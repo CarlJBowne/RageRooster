@@ -1,6 +1,4 @@
 using System.Collections;
-using UnityEngine.InputSystem;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -13,27 +11,32 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
     private bool isGrounded;
+    private Transform cameraTransform;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        cameraTransform = Camera.main.transform;
     }
 
     void Update()
     {
         Vector2 movementInput = Input.Movement;
-        Vector3 movement = new Vector3(movementInput.x, 0, movementInput.y) * moveSpeed * Time.deltaTime;
-        transform.Translate(movement, Space.World);
+        Vector3 movement = new Vector3(movementInput.x, 0, movementInput.y);
 
-        Vector2 camera = Input.Camera;
+        // Adjust movement direction based on camera's forward direction
+        Vector3 cameraForward = cameraTransform.forward;
+        cameraForward.y = 0; // Ignore vertical component
+        cameraForward.Normalize();
+
+        Vector3 cameraRight = cameraTransform.right;
+        cameraRight.y = 0; // Ignore vertical component
+        cameraRight.Normalize();
+
+        Vector3 adjustedMovement = (cameraForward * movement.z + cameraRight * movement.x) * moveSpeed * Time.deltaTime;
+        transform.Translate(adjustedMovement, Space.World);
+
         bool jump = Input.Jump.triggered;
-        bool attack = Input.Attack.triggered;
-        bool block = Input.Block.triggered;
-        bool grab = Input.Grab.triggered;
-        bool shootMode = Input.ShootMode.triggered;
-        bool shoot = Input.Shoot.triggered;
-        bool charge = Input.Charge.triggered;
-        bool sonic = Input.Sonic.triggered;
 
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
 
