@@ -6,6 +6,18 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    public float jumpForce = 5f;
+    public Transform groundCheck;
+    public float groundCheckRadius = 0.2f;
+    public LayerMask groundLayer;
+
+    private Rigidbody rb;
+    private bool isGrounded;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
 
     void Update()
     {
@@ -21,6 +33,13 @@ public class PlayerController : MonoBehaviour
         bool shootMode = Input.ShootMode.triggered;
         bool shoot = Input.Shoot.triggered;
         bool charge = Input.Charge.triggered;
-        bool sonic = Input.Sonic.triggered;      
+        bool sonic = Input.Sonic.triggered;
+
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
+
+        if (jump && isGrounded)
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
     }
 }
