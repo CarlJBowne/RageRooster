@@ -10,18 +10,16 @@ public class AttackSource : MonoBehaviour
 	/// <summary> Whether this source recieves contacts from the collider on its own mesh. (Leave on unless using the MultiAttackHitBox script on another Collider.) </summary>
 	[SerializeField] bool thisCollider = true;
 
-	/// <summary> A definition for an indidivdual attack. A dictionary of these can be used along with MultiAttackHitBox to define multiple attacks. </summary>
-	public struct AttackMove
-	{
-		public string name;
-		public int damage;
-	}
 	/// <summary> The default attack enacted by this source. </summary>
-	public AttackMove defaultAttack;
+	public Attack defaultAttack;
 	/// <summary> A list of possible attacks able to be activated by MultiAttackHitBox-es </summary>
-	public AttackMove[] attacks;
+	public Attack[] attacks;
 
-	private Dictionary<string, AttackMove> attacksDict;
+	private Dictionary<string, Attack> attacksDict;
+	/// <summary>
+	/// The ID string used to determine which attack in the AttackSource's repetior is meant to be used. Leave null for default.
+	/// </summary>
+	public string currentAttackID = null;
 
 	private void Awake()
 	{
@@ -40,9 +38,7 @@ public class AttackSource : MonoBehaviour
 	{
 		if (!target.TryGetComponent(out Health targetHealth)) return;
 
-		AttackMove selectedAttack = defaultAttack;
-		if (attackID != null) attacksDict.TryGetValue(attackID, out selectedAttack);
-		if (targetHealth.Damage(selectedAttack.damage))
+		if (targetHealth.Damage(GetAttack(attackID)))
 		{
 			//Succesful Strike Additional Logic here.
 		}
@@ -50,7 +46,19 @@ public class AttackSource : MonoBehaviour
 		{
 			//Unsuccesful Strike Additional Logic here.
 		}
-		
+
 	}
 
+	/// <summary>
+	/// Use via Animations or otherwise to set specific attacks to be used at a given point in time.
+	/// </summary>
+	/// <param name="attackID"></param>
+	public void SetAttackID(string attackID) => currentAttackID = attackID;
+
+	public Attack GetAttack(string ID = null)
+	{
+		ID ??= currentAttackID;
+		if (ID != null && attacksDict.TryGetValue(ID, out Attack result)) return result;
+		return defaultAttack;
+	}
 }

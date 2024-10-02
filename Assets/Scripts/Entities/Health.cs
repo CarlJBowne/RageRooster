@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,15 +25,15 @@ public class Health : MonoBehaviour
 
 	private void Awake() => health = maxHealth;
 
-	public bool Damage(int amount)
+	public bool Damage(Attack attack)
 	{
-		if (!damagable || amount < 1 || health == 0) return false;
+		if (!damagable || attack.amount < 1 || health == 0) return false;
 
-		if (health - amount < 0) amount = health;
+		if (health - attack.amount < 0) attack.amount = health;
 
-		health -= amount;
+		health -= attack.amount;
 
-		OnDamage(amount);
+		OnDamage(attack.amount);
 		if (health == 0) OnDeplete();
 
 		return true;
@@ -51,5 +52,19 @@ public class Health : MonoBehaviour
 
 	protected virtual void OnDamage(int amount) => damageEvent?.Invoke(amount);
 	protected virtual void OnDeplete() => depleteEvent?.Invoke();
+
+}
+
+/// <summary>
+/// The Data of an Individual Attack.
+/// </summary>
+[Serializable]
+public struct Attack
+{
+
+	public int amount;
+	public string name;
+	AttackSource source;
+	//Additional "Attack Type" data or whatnot.
 
 }

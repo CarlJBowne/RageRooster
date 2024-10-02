@@ -6,7 +6,7 @@ using UnityEngine;
 /// An individual Attack Hitbox to be used when multiple colliders are hitboxes.
 /// </summary>
 [RequireComponent(typeof(Collider))]
-public class AttackHitbox : MonoBehaviour
+public class AttackHitBox : MonoBehaviour
 {
 	/// <summary>
 	/// The AttackSource this Hitbox is tied too.
