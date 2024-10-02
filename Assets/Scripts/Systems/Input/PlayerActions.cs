@@ -311,7 +311,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""id"": ""56eadb48-0930-4aba-9cc5-5f8198ea57f3"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""NormalizeVector2"",
                     ""groups"": """",
                     ""action"": ""Camera"",
                     ""isComposite"": false,
