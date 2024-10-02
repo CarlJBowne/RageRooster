@@ -13,7 +13,7 @@ public abstract class Staticon<T> where T : Staticon<T>
 	private static T _instance;
 	public static T Get()
 	{ if (!initialized) Initialize(); return _instance; }
-	public static T I => Get();
+	public static T Instance => Get();
 
 	public static void Initialize()
 	{
