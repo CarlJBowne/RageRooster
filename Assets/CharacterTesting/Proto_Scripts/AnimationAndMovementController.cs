@@ -102,10 +102,6 @@ public class AnimationAndMovementController : MonoBehaviour
     // Handles the jump logic based on input and character state
     void HandleJump()
     {
-        Debug.Log("Is Jumping: " + _isJumping);
-        Debug.Log("Is Jump Pressed: " + _isJumpPressed);
-        Debug.Log("Is Grounded: " + _characterController.isGrounded);
-        Debug.Log("HandleJump called");
 
         // Check if the character can jump
         if (!_isJumping && _characterController.isGrounded && _isJumpPressed)
