@@ -3,23 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// This script is responsible for handling the player's movement and animations, I know it's a lot of code but I try to add comments where I can.
-/// Nameing Conventions:
-/// - Variables defined in the scope of the class are marked with an underscore (_)
-/// - camelCase is used for local variables, parameters, arguments, methodVariables, functionVariables, and private fields.
-/// - PascalCase is used for CLassNames, MethodNames, Properties, Public Fields, Constants, and Enum Values.
-///  (these are mainly notes for myself to keep the code clean and readable)
-/// For this script I will be using a Hierarchical State Machine to allow for an increase in complexity and flexibility in the future.
-/// State Machine:
-/// - Concrete States: Walking, Running, Jumping, Idle, Grounded
-/// -- Individual states that have behavior specific logic, each wit their own class derived from the same abstract class.
-/// 
-/// - Abstract States: Logic to inherit from, contains the basic logic for each state.
-/// 
-/// - Context: Creates instances of concrete states and passes the data to the state or states.
-/// </summary>
-
 public class AnimationAndMovementController : MonoBehaviour
 {
     PlayerInput _playerInput;
@@ -36,6 +19,7 @@ public class AnimationAndMovementController : MonoBehaviour
     Vector3 _currentMovement;
     Vector3 _currentRunMovement;
     Vector3 _appliedMovement;
+    Vector3 _cameraRelativeMovement;
     bool _isMovementPressed;
     bool _isRunPressed;
 
@@ -58,6 +42,11 @@ public class AnimationAndMovementController : MonoBehaviour
     bool _isJumpAnimating = false;
     int _jumpCount = 0;
 
+    // gliding variables
+    bool _isGliding = false;
+    float _glideGravity = -2.0f;
+    int _isGlidingHash;
+
     Dictionary<int, float>  initialJumpVelocities = new Dictionary<int, float>();
     Dictionary<int, float>  jumpGravities = new Dictionary<int, float>();
 
@@ -73,6 +62,7 @@ public class AnimationAndMovementController : MonoBehaviour
         _isRunningHash = Animator.StringToHash("isRunning");
         _isJumpingHash = Animator.StringToHash("isJumping");
         _jumpCountHash = Animator.StringToHash("jumpCount");
+        _isGlidingHash = Animator.StringToHash("isGliding");
 
         _playerInput.CharacterControls.Move.started += onMovementInput;
         _playerInput.CharacterControls.Move.canceled += onMovementInput;
@@ -115,6 +105,7 @@ public class AnimationAndMovementController : MonoBehaviour
         Debug.Log("Is Jumping: " + _isJumping);
         Debug.Log("Is Jump Pressed: " + _isJumpPressed);
         Debug.Log("Is Grounded: " + _characterController.isGrounded);
+        Debug.Log("HandleJump called");
 
         // Check if the character can jump
         if (!_isJumping && _characterController.isGrounded && _isJumpPressed)
@@ -135,6 +126,7 @@ public class AnimationAndMovementController : MonoBehaviour
             // Applies initial jump velocity to the character
             _currentMovement.y = initialJumpVelocities[_jumpCount];
             _appliedMovement.y = initialJumpVelocities[_jumpCount];
+            Debug.Log($"Jump Count: {_jumpCount}, Initial Jump Velocity: {initialJumpVelocities[_jumpCount]}");
         }
 
         // Reset the jump state when the player lands
@@ -142,6 +134,7 @@ public class AnimationAndMovementController : MonoBehaviour
         {
             _isJumping = false;
         }
+        
     }
 
     // Coroutine to reset the jump count after a delay
@@ -155,6 +148,16 @@ public class AnimationAndMovementController : MonoBehaviour
     void onJump(InputAction.CallbackContext context)
     {
         _isJumpPressed = context.ReadValueAsButton();
+
+        if (_isJumpPressed && _jumpCount <3)
+        {
+            HandleJump();
+
+            if (_jumpCount == 3 && !_characterController.isGrounded)
+            {
+                StartGliding();
+            }
+        }
     }
 
     // Input action handlers
@@ -169,11 +172,11 @@ public class AnimationAndMovementController : MonoBehaviour
         Vector3 positionToLookAt;
 
         // Set the position to look at based on current movement
-        positionToLookAt.x = _currentMovement.x;
+        positionToLookAt.x = _cameraRelativeMovement.x;
 
         // Ensure the y-axis is zero to avoid tilting the character
         positionToLookAt.y = _zero;
-        positionToLookAt.z = _currentMovement.z;
+        positionToLookAt.z = _cameraRelativeMovement.z;
 
         Quaternion currentRotation = transform.rotation;
 
@@ -236,6 +239,20 @@ public class AnimationAndMovementController : MonoBehaviour
         }
     }
 
+    void StartGliding()
+    {
+        _isGliding = true;
+        _animator.SetBool(_isGlidingHash, true);
+        _gravity = _glideGravity;
+    }
+
+    void StopGlide()
+    {
+        _isGliding = false;
+        _animator.SetBool(_isGlidingHash, false);
+        _gravity = -9.8f;
+    }
+
     // Handles the animation states based on movement and run inputs
     void HandleAnimation()
     {
@@ -279,11 +296,41 @@ public class AnimationAndMovementController : MonoBehaviour
             _appliedMovement.x = _currentMovement.x;
             _appliedMovement.z = _currentMovement.z;
         }
+        float verticalMovement = _appliedMovement.y;
+        _cameraRelativeMovement.y = verticalMovement;
+        _characterController.Move(_cameraRelativeMovement * Time.deltaTime);
 
-        _characterController.Move(_appliedMovement * Time.deltaTime);
+        if (_characterController.isGrounded && _isGliding)
+        {
+            StopGlide();
+        }
+
+        _cameraRelativeMovement = ConvertToCameraSpace(_appliedMovement);
+        Debug.Log($"_cameraRelativeMovement: {_cameraRelativeMovement}");
 
         HandleGravity();
         HandleJump();
+    }
+
+    Vector3 ConvertToCameraSpace(Vector3 vectorToRotate)
+    {
+        float currentYValue = vectorToRotate.y;
+
+        Vector3 cameraForward = Camera.main.transform.forward;
+        Vector3 cameraRight = Camera.main.transform.right;
+
+        cameraForward.y = 0;
+        cameraRight.y = 0;
+
+        cameraForward = cameraForward.normalized;
+        cameraRight = cameraRight.normalized;
+
+        Vector3 cameraForwardZProduct = vectorToRotate.z * cameraForward;
+        Vector3 cameraRightXProduct = vectorToRotate.x * cameraRight;
+
+        Vector3 vectorRotatedToCameraSpace = cameraForwardZProduct + cameraRightXProduct;
+        vectorRotatedToCameraSpace.y = currentYValue;
+        return vectorRotatedToCameraSpace;
     }
 
     // Called when the script instance is being loaded
