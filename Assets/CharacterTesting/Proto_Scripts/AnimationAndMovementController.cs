@@ -42,11 +42,6 @@ public class AnimationAndMovementController : MonoBehaviour
     bool _isJumpAnimating = false;
     int _jumpCount = 0;
 
-    // gliding variables
-    bool _isGliding = false;
-    float _glideGravity = -2.0f;
-    int _isGlidingHash;
-
     Dictionary<int, float>  initialJumpVelocities = new Dictionary<int, float>();
     Dictionary<int, float>  jumpGravities = new Dictionary<int, float>();
 
@@ -62,7 +57,6 @@ public class AnimationAndMovementController : MonoBehaviour
         _isRunningHash = Animator.StringToHash("isRunning");
         _isJumpingHash = Animator.StringToHash("isJumping");
         _jumpCountHash = Animator.StringToHash("jumpCount");
-        _isGlidingHash = Animator.StringToHash("isGliding");
 
         _playerInput.CharacterControls.Move.started += onMovementInput;
         _playerInput.CharacterControls.Move.canceled += onMovementInput;
@@ -148,11 +142,6 @@ public class AnimationAndMovementController : MonoBehaviour
         if (_isJumpPressed && _jumpCount <3)
         {
             HandleJump();
-
-            if (_jumpCount == 3 && !_characterController.isGrounded)
-            {
-                StartGliding();
-            }
         }
     }
 
@@ -235,19 +224,6 @@ public class AnimationAndMovementController : MonoBehaviour
         }
     }
 
-    void StartGliding()
-    {
-        _isGliding = true;
-        _animator.SetBool(_isGlidingHash, true);
-        _gravity = _glideGravity;
-    }
-
-    void StopGlide()
-    {
-        _isGliding = false;
-        _animator.SetBool(_isGlidingHash, false);
-        _gravity = -9.8f;
-    }
 
     // Handles the animation states based on movement and run inputs
     void HandleAnimation()
@@ -295,11 +271,6 @@ public class AnimationAndMovementController : MonoBehaviour
         float verticalMovement = _appliedMovement.y;
         _cameraRelativeMovement.y = verticalMovement;
         _characterController.Move(_cameraRelativeMovement * Time.deltaTime);
-
-        if (_characterController.isGrounded && _isGliding)
-        {
-            StopGlide();
-        }
 
         _cameraRelativeMovement = ConvertToCameraSpace(_appliedMovement);
         Debug.Log($"_cameraRelativeMovement: {_cameraRelativeMovement}");
