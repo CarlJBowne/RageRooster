@@ -25,7 +25,7 @@ public class AnimationAndMovementController : MonoBehaviour
 
     // constants
     float _rotationFactorPerFrame = 15.0f;
-    float _runMultiplier = 3.0f;
+    float _runMultiplier = 5.0f;
     int _zero = 0;
 
     // gravity variables
@@ -197,7 +197,7 @@ public class AnimationAndMovementController : MonoBehaviour
         float fallMultiplier = 2.0f;
 
         // Multiplier for gravity when the parachute is deployed
-        float parachuteGravityMultiplier = 0.005f; 
+        float parachuteGravityMultiplier = 0.05f; 
 
         // Apply grounded gravity when the character is on the ground
         if (_characterController.isGrounded)
