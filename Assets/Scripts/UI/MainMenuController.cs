@@ -14,4 +14,9 @@ public class MainMenuController : MonoBehaviour
     {
         SceneManager.LoadScene("ChickenCoop");
     }
+
+	public void MainPrototype()
+	{
+		SceneManager.LoadScene("MainMenu");
+	}
 }

@@ -9,8 +9,11 @@ public class AnimationAndMovementController : MonoBehaviour
     CharacterController _characterController;
     Animator _animator;
 
-    // parameter IDs
-    int _isWalkingHash;
+    public float walkSpeed = 10;
+
+
+	// parameter IDs
+	int _isWalkingHash;
     int _isRunningHash;
     int _jumpCountHash;
 
@@ -296,7 +299,7 @@ public class AnimationAndMovementController : MonoBehaviour
         }
         float verticalMovement = _appliedMovement.y;
         _cameraRelativeMovement.y = verticalMovement;
-        _characterController.Move(_cameraRelativeMovement * Time.deltaTime);
+        _characterController.Move(_cameraRelativeMovement * walkSpeed * Time.deltaTime);
 
         _cameraRelativeMovement = ConvertToCameraSpace(_appliedMovement);
 
