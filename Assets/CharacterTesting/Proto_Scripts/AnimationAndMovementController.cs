@@ -222,7 +222,7 @@ public class AnimationAndMovementController : MonoBehaviour
         {
             // Handle gravity when the character is falling
             float previousYVelocity = _currentMovement.y;
-            float gravityMultiplier = _isParachuteDeployed ? parachuteGravityMultiplier : fallMultiplier;
+            float gravityMultiplier = _jumpCount ==3 && _isParachuteDeployed ? parachuteGravityMultiplier : fallMultiplier;
             _currentMovement.y = _currentMovement.y + (jumpGravities[_jumpCount] * gravityMultiplier * Time.deltaTime);
             _appliedMovement.y = Mathf.Max((previousYVelocity + _currentMovement.y) * 0.5f, -20.0f);
         }
