@@ -42,9 +42,6 @@ public class AnimationAndMovementController : MonoBehaviour
     bool _isJumpAnimating = false;
     int _jumpCount = 0;
 
-    private bool _isParachuteDeployed = false;
-    int _isParachutingHash;
-
     Dictionary<int, float>  initialJumpVelocities = new Dictionary<int, float>();
     Dictionary<int, float>  jumpGravities = new Dictionary<int, float>();
 
@@ -60,7 +57,6 @@ public class AnimationAndMovementController : MonoBehaviour
         _isRunningHash = Animator.StringToHash("isRunning");
         _isJumpingHash = Animator.StringToHash("isJumping");
         _jumpCountHash = Animator.StringToHash("jumpCount");
-        _isParachutingHash = Animator.StringToHash("isParachuting");
 
         _playerInput.CharacterControls.Move.started += onMovementInput;
         _playerInput.CharacterControls.Move.canceled += onMovementInput;
@@ -69,10 +65,6 @@ public class AnimationAndMovementController : MonoBehaviour
         _playerInput.CharacterControls.Run.canceled += onRun;
         _playerInput.CharacterControls.Jump.started += onJump;
         _playerInput.CharacterControls.Jump.canceled += onJump;
-
-        // Add the parachute input event handlers
-        _playerInput.CharacterControls.Parachute.started += onParachuteInput;
-        _playerInput.CharacterControls.Parachute.canceled += onParachuteInput;
 
         SetupJumpVariables();
     }
@@ -124,6 +116,7 @@ public class AnimationAndMovementController : MonoBehaviour
             // Applies initial jump velocity to the character
             _currentMovement.y = initialJumpVelocities[_jumpCount];
             _appliedMovement.y = initialJumpVelocities[_jumpCount];
+            Debug.Log($"Jump Count: {_jumpCount}, Initial Jump Velocity: {initialJumpVelocities[_jumpCount]}");
         }
 
         // Reset the jump state when the player lands
@@ -196,9 +189,6 @@ public class AnimationAndMovementController : MonoBehaviour
         bool isFalling = _currentMovement.y <= 0.0f || !_isJumpPressed;
         float fallMultiplier = 2.0f;
 
-        // Multiplier for gravity when the parachute is deployed
-        float parachuteGravityMultiplier = 0.005f; 
-
         // Apply grounded gravity when the character is on the ground
         if (_characterController.isGrounded)
         {
@@ -222,8 +212,7 @@ public class AnimationAndMovementController : MonoBehaviour
         {
             // Handle gravity when the character is falling
             float previousYVelocity = _currentMovement.y;
-            float gravityMultiplier = _isParachuteDeployed ? parachuteGravityMultiplier : fallMultiplier;
-            _currentMovement.y = _currentMovement.y + (jumpGravities[_jumpCount] * gravityMultiplier * Time.deltaTime);
+            _currentMovement.y = _currentMovement.y + (jumpGravities[_jumpCount] * fallMultiplier * Time.deltaTime);
             _appliedMovement.y = Mathf.Max((previousYVelocity + _currentMovement.y) * 0.5f, -20.0f);
         }
         else
@@ -233,21 +222,6 @@ public class AnimationAndMovementController : MonoBehaviour
             _currentMovement.y = _currentMovement.y + (jumpGravities[_jumpCount] * Time.deltaTime);
             _appliedMovement.y = (previousYVelocity + _currentMovement.y) * .5f;
         }
-
-        if (_isParachuteDeployed)
-        {
-            _animator.SetBool(_isParachutingHash, true);
-        }
-        else
-        {
-            _animator.SetBool(_isParachutingHash, false);
-        }
-    }
-
-    void onParachuteInput(InputAction.CallbackContext context)
-    {
-        _isParachuteDeployed = context.ReadValueAsButton();
-        _animator.SetBool(_isParachutingHash, _isParachuteDeployed);
     }
 
 
@@ -299,6 +273,7 @@ public class AnimationAndMovementController : MonoBehaviour
         _characterController.Move(_cameraRelativeMovement * Time.deltaTime);
 
         _cameraRelativeMovement = ConvertToCameraSpace(_appliedMovement);
+        Debug.Log($"_cameraRelativeMovement: {_cameraRelativeMovement}");
 
         HandleGravity();
         HandleJump();

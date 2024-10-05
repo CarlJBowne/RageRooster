@@ -62,15 +62,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Parachute"",
-                    ""type"": ""Button"",
-                    ""id"": ""5bc9aad8-e0e2-4a91-827a-ba5da56e943c"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -205,28 +196,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""56063a78-c452-426b-9fd0-b93001b57d27"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Parachute"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""de3e0354-be4d-4b12-bb3d-68b97b4115b5"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Parachute"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -239,7 +208,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_CharacterControls_Run = m_CharacterControls.FindAction("Run", throwIfNotFound: true);
         m_CharacterControls_Jump = m_CharacterControls.FindAction("Jump", throwIfNotFound: true);
         m_CharacterControls_Look = m_CharacterControls.FindAction("Look", throwIfNotFound: true);
-        m_CharacterControls_Parachute = m_CharacterControls.FindAction("Parachute", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -305,7 +273,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_CharacterControls_Run;
     private readonly InputAction m_CharacterControls_Jump;
     private readonly InputAction m_CharacterControls_Look;
-    private readonly InputAction m_CharacterControls_Parachute;
     public struct CharacterControlsActions
     {
         private @PlayerInput m_Wrapper;
@@ -314,7 +281,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Run => m_Wrapper.m_CharacterControls_Run;
         public InputAction @Jump => m_Wrapper.m_CharacterControls_Jump;
         public InputAction @Look => m_Wrapper.m_CharacterControls_Look;
-        public InputAction @Parachute => m_Wrapper.m_CharacterControls_Parachute;
         public InputActionMap Get() { return m_Wrapper.m_CharacterControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -336,9 +302,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
-            @Parachute.started += instance.OnParachute;
-            @Parachute.performed += instance.OnParachute;
-            @Parachute.canceled += instance.OnParachute;
         }
 
         private void UnregisterCallbacks(ICharacterControlsActions instance)
@@ -355,9 +318,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
-            @Parachute.started -= instance.OnParachute;
-            @Parachute.performed -= instance.OnParachute;
-            @Parachute.canceled -= instance.OnParachute;
         }
 
         public void RemoveCallbacks(ICharacterControlsActions instance)
@@ -381,6 +341,5 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnRun(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
-        void OnParachute(InputAction.CallbackContext context);
     }
 }
