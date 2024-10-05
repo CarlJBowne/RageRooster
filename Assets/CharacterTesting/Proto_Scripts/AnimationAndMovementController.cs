@@ -9,8 +9,11 @@ public class AnimationAndMovementController : MonoBehaviour
     CharacterController _characterController;
     Animator _animator;
 
-    // parameter IDs
-    int _isWalkingHash;
+    public float walkSpeed = 10;
+
+
+	// parameter IDs
+	int _isWalkingHash;
     int _isRunningHash;
     int _jumpCountHash;
 
@@ -25,7 +28,7 @@ public class AnimationAndMovementController : MonoBehaviour
 
     // constants
     float _rotationFactorPerFrame = 15.0f;
-    float _runMultiplier = 3.0f;
+    float _runMultiplier = 5.0f;
     int _zero = 0;
 
     // gravity variables
@@ -197,7 +200,7 @@ public class AnimationAndMovementController : MonoBehaviour
         float fallMultiplier = 2.0f;
 
         // Multiplier for gravity when the parachute is deployed
-        float parachuteGravityMultiplier = 0.005f; 
+        float parachuteGravityMultiplier = 0.05f; 
 
         // Apply grounded gravity when the character is on the ground
         if (_characterController.isGrounded)
@@ -222,7 +225,7 @@ public class AnimationAndMovementController : MonoBehaviour
         {
             // Handle gravity when the character is falling
             float previousYVelocity = _currentMovement.y;
-            float gravityMultiplier = _isParachuteDeployed ? parachuteGravityMultiplier : fallMultiplier;
+            float gravityMultiplier = _jumpCount ==3 && _isParachuteDeployed ? parachuteGravityMultiplier : fallMultiplier;
             _currentMovement.y = _currentMovement.y + (jumpGravities[_jumpCount] * gravityMultiplier * Time.deltaTime);
             _appliedMovement.y = Mathf.Max((previousYVelocity + _currentMovement.y) * 0.5f, -20.0f);
         }
@@ -296,7 +299,7 @@ public class AnimationAndMovementController : MonoBehaviour
         }
         float verticalMovement = _appliedMovement.y;
         _cameraRelativeMovement.y = verticalMovement;
-        _characterController.Move(_cameraRelativeMovement * Time.deltaTime);
+        _characterController.Move(_cameraRelativeMovement * walkSpeed * Time.deltaTime);
 
         _cameraRelativeMovement = ConvertToCameraSpace(_appliedMovement);
 
