@@ -46,7 +46,6 @@ public class AnimationAndMovementController : MonoBehaviour
     int _jumpCount = 0;
 
     private bool _isParachuteDeployed = false;
-    int _isParachutingHash;
 
     Dictionary<int, float>  initialJumpVelocities = new Dictionary<int, float>();
     Dictionary<int, float>  jumpGravities = new Dictionary<int, float>();
@@ -63,7 +62,6 @@ public class AnimationAndMovementController : MonoBehaviour
         _isRunningHash = Animator.StringToHash("isRunning");
         _isJumpingHash = Animator.StringToHash("isJumping");
         _jumpCountHash = Animator.StringToHash("jumpCount");
-        _isParachutingHash = Animator.StringToHash("isParachuting");
 
         _playerInput.CharacterControls.Move.started += onMovementInput;
         _playerInput.CharacterControls.Move.canceled += onMovementInput;
@@ -73,27 +71,23 @@ public class AnimationAndMovementController : MonoBehaviour
         _playerInput.CharacterControls.Jump.started += onJump;
         _playerInput.CharacterControls.Jump.canceled += onJump;
 
-        // Add the parachute input event handlers
         _playerInput.CharacterControls.Parachute.started += onParachuteInput;
         _playerInput.CharacterControls.Parachute.canceled += onParachuteInput;
 
         SetupJumpVariables();
     }
 
-    // Initializes the jump variables
     void SetupJumpVariables()
     {
         float timeToApex = _maxJumpTime / 2;
         _gravity = (-2 * _maxJumpHeight) / Mathf.Pow(timeToApex, 2);
         _initialJumpVelocity = (2 * _maxJumpHeight) / timeToApex;
 
-        // Calculate the initial velocity and gravity for the second and third jump
         float secondJumpGravity = (-2 * (_maxJumpHeight + 2)) / Mathf.Pow(timeToApex * 1.25f, 2);
         float secondJumpInitialVelocity = (2 * (_maxJumpHeight + 2)) / (timeToApex * 1.25f);
         float thirdJumpGravity = (-2 * (_maxJumpHeight + 4)) / Mathf.Pow(timeToApex * 1.5f, 2);
         float thirdJumpInitialVelocity = (2 * (_maxJumpHeight + 4)) / (timeToApex * 1.5f);
 
-        // Store initial jump velocities and gravities in a dictionary
         initialJumpVelocities.Add(1, _initialJumpVelocity);
         initialJumpVelocities.Add(2, secondJumpInitialVelocity);
         initialJumpVelocities.Add(3, thirdJumpInitialVelocity);
@@ -104,32 +98,26 @@ public class AnimationAndMovementController : MonoBehaviour
         jumpGravities.Add(3, thirdJumpGravity);
     }
 
-    // Handles the jump logic based on input and character state
     void HandleJump()
     {
 
-        // Check if the character can jump
         if (!_isJumping && _characterController.isGrounded && _isJumpPressed)
         {
-            // Stops the jump reset routine if the player jumps before the jump reset time
             if (_jumpCount <3 && currentJumpResetRoutine != null)
             {
                 StopCoroutine(currentJumpResetRoutine);
             }
 
-            // Start the jump animation and update the jump state
             _animator.SetBool(_isJumpingHash, true);
             _isJumpAnimating = true;
             _isJumping = true;
             _jumpCount += 1;
             _animator.SetInteger(_jumpCountHash, _jumpCount);
 
-            // Applies initial jump velocity to the character
             _currentMovement.y = initialJumpVelocities[_jumpCount];
             _appliedMovement.y = initialJumpVelocities[_jumpCount];
         }
 
-        // Reset the jump state when the player lands
         else if (!_isJumpPressed && _isJumping && _characterController.isGrounded)
         {
             _isJumping = false;
@@ -137,14 +125,12 @@ public class AnimationAndMovementController : MonoBehaviour
         
     }
 
-    // Coroutine to reset the jump count after a delay
     IEnumerator JumpResetRoutine()
     {
         yield return new WaitForSeconds(0.5f);
         _jumpCount = 0;
     }
 
-    // Input action handlers
     void onJump(InputAction.CallbackContext context)
     {
         _isJumpPressed = context.ReadValueAsButton();
@@ -155,27 +141,22 @@ public class AnimationAndMovementController : MonoBehaviour
         }
     }
 
-    // Input action handlers
     void onRun(InputAction.CallbackContext context)
     {
         _isRunPressed = context.ReadValueAsButton();
     }
 
-    // Handles the character rotation based on the movement direction
     void HandleRotation()
     {
         Vector3 positionToLookAt;
 
-        // Set the position to look at based on current movement
         positionToLookAt.x = _cameraRelativeMovement.x;
 
-        // Ensure the y-axis is zero to avoid tilting the character
         positionToLookAt.y = _zero;
         positionToLookAt.z = _cameraRelativeMovement.z;
 
         Quaternion currentRotation = transform.rotation;
 
-        // Rotate the character if movement is pressed
         if (_isMovementPressed)
         {
         Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
@@ -199,10 +180,8 @@ public class AnimationAndMovementController : MonoBehaviour
         bool isFalling = _currentMovement.y <= 0.0f || !_isJumpPressed;
         float fallMultiplier = 2.0f;
 
-        // Multiplier for gravity when the parachute is deployed
         float parachuteGravityMultiplier = 0.05f; 
 
-        // Apply grounded gravity when the character is on the ground
         if (_characterController.isGrounded)
         {
             if (_isJumpAnimating)
@@ -211,7 +190,6 @@ public class AnimationAndMovementController : MonoBehaviour
                 _isJumpAnimating = false;
                 currentJumpResetRoutine = StartCoroutine(JumpResetRoutine());
 
-                // Reset jump count if it reaches 3
                 if (_jumpCount == 3)
                 {
                     _jumpCount = 0;
@@ -223,7 +201,6 @@ public class AnimationAndMovementController : MonoBehaviour
         }
         else if (isFalling)
         {
-            // Handle gravity when the character is falling
             float previousYVelocity = _currentMovement.y;
             float gravityMultiplier = _jumpCount ==3 && _isParachuteDeployed ? parachuteGravityMultiplier : fallMultiplier;
             _currentMovement.y = _currentMovement.y + (jumpGravities[_jumpCount] * gravityMultiplier * Time.deltaTime);
@@ -231,36 +208,23 @@ public class AnimationAndMovementController : MonoBehaviour
         }
         else
         {
-            // Handle gravity when the character is in the air but not falling
             float previousYVelocity = _currentMovement.y;
             _currentMovement.y = _currentMovement.y + (jumpGravities[_jumpCount] * Time.deltaTime);
             _appliedMovement.y = (previousYVelocity + _currentMovement.y) * .5f;
-        }
-
-        if (_isParachuteDeployed)
-        {
-            _animator.SetBool(_isParachutingHash, true);
-        }
-        else
-        {
-            _animator.SetBool(_isParachutingHash, false);
         }
     }
 
     void onParachuteInput(InputAction.CallbackContext context)
     {
         _isParachuteDeployed = context.ReadValueAsButton();
-        _animator.SetBool(_isParachutingHash, _isParachuteDeployed);
     }
 
 
-    // Handles the animation states based on movement and run inputs
     void HandleAnimation()
     {
         bool isWalking = _animator.GetBool(_isWalkingHash);
         bool isRunning = _animator.GetBool(_isRunningHash);
 
-        // Update walking animation state
         if (_isMovementPressed && !isWalking)
         {
             _animator.SetBool(_isWalkingHash, true);
@@ -270,7 +234,6 @@ public class AnimationAndMovementController : MonoBehaviour
             _animator.SetBool(_isWalkingHash, false);
         }
 
-        // Update running animation state
         if (_isMovementPressed && _isRunPressed && !isRunning)
         {
             _animator.SetBool(_isRunningHash, true);
@@ -286,7 +249,6 @@ public class AnimationAndMovementController : MonoBehaviour
         HandleRotation();
         HandleAnimation();
 
-        // Move the character based on run or walk state
         if (_isRunPressed)
         {
             _appliedMovement.x = _currentRunMovement.x;
@@ -328,15 +290,21 @@ public class AnimationAndMovementController : MonoBehaviour
         return vectorRotatedToCameraSpace;
     }
 
-    // Called when the script instance is being loaded
     void OnEnable()
     {
         _playerInput.CharacterControls.Enable();
     }
 
-    // Called when the script instance is being disabled
     void OnDisable()
     {
         _playerInput.CharacterControls.Disable();
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit.collider.CompareTag("Teleporter"))
+        {
+            Debug.Log("Character hit teleporter: " + hit.collider.name);
+        }
     }
 }
