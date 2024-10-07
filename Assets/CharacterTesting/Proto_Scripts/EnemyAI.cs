@@ -7,21 +7,22 @@ public class EnemyAI : MonoBehaviour
 {
     public Transform[] patrolPoints;
     public float detectionRadius = 10f;
-    public float chaseSpeed = 2f;
-    public float patrolSpeed = 0.5f;
+    public float chaseSpeed = 5f;
+    public float patrolSpeed = 2f;
     public LayerMask playerLayer;
 
     private int currentPatrolIndex;
     private NavMeshAgent agent;
     private Transform player;
     private bool isChasing;
-    private Animator anim;
+    Animator _animator;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        anim = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
+
         Patrol();
     }
 
@@ -41,23 +42,27 @@ public class EnemyAI : MonoBehaviour
 
     void Patrol()
     {
+
+        _animator.SetBool("isWalking", true);
+        _animator.SetBool("isRunning", false);
         // Patrol to the next point
         if (agent.remainingDistance < 0.5f && !agent.pathPending)
         {
             currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
             agent.destination = patrolPoints[currentPatrolIndex].position;
             agent.speed = patrolSpeed;
-            anim.SetBool("isRunning", false);
             Debug.Log("Patrolling to point: " + currentPatrolIndex);
         }
     }
 
     void ChasePlayer()
     {
+
+        _animator.SetBool("isWalking", false);
+        _animator.SetBool("isRunning", true);
         // Chase the player when detected
         agent.destination = player.position;
         agent.speed = chaseSpeed;
-        anim.SetBool("isRunning", true);
         Debug.Log("Chasing player");
     }
 
