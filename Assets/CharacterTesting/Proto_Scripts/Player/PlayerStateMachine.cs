@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerStateMachine : MonoBehaviour
 {
 	public Animator animator;
+	private PlayerStateBase currentState;
 
 
 	private void Awake()
@@ -12,16 +13,5 @@ public class PlayerStateMachine : MonoBehaviour
 		animator = GetComponent<Animator>();
 		PlayerStateBase[] animatorStates = animator.GetBehaviours<PlayerStateBase>();
 		foreach (PlayerStateBase state in animatorStates) state.Initialize(this);
-
-
 	}
-
-
-
-
-
-
-
-
-
 }
