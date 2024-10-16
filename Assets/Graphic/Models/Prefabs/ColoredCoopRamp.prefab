@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2717617844829886620}
   - component: {fileID: 8802025527749603939}
   - component: {fileID: 545838725528178939}
+  - component: {fileID: 4360506642825156084}
   m_Layer: 0
   m_Name: ColoredCoopRamp
   m_TagString: Untagged
@@ -26,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4078223908349444459}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.4999997, y: -0, z: -0, w: 0.86602557}
+  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
   m_LocalPosition: {x: 0.9866848, y: -0.64368135, z: -1.9060059}
   m_LocalScale: {x: 0.2921, y: 0.050000012, z: 0.020000003}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!33 &8802025527749603939
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -83,3 +84,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4360506642825156084
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4078223908349444459}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.0000486, y: 27.600258, z: 1.8013713}
+  m_Center: {x: 0.5000224, y: -11.8448305, z: 0.90080774}
