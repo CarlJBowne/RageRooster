@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace OLDStateMachine
+{
+
+
 public class PlayerStateMachine : MonoBehaviour
 {
 	public Animator animator;
@@ -14,4 +18,5 @@ public class PlayerStateMachine : MonoBehaviour
 		PlayerStateBase[] animatorStates = animator.GetBehaviours<PlayerStateBase>();
 		foreach (PlayerStateBase state in animatorStates) state.Initialize(this);
 	}
+}
 }

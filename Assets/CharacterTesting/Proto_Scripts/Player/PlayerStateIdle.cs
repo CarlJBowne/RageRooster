@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace OLDStateMachine
+{
+
 public class PlayerStateIdle : PlayerStateBase
 {
 
@@ -28,4 +31,5 @@ public class PlayerStateIdle : PlayerStateBase
         
     }
 
+}
 }

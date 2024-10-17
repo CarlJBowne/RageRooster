@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace OLDStateMachine
+{
+
+
 public class PlayerStateBase : StateMachineBehaviour
 {
 	protected PlayerStateMachine machine;
@@ -23,4 +27,5 @@ public class PlayerStateBase : StateMachineBehaviour
 
 	public virtual void OnInitialize() { }
 
+}
 }
