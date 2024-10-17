@@ -10,7 +10,9 @@ public class PlayerStateMachine : StateMachine
 
     #region Data
     [HideInInspector] public Animator animator;
-    [HideInInspector] public CharacterController charController;
+    //[HideInInspector] public CharacterController charController;
+    [HideInInspector] public Rigidbody rb;
+    [HideInInspector] public new CapsuleCollider collider;
     [HideInInspector] public Input input;
     [HideInInspector] public Transform cameraTransform;
 
@@ -25,7 +27,8 @@ public class PlayerStateMachine : StateMachine
     {
         base.Initialize();
         animator = GetComponent<Animator>();
-        charController = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
+        collider = GetComponent<CapsuleCollider>();
         input = Input.Get(); 
         cameraTransform = Camera.main.transform;
     }

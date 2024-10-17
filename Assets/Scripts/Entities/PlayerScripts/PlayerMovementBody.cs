@@ -13,6 +13,7 @@ public class PlayerMovementBody : StateBehavior
     public float decceleration;
     public float defaultGravity = 0;
     public float maxDownwardVelocity = 100f;
+    public float defaultGroundCheckDistance = 0.15f;
     public float coyoteTime = 0.5f;
     public float jumpBuffer = 1.5f;
     public float tripleJumpTime = 1f;
@@ -22,7 +23,7 @@ public class PlayerMovementBody : StateBehavior
     #endregion
 
     #region Data
-    [HideInInspector] public Vector3 velocity;
+    [HideInInspector] public Vector3 velocity { get => M.rb.velocity; set => M.rb.velocity = value; }
     [HideInInspector] public float currentGravity = 0;
     [HideInInspector] public float defaultMaxSpeed;
     [HideInInspector] public bool baseMovability = true;
@@ -30,7 +31,7 @@ public class PlayerMovementBody : StateBehavior
     [HideInInspector] public bool grounded;
     [HideInInspector] public float jumpInput;
     [HideInInspector] public float coyoteTimeLeft;
-    [HideInInspector] public int currentJump;
+    [HideInInspector] public int currentJump = 1; 
     [HideInInspector] public float tripleJumpTimeLeft;
     #endregion
 
@@ -44,13 +45,15 @@ public class PlayerMovementBody : StateBehavior
     {
         if(baseMovability) BaseHorizontalMovement();
 
-        velocity.y -= currentGravity;
+        velocity -= Vector3.up * currentGravity;
 
-        if(canJump) JumpCheck();
-        if (grounded != M.charController.isGrounded) GroundedChange(M.charController.isGrounded);
+        if (canJump) JumpCheck();
 
-        if(velocity.y < -maxDownwardVelocity) velocity.y = -maxDownwardVelocity;
-        M.charController.Move(velocity * Time.fixedDeltaTime); 
+        if (velocity.y < -maxDownwardVelocity) velocity = new Vector3(velocity.x, -maxDownwardVelocity, velocity.z);
+        
+        GroundCheck(-velocity.y);
+
+        D_Velocity = velocity;
     }
 
 
@@ -78,7 +81,8 @@ public class PlayerMovementBody : StateBehavior
         grounded = value;
         if (!value) coyoteTimeLeft = coyoteTime;
         else tripleJumpTimeLeft = tripleJumpTime;
-        TransitionTo(value ? groundedState : walkFallingState);
+        if(value && !groundedState.active || !value && !walkFallingState.active)
+            TransitionTo(value ? groundedState : walkFallingState);
     }
 
     private void JumpCheck()
@@ -88,16 +92,43 @@ public class PlayerMovementBody : StateBehavior
         if (groundedState.active && tripleJumpTimeLeft > 0) 
         { 
             tripleJumpTimeLeft -= Time.deltaTime;
-            if (tripleJumpTimeLeft <= 0) currentJump = 1;
+            if (tripleJumpTimeLeft <= 0) currentJump = 1; 
         }
 
         if (jumpInput > 0 && (groundedState.active || (walkFallingState.active && coyoteTimeLeft > 0)))
         {
             jumpInput = 0;
-            TransitionTo(jumpingStates[currentJump-1]);
+            TransitionTo(jumpingStates[currentJump]);
             currentJump = currentJump == 3 ? 1 : currentJump + 1;
             grounded = false;
         }
     }
+
+    public void GroundCheck(float downwardMomentum)
+    {
+        if (downwardMomentum < 0) return;
+        downwardMomentum = downwardMomentum.Min(defaultGroundCheckDistance);
+
+        var result = M.rb.SweepTest(Vector3.down, out RaycastHit hitInfo, downwardMomentum);
+
+        if (grounded != result) GroundedChange(result);
+        if (result)
+        {
+            //velocity = new Vector3(velocity.x, 0, velocity.z);
+            //transform.position = new(transform.position.x, transform.position.y - hitInfo.distance, transform.position.z);
+        }
+    }
+
+    public Vector3 D_Velocity;
+
+
+
+
+
+
+
+
+
+
 
 }

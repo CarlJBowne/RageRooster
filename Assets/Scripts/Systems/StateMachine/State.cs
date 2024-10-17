@@ -69,7 +69,7 @@ namespace SLS.StateMachineV2
             for (int i = 0; i < behaviors.Length; i++) behaviors[i].Initialize(machine);
             for (int i = 0; i < behaviors.Length; i++) behaviors[i].Awake_S();
 
-            Enter();
+            if(layer == -1) Enter();
         }
 
 

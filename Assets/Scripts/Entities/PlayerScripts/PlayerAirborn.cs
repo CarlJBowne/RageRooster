@@ -23,13 +23,13 @@ public class PlayerAirborn : StateBehavior
     {
         if (isJump && transform.position.y < initialHeight + jumpHeight)
         {
-            movement.velocity.y = jumpPower;
+            movement.velocity = new Vector3(movement.velocity.x, jumpPower, movement.velocity.z);
         }
         if (movement.velocity.y < jumpPower) TransitionTo(nextState);
 
         if (!Input.Jump.IsPressed() && transform.position.y > initialHeight + jumpMinHeight)
         {
-            if (movement.velocity.y > 0) movement.velocity.y = 0;
+            if (movement.velocity.y > 0) movement.velocity = new Vector3(movement.velocity.x, 0, movement.velocity.z);
             TransitionTo(nextState);
         }
 
@@ -42,7 +42,7 @@ public class PlayerAirborn : StateBehavior
     {
         movement.currentGravity = gravity;
         initialHeight = transform.position.y;
-        movement.velocity.y = jumpPower;
+        movement.velocity = new Vector3(movement.velocity.x, jumpPower, movement.velocity.z);
     }
     public override void OnExit() => movement.currentGravity = movement.defaultGravity;
 
