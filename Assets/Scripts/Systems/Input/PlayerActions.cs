@@ -135,7 +135,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""id"": ""c3684c17-7ec5-420f-ae8f-29ca000b5009"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""NormalizeVector2"",
                     ""groups"": """",
                     ""action"": ""Movement"",
                     ""isComposite"": true,

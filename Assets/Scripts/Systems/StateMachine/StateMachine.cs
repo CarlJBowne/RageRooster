@@ -74,8 +74,9 @@ namespace SLS.StateMachineV2
                 if (i==0 || nextState.lineage.Contains(prevState.lineage[i-1])) break;  
                 i--;
             }
-            for (; i < nextState.lineage.Length; i++)
-                nextState.lineage[i].Enter();
+            for (; i < nextState.lineage.Length-1; i++)
+                nextState.lineage[i].Enter(false);
+            nextState.Enter();
             currentState = nextState;
             nextState.onActivatedEvent?.Invoke(prevState);
         }
@@ -84,15 +85,14 @@ namespace SLS.StateMachineV2
         /// Get a StateBehavior attached to the Root State. (Aka. a Global State Behavior)
         /// </summary>
         /// <typeparam name="T">The Type wanted.</typeparam>
-        public T GetGlobalBehavior<T>() => ROOTState.GetComponent<T>();
+        public T GetGlobalBehavior<T>() where T : StateBehavior => ROOTState.GetComponent<T>();
         /// <summary>
         /// Try to get a StateBehavior attached to the Root State. (Aka. a Global State Behavior)
         /// </summary>
         /// <typeparam name="T">The Type wanted.</typeparam>
         /// <param name="result">The resulting behavior</param>
         /// <returns>True if a behavior of that type exists exists.</returns>
-        public bool TryGetGlobalBehavior<T>(out T result) => ROOTState.TryGetComponent<T>(out result);
-
+        public bool TryGetGlobalBehavior<T>(out T result) where T : StateBehavior => ROOTState.TryGetComponent<T>(out result);
 
     }
 

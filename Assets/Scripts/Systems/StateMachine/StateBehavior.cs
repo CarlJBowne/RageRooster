@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace SLS.StateMachineV2
@@ -49,6 +50,20 @@ namespace SLS.StateMachineV2
 
         public C GetComponentFromMachine<C>() where C : Component => M.GetComponent<C>();
         public bool TryGetComponentFromMachine<C>(out C result) where C : Component => M.TryGetComponent(out result);
+
+        /// <summary>
+        /// Get a StateBehavior attached to the Root State. (Aka. a Global State Behavior)
+        /// </summary>
+        /// <typeparam name="T">The Type wanted.</typeparam>
+        public T GetGlobalBehavior<T>() where T : StateBehavior => M.ROOTState.GetComponent<T>();
+        /// <summary>
+        /// Try to get a StateBehavior attached to the Root State. (Aka. a Global State Behavior)
+        /// </summary>
+        /// <typeparam name="T">The Type wanted.</typeparam>
+        /// <param name="result">The resulting behavior</param>
+        /// <returns>True if a behavior of that type exists exists.</returns>
+        public bool TryGetGlobalBehavior<T>(out T result) where T : StateBehavior => M.ROOTState.TryGetComponent<T>(out result);
+
 
         public void TransitionTo(State nextState) => M.TransitionState(nextState);
 
