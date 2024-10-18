@@ -9,24 +9,26 @@ public class PlayerMovementBody : StateBehavior
     public float acceleration;
     public float maxSpeed;
     public float decceleration;
-    public float defaultGravity = 0;
+    //public float defaultGravity = 0;
     public float maxDownwardVelocity = 100f;
     public float skinDistance = 0.05f;
     public float coyoteTime = 0.5f;
     public float jumpBuffer = 0.3f;
     public float tripleJumpTime = 0.3f;
     public State groundedState;
+    public State walkFallState;
     public State fallState;
     public State glideState;
-    public State[] jumpingStates;
+    public State jumpState1;
+    public State jumpState2;
     #endregion
 
     #region Data
-    [HideInInspector] public float currentGravity = 0;
+    //[HideInInspector] public float currentGravity = 0;
     [HideInInspector] public bool baseMovability = true;
     [HideInInspector] public bool canJump = true;
     [HideInInspector] public bool grounded = true;
-    [HideInInspector] public int currentJump = 1;
+    [HideInInspector] public bool secondJump;
 
     float jumpInput;
     float coyoteTimeLeft;
@@ -34,12 +36,12 @@ public class PlayerMovementBody : StateBehavior
     
     public Vector3 velocity { get => M.rb.velocity; set => M.rb.velocity = value; }
     public Vector3 position { get => M.rb.position; set => M.rb.position = value; }
+    [SerializeField] Vector3 D_velocity;
     #endregion
 
     public override void Awake_S()
     {
-        currentJump = 1;
-        currentGravity = defaultGravity;
+        //currentGravity = defaultGravity;
         M.collider.center = new Vector3(M.collider.center.x, (M.collider.height / 2) + skinDistance, M.collider.center.z);
     }
 
@@ -53,14 +55,11 @@ public class PlayerMovementBody : StateBehavior
     {
         if (baseMovability) BaseHorizontalMovement();
 
-        velocity -= Vector3.up * currentGravity * Time.deltaTime;
-
         if (canJump) JumpHandle();
-
-        if (velocity.y < -maxDownwardVelocity) SetVelocity(y: -maxDownwardVelocity);
 
         GroundCheck(velocity.y * -Time.deltaTime);
 
+        D_velocity = velocity;
     }
 
 
@@ -86,14 +85,14 @@ public class PlayerMovementBody : StateBehavior
         if (groundedState.active && tripleJumpTimeLeft > 0)
         {
             tripleJumpTimeLeft -= Time.deltaTime;
-            if (tripleJumpTimeLeft <= 0) currentJump = 1;
+            if (tripleJumpTimeLeft <= 0) secondJump = false;
         }
 
-        if (jumpInput > 0 && (groundedState.active || (fallState.active && coyoteTimeLeft > 0)))
+        if (jumpInput > 0 && (groundedState.active || (walkFallState.active && coyoteTimeLeft > 0)))
         {
             jumpInput = 0;
-            TransitionTo(jumpingStates[currentJump-1]);
-            currentJump = currentJump == 3 ? 1 : currentJump + 1;
+            TransitionTo(secondJump ? jumpState2 : jumpState1);
+            secondJump.Toggle();
             grounded = false;
         }
 
@@ -127,12 +126,7 @@ public class PlayerMovementBody : StateBehavior
         if (!result) coyoteTimeLeft = coyoteTime;
         else tripleJumpTimeLeft = tripleJumpTime;
         if ((result && !groundedState.active) || (!result && !fallState.active))
-            TransitionTo(result ? groundedState : FallOrGlide());
-
-        if (position.y <= -0.1944985f)
-        {
-            Debug.LogError("");
-        }
+            TransitionTo(result ? groundedState : walkFallState);
     }
 
     public State FallOrGlide() => Input.Jump.IsPressed() ? glideState : fallState;

@@ -1502,7 +1502,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravity: 9.81
-  overrideGravityOnStart: 0
+  terminalVelocity: 98.1
+  flatGravity: 0
   jumpHeight: 0
   jumpPower: 0
   jumpMinHeight: 0
@@ -2783,7 +2784,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravity: 3.27
-  overrideGravityOnStart: 1
+  terminalVelocity: 4.9
+  flatGravity: 0
   jumpHeight: 0
   jumpPower: 0
   jumpMinHeight: 0
@@ -2797,7 +2799,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4565631653423530229}
   m_Layer: 6
-  m_Name: Anim
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3146,24 +3148,22 @@ MonoBehaviour:
   acceleration: 2
   maxSpeed: 8
   decceleration: 0.75
-  defaultGravity: 0
-  maxDownwardVelocity: 19.62
+  maxDownwardVelocity: 10
   skinDistance: 0.05
   coyoteTime: 0.5
   jumpBuffer: 0.3
   tripleJumpTime: 0.3
   groundedState: {fileID: 3803531707346265779}
+  walkFallState: {fileID: 1666532131366438157}
   fallState: {fileID: 931477398715445950}
   glideState: {fileID: 6027212184641879295}
-  jumpingStates:
-  - {fileID: 1625394358674883294}
-  - {fileID: 2317239267716543947}
-  - {fileID: 6047201277479469942}
-  currentGravity: 0
+  jumpState1: {fileID: 1625394358674883294}
+  jumpState2: {fileID: 2317239267716543947}
   baseMovability: 1
   canJump: 1
   grounded: 1
-  currentJump: 0
+  secondJump: 0
+  D_velocity: {x: 0, y: 0, z: 0}
 --- !u!1 &4494565837756384463
 GameObject:
   m_ObjectHideFlags: 0
@@ -3257,7 +3257,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravity: 9.81
-  overrideGravityOnStart: 1
+  terminalVelocity: 98.1
+  flatGravity: 0
   jumpHeight: 3
   jumpPower: 8
   jumpMinHeight: 0.1
@@ -3520,8 +3521,8 @@ Transform:
   m_Children:
   - {fileID: 6790216793252147034}
   - {fileID: 3908212840131484515}
-  - {fileID: 6405852356470917581}
   - {fileID: 7977943911182383535}
+  - {fileID: 7685804907889260086}
   - {fileID: 1846500094994641161}
   m_Father: {fileID: 6385669238997089540}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3861,6 +3862,73 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.00000028219074, y: 0.01648701, z: -0.00057331705}
     m_Extent: {x: 0.005252939, y: 0.002848891, z: 0.0047490587}
   m_DirtyAABB: 0
+--- !u!1 &5651273197110606292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7685804907889260086}
+  - component: {fileID: 1666532131366438157}
+  - component: {fileID: 8170037764077192915}
+  m_Layer: 0
+  m_Name: Falling (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7685804907889260086
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5651273197110606292}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7427727485705586250}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1666532131366438157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5651273197110606292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  separateFromChildren: 0
+  onActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8170037764077192915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5651273197110606292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ae8156fa90eed4b8dd13eb17af36a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gravity: 9.81
+  terminalVelocity: 98.1
+  flatGravity: 0
+  jumpHeight: 0
+  jumpPower: 0
+  jumpMinHeight: 0
 --- !u!1 &5936538625018206224
 GameObject:
   m_ObjectHideFlags: 0
@@ -4355,72 +4423,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 9.313226e-10, y: 0.014263178, z: -0.0015374265}
     m_Extent: {x: 0.030787863, y: 0.0014776355, z: 0.0014066858}
   m_DirtyAABB: 0
---- !u!1 &6388525857090311768
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6405852356470917581}
-  - component: {fileID: 6047201277479469942}
-  - component: {fileID: 6069273465458068836}
-  m_Layer: 0
-  m_Name: Jumping (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &6405852356470917581
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6388525857090311768}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7427727485705586250}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6047201277479469942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6388525857090311768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  separateFromChildren: 0
-  onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &6069273465458068836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6388525857090311768}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23ae8156fa90eed4b8dd13eb17af36a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gravity: 9.81
-  overrideGravityOnStart: 1
-  jumpHeight: 6
-  jumpPower: 8
-  jumpMinHeight: 0.1
 --- !u!1 &6501205103368774112
 GameObject:
   m_ObjectHideFlags: 0
@@ -5399,7 +5401,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gravity: 9.81
-  overrideGravityOnStart: 1
+  terminalVelocity: 98.1
+  flatGravity: 0
   jumpHeight: 4
   jumpPower: 8
   jumpMinHeight: 0.1

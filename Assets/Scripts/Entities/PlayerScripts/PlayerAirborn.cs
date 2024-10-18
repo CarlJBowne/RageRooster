@@ -6,7 +6,9 @@ public class PlayerAirborn : StateBehavior
     PlayerMovementBody movement;
 
     public float gravity = 9.81f;
-    public bool overrideGravityOnStart = true;
+    public float terminalVelocity = 100f;
+    public bool flatGravity = false;
+    //public bool overrideGravityOnStart = true;
     public float jumpHeight;
     public float jumpPower;
     public float jumpMinHeight;
@@ -18,8 +20,10 @@ public class PlayerAirborn : StateBehavior
 
     public override void FixedUpdate_S()
     {
-        if (jumpPower>0 && transform.position.y < targetHeight) movement.SetVelocity(y: jumpPower);
-        if (movement.velocity.y < -jumpPower/10) TransitionTo(movement.FallOrGlide());
+        movement.SetVelocity(y: ApplyGravity());
+
+        if (jumpPower > 0 && transform.position.y < targetHeight) movement.SetVelocity(y: jumpPower);
+        if (movement.velocity.y < 0) TransitionTo(movement.FallOrGlide());
 
         if (!Input.Jump.IsPressed() && transform.position.y > targetMinHeight)
         {
@@ -31,11 +35,19 @@ public class PlayerAirborn : StateBehavior
 
     public override void OnEnter()
     {
-        movement.currentGravity = gravity;
+        if (jumpPower <= 0) return;
         targetMinHeight = transform.position.y + jumpMinHeight;
         targetHeight = movement.position.y + jumpHeight - (jumpPower.P() / (2 * gravity));
-        if (overrideGravityOnStart) movement.SetVelocity(y: jumpPower);
+        movement.SetVelocity(y: jumpPower);
     }
-    public override void OnExit() => movement.currentGravity = movement.defaultGravity;
+    //public override void OnExit() => movement.currentGravity = movement.defaultGravity;
+
+    private float ApplyGravity()
+    {
+        return  (!flatGravity 
+            ? movement.velocity.y - (gravity * Time.deltaTime) 
+            : -gravity * Time.deltaTime
+            ).Min(-terminalVelocity);
+    }
 
 }
