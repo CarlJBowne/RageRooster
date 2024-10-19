@@ -14,11 +14,6 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
     public float minSpeedForRotate;
 
     #endregion Config
-    #region Data
-    //[HideInInspector] public float currentSpeed;
-    //[HideInInspector] public Vector3 currentDirection;
-
-    #endregion Data 
 
     public override void OnAwake()
     {

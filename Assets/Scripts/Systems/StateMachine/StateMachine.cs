@@ -13,8 +13,6 @@ namespace SLS.StateMachineV2
 
         #region Config
 
-        [SerializeField] private string rootPath = "Root";
-
         #endregion
 
         #region Data
@@ -41,7 +39,26 @@ namespace SLS.StateMachineV2
         {
             if (ROOTState == null || Variables == null)
             {
-                Transform rootObject = transform.Find(rootPath);
+                Transform rootObject = transform.Find("Root");
+                if(rootObject == null)
+                {
+                    int i = 0;
+                    for (; i < rootObject.childCount; i++)
+                    {
+                        Transform child = rootObject.GetChild(i);
+                        if (child.TryGetComponent<State>(out _))
+                        {
+                            child.name = "Root";
+                            rootObject = child;
+                            break;
+                        }
+                    }
+                    if (i == rootObject.childCount)
+                    {
+                        enabled = false;
+                        throw new System.Exception("Root State Missing");
+                    }
+                }
                 ROOTState = rootObject.GetComponent<State>();
                 Variables = ROOTState.GetComponent<StateMachineVariables>();
                 Variables.Initialize();

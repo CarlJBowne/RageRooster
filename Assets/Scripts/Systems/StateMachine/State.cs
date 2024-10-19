@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using EditorAttributes;
 
 namespace SLS.StateMachineV2
 {
@@ -13,8 +14,28 @@ namespace SLS.StateMachineV2
         /// <summary>
         /// Acts as a separate state from children rather than automating to the first in the list. Only applicable if this State has child states. 
         /// </summary>
-        [SerializeField] private bool separateFromChildren;
-        [SerializeField] public UnityEvent<State> onActivatedEvent; 
+        [SerializeField, ShowField(nameof(__showSepFromChildren))] private bool separateFromChildren;
+        [SerializeField] public UnityEvent<State> onActivatedEvent;
+
+
+        #region Buttons
+
+        [Button]
+        private void AddChild()
+        {
+            var NSGO = new GameObject("NewState");
+            NSGO.transform.parent = base.transform;
+            NSGO.AddComponent<State>();
+        }
+        [Button(nameof(__enableSiblingCreation), ConditionResult.EnableDisable)]
+        private void AddSibling()
+        {
+            var NSGO = new GameObject("NewState");
+            NSGO.transform.parent = base.transform.parent;
+            NSGO.AddComponent<State>();
+        }
+
+        #endregion Buttons
 
         #endregion
 
@@ -35,12 +56,19 @@ namespace SLS.StateMachineV2
         public State[] children { get; private set; }
         public State activeChild { get; private set; }
         public State[] lineage { get; private set; }
+
         #endregion
 
+        #region EditorData
+        public bool __showSepFromChildren => base.transform.childCount > 0 && __enableSiblingCreation;
+        public bool __enableSiblingCreation => layer != -1;
 
+        #endregion 
 
-
-
+        private void Reset()
+        {
+            if (transform.parent.TryGetComponent<StateMachine>(out _)) layer = -1;
+        }
 
         public void _Initialize(StateMachine machine, int layer)
         {

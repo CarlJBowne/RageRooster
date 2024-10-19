@@ -1,6 +1,7 @@
 using SLS.StateMachineV2;
 using UnityEngine;
 using System.Linq;
+using EditorAttributes;
 
 public class PlayerMovementBody : PlayerStateBehavior
 {
@@ -36,7 +37,8 @@ public class PlayerMovementBody : PlayerStateBehavior
     float coyoteTimeLeft;
     float tripleJumpTimeLeft;
     
-    [SerializeField] Vector3 D_velocity;
+    [SerializeField, ReadOnly, Rename("Position")] Vector3 D_position;
+    [SerializeField, ReadOnly, Rename("Velocity")] Vector3 D_velocity;
     #endregion
 
     #region GetSet
@@ -91,6 +93,7 @@ public class PlayerMovementBody : PlayerStateBehavior
             GroundStateChange(GroundCheck());
         }
 
+        D_position = position;
         D_velocity = velocity;
     }
 
