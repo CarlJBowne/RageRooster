@@ -1,6 +1,6 @@
 using SLS.StateMachineV2;
 using UnityEngine;
-using UnityEngine.Windows;
+using System.Linq;
 
 public class PlayerMovementBody : PlayerStateBehavior
 {
@@ -26,7 +26,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     //[HideInInspector] public float currentGravity = 0;
     [HideInInspector] public bool baseMovability = true;
     [HideInInspector] public bool canJump = true;
-    [HideInInspector] public bool grounded = true;
+    public bool grounded = true;
     [HideInInspector] public bool secondJump;
     [HideInInspector] public float currentSpeed;
     [HideInInspector] public Vector3 currentDirection;
@@ -45,7 +45,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     public Quaternion rotationQ { get => M.rb.rotation; set => M.rb.rotation = value; }
     public Vector3 rotation { get => transform.eulerAngles; set => transform.eulerAngles = value; }
 
-    public void SetVelocity(float? x = null, float? y = null, float? z = null)
+    public void VelocitySet(float? x = null, float? y = null, float? z = null)
     {
         velocity = new Vector3(
             x ?? velocity.x,
@@ -53,7 +53,7 @@ public class PlayerMovementBody : PlayerStateBehavior
             z ?? velocity.z
             );
     }
-    public void SetPosition(float? x = null, float? y = null, float? z = null)
+    public void PositionSet(float? x = null, float? y = null, float? z = null)
     {
         position = new Vector3(
             x ?? position.x,
@@ -67,25 +67,29 @@ public class PlayerMovementBody : PlayerStateBehavior
 
 
 
-    public override void Awake_S()
+    public override void OnAwake()
     {
-        base.Awake_S();
+        M.physicsCallbacks += OnCollisionEnter_C;
         M.collider.center = new Vector3(M.collider.center.x, (M.collider.height / 2) + skinDistance, M.collider.center.z);
     }
 
-    public override void Update_S()
+    public override void OnUpdate()
     {
         if (input.jump.WasPressedThisFrame()) jumpInput = jumpBuffer + Time.fixedDeltaTime;
         if (jumpInput > 0) jumpInput -= Time.deltaTime;
     }
 
-    public override void FixedUpdate_S()
+    public override void OnFixedUpdate()
     {
         //if (baseMovability) BaseHorizontalMovement();
 
         if (canJump) JumpHandle();
 
-        GroundCheck(velocity.y * -Time.deltaTime);
+        if (grounded)
+        {
+            VelocitySet(y: 0);
+            GroundStateChange(GroundCheck());
+        }
 
         D_velocity = velocity;
     }
@@ -118,37 +122,41 @@ public class PlayerMovementBody : PlayerStateBehavior
         castResults = M.rb.SweepTestAll(direction);
         return castResults.Length > 0;
     }
-    public RaycastHit[] castResults;
-
-    public void GroundCheck(float downwardMomentum)
+    
+    //RE ADD SKIN DISTANCE TO FIX AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    public bool GroundCheck()
     {
-        if(downwardMomentum < 0)
-        {
-            if(grounded) grounded = false;
-            if (groundedState.active) TransitionTo(FallOrGlide());
-            return;
-        }
+        PositionSet(y: position.y + skinDistance);
+        castResults = M.rb.SweepTestAll(Vector3.down, skinDistance*2f);
+        PositionSet(y: position.y - skinDistance);
+        return castResults.Length > 0;
+    }
+    public RaycastHit[] castResults;
+    public bool GroundStateChange(bool input)
+    {
+        if(input == grounded) return false;
+        grounded = input;
 
-        castResults = M.rb.SweepTestAll(Vector3.down, downwardMomentum + skinDistance);
-        bool result = castResults.Length > 0;
-        if (downwardMomentum < 0) result = false;
-
-        if (grounded == result) return;
-        grounded = result;
-
-        if (result)
-        { 
-            SetVelocity(y: 0);
-            SetPosition(y: position.y - castResults[0].distance + skinDistance);
-        }
-
-        if (!result) coyoteTimeLeft = coyoteTime;
+        if (!grounded) coyoteTimeLeft = coyoteTime;
         else tripleJumpTimeLeft = tripleJumpTime;
-        if ((result && !groundedState.active) || (!result && !fallState.active))
-            TransitionTo(result ? groundedState : walkFallState);
+        if ((grounded && !groundedState.active) || (!grounded && !fallState.active))
+            TransitionTo(grounded ? groundedState : walkFallState);
+
+        return true;
+    }
+
+    private void OnCollisionEnter_C(PhysicsCallback type, Collision collision, Collider _)
+    {
+        if (type != PhysicsCallback.OnCollisionEnter || !state.active) return;
+
+        if (GroundCheck())
+        {
+            GroundStateChange(true);
+            VelocitySet(y: 0);
+            PositionSet(y: position.y - castResults[0].distance + skinDistance * 1.999f);
+        }
     }
 
     public State FallOrGlide() => input.jump.IsPressed() ? glideState : fallState;
-
 
 }

@@ -25,6 +25,8 @@ namespace SLS.StateMachineV2
         public State[] topLevelStates => ROOTState.children;
         public StateMachineVariables Variables { get; private set; }
 
+        public System.Action<PhysicsCallback, Collision?, Collider?> physicsCallbacks;
+
         #endregion
 
 
@@ -33,9 +35,9 @@ namespace SLS.StateMachineV2
 
 
 
-        protected virtual void Awake() => this.Initialize();
+        protected virtual void Awake() => this._Initialize();
 
-        public virtual void Initialize()
+        private void _Initialize()
         {
             if (ROOTState == null || Variables == null)
             {
@@ -44,9 +46,12 @@ namespace SLS.StateMachineV2
                 Variables = ROOTState.GetComponent<StateMachineVariables>();
                 Variables.Initialize();
             }
-            ROOTState.Initialize(this, -1);
+            this.Initialize();
+            ROOTState._Initialize(this, -1);
             currentState = ROOTState.activeChild;
         }
+
+        protected virtual void Initialize() { }
 
         private void Reset()
         {
@@ -57,9 +62,18 @@ namespace SLS.StateMachineV2
             Variables = root.AddComponent<StateMachineVariables>();
         }
 
-        protected virtual void Update() => ROOTState.Update_S();
+        protected virtual void Update() => ROOTState._Update();
 
-        protected virtual void FixedUpdate() => ROOTState.FixedUpdate_S();
+        protected virtual void FixedUpdate() => ROOTState._FixedUpdate();
+
+        #region Physics Callbacks
+        private void OnCollisionEnter(Collision collision) => physicsCallbacks?.Invoke(PhysicsCallback.OnCollisionEnter, collision, null);
+        private void OnCollisionExit(Collision collision) => physicsCallbacks?.Invoke(PhysicsCallback.OnCollisionExit, collision, null);
+        //private void OnCollisionStay(Collision collision) => physicsCallbacks?.Invoke(PhysicsCallback.OnCollisionEnter, collision, null);
+        private void OnTriggerEnter(Collider other) => physicsCallbacks?.Invoke(PhysicsCallback.OnTriggerEnter, null, other);
+        private void OnTriggerExit(Collider other) => physicsCallbacks?.Invoke(PhysicsCallback.OnTriggerExit, null, other);
+        //private void OnTriggerStay(Collider other) => physicsCallbacks?.Invoke(PhysicsCallback.OnTriggerStay, null, other);
+        #endregion
 
         public virtual void TransitionState(State nextState) => TransitionState(nextState, currentState);
         public virtual void TransitionState(State nextState, State prevState)
@@ -70,13 +84,13 @@ namespace SLS.StateMachineV2
             int i = prevState.lineage.Length - 1;
             for (; i >= 0;)
             {
-                prevState.lineage[i].Exit();
+                prevState.lineage[i]._Exit();
                 if (i==0 || nextState.lineage.Contains(prevState.lineage[i-1])) break;  
                 i--;
             }
             for (; i < nextState.lineage.Length-1; i++)
-                nextState.lineage[i].Enter(false);
-            nextState.Enter();
+                nextState.lineage[i]._Enter(false);
+            nextState._Enter();
             currentState = nextState;
             nextState.onActivatedEvent?.Invoke(prevState);
         }
@@ -94,6 +108,13 @@ namespace SLS.StateMachineV2
         /// <returns>True if a behavior of that type exists exists.</returns>
         public bool TryGetGlobalBehavior<T>(out T result) where T : StateBehavior => ROOTState.TryGetComponent<T>(out result);
 
+    }
+
+    public enum PhysicsCallback
+    {
+        OnCollisionEnter, OnCollisionExit, 
+        OnTriggerEnter, OnTriggerExit
+            //, OnCollisionStay, OnTriggerStay
     }
 
 }

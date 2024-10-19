@@ -20,13 +20,13 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
 
     #endregion Data 
 
-    public override void Awake_S()
+    public override void OnAwake()
     {
-        base.Awake_S();
-        body.currentDirection = transform.forward;
+        base.OnAwake();
+        body.currentDirection = transform.forward; 
     }
 
-    public override void FixedUpdate_S()
+    public override void OnFixedUpdate()
     {
         float deltaTime = Time.fixedDeltaTime / 0.02f;
         float currentSpeed = body.currentSpeed;
@@ -50,11 +50,11 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
             currentSpeed -= currentSpeed * decceleration * deltaTime;
         }
 
-        body.rotationQ = Quaternion.LookRotation(currentDirection);
+        body.rotation = currentDirection.DirToRot();
 
         Vector3 literalDirection = transform.forward * currentSpeed;
 
-        body.SetVelocity(x: literalDirection.x, z: literalDirection.z);
+        body.VelocitySet(x: literalDirection.x, z: literalDirection.z);
 
         body.currentSpeed = currentSpeed;
         body.currentDirection = currentDirection;

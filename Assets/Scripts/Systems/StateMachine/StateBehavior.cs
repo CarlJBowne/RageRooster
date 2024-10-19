@@ -21,8 +21,8 @@ namespace SLS.StateMachineV2
         /// Override with the "new" keyword with an expression like "=> M as MyStateMachine" to get a custom StateMachine
         /// </summary>
         public StateMachine M { get; private set; }
-        public new GameObject gameObject { get; private set; }
-        public new Transform transform { get; private set; }
+        public new GameObject gameObject => M.gameObject;
+        public new Transform transform => M.transform;
         public State state { get; private set; }
 
         #endregion
@@ -32,19 +32,20 @@ namespace SLS.StateMachineV2
 
 
 
-        public virtual void Initialize(StateMachine machine)
+        public void _Initialize(StateMachine machine)
         {
             this.M = machine;
-            gameObject = machine.gameObject;
-            transform = gameObject.transform;
             state = GetComponent<State>();
 
-            this.Awake_S();
+            this.Initialize(machine);
+            this.OnAwake();
         }
+        protected virtual void Initialize(StateMachine machine) { }
 
-        public virtual void Awake_S() { }
-        public virtual void Update_S() { }
-        public virtual void FixedUpdate_S() { }
+
+        public virtual void OnAwake() { }
+        public virtual void OnUpdate() { }
+        public virtual void OnFixedUpdate() { }
         public virtual void OnEnter() { }
         public virtual void OnExit() { }
 

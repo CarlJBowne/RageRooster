@@ -14,20 +14,22 @@ public class PlayerStateMachine : StateMachine
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public new CapsuleCollider collider;
     [HideInInspector] public Input input;
+    [HideInInspector] public PlayerMovementBody body;
     public Transform cameraTransform;
 
     #endregion
 
 
 
-    public override void Initialize()
+    protected override void Initialize()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<CapsuleCollider>();
-        input = Input.Get(); 
-        base.Initialize();
+        input = Input.Get();
+        body = GetGlobalBehavior<PlayerMovementBody>();
     }
+
 
 }
 public abstract class PlayerStateBehavior : StateBehavior
@@ -35,12 +37,18 @@ public abstract class PlayerStateBehavior : StateBehavior
     [HideInInspector] public new PlayerStateMachine M;
     [HideInInspector] public Input input;
     [HideInInspector] public PlayerMovementBody body;
+    [HideInInspector] public Rigidbody rb;
+    [HideInInspector] public new CapsuleCollider collider;
+    [HideInInspector] public Animator animator;
 
-    public override void Awake_S()
+    protected override void Initialize(StateMachine machine)
     {
-        M = base.M as PlayerStateMachine;
+        M = machine as PlayerStateMachine;
         input = M.input;
-        TryGetGlobalBehavior(out body);
+        body = M.body;
+        rb = M.rb;
+        collider = M.collider;
+        animator = M.animator;
     }
 
 }

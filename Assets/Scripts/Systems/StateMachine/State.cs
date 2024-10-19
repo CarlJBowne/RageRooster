@@ -42,7 +42,7 @@ namespace SLS.StateMachineV2
 
 
 
-        public void Initialize(StateMachine machine, int layer)
+        public void _Initialize(StateMachine machine, int layer)
         {
             this.machine = machine;
             this.layer = layer;
@@ -61,15 +61,14 @@ namespace SLS.StateMachineV2
                 for (int i = 0; i < childrenCount; i++)
                 {
                     children[i] = base.transform.GetChild(i).GetComponent<State>();
-                    children[i].Initialize(machine, layer + 1);
+                    children[i]._Initialize(machine, layer + 1);
                 }
             }
 
             behaviors = GetComponents<StateBehavior>();
-            for (int i = 0; i < behaviors.Length; i++) behaviors[i].Initialize(machine);
-            for (int i = 0; i < behaviors.Length; i++) behaviors[i].Awake_S();
+            for (int i = 0; i < behaviors.Length; i++) behaviors[i]._Initialize(machine);
 
-            if(layer == -1) Enter(true);
+            if(layer == -1) _Enter(true);
         }
 
 
@@ -86,17 +85,17 @@ namespace SLS.StateMachineV2
         }
 
 
-        public void Update_S()
+        public void _Update()
         {
-            for (int i = 0; i < behaviors.Length; i++) behaviors[i].Update_S();
-            if (isMultiState) activeChild?.Update_S();
+            for (int i = 0; i < behaviors.Length; i++) behaviors[i].OnUpdate();
+            if (isMultiState) activeChild?._Update();
         }
-        public void FixedUpdate_S()
+        public void _FixedUpdate()
         {
-            for (int i = 0; i < behaviors.Length; i++) behaviors[i].FixedUpdate_S();
-            if (isMultiState) activeChild?.FixedUpdate_S();
+            for (int i = 0; i < behaviors.Length; i++) behaviors[i].OnFixedUpdate();
+            if (isMultiState) activeChild?._FixedUpdate();
         }
-        public void Enter(bool specifically = true)
+        public void _Enter(bool specifically = true)
         {
             if(parent!=null) parent.activeChild = this;
             active = true;
@@ -106,12 +105,12 @@ namespace SLS.StateMachineV2
             if (specifically && isMultiState && !separateFromChildren)
             {
                 activeChild = children[0];
-                activeChild.Enter(specifically);
+                activeChild._Enter(specifically);
             }
                 
             base.gameObject.SetActive(true);
         }
-        public void Exit()
+        public void _Exit()
         {
             parent.activeChild = null;
             active = false;
