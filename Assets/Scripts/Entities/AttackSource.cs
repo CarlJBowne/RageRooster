@@ -23,7 +23,9 @@ public class AttackSource : MonoBehaviour
 
 	private void Awake()
 	{
-		for (int i = 0; i < attacks.Length; i++) attacksDict.Add(attacks[i].name, attacks[i]);
+		defaultAttack.source = this;
+		foreach (var attack in attacks) attacksDict.Add(attack.name, new(attack, this));
+		
 	}
 
 

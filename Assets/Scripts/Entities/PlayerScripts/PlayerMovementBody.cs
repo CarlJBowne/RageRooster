@@ -1,10 +1,9 @@
 using SLS.StateMachineV2;
 using UnityEngine;
+using UnityEngine.Windows;
 
-public class PlayerMovementBody : StateBehavior
+public class PlayerMovementBody : PlayerStateBehavior
 {
-    new PlayerStateMachine M => base.M as PlayerStateMachine;
-
     #region Config
     public float acceleration;
     public float maxSpeed;
@@ -29,53 +28,66 @@ public class PlayerMovementBody : StateBehavior
     [HideInInspector] public bool canJump = true;
     [HideInInspector] public bool grounded = true;
     [HideInInspector] public bool secondJump;
+    [HideInInspector] public float currentSpeed;
+    [HideInInspector] public Vector3 currentDirection;
+
 
     float jumpInput;
     float coyoteTimeLeft;
     float tripleJumpTimeLeft;
     
-    public Vector3 velocity { get => M.rb.velocity; set => M.rb.velocity = value; }
-    public Vector3 position { get => M.rb.position; set => M.rb.position = value; }
     [SerializeField] Vector3 D_velocity;
     #endregion
 
+    #region GetSet
+    public Vector3 velocity { get => M.rb.velocity; set => M.rb.velocity = value; }
+    public Vector3 position { get => M.rb.position; set => M.rb.position = value; }
+    public Quaternion rotationQ { get => M.rb.rotation; set => M.rb.rotation = value; }
+    public Vector3 rotation { get => transform.eulerAngles; set => transform.eulerAngles = value; }
+
+    public void SetVelocity(float? x = null, float? y = null, float? z = null)
+    {
+        velocity = new Vector3(
+            x ?? velocity.x,
+            y ?? velocity.y,
+            z ?? velocity.z
+            );
+    }
+    public void SetPosition(float? x = null, float? y = null, float? z = null)
+    {
+        position = new Vector3(
+            x ?? position.x,
+            y ?? position.y,
+            z ?? position.z
+            );
+    }
+
+
+    #endregion GetSet
+
+
+
     public override void Awake_S()
     {
-        //currentGravity = defaultGravity;
+        base.Awake_S();
         M.collider.center = new Vector3(M.collider.center.x, (M.collider.height / 2) + skinDistance, M.collider.center.z);
     }
 
     public override void Update_S()
     {
-        if (Input.Jump.WasPressedThisFrame()) jumpInput = jumpBuffer + Time.fixedDeltaTime;
+        if (input.jump.WasPressedThisFrame()) jumpInput = jumpBuffer + Time.fixedDeltaTime;
         if (jumpInput > 0) jumpInput -= Time.deltaTime;
     }
 
     public override void FixedUpdate_S()
     {
-        if (baseMovability) BaseHorizontalMovement();
+        //if (baseMovability) BaseHorizontalMovement();
 
         if (canJump) JumpHandle();
 
         GroundCheck(velocity.y * -Time.deltaTime);
 
         D_velocity = velocity;
-    }
-
-
-    private void BaseHorizontalMovement()
-    {
-        Vector3 adjustedDirection = Input.Movement.ToXZ().Rotate(M.cameraTransform.eulerAngles.y, Vector3.up);
-        Vector3 maxGoal = adjustedDirection * maxSpeed;
-
-        Vector3 workVelocity = velocity.XZ();
-
-        workVelocity = Vector3.MoveTowards(workVelocity, maxGoal, 
-            adjustedDirection.magnitude > 0 
-            ? (-Vector3.Dot(maxGoal, workVelocity) + 1).Min(1f) 
-            : decceleration);
-
-        SetVelocity(x: workVelocity.x, z: workVelocity.z);
     }
 
     private void JumpHandle()
@@ -96,10 +108,17 @@ public class PlayerMovementBody : StateBehavior
             grounded = false;
         }
 
-        if (fallState.active && Input.Jump.IsPressed()) TransitionTo(glideState);
-        if (glideState.active && !Input.Jump.IsPressed()) TransitionTo(fallState);
+        if (fallState.active && input.jump.IsPressed()) TransitionTo(glideState);
+        if (glideState.active && !input.jump.IsPressed()) TransitionTo(fallState);
 
     }
+
+    public bool DirectionCast(Vector3 direction)
+    {
+        castResults = M.rb.SweepTestAll(direction);
+        return castResults.Length > 0;
+    }
+    public RaycastHit[] castResults;
 
     public void GroundCheck(float downwardMomentum)
     {
@@ -110,8 +129,8 @@ public class PlayerMovementBody : StateBehavior
             return;
         }
 
-        RaycastHit[] results = M.rb.SweepTestAll(Vector3.down, downwardMomentum + skinDistance);
-        bool result = results.Length > 0;
+        castResults = M.rb.SweepTestAll(Vector3.down, downwardMomentum + skinDistance);
+        bool result = castResults.Length > 0;
         if (downwardMomentum < 0) result = false;
 
         if (grounded == result) return;
@@ -120,7 +139,7 @@ public class PlayerMovementBody : StateBehavior
         if (result)
         { 
             SetVelocity(y: 0);
-            SetPosition(y: position.y - results[0].distance + skinDistance);
+            SetPosition(y: position.y - castResults[0].distance + skinDistance);
         }
 
         if (!result) coyoteTimeLeft = coyoteTime;
@@ -129,32 +148,7 @@ public class PlayerMovementBody : StateBehavior
             TransitionTo(result ? groundedState : walkFallState);
     }
 
-    public State FallOrGlide() => Input.Jump.IsPressed() ? glideState : fallState;
-
-
-    public void SetVelocity(float? x = null, float? y = null, float? z = null)
-    {
-        velocity = new Vector3(
-            x ?? velocity.x,
-            y ?? velocity.y,
-            z ?? velocity.z
-            );
-    }
-    public void SetPosition(float? x = null, float? y = null, float? z = null)
-    {
-        position = new Vector3(
-            x ?? position.x,
-            y ?? position.y,
-            z ?? position.z
-            );
-    }
-
-
-
-
-
-
-
+    public State FallOrGlide() => input.jump.IsPressed() ? glideState : fallState;
 
 
 }

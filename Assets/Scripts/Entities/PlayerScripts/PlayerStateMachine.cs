@@ -30,3 +30,17 @@ public class PlayerStateMachine : StateMachine
     }
 
 }
+public abstract class PlayerStateBehavior : StateBehavior
+{
+    [HideInInspector] public new PlayerStateMachine M;
+    [HideInInspector] public Input input;
+    [HideInInspector] public PlayerMovementBody body;
+
+    public override void Awake_S()
+    {
+        M = base.M as PlayerStateMachine;
+        input = M.input;
+        TryGetGlobalBehavior(out body);
+    }
+
+}
