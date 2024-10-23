@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: faf8bca14a27a5641961b183587a1a56
+guid: f287dd9e2ad0cf5448bf0be925f29d96
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pinetree_base
+    second: {fileID: 2100000, guid: 82551b2930e8ce742b44dd6d4a0050c6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -34,7 +39,10 @@ ModelImporter:
     clipAnimations: []
     isReadable: 0
   meshes:
-    lODScreenPercentages: []
+    lODScreenPercentages:
+    - 0.25
+    - 0.125
+    - 0.01
     globalScale: 1
     meshCompression: 0
     addColliders: 0
