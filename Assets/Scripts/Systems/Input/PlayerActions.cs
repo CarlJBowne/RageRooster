@@ -286,6 +286,17 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""50638321-03e8-4590-8795-472ed781c7b4"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Charge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""10be895e-8672-4713-bd6d-f5bdd37642a1"",
                     ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",

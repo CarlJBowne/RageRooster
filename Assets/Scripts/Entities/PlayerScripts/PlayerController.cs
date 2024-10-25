@@ -11,6 +11,8 @@ public class PlayerController : PlayerStateBehavior
     public float jumpBuffer = 0.3f;
 
     public State groundedState;
+    public State idleWalkState;
+    public State chargingState;
     public State airborneState;
     public State fallingState;
     public State glidingState;
@@ -43,6 +45,10 @@ public class PlayerController : PlayerStateBehavior
 
         if ((input.jump.IsPressed() && fallingState.active) || (!input.jump.IsPressed() && glidingState.active))
             TransitionTo(input.jump.IsPressed() ? glidingState : fallingState);
+        M.animator.SetBool("Gliding", glidingState.active);
+
+        if (input.charge.IsPressed() && groundedState.active || !input.charge.IsPressed() && chargingState.active)
+            TransitionTo(input.charge.IsPressed() ? chargingState : idleWalkState);
 
     }
 

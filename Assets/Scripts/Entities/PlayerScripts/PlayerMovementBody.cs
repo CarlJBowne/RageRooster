@@ -84,6 +84,8 @@ public class PlayerMovementBody : PlayerStateBehavior
 
         D_position = position;
         D_velocity = velocity;
+
+        M.animator.SetFloat("CurrentSpeed", currentSpeed);
     }
 
     private void JumpHandle()

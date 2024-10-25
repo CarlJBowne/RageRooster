@@ -9,14 +9,21 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
     public float stopping = 0.75f;
     [Tooltip("1 = full second turn, 50 = 1 FixedUpdate turn")]
     public float maxTurnSpeed = 25;
+    public bool outwardTurn;
     public float minSpeedForRotate;
+    public PlayerFullbodyHitbox hitBox;
 
-    #endregion Config
+    #endregion
+    #region Data
+    [HideInInspector] public bool atTopSpeed;
+
+    #endregion 
 
     public override void OnAwake()
     {
         base.OnAwake();
         body.currentDirection = transform.forward;
+        hitBox = GetComponent<PlayerFullbodyHitbox>();
     }
 
     public override void OnFixedUpdate()
@@ -33,15 +40,19 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
             float Dot = Vector3.Dot(controlDirection, currentDirection);
             currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0);
 
-            currentSpeed *= Dot;
+            if(!outwardTurn) currentSpeed *= Dot;
             if(currentSpeed < maxSpeed)
                 currentSpeed = (currentSpeed + (controlMag * acceleration)).Max(maxSpeed) * deltaTime;
             else if(currentSpeed > maxSpeed)
                 currentSpeed = (currentSpeed - (controlMag * decceleration)).Min(maxSpeed) * deltaTime;
+
+            if (currentSpeed == maxSpeed) MaxSpeedChange(true);
+            else if (currentSpeed < maxSpeed) MaxSpeedChange(false);
         }
         else
         {
             currentSpeed -= currentSpeed * stopping * deltaTime;
+            MaxSpeedChange(false);
         }
 
         body.rotation = currentDirection.DirToRot();
@@ -68,5 +79,12 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
 
     }
 
+    private void MaxSpeedChange(bool value)
+    {
+        if (value == atTopSpeed) return;
+        atTopSpeed = value;
+
+        if (hitBox) hitBox.SetBoxState(value);
+    }
 
 }
