@@ -144,6 +144,8 @@ public class AnimationAndMovementController : MonoBehaviour
     void onRun(InputAction.CallbackContext context)
     {
         _isRunPressed = context.ReadValueAsButton();
+        //Audio Test
+        AudioManager.instance.PlayOneShot(FMODEvents.instance.laserShot);
     }
 
     void HandleRotation()

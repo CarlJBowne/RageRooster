@@ -71,6 +71,7 @@ public class PlayerMovementBody : StateBehavior
         else preVelocity -= preVelocity * decceleration;
 
         velocity = preVelocity + Vector3.up * velocity.y;
+
     }
 
     private void GroundedChange(bool value)
