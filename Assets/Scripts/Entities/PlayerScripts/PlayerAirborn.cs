@@ -7,10 +7,10 @@ public class PlayerAirborn : PlayerStateBehavior
     public float gravity = 9.81f;
     public float terminalVelocity = 100f;
     public bool flatGravity = false;
-    //public bool overrideGravityOnStart = true;
     public float jumpHeight;
     public float jumpPower;
     public float jumpMinHeight;
+    public State fallState;
 
     private float targetMinHeight;
     private float targetHeight;
@@ -19,13 +19,15 @@ public class PlayerAirborn : PlayerStateBehavior
     {
         body.VelocitySet(y: ApplyGravity());
 
-        if (jumpPower > 0 && transform.position.y < targetHeight) body.VelocitySet(y: jumpPower);
-        if (body.velocity.y < 0) TransitionTo(body.FallOrGlide());
+        if (jumpHeight <= 0) return;
+
+        if (transform.position.y < targetHeight) body.VelocitySet(y: jumpPower);
+        if (body.velocity.y < 0) TransitionTo(fallState);
 
         if (!input.jump.IsPressed() && transform.position.y > targetMinHeight)
         {
             if (body.velocity.y > 0) body.VelocitySet(y: 0);
-            TransitionTo(body.fallState);
+            TransitionTo(fallState);
         }
 
     }
@@ -37,7 +39,6 @@ public class PlayerAirborn : PlayerStateBehavior
         targetHeight = body.position.y + jumpHeight - (jumpPower.P() / (2 * gravity));
         body.VelocitySet(y: jumpPower);
     }
-    //public override void OnExit() => movement.currentGravity = movement.defaultGravity;
 
     private float ApplyGravity()
     {

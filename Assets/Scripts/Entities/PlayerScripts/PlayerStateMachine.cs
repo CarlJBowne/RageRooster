@@ -10,11 +10,9 @@ public class PlayerStateMachine : StateMachine
 
     #region Data
     [HideInInspector] public Animator animator;
-    //[HideInInspector] public CharacterController charController;
-    [HideInInspector] public Rigidbody rb;
-    [HideInInspector] public new CapsuleCollider collider;
     [HideInInspector] public Input input;
     [HideInInspector] public PlayerMovementBody body;
+    [HideInInspector] public PlayerController controller;
     public Transform cameraTransform;
 
     #endregion
@@ -24,10 +22,9 @@ public class PlayerStateMachine : StateMachine
     protected override void Initialize()
     {
         animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody>();
-        collider = GetComponent<CapsuleCollider>();
         input = Input.Get();
         body = GetGlobalBehavior<PlayerMovementBody>();
+        controller = GetGlobalBehavior<PlayerController>();
     }
 
 
@@ -37,18 +34,14 @@ public abstract class PlayerStateBehavior : StateBehavior
     [HideInInspector] public new PlayerStateMachine M;
     [HideInInspector] public Input input;
     [HideInInspector] public PlayerMovementBody body;
-    [HideInInspector] public Rigidbody rb;
-    [HideInInspector] public new CapsuleCollider collider;
-    [HideInInspector] public Animator animator;
+    [HideInInspector] public PlayerController controller;
 
     protected override void Initialize(StateMachine machine)
     {
         M = machine as PlayerStateMachine;
         input = M.input;
         body = M.body;
-        rb = M.rb;
-        collider = M.collider;
-        animator = M.animator;
+        controller = M.controller;
     }
 
 }

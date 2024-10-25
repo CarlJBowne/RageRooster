@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerDirectionalMovement : PlayerStateBehavior
 {
     #region Config
     public float acceleration;
+    public float decceleration;
     public float maxSpeed;
-    public float decceleration = 0.75f;
+    public float stopping = 0.75f;
     [Tooltip("1 = full second turn, 50 = 1 FixedUpdate turn")]
     public float maxTurnSpeed = 25;
     public float minSpeedForRotate;
@@ -18,7 +16,7 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
     public override void OnAwake()
     {
         base.OnAwake();
-        body.currentDirection = transform.forward; 
+        body.currentDirection = transform.forward;
     }
 
     public override void OnFixedUpdate()
@@ -27,22 +25,23 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
         float currentSpeed = body.currentSpeed;
         Vector3 currentDirection = body.currentDirection;
 
-        Vector3 controlVector = input.movement.ToXZ().Rotate(M.cameraTransform.eulerAngles.y, Vector3.up);
-        Vector3 controlDirection = controlVector.normalized;
-        float controlMag = controlVector.sqrMagnitude;
+        Vector3 controlDirection = controller.camAdjustedMovement.normalized;
+        float controlMag = controller.camAdjustedMovement.sqrMagnitude;
 
         if (controlMag > 0)
         {
             float Dot = Vector3.Dot(controlDirection, currentDirection);
             currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0);
 
-            currentSpeed = currentSpeed * Dot;
-            currentSpeed += controlMag * acceleration * deltaTime;
-            currentSpeed = currentSpeed.Max(maxSpeed * deltaTime);
+            currentSpeed *= Dot;
+            if(currentSpeed < maxSpeed)
+                currentSpeed = (currentSpeed + (controlMag * acceleration)).Max(maxSpeed) * deltaTime;
+            else if(currentSpeed > maxSpeed)
+                currentSpeed = (currentSpeed - (controlMag * decceleration)).Min(maxSpeed) * deltaTime;
         }
         else
         {
-            currentSpeed -= currentSpeed * decceleration * deltaTime;
+            currentSpeed -= currentSpeed * stopping * deltaTime;
         }
 
         body.rotation = currentDirection.DirToRot();
