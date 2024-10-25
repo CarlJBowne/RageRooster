@@ -259,6 +259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7060716494337343180}
   - component: {fileID: 6283255978592884001}
+  - component: {fileID: 6922533959549506122}
   m_Layer: 0
   m_Name: GradientHintIconLOD
   m_TagString: Untagged
@@ -274,7 +275,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6021745250348612280}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.7071057, z: -0, w: 0.7071079}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -9.871, y: 0.352, z: 65.405}
   m_LocalScale: {x: 0.2227249, y: 0.2227249, z: 0.2227249}
   m_ConstrainProportionsScale: 0
@@ -311,3 +312,24 @@ LODGroup:
     renderers:
     - renderer: {fileID: 1912973478335945856}
   m_Enabled: 1
+--- !u!65 &6922533959549506122
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6021745250348612280}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5095405, y: 2.52436, z: 2.5197053}
+  m_Center: {x: 0.03984002, y: 0.6066367, z: 0.0481344}
