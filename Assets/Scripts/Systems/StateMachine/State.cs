@@ -57,6 +57,10 @@ namespace SLS.StateMachineV2
         public State activeChild { get; private set; }
         public State[] lineage { get; private set; }
 
+        public State this[int i] => children[i];
+
+        public bool activeMain => machine.currentState == this;
+
         #endregion
 
         #region EditorData
