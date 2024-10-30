@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -13,14 +14,14 @@ public static class ExtensionMethods
 	public static int Int(this bool boolean) => boolean ? 1 : 0;
 	public static bool Bool(this int integral) => integral > 0;
 
-	public static Color SetRed(this ref Color color, float set) => color =			new Color(set,              color.g,           color.b,          color.a);
-	public static Color ChangeRed(this ref Color color, float change) => color =	new Color(color.r + change, color.g,           color.b,          color.a);
-	public static Color SetBlue(this ref Color color, float set) => color =			new Color(color.r,          set,			   color.b,          color.a);
-	public static Color ChangeBlue(this ref Color color, float change) => color =	new Color(color.r,          color.g + change,  color.b,          color.a);
-	public static Color SetGreen(this ref Color color, float set) => color =		new Color(color.r,          color.g,		   set,              color.a);
-	public static Color ChangeGreen(this ref Color color, float change) => color =	new Color(color.r,          color.g,           color.b + change, color.a);
-	public static Color SetAlpha(this ref Color color, float set) => color =		new Color(color.r,          color.g,           color.b,          set);
-	public static Color ChangeAlpha(this ref Color color, float change) => color =  new Color(color.r,          color.g,           color.b,          color.a + change);
+	public static Color SetRed(this ref Color color, float set) => new Color(set, color.g, color.b, color.a);
+	public static Color ChangeRed(this ref Color color, float change) => new Color(color.r + change, color.g, color.b, color.a);
+	public static Color SetBlue(this ref Color color, float set) => new Color(color.r, set, color.b, color.a);
+	public static Color ChangeBlue(this ref Color color, float change) => new Color(color.r, color.g + change,  color.b, color.a);
+	public static Color SetGreen(this ref Color color, float set) => new Color(color.r, color.g, set, color.a);
+	public static Color ChangeGreen(this ref Color color, float change) => new Color(color.r, color.g, color.b + change, color.a);
+	public static Color SetAlpha(this ref Color color, float set) => new Color(color.r, color.g, color.b, set);
+	public static Color ChangeAlpha(this ref Color color, float change) => new Color(color.r, color.g, color.b, color.a + change);
 
 
 }
@@ -109,6 +110,8 @@ public static class MonoBehaviorHelpers
 	}
 
 	public static T Random<T>(this T[] array) => array[UnityEngine.Random.Range(0, array.Length)];
+	public static T Random<T>(this List<T> array) => array[UnityEngine.Random.Range(0, array.Count)];
+	public static void RemoveAtLast<T>(this List<T> array, int i = 1) => array.Remove(array[^i]);
 
 
 }

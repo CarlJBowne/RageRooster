@@ -8,24 +8,43 @@ public class TrackerEB : StateBehavior
 {
     public Transform target;
 
-    public float range;
-    public float viewConeWidth;
+    
 
     public float autoCheckRate;
-    public bool updateDistance;
-    public bool updateDot;
-    public bool updateLineOfSight;
-    public LayerMask LOSMask;
-    public UnityEvent<bool> WithinDistanceChange;
-    public UnityEvent<bool> WithinViewConeChange;
-    public UnityEvent<bool> WithinLineOfSightChange;
-    public UnityEvent All3Enter;
 
+    [ToggleGroup("Distance", nameof(range))]
+    [SerializeField] public bool updateDistance;
+    [HideInInspector] public float range;
+
+    [ToggleGroup("View Cone", nameof(coneWidth))]
+    public bool updateDot;
+    [HideInInspector] public float coneWidth;
+
+    [ToggleGroup("Line of Sight", nameof(LOSMask))]
+    public bool updateLineOfSight;
+    [HideInInspector] public LayerMask LOSMask;
+
+    public UnityEvent conditionalEvent;
+    [SerializeField] bool exitZone;
 
     private float autoCheckTimer;
     private float distance;
     private float dot;
     private bool lineOfSight;
+
+    public override void OnAwake()
+    {
+        if (target == null||
+            !updateDistance && !updateDot && !updateLineOfSight
+            ) Destroy(this); 
+    }
+
+    public override void OnEnter()
+    {
+        Distance(true);
+        Dot(true);
+        LineOfSight(true);
+    }
 
     public override void OnFixedUpdate()
     {
@@ -40,37 +59,49 @@ public class TrackerEB : StateBehavior
 
     private void CheckData()
     {
+        float prevDist = distance;
+        float prevDot = dot;
+        bool prevLOS = lineOfSight;
+
         if (updateDistance) Distance(true);
         if (updateDot) Dot(true);
         if (updateLineOfSight) LineOfSight(true);
 
-        if(All3Enter != null && distance <= range && dot <= viewConeWidth && lineOfSight) All3Enter?.Invoke();
+        if ((updateDistance && prevDist <= range != distance <= range) ||
+            (updateDot && prevDot <= coneWidth != dot <= coneWidth) ||
+            (updateLineOfSight && prevLOS != lineOfSight)
+            ) if (EventConditions()) 
+                conditionalEvent?.Invoke();
     }
 
     public float Distance(bool check)
     {
-        float preValue = distance;
         if (check) distance = Vector3.Distance(transform.position, target.position);
-        if (preValue <= range != distance <= range) WithinDistanceChange?.Invoke(distance <= range);
         return distance;
     }
     public float Dot(bool check)
     {
-        float preValue = dot;
-        if (check) dot = Vector3.Dot(transform.forward, target.position-transform.position);
-        if (preValue <= viewConeWidth != dot <= viewConeWidth) WithinViewConeChange?.Invoke(distance <= range);
+        if (check) dot = (Vector3.Dot(transform.forward, target.position-transform.position) - 1) * -1;
         return dot;
     }
     public bool LineOfSight(bool check)
     {
-        bool preValue = lineOfSight;
         if (check)
         {
             Physics.Linecast(transform.position, target.position, out RaycastHit hit, LOSMask);
             lineOfSight = hit.transform == target;
         }
-        if(preValue != lineOfSight) WithinLineOfSightChange?.Invoke(lineOfSight);
         return lineOfSight;
     }
 
+    public bool EventConditions() 
+    {
+        bool within = true;
+        if (updateDistance && distance > range) within = false;
+        if (updateDot && dot > coneWidth) within = false;
+        if (updateLineOfSight && !lineOfSight) within = false;
+
+        return within == !exitZone;
+    }
+    
 }

@@ -155,6 +155,7 @@ namespace SLS.StateMachineV2
         public bool TryGetComponentFromMachine<C>(out C result) where C : Component => machine.TryGetComponent(out result);
 
         public void TransitionTo(State nextState) => machine.TransitionState(nextState, this);
+        public void TransitionTo() => machine.TransitionState(this);
 
         public static implicit operator bool(State s) => s.active;
 

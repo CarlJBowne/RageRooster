@@ -1,15 +1,15 @@
-﻿using System;
+﻿using SLS.StateMachineV2;
+using System;
 using UnityEngine;
-using SLS.StateMachineV2;
 using UnityEngine.AI;
 
 public class ChaseEB : StateBehavior
 {
+    [SerializeField] float speed;
     [SerializeField] Transform target;
     [SerializeField] float destUpdateRate = 2f;
     [SerializeField] float reachDistance;
-    [SerializeField] float loseDistance;
-    [SerializeField] State loseState;
+    [SerializeField] State reachState;
 
     private NavMeshAgent agent;
     private TrackerEB playerTracker;
@@ -19,31 +19,36 @@ public class ChaseEB : StateBehavior
     public override void OnAwake()
     {
         agent = GetComponentFromMachine<NavMeshAgent>();
+        playerTracker = GetComponent<TrackerEB>();
+    }
+
+    public override void OnEnter()
+    {
+        agent.enabled = true;
+        agent.speed = speed;
+        UpdateDestination();
     }
 
     public override void OnFixedUpdate()
     {
-        if (agent.remainingDistance <= reachDistance)
+        if (playerTracker.Distance(false) <= reachDistance)
         {
             ReachTarget();
             return;
         }
-            
+
         destUpdateTimer += Time.fixedDeltaTime;
-        if(destUpdateTimer > destUpdateRate)
+        if (destUpdateTimer > destUpdateRate)
         {
             destUpdateTimer %= destUpdateRate;
             UpdateDestination();
         }
     }
 
-    void UpdateDestination()
-    {
-        agent.SetDestination(target.position);
-    }
+    void UpdateDestination() => agent.SetDestination(target.position);
     void ReachTarget()
     {
-        TransitionTo(state[0]);
+        TransitionTo(reachState);
         agent.enabled = false;
     }
 }
