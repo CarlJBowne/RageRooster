@@ -11,8 +11,8 @@ public class Health : MonoBehaviour
 {
 	//Config
 	[SerializeField] private int maxHealth;
-	[SerializeField] private UnityEvent<int> damageEvent;
-	[SerializeField] private UnityEvent depleteEvent;
+	[SerializeField] private UnityEvent<int> damageEvent = new();
+	[SerializeField] private UnityEvent depleteEvent = new();
 
 	//Data
 	private int health;
@@ -64,7 +64,20 @@ public struct Attack
 
 	public int amount;
 	public string name;
-	AttackSource source;
+	[HideInInspector] public AttackSource source;
 	//Additional "Attack Type" data or whatnot.
+
+	public Attack(int amount, string name, AttackSource source)
+	{
+		this.source = source;
+		this.amount = amount;
+		this.name = name;
+	}
+	public Attack(Attack data, AttackSource source)
+	{
+		this.source = source;
+		amount = data.amount;
+		name = data.name;
+	}
 
 }

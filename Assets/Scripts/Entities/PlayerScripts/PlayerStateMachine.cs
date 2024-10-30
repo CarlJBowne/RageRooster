@@ -10,24 +10,38 @@ public class PlayerStateMachine : StateMachine
 
     #region Data
     [HideInInspector] public Animator animator;
-    [HideInInspector] public CharacterController charController;
     [HideInInspector] public Input input;
-    [HideInInspector] public Transform cameraTransform;
+    [HideInInspector] public PlayerMovementBody body;
+    [HideInInspector] public PlayerController controller;
+    public Transform cameraTransform;
 
-
-    public Vector3 MovementControl => Input.Movement.ToXZ();
-    public Vector3 MovementControlCameraAdjusted => Input.Movement.ToXZ().Rotated(cameraTransform.rotation.y, Direction.up);
     #endregion
 
 
 
-    public override void Initialize()
+    protected override void Initialize()
     {
-        base.Initialize();
         animator = GetComponent<Animator>();
-        charController = GetComponent<CharacterController>();
-        input = Input.Get(); 
-        cameraTransform = Camera.main.transform;
+        input = Input.Get();
+        body = GetGlobalBehavior<PlayerMovementBody>();
+        controller = GetGlobalBehavior<PlayerController>();
+    }
+
+
+}
+public abstract class PlayerStateBehavior : StateBehavior
+{
+    [HideInInspector] public new PlayerStateMachine M;
+    [HideInInspector] public Input input;
+    [HideInInspector] public PlayerMovementBody body;
+    [HideInInspector] public PlayerController controller;
+
+    protected override void Initialize(StateMachine machine)
+    {
+        M = machine as PlayerStateMachine;
+        input = M.input;
+        body = M.body;
+        controller = M.controller;
     }
 
 }

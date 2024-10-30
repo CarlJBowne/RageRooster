@@ -1,104 +1,149 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using SLS.StateMachineV2;
+using UnityEngine;
+using System.Linq;
+using EditorAttributes;
 
-public class PlayerMovementBody : StateBehavior
+public class PlayerMovementBody : PlayerStateBehavior
 {
-    new PlayerStateMachine M => base.M as PlayerStateMachine;
-
     #region Config
-    public float acceleration;
-    public float maxSpeed;
-    public float decceleration;
-    public float defaultGravity = 0;
-    public float maxDownwardVelocity = 100f;
+    public float skinDistance = 0.05f;
     public float coyoteTime = 0.5f;
-    public float jumpBuffer = 1.5f;
-    public float tripleJumpTime = 1f;
+    public float tripleJumpTime = 0.3f;
     public State groundedState;
-    public State walkFallingState;
-    public State[] jumpingStates;
+    public State airborneState;
+    public State fallState;
+    public State jumpState1;
+    public State jumpState2;
     #endregion
 
     #region Data
-    [HideInInspector] public Vector3 velocity;
-    [HideInInspector] public float currentGravity = 0;
-    [HideInInspector] public float defaultMaxSpeed;
+
+    [HideInInspector] public Rigidbody rb;
+    [HideInInspector] public new CapsuleCollider collider;
+
     [HideInInspector] public bool baseMovability = true;
     [HideInInspector] public bool canJump = true;
-    [HideInInspector] public bool grounded;
-    [HideInInspector] public float jumpInput;
+    public bool grounded = true;
+    [HideInInspector] public bool secondJump;
+    [HideInInspector] public float currentSpeed;
+    [HideInInspector] public Vector3 currentDirection;
+
     [HideInInspector] public float coyoteTimeLeft;
-    [HideInInspector] public int currentJump;
-    [HideInInspector] public float tripleJumpTimeLeft;
+    float tripleJumpTimeLeft;
+    
+    [SerializeField, ReadOnly, Rename("Position")] Vector3 D_position;
+    [SerializeField, ReadOnly, Rename("Velocity")] Vector3 D_velocity;
     #endregion
 
-    public override void Update_S()
+    #region GetSet
+    public Vector3 velocity { get => rb.velocity; set => rb.velocity = value; }
+    public Vector3 position { get => rb.position; set => rb.position = value; }
+    public Quaternion rotationQ { get => rb.rotation; set => rb.rotation = value; }
+    public Vector3 rotation { get => transform.eulerAngles; set => transform.eulerAngles = value; }
+
+    public void VelocitySet(float? x = null, float? y = null, float? z = null)
     {
-        if (Input.Jump.WasPressedThisFrame()) jumpInput = jumpBuffer + Time.fixedDeltaTime;
-        if (jumpInput > 0) jumpInput -= Time.deltaTime;
+        velocity = new Vector3(
+            x ?? velocity.x,
+            y ?? velocity.y,
+            z ?? velocity.z
+            );
+    }
+    public void PositionSet(float? x = null, float? y = null, float? z = null)
+    {
+        position = new Vector3(
+            x ?? position.x,
+            y ?? position.y,
+            z ?? position.z
+            );
     }
 
-    public override void FixedUpdate_S()
+
+    #endregion GetSet
+
+
+
+    public override void OnAwake()
     {
-        if(baseMovability) BaseHorizontalMovement();
+        rb = GetComponentFromMachine<Rigidbody>();
+        collider = GetComponentFromMachine<CapsuleCollider>();
 
-        velocity.y -= currentGravity;
 
-        if(canJump) JumpCheck();
-        if (grounded != M.charController.isGrounded) GroundedChange(M.charController.isGrounded);
-
-        if(velocity.y < -maxDownwardVelocity) velocity.y = -maxDownwardVelocity;
-        M.charController.Move(velocity * Time.fixedDeltaTime); 
+        M.physicsCallbacks += OnCollisionEnter_C;
+        collider.center = new Vector3(collider.center.x, (collider.height / 2) + skinDistance, collider.center.z);
     }
-
-
-
-
-    private void BaseHorizontalMovement()
+    public override void OnFixedUpdate()
     {
-        Vector3 movement = M.MovementControlCameraAdjusted;
+        if (canJump) JumpHandle();
 
-        Vector3 preVelocity = new(velocity.x, 0, velocity.z);
-
-        if (movement.magnitude > 0)
+        if (grounded)
         {
-            preVelocity += movement * acceleration;
-            if (preVelocity.magnitude > maxSpeed)
-                preVelocity = preVelocity.normalized * maxSpeed;
+            VelocitySet(y: 0);
+            GroundStateChange(GroundCheck());
         }
-        else preVelocity -= preVelocity * decceleration;
 
-        velocity = preVelocity + Vector3.up * velocity.y;
+        D_position = position;
+        D_velocity = velocity;
 
+        M.animator.SetFloat("CurrentSpeed", currentSpeed);
     }
 
-    private void GroundedChange(bool value)
+    private void JumpHandle()
     {
-        grounded = value;
-        if (!value) coyoteTimeLeft = coyoteTime;
-        else tripleJumpTimeLeft = tripleJumpTime;
-        TransitionTo(value ? groundedState : walkFallingState);
-    }
+        if (fallState.active && coyoteTimeLeft > 0) coyoteTimeLeft -= Time.deltaTime;
 
-    private void JumpCheck()
-    {
-        if (walkFallingState.active && coyoteTimeLeft > 0) coyoteTimeLeft -= Time.deltaTime;
-
-        if (groundedState.active && tripleJumpTimeLeft > 0) 
-        { 
+        if (groundedState.active && tripleJumpTimeLeft > 0)
+        {
             tripleJumpTimeLeft -= Time.deltaTime;
-            if (tripleJumpTimeLeft <= 0) currentJump = 1;
+            if (tripleJumpTimeLeft <= 0) secondJump = false;
         }
+    }
 
-        if (jumpInput > 0 && (groundedState.active || (walkFallingState.active && coyoteTimeLeft > 0)))
+    public bool DirectionCast(Vector3 direction)
+    {
+        castResults = rb.SweepTestAll(direction);
+        return castResults.Length > 0;
+    }
+    
+    public bool GroundCheck()
+    {
+        PositionSet(y: position.y + skinDistance);
+        castResults = rb.SweepTestAll(Vector3.down, skinDistance*2f);
+        PositionSet(y: position.y - skinDistance);
+        return castResults.Length > 0;
+    }
+    public RaycastHit[] castResults;
+    public bool GroundStateChange(bool input)
+    {
+        if(input == grounded) return false;
+        grounded = input;
+
+        if (!grounded) coyoteTimeLeft = coyoteTime;
+        else tripleJumpTimeLeft = tripleJumpTime;
+        if ((grounded && !groundedState.active) || (!grounded && !airborneState.active))
+            TransitionTo(grounded ? groundedState : fallState);
+        if (grounded && controller.CheckJumpBuffer()) BeginJump();
+
+        return true;
+    }
+
+    private void OnCollisionEnter_C(PhysicsCallback type, Collision collision, Collider _)
+    {
+        if (type != PhysicsCallback.OnCollisionEnter || !state.active) return;
+
+        if (GroundCheck())
         {
-            jumpInput = 0;
-            TransitionTo(jumpingStates[currentJump-1]);
-            currentJump = currentJump == 3 ? 1 : currentJump + 1;
-            grounded = false;
+            GroundStateChange(true);
+            VelocitySet(y: 0);
+            PositionSet(y: position.y - castResults[0].distance + skinDistance * 1.999f);
         }
+    }
+
+    public void BeginJump()
+    {
+        TransitionTo(secondJump ? jumpState2 : jumpState1);
+        secondJump.Toggle();
+        grounded = false;
     }
 
 }
