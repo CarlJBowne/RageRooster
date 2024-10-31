@@ -22,6 +22,7 @@ public class PlayerController : PlayerStateBehavior
 
     [HideInInspector] public float jumpInput;
     [HideInInspector] public Vector3 camAdjustedMovement;
+    [HideInInspector] public PlayerGrabber grabber;
 
     #endregion
     #region Getters
@@ -31,6 +32,8 @@ public class PlayerController : PlayerStateBehavior
     public override void OnAwake()
     {
         input.jump.started += (_) => JumpPress();
+        PlayerGrabber grabber = GetComponentFromMachine<PlayerGrabber>();
+        input.grab.started += (_) => grabber.GrabButtonPress();
     }
 
     private void OnDestroy()
