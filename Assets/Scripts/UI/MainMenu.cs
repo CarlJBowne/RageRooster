@@ -5,27 +5,33 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public void PlayGame()
-    {
-       SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    public string mainMenuMusicName = "MainMenu";
+    public GameObject optionsMenuPanel;
 
+    private void Start()
+    {
+        AudioManager.Instance.PlayMusic(mainMenuMusicName);
+        optionsMenuPanel.SetActive(false);
     }
 
-    public void GoToOptionsMenu()
-       {
-        SceneManager.LoadScene("Options");
-    
-       }
-
-  public void GoToAboutMenu()
-       {
-        SceneManager.LoadScene("About");
-    
-       }
+    public void PlayGame()
+    {
+        SceneManager.LoadScene("FarmHouse");
+        AudioManager.Instance.PlayMusic("FarmHouse");
+    }
 
     public void QuitGame()
     {
-
         Application.Quit();
+    }
+
+    public void OpenOptionsMenu()
+    {
+        optionsMenuPanel.SetActive(true);
+    }
+
+    public void CloseOptionsMenu()
+    {
+        optionsMenuPanel.SetActive(false);
     }
 }

@@ -23,7 +23,9 @@ namespace SLS.StateMachineV2
         public State[] topLevelStates => ROOTState.children;
         public StateMachineVariables Variables { get; private set; }
 
+#nullable enable
         public System.Action<PhysicsCallback, Collision?, Collider?> physicsCallbacks;
+#nullable disable
 
         #endregion
 
