@@ -10,14 +10,14 @@ public class MainMenu : MonoBehaviour
 
     private void Start()
     {
-        AudioManager.Instance.PlayMusic(mainMenuMusicName);
+        //AudioManager.Instance.PlayMusic(mainMenuMusicName);
         optionsMenuPanel.SetActive(false);
     }
 
     public void PlayGame()
     {
         SceneManager.LoadScene("FarmHouse");
-        AudioManager.Instance.PlayMusic("FarmHouse");
+        //AudioManager.Instance.PlayMusic("FarmHouse");
     }
 
     public void QuitGame()
