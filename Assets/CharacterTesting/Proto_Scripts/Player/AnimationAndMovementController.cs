@@ -145,7 +145,7 @@ public class AnimationAndMovementController : MonoBehaviour
     {
         _isRunPressed = context.ReadValueAsButton();
         //Audio Test
-        AudioManager.instance.PlayOneShot(FMODEvents.instance.laserShot);
+        AudioManager.Get().PlayOneShot(FMODEvents.instance.laserShot);
     }
 
     void HandleRotation()
