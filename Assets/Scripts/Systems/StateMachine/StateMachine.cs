@@ -26,6 +26,7 @@ namespace SLS.StateMachineV2
 #nullable enable
         public System.Action<PhysicsCallback, Collision?, Collider?> physicsCallbacks;
 #nullable disable
+        public System.Action waitforMachineInit;
 
         #endregion
 
@@ -68,6 +69,7 @@ namespace SLS.StateMachineV2
             this.Initialize();
             ROOTState._Initialize(this, -1);
             currentState = ROOTState.activeChild;
+            waitforMachineInit?.Invoke();
         }
 
         protected virtual void Initialize() { }

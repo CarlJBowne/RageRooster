@@ -32,7 +32,7 @@ public class PlayerController : PlayerStateBehavior
     public override void OnAwake()
     {
         input.jump.started += (_) => JumpPress();
-        PlayerGrabber grabber = GetComponentFromMachine<PlayerGrabber>();
+        grabber = GetComponentFromMachine<PlayerGrabber>();
         input.grab.started += (_) => grabber.GrabButtonPress();
     }
 
@@ -46,7 +46,7 @@ public class PlayerController : PlayerStateBehavior
         if (jumpInput > 0) jumpInput -= Time.deltaTime;
         camAdjustedMovement = input.movement.ToXZ().Rotate(M.cameraTransform.eulerAngles.y, Vector3.up);
 
-        if ((input.jump.IsPressed() && fallingState.active) || (!input.jump.IsPressed() && glidingState.active))
+        if ((input.jump.IsPressed() && fallingState.active && !grabber.currentGrabbed) || (!input.jump.IsPressed() && glidingState.active))
             TransitionTo(input.jump.IsPressed() ? glidingState : fallingState);
         M.animator.SetBool("Gliding", glidingState.active);
 
