@@ -8,13 +8,13 @@ public class AudioManager : Singleton<AudioManager>
 {
     [Header("Volume")]
     [Range(0, 1)]
-    public float masterVolume = 1;
+    public float masterVolume = 0.5f;
     [Range(0, 1)]
-    public float musicVolume = 1;
+    public float musicVolume = 0.5f;
     [Range(0, 1)]
-    public float sfxVolume = 1;
+    public float SFXVolume = 0.5f;
     [Range(0, 1)]
-    public float ambienceVolume = 1;
+    public float ambienceVolume = 0.5f;
     [Range(0, 1)]
 
     private Bus masterBus;
@@ -60,7 +60,7 @@ public class AudioManager : Singleton<AudioManager>
     {
         masterBus.setVolume(masterVolume);
         musicBus.setVolume(musicVolume);
-        sfxBus.setVolume(sfxVolume);
+        sfxBus.setVolume(SFXVolume);
         ambienceBus.setVolume(ambienceVolume);
     }
     
