@@ -16,7 +16,7 @@ public class FMODEvents : MonoBehaviour
     [field: Header("SFX")]
     [field: SerializeField] public EventReference laserShot { get; private set; }
     [field: Header("UI")]
-    [field: SerializeField] public EventReference buttonClick { get; private set; }
+    [field: SerializeField] public EventReference buttonPressed { get; private set; }
     [field: Header("Ambience")]
     [field: SerializeField] public EventReference ambience { get; private set; }
 
