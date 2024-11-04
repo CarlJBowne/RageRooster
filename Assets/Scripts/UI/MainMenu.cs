@@ -5,19 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public string mainMenuMusicName = "MainMenu";
     public GameObject optionsMenuPanel;
+    public GameObject creditsPanel;
+    public RectTransform creditsContent;
 
     private void Start()
     {
-        //AudioManager.Instance.PlayMusic(mainMenuMusicName);
         optionsMenuPanel.SetActive(false);
+        creditsPanel.SetActive(false);
     }
 
     public void PlayGame()
     {
         SceneManager.LoadScene("FarmHouse");
-        //AudioManager.Instance.PlayMusic("FarmHouse");
     }
 
     public void QuitGame()
@@ -33,5 +33,16 @@ public class MainMenu : MonoBehaviour
     public void CloseOptionsMenu()
     {
         optionsMenuPanel.SetActive(false);
+    }
+
+    public void ShowCredits()
+    {
+        creditsContent.anchoredPosition = new Vector2(creditsContent.anchoredPosition.x, 0);
+        creditsPanel.SetActive(true);
+    }
+
+    public void HideCredits()
+    {
+        creditsPanel.SetActive(false);
     }
 }
