@@ -22,7 +22,7 @@ public class VolumeSlider : MonoBehaviour
         volumeSlider = this.GetComponentInChildren<Slider>();
         if (volumeSlider != null)
         {
-            volumeSlider.value = 0.5f;
+            volumeSlider.value = PlayerPrefs.GetFloat(volumeType.ToString(), 0.5f);
             volumeSlider.onValueChanged.AddListener(delegate { OnSliderValueChanged(); });
         }
         else
@@ -31,7 +31,12 @@ public class VolumeSlider : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void Start()
+    {
+        UpdateSliderValue();
+    }
+
+    private void UpdateSliderValue()
     {
         switch (volumeType)
         {
@@ -73,5 +78,8 @@ public class VolumeSlider : MonoBehaviour
                 Debug.LogError("Volume type not found: " + volumeType);
                 break;
         }
+
+        PlayerPrefs.SetFloat(volumeType.ToString(), volumeSlider.value);
+        PlayerPrefs.Save();
     }
 }

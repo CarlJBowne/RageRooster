@@ -38,6 +38,8 @@ public class AudioManager : Singleton<AudioManager>
             return;
         }
         instance = this;
+        DontDestroyOnLoad(gameObject);
+        Debug.Log("AudioManager Awake");
 
         eventInstances = new List<EventInstance>();
         eventEmitters = new List<StudioEventEmitter>();
@@ -50,10 +52,9 @@ public class AudioManager : Singleton<AudioManager>
 
     private void Start()
     {
-        
+        Debug.Log("AudioManager Start");
         InitializeAmbience(FMODEvents.instance.ambience);
         InitializeMusic(FMODEvents.instance.music);
-        
     }
 
     private void Update()

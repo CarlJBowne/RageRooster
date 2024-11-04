@@ -5,6 +5,7 @@ using TMPro;
 
 public class ResolutionDropdown : MonoBehaviour
 {
+    public static ResolutionDropdown instance { get; private set; }
     public TMP_Dropdown resolutionDropdown;
 
     private List<Resolution> resolutions = new List<Resolution>();
@@ -21,8 +22,21 @@ public class ResolutionDropdown : MonoBehaviour
         new Resolution { width = 800, height = 600 }
     };
 
+    void Awake()
+    {
+        if (instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+        Debug.Log("ResolutionDropdown Awake");
+    }
+
     void Start()
     {
+        Debug.Log("ResolutionDropdown Start");
         resolutions.AddRange(predefinedResolutions);
         resolutionDropdown.ClearOptions();
 
@@ -41,6 +55,11 @@ public class ResolutionDropdown : MonoBehaviour
             }
         }
 
+        if (PlayerPrefs.HasKey("ResolutionIndex"))
+        {
+            currentResolutionIndex = PlayerPrefs.GetInt("ResolutionIndex");
+        }
+
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
@@ -53,7 +72,9 @@ public class ResolutionDropdown : MonoBehaviour
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
 
-        // Debug log to verify resolution change
+        PlayerPrefs.SetInt("ResolutionIndex", resolutionIndex);
+        PlayerPrefs.Save();
+
         Debug.Log("Resolution set to: " + resolution.width + " x " + resolution.height);
     }
 }

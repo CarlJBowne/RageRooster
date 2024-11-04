@@ -32,6 +32,8 @@ public class FMODEvents : MonoBehaviour
             return;
         }
         instance = this;
+        DontDestroyOnLoad(gameObject);
+        Debug.Log("FMODEvents Awake");
 
         if (ambience.Guid == System.Guid.Empty)
         {
