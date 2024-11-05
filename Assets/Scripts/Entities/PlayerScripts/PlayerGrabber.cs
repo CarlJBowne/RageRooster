@@ -66,7 +66,7 @@ public class PlayerGrabber : Grabber
             currentGrabbed.transform.position = transform.position + Vector3.down; //REMOVE WHEN PROPER THROWING ANIMATION IS IMPLEMENTED
 
             upcomingLaunchVelocity = Vector3.down * launchVelocity;
-            move.velocity += launchJumpMult * launchVelocity * Vector3.up;
+            move.VelocitySet(y: launchJumpMult * launchVelocity);
         }
         Release();
     }

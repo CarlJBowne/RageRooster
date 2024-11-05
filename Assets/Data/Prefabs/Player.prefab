@@ -2404,7 +2404,13 @@ MonoBehaviour:
     amount: 0
     name: 
     source: {fileID: 0}
-  attacks: []
+  attacks:
+  - amount: 0
+    name: Charge
+    source: {fileID: 0}
+  - amount: 0
+    name: GroundSlam
+    source: {fileID: 0}
   currentAttackID: 
 --- !u!114 &2714541672873312079
 MonoBehaviour:
@@ -3334,6 +3340,7 @@ MonoBehaviour:
   airborneState: {fileID: 5123969060782274918}
   fallingState: {fileID: 931477398715445950}
   glidingState: {fileID: 6027212184641879295}
+  groundSlamState: {fileID: 1252659914078541581}
   jumpInput: 0
   camAdjustedMovement: {x: 0, y: 0, z: 0}
   grabber: {fileID: 0}
@@ -3554,6 +3561,113 @@ Transform:
   - {fileID: 303978608636182774}
   m_Father: {fileID: 462775861518035807}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4861617110333237064
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4840406343167883971}
+  - component: {fileID: 1252659914078541581}
+  - component: {fileID: 3787973082022868609}
+  - component: {fileID: 6299152413537013217}
+  - component: {fileID: 8292631574940146293}
+  m_Layer: 0
+  m_Name: GroundSlam
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &4840406343167883971
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861617110333237064}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7427727485705586250}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1252659914078541581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861617110333237064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  separateFromChildren: 0
+  onActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &3787973082022868609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861617110333237064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ae8156fa90eed4b8dd13eb17af36a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  gravity: 14.715
+  terminalVelocity: 147.15
+  flatGravity: 0
+  jumpHeight: 0
+  jumpPower: -14
+  jumpMinHeight: 0
+  fallState: {fileID: 931477398715445950}
+--- !u!114 &6299152413537013217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861617110333237064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 1
+  onEnterName: Slam
+  onEnterTime: 0.01
+  animator: {fileID: 0}
+--- !u!114 &8292631574940146293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861617110333237064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26fff9b13fc691340ae0431c5e264325, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  autoActivate: 1
+  attackName: GroundSlam
+  hitBox: {fileID: 5879181629200015221}
 --- !u!1 &4930678102430661019
 GameObject:
   m_ObjectHideFlags: 0
@@ -3752,6 +3866,7 @@ Transform:
   - {fileID: 3908212840131484515}
   - {fileID: 7977943911182383535}
   - {fileID: 1846500094994641161}
+  - {fileID: 4840406343167883971}
   m_Father: {fileID: 6385669238997089540}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5123969060782274918

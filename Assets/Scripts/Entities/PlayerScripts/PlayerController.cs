@@ -16,6 +16,7 @@ public class PlayerController : PlayerStateBehavior
     public State airborneState;
     public State fallingState;
     public State glidingState;
+    public State groundSlamState;
 
     #endregion
     #region Data
@@ -23,6 +24,7 @@ public class PlayerController : PlayerStateBehavior
     [HideInInspector] public float jumpInput;
     [HideInInspector] public Vector3 camAdjustedMovement;
     [HideInInspector] public PlayerGrabber grabber;
+    //[HideInInspector] public PlayerAttackSystem attack;
 
     #endregion
     #region Getters
@@ -31,9 +33,14 @@ public class PlayerController : PlayerStateBehavior
 
     public override void OnAwake()
     {
-        input.jump.started += (_) => JumpPress();
         grabber = GetComponentFromMachine<PlayerGrabber>();
+        //attack = GetComponentFromMachine<PlayerAttackSystem>();
+
+        input.jump.started += (_) => JumpPress();
         input.grab.started += (_) => grabber.GrabButtonPress();
+        input.attack.started += (_) => PunchButtonPress();
+        input.attack.started += (_) => ChargeButtonPress();
+        //input.attack.started += (_) => attack.AttackButtonPress();
     }
 
     private void OnDestroy()
@@ -67,4 +74,18 @@ public class PlayerController : PlayerStateBehavior
         jumpInput = 0;
         return result;
     }
+
+    public void PunchButtonPress()
+    {
+        if (airborneState.active) groundSlamState.TransitionTo();
+    }
+
+    public void ChargeButtonPress()
+    {
+        if (airborneState.active)
+        {
+
+        }
+    }
+
 }

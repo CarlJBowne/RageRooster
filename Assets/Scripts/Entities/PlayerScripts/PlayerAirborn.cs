@@ -34,10 +34,11 @@ public class PlayerAirborn : PlayerStateBehavior
 
     public override void OnEnter()
     {
-        if (jumpPower <= 0) return;
+        if (jumpPower == 0) return;
+        body.VelocitySet(y: jumpPower);
+        if(jumpPower <= 0) return;
         targetMinHeight = transform.position.y + jumpMinHeight;
         targetHeight = body.position.y + jumpHeight - (jumpPower.P() / (2 * gravity));
-        body.VelocitySet(y: jumpPower);
     }
 
     private float ApplyGravity()
