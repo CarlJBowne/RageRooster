@@ -32,4 +32,6 @@ public class AttackHitBox : MonoBehaviour
 	/// </summary>
 	/// <param name="attackID"></param>
 	public void SetAttackID(string attackID) => currentAttackID = attackID;
+
+	public void ManualBeginAttack(GameObject target) => source.BeginAttack(target, currentAttackID);
 }

@@ -9,6 +9,7 @@ public class AttackSource : MonoBehaviour
 {
 	/// <summary> Whether this source recieves contacts from the collider on its own mesh. (Leave on unless using the MultiAttackHitBox script on another Collider.) </summary>
 	[SerializeField] bool thisCollider = true;
+	public bool IsSelfCollider() => thisCollider;
 
 	/// <summary> The default attack enacted by this source. </summary>
 	public Attack defaultAttack;

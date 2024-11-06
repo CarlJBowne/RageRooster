@@ -1506,6 +1506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locked: 0
   separateFromChildren: 0
   onActivatedEvent:
     m_PersistentCalls:
@@ -1572,6 +1573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locked: 0
   separateFromChildren: 0
   onActivatedEvent:
     m_PersistentCalls:
@@ -2273,6 +2275,7 @@ GameObject:
   - component: {fileID: 598530174602593461}
   - component: {fileID: 5748638683015826317}
   - component: {fileID: 2714541672873312079}
+  - component: {fileID: 4810220497755855147}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -2439,6 +2442,27 @@ MonoBehaviour:
   twoHandedHand: {fileID: 6163627308343083636}
   groundState: {fileID: 3803531707346265779}
   airBorneState: {fileID: 5123969060782274918}
+--- !u!114 &4810220497755855147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75abf0fbf8cd69a41b21a65a6991e62a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 15
+  damageEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  depleteEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  invincibilityTime: 3
+  queuedAttack: {fileID: 0}
 --- !u!1 &3254106208207764869
 GameObject:
   m_ObjectHideFlags: 0
@@ -2931,6 +2955,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locked: 0
   separateFromChildren: 0
   onActivatedEvent:
     m_PersistentCalls:
@@ -3301,6 +3326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locked: 0
   separateFromChildren: 0
   onActivatedEvent:
     m_PersistentCalls:
@@ -3455,6 +3481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locked: 0
   separateFromChildren: 0
   onActivatedEvent:
     m_PersistentCalls:
@@ -3608,6 +3635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locked: 0
   separateFromChildren: 0
   onActivatedEvent:
     m_PersistentCalls:
@@ -3881,6 +3909,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locked: 0
   separateFromChildren: 0
   onActivatedEvent:
     m_PersistentCalls:
@@ -4275,6 +4304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locked: 0
   separateFromChildren: 0
   onActivatedEvent:
     m_PersistentCalls:
@@ -5163,6 +5193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locked: 0
   separateFromChildren: 0
   onActivatedEvent:
     m_PersistentCalls:
@@ -5833,6 +5864,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locked: 0
   separateFromChildren: 0
   onActivatedEvent:
     m_PersistentCalls:
