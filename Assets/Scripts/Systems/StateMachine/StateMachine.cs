@@ -99,8 +99,16 @@ namespace SLS.StateMachineV2
         public virtual void TransitionState(State nextState) => TransitionState(nextState, currentState);
         public virtual void TransitionState(State nextState, State prevState)
         {
-            if (nextState == prevState || nextState == currentState || nextState == null ||
-                prevState.active == false || prevState == null || prevState == ROOTState) return; 
+            {
+                if (nextState == prevState ||
+                    nextState == currentState ||
+                    nextState == null ||
+                    prevState.active == false ||
+                    prevState == null ||
+                    prevState == ROOTState ||
+                    nextState.locked
+                ) return;
+            } // Pre Checks
 
             int i = prevState.lineage.Length - 1;
             for (; i >= 0;)

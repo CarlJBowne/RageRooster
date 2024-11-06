@@ -11,11 +11,13 @@ namespace SLS.StateMachineV2
     {
         #region Config
 
+        [SerializeField] public bool locked = false;
         /// <summary>
         /// Acts as a separate state from children rather than automating to the first in the list. Only applicable if this State has child states. 
         /// </summary>
         [SerializeField, ShowField(nameof(__showSepFromChildren))] private bool separateFromChildren;
         [SerializeField] public UnityEvent<State> onActivatedEvent;
+        
 
 
         #region Buttons
