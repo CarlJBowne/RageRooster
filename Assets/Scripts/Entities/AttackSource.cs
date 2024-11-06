@@ -15,17 +15,17 @@ public class AttackSource : MonoBehaviour
 	/// <summary> A list of possible attacks able to be activated by MultiAttackHitBox-es </summary>
 	public Attack[] attacks;
 
-	private Dictionary<string, Attack> attacksDict;
-	/// <summary>
-	/// The ID string used to determine which attack in the AttackSource's repetior is meant to be used. Leave null for default.
-	/// </summary>
-	public string currentAttackID = null;
+	private Dictionary<string, Attack> attacksDict = new Dictionary<string, Attack>();
+    /// <summary>
+    /// The ID string used to determine which attack in the AttackSource's repetior is meant to be used. Leave null for default.
+    /// </summary>
+    public string currentAttackID = null;
 
 	private void Awake()
 	{
 		attacksDict = new Dictionary<string, Attack>();
 		defaultAttack.source = this;
-		foreach (var attack in attacks) attacksDict.Add(attack.name, new(attack, this));
+		foreach (Attack attack in attacks) attacksDict.Add(attack.name, new(attack, this));
 		
 	}
 
