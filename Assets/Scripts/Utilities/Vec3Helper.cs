@@ -3,59 +3,25 @@ using UnityEngine;
 public static class Vec3Helper
 {
 
-	public static void Scale(this Vector3 v, Vector3 other)
-	{
-		v.x *= other.x;
-		v.y *= other.y;
-		v.z *= other.z;
-	}
-	public static void Scale(this Vector3 v, float x = 1f, float y = 1f, float z = 1f)
-	{
-		v.x *= x;
-		v.y *= y;
-		v.z *= z;
-	}
-	public static void Scale(this Vector3 v, float all)
-		=> v *= all;
-	public static Vector3 Scaled(this Vector3 v, Vector3 other)
+	public static Vector3 Scale(this Vector3 v, Vector3 other)
 		=> new(v.x * other.x, v.y * other.y, v.z * other.z);
-	public static Vector3 Scaled(this Vector3 v, float x = 1f, float y = 1f, float z = 1f)
+	public static Vector3 Scale(this Vector3 v, float x = 1f, float y = 1f, float z = 1f)
 		=> new(v.x * x, v.y * y, v.z * z);
-	public static Vector3 Scaled(this Vector3 v, float all)
+	public static Vector3 Scale(this Vector3 v, float all)
 		=> new(v.x * all, v.y * all, v.z * all);
 
-	public static void Divide(this Vector3 v, Vector3 other)
-	{
-		v.x /= other.x;
-		v.y /= other.y;
-		v.z /= other.z;
-	}
-	public static void Divide(this Vector3 v, float x = 1f, float y = 1f, float z = 1f)
-	{
-		v.x /= x;
-		v.y /= y;
-		v.z /= z;
-	}
-	public static void Divide(this Vector3 v, float all)
-		=> v /= all;
-	public static Vector3 Divided(this Vector3 v, Vector3 other)
+	public static Vector3 Divide(this Vector3 v, Vector3 other)
 		=> new(v.x / other.x, v.y / other.y, v.z / other.z);
-	public static Vector3 Divided(this Vector3 v, float x = 1f, float y = 1f, float z = 1f)
+	public static Vector3 Divide(this Vector3 v, float x = 1f, float y = 1f, float z = 1f)
 		=> new(v.x / x, v.y / y, v.z / z);
-	public static Vector3 Divided(this Vector3 v, float all)
+	public static Vector3 Divide(this Vector3 v, float all)
 		=> new(v.x / all, v.y / all, v.z / all);
 
 	public static Vector3 XY(this Vector3 v) => new(v.x, v.y, 0f);
 	public static Vector3 XZ(this Vector3 v) => new(v.x, 0f, v.z);
 	public static Vector3 YZ(this Vector3 v) => new(0f, v.y, v.z);
 
-	public static void Squash(this Vector3 v, Vector3 direction)
-	{
-		v.x *= (1 - direction.normalized.x);
-		v.y *= (1 - direction.normalized.y);
-		v.z *= (1 - direction.normalized.z);
-	}
-	public static Vector3 Squashed(this Vector3 v, Vector3 direction)
+	public static Vector3 Squash(this Vector3 v, Vector3 direction)
 		=> new (v.x * (1-direction.normalized.x), v.y * (1 - direction.normalized.y), v.z * (1 - direction.normalized.z));
 
 	public static Vector3 ToXZ(this Vector2 v) => new(v.x, 0, v.y);
@@ -63,31 +29,17 @@ public static class Vec3Helper
 	public static Vector3 To3(this Vector2 v) => new(v.x, v.y, 0);
 	public static Vector2 To2(this Vector3 v) => new(v.x, v.y);
 
-	public static void Swizzle(this Vector3 v)
-	{
-		float hold = v.y;
-		v.y = v.z;
-		v.z = hold;
-	}
-	public static Vector3 Swizzled(this Vector3 v)
+	public static Vector3 Swizzle(this Vector3 v)
 		=> new(v.x, v.z, v.y);
 
-	public static void Rotate(this Vector3 v, float amount, Vector3 axis)
-		=> v = Quaternion.AngleAxis(amount, axis) * v;
-	public static Vector3 Rotated(this Vector3 v, float amount, Vector3 axis)
+	public static Vector3 Rotate(this Vector3 v, float amount, Vector3 axis)
 		=> Quaternion.AngleAxis(amount, axis) * v;
-	public static void Rotate(this Vector3 v, Vector3 eularAngle)
-		=> v = Quaternion.Euler(eularAngle) * v;
-	public static Vector3 Rotated(this Vector3 v, Vector3 eularAngle)
+	public static Vector3 Rotate(this Vector3 v, Vector3 eularAngle)
 		=> Quaternion.Euler(eularAngle) * v;
 
-	public static void RotateTo(this Vector3 v, Vector3 towards)
-		=> v = Quaternion.FromToRotation(v, towards) * v;
-	public static void RotateTo(this Vector3 v, Vector3 towards, Vector3 reference)
-		=> v = Quaternion.FromToRotation(reference, towards) * v;
-	public static Vector3 RotatedTo(this Vector3 v, Vector3 towards)
+	public static Vector3 RotateTo(this Vector3 v, Vector3 towards)
 		=> Quaternion.FromToRotation(v, towards) * v;
-	public static Vector3 RotatedTo(this Vector3 v, Vector3 towards, Vector3 reference)
+	public static Vector3 RotateTo(this Vector3 v, Vector3 towards, Vector3 reference)
 		=> Quaternion.FromToRotation(reference, towards) * v;
 
 	public static Vector3 EularRotation(this Vector3 v)

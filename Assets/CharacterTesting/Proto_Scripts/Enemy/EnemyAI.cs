@@ -51,7 +51,7 @@ public class EnemyAI : MonoBehaviour
             currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
             agent.destination = patrolPoints[currentPatrolIndex].position;
             agent.speed = patrolSpeed;
-            Debug.Log("Patrolling to point: " + currentPatrolIndex);
+            //Debug.Log("Patrolling to point: " + currentPatrolIndex);
         }
     }
 
@@ -63,7 +63,7 @@ public class EnemyAI : MonoBehaviour
         // Chase the player when detected
         agent.destination = player.position;
         agent.speed = chaseSpeed;
-        Debug.Log("Chasing player");
+        //Debug.Log("Chasing player");
     }
 
     void DetectPlayer()
@@ -81,7 +81,7 @@ public class EnemyAI : MonoBehaviour
                     if (hit.collider.CompareTag("Player"))
                     {
                         isChasing = true;
-                        Debug.Log("Player detected, starting chase");
+                        //Debug.Log("Player detected, starting chase");
                         return;
                     }
                 }
@@ -89,7 +89,7 @@ public class EnemyAI : MonoBehaviour
         }
         // If no player detected, stop chasing
         isChasing = false;
-        Debug.Log("Player not detected, continue patrolling");
+        //Debug.Log("Player not detected, continue patrolling");
     }
 
     // Optional: Debug visualization for detection radius in editor

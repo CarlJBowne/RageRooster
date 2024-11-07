@@ -9,21 +9,25 @@ public class AttackSource : MonoBehaviour
 {
 	/// <summary> Whether this source recieves contacts from the collider on its own mesh. (Leave on unless using the MultiAttackHitBox script on another Collider.) </summary>
 	[SerializeField] bool thisCollider = true;
+	public bool IsSelfCollider() => thisCollider;
 
 	/// <summary> The default attack enacted by this source. </summary>
 	public Attack defaultAttack;
 	/// <summary> A list of possible attacks able to be activated by MultiAttackHitBox-es </summary>
 	public Attack[] attacks;
 
-	private Dictionary<string, Attack> attacksDict;
-	/// <summary>
-	/// The ID string used to determine which attack in the AttackSource's repetior is meant to be used. Leave null for default.
-	/// </summary>
-	public string currentAttackID = null;
+	private Dictionary<string, Attack> attacksDict = new Dictionary<string, Attack>();
+    /// <summary>
+    /// The ID string used to determine which attack in the AttackSource's repetior is meant to be used. Leave null for default.
+    /// </summary>
+    public string currentAttackID = null;
 
 	private void Awake()
 	{
-		for (int i = 0; i < attacks.Length; i++) attacksDict.Add(attacks[i].name, attacks[i]);
+		attacksDict = new Dictionary<string, Attack>();
+		defaultAttack.source = this;
+		foreach (Attack attack in attacks) attacksDict.Add(attack.name, new(attack, this));
+		
 	}
 
 
@@ -58,7 +62,7 @@ public class AttackSource : MonoBehaviour
 	public Attack GetAttack(string ID = null)
 	{
 		ID ??= currentAttackID;
-		if (ID != null && attacksDict.TryGetValue(ID, out Attack result)) return result;
+		if (ID != null && ID != "" && attacksDict.TryGetValue(ID, out Attack result)) return result;
 		return defaultAttack;
 	}
 }

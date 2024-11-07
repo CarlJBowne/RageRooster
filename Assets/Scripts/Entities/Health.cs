@@ -1,3 +1,4 @@
+using EditorAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,20 +11,20 @@ using UnityEngine.Events;
 public class Health : MonoBehaviour
 {
 	//Config
-	[SerializeField] private int maxHealth;
-	[SerializeField] private UnityEvent<int> damageEvent;
-	[SerializeField] private UnityEvent depleteEvent;
+	[SerializeField] protected int maxHealth;
+	[SerializeField] protected UnityEvent<int> damageEvent = new();
+	[SerializeField] protected UnityEvent depleteEvent = new();
 
 	//Data
-	private int health;
-	private bool damagable = true;
+	protected int health;
+	protected bool damagable = true;
 
+	//Getters
 	public int GetCurrentHealth() => health;
 	public int GetMaxHealth() => maxHealth;
 	public float GetHealthPercentage() => health / maxHealth;
 
-
-	private void Awake() => health = maxHealth;
+	protected virtual void Awake() => health = maxHealth;
 
 	public bool Damage(Attack attack)
 	{
@@ -47,7 +48,7 @@ public class Health : MonoBehaviour
 
 		if (health > maxHealth) health = maxHealth;
 
-		return true;
+        return true;
 	}
 
 	protected virtual void OnDamage(int amount) => damageEvent?.Invoke(amount);
@@ -64,7 +65,20 @@ public struct Attack
 
 	public int amount;
 	public string name;
-	AttackSource source;
+	[HideInInspector] public AttackSource source;
 	//Additional "Attack Type" data or whatnot.
+
+	public Attack(int amount, string name, AttackSource source)
+	{
+		this.source = source;
+		this.amount = amount;
+		this.name = name;
+	}
+	public Attack(Attack data, AttackSource source)
+	{
+		this.source = source;
+		amount = data.amount;
+		name = data.name;
+	}
 
 }
