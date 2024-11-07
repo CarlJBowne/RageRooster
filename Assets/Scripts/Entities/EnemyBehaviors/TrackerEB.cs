@@ -70,7 +70,8 @@ public class TrackerEB : StateBehavior
         if ((updateDistance && prevDist <= range != distance <= range) ||
             (updateDot && prevDot <= coneWidth != dot <= coneWidth) ||
             (updateLineOfSight && prevLOS != lineOfSight)
-            ) if (EventConditions()) 
+            ) 
+            if (EventConditions()) 
                 conditionalEvent?.Invoke();
     }
 

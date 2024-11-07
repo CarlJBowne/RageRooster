@@ -62,7 +62,7 @@ public class AttackSource : MonoBehaviour
 	public Attack GetAttack(string ID = null)
 	{
 		ID ??= currentAttackID;
-		if (ID != null && attacksDict.TryGetValue(ID, out Attack result)) return result;
+		if (ID != null && ID != "" && attacksDict.TryGetValue(ID, out Attack result)) return result;
 		return defaultAttack;
 	}
 }
