@@ -18,8 +18,12 @@ public class AttackHitBox : MonoBehaviour
 	public string currentAttackID = null;
 
 
+	public void SetActive(bool value) => gameObject.SetActive(value);
+	public void Enable() => gameObject.SetActive(true);
+    public void Disable() => gameObject.SetActive(false);
 
-	void OnTriggerEnter(Collider other) => source.BeginAttack(other.gameObject, currentAttackID);
+
+    void OnTriggerEnter(Collider other) => source.BeginAttack(other.gameObject, currentAttackID);
 
 	void OnCollisionEnter(Collision collision) => source.BeginAttack(collision.gameObject, currentAttackID);
 
@@ -28,4 +32,6 @@ public class AttackHitBox : MonoBehaviour
 	/// </summary>
 	/// <param name="attackID"></param>
 	public void SetAttackID(string attackID) => currentAttackID = attackID;
+
+	public void ManualBeginAttack(GameObject target) => source.BeginAttack(target, currentAttackID);
 }

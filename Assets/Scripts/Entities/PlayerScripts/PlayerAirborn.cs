@@ -1,49 +1,52 @@
 using SLS.StateMachineV2;
 using UnityEngine;
 
-public class PlayerAirborn : StateBehavior
+public class PlayerAirborn : PlayerStateBehavior
 {
-    PlayerMovementBody movement;
 
     public float gravity = 9.81f;
-    public bool isJump;
+    public float terminalVelocity = 100f;
+    public bool flatGravity = false;
     public float jumpHeight;
     public float jumpPower;
     public float jumpMinHeight;
-    public bool canGlide;
-    public bool isGlide;
-    [Tooltip("Gliding if Falling, Falling if anything else")]
-    public State nextState;
+    public State fallState;
 
-    private float initialHeight;
+    private float targetMinHeight;
+    private float targetHeight;
 
-    public override void Awake_S() => M.TryGetGlobalBehavior(out movement);
-
-    public override void FixedUpdate_S()
+    public override void OnFixedUpdate()
     {
-        if (isJump && transform.position.y < initialHeight + jumpHeight)
-        {
-            movement.velocity.y = jumpPower;
-        }
-        if (movement.velocity.y < jumpPower) TransitionTo(nextState);
+        body.VelocitySet(y: ApplyGravity());
 
-        if (!Input.Jump.IsPressed() && transform.position.y > initialHeight + jumpMinHeight)
+        if (jumpHeight <= 0) return;
+
+        if (transform.position.y < targetHeight) body.VelocitySet(y: jumpPower);
+        if (body.velocity.y < 0) TransitionTo(fallState);
+
+        if (!input.jump.IsPressed() && transform.position.y > targetMinHeight)
         {
-            if (movement.velocity.y > 0) movement.velocity.y = 0;
-            TransitionTo(nextState);
+            if (body.velocity.y > 0) body.VelocitySet(y: 0);
+            TransitionTo(fallState);
         }
 
-        if ((canGlide && Input.Jump.IsPressed())
-            || (isGlide && !Input.Jump.IsPressed()))
-            TransitionTo(nextState);
     }
 
     public override void OnEnter()
     {
-        movement.currentGravity = gravity;
-        initialHeight = transform.position.y;
-        movement.velocity.y = jumpPower;
+        if (jumpPower == 0) return;
+        body.VelocitySet(y: jumpPower);
+        if(jumpPower <= 0) return;
+        targetMinHeight = transform.position.y + jumpMinHeight;
+        targetHeight = body.position.y + jumpHeight - (jumpPower.P() / (2 * gravity));
     }
-    public override void OnExit() => movement.currentGravity = movement.defaultGravity;
+
+    private float ApplyGravity()
+    {
+        return  (!flatGravity 
+            ? body.velocity.y - (gravity * Time.deltaTime) 
+            : -gravity * Time.deltaTime
+            ).Min(-terminalVelocity);
+    }
 
 }
