@@ -146,7 +146,6 @@ public class AnimationAndMovementController : MonoBehaviour
         _isRunPressed = context.ReadValueAsButton();
         // Audio Test
         Vector3 worldPos = transform.position; // Use the player's position or another appropriate position
-        AudioManager.instance.PlayOneShot(FMODEvents.instance.laserShot, worldPos); // Provide the required worldPos parameter
     }
 
     void HandleRotation()
