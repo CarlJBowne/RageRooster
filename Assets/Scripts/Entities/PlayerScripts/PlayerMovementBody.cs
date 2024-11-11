@@ -1,7 +1,8 @@
-using SLS.StateMachineV2;
-using UnityEngine;
-using System.Linq;
 using EditorAttributes;
+using SLS.StateMachineV2;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public class PlayerMovementBody : PlayerStateBehavior
 {
@@ -30,7 +31,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     [HideInInspector] public float coyoteTimeLeft;
     float tripleJumpTimeLeft;
-    
+
     [SerializeField, ReadOnly, Rename("Position")] Vector3 D_position;
     [SerializeField, ReadOnly, Rename("Velocity")] Vector3 D_velocity;
     #endregion
@@ -68,19 +69,21 @@ public class PlayerMovementBody : PlayerStateBehavior
         rb = GetComponentFromMachine<Rigidbody>();
         collider = GetComponentFromMachine<CapsuleCollider>();
 
-
-        M.physicsCallbacks += OnCollisionEnter_C;
+        //M.physicsCallbacks += PhysicsCallbacks;
         collider.center = new Vector3(collider.center.x, (collider.height / 2) + skinDistance, collider.center.z);
     }
+
     public override void OnFixedUpdate()
     {
         if (canJump) JumpHandle();
 
+        /*
         if (grounded)
         {
             VelocitySet(y: 0);
             GroundStateChange(GroundCheck());
         }
+         */
 
         D_position = position;
         D_velocity = velocity;
@@ -104,18 +107,19 @@ public class PlayerMovementBody : PlayerStateBehavior
         castResults = rb.SweepTestAll(direction);
         return castResults.Length > 0;
     }
-    
+
     public bool GroundCheck()
     {
         PositionSet(y: position.y + skinDistance);
-        castResults = rb.SweepTestAll(Vector3.down, skinDistance*2f);
+        castResults = rb.SweepTestAll(Vector3.down, skinDistance * 2f);
         PositionSet(y: position.y - skinDistance);
         return castResults.Length > 0;
     }
     public RaycastHit[] castResults;
+
     public bool GroundStateChange(bool input)
     {
-        if(input == grounded) return false;
+        if (input == grounded || rb.velocity.y > 0) return false;
         grounded = input;
 
         if (!grounded) coyoteTimeLeft = coyoteTime;
@@ -127,8 +131,12 @@ public class PlayerMovementBody : PlayerStateBehavior
         return true;
     }
 
-    private void OnCollisionEnter_C(PhysicsCallback type, Collision collision, Collider _)
+    public void Collision() => GroundStateChange(rb.GroundCheck());
+
+    /*
+    private void PhysicsCallbacks(PhysicsCallback type, Collision collision, Collider _)
     {
+        
         if (type != PhysicsCallback.OnCollisionEnter || !state.active) return;
 
         if (GroundCheck())
@@ -137,7 +145,10 @@ public class PlayerMovementBody : PlayerStateBehavior
             VelocitySet(y: 0);
             PositionSet(y: position.y - castResults[0].distance + skinDistance * 1.999f);
         }
+         
     }
+    private List<Collision> collisions;
+    */
 
     public void BeginJump()
     {
