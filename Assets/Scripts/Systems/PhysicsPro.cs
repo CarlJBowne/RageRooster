@@ -5,27 +5,47 @@ using UnityEngine;
 
 public static class PhysicsPro
 {
-    public static bool GroundCheck(this Rigidbody rb, float thickness = 0.005f)
+
+    public static readonly float skinThickness = 0.005f;
+
+    public static bool DirectionCast(this Rigidbody rb, Vector3 direction, float distance = 0f)
     {
-        rb.Move(rb.position + (0.5f * thickness * Vector3.up), rb.rotation);
-        bool result = rb.SweepTest(Vector3.down, out _, thickness);
-        rb.Move(rb.position + (0.5f * thickness * Vector3.down), rb.rotation);
+        rb.Move(rb.position - (skinThickness * direction.normalized), rb.rotation);
+        bool result = rb.SweepTest(direction.normalized, out _, Mathf.Max(2 * skinThickness, distance));
+        rb.Move(rb.position + (skinThickness * direction.normalized), rb.rotation);
         return result;
     }
-    public static bool GroundCheck(this Rigidbody rb, out RaycastHit hitInfo, float thickness = 0.005f)
+    public static bool DirectionCast(this Rigidbody rb, Vector3 direction, out RaycastHit hit, float distance = 0f)
     {
-        rb.Move(rb.position + (0.5f * thickness * Vector3.up), rb.rotation);
-        bool result = rb.SweepTest(Vector3.down, out hitInfo, thickness);
-        rb.Move(rb.position + (0.5f * thickness * Vector3.down), rb.rotation);
+        rb.Move(rb.position - (skinThickness * direction.normalized), rb.rotation);
+        bool result = rb.SweepTest(direction.normalized, out hit, Mathf.Max(2 * skinThickness, distance));
+        rb.Move(rb.position + (skinThickness * direction.normalized), rb.rotation);
         return result;
     }
-    public static bool GroundCheck(this Rigidbody rb, out RaycastHit[] groundInfo, float thickness = 0.005f)
+    public static bool DirectionCast(this Rigidbody rb, Vector3 direction, float distance, out RaycastHit hit)
     {
-        rb.Move(rb.position + (0.5f * thickness * Vector3.up), rb.rotation);
-        groundInfo = rb.SweepTestAll(Vector3.down, thickness);
-        rb.Move(rb.position + (0.5f * thickness * Vector3.down), rb.rotation);
-        return groundInfo.Length > 0;
+        rb.Move(rb.position - (skinThickness * direction.normalized), rb.rotation);
+        bool result = rb.SweepTest(direction.normalized, out hit, Mathf.Max(2 * skinThickness, distance));
+        rb.Move(rb.position + (skinThickness * direction.normalized), rb.rotation);
+        return result;
     }
+    public static bool DirectionCast(this Rigidbody rb, Vector3 direction, out RaycastHit[] hit, float distance = 0f)
+    {
+        rb.Move(rb.position - (skinThickness * direction.normalized), rb.rotation);
+        hit = rb.SweepTestAll(direction.normalized, Mathf.Max(2 * skinThickness, distance));
+        rb.Move(rb.position + (skinThickness * direction.normalized), rb.rotation);
+        return hit.Length > 0;
+    }
+    public static bool DirectionCast(this Rigidbody rb, Vector3 direction, float distance, out RaycastHit[] hit)
+    {
+        rb.Move(rb.position - (skinThickness * direction.normalized), rb.rotation);
+        hit = rb.SweepTestAll(direction.normalized, Mathf.Max(2 * skinThickness, distance));
+        rb.Move(rb.position + (skinThickness * direction.normalized), rb.rotation);
+        return hit.Length > 0;
+    }
+
+
+
 
     static int maxBounces = 5;
     static float skinWidth = 0.015f;
@@ -73,7 +93,7 @@ public static class PhysicsPro
                     leftover = ProjectAndScale(leftover, hit.normal) * scale;
                 }
             }
-            return snapToSurface + rb.CollideAndSlide(leftover, pos + snapToSurface, depth + 1, gravityPass, velInit);
+            return snapToSurface + rb.CollideAndSlide(leftover, pos + snapToSurface, depth + 1, gravityPass, velInit, isGrounded);
         }
 
         return vel;
