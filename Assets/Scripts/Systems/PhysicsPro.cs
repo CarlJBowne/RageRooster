@@ -6,73 +6,45 @@ using UnityEngine;
 public static class PhysicsPro
 {
 
-    public static readonly float skinThickness = 0.005f;
-
-    public static bool DirectionCast(this Rigidbody rb, Vector3 direction, float distance = 0f)
+    public static bool DirectionCast(this Rigidbody rb, Vector3 direction, float distance, float buffer, out RaycastHit hit)
     {
-        rb.Move(rb.position - (skinThickness * direction.normalized), rb.rotation);
-        bool result = rb.SweepTest(direction.normalized, out _, Mathf.Max(2 * skinThickness, distance));
-        rb.Move(rb.position + (skinThickness * direction.normalized), rb.rotation);
+        rb.MovePosition(rb.position - direction * buffer);
+        bool result = rb.SweepTest(direction.normalized, out hit, distance + buffer);
+        rb.MovePosition(rb.position + direction * buffer);
+        hit.distance -= buffer;
         return result;
     }
-    public static bool DirectionCast(this Rigidbody rb, Vector3 direction, out RaycastHit hit, float distance = 0f)
+    public static bool DirectionCastAll(this Rigidbody rb, Vector3 direction, float distance, float buffer, out RaycastHit[] hit)
     {
-        rb.Move(rb.position - (skinThickness * direction.normalized), rb.rotation);
-        bool result = rb.SweepTest(direction.normalized, out hit, Mathf.Max(2 * skinThickness, distance));
-        rb.Move(rb.position + (skinThickness * direction.normalized), rb.rotation);
-        return result;
+        rb.MovePosition(rb.position - direction * buffer);
+        hit = rb.SweepTestAll(direction.normalized, distance + buffer);
+        rb.MovePosition(rb.position + direction * buffer);
+        hit[0].distance -= buffer;
+        return hit.Length>0;
     }
-    public static bool DirectionCast(this Rigidbody rb, Vector3 direction, float distance, out RaycastHit hit)
-    {
-        rb.Move(rb.position - (skinThickness * direction.normalized), rb.rotation);
-        bool result = rb.SweepTest(direction.normalized, out hit, Mathf.Max(2 * skinThickness, distance));
-        rb.Move(rb.position + (skinThickness * direction.normalized), rb.rotation);
-        return result;
-    }
-    public static bool DirectionCast(this Rigidbody rb, Vector3 direction, out RaycastHit[] hit, float distance = 0f)
-    {
-        rb.Move(rb.position - (skinThickness * direction.normalized), rb.rotation);
-        hit = rb.SweepTestAll(direction.normalized, Mathf.Max(2 * skinThickness, distance));
-        rb.Move(rb.position + (skinThickness * direction.normalized), rb.rotation);
-        return hit.Length > 0;
-    }
-    public static bool DirectionCast(this Rigidbody rb, Vector3 direction, float distance, out RaycastHit[] hit)
-    {
-        rb.Move(rb.position - (skinThickness * direction.normalized), rb.rotation);
-        hit = rb.SweepTestAll(direction.normalized, Mathf.Max(2 * skinThickness, distance));
-        rb.Move(rb.position + (skinThickness * direction.normalized), rb.rotation);
-        return hit.Length > 0;
-    }
-
-
 
 
     static int maxBounces = 5;
     static float skinWidth = 0.015f;
     static float maxSlopeAngle = 55;
 
-    public static Vector3 CollideAndSlide(this Rigidbody rb, Vector3 vel, Vector3 pos, int depth, bool gravityPass, Vector3 velInit, bool isGrounded)
+    public static Vector3 CollideAndSlide(this Rigidbody rb, Vector3 vel, Vector3 pos, int depth, bool gravityPass, Vector3 velInit)
     {
         if (depth >= maxBounces) return Vector3.zero;
 
-        float dist = vel.magnitude + skinWidth;
-
-        if (rb.SweepTest(vel.normalized, out RaycastHit hit, dist))
+        if (rb.DirectionCast(vel.normalized, vel.magnitude, 0, out RaycastHit hit))
         {
-            Vector3 snapToSurface = vel.normalized * (hit.distance - skinWidth);
+            Vector3 snapToSurface = vel.normalized * (hit.distance);
             Vector3 leftover = vel - snapToSurface;
             float angle = Vector3.Angle(Vector3.up, hit.normal);
 
-            if (snapToSurface.magnitude <= skinWidth)
-            {
-                snapToSurface = Vector3.zero;
-            }
+            //if (snapToSurface.magnitude <= checkBuffer) snapToSurface = Vector3.zero;
 
             // normal ground / slope
             if (angle <= maxSlopeAngle)
             {
                 if (gravityPass) return snapToSurface;
-                leftover = ProjectAndScale(leftover, hit.normal);
+                leftover = leftover.ProjectAndScale(hit.normal);
             }
             else // wall or steep slope
             {
@@ -81,19 +53,11 @@ public static class PhysicsPro
                     -new Vector3(velInit.x, 0, velInit.z).normalized
                     );
 
-                if(isGrounded && !gravityPass)
-                {
-                    leftover = ProjectAndScale(
-                    new Vector3(velInit.x, 0, velInit.z),
-                        new Vector3(hit.normal.x, 0, hit.normal.z).normalized
-                        ).normalized * scale;
-                }
-                else
-                {
-                    leftover = ProjectAndScale(leftover, hit.normal) * scale;
-                }
+                leftover = true && !gravityPass
+                    ? velInit.XZ().ProjectAndScale(hit.normal.XZ().normalized).normalized * scale
+                    : leftover.ProjectAndScale(hit.normal) * scale;
             }
-            return snapToSurface + rb.CollideAndSlide(leftover, pos + snapToSurface, depth + 1, gravityPass, velInit, isGrounded);
+            return snapToSurface + rb.CollideAndSlide(leftover, pos + snapToSurface, depth + 1, gravityPass, velInit);
         }
 
         return vel;
