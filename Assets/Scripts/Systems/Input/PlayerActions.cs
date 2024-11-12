@@ -344,8 +344,41 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         {
             ""name"": ""UI"",
             ""id"": ""6e828c38-7b4c-4ae2-850f-3d8181f5779a"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""Pause Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""813063fc-4ff1-479f-b367-36dcb905a19d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""2774d7a3-fc31-4a06-b50a-3edffb1d85d1"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb45f181-6daf-4973-8fde-c3f166b7333c"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -364,6 +397,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         m_Gameplay_Sonic = m_Gameplay.FindAction("Sonic", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_PauseGame = m_UI.FindAction("Pause Game", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -543,10 +577,12 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
+    private readonly InputAction m_UI_PauseGame;
     public struct UIActions
     {
         private @PlayerActions m_Wrapper;
         public UIActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PauseGame => m_Wrapper.m_UI_PauseGame;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -556,10 +592,16 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
+            @PauseGame.started += instance.OnPauseGame;
+            @PauseGame.performed += instance.OnPauseGame;
+            @PauseGame.canceled += instance.OnPauseGame;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
         {
+            @PauseGame.started -= instance.OnPauseGame;
+            @PauseGame.performed -= instance.OnPauseGame;
+            @PauseGame.canceled -= instance.OnPauseGame;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -592,5 +634,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     }
     public interface IUIActions
     {
+        void OnPauseGame(InputAction.CallbackContext context);
     }
 }
