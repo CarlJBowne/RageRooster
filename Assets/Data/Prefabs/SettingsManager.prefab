@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7992376348519649046}
   - component: {fileID: 914569984913485849}
   - component: {fileID: 8876518857739504979}
+  - component: {fileID: 5011603702099126549}
   m_Layer: 0
   m_Name: SettingsManager
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8158829022644922960}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 675.2908, y: 227.73447, z: 14.616835}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -77,3 +78,64 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resolutionDropdown: {fileID: 0}
+--- !u!114 &5011603702099126549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8158829022644922960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ced5e358805aac45940fb1b3f4365d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <playerJump>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <playerLand>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <playerDeath>k__BackingField:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  <music>k__BackingField:
+    Guid:
+      Data1: -2064340778
+      Data2: 1303822629
+      Data3: -129355872
+      Data4: -1070401621
+    Path: event:/Music/MainMenuMusic
+  <laserShot>k__BackingField:
+    Guid:
+      Data1: -1409377273
+      Data2: 1208930341
+      Data3: -1014345341
+      Data4: -1253347665
+    Path: event:/SFX/Enemy SFX/LaserShot
+  <buttonPressed>k__BackingField:
+    Guid:
+      Data1: -1345817986
+      Data2: 1233736306
+      Data3: -1727079536
+      Data4: -1647638855
+    Path: event:/SFX/UI/ButtonPressed
+  <ambience>k__BackingField:
+    Guid:
+      Data1: -106101516
+      Data2: 1108112555
+      Data3: -1570180455
+      Data4: 1331734748
+    Path: event:/Ambience/BGNoise
