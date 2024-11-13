@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-8110920987398215688
+--- !u!114 &-7172969442964673369
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,14 +20,14 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Parallax
-  m_Shader: {fileID: -6465566751694194690, guid: aa0824d6d4406e043963a3c6ea2b16f9,
+  m_Name: Shader Graphs_CelShader
+  m_Shader: {fileID: -6465566751694194690, guid: d6a87e04172edf347a685f2e3a51660c,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -37,19 +37,23 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _A0:
+    - Layer_7460DDE5:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Layer_A9070B7:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _AO:
         m_Texture: {fileID: 2800000, guid: 0337e37ee3630fd45ac72e04d6d868f4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Height:
-        m_Texture: {fileID: 2800000, guid: 2e4d13722c5075d4d927a67a3130dcd3, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _Normal:
-        m_Texture: {fileID: 2800000, guid: da2abb4165d68954583aa2bdd071071f, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _basecolor:
+    - _Texture:
         m_Texture: {fileID: 2800000, guid: 6c9c60ff95a20bb42855a1a12b3d7f6c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -67,11 +71,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Max: 1
+    - _Min: 1.11
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _amplitude: 2.14
-    - _offset: 0
-    - _steps: 10
-    - _tiling: 0
-    m_Colors: []
+    - _Shades: 0.281
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Offset: {r: 0, g: 0, b: 0, a: 0}
+    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
