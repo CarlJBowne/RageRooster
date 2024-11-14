@@ -27,6 +27,11 @@ public class TrackerEB : StateBehavior
     public UnityEvent conditionalEvent;
     [SerializeField] bool exitZone;
 
+    [ToggleGroup("Auto Rotate", nameof(maxRotateDelta))]
+    public bool autoRotate;
+    [SerializeField, HideInInspector, Tooltip("1 = full second turn, 50 = 1 FixedUpdate turn")] 
+    float maxRotateDelta;
+     
     private float autoCheckTimer;
     private float distance;
     private float dot;
@@ -54,6 +59,11 @@ public class TrackerEB : StateBehavior
         {
             autoCheckTimer %= autoCheckRate;
             CheckData();
+        }
+        if (autoRotate)
+        {
+            var dir = (target.transform.position - transform.position).XZ();
+            transform.eulerAngles = Vector3.RotateTowards(transform.forward, dir, maxRotateDelta * Mathf.PI * Time.fixedDeltaTime, 0).DirToRot();
         }
     }
 

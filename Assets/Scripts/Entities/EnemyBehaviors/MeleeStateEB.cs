@@ -8,7 +8,6 @@ public class MeleeStateEB : StateBehavior
 
     #region Config
     [SerializeField] float attackRate;
-    [SerializeField, Tooltip("1 = full second turn, 50 = 1 FixedUpdate turn")] float maxTurnSpeed;
     #endregion
     #region Data
 
@@ -30,9 +29,6 @@ public class MeleeStateEB : StateBehavior
             attackTimer -= attackRate;
             BeginAttack();
         }
-        Vector3 dir = tracker.target.position - transform.position;
-        dir.y = 0;
-        transform.eulerAngles = Vector3.RotateTowards(transform.forward, dir, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0).DirToRot();
     }
 
     public void BeginAttack()

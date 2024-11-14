@@ -14,7 +14,6 @@ public class ChaseEB : StateBehavior
     private NavMeshAgent agent;
     private TrackerEB playerTracker;
     private float destUpdateTimer;
-    private float distance => Vector3.Distance(transform.position, target.position);
 
     public override void OnAwake()
     {
