@@ -9,7 +9,7 @@ using UnityEngine;
 /// Further customization can be done with RuntimeInitializeOnLoadMethod, (See Bottom of script for example.)
 /// </summary>
 /// <typeparam name="T">The Behavior's Type</typeparam>
-public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
+public abstract class Singleton<T> : Singleton where T : Singleton<T>
 {
     #region Data and Setup
 
@@ -29,8 +29,15 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
         if (spawnMethod != null) GetDel = spawnMethod;
         if (path != null) Path = path;
-        if (spawnMethod == InitSavedPrefab) prefab = GlobalPrefabs.Get().singletons.FirstOrDefault(x => x.TryGetComponent(out T _)).gameObject;
         DontDestoryOnLoad = dontDestroyOnLoad;
+        if (spawnMethod == InitSavedPrefab)
+        {
+            Singleton S = GlobalPrefabs.Get().singletons.FirstOrDefault(x => x is T);
+            prefab = S
+                ? S.gameObject
+                : throw new Exception($"Singleton {typeof(T)} is labeled as using a saved prefab but isn't set up in the Global Prefabs Asset.");
+        }
+
         if (spawnOnBoot) spawnMethod?.Invoke();
     }
     /// <summary>
@@ -52,7 +59,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
             result = findAttempt;
             _instance = result;
 
-            (_instance as T).OnAwake();
+            _instance.OnAwake();
             return true;
         }
         else
@@ -137,6 +144,11 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
         if (_instance != null) return _instance;
         if (AttemptFind(out T attempt)) return attempt;
 
+        if (!prefab)
+        {
+            Debug.LogError("");
+            return null;
+        }
         GameObject result = Instantiate(prefab);
 
         InitFinal(result.GetComponent<T>());
@@ -250,6 +262,9 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
 
     #endregion
 }
+
+public abstract class Singleton : MonoBehaviour { };
+
 
 /* Example Use --------------------------------------------------------------------------------------------------------------------------------------------
 

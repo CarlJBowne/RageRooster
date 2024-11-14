@@ -21,7 +21,7 @@ public class GlobalPrefabs : SingletonScriptable<GlobalPrefabs>
 #endif
     }
 
-    public List<MonoBehaviour> singletons;
+    public List<Singleton> singletons;
 
 #if AYellowPaper
     [SerializeField] AYellowpaper.SerializedCollections.SerializedDictionary<string, GameObject> dictionary;

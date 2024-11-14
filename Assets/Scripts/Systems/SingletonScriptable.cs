@@ -13,9 +13,9 @@ public class SingletonScriptable<T> : ScriptableObject where T : SingletonScript
     public static T Instance => Get();
     public static T I => Get();
 
-    public static T Get() => _instance;
+    public static T Get() => _instance ? _instance : throw new System.Exception($"Scriptable Object Singleton {typeof(T)} is missing.");
 
-     
+
     private void OnEnable()
     {
         if (_instance != null) return;
