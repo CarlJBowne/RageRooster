@@ -129,7 +129,7 @@ public static class Vec3Helper
 	public static Vector3 DirToRot(this Vector3 value) => Quaternion.LookRotation(value.normalized).eulerAngles;
 	public static Vector3 RotToDir(this Vector3 value) => Quaternion.Euler(value) * Vector3.forward;
 
-
+	public static Vector3 ProjectAndScale(this Vector3 value, Vector3 normal) => Vector3.ProjectOnPlane(value, normal).normalized * value.magnitude;
 
 
 }

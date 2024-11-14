@@ -5,19 +5,8 @@ using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-    [Button]
-    public void QuickReset()
+    private void Start()
     {
-        coll.enabled = false;
-        coll.enabled = true;
+
     }
-
-    public Collider coll;
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent<PlayerStateMachine>(out _)) Debug.Log("YES");
-    }
-
 }

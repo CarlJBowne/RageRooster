@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6674807533319843650}
   - component: {fileID: 2454575778741117215}
   - component: {fileID: 2820556097218875402}
+  - component: {fileID: 5058294620470769122}
   m_Layer: 0
   m_Name: MillRoller_LOD0
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1689232215201073813}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 327.00916, y: 327.00916, z: 327.00916}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -86,6 +87,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5058294620470769122
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1689232215201073813}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3797661862317130195, guid: 05feb4e7de23a03479bd8784c2cd7b1a, type: 3}
 --- !u!1 &3622891837456296736
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,6 +120,7 @@ GameObject:
   - component: {fileID: 7322498041600977621}
   - component: {fileID: 2635810368779292553}
   - component: {fileID: 2739934273595600291}
+  - component: {fileID: 2844366576710173464}
   m_Layer: 0
   m_Name: MillRoller_LOD1
   m_TagString: Untagged
@@ -172,6 +196,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &2844366576710173464
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3622891837456296736}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5889136858061861937, guid: 05feb4e7de23a03479bd8784c2cd7b1a, type: 3}
 --- !u!1 &6155195222281933863
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,8 +228,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8749733762515573607}
   - component: {fileID: 3581453538207527417}
-  - component: {fileID: 7931807005488419713}
-  - component: {fileID: 6991815483869025090}
   m_Layer: 0
   m_Name: MillRoller
   m_TagString: Untagged
@@ -201,8 +245,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -17.91, y: 0.25, z: 66.91}
-  m_LocalScale: {x: 0.3183743, y: 0.3183743, z: 0.3183743}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6674807533319843650}
   - {fileID: 7322498041600977621}
@@ -236,48 +280,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 6068472714652316422}
   m_Enabled: 1
---- !u!65 &7931807005488419713
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6155195222281933863}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 6.422938, y: 5.896853, z: 6.2826214}
-  m_Center: {x: 0.012302313, y: 2.2187388, z: -0.17017563}
---- !u!65 &6991815483869025090
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6155195222281933863}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 9.270767, y: 9.312134, z: 5.7318954}
-  m_Center: {x: -0.000016474974, y: 4.1981397, z: 6.353789}
 --- !u!1 &8915734482701305983
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,6 +291,7 @@ GameObject:
   - component: {fileID: 6201677117499793263}
   - component: {fileID: 2579633582980257829}
   - component: {fileID: 6068472714652316422}
+  - component: {fileID: 310016259224125867}
   m_Layer: 0
   m_Name: MillRoller_LOD2
   m_TagString: Untagged
@@ -364,3 +367,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &310016259224125867
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8915734482701305983}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5320656018240521773, guid: 05feb4e7de23a03479bd8784c2cd7b1a, type: 3}
