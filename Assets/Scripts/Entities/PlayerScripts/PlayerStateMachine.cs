@@ -27,6 +27,8 @@ public class PlayerStateMachine : StateMachine
         controller = GetGlobalBehavior<PlayerController>();
     }
 
+    //private void OnCollisionStay() => body.Collision();
+    //private void OnCollisionExit() => body.Collision();
 
 }
 public abstract class PlayerStateBehavior : StateBehavior
