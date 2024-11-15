@@ -16,9 +16,11 @@ public class TrackerEB : StateBehavior
     [SerializeField] public bool updateDistance;
     [HideInInspector] public float range;
 
-    [ToggleGroup("View Cone", nameof(coneWidth))]
+    [ToggleGroup("View Cone", nameof(coneWidth)/*, nameof(is2D), nameof(coneHeight)*/ )]
     public bool updateDot;
     [HideInInspector] public float coneWidth;
+    //[HideInInspector] public bool is2D;
+    //[HideInInspector] public float coneHeight;
 
     [ToggleGroup("Line of Sight", nameof(LOSMask))]
     public bool updateLineOfSight;
@@ -29,19 +31,23 @@ public class TrackerEB : StateBehavior
 
     [ToggleGroup("Auto Rotate", nameof(maxRotateDelta))]
     public bool autoRotate;
-    [SerializeField, HideInInspector, Tooltip("1 = full second turn, 50 = 1 FixedUpdate turn")] 
-    float maxRotateDelta;
+    [HideInInspector, Tooltip("1 = full second turn, 50 = 1 FixedUpdate turn")] 
+    public float maxRotateDelta;
      
     private float autoCheckTimer;
     private float distance;
     private float dot;
+    //private float dotY;
     private bool lineOfSight;
 
     public override void OnAwake()
     {
         if (target == null||
             !updateDistance && !updateDot && !updateLineOfSight
-            ) Destroy(this); 
+            )
+        {
+
+        }
     }
 
     public override void OnEnter()
@@ -60,11 +66,8 @@ public class TrackerEB : StateBehavior
             autoCheckTimer %= autoCheckRate;
             CheckData();
         }
-        if (autoRotate)
-        {
-            var dir = (target.transform.position - transform.position).XZ();
-            transform.eulerAngles = Vector3.RotateTowards(transform.forward, dir, maxRotateDelta * Mathf.PI * Time.fixedDeltaTime, 0).DirToRot();
-        }
+        if (autoRotate) 
+            transform.eulerAngles = Vector3.RotateTowards(transform.forward, Direction.XZ(), maxRotateDelta * Mathf.PI * Time.fixedDeltaTime, 0).DirToRot();
     }
 
     private void CheckData()
@@ -92,7 +95,7 @@ public class TrackerEB : StateBehavior
     }
     public float Dot(bool check)
     {
-        if (check) dot = (Vector3.Dot(transform.forward, target.position-transform.position) - 1) * -1;
+        if (check) dot = (Vector3.Dot(transform.forward, target.position - transform.position) - 1) * -1;
         return dot;
     }
     public bool LineOfSight(bool check)
@@ -104,6 +107,8 @@ public class TrackerEB : StateBehavior
         }
         return lineOfSight;
     }
+    public Vector3 Direction => target.position - transform.position;
+
 
     public bool EventConditions() 
     {
@@ -114,5 +119,5 @@ public class TrackerEB : StateBehavior
 
         return within == !exitZone;
     }
-    
+
 }
