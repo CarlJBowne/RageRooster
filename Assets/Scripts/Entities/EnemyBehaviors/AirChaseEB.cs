@@ -9,7 +9,6 @@ public class AirChaseEB : StateBehavior
     [SerializeField] Transform target;
     [SerializeField] float reachDistance;
     [SerializeField] State reachState;
-    private float distance => Vector3.Distance(transform.position, target.position);
 
     private TrackerEB playerTracker;
 
@@ -21,7 +20,7 @@ public class AirChaseEB : StateBehavior
 
     public override void OnFixedUpdate()
     {
-        if (playerTracker.Distance(false) <= reachDistance)
+        if (playerTracker.Distance(true) <= reachDistance)
         {
             ReachTarget();
             return;

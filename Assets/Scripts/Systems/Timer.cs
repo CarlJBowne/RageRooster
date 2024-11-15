@@ -1,25 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
+[Serializable]
 public class Timer
 {
     public float value;
-    public readonly float lowerEdge;
-    public readonly float higherEdge;
-    private readonly Action action;
+    public float lowerEdge;
+    public float higherEdge;
+    public delegate void Delegate(); 
+    public Delegate action;
 
-    public Timer(float higherEdge, Action action = null) => new Timer(0, 0, higherEdge, action);
-    public Timer(float lowerEdge, float higherEdge, Action action = null) => new Timer(lowerEdge, lowerEdge, higherEdge, action);
-    public Timer(float begin, float lowerEdge, float higherEdge, Action action = null)
+    public Timer(float higherEdge, Delegate action = null) => new Timer(0, 0, higherEdge, action);
+    public Timer(float lowerEdge, float higherEdge, Delegate action = null) => new Timer(lowerEdge, lowerEdge, higherEdge, action);
+    public Timer(float begin, float lowerEdge, float higherEdge, Delegate action = null)
     {
         value = begin;
         this.lowerEdge = lowerEdge;
         this.higherEdge = higherEdge;
         this.action = action;
     }
+    public Timer() { }
+
+    public static Timer New(float higherEdge, Delegate action = null) => New(0, 0, higherEdge, action);
+    public static Timer New(float lowerEdge, float higherEdge, Delegate action = null) => New(lowerEdge, lowerEdge, higherEdge, action);
+    public static Timer New(float begin, float lowerEdge, float higherEdge, Delegate action = null)
+    {
+        Timer T = new();
+        T.value = begin;
+        T.lowerEdge = lowerEdge;
+        T.higherEdge = higherEdge;
+        T.action = action;
+        return T;
+    }
+
+
 
     public static implicit operator float(Timer timer) => timer.value;
 
@@ -44,18 +58,18 @@ public class Timer
         return timer;
     }
 
-    public void Increment(float value, Action action = null)
+    public void Increment(float amount, Delegate action = null)
     {
-        this.value += value;
-        if (value>0 && this.value >= this.higherEdge)
+        value += amount;
+        if (amount>0 && value >= higherEdge)
         {
-            action?.Invoke();
-            this.value = this.value - this.higherEdge + this.lowerEdge;
+            (action ?? this.action)?.Invoke();
+            value = value - higherEdge + lowerEdge;
         }
-        if (value<0 &&this.value <= this.lowerEdge)
+        if (amount<0 &&value <= lowerEdge)
         {
-            action?.Invoke();
-            this.value += this.value + this.higherEdge - this.lowerEdge;
+            (action ?? this.action)?.Invoke();
+            value += value + higherEdge - lowerEdge;
         }
     }
 }
