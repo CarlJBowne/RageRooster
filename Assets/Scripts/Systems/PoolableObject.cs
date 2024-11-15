@@ -42,7 +42,7 @@ public class PoolableObject : MonoBehaviour
         if (onDeactivate.GetInvocationList().Length > 0 && wasActive) onDeactivate(this);
         if (deactivateGameObject) gameObject.SetActive(false);
 
-        if (!pool) Destroy(gameObject);
+        if (pool == null) Destroy(gameObject);
     }
 
     private void OnDisable() { if (Active) Disable(); }
@@ -52,8 +52,16 @@ public class PoolableObject : MonoBehaviour
     {
         PoolableObject pool = subject.GetComponent<PoolableObject>(); 
         if (!pool) return null;
-        if (!pool.pool) return null;
+        if (pool.pool == null) return null;
         return pool;
+    }
+
+    public void SetPosition(Vector3 position) => transform.position = position;
+    public void SetRotation(Vector3 rotation) => transform.eulerAngles = rotation;
+    public void PlaceAtMuzzle(Transform muzzle)
+    {
+        transform.position = muzzle.position;
+        transform.rotation = muzzle.rotation;
     }
 
 }
