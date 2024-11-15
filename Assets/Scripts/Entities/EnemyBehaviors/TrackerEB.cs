@@ -53,7 +53,7 @@ public class TrackerEB : StateBehavior
     public override void OnAwake()
     {
         if(target == null) target = FindObjectOfType<PlayerStateMachine>().transform;
-        if (autoCheckRate > 0) autoCheckTimer = Timer.New(autoCheckRate, CheckData);
+        if (autoCheckRate > 0) autoCheckTimer = new(autoCheckRate, CheckData);
     }
 
     public override void OnEnter()
@@ -71,12 +71,8 @@ public class TrackerEB : StateBehavior
                 phases[currentPhase].autoRotateDelta * Mathf.PI * Time.fixedDeltaTime, 0)
                 .DirToRot();
 
-        if (autoCheckRate <= 0)
-        {
-            CheckData();
-            return;
-        }
-        autoCheckTimer += Time.deltaTime;
+        if (autoCheckRate > 0) autoCheckTimer += Time.deltaTime;
+        else if(autoCheckRate == 0) CheckData();
     }
 
     private void CheckData()

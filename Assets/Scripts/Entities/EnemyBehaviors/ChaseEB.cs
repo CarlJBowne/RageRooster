@@ -19,7 +19,7 @@ public class ChaseEB : StateBehavior
     {
         agent = GetComponentFromMachine<NavMeshAgent>();
         playerTracker = state.parent.GetComponent<TrackerEB>();
-        destUpdateTimer = Timer.New(destUpdateRate, UpdateDestination);
+        destUpdateTimer = new(destUpdateRate, UpdateDestination);
     }
 
     public override void OnEnter()
