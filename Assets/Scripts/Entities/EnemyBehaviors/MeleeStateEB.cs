@@ -15,16 +15,10 @@ public class MeleeStateEB : StateBehavior
     private float attackTimer;
     #endregion 
 
-
-    public override void OnAwake()
-    {
-        tracker = GetComponent<TrackerEB>();
-    }
-
     public override void OnFixedUpdate()
     {
         attackTimer += Time.fixedDeltaTime;
-        if(attackTimer > attackRate /*&& tracker.Dot(true) < 0.5*/)
+        if(attackTimer > attackRate)
         {
             attackTimer -= attackRate;
             BeginAttack();

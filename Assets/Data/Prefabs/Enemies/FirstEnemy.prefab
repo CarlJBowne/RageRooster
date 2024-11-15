@@ -416,7 +416,6 @@ GameObject:
   - component: {fileID: 8875710642327366796}
   - component: {fileID: 6309155619283984338}
   - component: {fileID: 6736125751645189697}
-  - component: {fileID: 6844640446425182842}
   - component: {fileID: 4160795181177420388}
   m_Layer: 0
   m_Name: Chasing
@@ -474,46 +473,6 @@ MonoBehaviour:
   destUpdateRate: 0.02
   reachDistance: 1.8
   reachState: {fileID: 843191684609943793}
---- !u!114 &6844640446425182842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1003426846957023087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2a16d6fb60029b478295ddbae3a5ef5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  autoCheckRate: 0.2
-  updateDistance: 1
-  range: 7.5
-  updateDot: 1
-  coneWidth: 0.3333333
-  updateLineOfSight: 0
-  LOSMask:
-    serializedVersion: 2
-    m_Bits: 0
-  conditionalEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3581232340763009195}
-        m_TargetAssemblyTypeName: SLS.StateMachineV2.State, Assembly-CSharp
-        m_MethodName: TransitionTo
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  exitZone: 1
-  autoRotate: 0
-  maxRotateDelta: 0
 --- !u!114 &4160795181177420388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -788,7 +747,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8061235268401769153}
   - component: {fileID: 843191684609943793}
-  - component: {fileID: 3702406945180288271}
   - component: {fileID: 738354572120715908}
   - component: {fileID: 5281166463461159709}
   m_Layer: 0
@@ -830,46 +788,6 @@ MonoBehaviour:
   onActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3702406945180288271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1411577453859662941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2a16d6fb60029b478295ddbae3a5ef5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  autoCheckRate: 0.2
-  updateDistance: 1
-  range: 1.8
-  updateDot: 0
-  coneWidth: 0
-  updateLineOfSight: 0
-  LOSMask:
-    serializedVersion: 2
-    m_Bits: 0
-  conditionalEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6309155619283984338}
-        m_TargetAssemblyTypeName: SLS.StateMachineV2.State, Assembly-CSharp
-        m_MethodName: TransitionTo
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  exitZone: 1
-  autoRotate: 0
-  maxRotateDelta: 2
 --- !u!114 &738354572120715908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -899,7 +817,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackRate: 1.4
-  maxTurnSpeed: 2
 --- !u!1 &1479886795859208409
 GameObject:
   m_ObjectHideFlags: 0
@@ -1506,7 +1423,6 @@ GameObject:
   - component: {fileID: 6170474229887068360}
   - component: {fileID: 3581232340763009195}
   - component: {fileID: 2577799525791025946}
-  - component: {fileID: 7301875364840052812}
   - component: {fileID: 97701640159672629}
   m_Layer: 0
   m_Name: Patrolling
@@ -1566,46 +1482,6 @@ MonoBehaviour:
   - {x: 0.5, y: 4.44, z: 33}
   - {x: -11.5, y: 4.44, z: 33}
   distanceToProceed: 0.5
---- !u!114 &7301875364840052812
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3675853143938587536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2a16d6fb60029b478295ddbae3a5ef5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  autoCheckRate: 0.2
-  updateDistance: 1
-  range: 7.5
-  updateDot: 1
-  coneWidth: 0.3333333
-  updateLineOfSight: 0
-  LOSMask:
-    serializedVersion: 2
-    m_Bits: 0
-  conditionalEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6309155619283984338}
-        m_TargetAssemblyTypeName: SLS.StateMachineV2.State, Assembly-CSharp
-        m_MethodName: TransitionTo
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  exitZone: 0
-  autoRotate: 0
-  maxRotateDelta: 0
 --- !u!114 &97701640159672629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2764,6 +2640,7 @@ GameObject:
   - component: {fileID: 5621844384992680875}
   - component: {fileID: 7457315932083687732}
   - component: {fileID: 951466309363598751}
+  - component: {fileID: 6681538051160207751}
   m_Layer: 0
   m_Name: Root
   m_TagString: Untagged
@@ -2819,6 +2696,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   variables: []
+--- !u!114 &6681538051160207751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8004256031596710509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0452307ce3dc7f044a8c8da0714c5455, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  autoCheckRate: 0.2
+  updateDistance: 1
+  updateDot: 1
+  updateLineOfSight: 0
+  LOSMask:
+    serializedVersion: 2
+    m_Bits: 0
+  phases:
+  - distance: 0
+    dot: 0
+    lineOfSight: 0
+    autoRotateDelta: 0
+  - distance: 9
+    dot: 45
+    lineOfSight: 0
+    autoRotateDelta: 0
+  - distance: 2
+    dot: 45
+    lineOfSight: 0
+    autoRotateDelta: 1
 --- !u!1 &8201656503941917113
 GameObject:
   m_ObjectHideFlags: 0

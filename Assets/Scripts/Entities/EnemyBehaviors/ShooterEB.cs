@@ -17,7 +17,7 @@ public class ShooterEB : StateBehavior
         bulletPool.Initialize();
         //fireTimer = new(rate, Fire);
         fireTimer = Timer.New(rate, Fire);
-        tracker = GetComponent<TrackerEB>();
+        tracker = state.parent.GetComponent<TrackerEB>();
     }
 
     public override void OnUpdate()

@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class AirChaseEB : StateBehavior
 {
     [SerializeField] float speed;
-    [SerializeField] Transform target;
     [SerializeField] float reachDistance;
     [SerializeField] State reachState;
 
@@ -15,22 +14,18 @@ public class AirChaseEB : StateBehavior
 
     public override void OnEnter()
     {
-        playerTracker = GetComponent<TrackerEB>();
+        playerTracker = state.parent.GetComponent<TrackerEB>();
     }
 
     public override void OnFixedUpdate()
     {
         if (playerTracker.Distance(true) <= reachDistance)
         {
-            ReachTarget();
+            playerTracker.PhaseTransition(reachState);
             return;
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.fixedDeltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, playerTracker.target.position, speed * Time.fixedDeltaTime);
     }
 
-    void ReachTarget()
-    {
-        TransitionTo(reachState);
-    }
 }
