@@ -50,9 +50,9 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
-        if (AudioManager.instance != null && FMODEvents.instance != null)
+        if (AudioManager.Get() != null && FMODEvents.instance != null)
         {
-            AudioManager.instance.PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+            AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
         }
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
@@ -64,9 +64,9 @@ public class PauseMenu : MonoBehaviour
 
     void Pause()
     {
-        if (AudioManager.instance != null && FMODEvents.instance != null)
+        if (AudioManager.Get() != null && FMODEvents.instance != null)
         {
-            AudioManager.instance.PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+            AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
         }
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
@@ -78,18 +78,18 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        if (AudioManager.instance != null && FMODEvents.instance != null)
+        if (AudioManager.Get() != null && FMODEvents.instance != null)
         {
-            AudioManager.instance.PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+            AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
         }
         Application.Quit();
     }
 
     public void OpenOptions()
     {
-        if (AudioManager.instance != null && FMODEvents.instance != null)
+        if (AudioManager.Get() != null && FMODEvents.instance != null)
         {
-            AudioManager.instance.PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+            AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
         }
         optionsMenuUI.SetActive(true);
         pauseMenuUI.SetActive(false);
@@ -98,9 +98,9 @@ public class PauseMenu : MonoBehaviour
 
     public void CloseOptions()
     {
-        if (AudioManager.instance != null && FMODEvents.instance != null)
+        if (AudioManager.Get() != null && FMODEvents.instance != null)
         {
-            AudioManager.instance.PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+            AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
         }
         optionsMenuUI.SetActive(false);
         pauseMenuUI.SetActive(true);
@@ -109,9 +109,9 @@ public class PauseMenu : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
-        if (AudioManager.instance != null && FMODEvents.instance != null)
+        if (AudioManager.Get() != null && FMODEvents.instance != null)
         {
-            AudioManager.instance.PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+            AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
         }
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");

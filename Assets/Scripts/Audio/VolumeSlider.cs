@@ -41,16 +41,16 @@ public class VolumeSlider : MonoBehaviour
         switch (volumeType)
         {
             case VolumeType.MASTER:
-                volumeSlider.value = AudioManager.instance.masterVolume;
+                volumeSlider.value = AudioManager.Get().masterVolume;
                 break;
             case VolumeType.MUSIC:
-                volumeSlider.value = AudioManager.instance.musicVolume;
+                volumeSlider.value = AudioManager.Get().musicVolume;
                 break;
             case VolumeType.SFX:
-                volumeSlider.value = AudioManager.instance.SFXVolume;
+                volumeSlider.value = AudioManager.Get().SFXVolume;
                 break;
             case VolumeType.AMBIENCE:
-                volumeSlider.value = AudioManager.instance.ambienceVolume;
+                volumeSlider.value = AudioManager.Get().ambienceVolume;
                 break;
             default:
                 Debug.LogError("Volume type not found: " + volumeType);
@@ -63,16 +63,16 @@ public class VolumeSlider : MonoBehaviour
         switch (volumeType)
         {
             case VolumeType.MASTER:
-                AudioManager.instance.masterVolume = volumeSlider.value;
+                AudioManager.Get().masterVolume = volumeSlider.value;
                 break;
             case VolumeType.MUSIC:
-                AudioManager.instance.musicVolume = volumeSlider.value;
+                AudioManager.Get().musicVolume = volumeSlider.value;
                 break;
             case VolumeType.SFX:
-                AudioManager.instance.SFXVolume = volumeSlider.value;
+                AudioManager.Get().SFXVolume = volumeSlider.value;
                 break;
             case VolumeType.AMBIENCE:
-                AudioManager.instance.ambienceVolume = volumeSlider.value;
+                AudioManager.Get().ambienceVolume = volumeSlider.value;
                 break;
             default:
                 Debug.LogError("Volume type not found: " + volumeType);

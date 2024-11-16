@@ -27,17 +27,8 @@ public class AudioManager : Singleton<AudioManager>
     private EventInstance ambienceEventInstance;
     private EventInstance musicEventInstance;
 
-    public static AudioManager instance { get; private set; }
-
     private new void Awake()
     {
-        if (instance != null)
-        {
-            Debug.LogError("Found more than one AudioManager in the scene.");
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
         DontDestroyOnLoad(gameObject);
         Debug.Log("AudioManager Awake");
 
