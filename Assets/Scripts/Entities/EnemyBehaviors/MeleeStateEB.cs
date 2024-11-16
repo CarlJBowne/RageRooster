@@ -39,7 +39,7 @@ public class MeleeStateEB : StateBehavior
         {
             if(item.TryGetComponent(out PlayerHealth hp))
             {
-                hp.Damage(new Attack(1, "no", null));
+                hp.Damage(new Attack(1, "no", false));
                 break;
             }
         }

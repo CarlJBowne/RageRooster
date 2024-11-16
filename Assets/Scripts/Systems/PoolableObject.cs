@@ -55,6 +55,11 @@ public class PoolableObject : MonoBehaviour
         if (pool.pool == null) return null;
         return pool;
     }
+    public static bool Is(GameObject subject, out PoolableObject result)
+    {
+        result = subject.GetComponent<PoolableObject>();
+        return result && result.pool != null;
+    }
 
     public void SetPosition(Vector3 position) => transform.position = position;
     public void SetRotation(Vector3 rotation) => transform.eulerAngles = rotation;

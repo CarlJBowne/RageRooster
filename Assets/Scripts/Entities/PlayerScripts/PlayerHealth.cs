@@ -9,8 +9,8 @@ public class PlayerHealth : Health
 
     private Coroutine invincibility;
     private new Collider collider;
-    [System.Obsolete, HideInInspector]
-    public AttackConstant queuedAttack;
+    //[System.Obsolete, HideInInspector]
+    //public AttackConstant queuedAttack;
 
     protected override void Awake()
     {
@@ -39,6 +39,8 @@ public class PlayerHealth : Health
         //if(queuedAttack != null) queuedAttack.BeginAttack(this);
     }
 
+    
+     /*
     private void InvincEndDontWork()
     {
         CapsuleCollider caps = GetComponent<CapsuleCollider>();
@@ -50,7 +52,7 @@ public class PlayerHealth : Health
 
         for (int i = 0; i < colls.Length; i++)
         {
-            if(colls[i].TryGetComponent(out AttackSource soc))
+            if(colls[i].TryGetComponent(out AttackMulti soc))
             {
                 if (soc.IsSelfCollider()) soc.BeginAttack(gameObject);
                 break;
@@ -61,7 +63,7 @@ public class PlayerHealth : Health
                 break;
             }
         }
-    }
+    }*/
 
 
 }

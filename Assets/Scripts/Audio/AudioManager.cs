@@ -30,7 +30,6 @@ public class AudioManager : Singleton<AudioManager>
     private new void Awake()
     {
         DontDestroyOnLoad(gameObject);
-        Debug.Log("AudioManager Awake");
 
         eventInstances = new List<EventInstance>();
         eventEmitters = new List<StudioEventEmitter>();
