@@ -9,6 +9,7 @@ public class Grabbable : MonoBehaviour
     public bool twoHanded;
     public float weight;
     public float wiggleFreeTime;
+    public int maxHealthToGrab;
     private UnityEvent<bool> GrabStateEvent;
 
     #endregion
@@ -20,6 +21,7 @@ public class Grabbable : MonoBehaviour
 
     public new Collider collider {  get; private set; }
     public Rigidbody rb { get; private set; }
+    public Health health { get; private set; }
 
     #endregion
 
@@ -27,7 +29,10 @@ public class Grabbable : MonoBehaviour
     {
         collider = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
+        health = GetComponent<Health>();
     }
+
+    public static bool Grab(GameObject target, out Grabbable result) => target.TryGetComponent(out result) && result.enabled && result.UnderThreshold() ? true : false;
 
     public Grabbable Grab(Grabber grabber)
     {
@@ -57,8 +62,7 @@ public class Grabbable : MonoBehaviour
         collider.enabled = true;
     }
 
-
-
+    public bool UnderThreshold() => !health || maxHealthToGrab < 1 || health.GetCurrentHealth() < maxHealthToGrab;
 
 }
 
@@ -71,7 +75,7 @@ public abstract class Grabber : MonoBehaviour
 
     protected bool AttemptGrab(GameObject target)
     {
-        if (target.TryGetComponent(out Grabbable result) && result.enabled)
+        if (Grabbable.Grab(target, out Grabbable result))
         {
             BeginGrab(result);
             return true;

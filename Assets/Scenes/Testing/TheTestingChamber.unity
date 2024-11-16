@@ -564,7 +564,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 29964
+    surfaceParameter: 30276
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: -626017724815244080
@@ -1036,6 +1036,7 @@ MonoBehaviour:
   twoHanded: 1
   weight: 0
   wiggleFreeTime: 0
+  maxHealthToGrab: 0
 --- !u!54 &280758275
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1225,7 +1226,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 29976
+    surfaceParameter: 30290
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: -626017724815244080
@@ -2539,7 +2540,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 29976
+    surfaceParameter: 30290
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: -626017724815244080
@@ -2585,6 +2586,7 @@ MonoBehaviour:
   twoHanded: 0
   weight: 0
   wiggleFreeTime: 0
+  maxHealthToGrab: 0
 --- !u!54 &961141755
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2971,7 +2973,7 @@ GameObject:
   - component: {fileID: 1086331912}
   - component: {fileID: 1086331911}
   - component: {fileID: 1086331910}
-  - component: {fileID: 1086331909}
+  - component: {fileID: 1086331914}
   m_Layer: 0
   m_Name: Destructable
   m_TagString: Untagged
@@ -2979,32 +2981,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1086331909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1086331908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7e2344e826528142841f0a2cdcd0215, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 1
-  damageEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  depleteEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - {m_Target: {fileID: 1086331908}, m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine, m_MethodName: SetActive, m_Mode: 6, m_Arguments: {m_ObjectArgument: {fileID: 0},
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, m_IntArgument: 0,
-          m_FloatArgument: 0, m_StringArgument: , m_BoolArgument: 0}, m_CallState: 2}
-    m_CallsDirty: 1
-  health: 0
-  damagable: 1
 --- !u!65 &1086331910
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3091,6 +3067,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1086331914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086331908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d34f06100d9ae46ab0563e7a6563d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  damageEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  depleteEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1086331908}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1218525716
 GameObject:
   m_ObjectHideFlags: 0
