@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7179026942052467369}
   - component: {fileID: 8050318351631663853}
   - component: {fileID: 481154117084305192}
-  - component: {fileID: 7772607445992815094}
+  - component: {fileID: 120326915241346108}
   m_Layer: 0
   m_Name: BasicEnemyBullet
   m_TagString: Untagged
@@ -144,7 +144,7 @@ MonoBehaviour:
     rotate: 0
   Active: 0
   timeExisting: 0
---- !u!114 &7772607445992815094
+--- !u!114 &120326915241346108
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,13 +153,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1536271116400417345}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53a88be0b07983c41a668af3d5286614, type: 3}
+  m_Script: {fileID: 11500000, guid: fc66877181d03114fb6bfca8c8bff6b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  thisCollider: 1
-  defaultAttack:
-    amount: 5
-    name: Bullet
+  attack:
+    amount: 3
+    name: BasicProj
+    wham: 0
     source: {fileID: 0}
-  attacks: []
-  currentAttackID: 
+    velocity: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
+  disableOnHit: 1
+  disableOnlyWithHealth: 0

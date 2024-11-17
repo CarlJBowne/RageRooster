@@ -12,7 +12,7 @@ public class AmbienceChangeTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            AudioManager.instance.SetAmbienceParameter(parameterName, parameterValue);
+            AudioManager.Get().SetAmbienceParameter(parameterName, parameterValue);
         }
     }
 }
