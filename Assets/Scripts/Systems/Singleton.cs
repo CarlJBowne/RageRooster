@@ -1,14 +1,15 @@
 using System;
-using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using R = UnityEngine.RuntimeInitializeOnLoadMethodAttribute;
 
 /// <summary>
 /// A type of Behavior that can only exist once in a scene. <br/>
 /// Further customization can be done with RuntimeInitializeOnLoadMethod, (See Bottom of script for example.)
 /// </summary>
 /// <typeparam name="T">The Behavior's Type</typeparam>
+[InitializeOnLoad]
 public abstract class Singleton<T> : Singleton where T : Singleton<T>
 {
     #region Data and Setup
@@ -82,7 +83,7 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
         if (_instance != null) return _instance;
         if (AttemptFind(out T attempt))
         {
-            InitFinal(attempt);
+            attempt.GetComponent<T>().InitFinal();
             return _instance;
         }
 
@@ -108,7 +109,7 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
         GameObject GO = new(typeof(T).ToString());
         T result = GO.AddComponent<T>();
 
-        InitFinal(result);
+        result.GetComponent<T>().InitFinal();
         return result;
     }
 
@@ -127,7 +128,7 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
 
         GameObject result = Instantiate(Resources.Load<GameObject>(Path));
 
-        InitFinal(result.GetComponent<T>());
+        result.GetComponent<T>().InitFinal();
         return _instance;
     }
 
@@ -151,7 +152,7 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
         }
         GameObject result = Instantiate(prefab);
 
-        InitFinal(result.GetComponent<T>());
+        result.GetComponent<T>().InitFinal();
         return _instance;
     }
 
@@ -175,10 +176,10 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
         return _instance;
     }
 #endif
-    protected static void InitFinal(T input)
+    protected void InitFinal()
     {
-        if (_instance || _instance == input) return;
-        _instance = input;
+        if (_instance || _instance == this) return;
+        _instance = this as T;
         if (DontDestoryOnLoad) DontDestroyOnLoad(_instance);
         _instance.OnAwake();
     }
@@ -204,7 +205,7 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
         else
         {
             if (_instance == this) return;
-            InitFinal(this as T);
+            (this as T).InitFinal(); ;
         }
     }
 
