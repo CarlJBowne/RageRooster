@@ -26,13 +26,13 @@ public class AttackMulti : AttackSource
 
     public override void Contact(GameObject target)
 	{
-		if (thisCollider) BeginAttack(target, currentAttack);
+		if (thisCollider) (this as IAttacker).BeginAttack(target, currentAttack, velocity);
 	}
 
 	public void BeginAttack(GameObject target, string ID)
 	{
 		SetAttackID(ID);
-		BeginAttack(target, currentAttack);
+        (this as IAttacker).BeginAttack(target, currentAttack, velocity);
 	}
 
     /// <summary>
@@ -43,7 +43,7 @@ public class AttackMulti : AttackSource
 	{
 		currentAttack = attackID != null && attackID != "" && attacksDict.ContainsKey(attackID) 
 			? attacksDict[attackID] 
-			: attack;
-    }
+			: currentAttack;
+    } 
 
 }

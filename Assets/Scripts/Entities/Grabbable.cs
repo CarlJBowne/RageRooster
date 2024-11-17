@@ -15,13 +15,12 @@ public class Grabbable : MonoBehaviour
     #endregion
     #region Data
 
-    private Coroutine wiggleEnum;
     private Grabber grabber;
     public bool grabbed => grabber != null;
 
     public new Collider collider {  get; private set; }
     public Rigidbody rb { get; private set; }
-    public Health health { get; private set; }
+    public EnemyHealth health { get; private set; }
 
     #endregion
 
@@ -29,7 +28,7 @@ public class Grabbable : MonoBehaviour
     {
         collider = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
-        health = GetComponent<Health>();
+        health = GetComponent<EnemyHealth>();
     }
 
     public static bool Grab(GameObject target, out Grabbable result) => target.TryGetComponent(out result) && result.enabled && result.UnderThreshold() ? true : false;
@@ -39,10 +38,11 @@ public class Grabbable : MonoBehaviour
         this.grabber = grabber;
         GrabStateEvent?.Invoke(true);
 
-        rb.isKinematic = true;
+
+        if(rb) rb.isKinematic = true;
         collider.enabled = false;
 
-        if (wiggleFreeTime > 0) wiggleEnum = StartCoroutine(WiggleEnum(wiggleFreeTime));
+        if (wiggleFreeTime > 0) StartCoroutine(WiggleEnum(wiggleFreeTime));
 
         return this;
     }
@@ -58,11 +58,11 @@ public class Grabbable : MonoBehaviour
         grabber = null;
         GrabStateEvent?.Invoke(false);
 
-        rb.isKinematic = false;
+        if(rb) rb.isKinematic = false;
         collider.enabled = true;
     }
 
-    public bool UnderThreshold() => !health || maxHealthToGrab < 1 || health.GetCurrentHealth() < maxHealthToGrab;
+    public bool UnderThreshold() => !health || maxHealthToGrab < 1 || health.GetCurrentHealth() <= maxHealthToGrab;
 
 }
 

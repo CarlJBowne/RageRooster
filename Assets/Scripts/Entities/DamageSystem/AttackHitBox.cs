@@ -6,7 +6,7 @@ using UnityEngine;
 /// An external Attack Source type that outsources the attack inflicted onto an AttackMulti
 /// </summary>
 [RequireComponent(typeof(Collider))]
-public class AttackHitBox : AttackSource
+public class AttackHitBox : MonoBehaviour, IAttacker
 {
     /// <summary>
     /// The AttackSource this Hitbox is tied too.
@@ -18,11 +18,15 @@ public class AttackHitBox : AttackSource
     public string currentAttackID = null;
 
 
+    void OnTriggerEnter(Collider other) => Contact(other.gameObject);
+
+    void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);
+
     public void SetActive(bool value) => gameObject.SetActive(value);
     public void Enable() => gameObject.SetActive(true);
     public void Disable() => gameObject.SetActive(false);
 
-    public override void Contact(GameObject target) => BeginAttack(target);
+    public void Contact(GameObject target) => BeginAttack(target);
     public void BeginAttack(GameObject target) => source.BeginAttack(target, currentAttackID);
 
     /// <summary>
@@ -30,5 +34,5 @@ public class AttackHitBox : AttackSource
     /// </summary>
     /// <param name="attackID"></param>
     public void SetAttackID(string attackID) => currentAttackID = attackID;
-
+    
 }

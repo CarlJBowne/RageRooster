@@ -6,6 +6,10 @@ using FMOD.Studio;
 
 public class AudioManager : Singleton<AudioManager>
 {
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void Boot() => SetInfo(spawnMethod: InitSavedPrefab, dontDestroyOnLoad: true, spawnOnBoot: true);
+
+
     [Header("Volume")]
     [Range(0, 1)]
     public float masterVolume = 0.5f;

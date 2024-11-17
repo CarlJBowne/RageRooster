@@ -11,9 +11,9 @@ public class AttackProjectile : AttackSource
     public bool disableOnlyWithHealth;
 
 
-    public override void Contact(GameObject target) => BeginAttack(target, attack);
+    public override void Contact(GameObject target) => BeginAttack(target, attack, velocity);
 
-    public override void BeginAttack(GameObject target, Attack attack)
+    public void BeginAttack(GameObject target, Attack attack, Vector3 velocity)
     {
         if (!target.TryGetComponent(out Health targetHealth)) return;
 

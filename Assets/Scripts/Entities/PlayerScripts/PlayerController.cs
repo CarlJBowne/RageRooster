@@ -17,6 +17,7 @@ public class PlayerController : PlayerStateBehavior
     public State fallingState;
     public State glidingState;
     public State groundSlamState;
+    public string punchAnimName;
 
     #endregion
     #region Data
@@ -78,6 +79,7 @@ public class PlayerController : PlayerStateBehavior
     public void PunchButtonPress()
     {
         if (airborneState.active) groundSlamState.TransitionTo();
+        else M.animator.Play(punchAnimName);
     }
 
     public void ChargeButtonPress()

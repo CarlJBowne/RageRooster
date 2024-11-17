@@ -18,9 +18,9 @@ public class PlayerHealth : Health
         collider = GetComponent<Collider>();
     }
 
-    protected override void OnDamage(int amount)
+    protected override void OnDamage(Attack attack)
     {
-        base.OnDamage(amount);
+        damageEvent?.Invoke(attack.amount);
         invincibility = StartCoroutine(InvinceEnum(invincibilityTime));
         damagable = false;
     }

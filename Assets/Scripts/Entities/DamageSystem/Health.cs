@@ -16,7 +16,7 @@ public class Health : MonoBehaviour
 	[SerializeField] protected UnityEvent depleteEvent = new();
 
 	//Data
-	protected int health;
+	[HideInEditMode, DisableInPlayMode] public int health;
 	protected bool damagable = true;
 
 	//Getters
@@ -28,14 +28,14 @@ public class Health : MonoBehaviour
 
 	public bool Damage(Attack attack)
 	{
-		if (!damagable || attack.amount < 1 || health == 0) return false;
+		if (!damagable || attack.amount < 1) return false;
 
 		if (health - attack.amount < 0) attack.amount = health;
 
 		health -= attack.amount;
 
-		OnDamage(attack.amount);
-		if (health == 0) OnDeplete();
+		OnDamage(attack);
+		if (health == 0) OnDeplete(attack);
 
 		return true;
 	}
@@ -51,8 +51,8 @@ public class Health : MonoBehaviour
         return true;
 	}
 
-	protected virtual void OnDamage(int amount) => damageEvent?.Invoke(amount);
-	protected virtual void OnDeplete() => depleteEvent?.Invoke();
+	protected virtual void OnDamage(Attack attack) => damageEvent?.Invoke(attack.amount);
+	protected virtual void OnDeplete(Attack attack) => depleteEvent?.Invoke();
 
 }
 
@@ -67,10 +67,10 @@ public struct Attack
 	public string name;
 	public bool wham;
 	
-	[HideInInspector] public AttackSource source;
+	[HideInInspector] public IAttacker source;
     [HideInInspector] public Vector3 velocity;
 
-	public Attack(Attack baseData, AttackSource source, Vector3 velocity)
+	public Attack(Attack baseData, IAttacker source, Vector3 velocity)
 	{
 		amount = baseData.amount;
 		name = baseData.name;
@@ -93,5 +93,13 @@ public struct Attack
 		this.wham = wham;
 		this.source = null;
 		this.velocity = Vector3.zero;
+	}	
+	public Attack(int amount, string name, bool wham, IAttacker source, Vector3 velocity)
+	{
+		this.amount = amount;
+		this.name = name;
+		this.wham = wham;
+		this.source = source;
+		this.velocity = velocity;
 	}
 }

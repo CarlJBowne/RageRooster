@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// The base form of Attack Source. A singular possible attack.
 /// </summary>
-public class AttackSource : MonoBehaviour
+public class AttackSource : MonoBehaviour, IAttacker
 {
     public Attack attack;
     public Vector3 velocity;
@@ -13,21 +14,26 @@ public class AttackSource : MonoBehaviour
 
     void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);
 
-    public virtual void Contact(GameObject target) => BeginAttack(target, attack);
+    public virtual void Contact(GameObject target) => (this as IAttacker).BeginAttack(target, attack, velocity);
 
-    public virtual void BeginAttack(GameObject target, Attack attack)
+}
+
+public interface IAttacker
+{
+    public abstract void Contact(GameObject target);
+
+    public void BeginAttack(GameObject target, Attack attack, Vector3 velocity)
     {
         if (!target.TryGetComponent(out Health targetHealth)) return;
 
         if (targetHealth.Damage(new Attack(attack, this, velocity)))
         {
-            //Succesful Strike Additional Logic here.
+
         }
         else
         {
-            //Unsuccesful Strike Additional Logic here.
+
         }
 
     }
-
 }
