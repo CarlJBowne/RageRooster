@@ -4,6 +4,7 @@ using SLS.StateMachineV2;
 using EditorAttributes;
 using UnityEngine.Events;
 
+
 public class TrackerEB : StateBehavior
 {
     public Transform target;
@@ -12,42 +13,47 @@ public class TrackerEB : StateBehavior
 
     public float autoCheckRate;
 
-    [ToggleGroup("Distance", nameof(range))]
-    [SerializeField] public bool updateDistance;
-    [HideInInspector] public float range;
-
-    [ToggleGroup("View Cone", nameof(coneWidth)/*, nameof(is2D), nameof(coneHeight)*/ )]
+    public bool updateDistance;
     public bool updateDot;
-    [HideInInspector] public float coneWidth;
-    //[HideInInspector] public bool is2D;
-    //[HideInInspector] public float coneHeight;
-
-    [ToggleGroup("Line of Sight", nameof(LOSMask))]
     public bool updateLineOfSight;
+
     [HideInInspector] public LayerMask LOSMask;
 
-    public UnityEvent conditionalEvent;
-    [SerializeField] bool exitZone;
+    [HelpBox("When check is run, the highest phase whose requirements are satisfied is transitioned to. These phases are equal to this state's child states, in order. The 0th state is treated as default so its parameters don't really matter.")]
+    public Phase[] phases;
+    private int currentPhase;  
+    [System.Serializable]
+    public struct Phase
+    {
+        public float distance;
+        [Tooltip("from 0 to 180 degrees")]
+        public float dot;
+        public bool lineOfSight;
+        [Tooltip("1 = full second turn, 50 = 1 FixedUpdate turn")]
+        public float autoRotateDelta;
 
-    [ToggleGroup("Auto Rotate", nameof(maxRotateDelta))]
-    public bool autoRotate;
-    [HideInInspector, Tooltip("1 = full second turn, 50 = 1 FixedUpdate turn")] 
-    public float maxRotateDelta;
-     
-    private float autoCheckTimer;
+        public bool Within(TrackerEB tracker)
+        {
+            bool result = true;
+
+            if (tracker.updateDistance && tracker.distance > distance) result = false;
+            if (tracker.updateDot && tracker.dot > dot) result = false;
+            if (tracker.updateLineOfSight && tracker.lineOfSight != lineOfSight) result = false;
+
+            return result;
+        }
+
+    }
+
+    private Timer autoCheckTimer;
     private float distance;
     private float dot;
-    //private float dotY;
     private bool lineOfSight;
 
     public override void OnAwake()
     {
-        if (target == null||
-            !updateDistance && !updateDot && !updateLineOfSight
-            )
-        {
-
-        }
+        if(target == null) target = FindObjectOfType<PlayerStateMachine>().transform;
+        if (autoCheckRate > 0) autoCheckTimer = new(autoCheckRate, CheckData);
     }
 
     public override void OnEnter()
@@ -55,38 +61,43 @@ public class TrackerEB : StateBehavior
         Distance(true);
         Dot(true);
         LineOfSight(true);
+        CheckData();
     }
 
-    public override void OnFixedUpdate()
+    public override void OnUpdate()
     {
-        if (autoCheckRate < 0) return;
-        autoCheckTimer += Time.fixedDeltaTime;
-        if(autoCheckTimer >= autoCheckRate)
-        {
-            autoCheckTimer %= autoCheckRate;
-            CheckData();
-        }
-        if (autoRotate) 
-            transform.eulerAngles = Vector3.RotateTowards(transform.forward, Direction.XZ(), maxRotateDelta * Mathf.PI * Time.fixedDeltaTime, 0).DirToRot();
+        if (phases[currentPhase].autoRotateDelta > 0) 
+            transform.eulerAngles = Vector3.RotateTowards(transform.forward, Direction.XZ(),
+                phases[currentPhase].autoRotateDelta * Mathf.PI * Time.fixedDeltaTime, 0)
+                .DirToRot();
+
+        if (autoCheckRate > 0) autoCheckTimer += Time.deltaTime;
+        else if(autoCheckRate == 0) CheckData();
     }
 
     private void CheckData()
     {
-        float prevDist = distance;
-        float prevDot = dot;
-        bool prevLOS = lineOfSight;
-
         if (updateDistance) Distance(true);
         if (updateDot) Dot(true);
         if (updateLineOfSight) LineOfSight(true);
 
-        if ((updateDistance && prevDist <= range != distance <= range) ||
-            (updateDot && prevDot <= coneWidth != dot <= coneWidth) ||
-            (updateLineOfSight && prevLOS != lineOfSight)
-            ) 
-            if (EventConditions()) 
-                conditionalEvent?.Invoke();
+        int i = phases.Length - 1;
+        for (; i > 0; i--) 
+        {
+            if (phases[i].Within(this)) break;
+        }
+
+        if (i != currentPhase) PhaseTransition(i);
+
     }
+
+    public void PhaseTransition(int i)
+    {
+        if (i == currentPhase) return;
+        currentPhase = i;
+        state[currentPhase].TransitionTo();
+    }
+    public void PhaseTransition(State i) => PhaseTransition(i.transform.GetSiblingIndex());
 
     public float Distance(bool check)
     {
@@ -95,7 +106,7 @@ public class TrackerEB : StateBehavior
     }
     public float Dot(bool check)
     {
-        if (check) dot = (Vector3.Dot(transform.forward, target.position - transform.position) - 1) * -1;
+        if (check) dot = (Vector3.Dot(transform.forward, target.position - transform.position) - 1) * -1 * 90;
         return dot;
     }
     public bool LineOfSight(bool check)
@@ -108,16 +119,5 @@ public class TrackerEB : StateBehavior
         return lineOfSight;
     }
     public Vector3 Direction => target.position - transform.position;
-
-
-    public bool EventConditions() 
-    {
-        bool within = true;
-        if (updateDistance && distance > range) within = false;
-        if (updateDot && dot > coneWidth) within = false;
-        if (updateLineOfSight && !lineOfSight) within = false;
-
-        return within == !exitZone;
-    }
 
 }

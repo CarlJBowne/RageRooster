@@ -2,43 +2,46 @@
 using System.Collections.Generic;
 
 [Serializable]
-public class Timer
+public struct Timer
 {
     public float value;
     public float lowerEdge;
     public float higherEdge;
     public delegate void Delegate(); 
     public Delegate action;
+    private bool active;
 
-    public Timer(float higherEdge, Delegate action = null) => new Timer(0, 0, higherEdge, action);
-    public Timer(float lowerEdge, float higherEdge, Delegate action = null) => new Timer(lowerEdge, lowerEdge, higherEdge, action);
+    public Timer(float higherEdge, Delegate action = null)
+    {
+        value = 0;
+        this.lowerEdge = 0;
+        this.higherEdge = higherEdge;
+        this.action = action;
+        active = true;
+    }
+    public Timer(float lowerEdge, float higherEdge, Delegate action = null)
+    {
+        value = 0;
+        this.lowerEdge = lowerEdge;
+        this.higherEdge = higherEdge;
+        this.action = action;
+        active = true;
+    }
     public Timer(float begin, float lowerEdge, float higherEdge, Delegate action = null)
     {
         value = begin;
         this.lowerEdge = lowerEdge;
         this.higherEdge = higherEdge;
         this.action = action;
-    }
-    public Timer() { }
-
-    public static Timer New(float higherEdge, Delegate action = null) => New(0, 0, higherEdge, action);
-    public static Timer New(float lowerEdge, float higherEdge, Delegate action = null) => New(lowerEdge, lowerEdge, higherEdge, action);
-    public static Timer New(float begin, float lowerEdge, float higherEdge, Delegate action = null)
-    {
-        Timer T = new();
-        T.value = begin;
-        T.lowerEdge = lowerEdge;
-        T.higherEdge = higherEdge;
-        T.action = action;
-        return T;
+        active = true;
     }
 
-
-
+    public static implicit operator bool(Timer timer) => timer.active;
     public static implicit operator float(Timer timer) => timer.value;
 
     public static Timer operator +(Timer timer, float value)
     {
+        if (!timer) return timer;
         timer.value += value;
         if(timer.value >= timer.higherEdge)
         {
@@ -49,6 +52,7 @@ public class Timer
     }
     public static Timer operator -(Timer timer, float value)
     {
+        if (!timer) return timer;
         timer.value -= value;
         if (timer.value <= timer.lowerEdge)
         {
@@ -58,18 +62,14 @@ public class Timer
         return timer;
     }
 
-    public void Increment(float amount, Delegate action = null)
+    public bool Increment(float amount, Delegate action = null)
     {
+        if(!this) return false;
         value += amount;
-        if (amount>0 && value >= higherEdge)
-        {
-            (action ?? this.action)?.Invoke();
-            value = value - higherEdge + lowerEdge;
-        }
-        if (amount<0 &&value <= lowerEdge)
-        {
-            (action ?? this.action)?.Invoke();
-            value += value + higherEdge - lowerEdge;
-        }
+        bool act = false;
+        if (amount>0 && value >= higherEdge) value = value - higherEdge + lowerEdge;
+        if (amount<0 &&value <= lowerEdge) value += value + higherEdge - lowerEdge;
+        if (act) (action ?? this.action)?.Invoke();
+        return act;
     }
 }
