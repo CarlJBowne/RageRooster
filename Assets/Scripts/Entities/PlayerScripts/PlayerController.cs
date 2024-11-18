@@ -73,7 +73,7 @@ public class PlayerController : PlayerStateBehavior
 		{
 			jumpInput = jumpBuffer + Time.fixedDeltaTime;
 
-			if ((fallingState.active || wallJumpState.active)
+			if (M.WallJump && (fallingState.active || wallJumpState.active)
 				&& body.rb.DirectionCast(body.currentDirection, 0.5f, body.checkBuffer, out RaycastHit hit) 
 				/*&& Mathf.Approximately(Vector3.Dot(Vector3.up, hit.normal), 0)*/)
             {
@@ -97,7 +97,7 @@ public class PlayerController : PlayerStateBehavior
 
 	public void PunchButtonPress()
 	{
-		if (airborneState.active) groundSlamState.TransitionTo();
+		if (airborneState.active && M.GroundSlam) groundSlamState.TransitionTo();
 		else M.animator.Play(punchAnimName);
 	}
 

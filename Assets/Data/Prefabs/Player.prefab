@@ -553,7 +553,6 @@ MonoBehaviour:
   outwardTurn: 1
   minSpeedForRotate: 0
   hitBox: {fileID: 0}
-  forceOutward: 0
   atTopSpeed: 0
 --- !u!114 &8566549583583497696
 MonoBehaviour:
@@ -577,6 +576,7 @@ MonoBehaviour:
   jumpPower: 14
   jumpMinHeight: 0
   fallState: {fileID: 931477398715445950}
+  allowMidFall: 1
 --- !u!1 &1279429419487906923
 GameObject:
   m_ObjectHideFlags: 0
@@ -1769,6 +1769,7 @@ MonoBehaviour:
   jumpPower: 0
   jumpMinHeight: 0
   fallState: {fileID: 0}
+  allowMidFall: 1
 --- !u!114 &1811448163934562790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2510,6 +2511,16 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   cameraTransform: {fileID: 0}
+  upgrades:
+    _serializedList:
+    - Key: GroundSlam
+      Value: 0
+    - Key: DropLaunch
+      Value: 0
+    - Key: WallJump
+      Value: 0
+    - Key: RageCharge
+      Value: 1
 --- !u!54 &1838944232945776554
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3163,6 +3174,7 @@ MonoBehaviour:
   jumpPower: 0
   jumpMinHeight: 0
   fallState: {fileID: 0}
+  allowMidFall: 1
 --- !u!114 &7896708475051073880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3693,6 +3705,7 @@ MonoBehaviour:
   jumpPower: 14
   jumpMinHeight: 2
   fallState: {fileID: 931477398715445950}
+  allowMidFall: 1
 --- !u!114 &3226011544157808691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3847,6 +3860,7 @@ MonoBehaviour:
   jumpPower: -14
   jumpMinHeight: 0
   fallState: {fileID: 931477398715445950}
+  allowMidFall: 1
 --- !u!114 &6299152413537013217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4122,7 +4136,6 @@ MonoBehaviour:
   outwardTurn: 0
   minSpeedForRotate: 0
   hitBox: {fileID: 0}
-  forceOutward: 0
   atTopSpeed: 0
 --- !u!1 &5317729476912238461
 GameObject:
@@ -4671,7 +4684,6 @@ MonoBehaviour:
   outwardTurn: 0
   minSpeedForRotate: 0
   hitBox: {fileID: 1677882198576959145}
-  forceOutward: 0
   atTopSpeed: 0
 --- !u!114 &1677882198576959145
 MonoBehaviour:
@@ -5562,7 +5574,6 @@ MonoBehaviour:
   outwardTurn: 0
   minSpeedForRotate: 0
   hitBox: {fileID: 0}
-  forceOutward: 0
   atTopSpeed: 0
 --- !u!1 &6872579914678844769
 GameObject:
@@ -6233,6 +6244,7 @@ MonoBehaviour:
   jumpPower: 14
   jumpMinHeight: 2
   fallState: {fileID: 931477398715445950}
+  allowMidFall: 1
 --- !u!114 &896978240648893205
 MonoBehaviour:
   m_ObjectHideFlags: 0
