@@ -85,6 +85,7 @@ public class PlayerGrabber : Grabber, IAttacker
         currentGrabbed.rb.velocity = upcomingLaunchVelocity;
     }
 
+    [Obsolete]
     public void Contact(GameObject target) => throw new NotImplementedException();
 
 
