@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9011953732544391782}
   - component: {fileID: 3884851501584084120}
   - component: {fileID: 7477183271271718741}
+  - component: {fileID: 5220154156415061525}
   m_Layer: 0
   m_Name: Shed_LOD0
   m_TagString: Untagged
@@ -86,6 +87,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5220154156415061525
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892612052059078409}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 5981947336520706180, guid: c9e9ede4a50123f449a660abbe9d1588, type: 3}
 --- !u!1 &4586963507481766720
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,6 +120,7 @@ GameObject:
   - component: {fileID: 1798100322653575307}
   - component: {fileID: 344178891422422099}
   - component: {fileID: 7760745817044247694}
+  - component: {fileID: 5488506955889725629}
   m_Layer: 0
   m_Name: Shed_LOD1
   m_TagString: Untagged
@@ -172,6 +196,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5488506955889725629
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4586963507481766720}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -9164088991669328161, guid: c9e9ede4a50123f449a660abbe9d1588, type: 3}
 --- !u!1 &7194038104906515183
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,6 +229,7 @@ GameObject:
   - component: {fileID: 1873488665588846246}
   - component: {fileID: 3638859309779712857}
   - component: {fileID: 2725571520214046521}
+  - component: {fileID: 8651771426552048628}
   m_Layer: 0
   m_Name: Shed_LOD2
   m_TagString: Untagged
@@ -258,6 +305,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &8651771426552048628
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7194038104906515183}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -435872840955297241, guid: c9e9ede4a50123f449a660abbe9d1588, type: 3}
 --- !u!1 &8362935515898032980
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,7 +337,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1824489526770883504}
   - component: {fileID: 6338506471666941108}
-  - component: {fileID: 1214091834631077526}
   m_Layer: 0
   m_Name: FarmShed
   m_TagString: Untagged
@@ -321,24 +389,3 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2725571520214046521}
   m_Enabled: 1
---- !u!65 &1214091834631077526
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8362935515898032980}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 14.747105, y: 13.023935, z: 11.145026}
-  m_Center: {x: -7.023632, y: -2.6162546, z: 4.487008}

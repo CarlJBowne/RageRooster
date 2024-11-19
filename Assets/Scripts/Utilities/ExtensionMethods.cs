@@ -55,12 +55,13 @@ public static class EasierMathExtensions
 	public static float Randomize(this float value, float min, float max) { value = UnityEngine.Random.Range(min, max); return value; }
 	public static int Randomize(this int value, int min, int max) { value = UnityEngine.Random.Range(min, max); return value; }
 
-	public static float RandomFrom(this float value, float min = 0) => UnityEngine.Random.Range(min, value);
-	public static int RandomFrom(this int value, int min = 0) => UnityEngine.Random.Range(min, value);
+	public static float RandomTo(this float value, float min = 0) => UnityEngine.Random.Range(min, value);
+	public static int RandomTo(this int value, int min = 0) => UnityEngine.Random.Range(min, value);
 
-	public static float RandomFrom(this Vector2 input) => UnityEngine.Random.Range(input.x, input.y);
-	public static int RandomFrom(this Vector2Int input) => UnityEngine.Random.Range(input.x, input.y);
+	public static float RandomBetween(this Vector2 input) => UnityEngine.Random.Range(input.x, input.y);
+	public static int RandomBetween(this Vector2Int input) => UnityEngine.Random.Range(input.x, input.y);
 
+	public static bool RandomChance(this float input) => UnityEngine.Random.Range(0f, 1f) >= input;
 
 }
 
@@ -113,7 +114,18 @@ public static class MonoBehaviorHelpers
 	public static T Random<T>(this List<T> array) => array[UnityEngine.Random.Range(0, array.Count)];
 	public static void RemoveAtLast<T>(this List<T> array, int i = 1) => array.Remove(array[^i]);
 
-
+	public static T GetOrAddComponent<T>(this Component O) where T : Component
+	{
+		O.gameObject.TryGetComponent(out T V);
+		V ??= O.gameObject.AddComponent<T>();
+		return V;
+	}
+	public static T GetOrAddComponent<T>(this GameObject O) where T : Component
+	{
+		O.TryGetComponent(out T V);
+		V ??= O.AddComponent<T>();
+		return V;
+	}
 }
 
 public delegate void BasicDelegate();

@@ -8,7 +8,6 @@ public class MeleeStateEB : StateBehavior
 
     #region Config
     [SerializeField] float attackRate;
-    [SerializeField, Tooltip("1 = full second turn, 50 = 1 FixedUpdate turn")] float maxTurnSpeed;
     #endregion
     #region Data
 
@@ -16,23 +15,14 @@ public class MeleeStateEB : StateBehavior
     private float attackTimer;
     #endregion 
 
-
-    public override void OnAwake()
-    {
-        tracker = GetComponent<TrackerEB>();
-    }
-
     public override void OnFixedUpdate()
     {
         attackTimer += Time.fixedDeltaTime;
-        if(attackTimer > attackRate /*&& tracker.Dot(true) < 0.5*/)
+        if(attackTimer > attackRate)
         {
             attackTimer -= attackRate;
             BeginAttack();
         }
-        Vector3 dir = tracker.target.position - transform.position;
-        dir.y = 0;
-        transform.eulerAngles = Vector3.RotateTowards(transform.forward, dir, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0).DirToRot();
     }
 
     public void BeginAttack()
@@ -49,7 +39,7 @@ public class MeleeStateEB : StateBehavior
         {
             if(item.TryGetComponent(out PlayerHealth hp))
             {
-                hp.Damage(new Attack(1, "no", null));
+                hp.Damage(new Attack(1, "no", false));
                 break;
             }
         }

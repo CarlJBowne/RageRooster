@@ -13,13 +13,13 @@ public class ChaseEB : StateBehavior
 
     private NavMeshAgent agent;
     private TrackerEB playerTracker;
-    private float destUpdateTimer;
-    private float distance => Vector3.Distance(transform.position, target.position);
+    private Timer destUpdateTimer;
 
     public override void OnAwake()
     {
         agent = GetComponentFromMachine<NavMeshAgent>();
-        playerTracker = GetComponent<TrackerEB>();
+        playerTracker = state.parent.GetComponent<TrackerEB>();
+        destUpdateTimer = new(destUpdateRate, UpdateDestination);
     }
 
     public override void OnEnter()
@@ -33,22 +33,15 @@ public class ChaseEB : StateBehavior
     {
         if (playerTracker.Distance(false) <= reachDistance)
         {
-            ReachTarget();
+            playerTracker.PhaseTransition(reachState);
+            agent.enabled = false;
+
             return;
         }
 
         destUpdateTimer += Time.fixedDeltaTime;
-        if (destUpdateTimer > destUpdateRate)
-        {
-            destUpdateTimer %= destUpdateRate;
-            UpdateDestination();
-        }
     }
 
     void UpdateDestination() => agent.SetDestination(target.position);
-    void ReachTarget()
-    {
-        TransitionTo(reachState);
-        agent.enabled = false;
-    }
+
 }
