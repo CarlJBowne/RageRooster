@@ -11,6 +11,7 @@ public class PlayerAirborn : PlayerStateBehavior
     public float jumpPower;
     public float jumpMinHeight;
     public State fallState;
+    public bool allowMidFall = true;
 
     private float targetMinHeight;
     private float targetHeight;
@@ -24,7 +25,7 @@ public class PlayerAirborn : PlayerStateBehavior
         if (transform.position.y < targetHeight) body.VelocitySet(y: jumpPower);
         if (body.velocity.y < 0) TransitionTo(fallState);
 
-        if (!input.jump.IsPressed() && transform.position.y > targetMinHeight)
+        if (allowMidFall && !input.jump.IsPressed() && transform.position.y > targetMinHeight)
         {
             if (body.velocity.y > 0) body.VelocitySet(y: 0);
             TransitionTo(fallState);

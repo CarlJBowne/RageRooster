@@ -1116,6 +1116,9 @@ GameObject:
   - component: {fileID: 3927902439295100161}
   - component: {fileID: 5542194556104785265}
   - component: {fileID: 7145112600956375108}
+  - component: {fileID: 1171501913040398372}
+  - component: {fileID: 2862750580442683540}
+  - component: {fileID: 8213563936651183793}
   m_Layer: 7
   m_Name: FloatingEnemy1
   m_TagString: Untagged
@@ -1200,6 +1203,86 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1171501913040398372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3500639052055708832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b18e851c5f4414a439ad7d539149b8b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 5
+  damageEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  depleteEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  health: 0
+  stunTime: 0.2
+  poofPrefab: {fileID: 0}
+  disableComponents:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  ragDoll: 1
+  minRagdollTime: 2
+  maxRagdollTime: 5
+  minRagdollVelovity: 0.2
+  thrownAttack:
+    amount: 10
+    name: Enemy Thrown
+    wham: 1
+    velocity: {x: 0, y: 0, z: 0}
+  projectile: 0
+  hasRagdolled: 0
+--- !u!114 &2862750580442683540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3500639052055708832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44ed58beabcca8749bd2e13371ec85c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  twoHanded: 0
+  weight: 1
+  wiggleFreeTime: 0
+  maxHealthToGrab: 0
+--- !u!54 &8213563936651183793
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3500639052055708832}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3561631405416528138
 GameObject:
   m_ObjectHideFlags: 0
