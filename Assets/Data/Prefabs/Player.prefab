@@ -479,6 +479,104 @@ SkinnedMeshRenderer:
     m_Center: {x: 9.313226e-10, y: 0.013736222, z: -0.001545338}
     m_Extent: {x: 0.020512447, y: 0.0039795022, z: 0.004044237}
   m_DirtyAABB: 0
+--- !u!1 &1242553937887867047
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1663018687967235127}
+  - component: {fileID: 7332593933944986562}
+  - component: {fileID: 8939101483229205746}
+  - component: {fileID: 8566549583583497696}
+  m_Layer: 0
+  m_Name: WallJump
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1663018687967235127
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242553937887867047}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6385669238997089540}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7332593933944986562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242553937887867047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &8939101483229205746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242553937887867047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a305d4ab8ca08de48ae74f0a056133f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  acceleration: 10
+  decceleration: 0.25
+  maxSpeed: 10
+  stopping: 0.75
+  maxTurnSpeed: 0
+  outwardTurn: 1
+  minSpeedForRotate: 0
+  hitBox: {fileID: 0}
+  atTopSpeed: 0
+--- !u!114 &8566549583583497696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242553937887867047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ae8156fa90eed4b8dd13eb17af36a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  gravity: 19.62
+  terminalVelocity: 100
+  flatGravity: 0
+  jumpHeight: 0
+  jumpPower: 14
+  jumpMinHeight: 0
+  fallState: {fileID: 931477398715445950}
+  allowMidFall: 1
 --- !u!1 &1279429419487906923
 GameObject:
   m_ObjectHideFlags: 0
@@ -1058,8 +1156,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.81
-  m_Center: {x: 0, y: 0.84, z: 0}
+  m_Radius: 0.84
+  m_Center: {x: 0, y: 0.81, z: 0}
 --- !u!114 &7907519079543039223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1671,6 +1769,7 @@ MonoBehaviour:
   jumpPower: 0
   jumpMinHeight: 0
   fallState: {fileID: 0}
+  allowMidFall: 1
 --- !u!114 &1811448163934562790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2412,6 +2511,16 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   cameraTransform: {fileID: 0}
+  upgrades:
+    _serializedList:
+    - Key: GroundSlam
+      Value: 0
+    - Key: DropLaunch
+      Value: 0
+    - Key: WallJump
+      Value: 0
+    - Key: RageCharge
+      Value: 1
 --- !u!54 &1838944232945776554
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2540,6 +2649,10 @@ MonoBehaviour:
     velocity: {x: 0, y: 0, z: 0}
   - amount: 10
     name: Slam
+    wham: 1
+    velocity: {x: 0, y: 0, z: 0}
+  - amount: 10
+    name: Charge
     wham: 1
     velocity: {x: 0, y: 0, z: 0}
 --- !u!1 &3254106208207764869
@@ -3061,6 +3174,7 @@ MonoBehaviour:
   jumpPower: 0
   jumpMinHeight: 0
   fallState: {fileID: 0}
+  allowMidFall: 1
 --- !u!114 &7896708475051073880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3391,6 +3505,7 @@ Transform:
   m_Children:
   - {fileID: 542910149066364657}
   - {fileID: 7427727485705586250}
+  - {fileID: 1663018687967235127}
   m_Father: {fileID: 802911248559169720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2516748386395492980
@@ -3446,6 +3561,7 @@ MonoBehaviour:
   fallingState: {fileID: 931477398715445950}
   glidingState: {fileID: 6027212184641879295}
   groundSlamState: {fileID: 1252659914078541581}
+  wallJumpState: {fileID: 7332593933944986562}
   punchAnimName: Punching
   jumpInput: 0
   camAdjustedMovement: {x: 0, y: 0, z: 0}
@@ -3589,6 +3705,7 @@ MonoBehaviour:
   jumpPower: 14
   jumpMinHeight: 2
   fallState: {fileID: 931477398715445950}
+  allowMidFall: 1
 --- !u!114 &3226011544157808691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3743,6 +3860,7 @@ MonoBehaviour:
   jumpPower: -14
   jumpMinHeight: 0
   fallState: {fileID: 931477398715445950}
+  allowMidFall: 1
 --- !u!114 &6299152413537013217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6126,6 +6244,7 @@ MonoBehaviour:
   jumpPower: 14
   jumpMinHeight: 2
   fallState: {fileID: 931477398715445950}
+  allowMidFall: 1
 --- !u!114 &896978240648893205
 MonoBehaviour:
   m_ObjectHideFlags: 0
