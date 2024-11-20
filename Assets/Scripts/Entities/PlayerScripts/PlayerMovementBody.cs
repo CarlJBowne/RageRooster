@@ -80,6 +80,9 @@ public class PlayerMovementBody : PlayerStateBehavior
     {
         M.animator.SetFloat("CurrentSpeed", currentSpeed);
 
+        //if(rb.velocity.magnitude > 0) 
+        //    rb.velocity = Vector3.MoveTowards(rb.velocity, Vector3.zero, rb.velocity.magnitude / 10f);
+
         rb.velocity = Vector3.zero;
 
         if (coyoteTimeLeft > 0) coyoteTimeLeft -= Time.deltaTime;
@@ -141,8 +144,16 @@ public class PlayerMovementBody : PlayerStateBehavior
             float angle = Vector3.Angle(Vector3.up, hit.normal);
             rb.MovePosition(position + snapToSurface);
 
-            if (step == movementProjectionSteps) return;
-            //if (horizontalMag > verticalMag != 90 - angle < maxSlopeAngle) return;
+            if(step == 0) GroundStateChange(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out RaycastHit groundHit));
+
+            if(hit.collider.gameObject.layer == Layers.NonSolid && verticalMag < horizontalMag * 2)
+            {
+                rb.MovePosition(position + vel.normalized * 0.05f);
+                return; 
+            }
+            if (verticalMag < horizontalMag * 2 && velocity.normalized.y < 0) GroundStateChange(true);
+
+            if (step == movementProjectionSteps || Vector3.Dot(Vector3.down, hit.normal) > 0.45f) return;
 
             Vector3 newDir = leftover.ProjectAndScale(hit.normal) * (Vector3.Dot(leftover.normalized, hit.normal) + 1);
 

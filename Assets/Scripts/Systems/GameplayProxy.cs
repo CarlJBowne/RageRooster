@@ -16,6 +16,6 @@ public class GameplayProxy : MonoBehaviour
             NEW.name = "Gameplay";
             Destroy(gameObject);
         }
-        else if(!reverseProxy && attempt != null) Destroy(attempt);
+        else if(reverseProxy && attempt != null) Destroy(attempt);
     }
 }
