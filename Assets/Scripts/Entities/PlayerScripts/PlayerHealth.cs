@@ -11,6 +11,8 @@ public class PlayerHealth : Health
     private new Collider collider;
     private UIHUDSystem UI;
 
+    private Vector3 respawnPoint;
+
     protected override void Awake()
     {
         base.Awake();
@@ -22,10 +24,16 @@ public class PlayerHealth : Health
     protected override void OnDamage(Attack attack)
     {
         damageEvent?.Invoke(attack.amount);
-        invincibility = StartCoroutine(InvinceEnum(invincibilityTime));
-        damagable = false;
+        if(health != 0)
+        {
+            invincibility = StartCoroutine(InvinceEnum(invincibilityTime));
+            damagable = false;
+        }
         UpdateHealth();
+        if(attack.name == "Pit") Respawn();
     }
+
+    protected override void OnDeplete(Attack attack) => UI.StartCoroutine(DeathEnum());
 
     private IEnumerator InvinceEnum(float time)
     {
@@ -40,7 +48,6 @@ public class PlayerHealth : Health
         collider.enabled = true;
         //if(queuedAttack != null) queuedAttack.BeginAttack(this);
     }
-
 
     public void UpdateHealth() => UI.UpdateHealth(health, maxHealth);
 
@@ -69,5 +76,21 @@ public class PlayerHealth : Health
        }
    }*/
 
+
+    private IEnumerator DeathEnum()
+    {
+        gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(2);
+
+        Respawn();
+        gameObject.SetActive(true);
+        health = maxHealth;
+        UpdateHealth();
+    }
+
+    public void SetRespawnPoint(Vector3 respawnPoint) => this.respawnPoint = respawnPoint;
+
+    public void Respawn() => transform.position = respawnPoint;
 
 }

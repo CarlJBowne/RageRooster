@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineV2;
+using System;
 
 public class PlayerStateMachine : StateMachine
 {
@@ -25,6 +26,7 @@ public class PlayerStateMachine : StateMachine
         input = Input.Get();
         body = GetGlobalBehavior<PlayerMovementBody>();
         controller = GetGlobalBehavior<PlayerController>();
+        whenInitializedEvent?.Invoke(this);
     }
 
     //private void OnCollisionStay() => body.Collision();
@@ -49,6 +51,8 @@ public class PlayerStateMachine : StateMachine
 
     }
 
+
+    public static Action<PlayerStateMachine> whenInitializedEvent;
 
 }
 public abstract class PlayerStateBehavior : StateBehavior

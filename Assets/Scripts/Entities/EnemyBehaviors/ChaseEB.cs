@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class ChaseEB : StateBehavior
 {
     [SerializeField] float speed;
-    [SerializeField] Transform target;
     [SerializeField] float destUpdateRate = 2f;
     [SerializeField] float reachDistance;
     [SerializeField] State reachState;
@@ -42,6 +41,6 @@ public class ChaseEB : StateBehavior
         destUpdateTimer += Time.fixedDeltaTime;
     }
 
-    void UpdateDestination() => agent.SetDestination(target.position);
+    void UpdateDestination() => agent.SetDestination(playerTracker.target.transform.position);
 
 }
