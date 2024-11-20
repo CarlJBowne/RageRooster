@@ -9,13 +9,14 @@ public class PlayerHealth : Health
 
     private Coroutine invincibility;
     private new Collider collider;
-    //[System.Obsolete, HideInInspector]
-    //public AttackConstant queuedAttack;
+    private UIHUDSystem UI;
 
     protected override void Awake()
     {
         base.Awake();
         collider = GetComponent<Collider>();
+        UIHUDSystem.TryGet(out UI);
+        UpdateHealth();
     }
 
     protected override void OnDamage(Attack attack)
@@ -23,6 +24,7 @@ public class PlayerHealth : Health
         damageEvent?.Invoke(attack.amount);
         invincibility = StartCoroutine(InvinceEnum(invincibilityTime));
         damagable = false;
+        UpdateHealth();
     }
 
     private IEnumerator InvinceEnum(float time)
@@ -39,31 +41,33 @@ public class PlayerHealth : Health
         //if(queuedAttack != null) queuedAttack.BeginAttack(this);
     }
 
-    
-     /*
-    private void InvincEndDontWork()
-    {
-        CapsuleCollider caps = GetComponent<CapsuleCollider>();
-        float radius = caps.radius + 0.05f;
-        Vector3 point1 = transform.position + caps.center - (Vector3.up * ((caps.height / 2) - caps.radius));
-        Vector3 point2 = transform.position + caps.center + (Vector3.up * ((caps.height / 2) - caps.radius));
 
-        Collider[] colls = Physics.OverlapCapsule(point1, point2, radius, GetComponent<Rigidbody>().includeLayers, QueryTriggerInteraction.Collide); //Fix Getting Rigidbody's useful layers
+    public void UpdateHealth() => UI.UpdateHealth(health, maxHealth);
 
-        for (int i = 0; i < colls.Length; i++)
-        {
-            if(colls[i].TryGetComponent(out AttackMulti soc))
-            {
-                if (soc.IsSelfCollider()) soc.BeginAttack(gameObject);
-                break;
-            }
-            else if(colls[i].TryGetComponent(out AttackHitBox box))
-            {
-                box.ManualBeginAttack(gameObject);
-                break;
-            }
-        }
-    }*/
+    /*
+   private void InvincEndDontWork()
+   {
+       CapsuleCollider caps = GetComponent<CapsuleCollider>();
+       float radius = caps.radius + 0.05f;
+       Vector3 point1 = transform.position + caps.center - (Vector3.up * ((caps.height / 2) - caps.radius));
+       Vector3 point2 = transform.position + caps.center + (Vector3.up * ((caps.height / 2) - caps.radius));
+
+       Collider[] colls = Physics.OverlapCapsule(point1, point2, radius, GetComponent<Rigidbody>().includeLayers, QueryTriggerInteraction.Collide); //Fix Getting Rigidbody's useful layers
+
+       for (int i = 0; i < colls.Length; i++)
+       {
+           if(colls[i].TryGetComponent(out AttackMulti soc))
+           {
+               if (soc.IsSelfCollider()) soc.BeginAttack(gameObject);
+               break;
+           }
+           else if(colls[i].TryGetComponent(out AttackHitBox box))
+           {
+               box.ManualBeginAttack(gameObject);
+               break;
+           }
+       }
+   }*/
 
 
 }

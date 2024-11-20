@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2433364661095370953}
   - component: {fileID: 8885311231432202622}
   - component: {fileID: 2116850839394699682}
-  m_Layer: 0
-  m_Name: ItemPickup
+  m_Layer: 3
+  m_Name: HintPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 8527713229153812084}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13.16, y: 37.23, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -46,7 +46,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a894e3ec5b40c4797aee97ae0dd07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upgradeName: GroundSlam
+  type: 1
+  upgradeName: 
+  hintString: According to all known laws of aviation, there is no way Angus should
+    be able to fly. The laws, this time, are right, cause Angus, indeed <i>cannot</i>
+    fly.
+  coinAmount: 0
 --- !u!135 &2116850839394699682
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -79,7 +84,7 @@ GameObject:
   - component: {fileID: 395966777554816635}
   - component: {fileID: 5072151033116919287}
   - component: {fileID: 3715566327370888956}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
