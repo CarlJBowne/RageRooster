@@ -2540,7 +2540,7 @@ Rigidbody:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
@@ -2610,7 +2610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75abf0fbf8cd69a41b21a65a6991e62a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 15
+  maxHealth: 3
   damageEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -3582,8 +3582,8 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   movementProjectionSteps: 3
-  checkBuffer: 0.005
-  maxSlopeAngle: 20
+  checkBuffer: 0.05
+  maxSlopeNormalAngle: 46
   coyoteTime: 0.5
   tripleJumpTime: 0.3
   groundedState: {fileID: 3803531707346265779}
@@ -3601,6 +3601,7 @@ MonoBehaviour:
   currentDirection: {x: 0, y: 0, z: 0}
   coyoteTimeLeft: 0
   velocity: {x: 0, y: 0, z: 0}
+  firstCaSVel: {x: 0, y: 0, z: 0}
 --- !u!1 &4494565837756384463
 GameObject:
   m_ObjectHideFlags: 0
@@ -4330,7 +4331,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &190071413214983404
 Transform:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ public class Health : MonoBehaviour
 	[SerializeField] protected UnityEvent depleteEvent = new();
 
 	//Data
-	[HideInEditMode, DisableInPlayMode] public int health;
+	[DisableInEditMode, DisableInPlayMode] public int health;
 	protected bool damagable = true;
 
 	//Getters
