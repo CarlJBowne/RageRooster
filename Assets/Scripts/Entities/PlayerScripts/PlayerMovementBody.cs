@@ -3,6 +3,7 @@ using SLS.StateMachineV2;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerMovementBody : PlayerStateBehavior
@@ -10,7 +11,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     #region Config
     public int movementProjectionSteps;
     public float checkBuffer = 0.005f;
-    public float maxSlopeAngle = 20f;
+    public float maxSlopeNormalAngle = 20f;
     public float coyoteTime = 0.5f;
     public float tripleJumpTime = 0.3f;
     public State groundedState;
@@ -35,7 +36,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     [HideInInspector] public float coyoteTimeLeft;
     float tripleJumpTimeLeft;
 
-    [DisableInPlayMode] public Vector3 velocity;
+    [DisableInPlayMode, DisableInEditMode] public Vector3 velocity;
     #endregion
 
     #region GetSet
@@ -61,8 +62,6 @@ public class PlayerMovementBody : PlayerStateBehavior
             z ?? position.z
             );
     }
-    
-
 
     #endregion GetSet
 
@@ -79,10 +78,6 @@ public class PlayerMovementBody : PlayerStateBehavior
     public override void OnFixedUpdate()
     {
         M.animator.SetFloat("CurrentSpeed", currentSpeed);
-
-        //if(rb.velocity.magnitude > 0) 
-        //    rb.velocity = Vector3.MoveTowards(rb.velocity, Vector3.zero, rb.velocity.magnitude / 10f);
-
         rb.velocity = Vector3.zero;
 
         if (coyoteTimeLeft > 0) coyoteTimeLeft -= Time.deltaTime;
@@ -94,70 +89,72 @@ public class PlayerMovementBody : PlayerStateBehavior
         }
 
         initVelocity = velocity;
+        initNormal = Vector3.up;
 
-
-        if(velocity.y <= 0.01f)
+        if (velocity.y <= 0.01f)
         {
-            GroundStateChange(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out RaycastHit groundHit));
-
-            if (grounded)
+            if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out groundHit))
             {
-                velocity.y = 0;
-                initVelocity.y = 0;
-
-                if (Vector3.Angle(Vector3.up, groundHit.normal) < 90 - maxSlopeAngle)
-                    velocity = velocity.ProjectAndScale(groundHit.normal);
+                AddToQueuedHits(new(groundHit));
+                initNormal = groundHit.normal;
+                if (WithinSlopeAngle(groundHit.normal))
+                {
+                    GroundStateChange(true);
+                    velocity.y = 0;
+                    initVelocity.y = 0;
+                    initVelocity = initVelocity.ProjectAndScale(groundHit.normal);
+                }
             }
+            else GroundStateChange(false);
         }
 
-        //initGroundNormal = groundHit.normal;
-        //initPosition = position;
-        Move(velocity * Time.fixedDeltaTime);
-
-        velocity = initVelocity;
-
-        /*
-        transform.position += velocity.XZ();
-        
-        Vector3 horizontal = velocity.XZ() * Time.fixedDeltaTime / 2;
-        Vector3 vertical = velocity.y * Time.fixedDeltaTime * Vector3.up / 2;
-        horizontal = CollideAndSlide(horizontal, transform.position, 0, false, horizontal);
-        vertical = CollideAndSlide(vertical, transform.position, 0, true, vertical);
-        
-        rb.MovePosition(rb.position + horizontal + vertical);
-        */
+        Move(initVelocity * Time.fixedDeltaTime, initNormal);
     }
 
-    Vector3 initVelocity;
-    //Vector3 initGroundNormal;
-    //Vector3 initPosition;
+    [SerializeField, DisableInPlayMode, DisableInEditMode] Vector3 initVelocity;
+    [SerializeField, DisableInPlayMode, DisableInEditMode] Vector3 initNormal;
+    RaycastHit groundHit;
 
-    private void Move(Vector3 vel, int step = 0)
+    private void Move(Vector3 vel, Vector3 prevNormal, int step = 0)
     {
-        float horizontalMag = initVelocity.XZ().magnitude;
-        float verticalMag = initVelocity.y.Abs();
-
         if (rb.DirectionCast(vel.normalized, vel.magnitude, checkBuffer, out RaycastHit hit))
         {
+            AddToQueuedHits(new(hit));
             Vector3 snapToSurface = vel.normalized * hit.distance;
             Vector3 leftover = vel - snapToSurface;
-            float angle = Vector3.Angle(Vector3.up, hit.normal);
+            Vector3 nextNormal = hit.normal;
             rb.MovePosition(position + snapToSurface);
 
-            if(step == 0) GroundStateChange(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out RaycastHit groundHit));
+            if (step == movementProjectionSteps) return;
 
-            if(hit.collider.gameObject.layer == Layers.NonSolid && verticalMag < horizontalMag * 2)
+            if (grounded && hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
+                nextNormal = prevNormal.XZ().normalized;
+
+            if(!grounded && vel.y < 0 && hit.normal.y > 0)
             {
-                rb.MovePosition(position + vel.normalized * 0.05f);
-                return; 
+                if (WithinSlopeAngle(hit.normal))
+                {
+                    GroundStateChange(true);
+                    leftover.y = 0;
+                }
+                else
+                {
+                    leftover = leftover.ProjectAndScale(hit.normal.XZ().normalized);
+                }
             }
-            if (verticalMag < horizontalMag * 2 && velocity.normalized.y < 0) GroundStateChange(true);
 
-            if (step == movementProjectionSteps || Vector3.Dot(Vector3.down, hit.normal) > 0.45f) return;
+            //Floor Ceiling Lock
+            if (prevNormal.y > 0 && hit.normal.y < 0) //If Floor First
+            {
+                nextNormal = prevNormal.XZ().normalized;
+            }
+            else if(prevNormal.y < 0 && hit.normal.y > 0) //If Cieling First
+            {
+                nextNormal = hit.normal.XZ().normalized;
+            }
 
-            Vector3 newDir = leftover.ProjectAndScale(hit.normal) * (Vector3.Dot(leftover.normalized, hit.normal) + 1);
-
-            Move(newDir, step + 1);
+            Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1);
+            Move(newDir, nextNormal, step + 1);
         }
         else
         {
@@ -171,7 +168,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     public bool GroundStateChange(bool input)
     {
-        if (input == grounded || rb.velocity.y > 0) return false;
+        if (input == grounded || rb.velocity.y > 0.01f) return false;
         grounded = input;
 
         if (!grounded) coyoteTimeLeft = coyoteTime;
@@ -183,22 +180,11 @@ public class PlayerMovementBody : PlayerStateBehavior
         return true;
     }
 
-    /*
-    private void PhysicsCallbacks(PhysicsCallback type, Collision collision, Collider _)
+    private bool WithinSlopeAngle(Vector3 inNormal)
     {
-        
-        if (type != PhysicsCallback.OnCollisionEnter || !state.active) return;
-
-        if (GroundCheck())
-        {
-            GroundStateChange(true);
-            VelocitySet(y: 0);
-            PositionSet(y: position.y - castResults[0].distance + skinDistance * 1.999f);
-        }
-         
+        float A = Vector3.Angle(Vector3.up, inNormal);
+        return A < maxSlopeNormalAngle;
     }
-    private List<Collision> collisions;
-    */
 
     public void BeginJump()
     {
@@ -207,9 +193,34 @@ public class PlayerMovementBody : PlayerStateBehavior
         grounded = false;
     }
 
+    private List<HitNormalDisplay> queuedHits = new();
+    private void AddToQueuedHits(HitNormalDisplay hit)
+    {
+        queuedHits.Add(hit);
+        if(queuedHits.Count > 100) queuedHits.RemoveAt(0);
+    }
     private void OnDrawGizmos()
     {
-        Gizmos.DrawRay(rb.position + rb.centerOfMass, rb.velocity.XZ() * Time.fixedDeltaTime);
+        foreach (var item in queuedHits)
+        {
+            Debug.DrawRay(item.position, item.normal/10);
+        }
     }
 
+}
+
+public struct HitNormalDisplay
+{
+    public Vector3 position;
+    public Vector3 normal;
+    public HitNormalDisplay(Vector3 position, Vector3 normal)
+    {
+        this.position = position;
+        this.normal = normal;
+    }
+    public HitNormalDisplay(RaycastHit fromHit)
+    {
+        this.position = fromHit.point;
+        this.normal = fromHit.normal;
+    }
 }
