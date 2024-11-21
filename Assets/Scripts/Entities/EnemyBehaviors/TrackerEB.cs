@@ -52,12 +52,24 @@ public class TrackerEB : StateBehavior
 
     public override void OnAwake()
     {
-        if(target == null) target = FindObjectOfType<PlayerStateMachine>().transform;
+        if(target == null)
+        {
+            PlayerStateMachine attempt = FindObjectOfType<PlayerStateMachine>();
+            if (attempt != null) target = attempt.transform; 
+            else PlayerStateMachine.whenInitializedEvent += player => 
+            { 
+                target = player.transform; 
+            };
+        }
         if (autoCheckRate > 0) autoCheckTimer = new(autoCheckRate, CheckData);
     }
 
     public override void OnEnter()
     {
+        if (target == null)
+        {
+            return;
+        }
         Distance(true);
         Dot(true);
         LineOfSight(true);

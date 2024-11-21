@@ -333,7 +333,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""id"": ""56eadb48-0930-4aba-9cc5-5f8198ea57f3"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""NormalizeVector2"",
+                    ""processors"": ""NormalizeVector2,ScaleVector2(x=5,y=5)"",
                     ""groups"": """",
                     ""action"": ""Camera"",
                     ""isComposite"": false,
@@ -346,7 +346,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             ""id"": ""6e828c38-7b4c-4ae2-850f-3d8181f5779a"",
             ""actions"": [
                 {
-                    ""name"": ""Pause Game"",
+                    ""name"": ""PauseGame"",
                     ""type"": ""Button"",
                     ""id"": ""813063fc-4ff1-479f-b367-36dcb905a19d"",
                     ""expectedControlType"": ""Button"",
@@ -363,7 +363,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Pause Game"",
+                    ""action"": ""PauseGame"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -374,7 +374,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Pause Game"",
+                    ""action"": ""PauseGame"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -397,7 +397,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         m_Gameplay_Sonic = m_Gameplay.FindAction("Sonic", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_PauseGame = m_UI.FindAction("Pause Game", throwIfNotFound: true);
+        m_UI_PauseGame = m_UI.FindAction("PauseGame", throwIfNotFound: true);
     }
 
     public void Dispose()

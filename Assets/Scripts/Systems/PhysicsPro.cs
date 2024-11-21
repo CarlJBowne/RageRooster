@@ -9,7 +9,7 @@ public static class PhysicsPro
     public static bool DirectionCast(this Rigidbody rb, Vector3 direction, float distance, float buffer, out RaycastHit hit)
     {
         rb.MovePosition(rb.position - direction * buffer);
-        bool result = rb.SweepTest(direction.normalized, out hit, distance + buffer);
+        bool result = rb.SweepTest(direction.normalized, out hit, distance + buffer, QueryTriggerInteraction.Ignore);
         rb.MovePosition(rb.position + direction * buffer);
         hit.distance -= buffer;
         return result;
