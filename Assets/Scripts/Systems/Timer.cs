@@ -72,4 +72,20 @@ public struct Timer
         if (act) (action ?? this.action)?.Invoke();
         return act;
     }
+
+    public static bool Time(ref float time, float amount, float higherEdge, float lowerEdge = 0f)
+    {
+        time += amount;
+        if (amount > 0 && time >= higherEdge)
+        {
+            time = time - higherEdge + lowerEdge;
+            return true;
+        }
+        else if (amount < 0 && time <= lowerEdge)
+        {
+            time += time + higherEdge - lowerEdge;
+            return true;
+        }
+        else return false;
+    }
 }
