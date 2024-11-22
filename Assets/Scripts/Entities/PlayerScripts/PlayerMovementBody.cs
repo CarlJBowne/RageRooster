@@ -35,6 +35,8 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     [HideInInspector] public float coyoteTimeLeft;
     float tripleJumpTimeLeft;
+    Transform anchorTransform;
+    Vector3 prevAnchorPosition;
 
     [DisableInPlayMode, DisableInEditMode] public Vector3 velocity;
     #endregion
@@ -80,6 +82,13 @@ public class PlayerMovementBody : PlayerStateBehavior
         M.animator.SetFloat("CurrentSpeed", currentSpeed);
         rb.velocity = Vector3.zero;
 
+        if (anchorTransform && !anchorTransform.gameObject.isStatic)
+        {
+            Vector3 anchorOffset = prevAnchorPosition - anchorTransform.position;
+            prevAnchorPosition = anchorTransform.position;
+            rb.MovePosition(rb.position - anchorOffset);
+        }
+
         if (coyoteTimeLeft > 0) coyoteTimeLeft -= Time.deltaTime;
 
         if (groundedState.active && tripleJumpTimeLeft > 0)
@@ -100,6 +109,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                 if (WithinSlopeAngle(groundHit.normal))
                 {
                     GroundStateChange(true);
+                    LatchAnchor(groundHit.transform);
                     velocity.y = 0;
                     initVelocity.y = 0;
                     initVelocity = initVelocity.ProjectAndScale(groundHit.normal);
@@ -130,28 +140,20 @@ public class PlayerMovementBody : PlayerStateBehavior
             if (grounded && hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
                 nextNormal = prevNormal.XZ().normalized;
 
-            if(!grounded && vel.y < 0 && hit.normal.y > 0)
-            {
+            if(!grounded && vel.y < 0 && hit.normal.y > 0) 
                 if (WithinSlopeAngle(hit.normal))
                 {
                     GroundStateChange(true);
+                    LatchAnchor(hit.transform);
                     leftover.y = 0;
                 }
-                else
-                {
-                    leftover = leftover.ProjectAndScale(hit.normal.XZ().normalized);
-                }
-            }
+                else leftover = leftover.ProjectAndScale(hit.normal.XZ().normalized);
 
             //Floor Ceiling Lock
             if (prevNormal.y > 0 && hit.normal.y < 0) //If Floor First
-            {
                 nextNormal = prevNormal.XZ().normalized;
-            }
             else if(prevNormal.y < 0 && hit.normal.y > 0) //If Cieling First
-            {
                 nextNormal = hit.normal.XZ().normalized;
-            }
 
             Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1);
             Move(newDir, nextNormal, step + 1);
@@ -171,6 +173,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         if (input == grounded || rb.velocity.y > 0.01f) return false;
         grounded = input;
 
+        if (!grounded) anchorTransform = null;
         if (!grounded) coyoteTimeLeft = coyoteTime;
         else tripleJumpTimeLeft = tripleJumpTime;
         if ((grounded && !groundedState.active) || (!grounded && !airborneState.active))
@@ -192,6 +195,14 @@ public class PlayerMovementBody : PlayerStateBehavior
         secondJump.Toggle();
         grounded = false;
     }
+
+    public void LatchAnchor(Transform newAnchor)
+    {
+        if (anchorTransform == newAnchor || newAnchor.gameObject.isStatic) return;
+        anchorTransform = newAnchor;
+        prevAnchorPosition = newAnchor.position;
+    }
+
 
     private List<HitNormalDisplay> queuedHits = new();
     private void AddToQueuedHits(HitNormalDisplay hit)
