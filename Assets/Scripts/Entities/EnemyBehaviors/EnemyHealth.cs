@@ -104,7 +104,7 @@ public class EnemyHealth : Health, IAttacker
 
     public void Contact(GameObject target)
     {
-        if(!hasRagdolled) return;
+        if (!hasRagdolled || target.layer == Layers.Player) return;
         hasHitSomething = true;
         (this as IAttacker).BeginAttack(target, thrownAttack, rb.velocity);
     }

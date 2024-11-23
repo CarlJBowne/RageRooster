@@ -17,8 +17,11 @@ public class PlayerController : PlayerStateBehavior
 	public State fallingState;
 	public State glidingState;
 	public State groundSlamState;
-	public State wallJumpState;
-	public string punchAnimName;
+	public PlayerWallJump wallJumpState;
+    public PlayerAirborn airChargeState;
+    public PlayerAirborn airChargeFallState;
+
+    public string punchAnimName;
 
 	#endregion
 	#region Data
@@ -57,14 +60,20 @@ public class PlayerController : PlayerStateBehavior
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
 		camAdjustedMovement = input.movement.ToXZ().Rotate(M.cameraTransform.eulerAngles.y, Vector3.up);
 
-		if ((input.jump.IsPressed() && fallingState.active && !grabber.currentGrabbed) || (!input.jump.IsPressed() && glidingState.active))
+		if ((input.jump.WasPressedThisFrame() && fallingState.active && !grabber.currentGrabbed) || (!input.jump.WasReleasedThisFrame() && glidingState.active))
 			TransitionTo(input.jump.IsPressed() ? glidingState : fallingState);
 		M.animator.SetBool("Gliding", glidingState.active);
 
 		if (input.charge.IsPressed() && groundedState.active || !input.charge.IsPressed() && chargingState.active)
 			TransitionTo(input.charge.IsPressed() ? chargingState : idleWalkState);
 
-	}
+        if (input.charge.WasPressedThisFrame() && airborneState && !airChargeState.state && !airChargeFallState.state)
+        {
+            airChargeState.BeginJump();
+            body.currentSpeed = airChargeState.state.Behavior<PlayerDirectionalMovement>().maxSpeed;
+            body.currentDirection = controller.camAdjustedMovement.magnitude > 0.1f ? controller.camAdjustedMovement : transform.forward;
+        }
+    }
 
 	private void JumpPress()
 	{
@@ -73,17 +82,9 @@ public class PlayerController : PlayerStateBehavior
 		{
 			jumpInput = jumpBuffer + Time.fixedDeltaTime;
 
-			if (M.WallJump && (fallingState.active || wallJumpState.active)
-				&& body.rb.DirectionCast(body.currentDirection, 0.5f, body.checkBuffer, out RaycastHit hit) 
-				/*&& Mathf.Approximately(Vector3.Dot(Vector3.up, hit.normal), 0)*/)
-            {
-                transform.eulerAngles = hit.normal.DirToRot();
-				body.currentDirection = hit.normal;
-
-                wallJumpState.TransitionTo();
-				wallJumpState.GetComponent<PlayerAirborn>().OnEnter();
-                body.currentSpeed = wallJumpState.GetComponent<PlayerDirectionalMovement>().maxSpeed;
-			}
+			if (M.WallJump && (fallingState.active || wallJumpState.state.active)
+				&& body.rb.DirectionCast(body.currentDirection, 0.5f, body.checkBuffer, out RaycastHit hit))
+				wallJumpState.WallJump(hit.normal); 
 		} 
 		
 	}
