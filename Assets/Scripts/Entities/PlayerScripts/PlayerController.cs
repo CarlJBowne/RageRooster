@@ -18,7 +18,10 @@ public class PlayerController : PlayerStateBehavior
 	public State glidingState;
 	public State groundSlamState;
 	public PlayerWallJump wallJumpState;
-	public string punchAnimName;
+    public PlayerAirborn airChargeState;
+    public PlayerAirborn airChargeFallState;
+
+    public string punchAnimName;
 
 	#endregion
 	#region Data
@@ -64,7 +67,13 @@ public class PlayerController : PlayerStateBehavior
 		if (input.charge.IsPressed() && groundedState.active || !input.charge.IsPressed() && chargingState.active)
 			TransitionTo(input.charge.IsPressed() ? chargingState : idleWalkState);
 
-	}
+        if (input.charge.WasPressedThisFrame() && airborneState && !airChargeState.state && !airChargeFallState.state)
+        {
+            airChargeState.BeginJump();
+            body.currentSpeed = airChargeState.state.Behavior<PlayerDirectionalMovement>().maxSpeed;
+            body.currentDirection = controller.camAdjustedMovement.magnitude > 0.1f ? controller.camAdjustedMovement : transform.forward;
+        }
+    }
 
 	private void JumpPress()
 	{

@@ -9,7 +9,6 @@ public class PlayerWallJump : PlayerAirborn
 
     protected Vector3 startPoint;
     protected Vector3 fixedDirection;
-    protected Vector3 fixedRotation;
 
     public override void OnFixedUpdate()
     {
@@ -21,10 +20,9 @@ public class PlayerWallJump : PlayerAirborn
             );
         body.currentSpeed = outwardVelocity;
         body.currentDirection = fixedDirection;
-        body.rotation = fixedRotation;
 
         float distance = (transform.position - startPoint).XZ().magnitude;
-        if (distance >= minDistance) TransitionTo(fallState);
+        if (distance >= minDistance) TransitionTo(body.fallState);
 
          
     }
@@ -43,9 +41,7 @@ public class PlayerWallJump : PlayerAirborn
 
         startPoint = transform.position;
         fixedDirection = direction;
-        fixedRotation = direction.DirToRot();
         
         body.currentDirection = fixedDirection;
-        transform.eulerAngles = fixedRotation;
     }
 }

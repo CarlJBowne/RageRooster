@@ -67,5 +67,6 @@ namespace SLS.StateMachineV2
 
         public void TransitionTo(State nextState) => M.TransitionState(nextState);
 
+        public virtual void Activate() => state.TransitionTo();
     }
 }
