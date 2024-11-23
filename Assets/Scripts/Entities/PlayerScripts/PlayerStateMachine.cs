@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineV2;
+using System;
 
 public class PlayerStateMachine : StateMachine
 {
@@ -25,10 +26,33 @@ public class PlayerStateMachine : StateMachine
         input = Input.Get();
         body = GetGlobalBehavior<PlayerMovementBody>();
         controller = GetGlobalBehavior<PlayerController>();
+        whenInitializedEvent?.Invoke(this);
     }
 
     //private void OnCollisionStay() => body.Collision();
     //private void OnCollisionExit() => body.Collision();
+
+
+    [SerializeField]
+    private AYellowpaper.SerializedCollections.SerializedDictionary<string, bool> upgrades = new()
+    {
+        { "GroundSlam", true },
+        { "DropLaunch", true },
+        { "WallJump", true },
+        { "RageCharge", true }
+    }; 
+    public bool GroundSlam => upgrades["GroundSlam"];
+    public bool DropLaunch => upgrades["DropLaunch"];
+    public bool WallJump => upgrades["WallJump"];
+    public bool RageCharge => upgrades["RageCharge"];
+    public void SetUpgrade(string id, bool value)
+    {
+        upgrades[id] = value;
+
+    }
+
+
+    public static Action<PlayerStateMachine> whenInitializedEvent;
 
 }
 public abstract class PlayerStateBehavior : StateBehavior

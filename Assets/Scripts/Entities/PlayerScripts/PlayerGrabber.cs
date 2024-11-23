@@ -57,7 +57,7 @@ public class PlayerGrabber : Grabber, IAttacker
 
     private void Throw()
     {
-        if (move.grounded)
+        if (move.grounded || !machine.DropLaunch)
         {
             upcomingLaunchVelocity = transform.forward * launchVelocity;
         }
@@ -85,6 +85,7 @@ public class PlayerGrabber : Grabber, IAttacker
         currentGrabbed.rb.velocity = upcomingLaunchVelocity;
     }
 
+    [Obsolete]
     public void Contact(GameObject target) => throw new NotImplementedException();
 
 

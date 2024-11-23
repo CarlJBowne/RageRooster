@@ -9,6 +9,7 @@ public static class Layers
     public static int UI = 5;
     public static int Player = 6;
     public static int Enemy = 7;
-    public static int NPC = 7;
-    public static int Projectile = 7;
+    public static int NPC = 8;
+    public static int Projectile = 9;
+    public static int InvisWall = 10;
 }
