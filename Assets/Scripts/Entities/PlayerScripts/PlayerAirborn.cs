@@ -13,8 +13,8 @@ public class PlayerAirborn : PlayerStateBehavior
     public State fallState;
     public bool allowMidFall = true;
 
-    private float targetMinHeight;
-    private float targetHeight;
+    protected float targetMinHeight;
+    protected float targetHeight;
 
     public override void OnFixedUpdate()
     {
@@ -39,10 +39,19 @@ public class PlayerAirborn : PlayerStateBehavior
         body.VelocitySet(y: jumpPower);
         if(jumpPower <= 0) return;
         targetMinHeight = transform.position.y + jumpMinHeight;
-        targetHeight = body.position.y + jumpHeight - (jumpPower.P() / (2 * gravity));
+        targetHeight = (transform.position.y + jumpHeight) - (jumpPower.P()) / (2 * gravity);
+        //targetHeight = body.position.y + jumpHeight - ((jumpPower * Time.fixedDeltaTime).P() / (2 * gravity));
+
+        body.jumpMarkers = new()
+        {
+            transform.position,
+            transform.position + Vector3.up * targetHeight,
+            transform.position + Vector3.up * jumpHeight
+        };
+
     }
 
-    private float ApplyGravity()
+    protected float ApplyGravity()
     {
         return  (!flatGravity 
             ? body.velocity.y - (gravity * Time.deltaTime) 

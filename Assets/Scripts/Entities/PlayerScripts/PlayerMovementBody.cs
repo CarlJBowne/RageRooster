@@ -212,11 +212,11 @@ public class PlayerMovementBody : PlayerStateBehavior
     }
     private void OnDrawGizmos()
     {
-        foreach (var item in queuedHits)
-        {
-            Debug.DrawRay(item.position, item.normal/10);
-        }
+        foreach (HitNormalDisplay item in queuedHits) Debug.DrawRay(item.position, item.normal / 10);
+        foreach (Vector3 item in jumpMarkers) Handles.DrawWireDisc(item, Vector3.up, 0.5f);
     }
+
+    public List<Vector3> jumpMarkers = new List<Vector3>();
 
 }
 
