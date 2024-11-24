@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineV2;
 using System;
+using Cinemachine;
 
 public class PlayerStateMachine : StateMachine
 {
@@ -15,6 +16,7 @@ public class PlayerStateMachine : StateMachine
     [HideInInspector] public PlayerMovementBody body;
     [HideInInspector] public PlayerController controller;
     public Transform cameraTransform;
+    public CinemachineFreeLook freeLookCamera;
 
     #endregion
 
@@ -27,6 +29,14 @@ public class PlayerStateMachine : StateMachine
         body = GetGlobalBehavior<PlayerMovementBody>();
         controller = GetGlobalBehavior<PlayerController>();
         whenInitializedEvent?.Invoke(this);
+
+        // Initialize the Cinemachine FreeLook camera
+        freeLookCamera = FindObjectOfType<CinemachineFreeLook>();
+        if (freeLookCamera != null)
+        {
+            freeLookCamera.Follow = transform;
+            freeLookCamera.LookAt = transform;
+        }
     }
 
     //private void OnCollisionStay() => body.Collision();

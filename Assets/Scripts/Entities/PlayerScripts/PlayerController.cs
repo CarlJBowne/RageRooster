@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Linq;
 using EditorAttributes;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 public class PlayerController : PlayerStateBehavior
 {
@@ -72,6 +73,12 @@ public class PlayerController : PlayerStateBehavior
             airChargeState.BeginJump();
             body.currentSpeed = airChargeState.state.Behavior<PlayerDirectionalMovement>().maxSpeed;
             body.currentDirection = controller.camAdjustedMovement.magnitude > 0.1f ? controller.camAdjustedMovement : transform.forward;
+        }
+
+		if (M.freeLookCamera != null)
+        {
+            M.freeLookCamera.Follow = transform;
+            M.freeLookCamera.LookAt = transform;
         }
     }
 
