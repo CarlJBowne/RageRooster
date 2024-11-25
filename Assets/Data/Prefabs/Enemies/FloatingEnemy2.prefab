@@ -826,6 +826,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96055279797595e40b7c62431ff14106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  states:
+    _serializedList: []
 --- !u!136 &892225924213003653
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -872,9 +874,8 @@ MonoBehaviour:
   stunTime: 0.2
   poofPrefab: {fileID: 0}
   disableComponents:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1878912946628853510}
+  - {fileID: 5419231795522299808}
   ragDoll: 1
   minRagdollTime: 2
   maxRagdollTime: 5
