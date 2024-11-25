@@ -57,8 +57,9 @@ public class PlayerGrabber : Grabber, IAttacker
 
     private void Throw()
     {
-        if (move.grounded || !machine.DropLaunch)
+        if (move.grounded || !machine.uDropLaunch)
         {
+            currentGrabbed.transform.position = transform.position + transform.forward;
             upcomingLaunchVelocity = transform.forward * launchVelocity;
         }
         else

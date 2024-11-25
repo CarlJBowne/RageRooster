@@ -479,6 +479,133 @@ SkinnedMeshRenderer:
     m_Center: {x: 9.313226e-10, y: 0.013736222, z: -0.001545338}
     m_Extent: {x: 0.020512447, y: 0.0039795022, z: 0.004044237}
   m_DirtyAABB: 0
+--- !u!1 &1049869934697765793
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8409826796498701612}
+  - component: {fileID: 780397825468177816}
+  - component: {fileID: 6615624878976301374}
+  - component: {fileID: 1178113904624510868}
+  - component: {fileID: 1632128030463539112}
+  - component: {fileID: 557223514539269041}
+  m_Layer: 0
+  m_Name: Bounce
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &8409826796498701612
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049869934697765793}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7427727485705586250}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &780397825468177816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049869934697765793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &6615624878976301374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049869934697765793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ae8156fa90eed4b8dd13eb17af36a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  gravity: 30
+  terminalVelocity: 98.1
+  flatGravity: 0
+  jumpHeight: 7
+  jumpPower: 14
+  jumpMinHeight: 2
+  allowMidFall: 1
+  fallState: {fileID: 2167252589490158483}
+--- !u!114 &1178113904624510868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049869934697765793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 1
+  onEnterName: Slam
+  onEnterTime: 0.01
+  animator: {fileID: 0}
+--- !u!135 &1632128030463539112
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049869934697765793}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.84
+  m_Center: {x: 0, y: 0.6, z: 0}
+--- !u!114 &557223514539269041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049869934697765793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe6a0940c9fc3d4bb2d2f3d11df477a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 6378731282900981655}
+  currentAttackID: GroundSlam
 --- !u!1 &1242553937887867047
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,8 +616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1663018687967235127}
   - component: {fileID: 7332593933944986562}
-  - component: {fileID: 8939101483229205746}
-  - component: {fileID: 8566549583583497696}
+  - component: {fileID: 1312688948471799068}
   m_Layer: 0
   m_Name: WallJump
   m_TagString: Untagged
@@ -511,7 +637,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6385669238997089540}
+  m_Father: {fileID: 7427727485705586250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7332593933944986562
 MonoBehaviour:
@@ -530,7 +656,7 @@ MonoBehaviour:
   onActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8939101483229205746
+--- !u!114 &1312688948471799068
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -539,44 +665,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1242553937887867047}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a305d4ab8ca08de48ae74f0a056133f7, type: 3}
+  m_Script: {fileID: 11500000, guid: d81b5da85c927e144a8d5be130fc03c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   M: {fileID: 0}
   body: {fileID: 0}
   controller: {fileID: 0}
-  acceleration: 10
-  decceleration: 0.25
-  maxSpeed: 10
-  stopping: 0.75
-  maxTurnSpeed: 0
-  outwardTurn: 1
-  minSpeedForRotate: 0
-  hitBox: {fileID: 0}
-  atTopSpeed: 0
---- !u!114 &8566549583583497696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1242553937887867047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23ae8156fa90eed4b8dd13eb17af36a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  gravity: 19.62
+  gravity: 30
   terminalVelocity: 100
   flatGravity: 0
   jumpHeight: 0
   jumpPower: 14
   jumpMinHeight: 0
-  fallState: {fileID: 931477398715445950}
-  allowMidFall: 1
+  allowMidFall: 0
+  fallState: {fileID: 2167252589490158483}
+  outwardVelocity: 8
+  minDistance: 3
+  maxAngleDifference: 0.1
 --- !u!1 &1279429419487906923
 GameObject:
   m_ObjectHideFlags: 0
@@ -1104,74 +1209,6 @@ Transform:
   - {fileID: 5102682931402744490}
   m_Father: {fileID: 1869141860640984838}
   m_LocalEulerAnglesHint: {x: 10.363491, y: 2.6135802, z: 4.2834477}
---- !u!1 &1694629495299660349
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8821875101863511432}
-  - component: {fileID: 892263469769741}
-  - component: {fileID: 7907519079543039223}
-  m_Layer: 6
-  m_Name: FullbodyHitbox
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &8821875101863511432
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694629495299660349}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 802911248559169720}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &892263469769741
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694629495299660349}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.84
-  m_Center: {x: 0, y: 0.81, z: 0}
---- !u!114 &7907519079543039223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1694629495299660349}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbe6a0940c9fc3d4bb2d2f3d11df477a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  source: {fileID: 6378731282900981655}
-  currentAttackID: Slam
 --- !u!1 &1793969619886907674
 GameObject:
   m_ObjectHideFlags: 0
@@ -1762,14 +1799,14 @@ MonoBehaviour:
   M: {fileID: 0}
   body: {fileID: 0}
   controller: {fileID: 0}
-  gravity: 19.62
+  gravity: 30
   terminalVelocity: 98.1
   flatGravity: 0
   jumpHeight: 0
   jumpPower: 0
   jumpMinHeight: 0
-  fallState: {fileID: 0}
   allowMidFall: 1
+  fallState: {fileID: 2167252589490158483}
 --- !u!114 &1811448163934562790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2468,7 +2505,6 @@ Transform:
   m_Children:
   - {fileID: 4565631653423530229}
   - {fileID: 6385669238997089540}
-  - {fileID: 8821875101863511432}
   - {fileID: 552744313867704146}
   - {fileID: 6163627308343083636}
   - {fileID: 190071413214983404}
@@ -2507,10 +2543,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e5741949eded53458e128d5d5c27d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  states:
+    _serializedList:
+    - Key: Grounded
+      Value: {fileID: 3803531707346265779}
+    - Key: IdleWalk
+      Value: {fileID: 4000547645901868762}
+    - Key: Charge
+      Value: {fileID: 3812935324549841644}
+    - Key: Airborne
+      Value: {fileID: 5123969060782274918}
+    - Key: Jump1
+      Value: {fileID: 1625394358674883294}
+    - Key: Jump2
+      Value: {fileID: 2317239267716543947}
+    - Key: Fall
+      Value: {fileID: 931477398715445950}
+    - Key: Glide
+      Value: {fileID: 6027212184641879295}
+    - Key: WallJump
+      Value: {fileID: 7332593933944986562}
+    - Key: GroundSlam
+      Value: {fileID: 1252659914078541581}
+    - Key: Bounce
+      Value: {fileID: 780397825468177816}
+    - Key: AirCharge
+      Value: {fileID: 6630164468072911266}
+    - Key: AirChargeFall
+      Value: {fileID: 9187357623978728356}
   animator: {fileID: 0}
   body: {fileID: 0}
   controller: {fileID: 0}
   cameraTransform: {fileID: 0}
+  freeLookCamera: {fileID: 0}
   upgrades:
     _serializedList:
     - Key: GroundSlam
@@ -3173,8 +3238,8 @@ MonoBehaviour:
   jumpHeight: 0
   jumpPower: 0
   jumpMinHeight: 0
-  fallState: {fileID: 0}
   allowMidFall: 1
+  fallState: {fileID: 0}
 --- !u!114 &7896708475051073880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3505,7 +3570,6 @@ Transform:
   m_Children:
   - {fileID: 542910149066364657}
   - {fileID: 7427727485705586250}
-  - {fileID: 1663018687967235127}
   m_Father: {fileID: 802911248559169720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2516748386395492980
@@ -3554,14 +3618,9 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   jumpBuffer: 0.3
-  groundedState: {fileID: 3803531707346265779}
-  idleWalkState: {fileID: 4000547645901868762}
-  chargingState: {fileID: 3812935324549841644}
-  airborneState: {fileID: 5123969060782274918}
-  fallingState: {fileID: 931477398715445950}
-  glidingState: {fileID: 6027212184641879295}
-  groundSlamState: {fileID: 1252659914078541581}
-  wallJumpState: {fileID: 7332593933944986562}
+  wallJumpState: {fileID: 1312688948471799068}
+  airChargeState: {fileID: 1503531427647151743}
+  airChargeFallState: {fileID: 2978236571489801571}
   punchAnimName: Punching
   jumpInput: 0
   camAdjustedMovement: {x: 0, y: 0, z: 0}
@@ -3586,11 +3645,10 @@ MonoBehaviour:
   maxSlopeNormalAngle: 46
   coyoteTime: 0.5
   tripleJumpTime: 0.3
-  groundedState: {fileID: 3803531707346265779}
-  airborneState: {fileID: 5123969060782274918}
-  fallState: {fileID: 931477398715445950}
-  jumpState1: {fileID: 1625394358674883294}
-  jumpState2: {fileID: 2317239267716543947}
+  jumpState1: {fileID: 4257060366744920222}
+  jumpState2: {fileID: 7146829242993839889}
+  wallJumpState: {fileID: 1312688948471799068}
+  airChargeState: {fileID: 1503531427647151743}
   rb: {fileID: 0}
   collider: {fileID: 0}
   baseMovability: 1
@@ -3598,10 +3656,10 @@ MonoBehaviour:
   grounded: 1
   secondJump: 0
   currentSpeed: 0
-  currentDirection: {x: 0, y: 0, z: 0}
+  _currentDirection: {x: 0, y: 0, z: 0}
   coyoteTimeLeft: 0
   velocity: {x: 0, y: 0, z: 0}
-  firstCaSVel: {x: 0, y: 0, z: 0}
+  jumpMarkers: []
 --- !u!1 &4494565837756384463
 GameObject:
   m_ObjectHideFlags: 0
@@ -3699,14 +3757,14 @@ MonoBehaviour:
   M: {fileID: 0}
   body: {fileID: 0}
   controller: {fileID: 0}
-  gravity: 19.62
+  gravity: 30
   terminalVelocity: 98.1
   flatGravity: 0
-  jumpHeight: 3
+  jumpHeight: 7
   jumpPower: 14
   jumpMinHeight: 2
-  fallState: {fileID: 931477398715445950}
   allowMidFall: 1
+  fallState: {fileID: 2167252589490158483}
 --- !u!114 &3226011544157808691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3797,9 +3855,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4840406343167883971}
   - component: {fileID: 1252659914078541581}
-  - component: {fileID: 3787973082022868609}
   - component: {fileID: 6299152413537013217}
-  - component: {fileID: 8292631574940146293}
+  - component: {fileID: 5855114282886156849}
+  - component: {fileID: 931549547403757152}
+  - component: {fileID: 191975908776800416}
+  - component: {fileID: 4601588046968553847}
   m_Layer: 0
   m_Name: GroundSlam
   m_TagString: Untagged
@@ -3839,29 +3899,6 @@ MonoBehaviour:
   onActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3787973082022868609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4861617110333237064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23ae8156fa90eed4b8dd13eb17af36a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  gravity: 14.715
-  terminalVelocity: 147.15
-  flatGravity: 0
-  jumpHeight: 0
-  jumpPower: -14
-  jumpMinHeight: 0
-  fallState: {fileID: 931477398715445950}
-  allowMidFall: 1
 --- !u!114 &6299152413537013217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3878,7 +3915,28 @@ MonoBehaviour:
   onEnterName: Slam
   onEnterTime: 0.01
   animator: {fileID: 0}
---- !u!114 &8292631574940146293
+--- !u!135 &5855114282886156849
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861617110333237064}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.84
+  m_Center: {x: 0, y: 0.6, z: 0}
+--- !u!114 &931549547403757152
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3887,15 +3945,62 @@ MonoBehaviour:
   m_GameObject: {fileID: 4861617110333237064}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26fff9b13fc691340ae0431c5e264325, type: 3}
+  m_Script: {fileID: 11500000, guid: bbe6a0940c9fc3d4bb2d2f3d11df477a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 6378731282900981655}
+  currentAttackID: GroundSlam
+--- !u!114 &191975908776800416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861617110333237064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f1e226f7a2b3f94b8171d3dcb2e56e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   M: {fileID: 0}
   body: {fileID: 0}
   controller: {fileID: 0}
-  autoActivate: 1
-  attackName: GroundSlam
-  hitBox: {fileID: 7907519079543039223}
+  gravity: 14.715
+  terminalVelocity: 147.15
+  flatGravity: 0
+  jumpHeight: 0
+  jumpPower: -14
+  jumpMinHeight: 0
+  allowMidFall: 1
+  fallState: {fileID: 0}
+  bouncingState: {fileID: 6615624878976301374}
+--- !u!54 &4601588046968553847
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861617110333237064}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &4930678102430661019
 GameObject:
   m_ObjectHideFlags: 0
@@ -4094,7 +4199,11 @@ Transform:
   - {fileID: 3908212840131484515}
   - {fileID: 7977943911182383535}
   - {fileID: 1846500094994641161}
+  - {fileID: 1663018687967235127}
   - {fileID: 4840406343167883971}
+  - {fileID: 8409826796498701612}
+  - {fileID: 7028723737484744588}
+  - {fileID: 8377843844754638416}
   m_Father: {fileID: 6385669238997089540}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5123969060782274918
@@ -4137,6 +4246,7 @@ MonoBehaviour:
   outwardTurn: 0
   minSpeedForRotate: 0
   hitBox: {fileID: 0}
+  forceMaxVelocity: 0
   atTopSpeed: 0
 --- !u!1 &5317729476912238461
 GameObject:
@@ -4170,6 +4280,204 @@ Transform:
   - {fileID: 1869141860640984838}
   m_Father: {fileID: 627506174124359799}
   m_LocalEulerAnglesHint: {x: 3.729395, y: 1.0794898, z: -3.072093}
+--- !u!1 &5339412235462586582
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7028723737484744588}
+  - component: {fileID: 6630164468072911266}
+  - component: {fileID: 1766021917863805240}
+  - component: {fileID: 1409538746235017687}
+  - component: {fileID: 264487216183127732}
+  - component: {fileID: 2763978919148611411}
+  - component: {fileID: 1503531427647151743}
+  - component: {fileID: 5123427297755334006}
+  - component: {fileID: 5359236866563957884}
+  m_Layer: 0
+  m_Name: AirCharge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7028723737484744588
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339412235462586582}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7427727485705586250}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6630164468072911266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339412235462586582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1766021917863805240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339412235462586582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a305d4ab8ca08de48ae74f0a056133f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 20
+  stopping: 0.75
+  maxTurnSpeed: 0.5
+  outwardTurn: 1
+  minSpeedForRotate: 0
+  hitBox: {fileID: 0}
+  forceMaxVelocity: 1
+  atTopSpeed: 0
+--- !u!135 &1409538746235017687
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339412235462586582}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.84
+  m_Center: {x: 0, y: 0.81, z: 0}
+--- !u!114 &264487216183127732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339412235462586582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe6a0940c9fc3d4bb2d2f3d11df477a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 6378731282900981655}
+  currentAttackID: Charge
+--- !u!54 &2763978919148611411
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339412235462586582}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
+--- !u!114 &1503531427647151743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339412235462586582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ae8156fa90eed4b8dd13eb17af36a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  gravity: 30
+  terminalVelocity: 98.1
+  flatGravity: 0
+  jumpHeight: 3
+  jumpPower: 13.5
+  jumpMinHeight: 3
+  allowMidFall: 0
+  fallState: {fileID: 2978236571489801571}
+--- !u!114 &5123427297755334006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339412235462586582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 1
+  onEnterName: Jump 1
+  onEnterTime: 0.01
+  animator: {fileID: 0}
+--- !u!114 &5359236866563957884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339412235462586582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 1
+  onEnterName: Jump 1
+  onEnterTime: 0.01
+  animator: {fileID: 0}
 --- !u!1 &5460903786281993192
 GameObject:
   m_ObjectHideFlags: 0
@@ -4622,7 +4930,9 @@ GameObject:
   - component: {fileID: 949085974986424741}
   - component: {fileID: 3812935324549841644}
   - component: {fileID: 1709320534574928523}
-  - component: {fileID: 1677882198576959145}
+  - component: {fileID: 4303229188960523177}
+  - component: {fileID: 7798220447604153142}
+  - component: {fileID: 2532947215877258004}
   m_Layer: 0
   m_Name: Charging
   m_TagString: Untagged
@@ -4682,11 +4992,33 @@ MonoBehaviour:
   maxSpeed: 20
   stopping: 0.75
   maxTurnSpeed: 2.5
-  outwardTurn: 0
+  outwardTurn: 1
   minSpeedForRotate: 0
-  hitBox: {fileID: 1677882198576959145}
+  hitBox: {fileID: 0}
+  forceMaxVelocity: 0
   atTopSpeed: 0
---- !u!114 &1677882198576959145
+--- !u!135 &4303229188960523177
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5936538625018206224}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.84
+  m_Center: {x: 0, y: 0.81, z: 0}
+--- !u!114 &7798220447604153142
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4695,15 +5027,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 5936538625018206224}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26fff9b13fc691340ae0431c5e264325, type: 3}
+  m_Script: {fileID: 11500000, guid: bbe6a0940c9fc3d4bb2d2f3d11df477a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  autoActivate: 1
-  attackName: Charge
-  hitBox: {fileID: 7907519079543039223}
+  source: {fileID: 6378731282900981655}
+  currentAttackID: Charge
+--- !u!54 &2532947215877258004
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5936538625018206224}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &6025825068919805804
 GameObject:
   m_ObjectHideFlags: 0
@@ -5470,6 +5825,187 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4046264282525592089}
   m_LocalEulerAnglesHint: {x: 4.8947906, y: 4.903557, z: 8.569211}
+--- !u!1 &6574491177993153932
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8377843844754638416}
+  - component: {fileID: 9187357623978728356}
+  - component: {fileID: 5012187120268294854}
+  - component: {fileID: 3239914536476910747}
+  - component: {fileID: 6522355499129223513}
+  - component: {fileID: 2299099583400383993}
+  - component: {fileID: 2978236571489801571}
+  - component: {fileID: 4312939935764186458}
+  m_Layer: 0
+  m_Name: AirChargeFall
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &8377843844754638416
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574491177993153932}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7427727485705586250}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9187357623978728356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574491177993153932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &5012187120268294854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574491177993153932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a305d4ab8ca08de48ae74f0a056133f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 20
+  stopping: 0.75
+  maxTurnSpeed: 0.5
+  outwardTurn: 1
+  minSpeedForRotate: 0
+  hitBox: {fileID: 0}
+  forceMaxVelocity: 1
+  atTopSpeed: 0
+--- !u!135 &3239914536476910747
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574491177993153932}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.84
+  m_Center: {x: 0, y: 0.81, z: 0}
+--- !u!114 &6522355499129223513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574491177993153932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe6a0940c9fc3d4bb2d2f3d11df477a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 6378731282900981655}
+  currentAttackID: Charge
+--- !u!54 &2299099583400383993
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574491177993153932}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  m_ImplicitCom: 0
+  m_ImplicitTensor: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
+--- !u!114 &2978236571489801571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574491177993153932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ae8156fa90eed4b8dd13eb17af36a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  gravity: 30
+  terminalVelocity: 98.1
+  flatGravity: 0
+  jumpHeight: 0
+  jumpPower: 0
+  jumpMinHeight: 0
+  allowMidFall: 0
+  fallState: {fileID: 2978236571489801571}
+--- !u!114 &4312939935764186458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574491177993153932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 1
+  onEnterName: Falling
+  onEnterTime: 0.01
+  animator: {fileID: 0}
 --- !u!1 &6680582673840668404
 GameObject:
   m_ObjectHideFlags: 0
@@ -5575,6 +6111,7 @@ MonoBehaviour:
   outwardTurn: 0
   minSpeedForRotate: 0
   hitBox: {fileID: 0}
+  forceMaxVelocity: 0
   atTopSpeed: 0
 --- !u!1 &6872579914678844769
 GameObject:
@@ -6238,14 +6775,14 @@ MonoBehaviour:
   M: {fileID: 0}
   body: {fileID: 0}
   controller: {fileID: 0}
-  gravity: 19.62
+  gravity: 30
   terminalVelocity: 98.1
   flatGravity: 0
-  jumpHeight: 4
+  jumpHeight: 8
   jumpPower: 14
   jumpMinHeight: 2
-  fallState: {fileID: 931477398715445950}
   allowMidFall: 1
+  fallState: {fileID: 2167252589490158483}
 --- !u!114 &896978240648893205
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,14 +15,9 @@ public class MovingPlatform : MonoBehaviour
         target = pointB.position;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        MovePlatform();
-    }
-
-    void MovePlatform()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.fixedDeltaTime);
 
         if (Vector3.Distance(transform.position, target) < 0.1f)
         {
@@ -30,8 +25,10 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
+    /*
     void OnTriggerEnter(Collider other)
     {
+        
         if (other.CompareTag("Player"))
         {
             player = other.transform;
@@ -44,10 +41,12 @@ public class MovingPlatform : MonoBehaviour
                 playerController.enabled = true;
             }
         }
+        
     }
 
     void OnTriggerExit(Collider other)
     {
+        
         if (other.CompareTag("Player"))
         {
             player.SetParent(originalParent);
@@ -59,5 +58,7 @@ public class MovingPlatform : MonoBehaviour
                 playerController.enabled = true;
             }
         }
+        
     }
+    */
 }

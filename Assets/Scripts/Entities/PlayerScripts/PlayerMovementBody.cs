@@ -14,11 +14,14 @@ public class PlayerMovementBody : PlayerStateBehavior
     public float maxSlopeNormalAngle = 20f;
     public float coyoteTime = 0.5f;
     public float tripleJumpTime = 0.3f;
-    public State groundedState;
-    public State airborneState;
-    public State fallState;
-    public State jumpState1;
-    public State jumpState2;
+    //public State groundedState;
+    //public State airborneState;
+    //public State fallState;
+    public PlayerAirborn jumpState1;
+    public PlayerAirborn jumpState2;
+    public PlayerWallJump wallJumpState;
+    public PlayerAirborn airChargeState;
+
     #endregion
 
     #region Data
@@ -30,11 +33,13 @@ public class PlayerMovementBody : PlayerStateBehavior
     [HideInInspector] public bool canJump = true;
     public bool grounded = true;
     [HideInInspector] public bool secondJump;
-    [HideInInspector] public float currentSpeed;
-    [HideInInspector] public Vector3 currentDirection;
+    [DisableInPlayMode, DisableInEditMode] public float currentSpeed;
+    [HideInInspector] public Vector3 _currentDirection = Vector3.forward; 
 
     [HideInInspector] public float coyoteTimeLeft;
     float tripleJumpTimeLeft;
+    Transform anchorTransform;
+    Vector3 prevAnchorPosition;
 
     [DisableInPlayMode, DisableInEditMode] public Vector3 velocity;
     #endregion
@@ -45,7 +50,17 @@ public class PlayerMovementBody : PlayerStateBehavior
     public Quaternion rotationQ { get => rb.rotation; set => rb.rotation = value; }
     public Vector3 rotation { get => transform.eulerAngles; set => transform.eulerAngles = value; }
 
-    
+    [HideInInspector] public Vector3 currentDirection
+    {
+        get => _currentDirection;
+        set
+        {
+            if (_currentDirection == value) return;
+            _currentDirection = value;
+            if(body) body.rotation = _currentDirection.DirToRot();
+        }
+    }
+
     public void VelocitySet(float? x = null, float? y = null, float? z = null)
     {
         velocity = new Vector3(
@@ -71,27 +86,38 @@ public class PlayerMovementBody : PlayerStateBehavior
     {
         rb = GetComponentFromMachine<Rigidbody>();
         collider = GetComponentFromMachine<CapsuleCollider>();
-
-        //collider.center = new Vector3(collider.center.x, (collider.height / 2) + skinDistance, collider.center.z);
+        M.physicsCallbacks += Collision;
     }
 
     public override void OnFixedUpdate()
     {
-        M.animator.SetFloat("CurrentSpeed", currentSpeed);
-        rb.velocity = Vector3.zero;
-
-        if (coyoteTimeLeft > 0) coyoteTimeLeft -= Time.deltaTime;
-
-        if (groundedState.active && tripleJumpTimeLeft > 0)
         {
-            tripleJumpTimeLeft -= Time.deltaTime;
-            if (tripleJumpTimeLeft <= 0) secondJump = false;
-        }
+            M.animator.SetFloat("CurrentSpeed", currentSpeed);
+            rb.velocity = Vector3.zero;
+
+            if (anchorTransform && !anchorTransform.gameObject.isStatic)
+            {
+                Vector3 anchorOffset = prevAnchorPosition - anchorTransform.position;
+                prevAnchorPosition = anchorTransform.position;
+                rb.MovePosition(rb.position - anchorOffset);
+            }
+
+            if (coyoteTimeLeft > 0) coyoteTimeLeft -= Time.deltaTime;
+
+            if (sGrounded.active && tripleJumpTimeLeft > 0)
+            {
+                tripleJumpTimeLeft -= Time.deltaTime;
+                if (tripleJumpTimeLeft <= 0) secondJump = false;
+            }
+
+
+
+        } // NonMovement
 
         initVelocity = velocity;
         initNormal = Vector3.up;
 
-        if (velocity.y <= 0.01f)
+        if (velocity.y <= 0.01f ||(sGrounded && velocity.y > 0.1f)) 
         {
             if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out groundHit))
             {
@@ -100,6 +126,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                 if (WithinSlopeAngle(groundHit.normal))
                 {
                     GroundStateChange(true);
+                    LatchAnchor(groundHit.transform);
                     velocity.y = 0;
                     initVelocity.y = 0;
                     initVelocity = initVelocity.ProjectAndScale(groundHit.normal);
@@ -111,8 +138,8 @@ public class PlayerMovementBody : PlayerStateBehavior
         Move(initVelocity * Time.fixedDeltaTime, initNormal);
     }
 
-    [SerializeField, DisableInPlayMode, DisableInEditMode] Vector3 initVelocity;
-    [SerializeField, DisableInPlayMode, DisableInEditMode] Vector3 initNormal;
+    Vector3 initVelocity;
+    Vector3 initNormal;
     RaycastHit groundHit;
 
     private void Move(Vector3 vel, Vector3 prevNormal, int step = 0)
@@ -130,39 +157,29 @@ public class PlayerMovementBody : PlayerStateBehavior
             if (grounded && hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
                 nextNormal = prevNormal.XZ().normalized;
 
-            if(!grounded && vel.y < 0 && hit.normal.y > 0)
-            {
+            if(!grounded && vel.y < 0 && hit.normal.y > 0) 
                 if (WithinSlopeAngle(hit.normal))
                 {
                     GroundStateChange(true);
+                    LatchAnchor(hit.transform);
                     leftover.y = 0;
                 }
-                else
-                {
-                    leftover = leftover.ProjectAndScale(hit.normal.XZ().normalized);
-                }
-            }
+                else leftover = leftover.ProjectAndScale(hit.normal.XZ().normalized);
 
             //Floor Ceiling Lock
-            if (prevNormal.y > 0 && hit.normal.y < 0) //If Floor First
-            {
-                nextNormal = prevNormal.XZ().normalized;
-            }
-            else if(prevNormal.y < 0 && hit.normal.y > 0) //If Cieling First
-            {
-                nextNormal = hit.normal.XZ().normalized;
-            }
+            if (prevNormal.y > 0 && hit.normal.y < 0) //Hit Floor First
+                nextNormal = (prevNormal.y != prevNormal.magnitude ? prevNormal : hit.normal).XZ().normalized;
+            else if(prevNormal.y < 0 && hit.normal.y > 0) //Hit Cieling First
+                nextNormal = (hit.normal.y != hit.normal.magnitude ? hit.normal : prevNormal).XZ().normalized;
 
-            Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1);
+            Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1); 
             Move(newDir, nextNormal, step + 1);
         }
         else
         {
             rb.MovePosition(position + vel);
-            if (grounded && initVelocity.y <= 0 && rb.DirectionCast(Vector3.down, 0.5f, checkBuffer, out RaycastHit groundHit))
-            {
+            if (grounded && initVelocity.y <= 0 && rb.DirectionCast(Vector3.down, 0.5f, checkBuffer, out RaycastHit groundHit)) 
                 rb.MovePosition(position + Vector3.down * groundHit.distance);
-            }
         }
     }
 
@@ -171,10 +188,14 @@ public class PlayerMovementBody : PlayerStateBehavior
         if (input == grounded || rb.velocity.y > 0.01f) return false;
         grounded = input;
 
-        if (!grounded) coyoteTimeLeft = coyoteTime;
+        if (!grounded)
+        {
+            coyoteTimeLeft = coyoteTime;
+            LatchAnchor(null);
+        }
         else tripleJumpTimeLeft = tripleJumpTime;
-        if ((grounded && !groundedState.active) || (!grounded && !airborneState.active))
-            TransitionTo(grounded ? groundedState : fallState);
+        if ((grounded && !sGrounded.active) || (!grounded && !sAirborne.active))
+            TransitionTo(grounded ? sGrounded : sFall);
         if (grounded && controller.CheckJumpBuffer()) BeginJump();
 
         return true;
@@ -188,10 +209,41 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     public void BeginJump()
     {
-        TransitionTo(secondJump ? jumpState2 : jumpState1);
-        secondJump.Toggle();
+        if (!sCharge)
+        {
+            (secondJump ? jumpState2 : jumpState1).BeginJump();
+            secondJump.Toggle();
+        }
+        else
+        {
+            airChargeState.BeginJump();
+        }
         grounded = false;
+        LatchAnchor(null);
     }
+
+    private void Collision(PhysicsCallback type, Collision collision, Collider trigger)
+    {
+        if (type != PhysicsCallback.OnCollisionEnter) return;
+        if ((jumpState1 || jumpState2 || airChargeState) && Vector3.Dot(collision.GetContact(0).normal, Vector3.down) > 0.75f) 
+        {
+            sFall.TransitionTo();
+            VelocitySet(y: 0);
+        }
+    }
+
+    public void LatchAnchor(Transform newAnchor)
+    {
+        if(newAnchor == null)
+        {
+            anchorTransform = null;
+            return;
+        }
+        if (anchorTransform == newAnchor || newAnchor.gameObject.isStatic) return;
+        anchorTransform = newAnchor;
+        prevAnchorPosition = newAnchor.position;
+    }
+
 
     private List<HitNormalDisplay> queuedHits = new();
     private void AddToQueuedHits(HitNormalDisplay hit)
@@ -201,11 +253,11 @@ public class PlayerMovementBody : PlayerStateBehavior
     }
     private void OnDrawGizmos()
     {
-        foreach (var item in queuedHits)
-        {
-            Debug.DrawRay(item.position, item.normal/10);
-        }
+        foreach (HitNormalDisplay item in queuedHits) Debug.DrawRay(item.position, item.normal / 10);
+        foreach (Vector3 item in jumpMarkers) Handles.DrawWireDisc(item, Vector3.up, 0.5f);
     }
+
+    public List<Vector3> jumpMarkers = new List<Vector3>();
 
 }
 
