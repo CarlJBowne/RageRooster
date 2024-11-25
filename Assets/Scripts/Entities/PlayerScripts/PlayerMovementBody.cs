@@ -14,9 +14,9 @@ public class PlayerMovementBody : PlayerStateBehavior
     public float maxSlopeNormalAngle = 20f;
     public float coyoteTime = 0.5f;
     public float tripleJumpTime = 0.3f;
-    public State groundedState;
-    public State airborneState;
-    public State fallState;
+    //public State groundedState;
+    //public State airborneState;
+    //public State fallState;
     public PlayerAirborn jumpState1;
     public PlayerAirborn jumpState2;
     public PlayerWallJump wallJumpState;
@@ -86,8 +86,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     {
         rb = GetComponentFromMachine<Rigidbody>();
         collider = GetComponentFromMachine<CapsuleCollider>();
-
-        //collider.center = new Vector3(collider.center.x, (collider.height / 2) + skinDistance, collider.center.z);
+        M.physicsCallbacks += Collision;
     }
 
     public override void OnFixedUpdate()
@@ -105,7 +104,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
             if (coyoteTimeLeft > 0) coyoteTimeLeft -= Time.deltaTime;
 
-            if (groundedState.active && tripleJumpTimeLeft > 0)
+            if (sGrounded.active && tripleJumpTimeLeft > 0)
             {
                 tripleJumpTimeLeft -= Time.deltaTime;
                 if (tripleJumpTimeLeft <= 0) secondJump = false;
@@ -115,12 +114,10 @@ public class PlayerMovementBody : PlayerStateBehavior
 
         } // NonMovement
 
-
-
         initVelocity = velocity;
         initNormal = Vector3.up;
 
-        if (velocity.y <= 0.01f)
+        if (velocity.y <= 0.01f ||(sGrounded && velocity.y > 0.1f)) 
         {
             if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out groundHit))
             {
@@ -170,12 +167,12 @@ public class PlayerMovementBody : PlayerStateBehavior
                 else leftover = leftover.ProjectAndScale(hit.normal.XZ().normalized);
 
             //Floor Ceiling Lock
-            if (prevNormal.y > 0 && hit.normal.y < 0) //If Floor First
-                nextNormal = prevNormal.XZ().normalized;
-            else if(prevNormal.y < 0 && hit.normal.y > 0) //If Cieling First
-                nextNormal = hit.normal.XZ().normalized;
+            if (prevNormal.y > 0 && hit.normal.y < 0) //Hit Floor First
+                nextNormal = (prevNormal.y != prevNormal.magnitude ? prevNormal : hit.normal).XZ().normalized;
+            else if(prevNormal.y < 0 && hit.normal.y > 0) //Hit Cieling First
+                nextNormal = (hit.normal.y != hit.normal.magnitude ? hit.normal : prevNormal).XZ().normalized;
 
-            Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1);
+            Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1); 
             Move(newDir, nextNormal, step + 1);
         }
         else
@@ -197,8 +194,8 @@ public class PlayerMovementBody : PlayerStateBehavior
             LatchAnchor(null);
         }
         else tripleJumpTimeLeft = tripleJumpTime;
-        if ((grounded && !groundedState.active) || (!grounded && !airborneState.active))
-            TransitionTo(grounded ? groundedState : fallState);
+        if ((grounded && !sGrounded.active) || (!grounded && !sAirborne.active))
+            TransitionTo(grounded ? sGrounded : sFall);
         if (grounded && controller.CheckJumpBuffer()) BeginJump();
 
         return true;
@@ -212,7 +209,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     public void BeginJump()
     {
-        if (!controller.chargingState)
+        if (!sCharge)
         {
             (secondJump ? jumpState2 : jumpState1).BeginJump();
             secondJump.Toggle();
@@ -223,6 +220,16 @@ public class PlayerMovementBody : PlayerStateBehavior
         }
         grounded = false;
         LatchAnchor(null);
+    }
+
+    private void Collision(PhysicsCallback type, Collision collision, Collider trigger)
+    {
+        if (type != PhysicsCallback.OnCollisionEnter) return;
+        if ((jumpState1 || jumpState2 || airChargeState) && Vector3.Dot(collision.GetContact(0).normal, Vector3.down) > 0.75f) 
+        {
+            sFall.TransitionTo();
+            VelocitySet(y: 0);
+        }
     }
 
     public void LatchAnchor(Transform newAnchor)

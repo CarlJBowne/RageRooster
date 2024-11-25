@@ -2543,10 +2543,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e5741949eded53458e128d5d5c27d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  states:
+    _serializedList:
+    - Key: Grounded
+      Value: {fileID: 3803531707346265779}
+    - Key: IdleWalk
+      Value: {fileID: 4000547645901868762}
+    - Key: Charge
+      Value: {fileID: 3812935324549841644}
+    - Key: Airborne
+      Value: {fileID: 5123969060782274918}
+    - Key: Jump1
+      Value: {fileID: 1625394358674883294}
+    - Key: Jump2
+      Value: {fileID: 2317239267716543947}
+    - Key: Fall
+      Value: {fileID: 931477398715445950}
+    - Key: Glide
+      Value: {fileID: 6027212184641879295}
+    - Key: WallJump
+      Value: {fileID: 7332593933944986562}
+    - Key: GroundSlam
+      Value: {fileID: 1252659914078541581}
+    - Key: Bounce
+      Value: {fileID: 780397825468177816}
+    - Key: AirCharge
+      Value: {fileID: 6630164468072911266}
+    - Key: AirChargeFall
+      Value: {fileID: 9187357623978728356}
   animator: {fileID: 0}
   body: {fileID: 0}
   controller: {fileID: 0}
   cameraTransform: {fileID: 0}
+  freeLookCamera: {fileID: 0}
   upgrades:
     _serializedList:
     - Key: GroundSlam
@@ -3589,13 +3618,6 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   jumpBuffer: 0.3
-  groundedState: {fileID: 3803531707346265779}
-  idleWalkState: {fileID: 4000547645901868762}
-  chargingState: {fileID: 3812935324549841644}
-  airborneState: {fileID: 5123969060782274918}
-  fallingState: {fileID: 931477398715445950}
-  glidingState: {fileID: 6027212184641879295}
-  groundSlamState: {fileID: 1252659914078541581}
   wallJumpState: {fileID: 1312688948471799068}
   airChargeState: {fileID: 1503531427647151743}
   airChargeFallState: {fileID: 2978236571489801571}
@@ -3623,9 +3645,6 @@ MonoBehaviour:
   maxSlopeNormalAngle: 46
   coyoteTime: 0.5
   tripleJumpTime: 0.3
-  groundedState: {fileID: 3803531707346265779}
-  airborneState: {fileID: 5123969060782274918}
-  fallState: {fileID: 931477398715445950}
   jumpState1: {fileID: 4257060366744920222}
   jumpState2: {fileID: 7146829242993839889}
   wallJumpState: {fileID: 1312688948471799068}
@@ -4277,6 +4296,7 @@ GameObject:
   - component: {fileID: 2763978919148611411}
   - component: {fileID: 1503531427647151743}
   - component: {fileID: 5123427297755334006}
+  - component: {fileID: 5359236866563957884}
   m_Layer: 0
   m_Name: AirCharge
   m_TagString: Untagged
@@ -4427,6 +4447,22 @@ MonoBehaviour:
   allowMidFall: 0
   fallState: {fileID: 2978236571489801571}
 --- !u!114 &5123427297755334006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339412235462586582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 1
+  onEnterName: Jump 1
+  onEnterTime: 0.01
+  animator: {fileID: 0}
+--- !u!114 &5359236866563957884
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

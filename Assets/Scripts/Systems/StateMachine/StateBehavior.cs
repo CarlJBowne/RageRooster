@@ -68,5 +68,8 @@ namespace SLS.StateMachineV2
         public void TransitionTo(State nextState) => M.TransitionState(nextState);
 
         public virtual void Activate() => state.TransitionTo();
+
+
+        public static implicit operator bool(StateBehavior B) => B != null && B.state.active;
     }
 }

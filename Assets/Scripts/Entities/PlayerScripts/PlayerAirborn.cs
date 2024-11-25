@@ -1,3 +1,4 @@
+using EditorAttributes;
 using SLS.StateMachineV2;
 using UnityEngine;
 
@@ -16,29 +17,48 @@ public class PlayerAirborn : PlayerStateBehavior
     protected float targetMinHeight;
     protected float targetHeight;
 
+    [SerializeField, DisableInEditMode, DisableInPlayMode] protected int phase = -1; 
+    //-1 = Inactive
+    //0 = PreMinHeight
+    //1 = PreMaxHeight
+    //2 = SlowingDown
+    //3 = Falling
+
+
     public override void OnFixedUpdate()
     {
         body.VelocitySet(y: ApplyGravity());
 
         if (jumpHeight <= 0) return;
 
-        if (transform.position.y < targetHeight) body.VelocitySet(y: jumpPower);
-        if (fallState != null && body.velocity.y < 0) TransitionTo(fallState.state);
+        if (phase == 0 && transform.position.y >= targetMinHeight) phase = 1;
+        if (phase == 1 && transform.position.y >= targetHeight) phase = 2;
+        if (phase == 2 && body.velocity.y < 0) phase = 3; 
 
-        if (allowMidFall && !input.jump.IsPressed() && transform.position.y > targetMinHeight)
+        if (phase < 2) body.VelocitySet(y: jumpPower);
+        if (body.velocity.y <= 0 || (allowMidFall && phase > 0 && !input.jump.IsPressed()))
         {
             if (body.velocity.y > 0) body.VelocitySet(y: 0);
-            TransitionTo(fallState.state);
+            phase = 3;
+            if (fallState != null) TransitionTo(fallState.state);
         }
+        
     }
 
     public override void OnEnter()
     {
         if (jumpPower == 0) return;
+        phase = 0;
         body.VelocitySet(y: jumpPower);
         if (jumpPower <= 0) return;
         targetMinHeight = transform.position.y + jumpMinHeight;
         targetHeight = (transform.position.y + jumpHeight) - (jumpPower.P()) / (2 * gravity);
+        if (targetHeight <= transform.position.y)
+        {
+            body.VelocitySet(y: Mathf.Sqrt(2 * gravity * jumpHeight));
+            targetMinHeight = transform.position.y;
+        }
+
 
         body.jumpMarkers = new()
         {
@@ -47,6 +67,7 @@ public class PlayerAirborn : PlayerStateBehavior
             transform.position + Vector3.up * jumpHeight
         };
     }
+    public override void OnExit() => phase = -1;
 
     protected float ApplyGravity()
     {
