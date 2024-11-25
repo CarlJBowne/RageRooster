@@ -8,12 +8,15 @@ public class BounceShroom : MonoBehaviour
     [SerializeField] float bounceHeight;
     [SerializeField] float bounceMinHeight;
 
+    private Animator anim;
+
     public static void AttemptBounce(GameObject G, PlayerAirborn bouncingState)
+    {if (G.TryGetComponent(out BounceShroom I)) I.Bounce(bouncingState);}
+
+    public void Bounce(PlayerAirborn bouncingState)
     {
-        if (!G.TryGetComponent(out BounceShroom I)) return;
-        bouncingState.BeginJump(I.bouncePower, I.bounceHeight, I.bounceMinHeight != 0 ? I.bounceMinHeight : I.bounceHeight);
+        bouncingState.BeginJump(bouncePower, bounceHeight, bounceMinHeight != 0 ? bounceMinHeight : bounceHeight);
+        if (anim || TryGetComponent(out anim)) anim.Play("Bounce");
     }
-
-
 }
 
