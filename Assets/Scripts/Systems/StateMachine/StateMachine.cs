@@ -13,6 +13,9 @@ namespace SLS.StateMachineV2
 
         #region Config
 
+        //Note, make nonreliant on YellowPaper later.
+        public AYellowpaper.SerializedCollections.SerializedDictionary<string, State> states;
+
         #endregion
 
         #region Data

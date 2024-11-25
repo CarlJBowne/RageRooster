@@ -22,7 +22,7 @@ public class PlayerWallJump : PlayerAirborn
         body.currentDirection = fixedDirection;
 
         float distance = (transform.position - startPoint).XZ().magnitude;
-        if (distance >= minDistance) TransitionTo(body.fallState);
+        if (distance >= minDistance) sFall.TransitionTo();
 
          
     }
