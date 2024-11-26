@@ -209,7 +209,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     public void BeginJump()
     {
-        if (!sCharge)
+        if (true)
         {
             (secondJump ? jumpState2 : jumpState1).BeginJump();
             secondJump.Toggle();
