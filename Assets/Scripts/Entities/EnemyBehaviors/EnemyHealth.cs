@@ -59,7 +59,8 @@ public class EnemyHealth : Health, IAttacker
     public void Destroy()
     {
         if(poofPrefab) Instantiate(poofPrefab);
-        Destroy(gameObject);
+        if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Disable();
+        else Destroy(gameObject);
     }
 
 
