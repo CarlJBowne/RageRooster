@@ -19,17 +19,29 @@ public class ObjectPool
     public Transform spawnPoint;
     [Tooltip("Whether the object will match the rotation of its spawnPoint.")]
     public bool rotate;
+    [Tooltip("Whether or not and at what rate the Pool will automatically spawn its charactetrs.")]
+    public float autoSpawnRate;
 
     private readonly List<PoolableObject> poolList = new();
     private int currentActiveObjects = 0;
     private int currentPooledObjects = 0;
     private int currentSelection = 0;
     private bool initialized;
+    private float autoSpawnTimer;
 
     public int ActiveObjects() => currentActiveObjects;
 
     public void Update()
     {
+        if(autoSpawnRate > 0)
+        {
+            autoSpawnTimer += Time.deltaTime;
+            if(autoSpawnTimer >= autoSpawnRate)
+            {
+                autoSpawnTimer %= autoSpawnRate;
+                Pump();
+            }
+        }
         if (autoDisableTime > 0) for (int i = 0; i < poolList.Count; i++)
             {
                 if (poolList[i].Active) poolList[i].timeExisting += Time.deltaTime;
@@ -48,7 +60,7 @@ public class ObjectPool
     public PoolableObject Pump()
     {
         if (!initialized) Initialize();
-        FindNextInstance();
+        if (!FindNextInstance()) return null;
         PoolableObject instance = ActivateInstance(poolList[currentSelection]);
         IncrementSelection();
         return instance;
@@ -67,12 +79,12 @@ public class ObjectPool
         pooledObject.SetActive(false);
     }
 
-    private void FindNextInstance()
+    private bool FindNextInstance()
     {
-        if (!poolList[currentSelection].Active) return;
+        if (!poolList[currentSelection].Active) return true;
         if (currentActiveObjects >= currentPooledObjects)
         {
-            if (!canGrow) return;
+            if (!canGrow) return false;
 
             NewInstance();
             currentSelection = currentPooledObjects - 1;
@@ -82,8 +94,9 @@ public class ObjectPool
         {
             IncrementSelection();
             safetyCounter++;
-            if (safetyCounter > defaultPoolDepth * 1000) return;
+            if (safetyCounter > defaultPoolDepth * 1000) return false;
         }
+        return true;
     }
 
     private void IncrementSelection() => currentSelection = (currentSelection == currentPooledObjects - 1) ? 0 : currentSelection + 1;
