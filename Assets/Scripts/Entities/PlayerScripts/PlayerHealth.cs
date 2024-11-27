@@ -51,6 +51,12 @@ public class PlayerHealth : Health
 
     public void UpdateHealth() => UI.UpdateHealth(health, maxHealth);
 
+    public void AddMaxHealth(int value = 1)
+    {
+        maxHealth += value;
+        UpdateHealth();
+    }
+
     /*
    private void InvincEndDontWork()
    {
