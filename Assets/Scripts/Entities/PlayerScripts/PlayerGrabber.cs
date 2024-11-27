@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PlayerGrabber : Grabber
+public class PlayerGrabber : Grabber, IAttacker
 {
     #region Config
     public float checkSphereRadius;
@@ -57,8 +57,9 @@ public class PlayerGrabber : Grabber
 
     private void Throw()
     {
-        if (move.grounded)
+        if (move.grounded || !machine.uDropLaunch)
         {
+            currentGrabbed.transform.position = transform.position + transform.forward;
             upcomingLaunchVelocity = transform.forward * launchVelocity;
         }
         else
@@ -67,6 +68,11 @@ public class PlayerGrabber : Grabber
 
             upcomingLaunchVelocity = Vector3.down * launchVelocity;
             move.VelocitySet(y: launchJumpMult * launchVelocity);
+        }
+        if(currentGrabbed.TryGetComponent(out EnemyHealth health))
+        {
+            health.Ragdoll(new Attack(0, "Throw", false, this, upcomingLaunchVelocity));
+            health.projectile = true;
         }
         Release();
     }
@@ -79,6 +85,9 @@ public class PlayerGrabber : Grabber
     {
         currentGrabbed.rb.velocity = upcomingLaunchVelocity;
     }
+
+    [Obsolete]
+    public void Contact(GameObject target) => throw new NotImplementedException();
 
 
 

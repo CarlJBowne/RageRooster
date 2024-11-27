@@ -32,11 +32,36 @@ public class ResolutionDropdown : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
         Debug.Log("ResolutionDropdown Awake");
+
+        if (resolutionDropdown == null)
+        {
+            GameObject dropdownObject = GameObject.Find("ResolutionDropdown");
+            if (dropdownObject != null)
+            {
+                resolutionDropdown = dropdownObject.GetComponent<TMP_Dropdown>();
+            }
+            else
+            {
+                resolutionDropdown = FindInactiveObjectByName("ResolutionDropdown")?.GetComponent<TMP_Dropdown>();
+            }
+
+            if (resolutionDropdown == null)
+            {
+                Debug.LogError("ResolutionDropdown is not assigned in the inspector and could not be found in the scene.");
+            }
+        }
     }
 
     void Start()
     {
         Debug.Log("ResolutionDropdown Start");
+
+        if (resolutionDropdown == null)
+        {
+            Debug.LogError("ResolutionDropdown is not assigned in the inspector.");
+            return;
+        }
+
         resolutions.AddRange(predefinedResolutions);
         resolutionDropdown.ClearOptions();
 
@@ -76,5 +101,18 @@ public class ResolutionDropdown : MonoBehaviour
         PlayerPrefs.Save();
 
         Debug.Log("Resolution set to: " + resolution.width + " x " + resolution.height);
+    }
+
+    private GameObject FindInactiveObjectByName(string name)
+    {
+        Transform[] objs = Resources.FindObjectsOfTypeAll<Transform>() as Transform[];
+        foreach (Transform obj in objs)
+        {
+            if (obj.hideFlags == HideFlags.None && obj.name == name)
+            {
+                return obj.gameObject;
+            }
+        }
+        return null;
     }
 }

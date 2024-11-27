@@ -11,7 +11,8 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
     public float maxTurnSpeed = 25;
     public bool outwardTurn;
     public float minSpeedForRotate;
-    public PlayerFullbodyHitbox hitBox;
+    public AttackHitBox hitBox;
+    public bool forceMaxVelocity;
 
     #endregion
     #region Data
@@ -23,7 +24,7 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
     {
         base.OnAwake();
         body.currentDirection = transform.forward;
-        hitBox = GetComponent<PlayerFullbodyHitbox>();
+        hitBox = GetComponent<AttackHitBox>();
     }
 
     public override void OnFixedUpdate()
@@ -35,47 +36,47 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
         Vector3 controlDirection = controller.camAdjustedMovement.normalized;
         float controlMag = controller.camAdjustedMovement.sqrMagnitude;
 
-        if (controlMag > 0)
+        if (!forceMaxVelocity)
         {
-            float Dot = Vector3.Dot(controlDirection, currentDirection);
-            currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0);
+            if (controlMag > 0)
+            {
+                float Dot = Vector3.Dot(controlDirection, currentDirection);
 
-            if(!outwardTurn) currentSpeed *= Dot;
-            if(currentSpeed < maxSpeed)
-                currentSpeed = (currentSpeed + (controlMag * acceleration)).Max(maxSpeed) * deltaTime;
-            else if(currentSpeed > maxSpeed)
-                currentSpeed = (currentSpeed - (controlMag * decceleration)).Min(maxSpeed) * deltaTime;
+                if (maxTurnSpeed > 0)
+                    currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0);
 
-            if (currentSpeed == maxSpeed) MaxSpeedChange(true);
-            else if (currentSpeed < maxSpeed) MaxSpeedChange(false);
+                if (!outwardTurn) currentSpeed *= Dot;
+                if (currentSpeed < maxSpeed)
+                    currentSpeed = (currentSpeed + (controlMag * acceleration)).Max(maxSpeed) * deltaTime;
+                else if (currentSpeed > maxSpeed)
+                    currentSpeed = (currentSpeed - (controlMag * decceleration)).Min(maxSpeed) * deltaTime;
+
+                if (currentSpeed == maxSpeed) MaxSpeedChange(true);
+                else if (currentSpeed < maxSpeed) MaxSpeedChange(false);
+            }
+            else
+            {
+                currentSpeed -= currentSpeed * stopping * deltaTime;
+                MaxSpeedChange(false);
+            }
         }
         else
         {
-            currentSpeed -= currentSpeed * stopping * deltaTime;
-            MaxSpeedChange(false);
+            currentSpeed = maxSpeed;
+            if (maxTurnSpeed > 0)
+                currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0);
+            MaxSpeedChange(true);
         }
 
-        body.rotation = currentDirection.DirToRot();
+        body.currentDirection = currentDirection;
+        body.currentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
 
         body.VelocitySet(x: literalDirection.x, z: literalDirection.z);
 
-        body.currentSpeed = currentSpeed;
-        body.currentDirection = currentDirection;
-
-        /*
-        Vector3 maxGoal = movementDirection * maxSpeed;
-
-        Vector3 workVelocity = body.velocity.XZ();
-
-        workVelocity = Vector3.MoveTowards(workVelocity, maxGoal,
-            movementDirection.magnitude > 0
-            ? (-Vector3.Dot(maxGoal, workVelocity) + 1).Min(1f)
-            : decceleration);
-
-        body.SetVelocity(x: workVelocity.x, z: workVelocity.z);
-        */
+        
+        
 
     }
 
@@ -84,7 +85,7 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
         if (value == atTopSpeed) return;
         atTopSpeed = value;
 
-        if (hitBox) hitBox.SetBoxState(value);
+        if (hitBox) hitBox.SetActive(value);
     }
 
 }

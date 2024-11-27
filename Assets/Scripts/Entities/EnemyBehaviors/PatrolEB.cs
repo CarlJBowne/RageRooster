@@ -23,17 +23,21 @@ public class PatrolEB : StateBehavior
         int targetPath = Enumerable.Range(0, path.Length)
                 .OrderBy(i => Vector3.Distance(transform.position, path[i]))
                 .First();
-        SetNextDest(targetPath);
+        SetNextDest(ref targetPath);
         currentDestination = targetPath;
     }
 
     public override void OnFixedUpdate()
     {
-        if (agent.remainingDistance < distanceToProceed) SetNextDest(++currentDestination);
+        if (agent.remainingDistance < distanceToProceed)
+        {
+            currentDestination++;
+            SetNextDest(ref currentDestination);
+        }
     }
-    void SetNextDest(int i)
+    void SetNextDest(ref int i)
     {
-        if (i == path.Length) i = 0;
+        if (i >= path.Length) i = 0;
         agent.SetDestination(path[i]);
     }
 

@@ -1,161 +1,297 @@
-//#define HasAddressables
-
 using System;
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using R = UnityEngine.RuntimeInitializeOnLoadMethodAttribute;
 
 /// <summary>
-/// A type of Behavior that can only exist once in a scene.
+/// A type of Behavior that can only exist once in a scene. <br/>
+/// Further customization can be done with RuntimeInitializeOnLoadMethod, (See Bottom of script for example.)
 /// </summary>
 /// <typeparam name="T">The Behavior's Type</typeparam>
-public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
+[InitializeOnLoad]
+public abstract class Singleton<T> : Singleton where T : Singleton<T>
 {
-	private static T _instance;
+    #region Data and Setup
 
-	public static T Instance => Get();
-	public static T I => Get();
+    private static T _instance;
 
-	public static T Get() => InitFind();
+    public static T Get() => GetDel?.Invoke();
+    public static bool TryGet(out T output)
+    {
+        output = GetDel?.Invoke();
+        return output != null;
+    }
 
+    public delegate T Delegate();
+    protected static Delegate GetDel = InitFind;
 
-	protected static bool AttemptFind(out T result)
-	{
-		T findAttempt = FindFirstObjectByType<T>();
-		if (findAttempt)
-		{
-			result = findAttempt;
-			_instance = result;
+    protected static void SetInfo(Delegate spawnMethod = null, bool dontDestroyOnLoad = false, bool spawnOnBoot = false, string path = null)
+    {
+        if (spawnMethod != null) GetDel = spawnMethod;
+        if (path != null) Path = path;
+        DontDestoryOnLoad = dontDestroyOnLoad;
+        if (spawnMethod == InitSavedPrefab)
+        {
+            Singleton S = GlobalPrefabs.Get().singletons.FirstOrDefault(x => x is T);
+            prefab = S
+                ? S.gameObject
+                : throw new Exception($"Singleton {typeof(T)} is labeled as using a saved prefab but isn't set up in the Global Prefabs Asset.");
+        }
 
-			_instance.Awake();
-			return true;
-		}
-		else
-		{
-			result = null;
-			return false;
-		}
-	}
+        if (spawnOnBoot) spawnMethod?.Invoke();
+    }
+    /// <summary>
+    /// Override to make this Singleton not destroy on load.
+    /// </summary>
+    static bool DontDestoryOnLoad = false;
+    protected static string Path = null;
+    protected static GameObject prefab;
 
-	protected static T InitFind()
-	{
-		if (_instance != null) return _instance;
-		if (AttemptFind(out T attempt)) return attempt;
+    #endregion
 
-		Debug.LogError("No Singleton of type" + nameof(T) + "could be found.");
-		return null;
-	}
+    #region Initialization
 
-	protected static T InitCreate(bool dontDestroyOnLoad = false, string name = null)
-	{
-		if (_instance != null) return _instance;
-		if (AttemptFind(out T attempt)) return attempt;
+    protected static bool AttemptFind(out T result)
+    {
+        T findAttempt = FindFirstObjectByType<T>();
+        if (findAttempt)
+        {
+            result = findAttempt;
+            _instance = result;
 
-		GameObject GO = new(name ?? typeof(T).ToString());
-		T result = GO.AddComponent<T>();
-		_instance = result;
-		if (dontDestroyOnLoad) DontDestroyOnLoad(result.gameObject);
+            _instance.OnAwake();
+            return true;
+        }
+        else
+        {
+            result = null;
+            return false;
+        }
+    }
 
-		_instance.Awake();
-		return result;
-	}
-
-#if HasAddressables
-	protected static T InitInstantiate(string path)
-	{
-		if (_instance != null) return _instance;
-		if (AttemptFind(out T attempt)) return attempt;
-
-		GameObject result = Instantiate(UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<GameObject>(path).WaitForCompletion());
-		_instance = result.GetComponent<T>();
-
-		_instance.Awake();
-		return _instance;
-	}
+    /// <summary>
+    /// Simply Attempts to Find the Singleton in the current scene.
+    /// </summary>
+    /// <returns></returns>
+    protected static T InitFind()
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying) { Debug.LogError($"{typeof(T)} accessed outside of runtime. Don't."); return null; }
 #endif
 
-	public static bool TryGet(out T output)
-	{
-		output = Get();
-		return output != null;
-	}
+        if (_instance != null) return _instance;
+        if (AttemptFind(out T attempt))
+        {
+            attempt.GetComponent<T>().InitFinal();
+            return _instance;
+        }
+
+#if UNITY_EDITOR
+        Debug.LogError($"No Singleton of type {typeof(T)} could be found.");
+#endif        
+        return null;
+    }
+
+    /// <summary>
+    /// Creates an instance of the Singleton from scratch.
+    /// </summary>
+    /// <returns></returns>
+    protected static T InitCreate()
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying) { Debug.LogError($"{typeof(T)} accessed outside of runtime. Don't."); return null; }
+#endif
+
+        if (_instance != null) return _instance;
+        if (AttemptFind(out T attempt)) return attempt;
+
+        GameObject GO = new(typeof(T).ToString());
+        T result = GO.AddComponent<T>();
+
+        result.GetComponent<T>().InitFinal();
+        return result;
+    }
+
+    /// <summary>
+    /// Instantiates a Prefab from the Resources folder. (Make sure to set the path in SetInfo.)
+    /// </summary>
+    /// <returns></returns>
+    protected static T InitResourcePrefab()
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying) { Debug.LogError($"{typeof(T)} accessed outside of runtime. Don't."); return null; }
+#endif
+
+        if (_instance != null) return _instance;
+        if (AttemptFind(out T attempt)) return attempt;
+
+        GameObject result = Instantiate(Resources.Load<GameObject>(Path));
+
+        result.GetComponent<T>().InitFinal();
+        return _instance;
+    }
+
+    /// <summary>
+    /// Instantiates a Prefab from the GlobalPrefabs ScriptableSingleton. (Make sure to place exactly one prefab into said Scriptable Object.)
+    /// </summary>
+    /// <returns></returns>
+    protected static T InitSavedPrefab()
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying) { Debug.LogError($"{typeof(T)} accessed outside of runtime. Don't."); return null; }
+#endif
+
+        if (_instance != null) return _instance;
+        if (AttemptFind(out T attempt)) return attempt;
+
+        if (!prefab)
+        {
+            Debug.LogError("");
+            return null;
+        }
+        GameObject result = Instantiate(prefab);
+
+        result.GetComponent<T>().InitFinal();
+        return _instance;
+    }
+
+#if UNITY_ADDRESSABLES_EXIST
+    /// <summary>
+    /// Instantiates a Prefab using the Addressables System. (Make sure to set the path in SetInfo.)
+    /// </summary>
+    /// <returns></returns>
+    protected static T InitAddressablePrefab()
+    {
+#if UNITY_EDITOR
+        if (!Application.isPlaying) { Debug.LogError($"{typeof(T)} accessed outside of runtime. Don't."); return null; }
+#endif
+
+        if (_instance != null) return _instance;
+        if (AttemptFind(out T attempt)) return attempt;
+
+        GameObject result = Instantiate(UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<GameObject>(Path).WaitForCompletion());
+
+        InitFinal(result.GetComponent<T>());
+        return _instance;
+    }
+#endif
+    protected void InitFinal()
+    {
+        if (_instance || _instance == this) return;
+        _instance = this as T;
+        if (DontDestoryOnLoad) DontDestroyOnLoad(_instance);
+        _instance.OnAwake();
+    }
+
+    #endregion
+
+    #region Other Functionality
 
 
-	/// <summary>
-	/// This is the Unity Function which runs some code necessary for Singleton Function. Use OnAwake() instead.
-	/// </summary>
-	public void Awake()
-	{
-		if (_instance && _instance != this)
-		{
-			Debug.LogError(
-				"Something or someone is attempting to create a second " +
-				typeof(T).ToString() +
-				". Which is a Singleton. If you wish to reset the " +
-				typeof(T).ToString() +
-				", destroy the first before instantiating its replacement. The duplicate " +
-				typeof(T).ToString() +
-				" will now be Deleted."
-				);
+    /// <summary>
+    /// This is the Unity Function which runs some code necessary for Singleton Function. Use OnAwake() instead.
+    /// </summary>
+    public void Awake()
+    {
+        if (_instance && _instance != this)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"Second {typeof(T)} found, Destroying...");
+#endif
 
-			Destroy(this);
-		}
-		else
-		{
-			_instance = this as T;
-			OnAwake();
-		}
-	}
+            Destroy(this);
+        }
+        else
+        {
+            if (_instance == this) return;
+            (this as T).InitFinal(); ;
+        }
+    }
 
-	protected virtual void OnAwake() { }
+    protected virtual void OnAwake() { }
 
-	/// <summary>
-	/// This is the Unity Function which runs some code necessary for Singleton Function. Use OnDestroyed() instead.
-	/// </summary>
-	private void OnDestroy()
-	{
-		if (_instance == this)
-		{
-			_instance = null;
-		}
-		OnDestroyed();
-	}
-	protected virtual void OnDestroyed() { }
+    /// <summary>
+    /// This is the Unity Function which runs some code necessary for Singleton Function. Use OnDestroyed() instead.
+    /// </summary>
+    private void OnDestroy()
+    {
+        if (_instance == this)
+        {
+            _instance = null;
+        }
+        OnDestroyed();
+    }
+    protected virtual void OnDestroyed() { }
 
-	/// <summary>
-	/// Destroys the instance of this singleton, wherever it is.
-	/// </summary>
-	/// <param name="leaveGameObject"> Whether the Game Object that contains the Singleton is left behind.</param>
-	public static void DestroyS(bool leaveGameObject = false)
-	{
-		if (_instance == null) return;
-		if (!leaveGameObject)
-		{
-			Destroy(_instance.gameObject);
-		}
-		else
-		{
-			Destroy(_instance);
-			_instance.OnDestroy();
-		}
-	}
+    /// <summary>
+    /// Destroys the instance of this singleton, wherever it is.
+    /// </summary>
+    /// <param name="leaveGameObject"> Whether the Game Object that contains the Singleton is left behind.</param>
+    public static void DestroyS(bool leaveGameObject = false)
+    {
+        if (_instance == null) return;
+        if (!leaveGameObject)
+        {
+            Destroy(_instance.gameObject);
+        }
+        else
+        {
+            Destroy(_instance);
+            _instance.OnDestroy();
+        }
+    }
 
-	/// <summary>
-	/// Very Dangerous. Do not use if you don't know what you're doing.
-	/// </summary>
-	public void Reset(bool ResetWholeGameObject)
-	{
-		if (ResetWholeGameObject)
-		{
-			GameObject obj = _instance.gameObject;
-			DestroyS(true);
-			obj.AddComponent<T>();
-		}
-		else
-		{
-			DestroyS(false);
-			Get();
-		}
+    /// <summary>
+    /// Very Dangerous. Do not use if you don't know what you're doing.
+    /// </summary>
+    public void Reset(bool ResetWholeGameObject)
+    {
+        if (ResetWholeGameObject)
+        {
+            GameObject obj = _instance.gameObject;
+            DestroyS(true);
+            obj.AddComponent<T>();
+        }
+        else
+        {
+            DestroyS(false);
+            Get();
+        }
 
-	}
+    }
+
+    #endregion
 }
+
+public abstract class Singleton : MonoBehaviour { };
+
+
+/* Example Use --------------------------------------------------------------------------------------------------------------------------------------------
+
+public class ExampleSingleton : Singleton<ExampleSingleton>
+{
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void Boot() => SetInfo(spawnMethod: InitResourcePrefab, dontDestroyOnLoad: true, spawnOnBoot: true, path: "ExampleSingleton");
+}
+
+Spawn methods include:
+
+InitFind
+--------Simply Attempts to Find the Singleton in the current scene.
+
+InitCreate
+----------Creates an instance of the Singleton from scratch.
+
+InitResourcePrefab
+------------------Instantiates a Prefab from the Resources folder. (Make sure to set the path in SetInfo.)
+
+InitSavedPrefab
+---------------Instantiates a Prefab from the GlobalPrefabs ScriptableSingleton. (Make sure to place exactly one prefab into said Scriptable Object.)
+
+InitAddressablePrefab
+---------------------Instantiates a Prefab using the Addressables System. (Make sure to set the path in SetInfo.)
+
+
+
+ */

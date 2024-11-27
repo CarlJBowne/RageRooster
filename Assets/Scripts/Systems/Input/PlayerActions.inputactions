@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Block",
+                    "name": "Parry",
                     "type": "Button",
                     "id": "41b60f5b-fb66-4bb2-9111-d89732c674ce",
                     "expectedControlType": "Button",
@@ -87,9 +87,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Sonic",
+                    "name": "Interact",
                     "type": "Button",
-                    "id": "ecff946b-b610-4039-9100-c561efd200ee",
+                    "id": "3be44590-2a62-48d9-a76d-dcf94015d78f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -210,18 +210,29 @@
                 {
                     "name": "",
                     "id": "75ed4169-60c0-4b34-bc7c-dca73045193a",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Block",
+                    "action": "Parry",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "28df4f8b-4845-4e82-a34a-75d29ec21fb8",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Parry",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "49a280b3-5bc9-4264-80ae-981b395a2d0f",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -232,7 +243,7 @@
                 {
                     "name": "",
                     "id": "60354f18-db69-4d52-82d9-c9c20bba1711",
-                    "path": "<Keyboard>/b",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -253,8 +264,30 @@
                 },
                 {
                     "name": "",
+                    "id": "29469ece-f68c-4b40-bbc6-987138a08b60",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShootMode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "5e27a2a3-33db-40c5-b46a-ccf96b66def0",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0df3dd72-06a3-463f-8955-bad0ac191f4d",
+                    "path": "<Mouse>/press",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -265,7 +298,7 @@
                 {
                     "name": "",
                     "id": "60090567-95fd-418a-a483-b46fd0fcb392",
-                    "path": "<Gamepad>/leftTrigger",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -286,17 +319,6 @@
                 },
                 {
                     "name": "",
-                    "id": "10be895e-8672-4713-bd6d-f5bdd37642a1",
-                    "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Sonic",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "e2bac16a-cd56-4bc6-b851-720dc199d5b6",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
@@ -311,9 +333,31 @@
                     "id": "56eadb48-0930-4aba-9cc5-5f8198ea57f3",
                     "path": "<Mouse>/delta",
                     "interactions": "",
-                    "processors": "NormalizeVector2",
+                    "processors": "NormalizeVector2,ScaleVector2(x=5,y=5)",
                     "groups": "",
                     "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f7af283d-dd19-4bf2-9fc6-ddd6ee521048",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d86d7e7e-d7cf-4fc9-ac50-d18d2e9d2a66",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -322,8 +366,41 @@
         {
             "name": "UI",
             "id": "6e828c38-7b4c-4ae2-850f-3d8181f5779a",
-            "actions": [],
-            "bindings": []
+            "actions": [
+                {
+                    "name": "PauseGame",
+                    "type": "Button",
+                    "id": "813063fc-4ff1-479f-b367-36dcb905a19d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2774d7a3-fc31-4a06-b50a-3edffb1d85d1",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bb45f181-6daf-4973-8fde-c3f166b7333c",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PauseGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
