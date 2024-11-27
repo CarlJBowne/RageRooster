@@ -16,7 +16,7 @@ public class BounceShroom : MonoBehaviour
     public void Bounce(PlayerAirborn bouncingState)
     {
         bouncingState.BeginJump(bouncePower, bounceHeight, bounceMinHeight != 0 ? bounceMinHeight : bounceHeight);
-        if (anim || TryGetComponent(out anim)) anim.Play("Bounce");
+        if (anim || transform.parent.TryGetComponent(out anim)) anim.Play("Bounce");
     }
 }
 
