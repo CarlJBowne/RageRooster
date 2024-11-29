@@ -47,8 +47,17 @@ public class AudioManager : Singleton<AudioManager>
     private void Start()
     {
         Debug.Log("AudioManager Start");
-        InitializeAmbience(FMODEvents.instance.ambience);
-        InitializeMusic(FMODEvents.instance.music);
+        if (FMODEvents.instance != null)
+        {
+            if (FMODEvents.instance.HasAmbience())
+            {
+                InitializeAmbience(FMODEvents.instance.GetAmbience());
+            }
+            if (FMODEvents.instance.HasMusic())
+            {
+                InitializeMusic(FMODEvents.instance.GetMusic());
+            }
+        }
     }
 
     private void Update()
