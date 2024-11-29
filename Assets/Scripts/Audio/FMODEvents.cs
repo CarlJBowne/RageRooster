@@ -37,25 +37,36 @@ public class FMODEvents : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         Debug.Log("FMODEvents Awake");
 
-        if (forestAmbience.Guid == System.Guid.Empty || ranchAmbience.Guid == System.Guid.Empty)
+        if (forestAmbience.Guid == System.Guid.Empty && ranchAmbience.Guid == System.Guid.Empty)
         {
-            Debug.LogError("One or more ambience events are not assigned in the FMODEvents component.");
+            Debug.LogWarning("No ambience events are assigned in the FMODEvents component.");
         }
     }
 
     public bool HasAmbience()
     {
-        return forestAmbience.IsNull == false || ranchAmbience.IsNull == false;
+        return forestAmbience.Guid != System.Guid.Empty || ranchAmbience.Guid != System.Guid.Empty;
     }
 
     public EventReference GetAmbience()
     {
-        return forestAmbience.IsNull == false ? forestAmbience : ranchAmbience;
+        if (forestAmbience.Guid != System.Guid.Empty)
+        {
+            return forestAmbience;
+        }
+        else if (ranchAmbience.Guid != System.Guid.Empty)
+        {
+            return ranchAmbience;
+        }
+        else
+        {
+            return new EventReference();
+        }
     }
 
     public bool HasMusic()
     {
-        return music.IsNull == false;
+        return music.Guid != System.Guid.Empty;
     }
 
     public EventReference GetMusic()
