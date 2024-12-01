@@ -45,6 +45,7 @@ public class AudioManager : Singleton<AudioManager>
         ambienceBus = RuntimeManager.GetBus("bus:/Ambience");
 
         SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
 
     private void Start()
@@ -135,23 +136,44 @@ public class AudioManager : Singleton<AudioManager>
     private void OnDestroy()
     {
         // Clean up when the AudioManager is destroyed
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
         CleanUp();
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Play the appropriate music for the loaded scene
+        // Stop the current scene's music before playing the new scene's music
+        StopSceneMusic();
         PlaySceneMusic(scene.name);
+    }
+
+    private void OnSceneUnloaded(Scene scene)
+    {
+        // Stop the current scene's music
+        StopSceneMusic();
+    }
+
+    private void StopSceneMusic()
+    {
+        // Stop and release the current music event instance
+        if (musicEventInstance.isValid())
+        {
+            Debug.Log("Stopping current music event instance.");
+            musicEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            musicEventInstance.release();
+            musicEventInstance.clearHandle(); // Clear the handle to ensure it's properly reset
+        }
+        else
+        {
+            Debug.Log("No valid music event instance to stop.");
+        }
     }
 
     private void PlaySceneMusic(string sceneName)
     {
-        // Stop the current music and play the new scene's music
-        if (musicEventInstance.isValid())
-        {
-            musicEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-            musicEventInstance.release();
-        }
+        // Ensure the current music is stopped before playing the new scene's music
+        StopSceneMusic();
 
         EventReference musicEvent = new EventReference();
         switch (sceneName)
@@ -165,11 +187,19 @@ public class AudioManager : Singleton<AudioManager>
             case "FarmHouse":
                 musicEvent = FMODEvents.instance.ranchMusic;
                 break;
+            default:
+                Debug.LogWarning($"No music event found for scene: {sceneName}");
+                return;
         }
 
         if (musicEvent.Guid != System.Guid.Empty)
         {
+            Debug.Log($"Initializing music for scene: {sceneName}");
             InitializeMusic(musicEvent);
+        }
+        else
+        {
+            Debug.LogWarning($"Music event reference is empty for scene: {sceneName}");
         }
     }
 }
