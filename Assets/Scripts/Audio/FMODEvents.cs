@@ -11,8 +11,10 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference playerDeath { get; private set; }
     
     [field: Header("Music")]
-    [field: SerializeField] public EventReference music { get; private set; }
-
+    [field: SerializeField] public EventReference mainMenuMusic { get; private set; }
+    [field: SerializeField] public EventReference forestMusic { get; private set; }
+    [field: SerializeField] public EventReference ranchMusic { get; private set; }
+    
     [field: Header("SFX")]
     [field: SerializeField] public EventReference laserShot { get; private set; }
 
@@ -27,6 +29,7 @@ public class FMODEvents : MonoBehaviour
 
     private void Awake()
     {
+        // Ensure only one instance of FMODEvents exists and initialize it
         if (instance != null)
         {
             Debug.LogError("Found more than one FMOD Event in the scene.");
@@ -45,11 +48,13 @@ public class FMODEvents : MonoBehaviour
 
     public bool HasAmbience()
     {
+        // Check if any ambience events are assigned
         return forestAmbience.Guid != System.Guid.Empty || ranchAmbience.Guid != System.Guid.Empty;
     }
 
     public EventReference GetAmbience()
     {
+        // Get the assigned ambience event
         if (forestAmbience.Guid != System.Guid.Empty)
         {
             return forestAmbience;
@@ -66,11 +71,28 @@ public class FMODEvents : MonoBehaviour
 
     public bool HasMusic()
     {
-        return music.Guid != System.Guid.Empty;
+        // Check if any music events are assigned
+        return mainMenuMusic.Guid != System.Guid.Empty || forestMusic.Guid != System.Guid.Empty || ranchMusic.Guid != System.Guid.Empty;
     }
 
     public EventReference GetMusic()
     {
-        return music;
+        // Get the assigned music event
+        if (mainMenuMusic.Guid != System.Guid.Empty)
+        {
+            return mainMenuMusic;
+        }
+        else if (forestMusic.Guid != System.Guid.Empty)
+        {
+            return forestMusic;
+        }
+        else if (ranchMusic.Guid != System.Guid.Empty)
+        {
+            return ranchMusic;
+        }
+        else
+        {
+            return new EventReference();
+        }
     }
 }
