@@ -10,7 +10,7 @@ public class Grabbable : MonoBehaviour
     public float weight;
     public float wiggleFreeTime;
     public int maxHealthToGrab;
-    private UnityEvent<bool> GrabStateEvent;
+    public UnityEvent<bool> GrabStateEvent;
 
     #endregion
     #region Data

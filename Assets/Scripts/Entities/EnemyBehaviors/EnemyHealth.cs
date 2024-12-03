@@ -11,13 +11,19 @@ public class EnemyHealth : Health, IAttacker
     public GameObject poofPrefab;
     public Behaviour[] disableComponents;
 
+    private Grabbable grabbable;
     private float stunTimeLeft = 0;
 
     protected override void Awake() 
     { 
         base.Awake();
         startPosition = transform.position;
+        TryGetComponent(out grabbable);
+        grabbable.GrabStateEvent.AddListener(OnGrabState);
     }
+
+
+    #region Damage
 
     protected override void OnDamage(Attack attack)
     {
@@ -75,6 +81,9 @@ public class EnemyHealth : Health, IAttacker
         else Destroy(gameObject);
     }
 
+    #endregion Damage
+
+    #region Ragdoll
 
     [ToggleGroup("Ragdoll", nameof(minRagdollTime), nameof(maxRagdollTime), nameof(minRagdollVelovity))]
     public bool ragDoll;
@@ -88,18 +97,18 @@ public class EnemyHealth : Health, IAttacker
     [HideInInspector] public bool hasRagdolled;
     private bool hasHitSomething;
     private Rigidbody rb;
+    private float ragDollTimer;
 
     public void Ragdoll(Attack attack)
     {
         SetRagDoll(true);
         rb.velocity = (attack.source as MonoBehaviour).transform.TransformDirection(attack.velocity);
-
-        StartCoroutine(Ragdolling());
     }
 
     private void SetRagDoll(bool value)
     {
         if(value == hasRagdolled) return;
+        ragDollTimer = 0;
         hasRagdolled = value;
         hasHitSomething = false;
         rb = this.GetOrAddComponent<Rigidbody>();
@@ -111,20 +120,21 @@ public class EnemyHealth : Health, IAttacker
                 if (B != null) B.enabled = !value;
     }
 
-
-    public IEnumerator Ragdolling()
+    private void Update()
     {
-        float elapsedTime = 0;
-        while (true) { yield return null;
-
-            elapsedTime += Time.deltaTime;
-
-            if(projectile && !hasHitSomething) continue;
-            if (elapsedTime > minRagdollTime && (rb.velocity.magnitude < minRagdollVelovity || elapsedTime > maxRagdollTime))
-                break;
+        if (hasRagdolled)
+        {
+            ragDollTimer += Time.deltaTime;
+            if (!(projectile && !hasHitSomething))
+                if (ragDollTimer > minRagdollTime && (rb.velocity.magnitude < minRagdollVelovity || ragDollTimer > maxRagdollTime))
+                    Destroy();
         }
-        Destroy();
     }
+
+    #endregion Ragdoll
+
+
+    #region Thrown
 
     public void Contact(GameObject target)
     {
@@ -136,6 +146,14 @@ public class EnemyHealth : Health, IAttacker
     private void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);
     private void OnTriggerEnter(Collider other) => Contact(other.gameObject);
 
+    private void OnGrabState(bool value)
+    {
+        if (hasRagdolled && value) hasRagdolled = false;
+    }
+
+    #endregion Thrown
+
+    #region Respawn
 
     [ToggleGroup("SingleRespawn", nameof(respawnTime))]
     public bool respawn;
@@ -155,4 +173,5 @@ public class EnemyHealth : Health, IAttacker
         }
     }
 
+    #endregion Respawn
 }
