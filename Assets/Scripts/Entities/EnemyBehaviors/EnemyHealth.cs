@@ -1,4 +1,5 @@
 ﻿using EditorAttributes;
+using SLS.StateMachineV2;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +12,12 @@ public class EnemyHealth : Health, IAttacker
     public Behaviour[] disableComponents;
 
     private float stunTimeLeft = 0;
+
+    protected override void Awake() 
+    { 
+        base.Awake();
+        startPosition = transform.position;
+    }
 
     protected override void OnDamage(Attack attack)
     {
@@ -58,8 +65,13 @@ public class EnemyHealth : Health, IAttacker
 
     public void Destroy()
     {
-        if(poofPrefab) Instantiate(poofPrefab);
-        if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Disable();
+        if (poofPrefab) Instantiate(poofPrefab);
+        if (respawn)
+        {
+            gameObject.SetActive(false);
+            Invoke(nameof(Respawn), respawnTime);
+        }
+        else if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Disable();
         else Destroy(gameObject);
     }
 
@@ -79,19 +91,26 @@ public class EnemyHealth : Health, IAttacker
 
     public void Ragdoll(Attack attack)
     {
-        rb = this.GetOrAddComponent<Rigidbody>();
-        rb.isKinematic = false;
-        rb.useGravity = true;
-        hasRagdolled = true;
-        hasHitSomething = false;
-        rb.gameObject.layer = Layers.NonSolid;
-        if (disableComponents.Length > 0) 
-            foreach (Behaviour B in disableComponents) 
-                if (B != null) B.enabled = false;
+        SetRagDoll(true);
         rb.velocity = (attack.source as MonoBehaviour).transform.TransformDirection(attack.velocity);
 
         StartCoroutine(Ragdolling());
     }
+
+    private void SetRagDoll(bool value)
+    {
+        if(value == hasRagdolled) return;
+        hasRagdolled = value;
+        hasHitSomething = false;
+        rb = this.GetOrAddComponent<Rigidbody>();
+        rb.isKinematic = !value;
+        rb.useGravity = value;
+        rb.gameObject.layer = value ? Layers.NonSolid : Layers.Enemy;
+        if (disableComponents.Length > 0)
+            foreach (Behaviour B in disableComponents)
+                if (B != null) B.enabled = !value;
+    }
+
 
     public IEnumerator Ragdolling()
     {
@@ -116,5 +135,24 @@ public class EnemyHealth : Health, IAttacker
 
     private void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);
     private void OnTriggerEnter(Collider other) => Contact(other.gameObject);
+
+
+    [ToggleGroup("SingleRespawn", nameof(respawnTime))]
+    public bool respawn;
+    [HideInInspector] public float respawnTime;
+    private Vector3 startPosition;
+
+    private void Respawn()
+    {
+        gameObject.SetActive(true);
+        transform.position = startPosition;
+        if (TryGetComponent(out StateMachine machine)) machine.TransitionState(machine.topLevelStates[0]);
+        if (hasRagdolled)
+        {
+            SetRagDoll(false);
+            transform.rotation = Quaternion.identity;
+            health = maxHealth;
+        }
+    }
 
 }
