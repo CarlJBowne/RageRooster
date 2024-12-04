@@ -142,6 +142,7 @@ MonoBehaviour:
     autoDisableTime: -1
     spawnPoint: {fileID: 0}
     rotate: 0
+    autoSpawnRate: 0
   Active: 0
   timeExisting: 0
 --- !u!114 &120326915241346108
@@ -157,10 +158,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attack:
-    amount: 3
+    amount: 1
     name: BasicProj
     wham: 0
-    source: {fileID: 0}
     velocity: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}
   disableOnHit: 1
