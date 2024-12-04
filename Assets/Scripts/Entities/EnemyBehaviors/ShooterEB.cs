@@ -23,8 +23,8 @@ public class ShooterEB : StateBehavior
     public override void OnUpdate()
     {
         bulletPool.spawnPoint.rotation = Quaternion.LookRotation(tracker.Direction, Vector3.up);
-        fireTimer.Increment(Time.deltaTime);
-        bulletPool.Update();
+        fireTimer.Increment(Time.deltaTime, Fire);
+        bulletPool.Update(); 
     }
 
     public void Fire()

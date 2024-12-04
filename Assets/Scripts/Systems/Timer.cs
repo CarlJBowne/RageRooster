@@ -67,8 +67,16 @@ public struct Timer
         if(!this) return false;
         value += amount;
         bool act = false;
-        if (amount>0 && value >= higherEdge) value = value - higherEdge + lowerEdge;
-        if (amount<0 &&value <= lowerEdge) value += value + higherEdge - lowerEdge;
+        if (amount>0 && value >= higherEdge)
+        {
+            value = value - higherEdge + lowerEdge;
+            act = true;
+        }
+        if (amount<0 &&value <= lowerEdge)
+        {
+            value += value + higherEdge - lowerEdge;
+            act = true;
+        }
         if (act) (action ?? this.action)?.Invoke();
         return act;
     }

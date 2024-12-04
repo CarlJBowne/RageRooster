@@ -1,4 +1,5 @@
 ﻿using EditorAttributes;
+using SLS.StateMachineV2;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,7 +11,19 @@ public class EnemyHealth : Health, IAttacker
     public GameObject poofPrefab;
     public Behaviour[] disableComponents;
 
+    private Grabbable grabbable;
     private float stunTimeLeft = 0;
+
+    protected override void Awake() 
+    { 
+        base.Awake();
+        startPosition = transform.position;
+        TryGetComponent(out grabbable);
+        grabbable.GrabStateEvent.AddListener(OnGrabState);
+    }
+
+
+    #region Damage
 
     protected override void OnDamage(Attack attack)
     {
@@ -58,11 +71,19 @@ public class EnemyHealth : Health, IAttacker
 
     public void Destroy()
     {
-        if(poofPrefab) Instantiate(poofPrefab);
-        if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Disable();
+        if (poofPrefab) Instantiate(poofPrefab);
+        if (respawn)
+        {
+            gameObject.SetActive(false);
+            Invoke(nameof(Respawn), respawnTime);
+        }
+        else if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Disable();
         else Destroy(gameObject);
     }
 
+    #endregion Damage
+
+    #region Ragdoll
 
     [ToggleGroup("Ragdoll", nameof(minRagdollTime), nameof(maxRagdollTime), nameof(minRagdollVelovity))]
     public bool ragDoll;
@@ -76,36 +97,44 @@ public class EnemyHealth : Health, IAttacker
     [HideInInspector] public bool hasRagdolled;
     private bool hasHitSomething;
     private Rigidbody rb;
+    private float ragDollTimer;
 
     public void Ragdoll(Attack attack)
     {
-        rb = this.GetOrAddComponent<Rigidbody>();
-        rb.isKinematic = false;
-        rb.useGravity = true;
-        hasRagdolled = true;
-        hasHitSomething = false;
-        rb.gameObject.layer = Layers.NonSolid;
-        if (disableComponents.Length > 0) 
-            foreach (Behaviour B in disableComponents) 
-                if (B != null) B.enabled = false;
+        SetRagDoll(true);
         rb.velocity = (attack.source as MonoBehaviour).transform.TransformDirection(attack.velocity);
-
-        StartCoroutine(Ragdolling());
     }
 
-    public IEnumerator Ragdolling()
+    private void SetRagDoll(bool value)
     {
-        float elapsedTime = 0;
-        while (true) { yield return null;
-
-            elapsedTime += Time.deltaTime;
-
-            if(projectile && !hasHitSomething) continue;
-            if (elapsedTime > minRagdollTime && (rb.velocity.magnitude < minRagdollVelovity || elapsedTime > maxRagdollTime))
-                break;
-        }
-        Destroy();
+        if(value == hasRagdolled) return;
+        ragDollTimer = 0;
+        hasRagdolled = value;
+        hasHitSomething = false;
+        rb = this.GetOrAddComponent<Rigidbody>();
+        rb.isKinematic = !value;
+        rb.useGravity = value;
+        rb.gameObject.layer = value ? Layers.NonSolid : Layers.Enemy;
+        if (disableComponents.Length > 0)
+            foreach (Behaviour B in disableComponents)
+                if (B != null) B.enabled = !value;
     }
+
+    private void Update()
+    {
+        if (hasRagdolled)
+        {
+            ragDollTimer += Time.deltaTime;
+            if (!(projectile && !hasHitSomething))
+                if (ragDollTimer > minRagdollTime && (rb.velocity.magnitude < minRagdollVelovity || ragDollTimer > maxRagdollTime))
+                    Destroy();
+        }
+    }
+
+    #endregion Ragdoll
+
+
+    #region Thrown
 
     public void Contact(GameObject target)
     {
@@ -117,4 +146,32 @@ public class EnemyHealth : Health, IAttacker
     private void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);
     private void OnTriggerEnter(Collider other) => Contact(other.gameObject);
 
+    private void OnGrabState(bool value)
+    {
+        if (hasRagdolled && value) hasRagdolled = false;
+    }
+
+    #endregion Thrown
+
+    #region Respawn
+
+    [ToggleGroup("SingleRespawn", nameof(respawnTime))]
+    public bool respawn;
+    [HideInInspector] public float respawnTime;
+    private Vector3 startPosition;
+
+    private void Respawn()
+    {
+        gameObject.SetActive(true);
+        transform.position = startPosition;
+        if (TryGetComponent(out StateMachine machine)) machine.TransitionState(machine.topLevelStates[0]);
+        if (hasRagdolled)
+        {
+            SetRagDoll(false);
+            transform.rotation = Quaternion.identity;
+            health = maxHealth;
+        }
+    }
+
+    #endregion Respawn
 }

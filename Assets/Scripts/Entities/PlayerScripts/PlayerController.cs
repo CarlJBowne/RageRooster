@@ -22,7 +22,7 @@ public class PlayerController : PlayerStateBehavior
     public PlayerAirborn airChargeState;
     public PlayerAirborn airChargeFallState;
 
-    public string punchAnimName;
+    public string punchTriggerName;
 
 	#endregion
 	#region Data
@@ -106,7 +106,7 @@ public class PlayerController : PlayerStateBehavior
 	public void PunchButtonPress()
 	{
 		if (sAirborne && M.uGroundSlam) sGroundSlam.TransitionTo();
-		else M.animator.Play(punchAnimName);
+		else M.animator.SetTrigger(punchTriggerName);
 	}
 
 }
