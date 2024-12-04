@@ -64,7 +64,7 @@ public class BrightnessController : MonoBehaviour
         color.a = Mathf.Lerp(maxAlpha, minAlpha, value);
         brightnessOverlay.color = color;
 
-        Debug.Log($"Brightness value: {value}, Alpha: {color.a}");
+        //Debug.Log($"Brightness value: {value}, Alpha: {color.a}");
     }
 
     Slider FindInactiveSlider()

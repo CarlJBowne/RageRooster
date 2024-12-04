@@ -26,7 +26,7 @@ public class FreeLookCollider : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Cinemachine FreeLook Camera is not assigned!");
+            //Debug.LogWarning("Cinemachine FreeLook Camera is not assigned!");
         }
     }
 }

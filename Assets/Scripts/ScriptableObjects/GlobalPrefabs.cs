@@ -1,4 +1,4 @@
-﻿#define AYellowPaper
+﻿//#define AYellowPaper
 
 using System;
 using System.Collections.Generic;
@@ -22,6 +22,7 @@ public class GlobalPrefabs : SingletonScriptable<GlobalPrefabs>
     }
 
     public List<Singleton> singletons;
+    public static List<Singleton> Singletons => Get().singletons;
 
 #if AYellowPaper
     [SerializeField] AYellowpaper.SerializedCollections.SerializedDictionary<string, GameObject> dictionary;

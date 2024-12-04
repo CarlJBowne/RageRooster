@@ -31,7 +31,7 @@ public class ResolutionDropdown : MonoBehaviour
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
-        Debug.Log("ResolutionDropdown Awake");
+        //Debug.Log("ResolutionDropdown Awake");
 
         if (resolutionDropdown == null)
         {
@@ -47,18 +47,18 @@ public class ResolutionDropdown : MonoBehaviour
 
             if (resolutionDropdown == null)
             {
-                Debug.LogError("ResolutionDropdown is not assigned in the inspector and could not be found in the scene.");
+                //Debug.LogError("ResolutionDropdown is not assigned in the inspector and could not be found in the scene.");
             }
         }
     }
 
     void Start()
     {
-        Debug.Log("ResolutionDropdown Start");
+        //Debug.Log("ResolutionDropdown Start");
 
         if (resolutionDropdown == null)
         {
-            Debug.LogError("ResolutionDropdown is not assigned in the inspector.");
+            //Debug.LogError("ResolutionDropdown is not assigned in the inspector.");
             return;
         }
 
@@ -100,7 +100,7 @@ public class ResolutionDropdown : MonoBehaviour
         PlayerPrefs.SetInt("ResolutionIndex", resolutionIndex);
         PlayerPrefs.Save();
 
-        Debug.Log("Resolution set to: " + resolution.width + " x " + resolution.height);
+        //Debug.Log("Resolution set to: " + resolution.width + " x " + resolution.height);
     }
 
     private GameObject FindInactiveObjectByName(string name)

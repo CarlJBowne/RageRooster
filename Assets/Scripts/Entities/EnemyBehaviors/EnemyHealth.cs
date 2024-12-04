@@ -47,7 +47,7 @@ public class EnemyHealth : Health, IAttacker
     private Coroutine stunEnum;
     private IEnumerator StunEnum()
     {
-        SetStun(true);
+        SetCompsActive(false);
 
         yield return null;
         while (stunTimeLeft > 0)
@@ -58,15 +58,7 @@ public class EnemyHealth : Health, IAttacker
         stunTimeLeft = 0;
 
         if (health <= 0 && !hasRagdolled) Destroy();
-        else SetStun(false);
-    }
-
-    public void SetStun(bool value)
-    {
-        if(disableComponents.Length > 0) 
-            foreach (Behaviour B in disableComponents) 
-                if(B != null) B.enabled = !value;
-
+        else SetCompsActive(true);
     }
 
     public void Destroy()
@@ -115,9 +107,14 @@ public class EnemyHealth : Health, IAttacker
         rb.isKinematic = !value;
         rb.useGravity = value;
         rb.gameObject.layer = value ? Layers.NonSolid : Layers.Enemy;
+        SetCompsActive(!value);
+    }
+
+    private void SetCompsActive(bool value)
+    {
         if (disableComponents.Length > 0)
             foreach (Behaviour B in disableComponents)
-                if (B != null) B.enabled = !value;
+                if (B != null) B.enabled = value;
     }
 
     private void Update()
@@ -148,6 +145,11 @@ public class EnemyHealth : Health, IAttacker
 
     private void OnGrabState(bool value)
     {
+        if (value)
+        {
+            health = 0;
+            SetCompsActive(false);
+        }
         if (hasRagdolled && value) hasRagdolled = false;
     }
 
