@@ -62,7 +62,7 @@ public class Grabbable : MonoBehaviour
         collider.enabled = true;
     }
 
-    public bool UnderThreshold() => !health || maxHealthToGrab < 1 || health.GetCurrentHealth() <= maxHealthToGrab;
+    public bool UnderThreshold() => !health || maxHealthToGrab < 15 || health.GetCurrentHealth() <= maxHealthToGrab;
 
 }
 
