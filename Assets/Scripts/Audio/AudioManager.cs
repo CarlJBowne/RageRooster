@@ -83,9 +83,10 @@ public class AudioManager : Singleton<AudioManager>
     private void InitializeMusic(EventReference musicEventReference)
     {
         // Create and start the music event instance
-        musicEventInstance = RuntimeManager.CreateInstance(musicEventReference);
+        //musicEventInstance = RuntimeManager.CreateInstance(musicEventReference);
         musicEventInstance.setVolume(musicVolume);
         musicEventInstance.start();
+        musicEventInstance.setPaused(false);
     }
 
     public void SetAmbienceParameter(string parameterName, float parameterValue)
@@ -137,6 +138,7 @@ public class AudioManager : Singleton<AudioManager>
         // Clean up when the AudioManager is destroyed
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
+        musicEventInstance.setPaused(true);
         CleanUp();
     }
 
@@ -159,6 +161,7 @@ public class AudioManager : Singleton<AudioManager>
         if (musicEventInstance.isValid())
         {
             ////Debug.Log("Stopping current music event instance.");
+            musicEventInstance.setPaused(true);
             musicEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             musicEventInstance.release();
             musicEventInstance.clearHandle(); // Clear the handle to ensure it's properly reset
