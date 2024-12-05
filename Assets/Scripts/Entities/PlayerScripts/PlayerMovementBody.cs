@@ -93,6 +93,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     public override void OnFixedUpdate()
     {
+        Vector3 prevPosition = rb.position;
         {
             M.animator.SetFloat("CurrentSpeed", currentSpeed);
             rb.velocity = Vector3.zero;
@@ -140,6 +141,8 @@ public class PlayerMovementBody : PlayerStateBehavior
         }
 
         Move(initVelocity * Time.fixedDeltaTime, initNormal);
+
+        M.freeLookCamera.transform.position += transform.position - prevPosition;
     }
 
     Vector3 initVelocity;
