@@ -30,7 +30,7 @@ public class PlayerGrabber : Grabber, IAttacker
     {
         machine = GetComponent<PlayerStateMachine>();
         move = machine.GetGlobalBehavior<PlayerMovementBody>();
-        //machine.waitforMachineInit += () => { move = machine.GetGlobalBehavior<PlayerMovementBody>(); };
+        if(!move) machine.waitforMachineInit += () => { move = machine.GetGlobalBehavior<PlayerMovementBody>(); };
     }
 
     public void GrabButtonPress()

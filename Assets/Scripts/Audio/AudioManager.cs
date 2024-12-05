@@ -174,6 +174,7 @@ public class AudioManager : Singleton<AudioManager>
         // Ensure the current music is stopped before playing the new scene's music
         StopSceneMusic();
 
+
         EventReference musicEvent = new EventReference();
         switch (sceneName)
         {
@@ -190,6 +191,7 @@ public class AudioManager : Singleton<AudioManager>
                 ////Debug.LogWarning($"No music event found for scene: {sceneName}");
                 return;
         }
+        musicEventInstance = RuntimeManager.CreateInstance(musicEvent);
 
         if (musicEvent.Guid != System.Guid.Empty)
         {
