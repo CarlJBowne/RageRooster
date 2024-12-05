@@ -10,7 +10,6 @@ using UnityEngine;
 /// Further customization can be done with RuntimeInitializeOnLoadMethod, (See Bottom of script for example.)
 /// </summary>
 /// <typeparam name="T">The Behavior's Type</typeparam>
-[InitializeOnLoad]
 public abstract class Singleton<T> : Singleton where T : Singleton<T>
 {
     #region Data and Setup

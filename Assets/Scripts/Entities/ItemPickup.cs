@@ -43,6 +43,7 @@ public class ItemPickup : MonoBehaviour
         {
             if(upgradeName == "Health") health.AddMaxHealth();
             else FindObjectOfType<PlayerStateMachine>().SetUpgrade(upgradeName, true);
+            UIHUDSystem.Get().ShowHint(hintString);
         }
         else if(type == ItemType.Hen)
         {

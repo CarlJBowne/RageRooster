@@ -1,4 +1,4 @@
-﻿//#define AYellowPaper
+﻿#define AYellowPaper
 
 using System;
 using System.Collections.Generic;
