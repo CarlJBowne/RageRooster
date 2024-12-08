@@ -2,21 +2,180 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
 /// <summary>
 /// A type of Behavior that can only exist once in a scene. <br/>
-/// Further customization can be done with RuntimeInitializeOnLoadMethod, (See Bottom of script for example.)
+/// Basic form that functions out of the box. (Inheret from SingletonAdvanced instead for special functionality.)
 /// </summary>
 /// <typeparam name="T">The Behavior's Type</typeparam>
-public abstract class Singleton<T> : Singleton where T : Singleton<T>
+public abstract class Singleton<T> : SingletonAncestor where T : Singleton<T>
 {
     #region Data and Setup
 
     private static T _instance;
 
-    public static T Get() => GetDel?.Invoke();
+    public static T Get() => InitFind();
+    public static bool TryGet(out T output)
+    {
+        output = InitFind();
+        return output != null;
+    }
+
+    #endregion
+
+    #region Initialization
+
+    protected static bool AttemptFind(out T result)
+    {
+        T findAttempt = FindFirstObjectByType<T>();
+        if (findAttempt)
+        {
+            result = findAttempt;
+            _instance = result;
+
+            _instance.OnAwake();
+            return true;
+        }
+        else
+        {
+            result = null;
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Simply Attempts to Find the Singleton in the current scene.
+    /// </summary>
+    /// <returns></returns>
+    protected static T InitFind()
+    {
+        #if UNITY_EDITOR
+        if (!Application.isPlaying) { Debug.LogError($"{typeof(T)} accessed outside of runtime. Don't."); return null; }
+        #endif
+
+        if (_instance != null) return _instance;
+        if (AttemptFind(out T attempt))
+        {
+            attempt.GetComponent<T>().InitFinal();
+            return _instance;
+        }
+        else
+        {
+            #if UNITY_EDITOR
+            Debug.LogError($"No Singleton of type {typeof(T)} could be found.");
+            #endif
+            return null;
+        }
+    }
+
+    protected void InitFinal()
+    {
+        if (_instance || _instance == this) return;
+        _instance = this as T;
+        activeSingletons.Add(typeof(T), this);
+        if (DontDestoryOnLoad) DontDestroyOnLoad(_instance);
+        _instance.OnAwake();
+    }
+
+    protected static bool DontDestoryOnLoad = false;
+
+    #endregion
+
+    #region Other Functionality
+
+
+    /// <summary>
+    /// This is the Unity Function which runs some code necessary for Singleton Function. Use OnAwake() instead.
+    /// </summary>
+    public void Awake()
+    {
+        if (_instance && _instance != this)
+        {
+#if UNITY_EDITOR
+            Debug.Log($"Second {typeof(T)} found, Destroying...");
+#endif
+
+            Destroy(this);
+        }
+        else
+        {
+            if (_instance == this) return;
+            (this as T).InitFinal(); ;
+        }
+    }
+
+    protected virtual void OnAwake() { }
+
+    /// <summary>
+    /// This is the Unity Function which runs some code necessary for Singleton Function. Use OnDestroyed() instead.
+    /// </summary>
+    private void OnDestroy()
+    {
+        if (_instance == this)
+        {
+            _instance = null;
+            activeSingletons.Remove(typeof(T));
+        }
+        this.OnDestroyed();
+    }
+    protected virtual void OnDestroyed() { }
+
+    /// <summary>
+    /// Destroys the instance of this singleton, wherever it is.
+    /// </summary>
+    /// <param name="leaveGameObject"> Whether the Game Object that contains the Singleton is left behind.</param>
+    public static void DestroyS(bool leaveGameObject = false)
+    {
+        if (_instance == null) return;
+        if (!leaveGameObject)
+        {
+            Destroy(_instance.gameObject);
+        }
+        else
+        {
+            Destroy(_instance);
+            _instance.OnDestroy();
+        }
+    }
+
+    /// <summary>
+    /// Very Dangerous. Do not use if you don't know what you're doing.
+    /// </summary>
+    public void Reset(bool ResetWholeGameObject)
+    {
+        if (ResetWholeGameObject)
+        {
+            GameObject obj = _instance.gameObject;
+            DestroyS(true);
+            obj.AddComponent<T>();
+        }
+        else
+        {
+            DestroyS(false);
+            Get();
+        }
+
+    }
+
+    #endregion
+
+}
+
+/// <summary>
+/// A type of Behavior that can only exist once in a scene. <br/>
+/// Advanced form that can be customized with a static "Data" method. (See bottom of script file for examples.)
+/// </summary>
+/// <typeparam name="T">The Behavior's Type</typeparam>
+public abstract class SingletonAdvanced<T> : Singleton<SingletonAdvanced<T>> where T : SingletonAdvanced<T>
+{
+    #region Data and Setup
+
+    private static T _instance;
+
+    public new static T Get() => GetDel?.Invoke();
     public static bool TryGet(out T output)
     {
         output = GetDel?.Invoke();
@@ -33,7 +192,7 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
         DontDestoryOnLoad = dontDestroyOnLoad;
         if (spawnMethod == InitSavedPrefab)
         {
-            Singleton S = GlobalPrefabs.Singletons.FirstOrDefault(x => x is T);
+            SingletonAncestor S = GlobalPrefabs.Singletons.FirstOrDefault(x => x is T);
             prefab = S
                 ? S.gameObject
                 : throw new Exception($"Singleton {typeof(T)} is set to use a saved prefab but isn't set up in the Global Prefabs Asset.");
@@ -44,7 +203,6 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
     /// <summary>
     /// Override to make this Singleton not destroy on load.
     /// </summary>
-    static bool DontDestoryOnLoad = false;
     protected static string Path = null;
     protected static GameObject prefab;
 
@@ -74,7 +232,7 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
     /// Simply Attempts to Find the Singleton in the current scene.
     /// </summary>
     /// <returns></returns>
-    protected static T InitFind()
+    protected new static T InitFind()
     {
 #if UNITY_EDITOR
         if (!Application.isPlaying) { Debug.LogError($"{typeof(T)} accessed outside of runtime. Don't."); return null; }
@@ -176,41 +334,8 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
         return _instance;
     }
 #endif
-    protected void InitFinal()
-    {
-        if (_instance || _instance == this) return;
-        _instance = this as T;
-        activeSingletons.Add(typeof(T), this);
-        if (DontDestoryOnLoad) DontDestroyOnLoad(_instance);
-        _instance.OnAwake();
-    }
 
     #endregion
-
-    #region Other Functionality
-
-
-    /// <summary>
-    /// This is the Unity Function which runs some code necessary for Singleton Function. Use OnAwake() instead.
-    /// </summary>
-    public void Awake()
-    {
-        if (_instance && _instance != this)
-        {
-#if UNITY_EDITOR
-            Debug.Log($"Second {typeof(T)} found, Destroying...");
-#endif
-
-            Destroy(this);
-        }
-        else
-        {
-            if (_instance == this) return;
-            (this as T).InitFinal(); ;
-        }
-    }
-
-    protected virtual void OnAwake() { }
 
     /// <summary>
     /// This is the Unity Function which runs some code necessary for Singleton Function. Use OnDestroyed() instead.
@@ -222,55 +347,16 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
             _instance = null;
             activeSingletons.Remove(typeof(T));
         }
-        OnDestroyed();
+        this.OnDestroyed();
     }
-    protected virtual void OnDestroyed() { }
-
-    /// <summary>
-    /// Destroys the instance of this singleton, wherever it is.
-    /// </summary>
-    /// <param name="leaveGameObject"> Whether the Game Object that contains the Singleton is left behind.</param>
-    public static void DestroyS(bool leaveGameObject = false)
-    {
-        if (_instance == null) return;
-        if (!leaveGameObject)
-        {
-            Destroy(_instance.gameObject);
-        }
-        else
-        {
-            Destroy(_instance);
-            _instance.OnDestroy();
-        }
-    }
-
-    /// <summary>
-    /// Very Dangerous. Do not use if you don't know what you're doing.
-    /// </summary>
-    public void Reset(bool ResetWholeGameObject)
-    {
-        if (ResetWholeGameObject)
-        {
-            GameObject obj = _instance.gameObject;
-            DestroyS(true);
-            obj.AddComponent<T>();
-        }
-        else
-        {
-            DestroyS(false);
-            Get();
-        }
-
-    }
-
-    #endregion
 
 }
 
-public abstract class Singleton : MonoBehaviour
+
+public abstract class SingletonAncestor : MonoBehaviour
 {
-    public static Dictionary<Type, Singleton> activeSingletons = new();
-    public static T Get<T>() where T : Singleton => activeSingletons[typeof(T)] as T;
+    public static Dictionary<Type, SingletonAncestor> activeSingletons = new();
+    public static T Get<T>() where T : SingletonAncestor => activeSingletons[typeof(T)] as T;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Boot()
@@ -278,7 +364,7 @@ public abstract class Singleton : MonoBehaviour
 #if UNITY_EDITOR
         Debug.Log("Loading Singletons");
 #endif
-        foreach (Type item in Assembly.GetAssembly(typeof(Singleton)).GetTypes().Where(t => typeof(Singleton).IsAssignableFrom(t) && !t.IsAbstract))
+        foreach (Type item in Assembly.GetAssembly(typeof(SingletonAdvanced<>)).GetTypes().Where(t => typeof(SingletonAdvanced<>).IsAssignableFrom(t) && !t.IsAbstract))
         {
             MethodInfo M = item.GetMethod("Data", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod);
             M?.Invoke(null, null);
@@ -310,7 +396,7 @@ public abstract class Singleton : MonoBehaviour
 
 /* Example Use --------------------------------------------------------------------------------------------------------------------------------------------
 
-public class ExampleSingleton : Singleton<ExampleSingleton>
+public class ExampleSingleton : SingletonAdvanced<ExampleSingleton>
 {
     static void Data() => SetData(spawnMethod: InitResourcePrefab, dontDestroyOnLoad: true, spawnOnBoot: true, path: "ExampleSingleton");
 }
