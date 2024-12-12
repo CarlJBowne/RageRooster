@@ -61,6 +61,7 @@ namespace SLS.StateMachineV2
         public State[] lineage { get; private set; }
 
         public State this[int i] => children[i];
+        public StateBehavior this[System.Type T] => GetComponent(T) as StateBehavior;
 
         public T Behavior<T>() where T : StateBehavior => behaviors.First(x => x is T) as T;
 
