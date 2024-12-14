@@ -18,11 +18,25 @@ public abstract class Singleton<T> : SingletonAncestor where T : Singleton<T>
     private static T _instance;
 
     public static T Get() => InitFind();
+    public static T I => InitFind();
     public static bool TryGet(out T output)
     {
         output = InitFind();
         return output != null;
     }
+    public static bool IsActive(out T output)
+    {
+        output = InitFind();
+        return output != null;
+    }
+    public static void Get(out T output)
+    {
+        output = InitFind();
+        if (output != null) throw new Exception("Singleton not active.");
+    }
+
+
+    public static bool Active;
 
     #endregion
 
@@ -75,6 +89,7 @@ public abstract class Singleton<T> : SingletonAncestor where T : Singleton<T>
     {
         if (_instance || _instance == this) return;
         _instance = this as T;
+        Active = true;
         activeSingletons.Add(typeof(T), this);
         if (DontDestoryOnLoad) DontDestroyOnLoad(_instance);
         _instance.OnAwake();
@@ -117,6 +132,7 @@ public abstract class Singleton<T> : SingletonAncestor where T : Singleton<T>
         if (_instance == this)
         {
             _instance = null;
+            Active = false;
             activeSingletons.Remove(typeof(T));
         }
         this.OnDestroyed();
@@ -176,11 +192,24 @@ public abstract class SingletonAdvanced<T> : Singleton<SingletonAdvanced<T>> whe
     private static T _instance;
 
     public new static T Get() => GetDel?.Invoke();
+    public new static T I => GetDel?.Invoke();
     public static bool TryGet(out T output)
     {
         output = GetDel?.Invoke();
         return output != null;
     }
+    public static bool IsActive(out T output)
+    {
+        output = GetDel?.Invoke();
+        return output != null;
+    }
+    public static void Get(out T output)
+    {
+        output = InitFind();
+        if (output != null) throw new Exception("Singleton not active.");
+    }
+
+
 
     public delegate T Delegate();
     protected static Delegate GetDel = InitFind;
