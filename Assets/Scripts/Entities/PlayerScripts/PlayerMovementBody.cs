@@ -14,9 +14,6 @@ public class PlayerMovementBody : PlayerStateBehavior
     public float maxSlopeNormalAngle = 20f;
     public float coyoteTime = 0.5f;
     public float tripleJumpTime = 0.3f;
-    //public State groundedState;
-    //public State airborneState;
-    //public State fallState;
     public PlayerAirborn jumpState1;
     public PlayerAirborn jumpState2;
     public PlayerWallJump wallJumpState;
@@ -48,9 +45,11 @@ public class PlayerMovementBody : PlayerStateBehavior
     //public Vector3 velocity { get => rb.velocity; set => rb.velocity = value; }
     public Vector3 position { 
         get => rb.position;
-        set => rb.position = value; }
-    public Quaternion rotationQ { get => rb.rotation; set => rb.rotation = value; }
-    public Vector3 rotation { get => transform.eulerAngles; set => transform.eulerAngles = value; }
+        set => rb.MovePosition(value); }
+    public Quaternion rotationQ 
+    { get => rb.rotation; set => rb.rotation = value; }
+    public Vector3 rotation 
+    { get => transform.eulerAngles; set => transform.eulerAngles = value; }
 
     [HideInInspector] public Vector3 currentDirection
     {
@@ -100,8 +99,8 @@ public class PlayerMovementBody : PlayerStateBehavior
 
             if (anchorTransform && !anchorTransform.gameObject.isStatic)
             {
-                Vector3 anchorOffset = prevAnchorPosition - anchorTransform.position;
-                prevAnchorPosition = anchorTransform.position;
+                Vector3 anchorOffset = prevAnchorPosition - anchorTransform.localPosition;
+                prevAnchorPosition = anchorTransform.localPosition;
                 rb.MovePosition(rb.position - anchorOffset);
             }
 
@@ -250,7 +249,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         }
         if (anchorTransform == newAnchor || newAnchor.gameObject.isStatic) return;
         anchorTransform = newAnchor;
-        prevAnchorPosition = newAnchor.position;
+        prevAnchorPosition = newAnchor.localPosition;
     }
 
 #if UNITY_EDITOR

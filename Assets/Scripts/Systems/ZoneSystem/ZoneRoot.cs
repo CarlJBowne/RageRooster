@@ -9,6 +9,7 @@ public class ZoneRoot : MonoBehaviour
     public Transform defaultPlayerSpawn;
 
     [HideInInspector] public new string name;
+    public Vector3 originOffset;
 
     public static implicit operator string(ZoneRoot A) => A.name ?? A.gameObject.scene.name;
 
@@ -27,6 +28,7 @@ public class ZoneRoot : MonoBehaviour
         if (!ZoneManager.Active) return;
 
         name = gameObject.scene.name;
+        originOffset = transform.position;
 
         if(transitions.Length == 0) transitions = gameObject.GetComponentsInChildren<ZoneTransition>();
 
@@ -76,11 +78,18 @@ public class ZoneProxy
 
     public void Update()
     {
-        if (!ZoneManager.IsCurrent(this) || task != null) return;
+        if (ZoneManager.IsCurrent(this) || task != null) return;
         bool value = CheckForLoad();
 
-        if (value && !loaded) task = Gameplay.Get().StartCoroutine(Loading());
-        else if (!value && loaded) task = Gameplay.Get().StartCoroutine(Unloading());
+        if (value && !loaded)
+        {
+            task = Gameplay.Get().StartCoroutine(Loading());
+        }    
+        else if (!value && loaded)
+        {
+            task = Gameplay.Get().StartCoroutine(Unloading());
+        }
+            
     }
 
     public bool CheckForLoad()
@@ -105,7 +114,7 @@ public class ZoneProxy
     IEnumerator Unloading()
     {
         yield return new WaitForSecondsRealtime(manager.minLoadTime);
-        if (CheckForLoad())
+        if (ZoneManager.IsCurrent(this) || CheckForLoad())
         {
             task = null;
             yield break;

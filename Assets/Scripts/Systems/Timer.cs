@@ -1,8 +1,10 @@
-﻿using System;
+﻿using EditorAttributes;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-[Serializable]
-public struct Timer
+[Serializable, System.Obsolete]
+public struct Timer_Old
 {
     public float value;
     public float lowerEdge;
@@ -11,7 +13,7 @@ public struct Timer
     public Delegate action;
     private bool active;
 
-    public Timer(float higherEdge, Delegate action = null)
+    public Timer_Old(float higherEdge, Delegate action = null)
     {
         value = 0;
         this.lowerEdge = 0;
@@ -19,7 +21,7 @@ public struct Timer
         this.action = action;
         active = true;
     }
-    public Timer(float lowerEdge, float higherEdge, Delegate action = null)
+    public Timer_Old(float lowerEdge, float higherEdge, Delegate action = null)
     {
         value = 0;
         this.lowerEdge = lowerEdge;
@@ -27,7 +29,7 @@ public struct Timer
         this.action = action;
         active = true;
     }
-    public Timer(float begin, float lowerEdge, float higherEdge, Delegate action = null)
+    public Timer_Old(float begin, float lowerEdge, float higherEdge, Delegate action = null)
     {
         value = begin;
         this.lowerEdge = lowerEdge;
@@ -36,10 +38,10 @@ public struct Timer
         active = true;
     }
 
-    public static implicit operator bool(Timer timer) => timer.active;
-    public static implicit operator float(Timer timer) => timer.value;
+    public static implicit operator bool(Timer_Old timer) => timer.active;
+    public static implicit operator float(Timer_Old timer) => timer.value;
 
-    public static Timer operator +(Timer timer, float value)
+    public static Timer_Old operator +(Timer_Old timer, float value)
     {
         if (!timer) return timer;
         timer.value += value;
@@ -50,7 +52,7 @@ public struct Timer
         }
         return timer;
     }
-    public static Timer operator -(Timer timer, float value)
+    public static Timer_Old operator -(Timer_Old timer, float value)
     {
         if (!timer) return timer;
         timer.value -= value;
@@ -96,4 +98,69 @@ public struct Timer
         }
         else return false;
     }
+}
+
+namespace Timer
+{
+
+    [System.Serializable]
+    public struct Loop
+    {
+        [SerializeField] public float rate;
+        [SerializeField, DisableInEditMode, DisableInPlayMode] public float current;
+        [HideInInspector] public bool disabled;
+
+        public Loop(float rate, bool disable = false)
+        {
+            this.rate = rate;
+            current = 0f;
+            disabled = disable;
+        }
+
+        public void Tick(Action callback)
+        {
+            if (disabled) return;
+            current += Time.deltaTime;
+            if(current > rate)
+            {
+                current %= rate;
+                callback?.Invoke();
+            }
+        }
+    }
+
+    [System.Serializable]
+    public struct OneTime
+    {
+        [SerializeField] public float length;
+        [SerializeField, DisableInEditMode, DisableInPlayMode] public float current;
+        [HideInInspector] public bool running;
+
+        public OneTime(float rate, bool activate = false)
+        {
+            this.length = rate;
+            current = 0f;
+            running = false;
+            if (activate) Begin();
+        }
+
+        public void Begin()
+        {
+            current = 0f;
+            running = true;
+        }
+
+        public void Tick(Action callback)
+        {
+            if (!running) return;
+            current += Time.deltaTime;
+            if (current > length)
+            {
+
+                running = false;
+                callback?.Invoke();
+            }
+        }
+    }
+
 }

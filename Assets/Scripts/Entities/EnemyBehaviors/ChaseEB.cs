@@ -12,7 +12,7 @@ public class ChaseEB : StateBehavior
 
     private NavMeshAgent agent;
     private TrackerEB playerTracker;
-    private Timer destUpdateTimer;
+    private Timer_Old destUpdateTimer;
 
     public override void OnAwake()
     {

@@ -32,7 +32,7 @@ public abstract class Singleton<T> : SingletonAncestor where T : Singleton<T>
     public static void Get(out T output)
     {
         output = InitFind();
-        if (output != null) throw new Exception("Singleton not active.");
+        if (output == null) throw new Exception("Singleton not active.");
     }
 
 
@@ -206,7 +206,7 @@ public abstract class SingletonAdvanced<T> : Singleton<SingletonAdvanced<T>> whe
     public static void Get(out T output)
     {
         output = InitFind();
-        if (output != null) throw new Exception("Singleton not active.");
+        if (output == null) throw new Exception("Singleton not active.");
     }
 
 
