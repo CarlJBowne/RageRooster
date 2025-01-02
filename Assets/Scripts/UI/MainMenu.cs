@@ -7,7 +7,7 @@ public class MainMenu : MonoBehaviour
 {
     public GameObject optionsMenuPanel;
     public GameObject creditsPanel;
-    public RectTransform creditsContent;
+    //public RectTransform creditsContent;
 
     private void Start()
     {
@@ -42,7 +42,7 @@ public class MainMenu : MonoBehaviour
     public void ShowCredits()
     {
         AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
-        creditsContent.anchoredPosition = new Vector2(creditsContent.anchoredPosition.x, 0);
+        //creditsContent.anchoredPosition = new Vector2(creditsContent.anchoredPosition.x, 0);
         creditsPanel.SetActive(true);
     }
 

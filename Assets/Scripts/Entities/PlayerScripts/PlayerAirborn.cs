@@ -59,13 +59,14 @@ public class PlayerAirborn : PlayerStateBehavior
             targetMinHeight = transform.position.y;
         }
 
-
+#if UNITY_EDITOR
         body.jumpMarkers = new()
         {
             transform.position,
             transform.position + Vector3.up * targetHeight,
             transform.position + Vector3.up * jumpHeight
         };
+#endif
     }
     public override void OnExit() => phase = -1;
 

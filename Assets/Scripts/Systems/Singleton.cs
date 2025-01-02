@@ -1,15 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using R = UnityEngine.RuntimeInitializeOnLoadMethodAttribute;
 
 /// <summary>
 /// A type of Behavior that can only exist once in a scene. <br/>
 /// Further customization can be done with RuntimeInitializeOnLoadMethod, (See Bottom of script for example.)
 /// </summary>
 /// <typeparam name="T">The Behavior's Type</typeparam>
-[InitializeOnLoad]
 public abstract class Singleton<T> : Singleton where T : Singleton<T>
 {
     #region Data and Setup
@@ -26,17 +26,17 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
     public delegate T Delegate();
     protected static Delegate GetDel = InitFind;
 
-    protected static void SetInfo(Delegate spawnMethod = null, bool dontDestroyOnLoad = false, bool spawnOnBoot = false, string path = null)
+    protected static void SetData(Delegate spawnMethod = null, bool dontDestroyOnLoad = false, bool spawnOnBoot = false, string path = null)
     {
         if (spawnMethod != null) GetDel = spawnMethod;
         if (path != null) Path = path;
         DontDestoryOnLoad = dontDestroyOnLoad;
         if (spawnMethod == InitSavedPrefab)
         {
-            Singleton S = GlobalPrefabs.Get().singletons.FirstOrDefault(x => x is T);
+            Singleton S = GlobalPrefabs.Singletons.FirstOrDefault(x => x is T);
             prefab = S
                 ? S.gameObject
-                : throw new Exception($"Singleton {typeof(T)} is labeled as using a saved prefab but isn't set up in the Global Prefabs Asset.");
+                : throw new Exception($"Singleton {typeof(T)} is set to use a saved prefab but isn't set up in the Global Prefabs Asset.");
         }
 
         if (spawnOnBoot) spawnMethod?.Invoke();
@@ -180,6 +180,7 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
     {
         if (_instance || _instance == this) return;
         _instance = this as T;
+        activeSingletons.Add(typeof(T), this);
         if (DontDestoryOnLoad) DontDestroyOnLoad(_instance);
         _instance.OnAwake();
     }
@@ -219,6 +220,7 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
         if (_instance == this)
         {
             _instance = null;
+            activeSingletons.Remove(typeof(T));
         }
         OnDestroyed();
     }
@@ -262,17 +264,55 @@ public abstract class Singleton<T> : Singleton where T : Singleton<T>
     }
 
     #endregion
+
 }
 
-public abstract class Singleton : MonoBehaviour { };
+public abstract class Singleton : MonoBehaviour
+{
+    public static Dictionary<Type, Singleton> activeSingletons = new();
+    public static T Get<T>() where T : Singleton => activeSingletons[typeof(T)] as T;
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    public static void Boot()
+    {
+#if UNITY_EDITOR
+        Debug.Log("Loading Singletons");
+#endif
+        foreach (Type item in Assembly.GetAssembly(typeof(Singleton)).GetTypes().Where(t => typeof(Singleton).IsAssignableFrom(t) && !t.IsAbstract))
+        {
+            MethodInfo M = item.GetMethod("Data", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod);
+            M?.Invoke(null, null);
+            /*
+                var F1 = item.GetField("InitMethod", BindingFlags.Static | BindingFlags.Public);
+                var F2 = item.GetField("DontDestroyOnLoad", BindingFlags.Static | BindingFlags.Public);
+                var F3 = item.GetField("Path", BindingFlags.Static | BindingFlags.Public);
+                var F4 = item.GetField("SpawnOnBoot", BindingFlags.Static | BindingFlags.Public);
+
+                var M = item.BaseType.GetMethod("SetInfo", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod);
+                    M.Invoke(null, new[]{
+                        F1 != null ? F1.GetValue(null) : null, 
+                        F2 != null ? F2.GetValue(null) : false, 
+                        F4 != null ? F4.GetValue(null) : false,  
+                        F3 != null ? F3.GetValue(null) : null});
+            */
+            /*
+                //var F2 = item.GetField("DontDestroyOnLoad", BindingFlags.Static | BindingFlags.Public);
+                //if (F2 != null) item.GetField("_DontDestroyOnLoad", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, F2);
+                //var F3 = item.GetField("Path", BindingFlags.Static | BindingFlags.Public);
+                //if (F3 != null) item.GetField("_Path", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, F3);
+                //var F1 = item.GetField("InitMethod", BindingFlags.Static | BindingFlags.Public);
+                //if(F1 != null) item.GetField("_GetDel", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, F1);
+            */
+        }
+    }
+
+}
 
 /* Example Use --------------------------------------------------------------------------------------------------------------------------------------------
 
 public class ExampleSingleton : Singleton<ExampleSingleton>
 {
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    private static void Boot() => SetInfo(spawnMethod: InitResourcePrefab, dontDestroyOnLoad: true, spawnOnBoot: true, path: "ExampleSingleton");
+    static void Data() => SetData(spawnMethod: InitResourcePrefab, dontDestroyOnLoad: true, spawnOnBoot: true, path: "ExampleSingleton");
 }
 
 Spawn methods include:

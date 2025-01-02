@@ -28,7 +28,7 @@ public class VolumeSlider : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Slider component not found in children.");
+            ////Debug.LogError("Slider component not found in children.");
         }
     }
 
@@ -56,7 +56,7 @@ public class VolumeSlider : MonoBehaviour
                 volumeSlider.value = AudioManager.Get().ambienceVolume;
                 break;
             default:
-                Debug.LogError("Volume type not found: " + volumeType);
+                ////Debug.LogError("Volume type not found: " + volumeType);
                 break;
         }
     }
@@ -83,7 +83,7 @@ public class VolumeSlider : MonoBehaviour
                 AudioManager.Get().ambienceVolume = volumeSlider.value;
                 break;
             default:
-                Debug.LogError("Volume type not found: " + volumeType);
+                ////Debug.LogError("Volume type not found: " + volumeType);
                 break;
         }
 

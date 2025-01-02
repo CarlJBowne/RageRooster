@@ -46,7 +46,9 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     #region GetSet
     //public Vector3 velocity { get => rb.velocity; set => rb.velocity = value; }
-    public Vector3 position { get => rb.position; set => rb.position = value; }
+    public Vector3 position { 
+        get => rb.position;
+        set => rb.position = value; }
     public Quaternion rotationQ { get => rb.rotation; set => rb.rotation = value; }
     public Vector3 rotation { get => transform.eulerAngles; set => transform.eulerAngles = value; }
 
@@ -91,6 +93,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     public override void OnFixedUpdate()
     {
+        Vector3 prevPosition = rb.position;
         {
             M.animator.SetFloat("CurrentSpeed", currentSpeed);
             rb.velocity = Vector3.zero;
@@ -121,7 +124,9 @@ public class PlayerMovementBody : PlayerStateBehavior
         {
             if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out groundHit))
             {
+#if UNITY_EDITOR
                 AddToQueuedHits(new(groundHit));
+#endif
                 initNormal = groundHit.normal;
                 if (WithinSlopeAngle(groundHit.normal))
                 {
@@ -136,6 +141,8 @@ public class PlayerMovementBody : PlayerStateBehavior
         }
 
         Move(initVelocity * Time.fixedDeltaTime, initNormal);
+
+        M.freeLookCamera.transform.position += transform.position - prevPosition;
     }
 
     Vector3 initVelocity;
@@ -146,7 +153,9 @@ public class PlayerMovementBody : PlayerStateBehavior
     {
         if (rb.DirectionCast(vel.normalized, vel.magnitude, checkBuffer, out RaycastHit hit))
         {
+#if UNITY_EDITOR
             AddToQueuedHits(new(hit));
+#endif
             Vector3 snapToSurface = vel.normalized * hit.distance;
             Vector3 leftover = vel - snapToSurface;
             Vector3 nextNormal = hit.normal;
@@ -244,6 +253,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         prevAnchorPosition = newAnchor.position;
     }
 
+#if UNITY_EDITOR
 
     private List<HitNormalDisplay> queuedHits = new();
     private void AddToQueuedHits(HitNormalDisplay hit)
@@ -258,6 +268,8 @@ public class PlayerMovementBody : PlayerStateBehavior
     }
 
     public List<Vector3> jumpMarkers = new List<Vector3>();
+
+#endif
 
 }
 

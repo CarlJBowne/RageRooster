@@ -32,17 +32,17 @@ public class FMODEvents : MonoBehaviour
         // Ensure only one instance of FMODEvents exists and initialize it
         if (instance != null)
         {
-            Debug.LogError("Found more than one FMOD Event in the scene.");
+            ////Debug.LogError("Found more than one FMOD Event in the scene.");
             Destroy(gameObject);
             return;
         }
         instance = this;
         DontDestroyOnLoad(gameObject);
-        Debug.Log("FMODEvents Awake");
+        ////Debug.Log("FMODEvents Awake");
 
         if (forestAmbience.Guid == System.Guid.Empty && ranchAmbience.Guid == System.Guid.Empty)
         {
-            Debug.LogWarning("No ambience events are assigned in the FMODEvents component.");
+            ////Debug.LogWarning("No ambience events are assigned in the FMODEvents component.");
         }
     }
 

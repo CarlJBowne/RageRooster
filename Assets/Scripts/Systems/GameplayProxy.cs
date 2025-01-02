@@ -7,14 +7,27 @@ public class GameplayProxy : MonoBehaviour
     public bool reverseProxy;
 
     private void Start()
-    {
+     {
         var attempt = GameObject.Find("Gameplay");
-        if(!reverseProxy && attempt == null)
+        if(!reverseProxy)
         {
-            var NEW = Instantiate(GlobalPrefabs.NamedPrefab("Gameplay"));
-            NEW.transform.position = transform.position;
-            NEW.name = "Gameplay";
-            Destroy(gameObject);
+            if(attempt == null)
+            {
+                GameObject NEW = Instantiate(GlobalPrefabs.NamedPrefab("Gameplay"));
+                NEW.name = "Gameplay";
+                DontDestroyOnLoad(NEW);
+                PlayerHealth Player = NEW.transform.GetChild(0).GetComponent<PlayerHealth>();
+                Player.SetRespawnPoint(transform.position);
+                Player.Respawn();
+
+                Destroy(gameObject);
+            }
+            else
+            {
+                PlayerHealth Player = attempt.transform.GetChild(0).GetComponent<PlayerHealth>();
+                Player.SetRespawnPoint(transform.position);
+                Player.Respawn();
+            }
         }
         else if(reverseProxy && attempt != null) Destroy(attempt);
     }
