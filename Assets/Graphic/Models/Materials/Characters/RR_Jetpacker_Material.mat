@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: RR_Jetpacker_Material
-  m_Shader: {fileID: -6465566751694194690, guid: d6a87e04172edf347a685f2e3a51660c,
+  m_Shader: {fileID: -6465566751694194690, guid: 211e0bfb2c6fa404b96055e01e7d80d3,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -64,6 +64,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Highlights:
+        m_Texture: {fileID: 2800000, guid: 62d0528e1c9bae14db84d1b1bfca8364, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -78,6 +82,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_ecfb3c73b8284330ac6436fea530b09c_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 64776826f4e5b38449bd253a7b682ab6, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Shadows:
+        m_Texture: {fileID: 2800000, guid: 31368ada17a6f574c8a94ddf7ec94708, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -102,6 +114,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AdditionalLightThreshold: 0.49
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Blend: 0
