@@ -1,6 +1,8 @@
 ﻿using EditorAttributes;
 using System;
 using System.Collections.Generic;
+using Timer;
+using UnityEditor;
 using UnityEngine;
 
 [Serializable, System.Obsolete]
@@ -163,4 +165,74 @@ namespace Timer
         }
     }
 
+}
+
+
+[CustomPropertyDrawer(typeof(Loop))]
+public class LoopPropertyDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.BeginProperty(position, label, property);
+
+        // Retrieve the serialized fields
+        SerializedProperty rateProperty = property.FindPropertyRelative("rate");
+        SerializedProperty currentProperty = property.FindPropertyRelative("current");
+
+        // Draw the label
+        position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
+
+        // Adjust the width for the fields
+        float fieldWidth = position.width / (EditorApplication.isPlaying ? 2 : 1);
+        Rect rateRect = new Rect(position.x, position.y, fieldWidth, position.height);
+
+        // Draw the "rate" field
+        EditorGUI.PropertyField(rateRect, rateProperty, GUIContent.none);
+
+        if (EditorApplication.isPlaying)
+        {
+            // Draw the range slider for "current" if in play mode
+            Rect sliderRect = new Rect(position.x + fieldWidth + 5, position.y, fieldWidth - 5, position.height);
+            float rateValue = rateProperty.floatValue;
+            float currentValue = currentProperty.floatValue;
+            currentValue = EditorGUI.Slider(sliderRect, currentValue, 0f, rateValue);
+            currentProperty.floatValue = currentValue;
+        }
+
+        EditorGUI.EndProperty();
+    }
+}
+[CustomPropertyDrawer(typeof(OneTime))]
+public class OneTimePropertyDrawer : PropertyDrawer
+{
+    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    {
+        EditorGUI.BeginProperty(position, label, property);
+
+        // Retrieve the serialized fields
+        SerializedProperty lengthProperty = property.FindPropertyRelative("length");
+        SerializedProperty currentProperty = property.FindPropertyRelative("current");
+
+        // Draw the label
+        position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
+
+        // Adjust the width for the fields
+        float fieldWidth = position.width / (EditorApplication.isPlaying ? 2 : 1);
+        Rect rateRect = new Rect(position.x, position.y, fieldWidth, position.height);
+
+        // Draw the "rate" field
+        EditorGUI.PropertyField(rateRect, lengthProperty, GUIContent.none);
+
+        if (EditorApplication.isPlaying)
+        {
+            // Draw the range slider for "current" if in play mode
+            Rect sliderRect = new Rect(position.x + fieldWidth + 5, position.y, fieldWidth - 5, position.height);
+            float lengthValue = lengthProperty.floatValue;
+            float currentValue = currentProperty.floatValue;
+            currentValue = EditorGUI.Slider(sliderRect, currentValue, 0f, lengthValue);
+            currentProperty.floatValue = currentValue;
+        }
+
+        EditorGUI.EndProperty();
+    }
 }

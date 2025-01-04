@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[DefaultExecutionOrder(-200)]
 public class ZoneRoot : MonoBehaviour
 {
     public ZoneTransition[] transitions;
@@ -13,6 +14,7 @@ public class ZoneRoot : MonoBehaviour
 
     public static implicit operator string(ZoneRoot A) => A.name ?? A.gameObject.scene.name;
 
+    /*
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Boot()
     {
@@ -22,10 +24,18 @@ public class ZoneRoot : MonoBehaviour
         SceneManager.LoadScene(Gameplay.GAMEPLAY_SCENE_NAME);
         return;
     }
+    */
 
     private void Awake()
     {
-        if (!ZoneManager.Active) return;
+        if (!ZoneManager.Active)
+        {
+            var attempt = FindFirstObjectByType<ZoneRoot>(FindObjectsInactive.Include);
+            if (attempt == null || ZoneManager.Active) return;
+            Gameplay.areaToOpen = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(Gameplay.GAMEPLAY_SCENE_NAME);
+            return;
+        }
 
         name = gameObject.scene.name;
         originOffset = transform.position;
