@@ -126,7 +126,7 @@ namespace SLS.StateMachineV3
             DoAwake();
 
             behaviors.DoEnter(null);
-            children[0].EnterState(null, true);
+            currentState = children[0].EnterState(null, true);
 
             waitforMachineInit?.Invoke();
         }
@@ -137,13 +137,14 @@ namespace SLS.StateMachineV3
         public virtual void TransitionState(State nextState, State prevState)
         {
             // Pre Checks
-            if (nextState.locked ||
+            if (
+                nextState == null ||
+                nextState.locked ||
                 nextState == currentState ||
                 nextState == prevState ||
-                nextState == null ||
-                !prevState.active ||
                 prevState == null ||
-                prevState == this
+                prevState == this ||
+                !prevState.active
                ) return;
              
 
@@ -156,8 +157,7 @@ namespace SLS.StateMachineV3
             }
             for (; i < nextState.lineage.Length-1; i++)
                 nextState.lineage[i].EnterState(prevState, false);
-            nextState.EnterState(prevState);
-            currentState = nextState;
+            currentState = nextState.EnterState(prevState);
             nextState.onActivatedEvent?.Invoke(prevState);
         }
 

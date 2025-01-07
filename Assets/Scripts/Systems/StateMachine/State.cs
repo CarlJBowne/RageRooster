@@ -135,20 +135,21 @@ namespace SLS.StateMachineV3
             behaviors.DoFixedUpdate();
             if (childCount > 0 && activeChild) activeChild.DoFixedUpdate();
         }
-        public void EnterState(State prev, bool specifically = true)
+        public State EnterState(State prev, bool specifically = true)
         {
             if(parent!=null) parent.activeChild = this;
             active = true;
 
+            base.gameObject.SetActive(true);
+
             behaviors.DoEnter(prev);
 
-            if (specifically && childCount>0 && !separateFromChildren)
+            if (specifically && childCount > 0 && !separateFromChildren)
             {
                 activeChild = children[0];
-                activeChild.EnterState(prev, specifically);
+                return activeChild.EnterState(prev, specifically);
             }
-                
-            base.gameObject.SetActive(true);
+            return this;
         }
         public void ExitState(State next)
         {
