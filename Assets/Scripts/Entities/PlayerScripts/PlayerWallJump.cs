@@ -1,4 +1,4 @@
-using SLS.StateMachineV2;
+using SLS.StateMachineV3;
 using UnityEngine;
 
 public class PlayerWallJump : PlayerAirborn
@@ -27,7 +27,7 @@ public class PlayerWallJump : PlayerAirborn
          
     }
 
-    public override void OnEnter()
+    public override void OnEnter(State prev)
     {
     }
 

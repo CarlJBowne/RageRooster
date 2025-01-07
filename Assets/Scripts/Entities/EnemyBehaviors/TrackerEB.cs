@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using SLS.StateMachineV2;
+using SLS.StateMachineV3;
 using EditorAttributes;
 using UnityEngine.Events;
 
@@ -64,7 +64,7 @@ public class TrackerEB : StateBehavior
         if (autoCheckRate > 0) autoCheckTimer = new(autoCheckRate, CheckData);
     }
 
-    public override void OnEnter()
+    public override void OnEnter(State prev)
     {
         if (target == null)
         {

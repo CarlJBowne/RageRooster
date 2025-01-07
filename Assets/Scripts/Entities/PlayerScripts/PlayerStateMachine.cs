@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SLS.StateMachineV2;
+using SLS.StateMachineV3;
 using System;
 using Cinemachine;
 
@@ -25,8 +25,8 @@ public class PlayerStateMachine : StateMachine
     {
         animator = GetComponent<Animator>();
         input = Input.Get();
-        body = GetGlobalBehavior<PlayerMovementBody>();
-        controller = GetGlobalBehavior<PlayerController>();
+        body = GetComponent<PlayerMovementBody>();
+        controller = GetComponent<PlayerController>();
         whenInitializedEvent?.Invoke(this);
 
         // Initialize the Cinemachine FreeLook camera
@@ -74,9 +74,9 @@ public abstract class PlayerStateBehavior : StateBehavior
     [HideInInspector] public PlayerMovementBody body;
     [HideInInspector] public PlayerController controller;
 
-    protected override void Initialize(StateMachine machine)
+    protected override void Initialize()
     {
-        M = machine as PlayerStateMachine;
+        M = base.M as PlayerStateMachine;
         input = M.input;
         body = M.body;
         controller = M.controller;

@@ -1,5 +1,5 @@
 using EditorAttributes;
-using SLS.StateMachineV2;
+using SLS.StateMachineV3;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,7 +87,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     {
         rb = GetComponentFromMachine<Rigidbody>();
         collider = GetComponentFromMachine<CapsuleCollider>();
-        M.physicsCallbacks += Collision;
+        //M.physicsCallbacks += Collision;
     }
 
     public override void OnFixedUpdate()
@@ -230,10 +230,9 @@ public class PlayerMovementBody : PlayerStateBehavior
         LatchAnchor(null);
     }
 
-    private void Collision(PhysicsCallback type, Collision collision, Collider trigger)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (type != PhysicsCallback.OnCollisionEnter) return;
-        if ((jumpState1 || jumpState2 || airChargeState) && Vector3.Dot(collision.GetContact(0).normal, Vector3.down) > 0.75f) 
+        if ((jumpState1 || jumpState2 || airChargeState) && Vector3.Dot(collision.GetContact(0).normal, Vector3.down) > 0.75f)
         {
             sFall.TransitionTo();
             VelocitySet(y: 0);

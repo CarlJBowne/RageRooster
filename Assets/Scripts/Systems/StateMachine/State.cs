@@ -2,36 +2,39 @@ using UnityEngine;
 using UnityEngine.Events;
 using EditorAttributes;
 using System.Linq;
+using UnityEngine.EventSystems;
+using Unity.VisualScripting;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
-namespace SLS.StateMachineV2
+namespace SLS.StateMachineV3
 {
     /// <summary>
-    /// The class for an individual State in the State Machine. You can't inherit from this.
+    /// The class for an individual State in the State Machine. I wouldn't recommend inheriting from this.
     /// </summary>
-    public sealed class State : MonoBehaviour
+    public class State : MonoBehaviour
     {
         #region Config
 
-        [SerializeField] public bool locked = false;
+        [HideField(nameof(__isMachine))] public bool locked = false;
         /// <summary>
         /// Acts as a separate state from children rather than automating to the first in the list. Only applicable if this State has child states. 
         /// </summary>
         [SerializeField, ShowField(nameof(__showSepFromChildren))] private bool separateFromChildren;
-        [SerializeField] public UnityEvent<State> onActivatedEvent;
+        [SerializeField, HideField(nameof(__isMachine))] public UnityEvent<State> onActivatedEvent;
         
 
 
         #region Buttons
 
         [Button]
-        private void AddChild()
+        protected virtual void AddChild()
         {
             var NSGO = new GameObject("NewState");
             NSGO.transform.parent = base.transform;
             NSGO.AddComponent<State>();
         }
         [Button(nameof(__enableSiblingCreation), ConditionResult.EnableDisable)]
-        private void AddSibling()
+        protected virtual void AddSibling()
         {
             var NSGO = new GameObject("NewState");
             NSGO.transform.parent = base.transform.parent;
@@ -45,127 +48,183 @@ namespace SLS.StateMachineV2
         #region Data
 
         //Inherited Components from Machine.
-        public StateMachine machine { get; private set; }
+        public StateMachine machine { get; protected set; }
         //Data
-        public bool active { get; private set; }
-        public StateBehavior[] behaviors { get; private set; }
-        public bool isMultiState { get; private set; }
-        public bool isRoot => layer == -1;
-        public bool isTopLayer => layer == 0;
+        public bool active { get; protected set; }
+        public StateBehavior[] behaviors { get; protected set; }
+
+        //Layer Data
+        public int layer { get; protected set; }
 
         //Relationships.
-        public State parent { get; private set; }
-        public int layer { get; private set; }
-        public State[] children { get; private set; }
-        public State activeChild { get; private set; }
-        public State[] lineage { get; private set; }
+        public State parent { get; protected set; }
+        public State[] children { get; protected set; }
+        public int childCount { get; protected set; }
+        public State activeChild { get; protected set; }
+        public State[] lineage { get; protected set; }
+
+
+
+
+        //Getters
 
         public State this[int i] => children[i];
         public StateBehavior this[System.Type T] => GetComponent(T) as StateBehavior;
-
         public T Behavior<T>() where T : StateBehavior => behaviors.First(x => x is T) as T;
-
-        public bool activeMain => machine.currentState == this;
+        public static implicit operator bool(State s) => s.active;
 
         #endregion
 
         #region EditorData
-        public bool __showSepFromChildren => base.transform.childCount > 0 && __enableSiblingCreation;
-        public bool __enableSiblingCreation => layer != -1;
+        protected virtual bool __showSepFromChildren => base.transform.childCount > 0 && __enableSiblingCreation;
+        protected virtual bool __enableSiblingCreation => true;
+        protected virtual bool __isMachine => false;
+
 
         #endregion 
 
-        private void Reset()
-        {
-            if (transform.parent.TryGetComponent<StateMachine>(out _)) layer = -1;
-        }
-
-        public void _Initialize(StateMachine machine, int layer)
+        private void InitializeP(StateMachine machine, State parent, int layer)
         {
             this.machine = machine;
             this.layer = layer;
 
-            if(layer != -1) parent = base.transform.parent.GetComponent<State>();
-            else separateFromChildren = false;
+            this.parent = parent;
             gameObject.SetActive(false);
 
-            LineageSetup();
-
-            int childrenCount = base.transform.childCount;
-            if (layer == -1 && childrenCount < 0) throw new System.Exception("Why on earth do you have a State Machine with zero states?");
-            if (childrenCount > 0)
             {
-                isMultiState = true;
-                children = new State[childrenCount];
-                for (int i = 0; i < childrenCount; i++)
+                lineage = new State[layer + 1];
+                State iState = this;
+                for (int i = layer; i >= 0; i--)
                 {
-                    children[i] = base.transform.GetChild(i).GetComponent<State>();
-                    children[i]._Initialize(machine, layer + 1);
+                    lineage[i] = iState;
+                    iState = iState.parent;
                 }
-            }
+            }//Lineage Setup
+
+            SetupChildren(transform);
 
             behaviors = GetComponents<StateBehavior>();
-            for (int i = 0; i < behaviors.Length; i++) behaviors[i]._Initialize(machine);
-
-            if(layer == -1) _Enter(true);
+            behaviors.DoInit(this);
         }
 
-
-        private void LineageSetup()
+        protected void SetupChildren(Transform parent)
         {
-            var result = new State[layer + 1];
-            State iState = this;
-            for (int i = layer; i >= 0; i--)
+            childCount = parent.childCount;
+            children = new State[childCount];
+            for (int i = 0; i < childCount; i++)
             {
-                result[i] = iState;
-                iState = iState.parent;
-            }
-            lineage = result;
+                children[i] = parent.GetChild(i).GetComponent<State>();
+                children[i].InitializeP(machine, this, layer + 1);
+            }//Children Setup
         }
 
 
-        public void _Update()
+        public void DoAwake()
         {
-            for (int i = 0; i < behaviors.Length; i++) behaviors[i].OnUpdate();
-            if (isMultiState) activeChild?._Update();
+            behaviors.DoAwake();
+            children.DoAwake();
         }
-        public void _FixedUpdate()
+
+        public void DoUpdate()
         {
-            for (int i = 0; i < behaviors.Length; i++) behaviors[i].OnFixedUpdate();
-            if (isMultiState) activeChild?._FixedUpdate();
+            behaviors.DoUpdate();
+            if (childCount>0 && activeChild) activeChild.DoUpdate();
         }
-        public void _Enter(bool specifically = true)
+        public void DoFixedUpdate()
+        {
+            behaviors.DoFixedUpdate();
+            if (childCount > 0 && activeChild) activeChild.DoFixedUpdate();
+        }
+        public void EnterState(State prev, bool specifically = true)
         {
             if(parent!=null) parent.activeChild = this;
             active = true;
 
-            for (int i = 0; i < behaviors.Length; i++) behaviors[i].OnEnter();
+            behaviors.DoEnter(prev);
 
-            if (specifically && isMultiState && !separateFromChildren)
+            if (specifically && childCount>0 && !separateFromChildren)
             {
                 activeChild = children[0];
-                activeChild._Enter(specifically);
+                activeChild.EnterState(prev, specifically);
             }
                 
             base.gameObject.SetActive(true);
         }
-        public void _Exit()
+        public void ExitState(State next)
         {
             parent.activeChild = null;
             active = false;
-            for (int i = 0; i < behaviors.Length; i++) behaviors[i].OnExit();
+            behaviors.DoExit(next);
             base.gameObject.SetActive(false);
         }
 
-
-        public C GetComponentFromMachine<C>() where C : Component => machine.GetComponent<C>();
-        public bool TryGetComponentFromMachine<C>(out C result) where C : Component => machine.TryGetComponent(out result);
-
-        public void TransitionTo(State nextState) => machine.TransitionState(nextState, this);
         public void TransitionTo() => machine.TransitionState(this);
-
-        public static implicit operator bool(State s) => s.active;
-
     }
 
+    /// <summary>
+    /// Behavior Scripts attached to a state. Inherit from this to create functionality.
+    /// </summary>
+    [RequireComponent(typeof(State))]
+    public abstract class StateBehavior : MonoBehaviour
+    {
+
+        /// <summary>
+        /// The State Machine owning this behavior. Likely the most important field you'll be referencing a lot.<br />
+        /// Override with the "new" keyword with an expression like "=> M as MyStateMachine" to get a custom StateMachine
+        /// </summary>
+        public StateMachine M { get; private set; }
+        public new GameObject gameObject => M.gameObject;
+        public new Transform transform => M.transform;
+        public State state { get; private set; }
+
+
+        public void InitializeP(State @state)
+        {
+            M = @state.machine;
+            this.state = @state;
+
+            this.Initialize();
+        }
+        protected virtual void Initialize() { }
+
+
+        public virtual void OnAwake() { }
+        public virtual void OnUpdate() { }
+        public virtual void OnFixedUpdate() { }
+        public virtual void OnEnter(State prev) { }
+        public virtual void OnExit(State next) { }
+
+        public C GetComponentFromMachine<C>() where C : Component => M.GetComponent<C>();
+        public bool TryGetComponentFromMachine<C>(out C result) where C : Component => M.TryGetComponent(out result);
+
+        public void TransitionTo(State nextState) => M.TransitionState(nextState);
+
+        public virtual void Activate() => state.TransitionTo();
+
+
+        public static implicit operator bool(StateBehavior B) => B != null && B.state.active;
+    }
+
+    public static class _StateMachineExtMethods
+    {
+        public static void DoAwake(this State[] states)
+        { for (int i = 0; i < states.Length; i++) states[i].DoAwake(); }
+
+        public static void DoInit(this StateBehavior[] beahviors, State This)
+        { for (int i = 0; i < beahviors.Length; i++) beahviors[i].InitializeP(This); }
+        public static void DoAwake(this StateBehavior[] beahviors)
+        { for (int i = 0; i < beahviors.Length; i++) beahviors[i].OnAwake(); }
+        public static void DoUpdate(this StateBehavior[] beahviors)
+        { for (int i = 0; i < beahviors.Length; i++) beahviors[i].OnUpdate(); }
+        public static void DoFixedUpdate(this StateBehavior[] beahviors)
+        { for (int i = 0; i < beahviors.Length; i++) beahviors[i].OnFixedUpdate(); }
+        public static void DoEnter(this StateBehavior[] states, State prev)
+        { for (int i = 0; i < states.Length; i++) states[i].OnEnter(prev); }
+        public static void DoExit(this StateBehavior[] states, State next)
+        { for (int i = 0; i < states.Length; i++) states[i].OnExit(next); }
+
+        public static bool IsTopLayer(this State state) => state.layer == 0;
+        public static bool ActiveMain(this State state) => state.machine.currentState == state;
+        public static bool IsMachine(this State state) => state is StateMachine;
+    }
 }

@@ -1,4 +1,4 @@
-﻿using SLS.StateMachineV2;
+﻿using SLS.StateMachineV3;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -15,7 +15,7 @@ public class PatrolEB : StateBehavior
 
     public override void OnAwake() => agent = GetComponentFromMachine<NavMeshAgent>();
 
-    public override void OnEnter()
+    public override void OnEnter(State prev)
     {
         agent.enabled = true;
         agent.speed = speed;
