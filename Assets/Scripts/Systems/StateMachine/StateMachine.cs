@@ -20,7 +20,16 @@ namespace SLS.StateMachineV2
 
         #region Data
 
-        public State ROOTState { get; private set; }
+        public State ROOTState
+        {
+            get
+            {
+                if (_ROOTState == null) _ROOTState = transform.Find("Root").GetComponent<State>();
+                return _ROOTState;
+            }
+            private set => _ROOTState = value;
+        }
+        private State _ROOTState { get; set; } 
         public State currentState { get; private set; }
         public State currentTopState => ROOTState.activeChild;
         public State[] topLevelStates => ROOTState.children;
@@ -93,10 +102,8 @@ namespace SLS.StateMachineV2
         #region Physics Callbacks
         private void OnCollisionEnter(Collision collision) => physicsCallbacks?.Invoke(PhysicsCallback.OnCollisionEnter, collision, null);
         private void OnCollisionExit(Collision collision) => physicsCallbacks?.Invoke(PhysicsCallback.OnCollisionExit, collision, null);
-        //private void OnCollisionStay(Collision collision) => physicsCallbacks?.Invoke(PhysicsCallback.OnCollisionEnter, collision, null);
         private void OnTriggerEnter(Collider other) => physicsCallbacks?.Invoke(PhysicsCallback.OnTriggerEnter, null, other);
         private void OnTriggerExit(Collider other) => physicsCallbacks?.Invoke(PhysicsCallback.OnTriggerExit, null, other);
-        //private void OnTriggerStay(Collider other) => physicsCallbacks?.Invoke(PhysicsCallback.OnTriggerStay, null, other);
         #endregion
 
         public virtual void TransitionState(State nextState) => TransitionState(nextState, currentState);

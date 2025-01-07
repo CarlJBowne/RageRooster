@@ -9,7 +9,7 @@ public class ShooterEB : StateBehavior
     public float rate;
     public float chanceOfFiringWhenBlocked;
 
-    Timer fireTimer;
+    Timer_Old fireTimer;
     TrackerEB tracker;
 
     public override void OnAwake() 

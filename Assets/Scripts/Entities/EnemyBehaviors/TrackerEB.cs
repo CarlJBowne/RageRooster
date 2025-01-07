@@ -45,7 +45,7 @@ public class TrackerEB : StateBehavior
 
     }
 
-    private Timer autoCheckTimer;
+    private Timer_Old autoCheckTimer;
     private float distance;
     private float dot;
     private bool lineOfSight;

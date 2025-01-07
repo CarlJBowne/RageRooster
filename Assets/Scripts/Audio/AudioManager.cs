@@ -5,7 +5,7 @@ using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.SceneManagement;
 
-public class AudioManager : Singleton<AudioManager>
+public class AudioManager : SingletonAdvanced<AudioManager>
 {
      static void Data() => SetData(spawnMethod: InitSavedPrefab, dontDestroyOnLoad: true, spawnOnBoot: true);
 
