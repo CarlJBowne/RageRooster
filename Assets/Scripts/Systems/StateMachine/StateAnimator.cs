@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using EditorAttributes;
 
-namespace SLS.StateMachineV2
+namespace SLS.StateMachineV3
 {
     [RequireComponent(typeof(State))]
     public class StateAnimator : StateBehavior
@@ -27,7 +27,7 @@ namespace SLS.StateMachineV2
             if (TryGetComponentFromMachine(out animator) == false) Destroy(this);
         }
 
-        public override void OnEnter()
+        public override void OnEnter(State prev)
         {
             if (onEntry == EntryAnimAction.Play) Play(onEnterName);
             if (onEntry == EntryAnimAction.CrossFade) CrossFade(onEnterName, onEnterTime);

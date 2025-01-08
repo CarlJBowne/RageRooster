@@ -1,4 +1,4 @@
-﻿using SLS.StateMachineV2;
+﻿using SLS.StateMachineV3;
 using UnityEngine;
 
 public class PlayerGroundSlam : PlayerAirborn
@@ -15,7 +15,7 @@ public class PlayerGroundSlam : PlayerAirborn
         attackCollider.center = Vector3.up * (.6f + (body.velocity.y * Time.fixedDeltaTime * 2));
     }
 
-    public override void OnEnter() => body.VelocitySet(y: body.velocity.y > jumpPower ? jumpPower : body.velocity.y);
+    public override void OnEnter(State prev) => body.VelocitySet(y: body.velocity.y > jumpPower ? jumpPower : body.velocity.y);
 
     private void OnTriggerEnter(Collider other) => BounceShroom.AttemptBounce(other.gameObject, bouncingState); 
 }

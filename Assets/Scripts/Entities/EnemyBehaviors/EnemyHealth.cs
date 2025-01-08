@@ -1,5 +1,5 @@
 ﻿using EditorAttributes;
-using SLS.StateMachineV2;
+using SLS.StateMachineV3;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -166,7 +166,7 @@ public class EnemyHealth : Health, IAttacker
     {
         gameObject.SetActive(true);
         transform.position = startPosition;
-        if (TryGetComponent(out StateMachine machine)) machine.TransitionState(machine.topLevelStates[0]);
+        if (TryGetComponent(out StateMachine machine)) machine.TransitionState(machine[0]);
         if (hasRagdolled)
         {
             SetRagDoll(false);

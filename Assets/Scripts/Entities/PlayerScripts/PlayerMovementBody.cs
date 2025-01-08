@@ -1,5 +1,5 @@
 using EditorAttributes;
-using SLS.StateMachineV2;
+using SLS.StateMachineV3;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +14,6 @@ public class PlayerMovementBody : PlayerStateBehavior
     public float maxSlopeNormalAngle = 20f;
     public float coyoteTime = 0.5f;
     public float tripleJumpTime = 0.3f;
-    //public State groundedState;
-    //public State airborneState;
-    //public State fallState;
     public PlayerAirborn jumpState1;
     public PlayerAirborn jumpState2;
     public PlayerWallJump wallJumpState;
@@ -48,9 +45,11 @@ public class PlayerMovementBody : PlayerStateBehavior
     //public Vector3 velocity { get => rb.velocity; set => rb.velocity = value; }
     public Vector3 position { 
         get => rb.position;
-        set => rb.position = value; }
-    public Quaternion rotationQ { get => rb.rotation; set => rb.rotation = value; }
-    public Vector3 rotation { get => transform.eulerAngles; set => transform.eulerAngles = value; }
+        set => rb.MovePosition(value); }
+    public Quaternion rotationQ 
+    { get => rb.rotation; set => rb.rotation = value; }
+    public Vector3 rotation 
+    { get => transform.eulerAngles; set => transform.eulerAngles = value; }
 
     [HideInInspector] public Vector3 currentDirection
     {
@@ -88,7 +87,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     {
         rb = GetComponentFromMachine<Rigidbody>();
         collider = GetComponentFromMachine<CapsuleCollider>();
-        M.physicsCallbacks += Collision;
+        //M.physicsCallbacks += Collision;
     }
 
     public override void OnFixedUpdate()
@@ -100,8 +99,8 @@ public class PlayerMovementBody : PlayerStateBehavior
 
             if (anchorTransform && !anchorTransform.gameObject.isStatic)
             {
-                Vector3 anchorOffset = prevAnchorPosition - anchorTransform.position;
-                prevAnchorPosition = anchorTransform.position;
+                Vector3 anchorOffset = prevAnchorPosition - anchorTransform.localPosition;
+                prevAnchorPosition = anchorTransform.localPosition;
                 rb.MovePosition(rb.position - anchorOffset);
             }
 
@@ -231,10 +230,9 @@ public class PlayerMovementBody : PlayerStateBehavior
         LatchAnchor(null);
     }
 
-    private void Collision(PhysicsCallback type, Collision collision, Collider trigger)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (type != PhysicsCallback.OnCollisionEnter) return;
-        if ((jumpState1 || jumpState2 || airChargeState) && Vector3.Dot(collision.GetContact(0).normal, Vector3.down) > 0.75f) 
+        if ((jumpState1 || jumpState2 || airChargeState) && Vector3.Dot(collision.GetContact(0).normal, Vector3.down) > 0.75f)
         {
             sFall.TransitionTo();
             VelocitySet(y: 0);
@@ -250,7 +248,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         }
         if (anchorTransform == newAnchor || newAnchor.gameObject.isStatic) return;
         anchorTransform = newAnchor;
-        prevAnchorPosition = newAnchor.position;
+        prevAnchorPosition = newAnchor.localPosition;
     }
 
 #if UNITY_EDITOR

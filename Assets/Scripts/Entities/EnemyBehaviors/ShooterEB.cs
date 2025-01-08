@@ -1,4 +1,4 @@
-﻿using SLS.StateMachineV2;
+﻿using SLS.StateMachineV3;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +9,7 @@ public class ShooterEB : StateBehavior
     public float rate;
     public float chanceOfFiringWhenBlocked;
 
-    Timer fireTimer;
+    Timer_Old fireTimer;
     TrackerEB tracker;
 
     public override void OnAwake() 

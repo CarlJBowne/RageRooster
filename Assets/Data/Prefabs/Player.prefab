@@ -380,6 +380,8 @@ GameObject:
   - component: {fileID: 2714541672873312079}
   - component: {fileID: 4810220497755855147}
   - component: {fileID: 6378731282900981655}
+  - component: {fileID: 1371118413310184343}
+  - component: {fileID: 3941225653291784218}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -439,6 +441,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e5741949eded53458e128d5d5c27d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   states:
     _serializedList:
     - Key: Grounded
@@ -467,6 +474,8 @@ MonoBehaviour:
       Value: {fileID: 6630164468072911266}
     - Key: AirChargeFall
       Value: {fileID: 9187357623978728356}
+  _variables:
+    variables: []
   animator: {fileID: 0}
   body: {fileID: 0}
   controller: {fileID: 0}
@@ -475,11 +484,11 @@ MonoBehaviour:
   upgrades:
     _serializedList:
     - Key: GroundSlam
-      Value: 0
+      Value: 1
     - Key: DropLaunch
-      Value: 0
+      Value: 1
     - Key: WallJump
-      Value: 0
+      Value: 1
     - Key: RageCharge
       Value: 1
 --- !u!54 &1838944232945776554
@@ -616,6 +625,64 @@ MonoBehaviour:
     name: Charge
     wham: 1
     velocity: {x: 0, y: 0, z: 0}
+--- !u!114 &1371118413310184343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 412fc1213c3f21a46932934c7ad746cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  jumpBuffer: 0.3
+  wallJumpState: {fileID: 1312688948471799068}
+  airChargeState: {fileID: 1503531427647151743}
+  airChargeFallState: {fileID: 2978236571489801571}
+  punchTriggerName: Punch
+  jumpInput: 0
+  camAdjustedMovement: {x: 0, y: 0, z: 0}
+  grabber: {fileID: 0}
+--- !u!114 &3941225653291784218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c3d6cd8aa43154aa3119b5010e205a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  movementProjectionSteps: 3
+  checkBuffer: 0.05
+  maxSlopeNormalAngle: 46
+  coyoteTime: 0.5
+  tripleJumpTime: 0.3
+  jumpState1: {fileID: 4257060366744920222}
+  jumpState2: {fileID: 7146829242993839889}
+  wallJumpState: {fileID: 1312688948471799068}
+  airChargeState: {fileID: 1503531427647151743}
+  rb: {fileID: 0}
+  collider: {fileID: 0}
+  baseMovability: 1
+  canJump: 1
+  grounded: 1
+  secondJump: 0
+  currentSpeed: 0
+  _currentDirection: {x: 0, y: 0, z: 0}
+  coyoteTimeLeft: 0
+  velocity: {x: 0, y: 0, z: 0}
+  jumpMarkers: []
 --- !u!1 &3517733372445410638
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,17 +853,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6385669238997089540}
-  - component: {fileID: 2516748386395492980}
-  - component: {fileID: 4170573517173253833}
-  - component: {fileID: 5391735678170023017}
-  - component: {fileID: 7130901174231943004}
   m_Layer: 0
-  m_Name: Root
+  m_Name: States
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6385669238997089540
 Transform:
   m_ObjectHideFlags: 0
@@ -814,94 +877,6 @@ Transform:
   - {fileID: 7427727485705586250}
   m_Father: {fileID: 802911248559169720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2516748386395492980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4480388050272498084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &4170573517173253833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4480388050272498084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 308afbb10d2169944a233b35c52ca6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  variables: []
---- !u!114 &5391735678170023017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4480388050272498084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 412fc1213c3f21a46932934c7ad746cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  jumpBuffer: 0.3
-  wallJumpState: {fileID: 1312688948471799068}
-  airChargeState: {fileID: 1503531427647151743}
-  airChargeFallState: {fileID: 2978236571489801571}
-  punchTriggerName: Punch
-  jumpInput: 0
-  camAdjustedMovement: {x: 0, y: 0, z: 0}
-  grabber: {fileID: 0}
---- !u!114 &7130901174231943004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4480388050272498084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40c3d6cd8aa43154aa3119b5010e205a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  movementProjectionSteps: 3
-  checkBuffer: 0.05
-  maxSlopeNormalAngle: 46
-  coyoteTime: 0.5
-  tripleJumpTime: 0.3
-  jumpState1: {fileID: 4257060366744920222}
-  jumpState2: {fileID: 7146829242993839889}
-  wallJumpState: {fileID: 1312688948471799068}
-  airChargeState: {fileID: 1503531427647151743}
-  rb: {fileID: 0}
-  collider: {fileID: 0}
-  baseMovability: 1
-  canJump: 1
-  grounded: 1
-  secondJump: 0
-  currentSpeed: 0
-  _currentDirection: {x: 0, y: 0, z: 0}
-  coyoteTimeLeft: 0
-  velocity: {x: 0, y: 0, z: 0}
-  jumpMarkers: []
 --- !u!1 &4568227700120816147
 GameObject:
   m_ObjectHideFlags: 0

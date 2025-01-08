@@ -524,16 +524,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4730313670804026173}
-  - component: {fileID: 6721435247097022436}
-  - component: {fileID: 3950945428001924435}
-  - component: {fileID: 7822588900001348730}
   m_Layer: 7
-  m_Name: Root
+  m_Name: States
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4730313670804026173
 Transform:
   m_ObjectHideFlags: 0
@@ -552,69 +549,6 @@ Transform:
   - {fileID: 4989592090761765797}
   m_Father: {fileID: 4055781241387413410}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6721435247097022436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2007976233965446511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &3950945428001924435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2007976233965446511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 308afbb10d2169944a233b35c52ca6f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  variables: []
---- !u!114 &7822588900001348730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2007976233965446511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0452307ce3dc7f044a8c8da0714c5455, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  autoCheckRate: 0.2
-  updateDistance: 1
-  updateDot: 1
-  updateLineOfSight: 1
-  LOSMask:
-    serializedVersion: 2
-    m_Bits: 0
-  phases:
-  - distance: 0
-    dot: 0
-    lineOfSight: 0
-    autoRotateDelta: 0
-  - distance: 14
-    dot: 80
-    lineOfSight: 0
-    autoRotateDelta: 0.2
-  - distance: 5
-    dot: 80
-    lineOfSight: 0
-    autoRotateDelta: 0.2
 --- !u!1 &2189017555492639888
 GameObject:
   m_ObjectHideFlags: 0
@@ -765,13 +699,14 @@ GameObject:
   - component: {fileID: 4831861877104449564}
   - component: {fileID: 6003309191609501265}
   - component: {fileID: 4863964995059642808}
+  - component: {fileID: 3332179714480363266}
   m_Layer: 7
   m_Name: FloatingEnemy2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4055781241387413410
 Transform:
   m_ObjectHideFlags: 0
@@ -826,8 +761,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96055279797595e40b7c62431ff14106, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   states:
     _serializedList: []
+  _variables:
+    variables: []
 --- !u!136 &892225924213003653
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -887,6 +829,8 @@ MonoBehaviour:
     velocity: {x: 0, y: 0, z: 0}
   projectile: 0
   hasRagdolled: 0
+  respawn: 0
+  respawnTime: 0
 --- !u!114 &6003309191609501265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -903,6 +847,9 @@ MonoBehaviour:
   weight: 1
   wiggleFreeTime: 0
   maxHealthToGrab: 0
+  GrabStateEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &4863964995059642808
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -930,6 +877,39 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3332179714480363266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2551659374973096520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0452307ce3dc7f044a8c8da0714c5455, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  autoCheckRate: 0.2
+  updateDistance: 1
+  updateDot: 1
+  updateLineOfSight: 1
+  LOSMask:
+    serializedVersion: 2
+    m_Bits: 0
+  phases:
+  - distance: 0
+    dot: 0
+    lineOfSight: 0
+    autoRotateDelta: 0
+  - distance: 14
+    dot: 80
+    lineOfSight: 0
+    autoRotateDelta: 0.2
+  - distance: 5
+    dot: 80
+    lineOfSight: 0
+    autoRotateDelta: 0.2
 --- !u!1 &2559604377289995549
 GameObject:
   m_ObjectHideFlags: 0
@@ -1489,6 +1469,7 @@ MonoBehaviour:
     autoDisableTime: 10
     spawnPoint: {fileID: 751122700976048558}
     rotate: 1
+    autoSpawnRate: 0
   rate: 2
   chanceOfFiringWhenBlocked: 0
 --- !u!1 &3952767387017707927

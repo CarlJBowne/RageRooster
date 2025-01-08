@@ -1,4 +1,4 @@
-using SLS.StateMachineV2;
+using SLS.StateMachineV3;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,8 +29,8 @@ public class PlayerGrabber : Grabber, IAttacker
     private void Awake()
     {
         machine = GetComponent<PlayerStateMachine>();
-        move = machine.GetGlobalBehavior<PlayerMovementBody>();
-        if(!move) machine.waitforMachineInit += () => { move = machine.GetGlobalBehavior<PlayerMovementBody>(); };
+        move = GetComponent<PlayerMovementBody>();
+        //if(!move) machine.waitforMachineInit += () => { move = machine.GetGlobalBehavior<PlayerMovementBody>(); };
     }
 
     public void GrabButtonPress()

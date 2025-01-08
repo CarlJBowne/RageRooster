@@ -1,4 +1,4 @@
-using SLS.StateMachineV2;
+using SLS.StateMachineV3;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,7 +12,7 @@ public class AirChaseEB : StateBehavior
     private TrackerEB playerTracker;
 
 
-    public override void OnEnter()
+    public override void OnEnter(State prev)
     {
         playerTracker = state.parent.GetComponent<TrackerEB>();
     }

@@ -1,4 +1,4 @@
-﻿using SLS.StateMachineV2;
+﻿using SLS.StateMachineV3;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,7 +12,7 @@ public class ChaseEB : StateBehavior
 
     private NavMeshAgent agent;
     private TrackerEB playerTracker;
-    private Timer destUpdateTimer;
+    private Timer_Old destUpdateTimer;
 
     public override void OnAwake()
     {
@@ -21,7 +21,7 @@ public class ChaseEB : StateBehavior
         destUpdateTimer = new(destUpdateRate, UpdateDestination);
     }
 
-    public override void OnEnter()
+    public override void OnEnter(State prev)
     {
         agent.enabled = true;
         agent.speed = speed;

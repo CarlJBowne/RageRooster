@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SLS.StateMachineV2;
+using SLS.StateMachineV3;
 
 public class MeleeStateEB : StateBehavior
 {

@@ -1,5 +1,5 @@
 using EditorAttributes;
-using SLS.StateMachineV2;
+using SLS.StateMachineV3;
 using UnityEngine;
 
 public class PlayerAirborn : PlayerStateBehavior
@@ -45,7 +45,7 @@ public class PlayerAirborn : PlayerStateBehavior
         
     }
 
-    public override void OnEnter()
+    public override void OnEnter(State prev)
     {
         if (jumpPower == 0) return;
         phase = 0;
@@ -68,7 +68,7 @@ public class PlayerAirborn : PlayerStateBehavior
         };
 #endif
     }
-    public override void OnExit() => phase = -1;
+    public override void OnExit(State next) => phase = -1;
 
     protected float ApplyGravity()
     {
