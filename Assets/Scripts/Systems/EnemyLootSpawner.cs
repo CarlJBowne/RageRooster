@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LootSpawner : MonoBehaviour
+public class EnemyLootSpawner : MonoBehaviour
 {
     public List<GameObject> lootPrefabs;
     public int lootCount = 1;

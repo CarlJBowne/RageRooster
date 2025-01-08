@@ -9,6 +9,7 @@ public class MeshDestroy : MonoBehaviour
     private Vector3 edgeVertex = Vector3.zero;
     private Vector2 edgeUV = Vector2.zero;
     private Plane edgePlane = new Plane();
+    private bool isBroken = false;
 
     public int CutCascades = 1;
     public float ExplodeForce = 20;
@@ -24,6 +25,9 @@ public class MeshDestroy : MonoBehaviour
 
     private void DestroyMesh()
     {
+        if (isBroken) return;
+        isBroken = true;
+
         var originalMesh = GetComponent<MeshFilter>().mesh;
         originalMesh.RecalculateBounds();
         var parts = new List<PartMesh>();
