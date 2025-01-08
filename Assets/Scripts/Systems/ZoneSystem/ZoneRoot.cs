@@ -30,10 +30,7 @@ public class ZoneRoot : MonoBehaviour
     {
         if (!ZoneManager.Active)
         {
-            var attempt = FindFirstObjectByType<ZoneRoot>(FindObjectsInactive.Include);
-            if (attempt == null || ZoneManager.Active) return;
-            Gameplay.areaToOpen = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(Gameplay.GAMEPLAY_SCENE_NAME);
+            ZoneManager.InitiateBeginning(SceneManager.GetActiveScene().name, defaultPlayerSpawn.position, defaultPlayerSpawn.eulerAngles.y);
             return;
         }
 

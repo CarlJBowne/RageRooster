@@ -9,18 +9,36 @@ public class ZoneManager : Singleton<ZoneManager>
 {
     [SerializeField] ZoneRoot currentZone;
     [SerializeField] AYellowpaper.SerializedCollections.SerializedDictionary<string, ZoneProxy> proxies = new();
+    public string defaultAreaScene;
     public float minLoadTime;
     public Timer.Loop offsetSetTimer = new(15f);
     public float distanceToOriginShift;
+
+    public static string AreaToOpen = null;
+    public static Vector3 playerSpawnPos;
+    public static float playerSpawnYRot;
+
 
     private Transform playerTransform;
     private PlayerStateMachine playerMachine;
     private Vector3Double currentOffset;
 
+    public static void InitiateBeginning(string sceneName, Vector3 pos, float yRot)
+    {
+        AreaToOpen = sceneName;
+        playerSpawnPos = pos;
+        playerSpawnYRot = yRot;
+        SceneManager.LoadScene(Gameplay.GAMEPLAY_SCENE_NAME);
+    }
+
     protected override void OnAwake()
     {
+        SceneManager.LoadScene(AreaToOpen ?? defaultAreaScene, LoadSceneMode.Additive);
+
         playerTransform = Gameplay.Player.transform;
         playerMachine = Gameplay.Player.GetComponent<PlayerStateMachine>();
+        playerTransform.position = playerSpawnPos;
+        playerTransform.eulerAngles = new(0,playerSpawnYRot,0);
     }
 
     public void Update()
