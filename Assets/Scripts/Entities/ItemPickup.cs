@@ -7,6 +7,7 @@ public class ItemPickup : MonoBehaviour
     public enum ItemType
     {
         Coin,
+        Health,
         Hint,
         Upgrade,
         Hen
@@ -16,16 +17,23 @@ public class ItemPickup : MonoBehaviour
     public string upgradeName;
     [TextArea]
     public string hintString;
-    public int coinAmount = 1;
+    public int addAmount = 1;
 
 
 
 
     private void OnTriggerEnter(Collider other)
     {
-        if(type == ItemType.Coin)
+        if (other.tag != "Player") return;
+        PlayerHealth health = other.GetComponent<PlayerHealth>();
+
+        if (type == ItemType.Coin)
         {
-            UIHUDSystem.Get().AddCurrency(coinAmount);
+            UIHUDSystem.Get().AddCurrency(addAmount);
+        }
+        else if (type == ItemType.Health)
+        {
+            health.Heal(1);
         }
         else if (type == ItemType.Hint)
         {
@@ -33,7 +41,9 @@ public class ItemPickup : MonoBehaviour
         }
         else if (type == ItemType.Upgrade)
         {
-            FindObjectOfType<PlayerStateMachine>().SetUpgrade(upgradeName, true);
+            if(upgradeName == "Health") health.AddMaxHealth();
+            else FindObjectOfType<PlayerStateMachine>().SetUpgrade(upgradeName, true);
+            UIHUDSystem.Get().ShowHint(hintString);
         }
         else if(type == ItemType.Hen)
         {

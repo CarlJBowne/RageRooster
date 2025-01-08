@@ -19,6 +19,7 @@ public class VolumeSlider : MonoBehaviour
 
     private void Awake()
     {
+        // Initialize the volume slider and set its value from PlayerPrefs
         volumeSlider = this.GetComponentInChildren<Slider>();
         if (volumeSlider != null)
         {
@@ -27,17 +28,19 @@ public class VolumeSlider : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Slider component not found in children.");
+            ////Debug.LogError("Slider component not found in children.");
         }
     }
 
     private void Start()
     {
+        // Update the slider value based on the current volume settings
         UpdateSliderValue();
     }
 
     private void UpdateSliderValue()
     {
+        // Set the slider value based on the volume type
         switch (volumeType)
         {
             case VolumeType.MASTER:
@@ -53,13 +56,14 @@ public class VolumeSlider : MonoBehaviour
                 volumeSlider.value = AudioManager.Get().ambienceVolume;
                 break;
             default:
-                Debug.LogError("Volume type not found: " + volumeType);
+                ////Debug.LogError("Volume type not found: " + volumeType);
                 break;
         }
     }
 
     public void OnSliderValueChanged()
     {
+        // Update the volume in AudioManager and save the value to PlayerPrefs
         switch (volumeType)
         {
             case VolumeType.MASTER:
@@ -67,6 +71,10 @@ public class VolumeSlider : MonoBehaviour
                 break;
             case VolumeType.MUSIC:
                 AudioManager.Get().musicVolume = volumeSlider.value;
+                if (AudioManager.Get().musicEventInstance.isValid())
+                {
+                    AudioManager.Get().musicEventInstance.setVolume(volumeSlider.value);
+                }
                 break;
             case VolumeType.SFX:
                 AudioManager.Get().SFXVolume = volumeSlider.value;
@@ -75,7 +83,7 @@ public class VolumeSlider : MonoBehaviour
                 AudioManager.Get().ambienceVolume = volumeSlider.value;
                 break;
             default:
-                Debug.LogError("Volume type not found: " + volumeType);
+                ////Debug.LogError("Volume type not found: " + volumeType);
                 break;
         }
 

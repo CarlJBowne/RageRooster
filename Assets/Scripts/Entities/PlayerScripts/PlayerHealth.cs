@@ -10,6 +10,8 @@ public class PlayerHealth : Health
     private Coroutine invincibility;
     private new Collider collider;
     private UIHUDSystem UI;
+    private Rigidbody rb;
+    private PlayerStateMachine machine;
 
     private Vector3 respawnPoint;
 
@@ -18,7 +20,10 @@ public class PlayerHealth : Health
         base.Awake();
         collider = GetComponent<Collider>();
         UIHUDSystem.TryGet(out UI);
+        TryGetComponent(out rb);
+        TryGetComponent(out machine);
         UpdateHealth();
+        //Respawn();
     }
 
     protected override void OnDamage(Attack attack)
@@ -50,6 +55,12 @@ public class PlayerHealth : Health
     }
 
     public void UpdateHealth() => UI.UpdateHealth(health, maxHealth);
+
+    public void AddMaxHealth(int value = 1)
+    {
+        maxHealth += value;
+        UpdateHealth();
+    }
 
     /*
    private void InvincEndDontWork()
@@ -91,6 +102,10 @@ public class PlayerHealth : Health
 
     public void SetRespawnPoint(Vector3 respawnPoint) => this.respawnPoint = respawnPoint;
 
-    public void Respawn() => transform.position = respawnPoint;
+    public void Respawn()
+    {
+        rb.MovePosition(respawnPoint);
+        machine.freeLookCamera.transform.position = respawnPoint;
+    }
 
 }

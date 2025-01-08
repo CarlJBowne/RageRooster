@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using EditorAttributes;
+using System.Linq;
 
 namespace SLS.StateMachineV2
 {
@@ -61,6 +62,8 @@ namespace SLS.StateMachineV2
 
         public State this[int i] => children[i];
 
+        public T Behavior<T>() where T : StateBehavior => behaviors.First(x => x is T) as T;
+
         public bool activeMain => machine.currentState == this;
 
         #endregion
@@ -83,6 +86,7 @@ namespace SLS.StateMachineV2
 
             if(layer != -1) parent = base.transform.parent.GetComponent<State>();
             else separateFromChildren = false;
+            gameObject.SetActive(false);
 
             LineageSetup();
 

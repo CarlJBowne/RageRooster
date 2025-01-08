@@ -9,20 +9,20 @@ public class Teleporter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("OnTriggerEnter called with: " + other.name); // Debug log
+        ////Debug.Log("OnTriggerEnter called with: " + other.name); // Debug log
 
         if (other.CompareTag(targetTag))
         {
-            Debug.Log("Teleporting " + other.name + " to " + targetLocation.position); // Debug log
+            ////Debug.Log("Teleporting " + other.name + " to " + targetLocation.position); // Debug log
 
             CharacterController characterController = other.GetComponent<CharacterController>();
             if (characterController != null)
             {
-                Debug.Log("Disabling CharacterController for: " + other.name); // Debug log
+                ////Debug.Log("Disabling CharacterController for: " + other.name); // Debug log
                 characterController.enabled = false; // Disable CharacterController
                 other.transform.position = targetLocation.position; // Teleport
                 characterController.enabled = true; // Re-enable CharacterController
-                Debug.Log("Re-enabled CharacterController for: " + other.name); // Debug log
+                ////Debug.Log("Re-enabled CharacterController for: " + other.name); // Debug log
             }
             else
             {
