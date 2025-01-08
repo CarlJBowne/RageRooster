@@ -37,8 +37,7 @@ public class ZoneManager : Singleton<ZoneManager>
 
         playerTransform = Gameplay.Player.transform;
         playerMachine = Gameplay.Player.GetComponent<PlayerStateMachine>();
-        playerTransform.position = playerSpawnPos;
-        playerTransform.eulerAngles = new(0,playerSpawnYRot,0);
+        playerMachine.InstantMove(playerSpawnPos, playerSpawnYRot);
     }
 
     public void Update()

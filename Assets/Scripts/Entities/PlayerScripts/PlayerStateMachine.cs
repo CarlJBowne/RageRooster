@@ -57,10 +57,11 @@ public class PlayerStateMachine : StateMachine
 
     public bool IsStableForOriginShift() => states["Grounded"].enabled || currentState == states["Fall"] || states["Glide"];
 
-    public void InstantMove(Vector3 newPosition)
+    public void InstantMove(Vector3 newPosition, float? yRot = null)
     {
         Vector3 camDelta = newPosition - transform.position;
         body.position = newPosition;
+        if (yRot != null) body.rotation = new(0, yRot.Value, 0);
         freeLookCamera.PreviousStateIsValid = false;
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);
     }
