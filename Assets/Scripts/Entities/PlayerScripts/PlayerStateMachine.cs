@@ -38,21 +38,6 @@ public class PlayerStateMachine : StateMachine
         }
     }
 
-    [SerializeField]
-    private AYellowpaper.SerializedCollections.SerializedDictionary<string, bool> upgrades = new()
-    {
-        { "GroundSlam", true },
-        { "DropLaunch", true },
-        { "WallJump", true },
-        { "RageCharge", true }
-    }; 
-    public bool uGroundSlam => upgrades["GroundSlam"];
-    public bool uDropLaunch => upgrades["DropLaunch"];
-    public bool uWallJump => upgrades["WallJump"];
-    public bool uRageCharge => upgrades["RageCharge"];
-    public void SetUpgrade(string id, bool value) => upgrades[id] = value; 
-
-
     public static Action<PlayerStateMachine> whenInitializedEvent;
 
     public bool IsStableForOriginShift() => states["Grounded"].enabled || currentState == states["Fall"] || states["Glide"];

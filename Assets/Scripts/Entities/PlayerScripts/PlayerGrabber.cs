@@ -16,6 +16,7 @@ public class PlayerGrabber : Grabber, IAttacker
     public Transform twoHandedHand;
     public State groundState;
     public State airBorneState;
+    public Upgrade dropLaunchUpgrade;
 
     #endregion
     #region Data
@@ -58,7 +59,7 @@ public class PlayerGrabber : Grabber, IAttacker
 
     private void Throw()
     {
-        if (move.grounded || !machine.uDropLaunch)
+        if (move.grounded || !dropLaunchUpgrade)
         {
             currentGrabbed.transform.position = transform.position + transform.forward;
             upcomingLaunchVelocity = transform.forward * launchVelocity;

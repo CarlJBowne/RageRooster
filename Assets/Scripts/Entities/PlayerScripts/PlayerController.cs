@@ -21,6 +21,8 @@ public class PlayerController : PlayerStateBehavior
 	public PlayerWallJump wallJumpState;
     public PlayerAirborn airChargeState;
     public PlayerAirborn airChargeFallState;
+	public Upgrade groundSlamUpgrade;
+	public Upgrade wallJumpUpgrade;
 
     public string punchTriggerName;
 
@@ -89,7 +91,7 @@ public class PlayerController : PlayerStateBehavior
 		{
 			jumpInput = jumpBuffer + Time.fixedDeltaTime;
 
-			if (M.uWallJump && (sFall || wallJumpState)
+			if (wallJumpUpgrade && (sFall || wallJumpState)
 				&& body.rb.DirectionCast(body.currentDirection, 0.5f, body.checkBuffer, out RaycastHit hit))
 				wallJumpState.WallJump(hit.normal); 
 		} 
@@ -105,7 +107,7 @@ public class PlayerController : PlayerStateBehavior
 
 	public void PunchButtonPress()
 	{
-		if (sAirborne && M.uGroundSlam) sGroundSlam.TransitionTo();
+		if (sAirborne && groundSlamUpgrade) sGroundSlam.TransitionTo();
 		else M.animator.SetTrigger(punchTriggerName);
 	}
 

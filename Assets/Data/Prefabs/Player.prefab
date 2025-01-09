@@ -481,16 +481,6 @@ MonoBehaviour:
   controller: {fileID: 0}
   cameraTransform: {fileID: 0}
   freeLookCamera: {fileID: 0}
-  upgrades:
-    _serializedList:
-    - Key: GroundSlam
-      Value: 1
-    - Key: DropLaunch
-      Value: 1
-    - Key: WallJump
-      Value: 1
-    - Key: RageCharge
-      Value: 1
 --- !u!54 &1838944232945776554
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -568,6 +558,8 @@ MonoBehaviour:
   twoHandedHand: {fileID: 6163627308343083636}
   groundState: {fileID: 3803531707346265779}
   airBorneState: {fileID: 5123969060782274918}
+  dropLaunchUpgrade: {fileID: 3210499484089810659, guid: 5096cd543e777e240af87643ae7b164b,
+    type: 2}
 --- !u!114 &4810220497755855147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -644,6 +636,10 @@ MonoBehaviour:
   wallJumpState: {fileID: 1312688948471799068}
   airChargeState: {fileID: 1503531427647151743}
   airChargeFallState: {fileID: 2978236571489801571}
+  groundSlamUpgrade: {fileID: 3684892169369894683, guid: 5096cd543e777e240af87643ae7b164b,
+    type: 2}
+  wallJumpUpgrade: {fileID: -5908332654645760598, guid: 5096cd543e777e240af87643ae7b164b,
+    type: 2}
   punchTriggerName: Punch
   jumpInput: 0
   camAdjustedMovement: {x: 0, y: 0, z: 0}
