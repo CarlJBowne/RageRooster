@@ -12,9 +12,9 @@ public class MeshDestroy : MonoBehaviour
     private bool isBroken = false;
 
     public int CutCascades = 1;
-    public float ExplodeForce = 20;
+    public float ExplodeForce = 10;
     public int MaxPieces = 3;
-    public float MinPieceSize = 0.5f;
+    public float MinPieceSize = 1f;
     public float DespawnTime = 5.0f;
 
     private void OnCollisionEnter(Collision collision)
