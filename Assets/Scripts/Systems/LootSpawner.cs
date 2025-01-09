@@ -8,6 +8,7 @@ public class LootSpawner : MonoBehaviour
     public int lootCount = 1;
     public float spawnForce = 5f;
 
+    public void SpawnLoot() => SpawnLoot(transform.position);
     public void SpawnLoot(Vector3 position)
     {
         for (int i = 0; i < lootCount; i++)

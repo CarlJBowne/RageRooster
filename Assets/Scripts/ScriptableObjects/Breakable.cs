@@ -17,14 +17,14 @@ public class MeshDestroy : MonoBehaviour
     public float MinPieceSize = 1f;
     public float DespawnTime = 5.0f;
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-            DestroyMesh();
-    }
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //        DestroyMesh();
+    //}
 
-    private void DestroyMesh()
-    {
+    public void DestroyMesh()
+    { 
         if (isBroken) return;
         isBroken = true;
 
@@ -75,11 +75,11 @@ public class MeshDestroy : MonoBehaviour
             Destroy(parts[i].GameObject, DespawnTime);
         }
 
-        var lootSpawner = FindObjectOfType<LootSpawner>();
-        if (lootSpawner != null)
-        {
-            lootSpawner.SpawnLoot(transform.position);
-        }
+        //var lootSpawner = FindObjectOfType<LootSpawner>();
+        //if (lootSpawner != null)
+        //{
+        //    lootSpawner.SpawnLoot(transform.position);
+        //}
 
         Destroy(gameObject);
     }

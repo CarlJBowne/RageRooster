@@ -888,7 +888,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 50642
+    surfaceParameter: 50658
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: 6150414182705691444
@@ -1458,6 +1458,7 @@ GameObject:
   - component: {fileID: 231493292}
   - component: {fileID: 231493291}
   - component: {fileID: 231493290}
+  - component: {fileID: 231493297}
   - component: {fileID: 231493295}
   - component: {fileID: 231493296}
   m_Layer: 0
@@ -1594,7 +1595,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CutCascades: 1
   ExplodeForce: 800
-  MaxPieces: 3
+  MaxPieces: 10
   MinPieceSize: 1
   DespawnTime: 15
 --- !u!114 &231493296
@@ -1613,6 +1614,50 @@ MonoBehaviour:
   - {fileID: 919132149155446097, guid: 646e184b8e9d6984cba389444f61f5b0, type: 3}
   lootCount: 1
   spawnForce: 5
+--- !u!114 &231493297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231493289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d34f06100d9ae46ab0563e7a6563d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 2
+  damageEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  depleteEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 231493296}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 231493295}
+        m_TargetAssemblyTypeName: MeshDestroy, Assembly-CSharp
+        m_MethodName: DestroyMesh
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  health: 0
 --- !u!1001 &231645634
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2878,6 +2923,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FirstEnemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4811522196661094151, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6736125751645189697, guid: bae59963cc72d7944868ead2202c05a2,
         type: 3}
       propertyPath: target
@@ -3119,22 +3169,22 @@ PrefabInstance:
     - target: {fileID: 821619924193850646, guid: c19770f612e0eb3429f6cb55130758c0,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.3654354
+      value: -0.36543536
       objectReference: {fileID: 0}
     - target: {fileID: 821619924193850646, guid: c19770f612e0eb3429f6cb55130758c0,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.09618198
+      value: -0.09618197
       objectReference: {fileID: 0}
     - target: {fileID: 821619924193850646, guid: c19770f612e0eb3429f6cb55130758c0,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.8953611
+      value: 0.8953611
       objectReference: {fileID: 0}
     - target: {fileID: 821619924193850646, guid: c19770f612e0eb3429f6cb55130758c0,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.23565754
+      value: -0.23565753
       objectReference: {fileID: 0}
     - target: {fileID: 842668144828806280, guid: c19770f612e0eb3429f6cb55130758c0,
         type: 3}
@@ -6270,7 +6320,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 50678
+    surfaceParameter: 50694
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: 6150414182705691444
@@ -11606,7 +11656,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 50678
+    surfaceParameter: 50694
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: 6150414182705691444
@@ -12501,6 +12551,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FloatingEnemy1
       objectReference: {fileID: 0}
+    - target: {fileID: 3500639052055708832, guid: 1321a3ef03ad2e64d9fd745d79e72abe,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12518,6 +12573,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FloatingEnemy2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2551659374973096520, guid: 9e1cfa2744bed914d9bc010b748988b0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4055781241387413410, guid: 9e1cfa2744bed914d9bc010b748988b0,
         type: 3}
@@ -12659,6 +12719,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FirstEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 4811522196661094151, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6736125751645189697, guid: bae59963cc72d7944868ead2202c05a2,
         type: 3}
