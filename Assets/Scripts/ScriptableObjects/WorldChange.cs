@@ -1,5 +1,6 @@
 ﻿using EditorAttributes;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -28,14 +29,18 @@ public class WorldChange : ScriptableObject, ICustomSerialized
 
     public Json Serialize()
     {
-        Json.Builder builder = new();
-        builder.AddField("Enabled", Enabled, true);
-        return builder.Result();
+        return new JObject
+            (new JProperty("Enabled", _enabled)
+            );
+
+        //Json.Builder builder = new();
+        //builder.AddField("Enabled", Enabled, true);
+        //return builder.Result();
     }
 
     public void Deserialize(Json Data)
     {
-        Dictionary<string, object> jsonData = Data.DeserializeAll();
+        var jsonData = Data.ToJToken();
         _enabled = (bool)jsonData["Enabled"];
         EditorUtility.SetDirty(this);
     }

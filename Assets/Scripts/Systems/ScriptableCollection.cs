@@ -1,3 +1,5 @@
+using Newtonsoft.Json.Linq;
+using System.Linq;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -31,25 +33,35 @@ public class ScriptableCollection : ScriptableObject, ICustomSerialized
 
     public Json Serialize()
     {
-        Json.Builder Build = new();
-        Build.AddString(nameof(selectedType), selectedType);
-        Build.AddList(nameof(List), List, true);
-        return Build.Result();
+        //Json.Builder Build = new();
+        //Build.AddString(nameof(selectedType), selectedType);
+        //Build.AddList(nameof(List), List, true);
+        //return Build.Result();
+
+        return new JObject(
+                new JProperty(nameof(selectedType), selectedType),
+                new JProperty(nameof(List), new JArray(
+                    from I in List
+                    select new JRaw(Json.Serialize(I).raw)
+                    ))
+                );
     }
     public void Deserialize(Json Data)
     {
-        Dictionary<string, object> jsonData = Data.DeserializeAll();
 
-        string readSOType = jsonData[nameof(selectedType)] as string;
+        var jsonData = Data.ToDictionary();
+
+        string readSOType = jsonData[nameof(selectedType)].Value<string>();
         if (readSOType != selectedType) throw new Exception("WRONG SCRIPTABLE OBJECT TYPE.");
-        var jsonArray = jsonData[nameof(List)] as Newtonsoft.Json.Linq.JArray;
 
-        for (int i = 0; i < jsonArray.Count; i++)
+        var jsonArray = jsonData[nameof(List)].ToArray();
+
+        for (int i = 0; i < jsonArray.Length && i < List.Count; i++)
         {
-            if (i >= List.Count) throw new Exception("JSON contains more items than the current collection.");
             Json.DeserializeInto(jsonArray[i], List[i]);
             EditorUtility.SetDirty(List[i]);
         }
+
     }
 }
 

@@ -5,10 +5,8 @@ using System;
 using System.IO;
 using EditorAttributes;
 using Newtonsoft.Json;
-using System.Linq;
-using JLinq = Newtonsoft.Json.Linq;
-using static UnityEngine.Rendering.DebugUI;
-using Unity.Jobs;
+using Newtonsoft.Json.Linq;
+using JToken = Newtonsoft.Json.Linq.JToken;
 
 [CreateAssetMenu(fileName = "SaveTester", menuName = "ScriptableObjects/SaveTester")]
 public class SaveTester : ScriptableObject
@@ -32,13 +30,14 @@ public class SaveTester : ScriptableObject
 }
 public class Json
 {
-    public string value;
+    public string raw;
 
-    public Json() => value = "";
-    public Json(string input) => value = input;
-    public static implicit operator string(Json obj) => obj.value;
+    public Json() => raw = "";
+    public Json(string input) => raw = input;
+    public static implicit operator string(Json obj) => obj.raw;
     public static implicit operator Json(string input) => new(input);
-    public static implicit operator Json(JLinq.JToken input) => new(input.ToString());
+    public static implicit operator Json(JToken input) => new(input.ToString());
+    //public static explicit operator Json(object input) => new(input as string);
 
     public static Json LoadJsonFromFile(string path, string filename)
     {
@@ -51,33 +50,33 @@ public class Json
     {
         if (!Directory.Exists(path)) Directory.CreateDirectory(path);
         using StreamWriter file = File.CreateText($"{path}/{filename}.json");
-        file.WriteLine(value);
+        file.WriteLine(raw);
     }
 
     //Improve more later (Add Indenting, make more Add functions, refactor to use "Begin/End Field" praxis, etc.)
     public class Builder : Json
     {
-        public Builder() { value = "{\n"; }
+        public Builder() { raw = "{\n"; }
 
         public static Builder operator +(Builder B, string S)
         {
-            B.value += S;
+            B.raw += S;
             return B;
         }
 
-        public void AddFieldHeader(string name) => this.value += $"\"{name}\":";
-        public void AddField(string name, object value, bool last = false) => this.value += $"\"{name}\": {Serialize(value).value}" + IsLast(last);
-        public void AddString(string name, object value, bool last = false) => this.value += $"\"{name}\": \"{value}\"" + IsLast(last);
+        public void AddFieldHeader(string name) => this.raw += $"\"{name}\":";
+        public void AddField(string name, object value, bool last = false) => this.raw += $"\"{name}\": {Serialize(value).raw}" + IsLast(last);
+        public void AddString(string name, object value, bool last = false) => this.raw += $"\"{name}\": \"{value}\"" + IsLast(last);
         public void AddList<T>(string name, List<T> value, bool last = false)
         {
             string result = $"\"{name}\":\n[\n";
             for (int i = 0; i < value.Count; i++) result += Serialize(value[i]) + IsLast(i == value.Count-1);
-            this.value += result + "\n]" + IsLast(last) + "\n";
+            this.raw += result + "\n]" + IsLast(last) + "\n";
         }
 
         public Json Result()
         {
-            value += "\n}";
+            raw += "\n}";
             return this;
         }
 
@@ -107,6 +106,7 @@ public class Json
             Result.Deserialize(this);
             return (T)Result;
         }
+        else if (raw[0] != '{' && raw[0] != '[') return new JRaw(raw).Value<T>();
         else return JsonConvert.DeserializeObject<T>(this);
     }
     /// <summary>
@@ -123,12 +123,9 @@ public class Json
             Result.Deserialize(Data);
             return (T)Result;
         }
+        else if (Data.raw[0] != '{' && Data.raw[0] != '[') return new JRaw(Data).Value<T>();
         else return JsonConvert.DeserializeObject<T>(Data);
     }
-
-    public Dictionary<string, object> DeserializeAll() => Deserialize<Dictionary<string, object>>();
-    public static Dictionary<string, object> DeserializeAll(Json Data) => Data.Deserialize<Dictionary<string, object>>();
-
 
     /// <summary>
     /// Attempts to Deserialize this Json representation into the desired type.
@@ -143,6 +140,7 @@ public class Json
             result = Activator.CreateInstance<T>();
             (result as ICustomSerialized).Deserialize(this);
         }
+        else if (raw[0] != '{' && raw[0] != '[') result = new JRaw(raw).Value<T>();
         else result = JsonConvert.DeserializeObject<T>(this);
         return result != null;
     }
@@ -160,6 +158,7 @@ public class Json
             result = Activator.CreateInstance<T>();
             (result as ICustomSerialized).Deserialize(Data);
         }
+        else if (Data.raw[0] != '{' && Data.raw[0] != '[') result = new JRaw(Data).Value<T>();
         else result = JsonConvert.DeserializeObject<T>(Data);
         return result != null;
     }
@@ -172,7 +171,7 @@ public class Json
     {
         var Custom = target as ICustomSerialized;
         if(Custom != null) Custom.Deserialize(this);
-        else JsonConvert.PopulateObject(value, target);
+        else JsonConvert.PopulateObject(raw, target);
     }
     /// <summary>
     /// Deserializes a Json representation and populates an object with its data.
@@ -181,11 +180,40 @@ public class Json
     /// <param name="target">The Object to be Populated.</param>
     public static void DeserializeInto(Json input, object target)
     {
-        var Custom = target as ICustomSerialized;
-        if (Custom != null) Custom.Deserialize(input);
+        if (target is ICustomSerialized Custom) Custom.Deserialize(input);
         else JsonConvert.PopulateObject(input, target);
     }
 
+    /// <summary>
+    /// Deserializes a Json representation and populates an object with its data.
+    /// </summary>
+    /// <param name="input">The Json representation to be Deseralized.</param>
+    /// <param name="target">The Object to be Populated.</param>
+    public static void DeserializeInto(JToken input, object target)
+    {
+        if (target is ICustomSerialized Custom) Custom.Deserialize(input);
+        else JsonConvert.PopulateObject(input.ToString(), target);
+    }
+
+
+    public Dictionary<string, Json> ToDictionary()
+    {
+        JObject X = JsonConvert.DeserializeObject<JObject>(this);
+        Dictionary<string, Json> result = new();
+
+        foreach (KeyValuePair<string, JToken> item in X) result.Add(item.Key, item.Value.ToString());
+        return result;
+    }
+    public Json[] ToArray()
+    {
+        JToken[] X = JsonConvert.DeserializeObject<JToken[]>(this);
+        Json[] result = new Json[X.Length];
+        for (int i = 0; i < result.Length; i++) result[i] = X[i].ToString();
+        return result;
+    }
+    public JToken ToJToken() => Deserialize<JToken>();
+
+    public T Value<T>() => new JRaw(raw).Value<T>();
 }
 
 public interface ICustomSerialized
@@ -201,4 +229,19 @@ public interface ICustomSerialized
     /// <param name="Data">The Json representation to be Deserialized.</param>
     public void Deserialize(Json Data);
 
+}
+
+public static class JsonExtensionMethods
+{
+    public static Json ToJson(this string input) => new(input);
+
+    public static void DeserializeInto(this JToken input, object target)
+    {
+        if (target is ICustomSerialized Custom) Custom.Deserialize(input);
+        else JsonConvert.PopulateObject(input.ToString(), target);
+    }
+
+    public static T To<T>(this JToken input) => input.Value<T>();
+
+    public static JArray Array(this JToken input) => input as JArray;
 }
