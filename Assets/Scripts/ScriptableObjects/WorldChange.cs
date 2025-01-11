@@ -27,21 +27,16 @@ public class WorldChange : ScriptableObject, ICustomSerialized
     }
     public void Deactivate() => _enabled = false;
 
-    public Json Serialize()
+    public JToken Serialize()
     {
         return new JObject
             (new JProperty("Enabled", _enabled)
             );
-
-        //Json.Builder builder = new();
-        //builder.AddField("Enabled", Enabled, true);
-        //return builder.Result();
     }
 
-    public void Deserialize(Json Data)
+    public void Deserialize(JToken Data)
     {
-        var jsonData = Data.ToJToken();
-        _enabled = (bool)jsonData["Enabled"];
+        _enabled = Data["Enabled"].Value<bool>();
         EditorUtility.SetDirty(this);
     }
 }

@@ -31,34 +31,26 @@ public class ScriptableCollection : ScriptableObject, ICustomSerialized
         AssetDatabase.SaveAssets();
     }
 
-    public Json Serialize()
+    public JToken Serialize()
     {
-        //Json.Builder Build = new();
-        //Build.AddString(nameof(selectedType), selectedType);
-        //Build.AddList(nameof(List), List, true);
-        //return Build.Result();
-
         return new JObject(
                 new JProperty(nameof(selectedType), selectedType),
                 new JProperty(nameof(List), new JArray(
                     from I in List
-                    select new JRaw(Json.Serialize(I).raw)
+                    select new JObject().Serialize(I)
                     ))
                 );
     }
-    public void Deserialize(Json Data)
+    public void Deserialize(JToken Data)
     {
-
-        var jsonData = Data.ToDictionary();
-
-        string readSOType = jsonData[nameof(selectedType)].Value<string>();
+        string readSOType = Data[nameof(selectedType)].Value<string>();
         if (readSOType != selectedType) throw new Exception("WRONG SCRIPTABLE OBJECT TYPE.");
 
-        var jsonArray = jsonData[nameof(List)].ToArray();
+        var jsonArray = Data[nameof(List)] as JArray;
 
-        for (int i = 0; i < jsonArray.Length && i < List.Count; i++)
+        for (int i = 0; i < jsonArray.Count && i < List.Count; i++)
         {
-            Json.DeserializeInto(jsonArray[i], List[i]);
+            jsonArray[i].DeserializeInto(List[i]);
             EditorUtility.SetDirty(List[i]);
         }
 

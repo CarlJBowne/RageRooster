@@ -7,6 +7,7 @@ using EditorAttributes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using JToken = Newtonsoft.Json.Linq.JToken;
+using static UnityEngine.Rendering.DebugUI;
 
 [CreateAssetMenu(fileName = "SaveTester", menuName = "ScriptableObjects/SaveTester")]
 public class SaveTester : ScriptableObject
@@ -16,18 +17,126 @@ public class SaveTester : ScriptableObject
     public ScriptableCollection coll;
 
     [Button]
-    public void Save()
-    {
-        coll.Serialize().SaveToFile(Application.dataPath + path, fileName);
-        //SaveHelper.SaveSavable(coll, Application.dataPath + path, fileName);
-    }
+    public void Save() => coll.Serialize().SaveToFile(Application.dataPath + path, fileName);
     [Button]
-    public void Load()
-    {
-        coll.Deserialize(Json.LoadJsonFromFile(Application.dataPath + path, fileName));
-        //SaveHelper.LoadObject(ref coll, Application.dataPath + path, fileName);
-    }
+    public void Load() => coll.Deserialize(new JObject().LoadJsonFromFile(Application.dataPath + path, fileName));
 }
+
+public interface ICustomSerialized
+{
+    /// <summary>
+    /// Serializes the object into a JToken. (Can be overridden along with its Deserialize Counterpart.)
+    /// </summary>
+    /// <returns> The Json representation.</returns>
+    public JToken Serialize();
+    /// <summary>
+    /// Deserializes a JToken and populates this object with its data. (Can be overridden along with its Serialize Counterpart.)
+    /// </summary>
+    /// <param name="Data">The Json representation to be Deserialized.</param>
+    public void Deserialize(JToken Data);
+
+}
+
+public static class JsonExtensionMethods
+{
+    /// <summary>
+    /// Loads a JToken from a file with the specified path and filename.
+    /// <br />*Must be used with one a newly constructed JToken via new().
+    /// </summary>
+    /// <param name="path">The path of the file.</param>
+    /// <param name="filename">The filename.</param>
+    /// <returns>The loaded JToken.</returns>
+    public static JToken LoadJsonFromFile(this JToken THIS, string path, string filename)
+    {
+        if (!Directory.Exists(path)) return null;
+        if (!File.Exists($"{path}/{filename}.json")) return null;
+        using StreamReader load = File.OpenText($"{path}/{filename}.json");
+        THIS = JObject.Parse(load.ReadToEnd());
+        return THIS;
+    }
+    /// <summary>
+    /// Saves this JToken to a file with the specified path and filename.
+    /// </summary>
+    /// <param name="path">The path of the file.</param>
+    /// <param name="filename">The filename.</param>
+    public static void SaveToFile(this JToken THIS, string path, string filename)
+    {
+        if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+        using StreamWriter file = File.CreateText($"{path}/{filename}.json");
+        file.WriteLine(THIS.ToString());
+    }
+
+    /// <summary>
+    /// Serializes the input object into a JToken. 
+    /// <br />*Compatible with ICustomSerialized
+    /// <br />*Must be used with one a newly constructed JToken via new().
+    /// </summary>
+    /// <param name="OBJ">The Source Object to be Serialized.</param>
+    /// <returns></returns>
+    public static JToken Serialize(this JToken THIS, object OBJ)
+    {
+        THIS = typeof(ICustomSerialized).IsAssignableFrom(OBJ.GetType()) 
+            ? (OBJ as ICustomSerialized).Serialize() 
+            : JObject.FromObject(OBJ);
+        return THIS;
+    }
+
+    /// <summary>
+    /// Deserializes this Token into the desired Type.
+    /// </summary>
+    /// <typeparam name="T">The Type to Deserialize into.</typeparam>
+    /// <returns>The Deserialized Value.</returns>
+    public static T Deserialize<T>(this JToken THIS)
+    {
+        if (typeof(ICustomSerialized).IsAssignableFrom(typeof(T)))
+        {
+            var Result = Activator.CreateInstance<T>() as ICustomSerialized;
+            Result.Deserialize(THIS);
+            return (T)Result;
+        }
+        else return THIS.Value<T>();
+    }
+    /// <summary>
+    /// Attempts to Deserialize this Token into the desired Type.
+    /// </summary>
+    /// <typeparam name="T">The Type to Deserialize into.</typeparam>
+    /// <param name="result"></param>
+    /// <returns>Whether the Deserialization was succesful.</returns>
+    public static bool TryDeserialize<T>(this JToken THIS, out T result)
+    {
+        if (typeof(ICustomSerialized).IsAssignableFrom(typeof(T)))
+        {
+            var IResult = Activator.CreateInstance<T>() as ICustomSerialized;
+            IResult.Deserialize(THIS);
+            result = (T)IResult;
+        }
+        else result = THIS.Value<T>();
+        return result != null;
+    }
+
+    /// <summary>
+    /// Populates an existing object using this Token.
+    /// </summary>
+    /// <param name="target">The Target object.</param>
+    public static void DeserializeInto(this JToken THIS, object target)
+    {
+        var Custom = target as ICustomSerialized;
+        if (Custom != null) Custom.Deserialize(THIS);
+        else
+            using (JsonReader sr = THIS.CreateReader())
+                JsonSerializer.CreateDefault().Populate(sr, target);
+    }
+
+    /// <summary>
+    /// Converts and Returns the Value as the desired Type.
+    /// </summary>
+    /// <typeparam name="T">The Type to Convert to.</typeparam>
+    /// <returns>A Converted Value.</returns>
+    public static T As<T>(this JObject THIS) => THIS.Value<T>();
+
+}
+
+/*
 public class Json
 {
     public string raw;
@@ -214,34 +323,4 @@ public class Json
     public JToken ToJToken() => Deserialize<JToken>();
 
     public T Value<T>() => new JRaw(raw).Value<T>();
-}
-
-public interface ICustomSerialized
-{
-    /// <summary>
-    /// Serializes the object into a Json representation. (Can be overridden along with its Deserialize Counterpart.)
-    /// </summary>
-    /// <returns> The Json representation.</returns>
-    public Json Serialize();
-    /// <summary>
-    /// Deserializes a Json representation and populates this object with its data. (Can be overridden along with its Serialize Counterpart.)
-    /// </summary>
-    /// <param name="Data">The Json representation to be Deserialized.</param>
-    public void Deserialize(Json Data);
-
-}
-
-public static class JsonExtensionMethods
-{
-    public static Json ToJson(this string input) => new(input);
-
-    public static void DeserializeInto(this JToken input, object target)
-    {
-        if (target is ICustomSerialized Custom) Custom.Deserialize(input);
-        else JsonConvert.PopulateObject(input.ToString(), target);
-    }
-
-    public static T To<T>(this JToken input) => input.Value<T>();
-
-    public static JArray Array(this JToken input) => input as JArray;
-}
+}*/
