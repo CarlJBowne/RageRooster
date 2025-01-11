@@ -1,41 +1,56 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.Rendering;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewSOCollection", menuName ="SO Collection")]
-public class ScriptableCollection : ScriptableObject
+[CreateAssetMenu(fileName = "NewSOCollection", menuName ="SO Collection"), System.Serializable]
+public class ScriptableCollection : ScriptableObject, ICustomSerialized
 {
     public string selectedType = null;
     public string SelectedType => selectedType;
 
-    public List<ScriptableObject> Objects = new();
+    public List<ScriptableObject> List = new();
 
     public void Create()
     {
         ScriptableObject NEWObject = Activator.CreateInstance(Type.GetType(selectedType)) as ScriptableObject;
 
-        NEWObject.name = $"{Objects.Count}_NewObject";
+        NEWObject.name = $"{List.Count}_NewObject";
         AssetDatabase.AddObjectToAsset(NEWObject, this);
         Undo.RegisterCreatedObjectUndo(NEWObject, "Added New Object");
         AssetDatabase.SaveAssets();
-        Objects.Add(NEWObject);
+        List.Add(NEWObject);
     }
     public void DeleteAt(int i)
     {
-        Undo.RecordObject(Objects[i], "Object Deleted");
-        DestroyImmediate(Objects[i], true);
-        Objects.RemoveAt(i);
+        Undo.RecordObject(List[i], "Object Deleted");
+        DestroyImmediate(List[i], true);
+        List.RemoveAt(i);
         AssetDatabase.SaveAssets();
     }
 
+    public Json Serialize()
+    {
+        Json.Builder Build = new();
+        Build.AddString(nameof(selectedType), selectedType);
+        Build.AddList(nameof(List), List, true);
+        return Build.Result();
+    }
+    public void Deserialize(Json Data)
+    {
+        Dictionary<string, object> jsonData = Data.DeserializeAll();
 
+        string readSOType = jsonData[nameof(selectedType)] as string;
+        if (readSOType != selectedType) throw new Exception("WRONG SCRIPTABLE OBJECT TYPE.");
+        var jsonArray = jsonData[nameof(List)] as Newtonsoft.Json.Linq.JArray;
 
-
+        for (int i = 0; i < jsonArray.Count; i++)
+        {
+            if (i >= List.Count) throw new Exception("JSON contains more items than the current collection.");
+            Json.DeserializeInto(jsonArray[i], List[i]);
+            EditorUtility.SetDirty(List[i]);
+        }
+    }
 }
 
 [CustomEditor(typeof(ScriptableCollection), true)]
@@ -61,15 +76,15 @@ public class ScriptableCollectionEditor : Editor
 
         if (initialized)
         {
-            for (int i = 0; i < This.Objects.Count; i++)
+            for (int i = 0; i < This.List.Count; i++)
             {
                 GUILayout.BeginHorizontal();
 
-                string editedName = EditorGUILayout.DelayedTextField(This.Objects[i].name.Substring(2), GUILayout.ExpandWidth(true));
-                if (editedName != This.Objects[i].name.Substring(2))
+                string editedName = EditorGUILayout.DelayedTextField(This.List[i].name.Substring(2), GUILayout.ExpandWidth(true));
+                if (editedName != This.List[i].name.Substring(2))
                 {
-                    This.Objects[i].name = $"{i}_{editedName}";
-                    EditorUtility.SetDirty(This.Objects[i]);
+                    This.List[i].name = $"{i}_{editedName}";
+                    EditorUtility.SetDirty(This.List[i]);
                     AssetDatabase.SaveAssets();
                     AssetDatabase.Refresh();
                 }
@@ -102,3 +117,4 @@ public class ScriptableCollectionEditor : Editor
     //private void Load() => assets = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(target)).Cast<ScriptableObject>().ToList();
 
 }
+

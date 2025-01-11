@@ -1,17 +1,22 @@
-﻿using System.Collections;
+﻿using EditorAttributes;
+using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class WorldChange : ScriptableObject
+[System.Serializable]
+public class WorldChange : ScriptableObject, ICustomSerialized
 {
-    private bool _enabled;
+    [SerializeField, DisableInEditMode, DisableInPlayMode] private bool _enabled;
 
     private System.Action _activateAction;
 
     public bool Enabled => _enabled;
+    [JsonIgnore]
     public System.Action Action => _activateAction;
 
+    [JsonIgnore]
     public bool defaultValue;
 
     public void Activate()
@@ -21,16 +26,17 @@ public class WorldChange : ScriptableObject
     }
     public void Deactivate() => _enabled = false;
 
-    //[EditorAttributes.Button]
-    //public void Delete()
-    //{
-    //
-    //    if (EditorUtility.DisplayDialog("Remove World Change", "Are you sure you want to delete this world change?", "Yes", "No"))
-    //    {
-    //        Undo.RecordObject(this, "World Change Deleted");
-    //        DestroyImmediate(this, true);
-    //        AssetDatabase.SaveAssets();
-    //    }
-    //}
+    public Json Serialize()
+    {
+        Json.Builder builder = new();
+        builder.AddField("Enabled", Enabled, true);
+        return builder.Result();
+    }
 
+    public void Deserialize(Json Data)
+    {
+        Dictionary<string, object> jsonData = Data.DeserializeAll();
+        _enabled = (bool)jsonData["Enabled"];
+        EditorUtility.SetDirty(this);
+    }
 }
