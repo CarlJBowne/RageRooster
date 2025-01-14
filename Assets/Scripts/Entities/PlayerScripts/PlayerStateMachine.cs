@@ -50,6 +50,14 @@ public class PlayerStateMachine : StateMachine
         freeLookCamera.PreviousStateIsValid = false;
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);
     }
+    public void Spawn(SavePoint spawn)
+    {
+        Vector3 camDelta = spawn.SpawnPoint.position - transform.position;
+        body.position = spawn.SpawnPoint.position;
+        body.rotation = new(0, spawn.SpawnPoint.eulerAngles.y, 0);
+        freeLookCamera.PreviousStateIsValid = false;
+        freeLookCamera.OnTargetObjectWarped(transform, camDelta);
+    }
 
 
 }

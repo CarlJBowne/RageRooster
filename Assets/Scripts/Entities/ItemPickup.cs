@@ -30,7 +30,7 @@ public class ItemPickup : MonoBehaviour
 
         if (type == ItemType.Coin)
         {
-            UIHUDSystem.Get().AddCurrency(addAmount);
+            GlobalState.AddCurrency(addAmount);
         }
         else if (type == ItemType.Health)
         {

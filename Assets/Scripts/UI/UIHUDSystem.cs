@@ -42,7 +42,7 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
     {
         if (maxValue > activeMaxHealth) 
             for (int i = 0; i < maxValue - activeMaxHealth; i++)
-                healthImages.Add(Instantiate<Image>(healthImages[0], healthImages[0].transform.parent));
+                healthImages.Add(Instantiate(healthImages[0], healthImages[0].transform.parent));
         activeMaxHealth = maxValue;
         //Note, can't go down since it probably won't ever go down.
         for (int i = 0; i < healthImages.Count; i++) 
@@ -56,10 +56,6 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
         hintTimer = hintTime;
     }
 
-    public void AddCurrency(int currency)
-    {
-        currentCurrency += currency;
-        currencyText.text = currentCurrency.ToString();
-    }
+    public static void SetCurrencyText(string currencyText) => Get().currencyText.text = currencyText;
 
 }

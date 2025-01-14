@@ -132,7 +132,7 @@ public static class JsonExtensionMethods
     /// </summary>
     /// <typeparam name="T">The Type to Convert to.</typeparam>
     /// <returns>A Converted Value.</returns>
-    public static T As<T>(this JObject THIS) => THIS.Value<T>();
+    public static T As<T>(this JToken THIS) => THIS.Value<T>();
 
 }
 

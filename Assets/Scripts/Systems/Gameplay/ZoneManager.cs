@@ -14,30 +14,19 @@ public class ZoneManager : Singleton<ZoneManager>
     public Timer.Loop offsetSetTimer = new(15f);
     public float distanceToOriginShift;
 
-    public static string AreaToOpen = null;
-    public static Vector3 playerSpawnPos;
-    public static float playerSpawnYRot;
-
+    public static System.Action OnFirstLoad;
 
     private Transform playerTransform;
     private PlayerStateMachine playerMachine;
     private Vector3Double currentOffset;
 
-    public static void InitiateBeginning(string sceneName, Vector3 pos, float yRot)
-    {
-        AreaToOpen = sceneName;
-        playerSpawnPos = pos;
-        playerSpawnYRot = yRot;
-        SceneManager.LoadScene(Gameplay.GAMEPLAY_SCENE_NAME);
-    }
+    public static ZoneRoot CurrentZone => Get().currentZone;
+
 
     protected override void OnAwake()
     {
-        SceneManager.LoadScene(AreaToOpen ?? defaultAreaScene, LoadSceneMode.Additive);
-
         playerTransform = Gameplay.Player.transform;
         playerMachine = Gameplay.Player.GetComponent<PlayerStateMachine>();
-        playerMachine.InstantMove(playerSpawnPos, playerSpawnYRot);
     }
 
     public void Update()
@@ -54,6 +43,7 @@ public class ZoneManager : Singleton<ZoneManager>
         {
             currentZone = zone;
             proxies.Add(zone, new(zone));
+            OnFirstLoad?.Invoke();
         }
         else proxies[zone.name].root = zone;
 

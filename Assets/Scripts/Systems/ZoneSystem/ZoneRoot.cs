@@ -7,37 +7,34 @@ using UnityEngine.SceneManagement;
 public class ZoneRoot : MonoBehaviour
 {
     public ZoneTransition[] transitions;
-    public Transform defaultPlayerSpawn;
+    public SavePoint[] _spawns;
+    public SavePoint defaultPlayerSpawn;
 
+    public SavePoint[] spawns {get{
+            if (_spawns == null || _spawns.Length == 0) 
+                _spawns = gameObject.GetComponentsInChildren<SavePoint>();
+            return _spawns; 
+        }}
     [HideInInspector] public new string name;
     public Vector3 originOffset;
+    [HideInInspector] public int loadID = -2;
 
     public static implicit operator string(ZoneRoot A) => A.name ?? A.gameObject.scene.name;
-
-    /*
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    public static void Boot()
-    {
-        var attempt = FindFirstObjectByType<ZoneRoot>(FindObjectsInactive.Include);
-        if (attempt == null || ZoneManager.Active) return;
-        Gameplay.areaToOpen = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene(Gameplay.GAMEPLAY_SCENE_NAME);
-        return;
-    }
-    */
 
     private void Awake()
     {
         if (!ZoneManager.Active)
         {
-            ZoneManager.InitiateBeginning(SceneManager.GetActiveScene().name, defaultPlayerSpawn.position, defaultPlayerSpawn.eulerAngles.y);
+            if (loadID == -2) Gameplay.BeginScene(SceneManager.GetActiveScene().name);
+            else Gameplay.BeginSavePoint(SceneManager.GetActiveScene().name, loadID);
             return;
         }
 
         name = gameObject.scene.name;
         originOffset = transform.position;
 
-        if(transitions.Length == 0) transitions = gameObject.GetComponentsInChildren<ZoneTransition>();
+        if(transitions == null || transitions.Length == 0) transitions = gameObject.GetComponentsInChildren<ZoneTransition>();
+        if(spawns == null || spawns.Length == 0) _spawns = gameObject.GetComponentsInChildren<SavePoint>();
 
         ZoneManager.LoadArea(this);
 
@@ -48,7 +45,7 @@ public class ZoneRoot : MonoBehaviour
 
     }
 
-
+    public SavePoint GetSpawn(int id) => id == -1 ? defaultPlayerSpawn : spawns[id];
 }
 
 [System.Serializable]
@@ -148,3 +145,17 @@ public class ZoneProxy
     public ZoneRoot GetRoot() => root != null ? root : throw new System.Exception("ERROR: The Player is attempting to transition to a Zone that has not yet Loaded. Ideally, there would be a collider attached to the visual proxy to prevent this from ever happening.");
 
 }
+
+//public struct SpawnPoint
+//{
+//    public Vector3 position; 
+//    public float yRotation;
+//
+//    public SpawnPoint(Vector3 position, float yRotation)
+//    {
+//        this.position = position;
+//        this.yRotation = yRotation;
+//    }
+//
+//    public static implicit operator SpawnPoint(Transform original) => new(original.position, original.eulerAngles.y);
+//}

@@ -31,6 +31,8 @@ public class ScriptableCollection : ScriptableObject, ICustomSerialized
         AssetDatabase.SaveAssets();
     }
 
+    public List<T> Cast<T>() where T : ScriptableObject => List.Cast<T>().ToList();
+
     public JToken Serialize()
     {
         return new JObject(
@@ -76,8 +78,6 @@ public class ScriptableCollectionEditor : Editor
         //base.OnInspectorGUI();
         serializedObject.Update();
 
-        EditorGUILayout.EditorToolbar();
-
         if (initialized)
         {
             for (int i = 0; i < This.List.Count; i++)
@@ -102,6 +102,19 @@ public class ScriptableCollectionEditor : Editor
             GUI.backgroundColor = Color.green;
             if (GUILayout.Button("+")) This.Create();
             GUI.backgroundColor = Color.white;
+
+            if(This.List.Count == 0)
+            {
+                GUI.backgroundColor = Color.blue;
+                if (GUILayout.Button("UnreferencedChildren?"))
+                {
+                    var ALL = AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(This)).ToList();
+                    ALL.Remove(This);
+                    This.List = ALL.Cast<ScriptableObject>().ToList();
+                }
+                GUI.backgroundColor = Color.white;
+            }
+            
         }
         else
         {
