@@ -17,38 +17,38 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
-        AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+        AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
         SceneManager.LoadScene("FarmHouse");
     }
 
     public void QuitGame()
     {
-        AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+        AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
         Application.Quit();
     }
 
     public void OpenOptionsMenu()
     {
-        AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+        AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
         optionsMenuPanel.SetActive(true);
     }
 
     public void CloseOptionsMenu()
     {
-        AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+        AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
         optionsMenuPanel.SetActive(false);
     }
 
     public void ShowCredits()
     {
-        AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+        AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
         //creditsContent.anchoredPosition = new Vector2(creditsContent.anchoredPosition.x, 0);
         creditsPanel.SetActive(true);
     }
 
     public void HideCredits()
     {
-        AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+        AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
         creditsPanel.SetActive(false);
     }
 }

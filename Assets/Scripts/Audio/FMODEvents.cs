@@ -7,23 +7,78 @@ public class FMODEvents : MonoBehaviour
 {
     [field: Header("Player SFX")]
     [field: SerializeField] public EventReference playerJump { get; private set; }
+    [field: SerializeField] public EventReference playerSecondJump { get; private set; }
+    [field: SerializeField] public EventReference playerHover { get; private set; }
+    [field: SerializeField] public EventReference playerFootsteps { get; private set; }
+    [field: SerializeField] public EventReference playerMeleeSwings { get; private set; }
+    [field: SerializeField] public EventReference playerGrab { get; private set; }
+    [field: SerializeField] public EventReference playerThrow { get; private set; }
+    [field: SerializeField] public EventReference playerButtSlam { get; private set; }
+    [field: SerializeField] public EventReference playerAimMode { get; private set; }
+    [field: SerializeField] public EventReference playerShootEggs { get; private set; }
+    [field: SerializeField] public EventReference playerDamage { get; private set; }
+    [field: SerializeField] public EventReference playerIdle { get; private set; }
+    [field: SerializeField] public EventReference playerDropLaunch { get; private set; }
+    [field: SerializeField] public EventReference playerWallKick { get; private set; }
+    [field: SerializeField] public EventReference playerRagingChargeActivate { get; private set; }
+    [field: SerializeField] public EventReference playerCharging { get; private set; }
+    [field: SerializeField] public EventReference playerHellcopterSpin { get; private set; }
     [field: SerializeField] public EventReference playerLand { get; private set; }
     [field: SerializeField] public EventReference playerDeath { get; private set; }
+    [field: SerializeField] public EventReference playerAirDash { get; private set; }
     
     [field: Header("Music")]
-    [field: SerializeField] public EventReference mainMenuMusic { get; private set; }
-    [field: SerializeField] public EventReference forestMusic { get; private set; }
-    [field: SerializeField] public EventReference ranchMusic { get; private set; }
+    [field: SerializeField] public EventReference titleScreenMusic { get; private set; }
+    [field: SerializeField] public EventReference rockyFurrowsHubMusic { get; private set; }
+    [field: SerializeField] public EventReference ireGorgeMusic { get; private set; }
+    [field: SerializeField] public EventReference seethingDepthsMusic { get; private set; }
+    [field: SerializeField] public EventReference rancorPeakMusic { get; private set; }
+    [field: SerializeField] public EventReference rockyFurrowsBossFightMusic { get; private set; }
+    [field: SerializeField] public EventReference ireGorgeBossMusic { get; private set; }
+    [field: SerializeField] public EventReference seethingDepthBossMusic { get; private set; }
+    [field: SerializeField] public EventReference finalBossMusic { get; private set; }
+    [field: SerializeField] public EventReference abilityVictoryFanfareMusic { get; private set; }
+    [field: SerializeField] public EventReference henFanfareMusic { get; private set; }
+    [field: SerializeField] public EventReference goldenKernelFanfareMusic { get; private set; }
+    [field: SerializeField] public EventReference creditsMusic { get; private set; }
+    [field: SerializeField] public EventReference fightMusic1 { get; private set; }
+    [field: SerializeField] public EventReference fightMusic2 { get; private set; }
+    [field: SerializeField] public EventReference fightMusic3 { get; private set; }
     
     [field: Header("SFX")]
-    [field: SerializeField] public EventReference laserShot { get; private set; }
+    [field: SerializeField] public EventReference healthPickup { get; private set; }
+    [field: SerializeField] public EventReference bullionPickup { get; private set; }
 
     [field: Header("UI")]
-    [field: SerializeField] public EventReference buttonPressed { get; private set; }
+    [field: SerializeField] public EventReference selectionHover { get; private set; }
+    [field: SerializeField] public EventReference selectionConfirm { get; private set; }
+    [field: SerializeField] public EventReference returnExit { get; private set; }
+    [field: SerializeField] public EventReference pauseSettings { get; private set; }
+    [field: SerializeField] public EventReference pauseGameStats { get; private set; }
 
     [field: Header("Ambience")]
-    [field: SerializeField] public EventReference forestAmbience { get; private set; }
-    [field: SerializeField] public EventReference ranchAmbience { get; private set; }
+    [field: SerializeField] public EventReference ireGorgeAmbience { get; private set; }
+    [field: SerializeField] public EventReference rockyFurrowsAmbience { get; private set; }
+    [field: SerializeField] public EventReference waterSplash { get; private set; }
+    [field: SerializeField] public EventReference enemyImpact { get; private set; }
+    [field: SerializeField] public EventReference eggShotImpact { get; private set; }
+    [field: SerializeField] public EventReference woodenDestructible { get; private set; }
+    [field: SerializeField] public EventReference stoneDestructible { get; private set; }
+    [field: SerializeField] public EventReference metalDestructible { get; private set; }
+    [field: SerializeField] public EventReference bossAmbience { get; private set; }
+    [field: SerializeField] public EventReference transitionAmbience { get; private set; }
+
+    [field: Header("Enemy SFX")]
+    [field: SerializeField] public EventReference enemyDamage { get; private set; }
+    [field: SerializeField] public EventReference enemyMeleeSwings { get; private set; }
+    [field: SerializeField] public EventReference enemyRangedShots { get; private set; }
+    [field: SerializeField] public EventReference enemyDeath { get; private set; }
+    [field: SerializeField] public EventReference enemyJetpackIdle { get; private set; }
+    [field: SerializeField] public EventReference enemyJetpackMotion { get; private set; }
+    [field: SerializeField] public EventReference enemyGrabbed { get; private set; }
+    [field: SerializeField] public EventReference enemyHeld { get; private set; }
+    [field: SerializeField] public EventReference enemyThrown { get; private set; }
+    [field: SerializeField] public EventReference enemyIdleChatter { get; private set; }
 
     public static FMODEvents instance { get; private set; }
 
@@ -40,7 +95,7 @@ public class FMODEvents : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         ////Debug.Log("FMODEvents Awake");
 
-        if (forestAmbience.Guid == System.Guid.Empty && ranchAmbience.Guid == System.Guid.Empty)
+        if (ireGorgeAmbience.Guid == System.Guid.Empty && rockyFurrowsAmbience.Guid == System.Guid.Empty)
         {
             ////Debug.LogWarning("No ambience events are assigned in the FMODEvents component.");
         }
@@ -49,19 +104,19 @@ public class FMODEvents : MonoBehaviour
     public bool HasAmbience()
     {
         // Check if any ambience events are assigned
-        return forestAmbience.Guid != System.Guid.Empty || ranchAmbience.Guid != System.Guid.Empty;
+        return ireGorgeAmbience.Guid != System.Guid.Empty || rockyFurrowsAmbience.Guid != System.Guid.Empty;
     }
 
     public EventReference GetAmbience()
     {
         // Get the assigned ambience event
-        if (forestAmbience.Guid != System.Guid.Empty)
+        if (ireGorgeAmbience.Guid != System.Guid.Empty)
         {
-            return forestAmbience;
+            return ireGorgeAmbience;
         }
-        else if (ranchAmbience.Guid != System.Guid.Empty)
+        else if (rockyFurrowsAmbience.Guid != System.Guid.Empty)
         {
-            return ranchAmbience;
+            return rockyFurrowsAmbience;
         }
         else
         {
@@ -72,23 +127,23 @@ public class FMODEvents : MonoBehaviour
     public bool HasMusic()
     {
         // Check if any music events are assigned
-        return mainMenuMusic.Guid != System.Guid.Empty || forestMusic.Guid != System.Guid.Empty || ranchMusic.Guid != System.Guid.Empty;
+        return titleScreenMusic.Guid != System.Guid.Empty || ireGorgeMusic.Guid != System.Guid.Empty || rockyFurrowsHubMusic.Guid != System.Guid.Empty;
     }
 
     public EventReference GetMusic()
     {
         // Get the assigned music event
-        if (mainMenuMusic.Guid != System.Guid.Empty)
+        if (titleScreenMusic.Guid != System.Guid.Empty)
         {
-            return mainMenuMusic;
+            return titleScreenMusic;
         }
-        else if (forestMusic.Guid != System.Guid.Empty)
+        else if (ireGorgeMusic.Guid != System.Guid.Empty)
         {
-            return forestMusic;
+            return ireGorgeMusic;
         }
-        else if (ranchMusic.Guid != System.Guid.Empty)
+        else if (rockyFurrowsHubMusic.Guid != System.Guid.Empty)
         {
-            return ranchMusic;
+            return rockyFurrowsHubMusic;
         }
         else
         {

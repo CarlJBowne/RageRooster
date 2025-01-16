@@ -182,13 +182,13 @@ public class AudioManager : SingletonAdvanced<AudioManager>
         switch (sceneName)
         {
             case "MainMenu":
-                musicEvent = FMODEvents.instance.mainMenuMusic;
+                musicEvent = FMODEvents.instance.titleScreenMusic;
                 break;
             case "Forest":
-                musicEvent = FMODEvents.instance.forestMusic;
+                musicEvent = FMODEvents.instance.ireGorgeMusic;
                 break;
             case "FarmHouse":
-                musicEvent = FMODEvents.instance.ranchMusic;
+                musicEvent = FMODEvents.instance.rockyFurrowsHubMusic;
                 break;
             default:
                 ////Debug.LogWarning($"No music event found for scene: {sceneName}");
