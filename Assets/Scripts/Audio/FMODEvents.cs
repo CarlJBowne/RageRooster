@@ -26,6 +26,7 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference playerLand { get; private set; }
     [field: SerializeField] public EventReference playerDeath { get; private set; }
     [field: SerializeField] public EventReference playerAirDash { get; private set; }
+    [field: SerializeField] public EventReference eggShotImpact { get; private set; }
     
     [field: Header("Music")]
     [field: SerializeField] public EventReference titleScreenMusic { get; private set; }
@@ -37,9 +38,6 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference ireGorgeBossMusic { get; private set; }
     [field: SerializeField] public EventReference seethingDepthBossMusic { get; private set; }
     [field: SerializeField] public EventReference finalBossMusic { get; private set; }
-    [field: SerializeField] public EventReference abilityVictoryFanfareMusic { get; private set; }
-    [field: SerializeField] public EventReference henFanfareMusic { get; private set; }
-    [field: SerializeField] public EventReference goldenKernelFanfareMusic { get; private set; }
     [field: SerializeField] public EventReference creditsMusic { get; private set; }
     [field: SerializeField] public EventReference fightMusic1 { get; private set; }
     [field: SerializeField] public EventReference fightMusic2 { get; private set; }
@@ -48,6 +46,14 @@ public class FMODEvents : MonoBehaviour
     [field: Header("SFX")]
     [field: SerializeField] public EventReference healthPickup { get; private set; }
     [field: SerializeField] public EventReference bullionPickup { get; private set; }
+    [field: SerializeField] public EventReference abilityVictoryFanfareSFX { get; private set; }
+    [field: SerializeField] public EventReference henFanfareSFX { get; private set; }
+    [field: SerializeField] public EventReference goldenKernelFanfareSFX { get; private set; }
+    [field: SerializeField] public EventReference wishboneFanFareSFX { get; private set; }
+    [field: SerializeField] public EventReference woodenDestructible { get; private set; }
+    [field: SerializeField] public EventReference stoneDestructible { get; private set; }
+    [field: SerializeField] public EventReference metalDestructible { get; private set; }
+
 
     [field: Header("UI")]
     [field: SerializeField] public EventReference selectionHover { get; private set; }
@@ -60,11 +66,6 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference ireGorgeAmbience { get; private set; }
     [field: SerializeField] public EventReference rockyFurrowsAmbience { get; private set; }
     [field: SerializeField] public EventReference waterSplash { get; private set; }
-    [field: SerializeField] public EventReference enemyImpact { get; private set; }
-    [field: SerializeField] public EventReference eggShotImpact { get; private set; }
-    [field: SerializeField] public EventReference woodenDestructible { get; private set; }
-    [field: SerializeField] public EventReference stoneDestructible { get; private set; }
-    [field: SerializeField] public EventReference metalDestructible { get; private set; }
     [field: SerializeField] public EventReference bossAmbience { get; private set; }
     [field: SerializeField] public EventReference transitionAmbience { get; private set; }
 
@@ -79,6 +80,9 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference enemyHeld { get; private set; }
     [field: SerializeField] public EventReference enemyThrown { get; private set; }
     [field: SerializeField] public EventReference enemyIdleChatter { get; private set; }
+    [field: SerializeField] public EventReference enemyImpact { get; private set; }
+
+    // make a header for farm animal sfx
 
     public static FMODEvents instance { get; private set; }
 
