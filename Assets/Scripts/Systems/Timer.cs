@@ -138,9 +138,9 @@ namespace Timer
         [SerializeField, DisableInEditMode, DisableInPlayMode] public float current;
         [HideInInspector] public bool running;
 
-        public OneTime(float rate, bool activate = false)
+        public OneTime(float length, bool activate = false)
         {
-            this.length = rate;
+            this.length = length;
             current = 0f;
             running = false;
             if (activate) Begin();
