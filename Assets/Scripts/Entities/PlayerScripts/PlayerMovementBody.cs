@@ -119,6 +119,8 @@ public class PlayerMovementBody : PlayerStateBehavior
         initVelocity = velocity;
         initNormal = Vector3.up;
 
+        if (PlayerStateMachine.DEBUG_MODE_ACTIVE && Input.Jump.IsPressed()) VelocitySet(y: 10f);
+
         if (velocity.y <= 0.01f ||(sGrounded && velocity.y > 0.1f)) 
         {
             if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out groundHit))

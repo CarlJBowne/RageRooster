@@ -36,7 +36,15 @@ public class PlayerStateMachine : StateMachine
             freeLookCamera.Follow = transform;
             freeLookCamera.LookAt = transform;
         }
+
+        #if UNITY_EDITOR
+        input.asset.Gameplay.DebugActivate.performed += (_) => { DEBUG_MODE_ACTIVE = !DEBUG_MODE_ACTIVE; };
+        #endif
     }
+
+    public static bool DEBUG_MODE_ACTIVE;
+
+
 
     public static Action<PlayerStateMachine> whenInitializedEvent;
 
@@ -67,6 +75,7 @@ public abstract class PlayerStateBehavior : StateBehavior
     [HideInInspector] public Input input;
     [HideInInspector] public PlayerMovementBody body;
     [HideInInspector] public PlayerController controller;
+    
 
     protected override void Initialize()
     {
@@ -75,7 +84,7 @@ public abstract class PlayerStateBehavior : StateBehavior
         body = M.body;
         controller = M.controller;
     }
-
+        
 
     #region States
 
