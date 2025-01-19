@@ -14,7 +14,6 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
     public TextMeshProUGUI hintText;
     public TextMeshProUGUI currencyText;
     public float hintTime;
-
     private int activeMaxHealth = 1;
     private float hintTimer;
 
