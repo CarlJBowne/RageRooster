@@ -82,7 +82,12 @@ public class FMODEvents : MonoBehaviour
     [field: SerializeField] public EventReference enemyIdleChatter { get; private set; }
     [field: SerializeField] public EventReference enemyImpact { get; private set; }
 
-    // make a header for farm animal sfx
+    [field: Header("Animal SFX")]
+    [field: SerializeField] public EventReference Cow { get; private set; }
+    [field: SerializeField] public EventReference Chicken { get; private set; }
+    [field: SerializeField] public EventReference Pig { get; private set; }
+    [field: SerializeField] public EventReference Goat { get; private set; }
+    [field: SerializeField] public EventReference Bird { get; private set; }
 
     public static FMODEvents instance { get; private set; }
 
