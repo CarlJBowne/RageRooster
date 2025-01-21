@@ -11,20 +11,10 @@ public class PauseMenu : MonoBehaviour
     public GameObject optionsMenuUI;
     public EventSystem eventSystem;
     private bool isPaused = false;
-    private PlayerActions playerAction;
 
-    private void OnEnable()
-    {
-        playerAction = new PlayerActions();
-        playerAction.UI.PauseGame.performed += OnPause;
-        playerAction.UI.Enable();
-    }
+    private void OnEnable() => Input.UI.PauseGame.performed += OnPause;
 
-    private void OnDisable()
-    {
-        playerAction.UI.PauseGame.performed -= OnPause;
-        playerAction.UI.Disable();
-    }
+    private void OnDisable() => Input.UI.PauseGame.performed -= OnPause;
 
     private void Start()
     {
