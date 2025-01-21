@@ -81,8 +81,8 @@ public class Gameplay : Singleton<Gameplay>
         Player.gameObject.SetActive(true);
     }
 
-    public static void SpawnPlayer() => Get().StartCoroutine(Get().SpawnPlayer_CR());
-    public void ResetToSaved() => StartCoroutine(Get().ResetToSaved_CR());
+    public static void SpawnPlayer() => new CoroutinePlus(Get().SpawnPlayer_CR(), Get());
+    public void ResetToSaved() => new CoroutinePlus(Get().ResetToSaved_CR(), Get());
 
     private IEnumerator SpawnPlayer_CR()
     {

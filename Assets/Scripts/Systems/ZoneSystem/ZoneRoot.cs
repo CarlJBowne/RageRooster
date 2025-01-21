@@ -56,7 +56,7 @@ public class ZoneProxy
     public ZoneRoot root;
 
     public List<ZoneTransition> transitionsTo;
-    public Coroutine task;
+    public CoroutinePlus task;
     public AsyncOperation async;
 
     private readonly ZoneManager manager;
@@ -77,21 +77,21 @@ public class ZoneProxy
         loaded = true;
         transitionsTo = new();
         ZoneManager.Get(out manager);
-        task = Gameplay.Get().StartCoroutine(LockFromUnloading());
+        task = new (LockFromUnloading(), Gameplay.Get());
     }
 
     public void Update()
     {
-        if (ZoneManager.IsCurrent(this) || task != null) return;
+        if (ZoneManager.IsCurrent(this) || task) return;
         bool value = CheckForLoad();
 
         if (value && !loaded)
         {
-            task = Gameplay.Get().StartCoroutine(Loading());
+            task = new (Loading(), Gameplay.Get());
         }    
         else if (!value && loaded)
         {
-            task = Gameplay.Get().StartCoroutine(Unloading());
+            task = new (Unloading(), Gameplay.Get());
         }
             
     }
@@ -132,7 +132,7 @@ public class ZoneProxy
         SetTraversable(true);
         root = null;
 
-        task = CheckForLoad() ? Gameplay.Get().StartCoroutine(Loading()) : null;
+        task = CheckForLoad() ? new(Loading(), Gameplay.Get()) : null;
     }
     IEnumerator LockFromUnloading()
     {
@@ -146,17 +146,3 @@ public class ZoneProxy
     public ZoneRoot GetRoot() => root != null ? root : throw new System.Exception("ERROR: The Player is attempting to transition to a Zone that has not yet Loaded. Ideally, there would be a collider attached to the visual proxy to prevent this from ever happening.");
 
 }
-
-//public struct SpawnPoint
-//{
-//    public Vector3 position; 
-//    public float yRotation;
-//
-//    public SpawnPoint(Vector3 position, float yRotation)
-//    {
-//        this.position = position;
-//        this.yRotation = yRotation;
-//    }
-//
-//    public static implicit operator SpawnPoint(Transform original) => new(original.position, original.eulerAngles.y);
-//}

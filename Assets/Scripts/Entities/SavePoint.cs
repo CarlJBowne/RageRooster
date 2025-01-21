@@ -42,7 +42,7 @@ public class SavePoint : MonoBehaviour, IInteractable
 
     bool IInteractable.Interaction()
     {
-        StartCoroutine(Save_CR());
+        new CoroutinePlus(Save_CR(), this);
         return true;
     }
     private IEnumerator Save_CR()
