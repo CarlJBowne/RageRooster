@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static UnityEditor.Progress;
@@ -19,6 +20,7 @@ public class ZoneManager : Singleton<ZoneManager>
     private Transform playerTransform;
     private PlayerStateMachine playerMachine;
     private Vector3Double currentOffset;
+    private bool forceMoveNextZone = false;
 
     public static ZoneRoot CurrentZone => Get().currentZone;
 
@@ -36,8 +38,8 @@ public class ZoneManager : Singleton<ZoneManager>
     }
 
 
-    public static void LoadArea(ZoneRoot zone) { if (Active) Get().LoadArea_(zone); }
-    private void LoadArea_(ZoneRoot zone)
+    public static void LoadZone(ZoneRoot zone) { if (Active) Get().LoadZone_(zone); }
+    private void LoadZone_(ZoneRoot zone)
     {
         if (currentZone == null)
         {
@@ -45,9 +47,18 @@ public class ZoneManager : Singleton<ZoneManager>
             proxies.Add(zone, new(zone));
             OnFirstLoad?.Invoke();
         }
-        else proxies[zone.name].root = zone;
+        else
+        {
+            proxies[zone.name].root = zone;
+            proxies[zone.name].loaded = true;
+        }
 
         zone.transform.position = zone.originOffset + currentOffset;
+        if (forceMoveNextZone)
+        {
+            DoTransition(name);
+            forceMoveNextZone = false;
+        }
     }
     
     public static void DoTransition(string sceneName) { if (Active) Get().DoTransition_(sceneName); }
@@ -74,7 +85,7 @@ public class ZoneManager : Singleton<ZoneManager>
         proxy.transitionsTo.Remove(transition);
         if (currentZone != proxy && proxy.transitionsTo.Count == 0)
         {
-            if(proxy.loaded) SceneManager.UnloadSceneAsync(proxy.name);
+            if(proxy.loaded && IsSceneLoaded(proxy)) SceneManager.UnloadSceneAsync(proxy.name);
             proxies.Remove(transition);
         }
     }
@@ -95,6 +106,28 @@ public class ZoneManager : Singleton<ZoneManager>
                 if (item.loaded) item.root.transform.position = item.root.originOffset + currentOffset;
         }
     }
+
+    public static bool ZoneIsReady(string name) => Get().proxies.ContainsKey(name) && Get().proxies[name].loaded;
+
+    public IEnumerator UnloadAll()
+    {
+        ZoneProxy[] zones = proxies.Values.ToArray();
+
+        int unloadsLeft = 0;
+        for (int i = 0; i < zones.Length; i++)
+            if (IsSceneLoaded(zones[i]))
+            {
+                unloadsLeft++;
+                zones[i].task = null;
+                SceneManager.UnloadSceneAsync(zones[i]).completed += _ => 
+                { unloadsLeft--; };
+            }
+                
+        yield return new WaitUntil(() => unloadsLeft == 0);
+        proxies.Clear();
+    }
+
+    public static bool IsSceneLoaded(string name) => SceneManager.GetSceneByName(name).isLoaded;
 }
 
 public struct Vector3Double

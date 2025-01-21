@@ -36,7 +36,7 @@ public class ZoneRoot : MonoBehaviour
         if(transitions == null || transitions.Length == 0) transitions = gameObject.GetComponentsInChildren<ZoneTransition>();
         if(spawns == null || spawns.Length == 0) _spawns = gameObject.GetComponentsInChildren<SavePoint>();
 
-        ZoneManager.LoadArea(this);
+        ZoneManager.LoadZone(this);
 
     }
 
@@ -124,7 +124,8 @@ public class ZoneProxy
             yield break;
         }
 
-        async = SceneManager.UnloadSceneAsync(name);
+        if(ZoneManager.IsSceneLoaded(name)) async = SceneManager.UnloadSceneAsync(name);
+        else yield break;  
         while (async.progress < 1) yield return null;
 
         loaded = false;

@@ -17,16 +17,16 @@ public class GameplayProxy : MonoBehaviour
                 NEW.name = "Gameplay";
                 DontDestroyOnLoad(NEW);
                 PlayerHealth Player = NEW.transform.GetChild(0).GetComponent<PlayerHealth>();
-                Player.SetRespawnPoint(transform.position);
-                Player.Respawn();
+                //Player.SetRespawnPoint(transform.position);
+                //Player.Respawn();
 
                 Destroy(gameObject);
             }
             else
             {
                 PlayerHealth Player = attempt.transform.GetChild(0).GetComponent<PlayerHealth>();
-                Player.SetRespawnPoint(transform.position);
-                Player.Respawn();
+                //Player.SetRespawnPoint(transform.position);
+                //Player.Respawn();
             }
         }
         else if(reverseProxy && attempt != null) Destroy(attempt);

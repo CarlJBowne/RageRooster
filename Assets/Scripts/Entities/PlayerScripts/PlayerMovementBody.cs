@@ -51,6 +51,8 @@ public class PlayerMovementBody : PlayerStateBehavior
     public Vector3 rotation 
     { get => transform.eulerAngles; set => transform.eulerAngles = value; }
 
+    public Vector3 center => position + collider.center;
+
     [HideInInspector] public Vector3 currentDirection
     {
         get => _currentDirection;

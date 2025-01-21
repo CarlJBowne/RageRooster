@@ -57,6 +57,16 @@ public class PlayerStateMachine : StateMachine
         if (yRot != null) body.rotation = new(0, yRot.Value, 0);
         freeLookCamera.PreviousStateIsValid = false;
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);
+        body.velocity = Vector3.zero;
+    }
+    public void InstantMove(SavePoint savePoint)
+    {
+        Vector3 camDelta = savePoint.SpawnPoint.position - transform.position;
+        body.position = savePoint.SpawnPoint.position;
+        body.rotation = new(0, savePoint.SpawnPoint.eulerAngles.y, 0);
+        freeLookCamera.PreviousStateIsValid = false;
+        freeLookCamera.OnTargetObjectWarped(transform, camDelta);
+        body.velocity = Vector3.zero;
     }
     public void Spawn(SavePoint spawn)
     {

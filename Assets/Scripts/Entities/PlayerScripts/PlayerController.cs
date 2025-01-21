@@ -47,7 +47,7 @@ public class PlayerController : PlayerStateBehavior
 		input.jump.started += _ => JumpPress();
 		input.grab.started += _ => grabber.GrabButtonPress();
 		input.attack.started += _ => PunchButtonPress();
-		//input.attack.started += _ => ChargeButtonPress();
+		input.parry.started += _ => ParryButtonPress();
 	}
 
 	private void OnDestroy()
@@ -55,8 +55,8 @@ public class PlayerController : PlayerStateBehavior
 		input.jump.started -= _ => JumpPress();
 		input.grab.started -= _ => grabber.GrabButtonPress();
 		input.attack.started -= _ => PunchButtonPress();
-		//input.attack.started -= _ => ChargeButtonPress();
-	}
+        input.parry.started -= _ => ParryButtonPress();
+    }
 
 	public override void OnUpdate()
 	{
@@ -110,5 +110,18 @@ public class PlayerController : PlayerStateBehavior
 		if (sAirborne && groundSlamUpgrade) sGroundSlam.TransitionTo();
 		else M.animator.SetTrigger(punchTriggerName);
 	}
+
+	public void ParryButtonPress()
+	{
+		var interactCheck = Physics.OverlapSphere(body.center + body.transform.forward * 2, 1.5f);
+        for (int i = 0; i < interactCheck.Length; i++) 
+			if (interactCheck[i].TryGetComponent(out IInteractable foundInteractable))
+            {
+				foundInteractable.Interact();
+				return;
+            }
+
+		//Do Parry move here.
+    }
 
 }

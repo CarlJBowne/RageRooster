@@ -5,19 +5,23 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SavePoint : MonoBehaviour
+public class SavePoint : MonoBehaviour, IInteractable
 {
     public Transform SpawnPoint;
-    [Button]
+
+    bool canInteract = true;
+    bool IInteractable.canInteract => canInteract;
+
+    
     public void Checkpoint()
     {
         Gameplay.spawnSceneName = gameObject.scene.name;
         Gameplay.spawnPointID = GetID();
     }
-    [Button]
+    
     public void Save() => GlobalState.Save();
     [Button]
-    public void BeginFromHere()
+    private void BeginFromHere()
     {
         GetComponentInParent<ZoneRoot>().loadID = GetID();
         UnityEditor.EditorApplication.isPlaying = true;
@@ -36,6 +40,35 @@ public class SavePoint : MonoBehaviour
         return ID;
     }
 
+    bool IInteractable.Interaction()
+    {
+        StartCoroutine(Save_CR());
+        return true;
+    }
+    private IEnumerator Save_CR()
+    {
+        Save();
 
+        Light light = gameObject.GetOrAddComponent<Light>();
+        light.type = LightType.Point;
+        light.intensity = 10;
+        light.color = Color.green;
+        while(light.intensity > 0)
+        {
+            yield return null;
+            light.intensity -= 0.1f; 
+        }
+    }
 
+}
+
+public interface IInteractable
+{
+    public bool Interact()
+    {
+        if (canInteract) return Interaction();
+        else return false;
+    }
+    protected bool canInteract { get; }
+    protected bool Interaction();
 }

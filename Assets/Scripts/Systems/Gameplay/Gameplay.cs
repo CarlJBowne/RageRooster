@@ -1,5 +1,6 @@
 ﻿using Cinemachine;
 using System;
+using System.Collections;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -18,8 +19,6 @@ public class Gameplay : Singleton<Gameplay>
     public ZoneManager zoneManager;
     public GlobalState globalState;
 
-    //public static string ZoneToOpen = null;
-    //public static SpawnData spawnData = new(null, -1);
     public static string spawnSceneName = null;
     public static int spawnPointID = -1;
     
@@ -72,12 +71,41 @@ public class Gameplay : Singleton<Gameplay>
 
         SceneManager.LoadScene(spawnSceneName ?? ZoneManager.Get().defaultAreaScene, LoadSceneMode.Additive);
 
-        ZoneManager.OnFirstLoad += () =>
-        {
-            SavePoint spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
-            Player.GetComponent<PlayerStateMachine>().InstantMove(spawn.SpawnPoint.position, spawn.SpawnPoint.eulerAngles.y);
-        };
+        ZoneManager.OnFirstLoad += OnFirstLoad;
     }
+
+    private void OnFirstLoad()
+    {
+        SavePoint spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
+        Player.GetComponent<PlayerStateMachine>().InstantMove(spawn);
+        Player.gameObject.SetActive(true);
+    }
+
+    public static void SpawnPlayer() => Get().StartCoroutine(Get().SpawnPlayer_CR());
+    public void ResetToSaved() => StartCoroutine(Get().ResetToSaved_CR());
+
+    private IEnumerator SpawnPlayer_CR()
+    {
+        if(!ZoneManager.ZoneIsReady(spawnSceneName)) SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
+
+        yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
+
+        ZoneManager.DoTransition(spawnSceneName);
+        Player.GetComponent<PlayerStateMachine>().InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
+    }
+    private IEnumerator ResetToSaved_CR()
+    {
+        Player.SetActive(false);
+        yield return ZoneManager.Get().UnloadAll();
+
+        GlobalState.Load();
+        SceneManager.LoadScene(spawnSceneName ?? ZoneManager.Get().defaultAreaScene, LoadSceneMode.Additive);
+
+        yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
+        ZoneManager.DoTransition(spawnSceneName);
+        Player.GetComponent<PlayerStateMachine>().InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
+    }
+
 
 }
 
