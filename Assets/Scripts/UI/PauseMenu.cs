@@ -117,4 +117,8 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
         eventSystem.enabled = false;
     }
+
+    public void Respawn() => Gameplay.SpawnPlayer();
+    public void ReloadSave() => Gameplay.Get().ResetToSaved();
+
 }
