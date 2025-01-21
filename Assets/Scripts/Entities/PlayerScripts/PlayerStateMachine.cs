@@ -36,21 +36,14 @@ public class PlayerStateMachine : StateMachine
             freeLookCamera.Follow = transform;
             freeLookCamera.LookAt = transform;
         }
+
+        #if UNITY_EDITOR
+        input.asset.Gameplay.DebugActivate.performed += (_) => { DEBUG_MODE_ACTIVE = !DEBUG_MODE_ACTIVE; };
+        #endif
     }
 
-    [SerializeField]
-    private AYellowpaper.SerializedCollections.SerializedDictionary<string, bool> upgrades = new()
-    {
-        { "GroundSlam", true },
-        { "DropLaunch", true },
-        { "WallJump", true },
-        { "RageCharge", true }
-    }; 
-    public bool uGroundSlam => upgrades["GroundSlam"];
-    public bool uDropLaunch => upgrades["DropLaunch"];
-    public bool uWallJump => upgrades["WallJump"];
-    public bool uRageCharge => upgrades["RageCharge"];
-    public void SetUpgrade(string id, bool value) => upgrades[id] = value; 
+    public static bool DEBUG_MODE_ACTIVE;
+
 
 
     public static Action<PlayerStateMachine> whenInitializedEvent;
@@ -64,6 +57,24 @@ public class PlayerStateMachine : StateMachine
         if (yRot != null) body.rotation = new(0, yRot.Value, 0);
         freeLookCamera.PreviousStateIsValid = false;
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);
+        body.velocity = Vector3.zero;
+    }
+    public void InstantMove(SavePoint savePoint)
+    {
+        Vector3 camDelta = savePoint.SpawnPoint.position - transform.position;
+        body.position = savePoint.SpawnPoint.position;
+        body.rotation = new(0, savePoint.SpawnPoint.eulerAngles.y, 0);
+        freeLookCamera.PreviousStateIsValid = false;
+        freeLookCamera.OnTargetObjectWarped(transform, camDelta);
+        body.velocity = Vector3.zero;
+    }
+    public void Spawn(SavePoint spawn)
+    {
+        Vector3 camDelta = spawn.SpawnPoint.position - transform.position;
+        body.position = spawn.SpawnPoint.position;
+        body.rotation = new(0, spawn.SpawnPoint.eulerAngles.y, 0);
+        freeLookCamera.PreviousStateIsValid = false;
+        freeLookCamera.OnTargetObjectWarped(transform, camDelta);
     }
 
 
@@ -74,6 +85,7 @@ public abstract class PlayerStateBehavior : StateBehavior
     [HideInInspector] public Input input;
     [HideInInspector] public PlayerMovementBody body;
     [HideInInspector] public PlayerController controller;
+    
 
     protected override void Initialize()
     {
@@ -82,7 +94,7 @@ public abstract class PlayerStateBehavior : StateBehavior
         body = M.body;
         controller = M.controller;
     }
-
+        
 
     #region States
 

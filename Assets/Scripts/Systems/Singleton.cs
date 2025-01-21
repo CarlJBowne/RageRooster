@@ -388,36 +388,19 @@ public abstract class SingletonAncestor : MonoBehaviour
     public static T Get<T>() where T : SingletonAncestor => activeSingletons[typeof(T)] as T;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    public static void Boot()
+    private static void Boot()
     {
 #if UNITY_EDITOR
         Debug.Log("Loading Singletons");
 #endif
-        foreach (Type item in Assembly.GetAssembly(typeof(SingletonAdvanced<>)).GetTypes().Where(t => typeof(SingletonAdvanced<>).IsAssignableFrom(t) && !t.IsAbstract))
+
+        Type[] types = typeof(SingletonAdvanced<>).GetAllChildTypes(false);
+
+        foreach (Type item in types)
         {
             MethodInfo M = item.GetMethod("Data", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod);
             M?.Invoke(null, null);
-            /*
-                var F1 = item.GetField("InitMethod", BindingFlags.Static | BindingFlags.Public);
-                var F2 = item.GetField("DontDestroyOnLoad", BindingFlags.Static | BindingFlags.Public);
-                var F3 = item.GetField("Path", BindingFlags.Static | BindingFlags.Public);
-                var F4 = item.GetField("SpawnOnBoot", BindingFlags.Static | BindingFlags.Public);
 
-                var M = item.BaseType.GetMethod("SetInfo", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod);
-                    M.Invoke(null, new[]{
-                        F1 != null ? F1.GetValue(null) : null, 
-                        F2 != null ? F2.GetValue(null) : false, 
-                        F4 != null ? F4.GetValue(null) : false,  
-                        F3 != null ? F3.GetValue(null) : null});
-            */
-            /*
-                //var F2 = item.GetField("DontDestroyOnLoad", BindingFlags.Static | BindingFlags.Public);
-                //if (F2 != null) item.GetField("_DontDestroyOnLoad", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, F2);
-                //var F3 = item.GetField("Path", BindingFlags.Static | BindingFlags.Public);
-                //if (F3 != null) item.GetField("_Path", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, F3);
-                //var F1 = item.GetField("InitMethod", BindingFlags.Static | BindingFlags.Public);
-                //if(F1 != null) item.GetField("_GetDel", BindingFlags.Static | BindingFlags.NonPublic).SetValue(null, F1);
-            */
         }
     }
 
@@ -450,3 +433,31 @@ InitAddressablePrefab
 
 
  */
+
+public static class TypeHelpers
+{
+    public static Type[] GetAllChildTypes(this Type T, bool noAbstracts = false)
+    => Assembly.GetAssembly(T).GetTypes().Where(i => 
+    i.ImplementsOrDerives(T) && 
+    (!noAbstracts || !i.IsAbstract())
+    ).ToArray();
+
+    public static bool ImplementsOrDerives(this Type @this, Type from)
+    {
+        if (from is null) 
+            return false;
+        
+        if (!from.IsGenericType || !from.IsGenericTypeDefinition) 
+            return from.IsAssignableFrom(@this);
+                
+        if (from.IsInterface) 
+            foreach (Type @interface in @this.GetInterfaces())
+                if (@interface.IsGenericType && @interface.GetGenericTypeDefinition() == from) 
+                    return true;
+
+        if (@this.IsGenericType && @this.GetGenericTypeDefinition() == from) 
+            return true;
+
+        return @this.BaseType?.ImplementsOrDerives(from) ?? false;
+    }
+}

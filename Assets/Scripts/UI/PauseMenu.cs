@@ -52,7 +52,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (AudioManager.Get() != null && FMODEvents.instance != null)
         {
-            AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+            AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
         }
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
@@ -66,7 +66,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (AudioManager.Get() != null && FMODEvents.instance != null)
         {
-            AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+            AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
         }
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
@@ -80,7 +80,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (AudioManager.Get() != null && FMODEvents.instance != null)
         {
-            AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+            AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
         }
         Application.Quit();
     }
@@ -89,7 +89,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (AudioManager.Get() != null && FMODEvents.instance != null)
         {
-            AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+            AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
         }
         optionsMenuUI.SetActive(true);
         pauseMenuUI.SetActive(false);
@@ -100,7 +100,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (AudioManager.Get() != null && FMODEvents.instance != null)
         {
-            AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+            AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
         }
         optionsMenuUI.SetActive(false);
         pauseMenuUI.SetActive(true);
@@ -111,7 +111,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (AudioManager.Get() != null && FMODEvents.instance != null)
         {
-            AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+            AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
         }
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");

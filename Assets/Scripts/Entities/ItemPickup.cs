@@ -15,6 +15,7 @@ public class ItemPickup : MonoBehaviour
 
     public ItemType type;
     public string upgradeName;
+    public Upgrade activateUpgrade;
     [TextArea]
     public string hintString;
     public int addAmount = 1;
@@ -29,7 +30,7 @@ public class ItemPickup : MonoBehaviour
 
         if (type == ItemType.Coin)
         {
-            UIHUDSystem.Get().AddCurrency(addAmount);
+            GlobalState.AddCurrency(addAmount);
         }
         else if (type == ItemType.Health)
         {
@@ -41,8 +42,9 @@ public class ItemPickup : MonoBehaviour
         }
         else if (type == ItemType.Upgrade)
         {
-            if(upgradeName == "Health") health.AddMaxHealth();
-            else FindObjectOfType<PlayerStateMachine>().SetUpgrade(upgradeName, true);
+            activateUpgrade.value = true;
+            //if(upgradeName == "Health") health.AddMaxHealth();
+            //else FindObjectOfType<PlayerStateMachine>().SetUpgrade(upgradeName, true);
             UIHUDSystem.Get().ShowHint(hintString);
         }
         else if(type == ItemType.Hen)

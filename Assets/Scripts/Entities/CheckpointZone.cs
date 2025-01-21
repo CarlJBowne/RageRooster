@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Obsolete]
 public class CheckpointZone : MonoBehaviour
 {
     public Vector3 targetPositionRelative;
@@ -10,7 +11,7 @@ public class CheckpointZone : MonoBehaviour
     {
         if(other.TryGetComponent(out PlayerHealth hp))
         {
-            hp.SetRespawnPoint(targetPositionRelative + transform.position);
+            //hp.SetRespawnPoint(targetPositionRelative + transform.position);
         }
     }
 }

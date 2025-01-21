@@ -15,40 +15,45 @@ public class MainMenu : MonoBehaviour
         creditsPanel.SetActive(false);
     }
 
+    private void PlaySound()
+    {
+        AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
+    }
+
     public void PlayGame()
     {
-        AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+        PlaySound();
         SceneManager.LoadScene("FarmHouse");
     }
 
     public void QuitGame()
     {
-        AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+        PlaySound();
         Application.Quit();
     }
 
     public void OpenOptionsMenu()
     {
-        AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+        PlaySound();
         optionsMenuPanel.SetActive(true);
     }
 
     public void CloseOptionsMenu()
     {
-        AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+        PlaySound();
         optionsMenuPanel.SetActive(false);
     }
 
     public void ShowCredits()
     {
-        AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+        PlaySound();
         //creditsContent.anchoredPosition = new Vector2(creditsContent.anchoredPosition.x, 0);
         creditsPanel.SetActive(true);
     }
 
     public void HideCredits()
     {
-        AudioManager.Get().PlayOneShot(FMODEvents.instance.buttonPressed, this.transform.position);
+        PlaySound();
         creditsPanel.SetActive(false);
     }
 }

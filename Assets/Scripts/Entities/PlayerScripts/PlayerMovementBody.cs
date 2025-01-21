@@ -51,6 +51,8 @@ public class PlayerMovementBody : PlayerStateBehavior
     public Vector3 rotation 
     { get => transform.eulerAngles; set => transform.eulerAngles = value; }
 
+    public Vector3 center => position + collider.center;
+
     [HideInInspector] public Vector3 currentDirection
     {
         get => _currentDirection;
@@ -118,6 +120,8 @@ public class PlayerMovementBody : PlayerStateBehavior
 
         initVelocity = velocity;
         initNormal = Vector3.up;
+
+        if (PlayerStateMachine.DEBUG_MODE_ACTIVE && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
         if (velocity.y <= 0.01f ||(sGrounded && velocity.y > 0.1f)) 
         {

@@ -10,6 +10,7 @@ public class EnemyHealth : Health, IAttacker
     public float stunTime;
     public GameObject poofPrefab;
     public Behaviour[] disableComponents;
+    public EnemyLootSpawner enemyLootSpawner;
 
     private Grabbable grabbable;
     private float stunTimeLeft = 0;
@@ -20,6 +21,7 @@ public class EnemyHealth : Health, IAttacker
         startPosition = transform.position;
         TryGetComponent(out grabbable);
         grabbable.GrabStateEvent.AddListener(OnGrabState);
+        enemyLootSpawner = FindObjectOfType<EnemyLootSpawner>();
     }
 
 
@@ -64,12 +66,13 @@ public class EnemyHealth : Health, IAttacker
     public void Destroy()
     {
         if (poofPrefab) Instantiate(poofPrefab);
-        if (respawn)
+        if (enemyLootSpawner != null) enemyLootSpawner.SpawnLoot(transform.position);
+        else
         {
             gameObject.SetActive(false);
             Invoke(nameof(Respawn), respawnTime);
         }
-        else if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Disable();
+        if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Disable();
         else Destroy(gameObject);
     }
 

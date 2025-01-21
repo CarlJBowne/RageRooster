@@ -14,12 +14,14 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
     public TextMeshProUGUI hintText;
     public TextMeshProUGUI currencyText;
     public float hintTime;
+    public Timer.OneTime comboTime;
+    public TextMeshProUGUI comboCounterText;
+    public TextMeshProUGUI comboFlavorText;
+    public ComboLevel[] comboLevels;
 
     private int activeMaxHealth = 1;
     private float hintTimer;
-
-    public int currentCurrency; //Consider putting this in its own system when we figure out what it does.
-
+    private int currentCombo;
 
     protected override void OnAwake()
     {
@@ -36,13 +38,14 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
                 hintHolder.SetActive(false);
             }
         }
+        comboTime.Tick(EndCombo);
     }
 
     public void UpdateHealth(int currentValue, int maxValue)
     {
         if (maxValue > activeMaxHealth) 
             for (int i = 0; i < maxValue - activeMaxHealth; i++)
-                healthImages.Add(Instantiate<Image>(healthImages[0], healthImages[0].transform.parent));
+                healthImages.Add(Instantiate(healthImages[0], healthImages[0].transform.parent));
         activeMaxHealth = maxValue;
         //Note, can't go down since it probably won't ever go down.
         for (int i = 0; i < healthImages.Count; i++) 
@@ -56,10 +59,38 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
         hintTimer = hintTime;
     }
 
-    public void AddCurrency(int currency)
+    public static void SetCurrencyText(string currencyText) => Get().currencyText.text = currencyText;
+
+    public static void AddCombo() => Get().AddCombo_();
+    private void AddCombo_()
     {
-        currentCurrency += currency;
-        currencyText.text = currentCurrency.ToString();
+        currentCombo++;
+        comboTime.Begin();
+        comboCounterText.enabled = true;
+        comboCounterText.text = currentCombo.ToString();
+        if(currentCombo >= comboLevels[0].req)
+        {
+            int i = 0; //Cooler solution.
+            for (; i < comboLevels.Length && currentCombo >= comboLevels[i + 1].req; i++);
+            //int F = 0; //More sure solution.
+            //for (int i = 1; i < comboLevels.Length && currentCombo >= comboLevels[i].req; i++) F = i;
+            comboFlavorText.enabled = true;
+            comboFlavorText.text = comboLevels[i].flavorText;
+        }
+    }
+    private void EndCombo()
+    {
+        currentCombo = 0;
+        comboTime.running = false;
+        comboCounterText.enabled = false;
+        comboFlavorText.enabled = false;
+    }
+
+    [Serializable]
+    public struct ComboLevel
+    {
+        public int req;
+        public string flavorText;
     }
 
 }
