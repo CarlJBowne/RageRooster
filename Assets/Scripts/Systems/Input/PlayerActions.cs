@@ -116,6 +116,15 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugActivate"",
+                    ""type"": ""Button"",
+                    ""id"": ""da5167ff-9329-438b-9a21-5230134c8ae6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -382,6 +391,28 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""118b5a07-4824-4b1c-b189-75f422180f9a"",
+                    ""path"": ""<Keyboard>/backslash"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugActivate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d4590807-8f59-498a-b3ab-24dcdb998ffa"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DebugActivate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -439,6 +470,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         m_Gameplay_Shoot = m_Gameplay.FindAction("Shoot", throwIfNotFound: true);
         m_Gameplay_Charge = m_Gameplay.FindAction("Charge", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
+        m_Gameplay_DebugActivate = m_Gameplay.FindAction("DebugActivate", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_PauseGame = m_UI.FindAction("PauseGame", throwIfNotFound: true);
@@ -513,6 +545,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Shoot;
     private readonly InputAction m_Gameplay_Charge;
     private readonly InputAction m_Gameplay_Interact;
+    private readonly InputAction m_Gameplay_DebugActivate;
     public struct GameplayActions
     {
         private @PlayerActions m_Wrapper;
@@ -527,6 +560,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         public InputAction @Shoot => m_Wrapper.m_Gameplay_Shoot;
         public InputAction @Charge => m_Wrapper.m_Gameplay_Charge;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
+        public InputAction @DebugActivate => m_Wrapper.m_Gameplay_DebugActivate;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -566,6 +600,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @DebugActivate.started += instance.OnDebugActivate;
+            @DebugActivate.performed += instance.OnDebugActivate;
+            @DebugActivate.canceled += instance.OnDebugActivate;
         }
 
         private void UnregisterCallbacks(IGameplayActions instance)
@@ -600,6 +637,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @DebugActivate.started -= instance.OnDebugActivate;
+            @DebugActivate.performed -= instance.OnDebugActivate;
+            @DebugActivate.canceled -= instance.OnDebugActivate;
         }
 
         public void RemoveCallbacks(IGameplayActions instance)
@@ -675,6 +715,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnCharge(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnDebugActivate(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -7,39 +7,36 @@ using UnityEngine.SceneManagement;
 public class ZoneRoot : MonoBehaviour
 {
     public ZoneTransition[] transitions;
-    public Transform defaultPlayerSpawn;
+    public SavePoint[] _spawns;
+    public SavePoint defaultPlayerSpawn;
 
+    public SavePoint[] spawns {get{
+            if (_spawns == null || _spawns.Length == 0) 
+                _spawns = gameObject.GetComponentsInChildren<SavePoint>();
+            return _spawns; 
+        }}
     [HideInInspector] public new string name;
     public Vector3 originOffset;
+    [HideInInspector] public int loadID = -2;
 
     public static implicit operator string(ZoneRoot A) => A.name ?? A.gameObject.scene.name;
-
-    /*
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    public static void Boot()
-    {
-        var attempt = FindFirstObjectByType<ZoneRoot>(FindObjectsInactive.Include);
-        if (attempt == null || ZoneManager.Active) return;
-        Gameplay.areaToOpen = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene(Gameplay.GAMEPLAY_SCENE_NAME);
-        return;
-    }
-    */
 
     private void Awake()
     {
         if (!ZoneManager.Active)
         {
-            ZoneManager.InitiateBeginning(SceneManager.GetActiveScene().name, defaultPlayerSpawn.position, defaultPlayerSpawn.eulerAngles.y);
+            if (loadID == -2) Gameplay.BeginScene(SceneManager.GetActiveScene().name);
+            else Gameplay.BeginSavePoint(SceneManager.GetActiveScene().name, loadID);
             return;
         }
 
         name = gameObject.scene.name;
         originOffset = transform.position;
 
-        if(transitions.Length == 0) transitions = gameObject.GetComponentsInChildren<ZoneTransition>();
+        if(transitions == null || transitions.Length == 0) transitions = gameObject.GetComponentsInChildren<ZoneTransition>();
+        if(spawns == null || spawns.Length == 0) _spawns = gameObject.GetComponentsInChildren<SavePoint>();
 
-        ZoneManager.LoadArea(this);
+        ZoneManager.LoadZone(this);
 
     }
 
@@ -48,7 +45,7 @@ public class ZoneRoot : MonoBehaviour
 
     }
 
-
+    public SavePoint GetSpawn(int id) => id == -1 ? defaultPlayerSpawn : spawns[id];
 }
 
 [System.Serializable]
@@ -59,7 +56,7 @@ public class ZoneProxy
     public ZoneRoot root;
 
     public List<ZoneTransition> transitionsTo;
-    public Coroutine task;
+    public CoroutinePlus task;
     public AsyncOperation async;
 
     private readonly ZoneManager manager;
@@ -80,21 +77,21 @@ public class ZoneProxy
         loaded = true;
         transitionsTo = new();
         ZoneManager.Get(out manager);
-        task = Gameplay.Get().StartCoroutine(LockFromUnloading());
+        task = new (LockFromUnloading(), Gameplay.Get());
     }
 
     public void Update()
     {
-        if (ZoneManager.IsCurrent(this) || task != null) return;
+        if (ZoneManager.IsCurrent(this) || task) return;
         bool value = CheckForLoad();
 
         if (value && !loaded)
         {
-            task = Gameplay.Get().StartCoroutine(Loading());
+            task = new (Loading(), Gameplay.Get());
         }    
         else if (!value && loaded)
         {
-            task = Gameplay.Get().StartCoroutine(Unloading());
+            task = new (Unloading(), Gameplay.Get());
         }
             
     }
@@ -127,14 +124,15 @@ public class ZoneProxy
             yield break;
         }
 
-        async = SceneManager.UnloadSceneAsync(name);
+        if(ZoneManager.IsSceneLoaded(name)) async = SceneManager.UnloadSceneAsync(name);
+        else yield break;  
         while (async.progress < 1) yield return null;
 
         loaded = false;
         SetTraversable(true);
         root = null;
 
-        task = CheckForLoad() ? Gameplay.Get().StartCoroutine(Loading()) : null;
+        task = CheckForLoad() ? new(Loading(), Gameplay.Get()) : null;
     }
     IEnumerator LockFromUnloading()
     {

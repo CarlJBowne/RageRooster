@@ -12484,7 +12484,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 61164
+    surfaceParameter: 51306
     meshQueryIndex: 6
     subMeshQueryIndex: 0
     geometryHashValue: 116227416202012170
@@ -21081,7 +21081,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 61166
+    surfaceParameter: 51310
     meshQueryIndex: 14
     subMeshQueryIndex: 0
     geometryHashValue: -2267493317700069288
@@ -22309,7 +22309,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 61132
+    surfaceParameter: 51244
     meshQueryIndex: 8
     subMeshQueryIndex: 0
     geometryHashValue: -3690492458916514774
@@ -26359,7 +26359,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 61160
+    surfaceParameter: 51300
     meshQueryIndex: 13
     subMeshQueryIndex: 0
     geometryHashValue: 4363195801587657900
@@ -27051,7 +27051,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 61604
+    surfaceParameter: 51728
     meshQueryIndex: 9
     subMeshQueryIndex: 0
     geometryHashValue: -2042238050434231505
@@ -28279,7 +28279,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 61324
+    surfaceParameter: 51470
     meshQueryIndex: 7
     subMeshQueryIndex: 0
     geometryHashValue: -2625983465876657546
@@ -40701,7 +40701,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 61530
+    surfaceParameter: 51656
     meshQueryIndex: 11
     subMeshQueryIndex: 0
     geometryHashValue: 1061589182650942645
@@ -43300,7 +43300,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 61198
+    surfaceParameter: 51342
     meshQueryIndex: 2
     subMeshQueryIndex: 0
     geometryHashValue: -9098918920619945270
@@ -45936,7 +45936,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 61580
+    surfaceParameter: 51704
     meshQueryIndex: 12
     subMeshQueryIndex: 0
     geometryHashValue: 4280833765079685576
@@ -47012,7 +47012,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 61322
+    surfaceParameter: 51468
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: -8839178511704575852
@@ -50254,7 +50254,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 61366
+    surfaceParameter: 51518
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: 6600635735307821938
@@ -54648,7 +54648,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 61648
+    surfaceParameter: 51772
     meshQueryIndex: 15
     subMeshQueryIndex: 0
     geometryHashValue: 5614024670057816405
@@ -55450,7 +55450,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1495669062}
   - component: {fileID: 1495669061}
-  - component: {fileID: 1495669060}
+  - component: {fileID: 1495669063}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -55458,26 +55458,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1495669060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1495669059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!114 &1495669061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55508,6 +55488,47 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1495669063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495669059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018,
+    type: 3}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
 --- !u!1 &1496583598
 GameObject:
   m_ObjectHideFlags: 0
@@ -63942,7 +63963,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 61198
+    surfaceParameter: 51342
     meshQueryIndex: 2
     subMeshQueryIndex: 0
     geometryHashValue: -9098918920619945270
@@ -65702,7 +65723,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 61454
+    surfaceParameter: 51584
     meshQueryIndex: 10
     subMeshQueryIndex: 0
     geometryHashValue: -7048952547622953927
@@ -70713,7 +70734,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 64224
+    surfaceParameter: 54356
     meshQueryIndex: 16
     subMeshQueryIndex: 0
     geometryHashValue: 3950777292993918020
@@ -75028,8 +75049,58 @@ PrefabInstance:
       objectReference: {fileID: 2026936976}
     - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
         type: 3}
+      propertyPath: <playerJump>k__BackingField.Path
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
       propertyPath: <buttonPressed>k__BackingField.Path
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <ireGorgeMusic>k__BackingField.Path
+      value: event:/Music/ireGorgeMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <ireGorgeAmbience>k__BackingField.Path
+      value: event:/Ambience/ireGorgeAumbience
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <playerJump>k__BackingField.Guid.Data1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <playerJump>k__BackingField.Guid.Data2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <playerJump>k__BackingField.Guid.Data3
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <playerJump>k__BackingField.Guid.Data4
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <selectionConfirm>k__BackingField.Path
+      value: event:/SFX/UI/selectionConfirm
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <titleScreenMusic>k__BackingField.Path
+      value: event:/Music/TitleScreenMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <stoneDestructible>k__BackingField.Path
+      value: event:/SFX/Msc./stoneDestructible
       objectReference: {fileID: 0}
     - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
         type: 3}
@@ -75050,6 +75121,156 @@ PrefabInstance:
         type: 3}
       propertyPath: <buttonPressed>k__BackingField.Guid.Data4
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <ireGorgeMusic>k__BackingField.Guid.Data1
+      value: 1006540404
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <ireGorgeMusic>k__BackingField.Guid.Data2
+      value: 1127768581
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <ireGorgeMusic>k__BackingField.Guid.Data3
+      value: -1255742071
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <ireGorgeMusic>k__BackingField.Guid.Data4
+      value: -769505739
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <rockyFurrowsAmbience>k__BackingField.Path
+      value: event:/Ambience/rockyFurrowsAmbience
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <rockyFurrowsHubMusic>k__BackingField.Path
+      value: event:/Music/rockyFurrowHubMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <ireGorgeAmbience>k__BackingField.Guid.Data1
+      value: -582202770
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <ireGorgeAmbience>k__BackingField.Guid.Data2
+      value: 1123517251
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <ireGorgeAmbience>k__BackingField.Guid.Data3
+      value: -405595728
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <ireGorgeAmbience>k__BackingField.Guid.Data4
+      value: -1130051157
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <selectionConfirm>k__BackingField.Guid.Data1
+      value: -1571929637
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <selectionConfirm>k__BackingField.Guid.Data2
+      value: 1335842918
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <selectionConfirm>k__BackingField.Guid.Data3
+      value: 133114814
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <selectionConfirm>k__BackingField.Guid.Data4
+      value: -1249041970
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <titleScreenMusic>k__BackingField.Guid.Data1
+      value: -2064340778
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <titleScreenMusic>k__BackingField.Guid.Data2
+      value: 1303822629
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <titleScreenMusic>k__BackingField.Guid.Data3
+      value: -129355872
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <titleScreenMusic>k__BackingField.Guid.Data4
+      value: -1070401621
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <stoneDestructible>k__BackingField.Guid.Data1
+      value: 259421969
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <stoneDestructible>k__BackingField.Guid.Data2
+      value: 1128626160
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <stoneDestructible>k__BackingField.Guid.Data3
+      value: 1451369107
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <stoneDestructible>k__BackingField.Guid.Data4
+      value: 502946856
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <rockyFurrowsAmbience>k__BackingField.Guid.Data1
+      value: 437877353
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <rockyFurrowsAmbience>k__BackingField.Guid.Data2
+      value: 1144078499
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <rockyFurrowsAmbience>k__BackingField.Guid.Data3
+      value: 1872967304
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <rockyFurrowsAmbience>k__BackingField.Guid.Data4
+      value: 1044229776
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <rockyFurrowsHubMusic>k__BackingField.Guid.Data1
+      value: -1412819652
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <rockyFurrowsHubMusic>k__BackingField.Guid.Data2
+      value: 1166530803
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <rockyFurrowsHubMusic>k__BackingField.Guid.Data3
+      value: 102122898
+      objectReference: {fileID: 0}
+    - target: {fileID: 5011603702099126549, guid: bf146f24bcafe5c40862da99ae5be398,
+        type: 3}
+      propertyPath: <rockyFurrowsHubMusic>k__BackingField.Guid.Data4
+      value: -1080161446
       objectReference: {fileID: 0}
     - target: {fileID: 7632823375067589096, guid: bf146f24bcafe5c40862da99ae5be398,
         type: 3}

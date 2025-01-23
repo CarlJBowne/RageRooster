@@ -37,5 +37,8 @@ public class Input : Staticon<Input>
 	public Button charge => asset.Gameplay.Charge;
 	public Button interact => asset.Gameplay.Interact;
 
-
+	public static class UI
+	{
+		public static Button PauseGame => Get().asset.UI.PauseGame;
+	}
 }

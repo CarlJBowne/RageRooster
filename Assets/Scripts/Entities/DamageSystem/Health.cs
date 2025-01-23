@@ -2,6 +2,7 @@ using EditorAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,7 +17,7 @@ public class Health : MonoBehaviour
 	[SerializeField] protected UnityEvent depleteEvent = new();
 
 	//Data
-	[DisableInEditMode, DisableInPlayMode] public int health;
+	[SerializeField, HideInInspector] protected int health;
 	protected bool damagable = true;
 
 	//Getters
@@ -102,4 +103,27 @@ public struct Attack
 		this.source = source;
 		this.velocity = velocity;
 	}
+}
+
+[CustomEditor(typeof(Health), true)]
+public class HealthEditor : Editor
+{
+    public override void OnInspectorGUI()
+	{
+        serializedObject.Update();
+
+		if (EditorApplication.isPlaying)
+		{
+            SerializedObject serializedObject = new UnityEditor.SerializedObject(target);
+            SerializedProperty maxHealth = serializedObject.FindProperty("maxHealth");
+            SerializedProperty health = serializedObject.FindProperty("health");
+
+            Rect fullRect = GUILayoutUtility.GetRect(18, 18, "TextField");
+            EditorGUILayout.BeginVertical();
+			EditorGUI.ProgressBar(fullRect, (float)health.intValue / (float)maxHealth.intValue, $"{health.intValue} / {maxHealth.intValue}");
+			EditorGUILayout.EndVertical();
+		}
+
+        base.OnInspectorGUI();
+    }
 }
