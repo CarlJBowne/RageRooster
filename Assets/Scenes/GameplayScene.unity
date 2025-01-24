@@ -314,6 +314,7 @@ MonoBehaviour:
   uI: {fileID: 1102896214256913182}
   zoneManager: {fileID: 158189933}
   globalState: {fileID: 0}
+  settingsMenu: {fileID: 2966444292119229785}
 --- !u!114 &158189932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2174,6 +2175,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6224419310896114609}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2966444292119229785 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 295096287533630024, guid: 99d6c4660e13dd04a97aebd573357d85,
+    type: 3}
+  m_PrefabInstance: {fileID: 6224419310896114609}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2966444292119229783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef74c346e9196a34fa567f9d55c59f1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3045688339222950566
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -2896,11 +2909,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6200643390166357455}
     m_Modifications:
-    - target: {fileID: 2425845853416000055, guid: 99d6c4660e13dd04a97aebd573357d85,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 158189932}
     - target: {fileID: 3144560642773031192, guid: 99d6c4660e13dd04a97aebd573357d85,
         type: 3}
       propertyPath: m_Pivot.x
@@ -3039,11 +3047,6 @@ PrefabInstance:
     - target: {fileID: 6194678055947248673, guid: 99d6c4660e13dd04a97aebd573357d85,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 158189932}
-    - target: {fileID: 7792501537415735197, guid: 99d6c4660e13dd04a97aebd573357d85,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 158189932}
     - target: {fileID: 9071426783022773839, guid: 99d6c4660e13dd04a97aebd573357d85,
@@ -3390,7 +3393,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 11.560913, y: 151}
+  m_AnchoredPosition: {x: 11.561035, y: 151}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &7769794168615292033

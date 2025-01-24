@@ -18,6 +18,7 @@ public class Gameplay : Singleton<Gameplay>
     public UIHUDSystem uI;
     public ZoneManager zoneManager;
     public GlobalState globalState;
+    public SettingsMenu settingsMenu;
 
     public static string spawnSceneName = null;
     public static int spawnPointID = -1;
@@ -72,6 +73,8 @@ public class Gameplay : Singleton<Gameplay>
         SceneManager.LoadScene(spawnSceneName ?? ZoneManager.Get().defaultAreaScene, LoadSceneMode.Additive);
 
         ZoneManager.OnFirstLoad += OnFirstLoad;
+
+        settingsMenu.Init();
     }
 
     private void OnFirstLoad()
