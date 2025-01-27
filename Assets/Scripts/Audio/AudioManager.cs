@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class AudioManager : SingletonAdvanced<AudioManager>
 {
-     static void Data() => SetData(spawnMethod: InitSavedPrefab, dontDestroyOnLoad: true, spawnOnBoot: true);
+     static void Data() => SetData(spawnMethod: InitFind, dontDestroyOnLoad: true, spawnOnBoot: true);
 
 
     [Header("Volume")]
@@ -194,7 +194,6 @@ public class AudioManager : SingletonAdvanced<AudioManager>
                 ////Debug.LogWarning($"No music event found for scene: {sceneName}");
                 return;
         }
-        musicEventInstance = RuntimeManager.CreateInstance(musicEvent);
 
         if (musicEvent.Guid != System.Guid.Empty)
         {
@@ -205,5 +204,6 @@ public class AudioManager : SingletonAdvanced<AudioManager>
         {
             ////Debug.LogWarning($"Music event reference is empty for scene: {sceneName}");
         }
+        musicEventInstance = RuntimeManager.CreateInstance(musicEvent);
     }
 }
