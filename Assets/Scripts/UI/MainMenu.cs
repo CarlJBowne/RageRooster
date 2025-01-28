@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : MenuSingleton<MainMenu>
 {
     public GameObject optionsMenuPanel;
     public GameObject creditsPanel;
@@ -15,45 +15,43 @@ public class MainMenu : MonoBehaviour
         creditsPanel.SetActive(false);
     }
 
-    private void PlaySound()
-    {
-        AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
-    }
+    private void PlaySound() => AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
 
     public void PlayGame()
     {
-        PlaySound();
-        SceneManager.LoadScene("FarmHouse");
+        //PlaySound();
+        SceneManager.LoadScene("GameplayScene");
+        Close();
     }
 
     public void QuitGame()
     {
-        PlaySound();
+        //PlaySound();
         Application.Quit();
     }
 
     public void OpenOptionsMenu()
     {
-        PlaySound();
+        //PlaySound();
         optionsMenuPanel.SetActive(true);
     }
 
     public void CloseOptionsMenu()
     {
-        PlaySound();
+        //PlaySound();
         optionsMenuPanel.SetActive(false);
     }
 
     public void ShowCredits()
     {
-        PlaySound();
+        //PlaySound();
         //creditsContent.anchoredPosition = new Vector2(creditsContent.anchoredPosition.x, 0);
         creditsPanel.SetActive(true);
     }
 
     public void HideCredits()
     {
-        PlaySound();
+        //PlaySound();
         creditsPanel.SetActive(false);
     }
 }

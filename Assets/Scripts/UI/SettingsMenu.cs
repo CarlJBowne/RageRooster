@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EditorAttributes;
 
-public class SettingsMenu : MonoBehaviour, ICustomSerialized
+public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
 {
     public RemappingMenu remap;
 
@@ -16,7 +16,11 @@ public class SettingsMenu : MonoBehaviour, ICustomSerialized
     [SerializeField, DisableInEditMode, DisableInPlayMode] float currentSFXVolume;
     [SerializeField, DisableInEditMode, DisableInPlayMode] float currentAmbienceVolume;
 
-    public void Init() => RevertChanges();
+    protected override void Awake()
+    {
+        base.Awake();
+        RevertChanges();
+    }
 
 
     public void SetMaster(float input)
@@ -45,7 +49,7 @@ public class SettingsMenu : MonoBehaviour, ICustomSerialized
     public void ConfirmChanges()
     {
         Serialize().SaveToFile(SaveFilePath, SaveFileName);
-        gameObject.SetActive(false);
+        TrueClose();
     }
     public void RevertChanges()
     {
@@ -53,7 +57,7 @@ public class SettingsMenu : MonoBehaviour, ICustomSerialized
         var loadAttempt = new JObject().LoadJsonFromFile(SaveFilePath, SaveFileName);
         if(loadAttempt != null) Deserialize(loadAttempt);
         remap.UpdateAllIcons();
-        gameObject.SetActive(false);
+        TrueClose();
     }
 
 
