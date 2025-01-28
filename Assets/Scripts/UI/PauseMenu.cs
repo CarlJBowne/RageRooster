@@ -5,65 +5,40 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenu : MenuSingleton<PauseMenu>
 {
-    public GameObject pauseMenuUI;
-    public GameObject optionsMenuUI;
-    public EventSystem eventSystem;
-    private bool isPaused = false;
+    public static bool isPaused => Get().isActive;
 
-    private void OnEnable() => Input.UI.PauseGame.performed += OnPause;
-
-    private void OnDisable() => Input.UI.PauseGame.performed -= OnPause;
-
-    private void Start()
+    protected override void Awake()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        Input.UI.PauseGame.performed += PauseCallback;
+        base.Awake();
+    }
+    protected override void OnDestroy()
+    {
+        Input.UI.PauseGame.performed -= PauseCallback;
+        base.OnDestroy();
+    }
+    private void PauseCallback(InputAction.CallbackContext ctx)
+    {
+        if (PauseMenu.Active) return;
+        Menu.Manager.disableEscape = true;
+        Open();
     }
 
-    private void OnPause(InputAction.CallbackContext context)
+    protected override void OnOpen()
     {
-        if (optionsMenuUI.activeSelf)
-        {
-            CloseOptions();
-        }
-        else if (isPaused)
-        {
-            Resume();
-        }
-        else
-        {
-            Pause();
-        }
-    }
-
-    public void Resume()
-    {
-        if (AudioManager.Get() != null && FMODEvents.instance != null)
-        {
-            AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
-        }
-        pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        eventSystem.enabled = false;
-        isPaused = false;
-    }
-
-    void Pause()
-    {
-        if (AudioManager.Get() != null && FMODEvents.instance != null)
-        {
-            AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
-        }
-        pauseMenuUI.SetActive(true);
+        base.OnOpen();
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        eventSystem.enabled = true;
-        isPaused = true;
+    }
+    protected override void OnClose()
+    {
+        base.OnClose();
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void QuitGame()
@@ -75,27 +50,27 @@ public class PauseMenu : MonoBehaviour
         Application.Quit();
     }
 
-    public void OpenOptions()
-    {
-        if (AudioManager.Get() != null && FMODEvents.instance != null)
-        {
-            AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
-        }
-        optionsMenuUI.SetActive(true);
-        pauseMenuUI.SetActive(false);
-        eventSystem.enabled = true;
-    }
+    //public void OpenOptions()
+    //{
+    //    if (AudioManager.Get() != null && FMODEvents.instance != null)
+    //    {
+    //        AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
+    //    }
+    //    optionsMenuUI.SetActive(true);
+    //    pauseMenuUI.SetActive(false);
+    //    eventSystem.enabled = true;
+    //}
 
-    public void CloseOptions()
-    {
-        if (AudioManager.Get() != null && FMODEvents.instance != null)
-        {
-            AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
-        }
-        optionsMenuUI.SetActive(false);
-        pauseMenuUI.SetActive(true);
-        eventSystem.enabled = true;
-    }
+    //public void CloseOptions()
+    //{
+    //    if (AudioManager.Get() != null && FMODEvents.instance != null)
+    //    {
+    //        AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
+    //    }
+    //    optionsMenuUI.SetActive(false);
+    //    pauseMenuUI.SetActive(true);
+    //    eventSystem.enabled = true;
+    //}
 
     public void ReturnToMainMenu()
     {
@@ -105,7 +80,7 @@ public class PauseMenu : MonoBehaviour
         }
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
-        eventSystem.enabled = false;
+        //eventSystem.enabled = false;
     }
 
     public void Respawn() => Gameplay.SpawnPlayer();

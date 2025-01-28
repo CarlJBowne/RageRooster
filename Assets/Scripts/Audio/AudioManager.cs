@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class AudioManager : SingletonAdvanced<AudioManager>
 {
-     static void Data() => SetData(spawnMethod: InitFind, dontDestroyOnLoad: true, spawnOnBoot: true);
+     static void Data() => SetData(spawnMethod: InitSavedPrefab, dontDestroyOnLoad: true, spawnOnBoot: true);
 
 
     [Header("Volume")]
