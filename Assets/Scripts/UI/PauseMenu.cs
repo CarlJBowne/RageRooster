@@ -47,7 +47,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
         {
             AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
         }
-        Application.Quit();
+        SceneManager.LoadScene("MainMenu");
     }
 
     //public void OpenOptions()
