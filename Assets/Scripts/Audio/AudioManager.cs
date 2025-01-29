@@ -194,7 +194,6 @@ public class AudioManager : SingletonAdvanced<AudioManager>
                 ////Debug.LogWarning($"No music event found for scene: {sceneName}");
                 return;
         }
-        musicEventInstance = RuntimeManager.CreateInstance(musicEvent);
 
         if (musicEvent.Guid != System.Guid.Empty)
         {
@@ -205,5 +204,6 @@ public class AudioManager : SingletonAdvanced<AudioManager>
         {
             ////Debug.LogWarning($"Music event reference is empty for scene: {sceneName}");
         }
+        musicEventInstance = RuntimeManager.CreateInstance(musicEvent);
     }
 }
