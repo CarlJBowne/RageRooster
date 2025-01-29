@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ButtonSound : MonoBehaviour
 {
-    EventReference sound;
+    public EventReference sound;
 
     private void Awake()
     {

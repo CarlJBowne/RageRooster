@@ -10,15 +10,10 @@ public class AudioManager : SingletonAdvanced<AudioManager>
      static void Data() => SetData(spawnMethod: InitSavedPrefab, dontDestroyOnLoad: true, spawnOnBoot: true);
 
 
-    [Header("Volume")]
-    [Range(0, 1)]
-    public float masterVolume = 0.5f;
-    [Range(0, 1)]
-    public float musicVolume = 0.5f;
-    [Range(0, 1)]
-    public float SFXVolume = 0.5f;
-    [Range(0, 1)]
-    public float ambienceVolume = 0.5f;
+    public float masterVolume {set => masterBus.setVolume(value);}
+    public float musicVolume {set => musicBus.setVolume(value);}
+    public float SFXVolume {set => sfxBus.setVolume(value);}
+    public float ambienceVolume {set => ambienceBus.setVolume(value);}
 
     private Bus masterBus;
     private Bus musicBus;
@@ -64,14 +59,6 @@ public class AudioManager : SingletonAdvanced<AudioManager>
         }
     }
 
-    private void Update()
-    {
-        // Update the volume of each bus
-        masterBus.setVolume(masterVolume);
-        musicBus.setVolume(musicVolume);
-        sfxBus.setVolume(SFXVolume);
-        ambienceBus.setVolume(ambienceVolume);
-    }
     
     private void InitializeAmbience(EventReference ambienceEvent)
     {
@@ -80,11 +67,11 @@ public class AudioManager : SingletonAdvanced<AudioManager>
         ambienceEventInstance.start();
     }
 
-    private void InitializeMusic(EventReference musicEventReference)
+    public void InitializeMusic(EventReference musicEventReference)
     {
         // Create and start the music event instance
         //musicEventInstance = RuntimeManager.CreateInstance(musicEventReference);
-        musicEventInstance.setVolume(musicVolume);
+        //musicEventInstance.setVolume(musicVolume);
         musicEventInstance.start();
         musicEventInstance.setPaused(false);
     }
