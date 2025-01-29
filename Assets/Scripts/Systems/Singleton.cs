@@ -241,7 +241,7 @@ public abstract class SingletonAdvanced<T> : Singleton<SingletonAdvanced<T>> whe
 
     protected static bool AttemptFind(out T result)
     {
-        T findAttempt = FindFirstObjectByType<T>();
+        T findAttempt = FindFirstObjectByType<T>(FindObjectsInactive.Include);
         if (findAttempt)
         {
             result = findAttempt;
