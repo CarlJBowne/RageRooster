@@ -17,7 +17,7 @@ public class ZoneRoot : MonoBehaviour
         }}
     [HideInInspector] public new string name;
     public Vector3 originOffset;
-    [HideInInspector] public int loadID = -2;
+    private int loadID = -2;
 
     public static implicit operator string(ZoneRoot A) => A.name ?? A.gameObject.scene.name;
 
@@ -46,6 +46,9 @@ public class ZoneRoot : MonoBehaviour
     }
 
     public SavePoint GetSpawn(int id) => id == -1 ? defaultPlayerSpawn : spawns[id];
+
+    public void SetSpawn(SavePoint This) => loadID = This.GetID();
+
 }
 
 [System.Serializable]

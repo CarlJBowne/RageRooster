@@ -39,11 +39,13 @@ public class Gameplay : Singleton<Gameplay>
 
     public static void BeginMainMenu(int fileNo)
     {
+        if (Gameplay.Active) return;
         GlobalState.activeSaveFile = fileNo;
         SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
     }
     public static void BeginScene(string sceneToLoad)
     {
+        if (Gameplay.Active) return;
         PostMaLoad += () =>
         {
             if (spawnSceneName != sceneToLoad)
@@ -56,6 +58,7 @@ public class Gameplay : Singleton<Gameplay>
     }
     public static void BeginSavePoint(string sceneToLoad, int spawnID)
     {
+        if (Gameplay.Active) return;
         PostMaLoad += () =>
         {
             spawnSceneName = sceneToLoad;
@@ -69,6 +72,8 @@ public class Gameplay : Singleton<Gameplay>
         GlobalState.Load();
 
         PostMaLoad?.Invoke();
+
+        zoneManager.Awake();
 
         SceneManager.LoadScene(spawnSceneName ?? ZoneManager.Get().defaultAreaScene, LoadSceneMode.Additive);
 
