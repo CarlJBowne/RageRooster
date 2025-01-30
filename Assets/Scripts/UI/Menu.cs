@@ -86,12 +86,8 @@ public class Menu : MonoBehaviour
 
         public static void Escape()
         {
-            if (disableEscape)
-            {
-                disableEscape = false;
-                return;
-            }
-            currentMenus[^1].Close();
+            if (PauseMenu.Loaded && !PauseMenu.Active) PauseMenu.Get().Open();
+            else if (currentMenus.Count > 0) currentMenus[^1].Close(); 
         }
 
     }
@@ -169,6 +165,12 @@ public abstract class MenuSingleton<T> : Menu where T : MenuSingleton<T>
         if (_instance || _instance == this) return;
         _instance = this as T;
         Loaded = true;
+    }
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        Loaded = false;
+        _instance = null;
     }
 
 
