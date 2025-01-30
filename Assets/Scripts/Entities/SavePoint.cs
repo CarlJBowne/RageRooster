@@ -23,7 +23,7 @@ public class SavePoint : MonoBehaviour, IInteractable
     [Button]
     private void BeginFromHere()
     {
-        GetComponentInParent<ZoneRoot>().loadID = GetID();
+        GetComponentInParent<ZoneRoot>().SetSpawn(this);
         UnityEditor.EditorApplication.isPlaying = true;
     }
 

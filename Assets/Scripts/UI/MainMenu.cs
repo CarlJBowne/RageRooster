@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,20 +8,22 @@ public class MainMenu : MenuSingleton<MainMenu>
 {
     public GameObject optionsMenuPanel;
     public GameObject creditsPanel;
+    public EventReference musicRef;
     //public RectTransform creditsContent;
 
     private void Start()
     {
         optionsMenuPanel.SetActive(false);
         creditsPanel.SetActive(false);
+        AudioManager.Get().InitializeMusic(musicRef);
     }
 
-    private void PlaySound() => AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
+    //private void PlaySound() => AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
 
     public void PlayGame()
     {
         //PlaySound();
-        SceneManager.LoadScene("GameplayScene");
+        Gameplay.BeginMainMenu(0);
         Close();
     }
 

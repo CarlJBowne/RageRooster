@@ -41,24 +41,24 @@ public class VolumeSlider : MonoBehaviour
     private void UpdateSliderValue()
     {
         // Set the slider value based on the volume type
-        switch (volumeType)
-        {
-            case VolumeType.MASTER:
-                volumeSlider.value = AudioManager.Get().masterVolume;
-                break;
-            case VolumeType.MUSIC:
-                volumeSlider.value = AudioManager.Get().musicVolume;
-                break;
-            case VolumeType.SFX:
-                volumeSlider.value = AudioManager.Get().SFXVolume;
-                break;
-            case VolumeType.AMBIENCE:
-                volumeSlider.value = AudioManager.Get().ambienceVolume;
-                break;
-            default:
-                ////Debug.LogError("Volume type not found: " + volumeType);
-                break;
-        }
+        //switch (volumeType)
+        //{
+        //    case VolumeType.MASTER:
+        //        volumeSlider.value = AudioManager.Get().masterVolume;
+        //        break;
+        //    case VolumeType.MUSIC:
+        //        volumeSlider.value = AudioManager.Get().musicVolume;
+        //        break;
+        //    case VolumeType.SFX:
+        //        volumeSlider.value = AudioManager.Get().SFXVolume;
+        //        break;
+        //    case VolumeType.AMBIENCE:
+        //        volumeSlider.value = AudioManager.Get().ambienceVolume;
+        //        break;
+        //    default:
+        //        ////Debug.LogError("Volume type not found: " + volumeType);
+        //        break;
+        //}
     }
 
     public void OnSliderValueChanged()

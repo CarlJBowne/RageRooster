@@ -2701,6 +2701,10 @@ MonoBehaviour:
       Data4: 0
     Path: 
   remap: {fileID: 5438929637913221121}
+  masterSlider: {fileID: 3955007559571179459}
+  musicSlider: {fileID: 1234122759963363866}
+  SFXSlider: {fileID: 756312268797488502}
+  AmbSlider: {fileID: 6185534698024737493}
   currentMasterVolume: 0
   currentMusicVolume: 0
   currentSFXVolume: 0
@@ -3020,7 +3024,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7738666588431750928}
   - component: {fileID: 1234122759963363866}
-  - component: {fileID: 5345222329156240753}
   m_Layer: 5
   m_Name: Music
   m_TagString: Untagged
@@ -3101,20 +3104,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &5345222329156240753
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3233177929265073230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60a78d1bb70b6674894015bdfd131e20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeType: 1
+      m_Calls:
+      - m_Target: {fileID: 6837463468292051762}
+        m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
+        m_MethodName: SetMusic
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3438270898039688681
 GameObject:
   m_ObjectHideFlags: 0
@@ -4134,7 +4136,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1821160763775318175}
   - component: {fileID: 6185534698024737493}
-  - component: {fileID: 4291381871560256173}
   m_Layer: 5
   m_Name: Ambience
   m_TagString: Untagged
@@ -4215,20 +4216,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &4291381871560256173
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4217448729132537010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60a78d1bb70b6674894015bdfd131e20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeType: 3
+      m_Calls:
+      - m_Target: {fileID: 6837463468292051762}
+        m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
+        m_MethodName: SetAmbience
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4410273150858096211
 GameObject:
   m_ObjectHideFlags: 0
@@ -5968,7 +5968,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4504835423583393395}
   - component: {fileID: 756312268797488502}
-  - component: {fileID: 4758199884012796089}
   m_Layer: 5
   m_Name: SFX
   m_TagString: Untagged
@@ -6049,20 +6048,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &4758199884012796089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6227407726750958988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60a78d1bb70b6674894015bdfd131e20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeType: 2
+      m_Calls:
+      - m_Target: {fileID: 6837463468292051762}
+        m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
+        m_MethodName: SetSFX
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6251570366668386505
 GameObject:
   m_ObjectHideFlags: 0
@@ -8696,7 +8694,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8621415009987438456}
   - component: {fileID: 3955007559571179459}
-  - component: {fileID: 2010118601585043972}
   m_Layer: 5
   m_Name: Master
   m_TagString: Untagged
@@ -8777,20 +8774,19 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &2010118601585043972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8973082219680994681}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60a78d1bb70b6674894015bdfd131e20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeType: 0
+      m_Calls:
+      - m_Target: {fileID: 6837463468292051762}
+        m_TargetAssemblyTypeName: SettingsMenu, Assembly-CSharp
+        m_MethodName: SetMaster
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &9071709879871788996
 GameObject:
   m_ObjectHideFlags: 0

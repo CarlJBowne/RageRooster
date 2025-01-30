@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EditorAttributes;
+using UnityEngine.UI;
 
 public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
 {
@@ -10,6 +11,11 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
 
     public static string SaveFilePath => Application.persistentDataPath;
     public static string SaveFileName => "Config";
+
+    [SerializeField] Slider masterSlider;
+    [SerializeField] Slider musicSlider;
+    [SerializeField] Slider SFXSlider;
+    [SerializeField] Slider AmbSlider;
 
     [SerializeField, DisableInEditMode, DisableInPlayMode] float currentMasterVolume;
     [SerializeField, DisableInEditMode, DisableInPlayMode] float currentMusicVolume;
@@ -57,6 +63,13 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
         var loadAttempt = new JObject().LoadJsonFromFile(SaveFilePath, SaveFileName);
         if(loadAttempt != null) Deserialize(loadAttempt);
         remap.UpdateAllIcons();
+
+        masterSlider.value = currentMasterVolume;
+        musicSlider.value = currentMusicVolume;
+        SFXSlider.value = currentSFXVolume;
+        AmbSlider.value = currentAmbienceVolume;
+
+
         TrueClose();
     }
 

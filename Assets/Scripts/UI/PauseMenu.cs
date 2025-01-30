@@ -9,22 +9,6 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 {
     public static bool isPaused => Get().isActive;
 
-    protected override void Awake()
-    {
-        Input.UI.PauseGame.performed += PauseCallback;
-        base.Awake();
-    }
-    protected override void OnDestroy()
-    {
-        Input.UI.PauseGame.performed -= PauseCallback;
-        base.OnDestroy();
-    }
-    private void PauseCallback(InputAction.CallbackContext ctx)
-    {
-        if (PauseMenu.Active) return;
-        Menu.Manager.disableEscape = true;
-        Open();
-    }
 
     protected override void OnOpen()
     {
