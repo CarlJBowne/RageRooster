@@ -18,6 +18,7 @@ public class Gameplay : Singleton<Gameplay>
     public UIHUDSystem uI;
     public ZoneManager zoneManager;
     public GlobalState globalState;
+    public SettingsMenu settingsMenu;
 
     public static string spawnSceneName = null;
     public static int spawnPointID = -1;
@@ -38,11 +39,13 @@ public class Gameplay : Singleton<Gameplay>
 
     public static void BeginMainMenu(int fileNo)
     {
+        if (Gameplay.Active) return;
         GlobalState.activeSaveFile = fileNo;
         SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
     }
     public static void BeginScene(string sceneToLoad)
     {
+        if (Gameplay.Active) return;
         PostMaLoad += () =>
         {
             if (spawnSceneName != sceneToLoad)
@@ -55,6 +58,7 @@ public class Gameplay : Singleton<Gameplay>
     }
     public static void BeginSavePoint(string sceneToLoad, int spawnID)
     {
+        if (Gameplay.Active) return;
         PostMaLoad += () =>
         {
             spawnSceneName = sceneToLoad;
@@ -69,9 +73,16 @@ public class Gameplay : Singleton<Gameplay>
 
         PostMaLoad?.Invoke();
 
+        zoneManager.Awake();
+
         SceneManager.LoadScene(spawnSceneName ?? ZoneManager.Get().defaultAreaScene, LoadSceneMode.Additive);
 
         ZoneManager.OnFirstLoad += OnFirstLoad;
+
+        Input.UI.PauseGame.performed += c =>
+        {
+            Menu.Manager.Escape();
+        };
     }
 
     private void OnFirstLoad()
