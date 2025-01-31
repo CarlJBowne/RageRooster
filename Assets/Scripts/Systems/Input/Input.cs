@@ -31,9 +31,9 @@ public class Input : Staticon<Input>
 	public Vector2 movement => asset.Gameplay.Movement.ReadValue<Vector2>();
 	public Vector2 camera => asset.Gameplay.Camera.ReadValue<Vector2>();
 	public Button jump => asset.Gameplay.Jump;
-	public Button attack => asset.Gameplay.Attack;
+	public Button attack => asset.Gameplay.AttackTap;
 	public Button parry => asset.Gameplay.Parry;
-	public Button grab => asset.Gameplay.Grab;
+	public Button grab => asset.Gameplay.GrabTap;
 	public Button shootMode => asset.Gameplay.ShootMode;
 	public Button shoot => asset.Gameplay.Shoot;
 	public Button charge => asset.Gameplay.Charge;
