@@ -18,9 +18,11 @@ public class Input : Staticon<Input>
 	public static Vector2 Movement => Get().asset.Gameplay.Movement.ReadValue<Vector2>();
 	public static Vector2 Camera => Get().asset.Gameplay.Camera.ReadValue<Vector2>();
 	public static Button Jump => Get().asset.Gameplay.Jump;
-	public static Button Attack => Get().asset.Gameplay.Attack;
+	public static Button AttackTap => Get().asset.Gameplay.AttackTap;
+	public static Button AttackHold => Get().asset.Gameplay.AttackHold;
 	public static Button Parry => Get().asset.Gameplay.Parry;
-	public static Button Grab => Get().asset.Gameplay.Grab;
+	public static Button GrabTap => Get().asset.Gameplay.GrabTap;
+	public static Button GrabHold => Get().asset.Gameplay.GrabHold;
 	public static Button ShootMode => Get().asset.Gameplay.ShootMode;
 	public static Button Shoot => Get().asset.Gameplay.Shoot;
 	public static Button Charge => Get().asset.Gameplay.Charge;
@@ -29,9 +31,9 @@ public class Input : Staticon<Input>
 	public Vector2 movement => asset.Gameplay.Movement.ReadValue<Vector2>();
 	public Vector2 camera => asset.Gameplay.Camera.ReadValue<Vector2>();
 	public Button jump => asset.Gameplay.Jump;
-	public Button attack => asset.Gameplay.Attack;
+	public Button attack => asset.Gameplay.AttackTap;
 	public Button parry => asset.Gameplay.Parry;
-	public Button grab => asset.Gameplay.Grab;
+	public Button grab => asset.Gameplay.GrabTap;
 	public Button shootMode => asset.Gameplay.ShootMode;
 	public Button shoot => asset.Gameplay.Shoot;
 	public Button charge => asset.Gameplay.Charge;
