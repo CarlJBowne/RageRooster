@@ -292,8 +292,18 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1170500530874996699, guid: 3ac3d888a768c534db0a8eb4dd9e26ce,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1578635733}
   m_SourcePrefab: {fileID: 100100000, guid: 3ac3d888a768c534db0a8eb4dd9e26ce, type: 3}
+--- !u!1 &23180423 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1170500530874996699, guid: 3ac3d888a768c534db0a8eb4dd9e26ce,
+    type: 3}
+  m_PrefabInstance: {fileID: 23180422}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &68257997 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7035370390711983531, guid: bb24ceefa3fa3834aa9e96ed072561cf,
@@ -5627,6 +5637,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 23180422}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1578635733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 23180423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 0}
+  m_BuildHeightMesh: 0
 --- !u!1001 &1585058260
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6650,6 +6691,7 @@ GameObject:
   - component: {fileID: 1953214748}
   - component: {fileID: 1953214750}
   - component: {fileID: 1953214749}
+  - component: {fileID: 1953214751}
   m_Layer: 0
   m_Name: Terrain
   m_TagString: Untagged
@@ -6732,6 +6774,37 @@ Terrain:
   m_EnableHeightmapRayTracing: 1
   m_EnableTreesAndDetailsRayTracing: 0
   m_TreeMotionVectorModeOverride: 3
+--- !u!114 &1953214751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1953214747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: ec447abf834f00e4498ac4d2dbfe96b1, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!1001 &1955045775
 PrefabInstance:
   m_ObjectHideFlags: 0
