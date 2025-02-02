@@ -2,8 +2,10 @@ using Newtonsoft.Json.Linq;
 using System.Linq;
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [CreateAssetMenu(fileName = "NewSOCollection", menuName ="SO Collection"), System.Serializable]
 public class ScriptableCollection : ScriptableObject, ICustomSerialized
@@ -15,6 +17,7 @@ public class ScriptableCollection : ScriptableObject, ICustomSerialized
 
     public void Create()
     {
+#if UNITY_EDITOR
         ScriptableObject NEWObject = Activator.CreateInstance(Type.GetType(selectedType)) as ScriptableObject;
 
         NEWObject.name = $"{List.Count}_NewObject";
@@ -22,13 +25,16 @@ public class ScriptableCollection : ScriptableObject, ICustomSerialized
         Undo.RegisterCreatedObjectUndo(NEWObject, "Added New Object");
         AssetDatabase.SaveAssets();
         List.Add(NEWObject);
+#endif
     }
     public void DeleteAt(int i)
     {
+#if UNITY_EDITOR
         Undo.RecordObject(List[i], "Object Deleted");
         DestroyImmediate(List[i], true);
         List.RemoveAt(i);
         AssetDatabase.SaveAssets();
+#endif
     }
 
     public List<T> Cast<T>() where T : ScriptableObject => List.Cast<T>().ToList();
@@ -53,12 +59,15 @@ public class ScriptableCollection : ScriptableObject, ICustomSerialized
         for (int i = 0; i < jsonArray.Count && i < List.Count; i++)
         {
             jsonArray[i].DeserializeInto(List[i]);
-            EditorUtility.SetDirty(List[i]);
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(List[i]);
+#endif
         }
 
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(ScriptableCollection), true)]
 public class ScriptableCollectionEditor : Editor
 {
@@ -135,3 +144,4 @@ public class ScriptableCollectionEditor : Editor
 
 }
 
+#endif

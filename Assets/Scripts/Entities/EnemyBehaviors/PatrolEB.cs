@@ -12,8 +12,13 @@ public class PatrolEB : StateBehavior
 
     private NavMeshAgent agent;
     int currentDestination = 0;
+    private bool navMeshFailed;
 
-    public override void OnAwake() => agent = GetComponentFromMachine<NavMeshAgent>();
+    public override void OnAwake()
+    {
+        agent = GetComponentFromMachine<NavMeshAgent>();
+        navMeshFailed = !agent.isOnNavMesh;
+    }
 
     public override void OnEnter(State prev)
     {
@@ -29,6 +34,7 @@ public class PatrolEB : StateBehavior
 
     public override void OnFixedUpdate()
     {
+        if (navMeshFailed) return;
         if (agent.remainingDistance < distanceToProceed)
         {
             currentDestination++;
