@@ -75,7 +75,9 @@ namespace SLS.StateMachineV3
                         System.Type type = item.GetType();
                         Component copy = gameObject.AddComponent(type);
 
+#if UNITY_EDITOR
                         UnityEditor.EditorUtility.CopySerialized(item, copy);
+#endif
                     }
                     for (int i = rootBehaviors.Length - 1; i >= 0; i--) DestroyImmediate(rootBehaviors[i]);
                     DestroyImmediate(badRootState);

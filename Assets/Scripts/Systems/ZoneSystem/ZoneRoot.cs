@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class ZoneRoot : MonoBehaviour
 {
     public ZoneTransition[] transitions;
-    public SavePoint[] _spawns;
     public SavePoint defaultPlayerSpawn;
 
     public SavePoint[] spawns {get{
@@ -15,9 +15,11 @@ public class ZoneRoot : MonoBehaviour
                 _spawns = gameObject.GetComponentsInChildren<SavePoint>();
             return _spawns; 
         }}
+    private SavePoint[] _spawns; 
     [HideInInspector] public new string name;
     public Vector3 originOffset;
     private int loadID = -2;
+    private Light[] directionalLights;
 
     public static implicit operator string(ZoneRoot A) => A.name ?? A.gameObject.scene.name;
 
@@ -35,6 +37,9 @@ public class ZoneRoot : MonoBehaviour
 
         if(transitions == null || transitions.Length == 0) transitions = gameObject.GetComponentsInChildren<ZoneTransition>();
         if(spawns == null || spawns.Length == 0) _spawns = gameObject.GetComponentsInChildren<SavePoint>();
+        
+        directionalLights = gameObject.GetComponentsInChildren<Light>().Where(l => l.type == LightType.Directional).ToArray();
+        foreach (var item in directionalLights) item.enabled = false;
 
         ZoneManager.LoadZone(this);
 
