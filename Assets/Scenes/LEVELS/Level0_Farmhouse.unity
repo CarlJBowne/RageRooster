@@ -6022,7 +6022,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 32908
+    surfaceParameter: 32924
     meshQueryIndex: 3
     subMeshQueryIndex: 0
     geometryHashValue: -3347191979974102914
@@ -16381,6 +16381,7 @@ GameObject:
   - component: {fileID: 953916701}
   - component: {fileID: 953916700}
   - component: {fileID: 953916699}
+  - component: {fileID: 953916703}
   m_Layer: 0
   m_Name: Lake 2
   m_TagString: Untagged
@@ -16475,6 +16476,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 410644655}
   m_LocalEulerAnglesHint: {x: 0, y: -34.954, z: 0}
+--- !u!114 &953916703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953916698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack:
+    amount: 1
+    name: Pit
+    wham: 0
+    velocity: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
 --- !u!1 &957042201
 GameObject:
   m_ObjectHideFlags: 0
@@ -23817,7 +23836,8 @@ PrefabInstance:
     - target: {fileID: 8885311231432202622, guid: 87821c1e9d5cd3e40b3f50d6bcda2b12,
         type: 3}
       propertyPath: hintString
-      value: Grab an enemy and press Y while in midair to Drop Launch!
+      value: Grab an enemy and press Y while in midair to Drop-Launch yourself into
+        a vertical boost!
       objectReference: {fileID: 0}
     - target: {fileID: 8885311231432202622, guid: 87821c1e9d5cd3e40b3f50d6bcda2b12,
         type: 3}
@@ -25114,6 +25134,7 @@ GameObject:
   - component: {fileID: 1613713153}
   - component: {fileID: 1613713152}
   - component: {fileID: 1613713151}
+  - component: {fileID: 1613713155}
   m_Layer: 0
   m_Name: Lake 1
   m_TagString: Untagged
@@ -25208,6 +25229,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 410644655}
   m_LocalEulerAnglesHint: {x: 0, y: -88.926, z: 0}
+--- !u!114 &1613713155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613713150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack:
+    amount: 1
+    name: Pit
+    wham: 0
+    velocity: {x: 0, y: 0, z: 0}
+  velocity: {x: 0, y: 0, z: 0}
 --- !u!4 &1622268228 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4606180591431543991, guid: b8b9274ab35957841ab0f81699251af1,
