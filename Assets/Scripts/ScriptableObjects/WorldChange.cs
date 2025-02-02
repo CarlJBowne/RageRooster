@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]
@@ -37,6 +36,8 @@ public class WorldChange : ScriptableObject, ICustomSerialized
     public void Deserialize(JToken Data)
     {
         _enabled = Data["Enabled"].Value<bool>();
-        EditorUtility.SetDirty(this);
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
     }
 }

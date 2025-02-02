@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using Timer;
-using UnityEditor;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [Serializable, System.Obsolete]
 public struct Timer_Old
@@ -167,7 +169,7 @@ namespace Timer
 
 }
 
-
+#if UNITY_EDITOR
 [CustomPropertyDrawer(typeof(Loop))]
 public class LoopPropertyDrawer : PropertyDrawer
 {
@@ -236,3 +238,5 @@ public class OneTimePropertyDrawer : PropertyDrawer
         EditorGUI.EndProperty();
     }
 }
+
+#endif
