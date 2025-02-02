@@ -14,7 +14,13 @@ public class AmbienceChangeTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             EventReference ambienceEvent = GetAmbienceEvent(ambienceType);
-            AudioManager.Get().SetAmbienceParameter(ambienceEvent.Path, parameterValue);
+            AudioManager.Get().SetAmbienceParameter(
+#if UNITY_EDITOR
+                ambienceEvent.Path,
+#else
+"PROBLEM",
+#endif
+                parameterValue);
         }
     }
 

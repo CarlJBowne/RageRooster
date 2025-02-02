@@ -1,7 +1,6 @@
 using EditorAttributes;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,12 +19,14 @@ public class SavePoint : MonoBehaviour, IInteractable
     }
     
     public void Save() => GlobalState.Save();
+#if UNITY_EDITOR
     [Button]
     private void BeginFromHere()
     {
         GetComponentInParent<ZoneRoot>().SetSpawn(this);
         UnityEditor.EditorApplication.isPlaying = true;
     }
+#endif
 
     public int GetID()
     {

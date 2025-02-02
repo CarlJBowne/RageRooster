@@ -2,9 +2,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using EditorAttributes;
 using System.Linq;
-using UnityEngine.EventSystems;
-using Unity.VisualScripting;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace SLS.StateMachineV3
 {

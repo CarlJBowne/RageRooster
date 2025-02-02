@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class Upgrade : ScriptableObject, ICustomSerialized
@@ -20,6 +19,8 @@ public class Upgrade : ScriptableObject, ICustomSerialized
     public void Deserialize(JToken Data)
     {
         value = Data["Enabled"].Value<bool>();
-        EditorUtility.SetDirty(this);
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
     }
 }
