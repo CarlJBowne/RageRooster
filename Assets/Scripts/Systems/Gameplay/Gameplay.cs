@@ -1,12 +1,11 @@
 ﻿using Cinemachine;
 using System;
 using System.Collections;
-using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.PlayerSettings;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class Gameplay : Singleton<Gameplay>
 {
@@ -120,6 +119,7 @@ public class Gameplay : Singleton<Gameplay>
 
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(Gameplay), true)]
 public class GameplayEditor : Editor
 {
@@ -142,4 +142,5 @@ public class GameplayEditor : Editor
 
 
 }
+#endif
 
