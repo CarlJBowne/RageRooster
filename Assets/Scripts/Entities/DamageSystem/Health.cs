@@ -2,9 +2,11 @@ using EditorAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 /// <summary>
 /// A Component managing the Health of an entity, whether that be Player, Enemy, or Destructible Object.
@@ -105,6 +107,7 @@ public struct Attack
 	}
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(Health), true)]
 public class HealthEditor : Editor
 {
@@ -127,3 +130,4 @@ public class HealthEditor : Editor
         base.OnInspectorGUI();
     }
 }
+#endif
