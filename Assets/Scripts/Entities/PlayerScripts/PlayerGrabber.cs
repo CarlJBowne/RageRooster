@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PlayerGrabber : Grabber, IAttacker
+public class PlayerGrabber : Grabber
 {
     #region Config
     public float checkSphereRadius;
@@ -52,9 +52,7 @@ public class PlayerGrabber : Grabber, IAttacker
     private void LateUpdate()
     {
         if (!grabbing) return;
-        currentGrabbed.transform.SetPositionAndRotation(
-            twoHanded ? twoHandedHand.position : oneHandedHand.position, 
-            twoHanded ? twoHandedHand.rotation : oneHandedHand.rotation);
+        currentGrabbed.transform.SetPositionAndRotation(twoHanded ? twoHandedHand : oneHandedHand);
     }
 
     private void Throw()
@@ -73,7 +71,7 @@ public class PlayerGrabber : Grabber, IAttacker
         }
         if(currentGrabbed.TryGetComponent(out EnemyHealth health))
         {
-            health.Ragdoll(new Attack(0, "Throw", false, this, upcomingLaunchVelocity));
+            health.Ragdoll(new(0, upcomingLaunchVelocity, "Throwing"));
             health.projectile = true;
         }
         Release();
@@ -87,11 +85,6 @@ public class PlayerGrabber : Grabber, IAttacker
     {
         currentGrabbed.rb.velocity = upcomingLaunchVelocity;
     }
-
-    [Obsolete]
-    public void Contact(GameObject target) => throw new NotImplementedException();
-
-
 
     /* Questions:
      Do we want to fully reset the player's velocity on drop launch or launch them relative to their downward velocity.

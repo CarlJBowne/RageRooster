@@ -5,28 +5,30 @@ using UnityEngine;
 /// <summary>
 /// The base form of Attack Source. A singular possible attack.
 /// </summary>
-public class AttackSource : MonoBehaviour, IAttacker
+[System.Obsolete]
+public class AttackSource_Old : MonoBehaviour, IAttacker_Old
 {
-    public Attack attack;
+    public Attack_Old attack;
     public Vector3 velocity;
 
     void OnTriggerEnter(Collider other) => Contact(other.gameObject);
 
     void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);
 
-    public virtual void Contact(GameObject target) => (this as IAttacker).BeginAttack(target, attack, velocity);
+    public virtual void Contact(GameObject target) => (this as IAttacker_Old).BeginAttack(target, attack, velocity);
 
 }
 
-public interface IAttacker
+[System.Obsolete]
+public interface IAttacker_Old
 {
     public abstract void Contact(GameObject target);
 
-    public void BeginAttack(GameObject target, Attack attack, Vector3 velocity)
+    public void BeginAttack(GameObject target, Attack_Old attack, Vector3 velocity)
     {
         if (!target.TryGetComponent(out Health targetHealth)) return;
 
-        if (targetHealth.Damage(new Attack(attack, this, velocity)))
+        if (targetHealth.Damage(new Attack_Old(attack, this, velocity)))
         {
 
         }

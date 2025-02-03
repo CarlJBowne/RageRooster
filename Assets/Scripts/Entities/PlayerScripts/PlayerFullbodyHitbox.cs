@@ -7,8 +7,8 @@ using UnityEngine;
 public class PlayerFullbodyHitbox : PlayerStateBehavior
 {
     public bool autoActivate = true;
-    public string attackName;
-    public AttackHitBox hitBox;
+    public int attackID;
+    public Collider hitBox;
 
 
 
@@ -20,12 +20,11 @@ public class PlayerFullbodyHitbox : PlayerStateBehavior
     }
     public override void OnExit(State next)
     {
-        hitBox.Disable();
+        SetBoxState(false);
     }
 
     public void SetBoxState(bool value)
     {
-        hitBox.SetActive(value);
-        if(value) hitBox.currentAttackID = attackName;
+        hitBox.enabled = value;
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6615624878976301374}
   - component: {fileID: 1178113904624510868}
   - component: {fileID: 1632128030463539112}
-  - component: {fileID: 557223514539269041}
+  - component: {fileID: 7868266934595780143}
   m_Layer: 0
   m_Name: Bounce
   m_TagString: Untagged
@@ -114,7 +114,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.84
   m_Center: {x: 0, y: 0.6, z: 0}
---- !u!114 &557223514539269041
+--- !u!114 &7868266934595780143
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,11 +123,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1049869934697765793}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbe6a0940c9fc3d4bb2d2f3d11df477a, type: 3}
+  m_Script: {fileID: 11500000, guid: 00e08d19e70a0a44ba49ccb39b83df8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 6378731282900981655}
-  currentAttackID: GroundSlam
+  attack:
+    amount: 10
+    velocity: {x: 0, y: 15, z: 0}
+    tags:
+    - name: FromPlayer
+    - name: Wham
+  sourceEntity: {fileID: 8455434200384702600}
+  enabled: 1
 --- !u!1 &1242553937887867047
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,7 +503,6 @@ GameObject:
   - component: {fileID: 598530174602593461}
   - component: {fileID: 2714541672873312079}
   - component: {fileID: 4810220497755855147}
-  - component: {fileID: 6378731282900981655}
   - component: {fileID: 1371118413310184343}
   - component: {fileID: 3941225653291784218}
   - component: {fileID: 2783735533672575433}
@@ -699,44 +704,9 @@ MonoBehaviour:
   depleteEvent:
     m_PersistentCalls:
       m_Calls: []
+  immuneTags: []
   health: 0
   invincibilityTime: 3
---- !u!114 &6378731282900981655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2950555048310845610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96400e0c9bd852243a67a0bc98ac878a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attack:
-    amount: 0
-    name: 
-    wham: 0
-    velocity: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 4, z: 4}
-  thisCollider: 0
-  attacks:
-  - amount: 5
-    name: Punch1
-    wham: 1
-    velocity: {x: 0, y: 0, z: 0}
-  - amount: 10
-    name: Wham
-    wham: 1
-    velocity: {x: 0, y: 0, z: 0}
-  - amount: 10
-    name: Slam
-    wham: 1
-    velocity: {x: 0, y: 0, z: 0}
-  - amount: 10
-    name: Charge
-    wham: 1
-    velocity: {x: 0, y: 0, z: 0}
 --- !u!114 &1371118413310184343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1085,9 +1055,9 @@ GameObject:
   - component: {fileID: 1252659914078541581}
   - component: {fileID: 6299152413537013217}
   - component: {fileID: 5855114282886156849}
-  - component: {fileID: 931549547403757152}
   - component: {fileID: 191975908776800416}
   - component: {fileID: 4601588046968553847}
+  - component: {fileID: 2199304448062642395}
   m_Layer: 0
   m_Name: GroundSlam
   m_TagString: Untagged
@@ -1164,20 +1134,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.84
   m_Center: {x: 0, y: 0.6, z: 0}
---- !u!114 &931549547403757152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4861617110333237064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbe6a0940c9fc3d4bb2d2f3d11df477a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  source: {fileID: 6378731282900981655}
-  currentAttackID: GroundSlam
 --- !u!114 &191975908776800416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1230,6 +1186,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &2199304448062642395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861617110333237064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e08d19e70a0a44ba49ccb39b83df8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack:
+    amount: 10
+    velocity: {x: 0, y: -15, z: 0}
+    tags:
+    - name: FromPlayer
+    - name: GroundSlam
+    - name: Wham
+  sourceEntity: {fileID: 8455434200384702600}
+  enabled: 1
 --- !u!1 &5300167671746722696
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,12 +1303,10 @@ GameObject:
   - component: {fileID: 6630164468072911266}
   - component: {fileID: 1766021917863805240}
   - component: {fileID: 1409538746235017687}
-  - component: {fileID: 264487216183127732}
   - component: {fileID: 2763978919148611411}
   - component: {fileID: 1503531427647151743}
   - component: {fileID: 5123427297755334006}
-  - component: {fileID: 5359236866563957884}
-  - component: {fileID: 6222436586225806277}
+  - component: {fileID: 7477544725745237100}
   m_Layer: 0
   m_Name: AirCharge
   m_TagString: Untagged
@@ -1393,7 +1368,7 @@ MonoBehaviour:
   maxTurnSpeed: 0.5
   outwardTurn: 1
   minSpeedForRotate: 0
-  hitBox: {fileID: 0}
+  hitBox: {fileID: 1409538746235017687}
   forceMaxVelocity: 1
   atTopSpeed: 0
 --- !u!135 &1409538746235017687
@@ -1417,20 +1392,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.84
   m_Center: {x: 0, y: 0.81, z: 0}
---- !u!114 &264487216183127732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5339412235462586582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbe6a0940c9fc3d4bb2d2f3d11df477a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  source: {fileID: 6378731282900981655}
-  currentAttackID: Charge
 --- !u!54 &2763978919148611411
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1498,7 +1459,7 @@ MonoBehaviour:
   onEnterName: Jump 1
   onEnterTime: 0.01
   animator: {fileID: 0}
---- !u!114 &5359236866563957884
+--- !u!114 &7477544725745237100
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1507,29 +1468,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 5339412235462586582}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Script: {fileID: 11500000, guid: 00e08d19e70a0a44ba49ccb39b83df8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onEntry: 1
-  onEnterName: Jump 1
-  onEnterTime: 0.01
-  animator: {fileID: 0}
---- !u!114 &6222436586225806277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5339412235462586582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 1
-  onEnterName: Jump 1
-  onEnterTime: 0.01
-  animator: {fileID: 0}
+  attack:
+    amount: 10
+    velocity: {x: 0, y: 0, z: 15}
+    tags:
+    - name: FromPlayer
+    - name: Charge
+    - name: Wham
+  sourceEntity: {fileID: 8455434200384702600}
+  enabled: 1
 --- !u!1 &5467346788979988012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1625,8 +1575,8 @@ GameObject:
   - component: {fileID: 3812935324549841644}
   - component: {fileID: 1709320534574928523}
   - component: {fileID: 4303229188960523177}
-  - component: {fileID: 7798220447604153142}
   - component: {fileID: 2532947215877258004}
+  - component: {fileID: 4783550702967590489}
   m_Layer: 0
   m_Name: Charging
   m_TagString: Untagged
@@ -1688,7 +1638,7 @@ MonoBehaviour:
   maxTurnSpeed: 2.5
   outwardTurn: 1
   minSpeedForRotate: 0
-  hitBox: {fileID: 0}
+  hitBox: {fileID: 4303229188960523177}
   forceMaxVelocity: 0
   atTopSpeed: 0
 --- !u!135 &4303229188960523177
@@ -1712,20 +1662,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.84
   m_Center: {x: 0, y: 0.81, z: 0}
---- !u!114 &7798220447604153142
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5936538625018206224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbe6a0940c9fc3d4bb2d2f3d11df477a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  source: {fileID: 6378731282900981655}
-  currentAttackID: Charge
 --- !u!54 &2532947215877258004
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1753,6 +1689,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &4783550702967590489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5936538625018206224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e08d19e70a0a44ba49ccb39b83df8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack:
+    amount: 10
+    velocity: {x: 0, y: 0, z: 15}
+    tags:
+    - name: FromPlayer
+    - name: Charge
+    - name: Wham
+  sourceEntity: {fileID: 8455434200384702600}
+  enabled: 1
 --- !u!1 &6574491177993153932
 GameObject:
   m_ObjectHideFlags: 0
@@ -1765,10 +1722,10 @@ GameObject:
   - component: {fileID: 9187357623978728356}
   - component: {fileID: 5012187120268294854}
   - component: {fileID: 3239914536476910747}
-  - component: {fileID: 6522355499129223513}
   - component: {fileID: 2299099583400383993}
   - component: {fileID: 2978236571489801571}
   - component: {fileID: 4312939935764186458}
+  - component: {fileID: 1326970059289146713}
   m_Layer: 0
   m_Name: AirChargeFall
   m_TagString: Untagged
@@ -1830,7 +1787,7 @@ MonoBehaviour:
   maxTurnSpeed: 0.5
   outwardTurn: 1
   minSpeedForRotate: 0
-  hitBox: {fileID: 0}
+  hitBox: {fileID: 3239914536476910747}
   forceMaxVelocity: 1
   atTopSpeed: 0
 --- !u!135 &3239914536476910747
@@ -1854,20 +1811,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.84
   m_Center: {x: 0, y: 0.81, z: 0}
---- !u!114 &6522355499129223513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6574491177993153932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbe6a0940c9fc3d4bb2d2f3d11df477a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  source: {fileID: 6378731282900981655}
-  currentAttackID: Charge
 --- !u!54 &2299099583400383993
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1935,6 +1878,27 @@ MonoBehaviour:
   onEnterName: Falling
   onEnterTime: 0.01
   animator: {fileID: 0}
+--- !u!114 &1326970059289146713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574491177993153932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e08d19e70a0a44ba49ccb39b83df8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack:
+    amount: 10
+    velocity: {x: 0, y: 0, z: 15}
+    tags:
+    - name: FromPlayer
+    - name: Charge
+    - name: Wham
+  sourceEntity: {fileID: 8455434200384702600}
+  enabled: 1
 --- !u!1 &6820223952866294626
 GameObject:
   m_ObjectHideFlags: 0
@@ -2020,7 +1984,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2870979174355801259}
   - component: {fileID: 170612175005847972}
-  - component: {fileID: 2087550657071486907}
+  - component: {fileID: 2820619560558629124}
   m_Layer: 0
   m_Name: PunchHitboxR
   m_TagString: Untagged
@@ -2066,7 +2030,7 @@ CapsuleCollider:
   m_Height: 0.69
   m_Direction: 0
   m_Center: {x: -0.34, y: 0, z: 0}
---- !u!114 &2087550657071486907
+--- !u!114 &2820619560558629124
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2075,11 +2039,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 6866037446337861215}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbe6a0940c9fc3d4bb2d2f3d11df477a, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 6378731282900981655}
-  currentAttackID: 
+  currentAttackID: 0
+  sourceEntity: {fileID: 8455434200384702600}
+  attacks:
+  - amount: 15
+    velocity: {x: -10, y: 0, z: 0}
+    tags:
+    - name: Punch
+    - name: Wham
+  additionalTags:
+  - name: FromPlayer
+  enabled: 1
 --- !u!1 &7011906604276923133
 GameObject:
   m_ObjectHideFlags: 0
@@ -2121,7 +2094,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5587441344437679608}
   - component: {fileID: 2893852447847949994}
-  - component: {fileID: 823868846726048505}
+  - component: {fileID: 4478454178449294283}
   m_Layer: 0
   m_Name: PunchHitboxL
   m_TagString: Untagged
@@ -2167,7 +2140,7 @@ CapsuleCollider:
   m_Height: 0.69
   m_Direction: 0
   m_Center: {x: 0.34, y: 0, z: 0}
---- !u!114 &823868846726048505
+--- !u!114 &4478454178449294283
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2176,11 +2149,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 7857623712039276735}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbe6a0940c9fc3d4bb2d2f3d11df477a, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 6378731282900981655}
-  currentAttackID: 
+  currentAttackID: 0
+  sourceEntity: {fileID: 8455434200384702600}
+  attacks:
+  - amount: 10
+    velocity: {x: 10, y: 0, z: 0}
+    tags:
+    - name: Punch
+  additionalTags:
+  - name: FromPlayer
+  enabled: 1
 --- !u!1 &8199206087883158074
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,13 +5,13 @@ using UnityEngine;
 /// <summary>
 /// An external Attack Source type that outsources the attack inflicted onto an AttackMulti
 /// </summary>
-[RequireComponent(typeof(Collider))]
-public class AttackHitBox : MonoBehaviour, IAttacker
+[RequireComponent(typeof(Collider)), System.Obsolete]
+public class AttackHitBox_Old : MonoBehaviour, IAttacker_Old
 {
     /// <summary>
     /// The AttackSource this Hitbox is tied too.
     /// </summary>
-    [SerializeField] AttackMulti source;
+    [SerializeField] AttackMulti_Old source;
     /// <summary>
     /// The ID string used to determine which attack in the AttackSource's repetior is meant to be used. Leave null for default.
     /// </summary>

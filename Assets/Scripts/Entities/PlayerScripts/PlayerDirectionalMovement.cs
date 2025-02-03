@@ -11,7 +11,7 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
     public float maxTurnSpeed = 25;
     public bool outwardTurn;
     public float minSpeedForRotate;
-    public AttackHitBox hitBox;
+    public Collider hitBox;
     public bool forceMaxVelocity;
 
     #endregion
@@ -24,7 +24,6 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
     {
         base.OnAwake();
         body.currentDirection = transform.forward;
-        hitBox = GetComponent<AttackHitBox>();
     }
 
     public override void OnFixedUpdate()
@@ -85,7 +84,7 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
         if (value == atTopSpeed) return;
         atTopSpeed = value;
 
-        if (hitBox) hitBox.SetActive(value);
+        if (hitBox) hitBox.enabled = atTopSpeed;
     }
 
 }
