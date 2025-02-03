@@ -704,7 +704,8 @@ MonoBehaviour:
   depleteEvent:
     m_PersistentCalls:
       m_Calls: []
-  immuneTags: []
+  immuneTags:
+  - name: FromPlayer
   health: 0
   invincibilityTime: 3
 --- !u!114 &1371118413310184343
@@ -1703,7 +1704,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack:
     amount: 10
-    velocity: {x: 0, y: 0, z: 15}
+    velocity: {x: 0, y: 0, z: 1.5}
     tags:
     - name: FromPlayer
     - name: Charge

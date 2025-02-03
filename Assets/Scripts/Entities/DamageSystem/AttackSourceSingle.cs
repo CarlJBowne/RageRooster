@@ -6,20 +6,20 @@ using Timer;
 using UnityEditor;
 using UnityEngine;
 
-public class AttackSourceSingle : MonoBehaviour
+public class AttackSourceSingle : AttackSourceBase
 {
     public Attack attack;
     public MonoBehaviour sourceEntity;
     public new bool enabled = true;
 
-    public Attack GetAttack()
+    public override Attack GetAttack()
     {
         Attack result = attack;
-        result.velocity = transform.TransformPoint(result.velocity);
+        result.velocity = transform.TransformDirection(result.velocity);
         return result;
     }
 
-    public virtual void Contact(GameObject target)
+    public override void Contact(GameObject target)
     {
         if (enabled && target.TryGetComponent(out Health health)) health.Damage(GetAttack());
     }
