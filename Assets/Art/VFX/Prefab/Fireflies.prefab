@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7155809190962485376
+--- !u!1 &7475947540355164673
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,42 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9141602376915525430}
-  - component: {fileID: 7414993524362904150}
-  - component: {fileID: 7081382935272620051}
+  - component: {fileID: 6247383925063827008}
+  - component: {fileID: 8428548270239516738}
+  - component: {fileID: 2050403538547329751}
   m_Layer: 0
-  m_Name: vfx_tornado
+  m_Name: Fireflies
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9141602376915525430
+--- !u!4 &6247383925063827008
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7155809190962485376}
+  m_GameObject: {fileID: 7475947540355164673}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.55, y: 2.06, z: -2.78}
+  m_LocalPosition: {x: -95.671, y: 1.97, z: 50.68014}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!2083052967 &7414993524362904150
+--- !u!2083052967 &8428548270239516738
 VisualEffect:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7155809190962485376}
+  m_GameObject: {fileID: 7475947540355164673}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: b16189d19a3918d4fbfb695260d752b3, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 49adfe90f06beef41ad71a31ce20b618, type: 3}
   m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 1
+  m_InitialEventNameOverriden: 0
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_AllowInstancing: 1
@@ -51,30 +51,18 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 0.79
-        m_Name: Dissolve(Layer 1)
+      - m_Value: 5
+        m_Name: Radius
+        m_Overridden: 1
+      - m_Value: 5
+        m_Name: Height
         m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
-      m_Array:
-      - m_Value: {x: 0.79, y: 1.98, z: 0.43}
-        m_Name: Scale
-        m_Overridden: 1
-      - m_Value: {x: 0, y: 0, z: 0}
-        m_Name: Layer 1 Position
-        m_Overridden: 0
-      - m_Value: {x: 1.1, y: 1.12, z: 0.87}
-        m_Name: Scale Layer 2
-        m_Overridden: 1
-      - m_Value: {x: 0, y: 0, z: 0}
-        m_Name: Scale Yellow
-        m_Overridden: 0
+      m_Array: []
     m_Vector4f:
-      m_Array:
-      - m_Value: {x: 162.2736, y: 2.2388685, z: 0, w: 1}
-        m_Name: Color(Layer 1)
-        m_Overridden: 1
+      m_Array: []
     m_Uint:
       m_Array: []
     m_Int:
@@ -89,16 +77,16 @@ VisualEffect:
       m_Array: []
     m_Bool:
       m_Array: []
---- !u!73398921 &7081382935272620051
+--- !u!73398921 &2050403538547329751
 VFXRenderer:
   serializedVersion: 1
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7155809190962485376}
+  m_GameObject: {fileID: 7475947540355164673}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -107,9 +95,6 @@ VFXRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_StaticBatchInfo:
