@@ -5,6 +5,7 @@ using EditorAttributes;
 using UnityEngine.InputSystem;
 using Cinemachine;
 using System.Collections.Generic;
+using PCA = PlayerControlAction;
 
 public class PlayerController : PlayerStateBehavior
 {
@@ -94,14 +95,29 @@ public class PlayerController : PlayerStateBehavior
 
 
 
-	public Queue<InputAction> actionQueue;
 
-    private void BeginActionEvent(InputAction.CallbackContext callbackContext) => BeginAction(callbackContext.action);
+    private PCA currentAction;
+    private bool readyForNextAction = true;
+	private Queue<PCA> actionQueue;
 
-	private void BeginAction(InputAction action)
+    private void BeginActionEvent(InputAction.CallbackContext callbackContext)
+    {
+        if(currentAction.feedingActions.TryGetValue(callbackContext.action, out PCA nextAct) &&
+            (nextAct.necessaryUpgrade == null || nextAct.necessaryUpgrade)
+            )
+            if (readyForNextAction) BeginAction(nextAct);
+            else actionQueue.Enqueue(nextAct);
+    }
+
+
+
+
+
+    public void ApplyCurrentAction(PCA action) => currentAction = action;
+
+    private void BeginAction(PCA action)
 	{
-		if(actionQueue.Count == 0) DoAction(action);
-		actionQueue.Enqueue(action);
+
     }
     private void EndAction()
     {
@@ -162,4 +178,16 @@ public class PlayerController : PlayerStateBehavior
     {
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
 }
