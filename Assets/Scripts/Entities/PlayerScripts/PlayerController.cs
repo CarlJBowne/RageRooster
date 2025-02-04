@@ -4,6 +4,7 @@ using System.Linq;
 using EditorAttributes;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using System.Collections.Generic;
 
 public class PlayerController : PlayerStateBehavior
 {
@@ -32,7 +33,6 @@ public class PlayerController : PlayerStateBehavior
 	[HideInInspector] public float jumpInput;
 	[HideInInspector] public Vector3 camAdjustedMovement;
 	[HideInInspector] public PlayerGrabber grabber;
-	//[HideInInspector] public PlayerAttackSystem attack;
 
 	#endregion
 	#region Getters
@@ -44,18 +44,18 @@ public class PlayerController : PlayerStateBehavior
 		grabber = GetComponentFromMachine<PlayerGrabber>();
 		//attack = GetComponentFromMachine<PlayerAttackSystem>();
 
-		input.jump.started += _ => JumpPress();
-		input.grab.started += _ => grabber.GrabButtonPress();
-		input.attack.started += _ => PunchButtonPress();
-		input.parry.started += _ => ParryButtonPress();
-	}
+		input.jump.started += BeginActionEvent;
+        input.grabTap.started += BeginActionEvent;
+        input.attackTap.started += BeginActionEvent;
+        input.parry.started += BeginActionEvent;
+    }
 
 	private void OnDestroy()
 	{
-		input.jump.started -= _ => JumpPress();
-		input.grab.started -= _ => grabber.GrabButtonPress();
-		input.attack.started -= _ => PunchButtonPress();
-        input.parry.started -= _ => ParryButtonPress();
+		input.jump.started -= BeginActionEvent;
+        input.grabTap.started -= BeginActionEvent;
+        input.attackTap.started -= BeginActionEvent;
+        input.parry.started -= BeginActionEvent;
     }
 
 	public override void OnUpdate()
@@ -67,10 +67,10 @@ public class PlayerController : PlayerStateBehavior
 			TransitionTo(input.jump.IsPressed() ? sGlide : sFall);
 		M.animator.SetBool("Gliding", sGlide);
 
-		if (input.charge.IsPressed() && sGrounded || !input.charge.IsPressed() && sCharge)
-			TransitionTo(input.charge.IsPressed() ? sCharge : sIdleWalk);
+		if (input.chargeTap.IsPressed() && sGrounded || !input.chargeTap.IsPressed() && sCharge)
+			TransitionTo(input.chargeTap.IsPressed() ? sCharge : sIdleWalk);
 
-        if (input.charge.WasPressedThisFrame() && sAirborne && !airChargeState.state && !airChargeFallState.state)
+        if (input.chargeTap.WasPressedThisFrame() && sAirborne && !airChargeState.state && !airChargeFallState.state)
         {
             airChargeState.BeginJump();
             body.currentSpeed = airChargeState.state.Behavior<PlayerDirectionalMovement>().maxSpeed;
@@ -84,44 +84,82 @@ public class PlayerController : PlayerStateBehavior
         }
     }
 
-	private void JumpPress()
-	{
-		if (sGrounded || (sAirborne && body.coyoteTimeLeft > 0)) body.BeginJump();
-		else
-		{
-			jumpInput = jumpBuffer + Time.fixedDeltaTime;
-
-			if (wallJumpUpgrade && (sFall || wallJumpState)
-				&& body.rb.DirectionCast(body.currentDirection, 0.5f, body.checkBuffer, out RaycastHit hit))
-				wallJumpState.WallJump(hit.normal); 
-		} 
-		
-	}
-
-	public bool CheckJumpBuffer()
-	{
-		bool result = jumpInput > 0;
-		jumpInput = 0;
-		return result;
-	}
-
-	public void PunchButtonPress()
-	{
-		if (sAirborne && groundSlamUpgrade) sGroundSlam.TransitionTo();
-		else M.animator.SetTrigger(punchTriggerName);
-	}
-
-	public void ParryButtonPress()
-	{
-		var interactCheck = Physics.OverlapSphere(body.center + body.transform.forward * 2, 1.5f);
-        for (int i = 0; i < interactCheck.Length; i++) 
-			if (interactCheck[i].TryGetComponent(out IInteractable foundInteractable))
-            {
-				foundInteractable.Interact();
-				return;
-            }
-
-		//Do Parry move here.
+    public bool CheckJumpBuffer()
+    {
+        bool result = jumpInput > 0;
+        jumpInput = 0;
+        return result;
     }
 
+
+
+
+	public Queue<InputAction> actionQueue;
+
+    private void BeginActionEvent(InputAction.CallbackContext callbackContext) => BeginAction(callbackContext.action);
+
+	private void BeginAction(InputAction action)
+	{
+		if(actionQueue.Count == 0) DoAction(action);
+		actionQueue.Enqueue(action);
+    }
+    private void EndAction()
+    {
+        actionQueue.Dequeue();
+        if (actionQueue.Count > 0) DoAction(actionQueue.Peek());
+    }
+    private void DoAction(InputAction action)
+	{
+        if (action == input.jump) JumpAction();
+        else if (action == input.attackTap) AttackAction(false);
+        else if (action == input.attackHold) AttackAction(true);
+        else if (action == input.grabTap) GrabAction(false);
+        else if (action == input.grabHold) GrabAction(true);
+        else if (action == input.parry) ParryAction();
+        else if (action == input.chargeTap) ChargeAction(false);
+        else if (action == input.chargeHold) ChargeAction(true);
+    }
+
+    private void JumpAction()
+    {
+        if (sGrounded || (sAirborne && body.coyoteTimeLeft > 0)) body.BeginJump();
+        else
+        {
+            jumpInput = jumpBuffer + Time.fixedDeltaTime;
+
+            if (wallJumpUpgrade && (sFall || wallJumpState)
+                && body.rb.DirectionCast(body.currentDirection, 0.5f, body.checkBuffer, out RaycastHit hit))
+                wallJumpState.WallJump(hit.normal);
+        }
+
+    }
+
+    public void AttackAction(bool held)
+    {
+        if (sAirborne && groundSlamUpgrade) sGroundSlam.TransitionTo();
+        else M.animator.SetTrigger(punchTriggerName);
+    }
+
+    public void GrabAction(bool held)
+    {
+
+    }
+
+    public void ParryAction()
+    {
+        var interactCheck = Physics.OverlapSphere(body.center + body.transform.forward * 2, 1.5f);
+        for (int i = 0; i < interactCheck.Length; i++)
+            if (interactCheck[i].TryGetComponent(out IInteractable foundInteractable))
+            {
+                foundInteractable.Interact();
+                return;
+            }
+
+        //Do Parry move here.
+    }
+
+    public void ChargeAction(bool held)
+    {
+
+    }
 }

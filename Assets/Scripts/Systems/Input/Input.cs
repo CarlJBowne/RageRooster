@@ -25,18 +25,22 @@ public class Input : Staticon<Input>
 	public static Button GrabHold => Get().asset.Gameplay.GrabHold;
 	public static Button ShootMode => Get().asset.Gameplay.ShootMode;
 	public static Button Shoot => Get().asset.Gameplay.Shoot;
-	public static Button Charge => Get().asset.Gameplay.Charge;
+	public static Button ChargeTap => Get().asset.Gameplay.ChargeTap;
+	public static Button ChargeHold => Get().asset.Gameplay.ChargeHold;
 	public static Button Interact => Get().asset.Gameplay.Interact;
 
 	public Vector2 movement => asset.Gameplay.Movement.ReadValue<Vector2>();
 	public Vector2 camera => asset.Gameplay.Camera.ReadValue<Vector2>();
 	public Button jump => asset.Gameplay.Jump;
-	public Button attack => asset.Gameplay.AttackTap;
+	public Button attackTap => asset.Gameplay.AttackTap;
+	public Button attackHold => asset.Gameplay.AttackHold;
 	public Button parry => asset.Gameplay.Parry;
-	public Button grab => asset.Gameplay.GrabTap;
+	public Button grabTap => asset.Gameplay.GrabTap;
+	public Button grabHold => asset.Gameplay.GrabHold;
 	public Button shootMode => asset.Gameplay.ShootMode;
 	public Button shoot => asset.Gameplay.Shoot;
-	public Button charge => asset.Gameplay.Charge;
+	public Button chargeTap => asset.Gameplay.ChargeTap;
+	public Button chargeHold => asset.Gameplay.ChargeHold;
 	public Button interact => asset.Gameplay.Interact;
 
 	public static class UI

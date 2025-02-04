@@ -96,12 +96,21 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Charge",
+                    "name": "ChargeTap",
                     "type": "Button",
                     "id": "d89a9dba-9dc2-434e-b13b-db15063013e6",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChargeHold",
+                    "type": "Button",
+                    "id": "8e96f188-8ef5-4b3c-b1cb-3f2b17f7f9d6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 },
                 {
@@ -329,7 +338,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Charge",
+                    "action": "ChargeTap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -340,7 +349,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Charge",
+                    "action": "ChargeTap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -451,6 +460,28 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "GrabHold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5c647621-a24d-4641-a479-4e481ad8d5d0",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "ChargeHold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b9413709-1a87-4ce8-81b8-0a1bcec89a29",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "ChargeHold",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
