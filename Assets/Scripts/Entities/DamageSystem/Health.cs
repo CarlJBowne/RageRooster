@@ -132,6 +132,7 @@ public struct Attack_Old
 	}
 }
 
+/*
 #if UNITY_EDITOR
 [CustomEditor(typeof(Health), true)]
 public class HealthEditor : Editor
@@ -156,3 +157,4 @@ public class HealthEditor : Editor
     }
 }
 #endif
+*/
