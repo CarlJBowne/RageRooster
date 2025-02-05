@@ -25,6 +25,7 @@ public class PlayerController : PlayerStateBehavior
     public PlayerAirborn airChargeFallState;
 	public Upgrade groundSlamUpgrade;
 	public Upgrade wallJumpUpgrade;
+    public Timer.OneTime inputQueueDecay = new(1f);
 
     public string punchTriggerName;
 
@@ -61,6 +62,12 @@ public class PlayerController : PlayerStateBehavior
 
 	public override void OnUpdate()
 	{
+        if (inputQueueDecay.running) inputQueueDecay.Tick(() =>
+        {
+            if (actionQueue.Count > 0) actionQueue.Dequeue();
+            if (actionQueue.Count > 0) inputQueueDecay.Begin();
+        });
+
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
 		camAdjustedMovement = input.movement.ToXZ().Rotate(M.cameraTransform.eulerAngles.y, Vector3.up);
 
@@ -96,45 +103,56 @@ public class PlayerController : PlayerStateBehavior
 
 
 
-    private PCA currentAction;
-    private bool readyForNextAction = true;
-	private Queue<PCA> actionQueue;
+    public PCA currentAction;
+    public bool readyForNextAction = true;
+	public Queue<InputActionReference> actionQueue;
 
     private void BeginActionEvent(InputAction.CallbackContext callbackContext)
     {
-        if(currentAction.feedingActions.TryGetValue(callbackContext.action, out PCA nextAct) &&
-            (nextAct.necessaryUpgrade == null || nextAct.necessaryUpgrade)
-            )
-            if (readyForNextAction) BeginAction(nextAct);
-            else actionQueue.Enqueue(nextAct);
+        InputActionReference action = callbackContext.action.Reference();
+        if(currentAction.IsActionValid(action))
+            if (readyForNextAction) BeginAction(action);
+            else
+            {
+                actionQueue.Enqueue(action);
+                inputQueueDecay.Begin();
+            }
     }
 
 
 
 
 
-    public void ApplyCurrentAction(PCA action) => currentAction = action;
 
-    private void BeginAction(PCA action)
-	{
+    private void BeginAction(InputActionReference action) => currentAction.feedingActions[action]?.Invoke();
 
-    }
-    private void EndAction()
+    public void ReadyNextAction()
     {
-        actionQueue.Dequeue();
-        if (actionQueue.Count > 0) DoAction(actionQueue.Peek());
+        readyForNextAction = true;
+        if(actionQueue.Count > 0)
+        {
+            if(currentAction.IsActionValid(actionQueue.Peek())) BeginAction(actionQueue.Dequeue());
+            else
+            {
+                actionQueue.Dequeue();
+                while(actionQueue.Count > 0)
+                {
+                    if (currentAction.IsActionValid(actionQueue.Peek()))
+                    {
+                        BeginAction(actionQueue.Dequeue());
+                        break;
+                    }
+                    else actionQueue.Dequeue();
+                }
+            }
+        }
     }
-    private void DoAction(InputAction action)
-	{
-        if (action == input.jump) JumpAction();
-        else if (action == input.attackTap) AttackAction(false);
-        else if (action == input.attackHold) AttackAction(true);
-        else if (action == input.grabTap) GrabAction(false);
-        else if (action == input.grabHold) GrabAction(true);
-        else if (action == input.parry) ParryAction();
-        else if (action == input.chargeTap) ChargeAction(false);
-        else if (action == input.chargeHold) ChargeAction(true);
+    public void FinishAction()
+    {
+        if (actionQueue.Count == 0)
+            currentAction.Finish();
     }
+
 
     private void JumpAction()
     {

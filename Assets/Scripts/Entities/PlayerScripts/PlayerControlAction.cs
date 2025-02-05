@@ -1,18 +1,32 @@
 ﻿using AYellowpaper.SerializedCollections;
+using FMOD.Studio;
+using SLS.StateMachineV3;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UltEvents;
 
 public class PlayerControlAction : PlayerStateBehavior
 {
     public string animationName;
+    public bool lockAction = true;
 
-    public SerializedDictionary<InputAction, PlayerControlAction> feedingActions;
+    public SerializedDictionary<InputActionReference, UltEvent> feedingActions;
 
-    public Upgrade necessaryUpgrade;
+    public State nextState;
 
-    public override void OnAwake() => controller.ApplyCurrentAction(this);
+    public override void OnAwake() => controller.currentAction = this;
+
+    public override void OnEnter(State prev)
+    {
+        if (lockAction) controller.readyForNextAction = false; 
+    }
+
+    public bool IsActionValid(InputActionReference button) => feedingActions.ContainsKey(button);
+
+    public void Finish() => nextState.TransitionTo();
 
 }
