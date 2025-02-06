@@ -10,10 +10,10 @@ public class BounceShroom : MonoBehaviour
 
     private Animator anim;
 
-    public static void AttemptBounce(GameObject G, PlayerAirborn bouncingState)
+    public static void AttemptBounce(GameObject G, PlayerAirborneMovement bouncingState)
     {if (G.TryGetComponent(out BounceShroom I)) I.Bounce(bouncingState);}
 
-    public void Bounce(PlayerAirborn bouncingState)
+    public void Bounce(PlayerAirborneMovement bouncingState)
     {
         bouncingState.BeginJump(bouncePower, bounceHeight, bounceMinHeight != 0 ? bounceMinHeight : bounceHeight);
         if (anim || transform.parent.TryGetComponent(out anim)) anim.Play("Bounce");

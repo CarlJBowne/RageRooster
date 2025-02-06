@@ -103,7 +103,6 @@ public abstract class PlayerStateBehavior : StateBehavior
     public State sCharge => M.states["Charge"];
     public State sAirborne => M.states["Airborne"];
     public State sJump1 => M.states["Jump1"];
-    public State sJump2 => M.states["Jump2"];
     public State sFall => M.states["Fall"];
     public State sGlide => M.states["Glide"];
     public State sWallJump => M.states["WallJump"];

@@ -1,47 +1,54 @@
-using SLS.StateMachineV3;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWallJump : PlayerAirborn
+public class PlayerWallJump : PlayerMovementEffector
 {
+    public float gravity;
+    public float terminalVelocity;
+    public bool flatGravity;
+
+    public float jumpPower;
     public float outwardVelocity;
     public float minDistance;
     public float maxAngleDifference;
 
+    public Upgrade upgrade;
+
     protected Vector3 startPoint;
     protected Vector3 fixedDirection;
 
-    public override void OnFixedUpdate()
+
+    public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
-        
-        body.VelocitySet(
-            x: fixedDirection.x * outwardVelocity,
-            y: ApplyGravity(),
-            z: fixedDirection.z * outwardVelocity
-            );
+        resultX = fixedDirection.x * outwardVelocity;
+        resultZ = fixedDirection.z * outwardVelocity;
+
         body.currentSpeed = outwardVelocity;
         body.currentDirection = fixedDirection;
 
         float distance = (transform.position - startPoint).XZ().magnitude;
         if (distance >= minDistance) sFall.TransitionTo();
 
-         
     }
-
-    public override void OnEnter(State prev)
-    {
-    }
+    public override void VerticalMovement(out float? result) => result = ApplyGravity(gravity, terminalVelocity, flatGravity);
 
     public void WallJump(Vector3 direction)
     {
-        if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return;
-        direction = direction.XZ();
+        if(upgrade && body.rb.DirectionCast(body.currentDirection, 0.5f, body.checkBuffer, out RaycastHit hit))
+        {
+            if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return;
+            direction = direction.XZ();
 
-        if (!state.active) state.TransitionTo();
-        body.VelocitySet(y: jumpPower);
+            if (!state.active) state.TransitionTo();
+            body.VelocitySet(y: jumpPower);
 
-        startPoint = transform.position;
-        fixedDirection = direction;
-        
-        body.currentDirection = fixedDirection;
+            startPoint = transform.position;
+            fixedDirection = direction;
+
+            body.currentDirection = fixedDirection;
+
+            state.TransitionTo();
+        }
     }
 }

@@ -21,10 +21,11 @@ public class PlayerController : PlayerStateBehavior
 	//public State glidingState;
 	//public State groundSlamState;
 	public PlayerWallJump wallJumpState;
-    public PlayerAirborn airChargeState;
-    public PlayerAirborn airChargeFallState;
+    public PlayerAirborneMovement airChargeState;
+    public PlayerAirborneMovement airChargeFallState;
 	public Upgrade groundSlamUpgrade;
 	public Upgrade wallJumpUpgrade;
+    public Upgrade ragingChargeUpgrade;
     public Timer.OneTime inputQueueDecay = new(1f);
 
     public string punchTriggerName;
@@ -71,19 +72,22 @@ public class PlayerController : PlayerStateBehavior
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
 		camAdjustedMovement = input.movement.ToXZ().Rotate(M.cameraTransform.eulerAngles.y, Vector3.up);
 
-		if ((input.jump.WasPressedThisFrame() && sFall && !grabber.currentGrabbed) || (!input.jump.WasReleasedThisFrame() && sGlide))
-			TransitionTo(input.jump.IsPressed() ? sGlide : sFall);
-		M.animator.SetBool("Gliding", sGlide);
-
-		if (input.chargeTap.IsPressed() && sGrounded || !input.chargeTap.IsPressed() && sCharge)
-			TransitionTo(input.chargeTap.IsPressed() ? sCharge : sIdleWalk);
-
-        if (input.chargeTap.WasPressedThisFrame() && sAirborne && !airChargeState.state && !airChargeFallState.state)
+		if ((input.jump.IsPressed() && sFall && !grabber.currentGrabbed) || (!input.jump.IsPressed() && sGlide))
         {
-            airChargeState.BeginJump();
-            body.currentSpeed = airChargeState.state.Behavior<PlayerDirectionalMovement>().maxSpeed;
-            body.currentDirection = controller.camAdjustedMovement.magnitude > 0.1f ? controller.camAdjustedMovement : transform.forward;
+            TransitionTo(input.jump.IsPressed() ? sGlide : sFall);
+            M.animator.SetBool("Gliding", sGlide);
         }
+			
+
+		//if (input.chargeTap.IsPressed() && sGrounded || !input.chargeTap.IsPressed() && sCharge)
+		//	TransitionTo(input.chargeTap.IsPressed() ? sCharge : sIdleWalk);
+
+        //if (input.chargeTap.WasPressedThisFrame() && sAirborne && !airChargeState.state && !airChargeFallState.state)
+        //{
+        //    airChargeState.BeginJump();
+        //    body.currentSpeed = airChargeState.state.Behavior<PlayerDirectionalMovement>().maxSpeed;
+        //    body.currentDirection = controller.camAdjustedMovement.magnitude > 0.1f ? controller.camAdjustedMovement : transform.forward;
+        //}
 
 		if (M.freeLookCamera != null)
         {
@@ -149,22 +153,15 @@ public class PlayerController : PlayerStateBehavior
     }
     public void FinishAction()
     {
-        if (actionQueue.Count == 0)
-            currentAction.Finish();
+        if (readyForNextAction && currentAction != null) currentAction.Finish();
+        else if (M.currentState.TryGetComponent(out PlayerStateAnimator anim)) anim.Finish();
     }
 
 
-    private void JumpAction()
+    public void JumpAction()
     {
         if (sGrounded || (sAirborne && body.coyoteTimeLeft > 0)) body.BeginJump();
-        else
-        {
-            jumpInput = jumpBuffer + Time.fixedDeltaTime;
-
-            if (wallJumpUpgrade && (sFall || wallJumpState)
-                && body.rb.DirectionCast(body.currentDirection, 0.5f, body.checkBuffer, out RaycastHit hit))
-                wallJumpState.WallJump(hit.normal);
-        }
+        else jumpInput = jumpBuffer + Time.fixedDeltaTime;
 
     }
 

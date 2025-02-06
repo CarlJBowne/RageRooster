@@ -11,7 +11,6 @@ using UltEvents;
 
 public class PlayerControlAction : PlayerStateBehavior
 {
-    public string animationName;
     public bool lockAction = true;
 
     public SerializedDictionary<InputActionReference, UltEvent> feedingActions;

@@ -2,6 +2,7 @@ using EditorAttributes;
 using SLS.StateMachineV3;
 using UnityEngine;
 
+[System.Obsolete]
 public class PlayerAirborn : PlayerStateBehavior
 {
 
