@@ -82,7 +82,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
     private bool Condition() => (!needChargeButton || Input.ChargeHold.IsPressed()) && (!needRagingUpgrade || controller.ragingChargeUpgrade);
 
     public override void OnEnter(State prev){if(attackCollider != null) attackCollider.enabled = true;}
-    public override void OnExit(State next){if(attackCollider == null) attackCollider.enabled = false;}
+    public override void OnExit(State next){if(attackCollider != null) attackCollider.enabled = false;}
 }
 
 public abstract class PlayerMovementEffector : PlayerStateBehavior
