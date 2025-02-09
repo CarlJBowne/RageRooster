@@ -46,7 +46,7 @@ public class PlayerAirborn : PlayerStateBehavior
         
     }
 
-    public override void OnEnter(State prev)
+    public override void OnEnter(State prev, bool isFinal)
     {
         if (jumpPower == 0) return;
         phase = 0;

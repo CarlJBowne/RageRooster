@@ -85,7 +85,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
 
     }
     
-    public override void OnEnter(State prev){ base.OnEnter(prev); if (attackCollider != null) attackCollider.enabled = true;}
+    public override void OnEnter(State prev, bool isFinal){ base.OnEnter(prev, isFinal); if (attackCollider != null) attackCollider.enabled = true;}
     public override void OnExit(State next){if(attackCollider != null) attackCollider.enabled = false;}
 }
 
@@ -96,11 +96,6 @@ public abstract class PlayerMovementEffector : PlayerStateBehavior
 
     public override void OnFixedUpdate()
     {
-        if (check)
-        {
-            trueActive = state.ActiveMain();
-            check = false;
-        }
         if (!trueActive) return;
         this.HorizontalMovement(out float? X, out float? Z);
         this.VerticalMovement(out float? Y);
@@ -118,5 +113,5 @@ public abstract class PlayerMovementEffector : PlayerStateBehavior
             ).Min(-terminalVelocity);
     }
 
-    public override void OnEnter(State prev) => check = true;
+    public override void OnEnter(State prev, bool isFinal) => trueActive = isFinal;
 }

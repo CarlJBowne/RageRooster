@@ -120,9 +120,10 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
     }
 
-    public override void OnEnter(State prev)
+    public override void OnEnter(State prev, bool isFinal)
     {
-        base.OnEnter(prev);
+        base.OnEnter(prev, isFinal);
+        if (!isFinal) return;
 
         if (!upwards || body.jumpPhase != -1) return;
         body.jumpPhase = 0;

@@ -74,9 +74,9 @@ public class PlayerMovementNegater : PlayerMovementEffector
                 break;
         }
     }
-    public override void OnEnter(State prev)
+    public override void OnEnter(State prev, bool isFinal)
     {
-        base.OnEnter(prev);
+        base.OnEnter(prev, isFinal);
         disabled = false;
         if (savePriorVelocity)
         {

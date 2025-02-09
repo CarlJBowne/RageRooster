@@ -17,9 +17,9 @@ public class PlayerStateAnimator : StateAnimator
         controller = M.GetComponent<PlayerController>();
     }
 
-    public override void OnEnter(State prev)
+    public override void OnEnter(State prev, bool isFinal)
     {
-        base.OnEnter(prev);
+        base.OnEnter(prev, isFinal);
         if (isAction) controller.currentAction = null;
     }
     

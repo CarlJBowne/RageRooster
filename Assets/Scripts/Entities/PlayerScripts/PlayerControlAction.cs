@@ -26,10 +26,10 @@ public class PlayerControlAction : PlayerStateBehavior
     }
 
     public State nextState;
-    public override void OnAwake() => state.onActivatedEvent.AddListener(Begin);
 
-    void Begin(State prev)
+    public override void OnEnter(State prev, bool isFinal)
     {
+        if (!isFinal) return;
         controller.currentAction = this;
         if (lockAction) controller.readyForNextAction = false;
     }
@@ -37,7 +37,7 @@ public class PlayerControlAction : PlayerStateBehavior
     public bool HasAction(InputActionReference button)
     {
         for (int i = 0; i < possibleActions.Length; i++) 
-            if (possibleActions[i].input.action == button.action) 
+            if (possibleActions[i].input.ToString() == button.ToString()) 
                 return true;
         return false;
 
@@ -48,7 +48,7 @@ public class PlayerControlAction : PlayerStateBehavior
     {
         for (int i = 0; i < possibleActions.Length; i++)
         {
-            if (possibleActions[i].input.action.ToString() == button.action.ToString())
+            if (possibleActions[i].input.ToString() == button.ToString())
             {
                 possibleActions[i].result?.Invoke();
                 return true;

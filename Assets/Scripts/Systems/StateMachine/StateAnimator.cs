@@ -26,9 +26,9 @@ namespace SLS.StateMachineV3
             if (TryGetComponentFromMachine(out animator) == false) Destroy(this);
         }
 
-        public override void OnEnter(State prev)
+        public override void OnEnter(State prev, bool isFinal)
         {
-            if (!state.ActiveMain()) return;
+            if (!isFinal) return;
             if (onEntry == EntryAnimAction.Play) Play(onEnterName);
             if (onEntry == EntryAnimAction.CrossFade) CrossFade(onEnterName, onEnterTime);
             if (onEntry == EntryAnimAction.Trigger) Trigger(onEnterName);
