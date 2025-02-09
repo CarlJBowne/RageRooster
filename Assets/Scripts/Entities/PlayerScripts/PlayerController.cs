@@ -123,8 +123,7 @@ public class PlayerController : PlayerStateBehavior
     private void BeginActionEvent(InputAction.CallbackContext callbackContext)
     {
         InputActionReference action = callbackContext.action.Reference();
-        if (readyForNextAction && currentAction.IsActionValid(action)) BeginAction(action);
-        else
+        if (!readyForNextAction || currentAction == null || currentAction.TryNextAction(action))
         {
             actionQueue.Enqueue(action);
             inputQueueDecay.Begin();
@@ -136,22 +135,20 @@ public class PlayerController : PlayerStateBehavior
 
 
 
-    private void BeginAction(InputActionReference action) => currentAction.feedingActions[action]?.Invoke();
-
     public void ReadyNextAction()
     {
         readyForNextAction = true;
         if(actionQueue.Count > 0)
         {
-            if(currentAction.IsActionValid(actionQueue.Peek())) BeginAction(actionQueue.Dequeue());
+            if(currentAction.HasAction(actionQueue.Peek())) currentAction.TryNextAction(actionQueue.Dequeue());
             else
             {
                 actionQueue.Dequeue();
                 while(actionQueue.Count > 0)
                 {
-                    if (currentAction.IsActionValid(actionQueue.Peek()))
+                    if (currentAction.HasAction(actionQueue.Peek()))
                     {
-                        BeginAction(actionQueue.Dequeue());
+                        currentAction.TryNextAction(actionQueue.Dequeue());
                         break;
                     }
                     else actionQueue.Dequeue();

@@ -31,7 +31,7 @@ Transform:
   m_Children:
   - {fileID: 8621529309177891415}
   m_Father: {fileID: 3825655863609033182}
-  m_LocalEulerAnglesHint: {x: 12.49599, y: 4.1953125, z: 56.675976}
+  m_LocalEulerAnglesHint: {x: 5.1389484, y: 8.273377, z: 53.07055}
 --- !u!1 &43571758980712038
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +94,7 @@ Transform:
   m_Children:
   - {fileID: 6763783356076930483}
   m_Father: {fileID: 8792377162348387678}
-  m_LocalEulerAnglesHint: {x: 0.99386567, y: -16.896969, z: 7.4454393}
+  m_LocalEulerAnglesHint: {x: 1.4082397, y: -29.200853, z: 6.0682516}
 --- !u!1 &153715694443020440
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,7 +189,7 @@ Transform:
   m_Children:
   - {fileID: 8776688145745335546}
   m_Father: {fileID: 4658731633878875590}
-  m_LocalEulerAnglesHint: {x: 1.2468367, y: 3.1646624, z: 52.400394}
+  m_LocalEulerAnglesHint: {x: -0.14602722, y: 1.3770274, z: 46.184727}
 --- !u!1 &274064172517191156
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,35 +257,33 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   lockAction: 1
-  feedingActions:
-    _serializedList:
-    - Key: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3604029697970703219}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-        type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3864174957687219544}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3864174957687219544}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+  possibleActions:
+  - input: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 3604029697970703219}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+      type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 3864174957687219544}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 3864174957687219544}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
   nextState: {fileID: 4000547645901868762}
-  AAAAAAAAAAAAA: {fileID: 0}
 --- !u!114 &6947035756367949998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -509,7 +507,7 @@ Transform:
   - {fileID: 8101396547878388041}
   - {fileID: 1789038507570394523}
   m_Father: {fileID: 3385882186619424120}
-  m_LocalEulerAnglesHint: {x: -44.834465, y: 4.967845, z: -75.180916}
+  m_LocalEulerAnglesHint: {x: -14.555369, y: 1.941041, z: -68.77887}
 --- !u!1 &594471943774320014
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,7 +539,7 @@ Transform:
   m_Children:
   - {fileID: 430594095961064573}
   m_Father: {fileID: 6910424532621849214}
-  m_LocalEulerAnglesHint: {x: 0.9685109, y: -0.1028832, z: 19.073683}
+  m_LocalEulerAnglesHint: {x: 4.2845263, y: 2.549618, z: 13.170957}
 --- !u!1 &619101134808790287
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,7 +571,7 @@ Transform:
   m_Children:
   - {fileID: 2965703725939741686}
   m_Father: {fileID: 3825655863609033182}
-  m_LocalEulerAnglesHint: {x: 31.675232, y: 33.86531, z: 72.99702}
+  m_LocalEulerAnglesHint: {x: 26.893867, y: 34.628803, z: 68.149445}
 --- !u!1 &622944000673277637
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,35 +639,33 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   lockAction: 1
-  feedingActions:
-    _serializedList:
-    - Key: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 6397329766730335508}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-        type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3443062856187106688}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2690473538302802805}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2690473538302802805}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+  possibleActions:
+  - input: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 6397329766730335508}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+      type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 3443062856187106688}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 2690473538302802805}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 2690473538302802805}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
   nextState: {fileID: 4000547645901868762}
-  AAAAAAAAAAAAA: {fileID: 0}
 --- !u!114 &7736482665558727247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,7 +796,7 @@ Transform:
   - {fileID: 1165175849844924605}
   - {fileID: 198170318043150982}
   m_Father: {fileID: 6856472744283411903}
-  m_LocalEulerAnglesHint: {x: 4.332525, y: -0.1665218, z: 25.061552}
+  m_LocalEulerAnglesHint: {x: 1.2965382, y: -0.39691713, z: 6.046248}
 --- !u!1 &702391210195654505
 GameObject:
   m_ObjectHideFlags: 0
@@ -834,7 +830,7 @@ Transform:
   - {fileID: 2376667544890222276}
   - {fileID: 6119314003130502587}
   m_Father: {fileID: 7768698883904891030}
-  m_LocalEulerAnglesHint: {x: 0.6668343, y: -0.475628, z: -12.478716}
+  m_LocalEulerAnglesHint: {x: 4.9424305, y: 0.6472883, z: -40.181892}
 --- !u!1 &783300293168918713
 GameObject:
   m_ObjectHideFlags: 0
@@ -898,7 +894,7 @@ Transform:
   - {fileID: 7768698883904891030}
   - {fileID: 8225864446363286040}
   m_Father: {fileID: 6049917985640779311}
-  m_LocalEulerAnglesHint: {x: 2.6937726, y: 2.0763235, z: -37.653843}
+  m_LocalEulerAnglesHint: {x: 1.4836788, y: 0.82351583, z: -6.1420765}
 --- !u!1 &936260266508204397
 GameObject:
   m_ObjectHideFlags: 0
@@ -1083,7 +1079,7 @@ Transform:
   m_Children:
   - {fileID: 2444525046181681513}
   m_Father: {fileID: 8621529309177891415}
-  m_LocalEulerAnglesHint: {x: 0.99178773, y: -9.803604, z: -1.7738284}
+  m_LocalEulerAnglesHint: {x: 1.129954, y: 0.000003199306, z: 0.00000013388122}
 --- !u!1 &983945154792591840
 GameObject:
   m_ObjectHideFlags: 0
@@ -1321,7 +1317,7 @@ Transform:
   m_Children:
   - {fileID: 5173575768337105014}
   m_Father: {fileID: 7263763074914503860}
-  m_LocalEulerAnglesHint: {x: 0.8696171, y: 0.9255089, z: -100.4995}
+  m_LocalEulerAnglesHint: {x: 0.29379034, y: -2.3329191, z: -93.76077}
 --- !u!1 &1122395783523706932
 GameObject:
   m_ObjectHideFlags: 0
@@ -1353,7 +1349,7 @@ Transform:
   m_Children:
   - {fileID: 3926069818342537704}
   m_Father: {fileID: 8101396547878388041}
-  m_LocalEulerAnglesHint: {x: 0.9959026, y: -16.91385, z: 7.452341}
+  m_LocalEulerAnglesHint: {x: 1.0556613, y: -27.151546, z: 5.025435}
 --- !u!1 &1150020201749930359
 GameObject:
   m_ObjectHideFlags: 0
@@ -1387,7 +1383,7 @@ Transform:
   - {fileID: 4658731633878875590}
   - {fileID: 6103255078954430404}
   m_Father: {fileID: 6978498797856380663}
-  m_LocalEulerAnglesHint: {x: -8.60306, y: -15.5627165, z: -57.65947}
+  m_LocalEulerAnglesHint: {x: 1.1568435, y: -31.433529, z: -47.634315}
 --- !u!1 &1175218730390692762
 GameObject:
   m_ObjectHideFlags: 0
@@ -1578,7 +1574,7 @@ Transform:
   m_Children:
   - {fileID: 8377350900205150748}
   m_Father: {fileID: 6472118728543943946}
-  m_LocalEulerAnglesHint: {x: -3.0789988, y: -5.212018, z: -31.57362}
+  m_LocalEulerAnglesHint: {x: -1.5145653, y: -4.4687176, z: -27.266922}
 --- !u!1 &1600405943673852407
 GameObject:
   m_ObjectHideFlags: 0
@@ -1610,7 +1606,7 @@ Transform:
   m_Children:
   - {fileID: 8190789354852401008}
   m_Father: {fileID: 5580758618047745797}
-  m_LocalEulerAnglesHint: {x: -1.3769273, y: -20.509039, z: -5.2535605}
+  m_LocalEulerAnglesHint: {x: -2.0455365, y: -22.230827, z: -8.607703}
 --- !u!1 &1778405043246633851
 GameObject:
   m_ObjectHideFlags: 0
@@ -1883,7 +1879,7 @@ Transform:
   m_Children:
   - {fileID: 8072541376865006971}
   m_Father: {fileID: 7015834793163874879}
-  m_LocalEulerAnglesHint: {x: -4.1483026, y: 14.171464, z: 48.609566}
+  m_LocalEulerAnglesHint: {x: 0.48958707, y: -7.24391, z: 110.87587}
 --- !u!1 &2354280182447277193
 GameObject:
   m_ObjectHideFlags: 0
@@ -2085,53 +2081,44 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   lockAction: 0
-  feedingActions:
-    _serializedList:
-    - Key: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 802911248559169720}
-          _MemberName: get_forward
-          _PersistentArguments: []
-        - _Target: {fileID: 750694679335013753}
-          _MemberName: WallJump
-          _PersistentArguments:
-          - _Type: 15
-            _Int: 0
-            _String: 
-            _X: 7
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-    - Key: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8357743815805410302}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-        type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2948750066402289689}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls: []
-    - Key: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls: []
-    - Key: {fileID: -5811927394845417266, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-        type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 6630164468072911266}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+  possibleActions:
+  - input: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 802911248559169720}
+        _MemberName: get_forward
+        _PersistentArguments: []
+      - _Target: {fileID: 750694679335013753}
+        _MemberName: WallJump
+        _PersistentArguments:
+        - _Type: 15
+          _Int: 0
+          _String: 
+          _X: 7
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+  - input: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 8357743815805410302}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls: []
+  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls: []
+  - input: {fileID: -5811927394845417266, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+      type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 6630164468072911266}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
   nextState: {fileID: 0}
-  AAAAAAAAAAAAA: {fileID: 0}
 --- !u!1 &2672848381205299414
 GameObject:
   m_ObjectHideFlags: 0
@@ -2163,7 +2150,7 @@ Transform:
   m_Children:
   - {fileID: 2724021064250841048}
   m_Father: {fileID: 4032396749619053737}
-  m_LocalEulerAnglesHint: {x: 2.6071422, y: -18.437878, z: -37.939766}
+  m_LocalEulerAnglesHint: {x: -2.0801866, y: -16.2791, z: -7.0461273}
 --- !u!1 &2753846029000189943
 GameObject:
   m_ObjectHideFlags: 0
@@ -2226,7 +2213,7 @@ Transform:
   m_Children:
   - {fileID: 2283630068836833606}
   m_Father: {fileID: 4658731633878875590}
-  m_LocalEulerAnglesHint: {x: 11.705645, y: 4.705563, z: 56.945103}
+  m_LocalEulerAnglesHint: {x: 13.101767, y: -0.04940606, z: 46.901928}
 --- !u!1 &2853206829807409614
 GameObject:
   m_ObjectHideFlags: 0
@@ -2289,7 +2276,7 @@ Transform:
   m_Children:
   - {fileID: 5023826619065575401}
   m_Father: {fileID: 426175620113013059}
-  m_LocalEulerAnglesHint: {x: -1.4190148, y: -22.10348, z: -3.0437706}
+  m_LocalEulerAnglesHint: {x: -4.2136054, y: -32.457912, z: -11.861668}
 --- !u!1 &2920140632751408782
 GameObject:
   m_ObjectHideFlags: 0
@@ -2664,9 +2651,9 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   jumpBuffer: 0.3
-  wallJumpState: {fileID: 0}
-  airChargeState: {fileID: 0}
-  airChargeFallState: {fileID: 0}
+  wallJumpState: {fileID: 750694679335013753}
+  airChargeState: {fileID: 3698709666984973678}
+  airChargeFallState: {fileID: 6062820148927623488}
   groundSlamUpgrade: {fileID: 3684892169369894683, guid: 5096cd543e777e240af87643ae7b164b,
     type: 2}
   wallJumpUpgrade: {fileID: -5908332654645760598, guid: 5096cd543e777e240af87643ae7b164b,
@@ -2703,9 +2690,9 @@ MonoBehaviour:
   maxSlopeNormalAngle: 46
   coyoteTime: 0.5
   tripleJumpTime: 0.3
-  jumpState1: {fileID: 0}
-  wallJumpState: {fileID: 0}
-  airChargeState: {fileID: 0}
+  jumpState1: {fileID: 3698709666984973678}
+  wallJumpState: {fileID: 750694679335013753}
+  airChargeState: {fileID: 6062820148927623488}
   rb: {fileID: 0}
   collider: {fileID: 0}
   baseMovability: 1
@@ -2906,35 +2893,33 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   lockAction: 1
-  feedingActions:
-    _serializedList:
-    - Key: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 6397329766730335508}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-        type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 5567832916535865027}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2690473538302802805}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2690473538302802805}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+  possibleActions:
+  - input: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 6397329766730335508}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+      type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 5567832916535865027}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 2690473538302802805}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 2690473538302802805}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
   nextState: {fileID: 4000547645901868762}
-  AAAAAAAAAAAAA: {fileID: 0}
 --- !u!114 &5054057747023772269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2986,7 +2971,7 @@ Transform:
   - {fileID: 8792377162348387678}
   - {fileID: 5575870729952292620}
   m_Father: {fileID: 7922418922289687215}
-  m_LocalEulerAnglesHint: {x: -11.291062, y: -20.767328, z: -55.939445}
+  m_LocalEulerAnglesHint: {x: -20.079613, y: 25.324234, z: -61.924828}
 --- !u!1 &3275911114666956986
 GameObject:
   m_ObjectHideFlags: 0
@@ -3178,7 +3163,7 @@ Transform:
   m_Children:
   - {fileID: 2756405256419203544}
   m_Father: {fileID: 1474748360388731497}
-  m_LocalEulerAnglesHint: {x: 4.763169, y: -13.847358, z: 6.5399923}
+  m_LocalEulerAnglesHint: {x: 0.02100201, y: -0.000008416411, z: -0.000005218409}
 --- !u!1 &3303520967284252068
 GameObject:
   m_ObjectHideFlags: 0
@@ -3245,35 +3230,33 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   lockAction: 1
-  feedingActions:
-    _serializedList:
-    - Key: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3604029697970703219}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-        type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3864174957687219544}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3864174957687219544}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+  possibleActions:
+  - input: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 3604029697970703219}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+      type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 3864174957687219544}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 3864174957687219544}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
   nextState: {fileID: 4000547645901868762}
-  AAAAAAAAAAAAA: {fileID: 0}
 --- !u!1 &3320372323028835293
 GameObject:
   m_ObjectHideFlags: 0
@@ -3337,7 +3320,7 @@ Transform:
   - {fileID: 6878032534849975789}
   - {fileID: 6472118728543943946}
   m_Father: {fileID: 6049917985640779311}
-  m_LocalEulerAnglesHint: {x: 9.559287, y: 162.85684, z: -35.732037}
+  m_LocalEulerAnglesHint: {x: 47.767784, y: -160.3714, z: -34.9436}
 --- !u!1 &3346736917177530380
 GameObject:
   m_ObjectHideFlags: 0
@@ -3651,7 +3634,7 @@ Transform:
   - {fileID: 3385882186619424120}
   - {fileID: 3949030364235504406}
   m_Father: {fileID: 6119314003130502587}
-  m_LocalEulerAnglesHint: {x: -13.494613, y: -51.891342, z: -40.775723}
+  m_LocalEulerAnglesHint: {x: 52.323185, y: -0.83044034, z: -12.883809}
 --- !u!1 &4124917820233702332
 GameObject:
   m_ObjectHideFlags: 0
@@ -3768,17 +3751,15 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   lockAction: 1
-  feedingActions:
-    _serializedList:
-    - Key: {fileID: -5811927394845417266, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-        type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 6630164468072911266}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+  possibleActions:
+  - input: {fileID: -5811927394845417266, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+      type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 6630164468072911266}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
   nextState: {fileID: 0}
-  AAAAAAAAAAAAA: {fileID: 0}
 --- !u!1 &4150898326689556692
 GameObject:
   m_ObjectHideFlags: 0
@@ -3841,7 +3822,7 @@ Transform:
   m_Children:
   - {fileID: 8730721630296804507}
   m_Father: {fileID: 430594095961064573}
-  m_LocalEulerAnglesHint: {x: 9.691092, y: -107.60183, z: 17.004057}
+  m_LocalEulerAnglesHint: {x: 12.864442, y: -90.23174, z: 33.656876}
 --- !u!1 &4187272217151358159
 GameObject:
   m_ObjectHideFlags: 0
@@ -4203,35 +4184,33 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   lockAction: 0
-  feedingActions:
-    _serializedList:
-    - Key: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 1371118413310184343}
-          _MemberName: JumpAction
-          _PersistentArguments: []
-    - Key: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-        type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 7788667647418580513}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 6901183049837345610}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 6901183049837345610}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+  possibleActions:
+  - input: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 1371118413310184343}
+        _MemberName: JumpAction
+        _PersistentArguments: []
+  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+      type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 7788667647418580513}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 6901183049837345610}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 6901183049837345610}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
   nextState: {fileID: 0}
-  AAAAAAAAAAAAA: {fileID: 0}
 --- !u!114 &5006421896293173243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4281,7 +4260,7 @@ Transform:
   - {fileID: 3825655863609033182}
   - {fileID: 3708816382906302327}
   m_Father: {fileID: 8730721630296804507}
-  m_LocalEulerAnglesHint: {x: -16.180874, y: -18.35834, z: -82.67558}
+  m_LocalEulerAnglesHint: {x: 26.03881, y: -19.29337, z: -36.586197}
 --- !u!1 &4452476515952936512
 GameObject:
   m_ObjectHideFlags: 0
@@ -4581,23 +4560,21 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   lockAction: 1
-  feedingActions:
-    _serializedList:
-    - Key: {fileID: -5811927394845417266, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-        type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 6630164468072911266}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls: []
-    - Key: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls: []
+  possibleActions:
+  - input: {fileID: -5811927394845417266, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+      type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 6630164468072911266}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls: []
+  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls: []
   nextState: {fileID: 0}
-  AAAAAAAAAAAAA: {fileID: 0}
 --- !u!114 &3818254776817288668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4611,7 +4588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onEntry: 2
-  onEnterName: Jumping
+  onEnterName: Jump
   onEnterTime: 0.1
   animator: {fileID: 0}
 --- !u!1 &4575873392006091050
@@ -4677,7 +4654,7 @@ Transform:
   m_Children:
   - {fileID: 2745291762251493284}
   m_Father: {fileID: 5575870729952292620}
-  m_LocalEulerAnglesHint: {x: 10.482218, y: -21.065052, z: 13.489512}
+  m_LocalEulerAnglesHint: {x: 1.173121, y: -3.597054, z: 3.0867443}
 --- !u!1 &4847132524298841716
 GameObject:
   m_ObjectHideFlags: 0
@@ -4932,7 +4909,7 @@ Transform:
   m_Children:
   - {fileID: 8092589329398367124}
   m_Father: {fileID: 4658731633878875590}
-  m_LocalEulerAnglesHint: {x: -50.74965, y: -31.14632, z: 47.70059}
+  m_LocalEulerAnglesHint: {x: -43.42135, y: -26.197966, z: 36.20369}
 --- !u!1 &4969915113144856558
 GameObject:
   m_ObjectHideFlags: 0
@@ -5119,7 +5096,7 @@ Transform:
   m_Children:
   - {fileID: 9182283250802229311}
   m_Father: {fileID: 8990209623019993376}
-  m_LocalEulerAnglesHint: {x: -1.4203614, y: -22.129253, z: -3.0481563}
+  m_LocalEulerAnglesHint: {x: -2.4172761, y: -22.786285, z: -7.7163887}
 --- !u!1 &5298102071390176992
 GameObject:
   m_ObjectHideFlags: 0
@@ -5523,7 +5500,7 @@ Transform:
   m_Children:
   - {fileID: 7263763074914503860}
   m_Father: {fileID: 577651859517530263}
-  m_LocalEulerAnglesHint: {x: -32.408432, y: 32.95159, z: 107.73424}
+  m_LocalEulerAnglesHint: {x: -9.942221, y: 7.224236, z: 87.85849}
 --- !u!1 &5476920180933388967
 GameObject:
   m_ObjectHideFlags: 0
@@ -5677,41 +5654,39 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   lockAction: 0
-  feedingActions:
-    _serializedList:
-    - Key: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 1371118413310184343}
-          _MemberName: JumpAction
-          _PersistentArguments: []
-    - Key: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 6227438277254479290}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-        type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 7788667647418580513}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2690473538302802805}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2690473538302802805}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+  possibleActions:
+  - input: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 1371118413310184343}
+        _MemberName: JumpAction
+        _PersistentArguments: []
+  - input: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 6227438277254479290}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+      type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 7788667647418580513}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 2690473538302802805}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 2690473538302802805}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
   nextState: {fileID: 0}
-  AAAAAAAAAAAAA: {fileID: 0}
 --- !u!114 &3271233607042112568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6120,35 +6095,33 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   lockAction: 0
-  feedingActions:
-    _serializedList:
-    - Key: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 1371118413310184343}
-          _MemberName: JumpAction
-          _PersistentArguments: []
-    - Key: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-        type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 7788667647418580513}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 6901183049837345610}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 6901183049837345610}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+  possibleActions:
+  - input: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 1371118413310184343}
+        _MemberName: JumpAction
+        _PersistentArguments: []
+  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+      type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 7788667647418580513}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 6901183049837345610}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 6901183049837345610}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
   nextState: {fileID: 0}
-  AAAAAAAAAAAAA: {fileID: 0}
 --- !u!114 &472102404780835729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6340,7 +6313,7 @@ Transform:
   m_Children:
   - {fileID: 3225057094629792721}
   m_Father: {fileID: 153912413101986097}
-  m_LocalEulerAnglesHint: {x: 1.8842399, y: -1.8144183, z: 0.7706732}
+  m_LocalEulerAnglesHint: {x: 1.9337263, y: -0.0000038707085, z: -0.0000043039754}
 --- !u!1 &6361477669281934816
 GameObject:
   m_ObjectHideFlags: 0
@@ -6437,7 +6410,7 @@ Transform:
   - {fileID: 4394099710664233783}
   - {fileID: 4032396749619053737}
   m_Father: {fileID: 6049917985640779311}
-  m_LocalEulerAnglesHint: {x: -25.53014, y: -159.65831, z: 138.05147}
+  m_LocalEulerAnglesHint: {x: -23.154852, y: -164.63864, z: 122.44647}
 --- !u!1 &6500105468503623956
 GameObject:
   m_ObjectHideFlags: 0
@@ -6895,42 +6868,39 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   lockAction: 0
-  feedingActions:
-    _serializedList:
-    - Key: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 1371118413310184343}
-          _MemberName: JumpAction
-          _PersistentArguments: []
-    - Key: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 6227438277254479290}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-        type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 7788667647418580513}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2690473538302802805}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2690473538302802805}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+  possibleActions:
+  - input: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 1371118413310184343}
+        _MemberName: JumpAction
+        _PersistentArguments: []
+  - input: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 6227438277254479290}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+      type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 7788667647418580513}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 2690473538302802805}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 2690473538302802805}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
   nextState: {fileID: 0}
-  AAAAAAAAAAAAA: {fileID: -6511534230023804711, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-    type: 3}
 --- !u!114 &2556941006449818051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7044,7 +7014,7 @@ Transform:
   m_Children:
   - {fileID: 1237757505085222623}
   m_Father: {fileID: 8776688145745335546}
-  m_LocalEulerAnglesHint: {x: -2.3544142, y: 3.8709345, z: 0.99083906}
+  m_LocalEulerAnglesHint: {x: -2.332759, y: -0.0000016666412, z: -0.000006663731}
 --- !u!1 &6867780156947635812
 GameObject:
   m_ObjectHideFlags: 0
@@ -7246,7 +7216,7 @@ Transform:
   m_Children:
   - {fileID: 1006988339830267982}
   m_Father: {fileID: 7004084140024539114}
-  m_LocalEulerAnglesHint: {x: -1.3760505, y: -20.499363, z: -5.250787}
+  m_LocalEulerAnglesHint: {x: -4.2988625, y: -32.51861, z: -14.69257}
 --- !u!1 &7096887498379887379
 GameObject:
   m_ObjectHideFlags: 0
@@ -7278,7 +7248,7 @@ Transform:
   m_Children:
   - {fileID: 2486181950448375229}
   m_Father: {fileID: 3825655863609033182}
-  m_LocalEulerAnglesHint: {x: -0.15742911, y: 4.1613393, z: 54.753647}
+  m_LocalEulerAnglesHint: {x: -4.2642245, y: 6.1666737, z: 51.73914}
 --- !u!1 &7135833200255002569
 GameObject:
   m_ObjectHideFlags: 0
@@ -7435,7 +7405,7 @@ Transform:
   m_Children:
   - {fileID: 2483940894785225649}
   m_Father: {fileID: 8092589329398367124}
-  m_LocalEulerAnglesHint: {x: 4.4804626, y: -13.430062, z: 6.937501}
+  m_LocalEulerAnglesHint: {x: 0.021001626, y: 0.000004564093, z: 0.000010054808}
 --- !u!1 &7428042679747698151
 GameObject:
   m_ObjectHideFlags: 0
@@ -7529,7 +7499,7 @@ Transform:
   m_Children:
   - {fileID: 8695169672284203444}
   m_Father: {fileID: 8072541376865006971}
-  m_LocalEulerAnglesHint: {x: 0.9055599, y: 0.18638292, z: -103.385025}
+  m_LocalEulerAnglesHint: {x: -0.051158976, y: 8.028513, z: -110.18599}
 --- !u!1 &7834032898238153581
 GameObject:
   m_ObjectHideFlags: 0
@@ -7739,10 +7709,8 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   lockAction: 1
-  feedingActions:
-    _serializedList: []
+  possibleActions: []
   nextState: {fileID: 4000547645901868762}
-  AAAAAAAAAAAAA: {fileID: 0}
 --- !u!114 &6960195376670105774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7841,7 +7809,7 @@ Transform:
   - {fileID: 7015834793163874879}
   - {fileID: 6910424532621849214}
   m_Father: {fileID: 802911248559169720}
-  m_LocalEulerAnglesHint: {x: 4.8558016, y: -75.09948, z: -113.91996}
+  m_LocalEulerAnglesHint: {x: -12.313288, y: -50.99268, z: -94.32313}
 --- !u!1 &8208979368628364121
 GameObject:
   m_ObjectHideFlags: 0
@@ -7941,10 +7909,8 @@ MonoBehaviour:
   body: {fileID: 0}
   controller: {fileID: 0}
   lockAction: 1
-  feedingActions:
-    _serializedList: []
+  possibleActions: []
   nextState: {fileID: 4000547645901868762}
-  AAAAAAAAAAAAA: {fileID: 0}
 --- !u!114 &3847701285562395558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7992,7 +7958,7 @@ Transform:
   m_Children:
   - {fileID: 153912413101986097}
   m_Father: {fileID: 4658731633878875590}
-  m_LocalEulerAnglesHint: {x: 32.55336, y: 33.452938, z: 72.35671}
+  m_LocalEulerAnglesHint: {x: 32.662216, y: 35.189102, z: 71.89165}
 --- !u!1 &8385373022166331504
 GameObject:
   m_ObjectHideFlags: 0
@@ -8220,7 +8186,7 @@ Transform:
   m_Children:
   - {fileID: 6978498797856380663}
   m_Father: {fileID: 430594095961064573}
-  m_LocalEulerAnglesHint: {x: -10.89875, y: 100.837364, z: -158.57521}
+  m_LocalEulerAnglesHint: {x: -14.82182, y: 88.417946, z: -139.86919}
 --- !u!1 &8527717529813097758
 GameObject:
   m_ObjectHideFlags: 0
@@ -8252,7 +8218,7 @@ Transform:
   m_Children:
   - {fileID: 7060264533571552193}
   m_Father: {fileID: 2965703725939741686}
-  m_LocalEulerAnglesHint: {x: 2.2013078, y: -9.464429, z: 2.0271327}
+  m_LocalEulerAnglesHint: {x: 1.9337415, y: 0.0000020930004, z: -0.0000013629062}
 --- !u!1 &8547397943309547804
 GameObject:
   m_ObjectHideFlags: 0
@@ -8377,7 +8343,7 @@ Transform:
   m_Children:
   - {fileID: 5223694443028979170}
   m_Father: {fileID: 2283630068836833606}
-  m_LocalEulerAnglesHint: {x: 1.1055061, y: 2.9039068, z: 0.8423355}
+  m_LocalEulerAnglesHint: {x: 1.1299666, y: 0.0000017993654, z: 0.000006761584}
 --- !u!1 &8609352716840465281
 GameObject:
   m_ObjectHideFlags: 0
@@ -8473,7 +8439,7 @@ Transform:
   m_Children:
   - {fileID: 5548677124390253457}
   m_Father: {fileID: 1789038507570394523}
-  m_LocalEulerAnglesHint: {x: 2.9787107, y: -8.157395, z: 13.719397}
+  m_LocalEulerAnglesHint: {x: 2.0480652, y: -12.614018, z: 7.5758133}
 --- !u!1 &8652558580763543935
 GameObject:
   m_ObjectHideFlags: 0
@@ -8506,7 +8472,7 @@ Transform:
   - {fileID: 7922418922289687215}
   - {fileID: 8602250085024022621}
   m_Father: {fileID: 2376667544890222276}
-  m_LocalEulerAnglesHint: {x: -27.908907, y: -51.337303, z: 8.923933}
+  m_LocalEulerAnglesHint: {x: 32.767353, y: 5.6083107, z: 9.527955}
 --- !u!1 &8749710009740494907
 GameObject:
   m_ObjectHideFlags: 0
@@ -8570,7 +8536,7 @@ Transform:
   m_Children:
   - {fileID: 4895629718662127355}
   m_Father: {fileID: 2486181950448375229}
-  m_LocalEulerAnglesHint: {x: -2.4285007, y: -7.9469852, z: -3.7766817}
+  m_LocalEulerAnglesHint: {x: -2.33276, y: -0.000009309256, z: -0.000002555851}
 --- !u!1 &8981232258050459337
 GameObject:
   m_ObjectHideFlags: 0
@@ -8634,7 +8600,7 @@ Transform:
   m_Children:
   - {fileID: 1474748360388731497}
   m_Father: {fileID: 3825655863609033182}
-  m_LocalEulerAnglesHint: {x: -40.194054, y: -27.780102, z: 45.707977}
+  m_LocalEulerAnglesHint: {x: -39.52972, y: -34.48659, z: 27.501776}
 --- !u!1 &9149376269122314372
 GameObject:
   m_ObjectHideFlags: 0
@@ -8667,7 +8633,7 @@ Transform:
   - {fileID: 5632459594431853759}
   - {fileID: 8740633168634587922}
   m_Father: {fileID: 430594095961064573}
-  m_LocalEulerAnglesHint: {x: 0.4239963, y: -0.8858005, z: 10.319907}
+  m_LocalEulerAnglesHint: {x: 1.2964134, y: -0.3973364, z: -5.200269}
 --- !u!1 &9169919536835946083
 GameObject:
   m_ObjectHideFlags: 0
