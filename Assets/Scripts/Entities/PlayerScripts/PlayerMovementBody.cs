@@ -92,6 +92,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     {
         rb = GetComponentFromMachine<Rigidbody>();
         collider = GetComponentFromMachine<CapsuleCollider>();
+        currentDirection = Vector3.forward;
         //M.physicsCallbacks += Collision;
     }
 

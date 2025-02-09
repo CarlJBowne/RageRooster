@@ -17,14 +17,24 @@ public class PlayerControlAction : PlayerStateBehavior
 
     public State nextState;
 
-    public override void OnAwake() => controller.currentAction = this;
-
-    public override void OnEnter(State prev)
+    public override void OnAwake()
     {
-        if (lockAction) controller.readyForNextAction = false; 
+        state.onActivatedEvent.AddListener(Begin);
     }
 
-    public bool IsActionValid(InputActionReference button) => feedingActions.ContainsKey(button);
+    void Begin(State prev)
+    {
+        controller.currentAction = this;
+        if (lockAction) controller.readyForNextAction = false;
+    }
+
+    public bool IsActionValid(InputActionReference button)
+    {
+        Debug.Log($"They are {button == feedingActions.Keys.ToList()[0]}");
+        return feedingActions.ContainsKey(button);
+    }
+
+    public InputActionReference AAAAAAAAAAAAA;
 
     public void Finish() => nextState.TransitionTo();
 

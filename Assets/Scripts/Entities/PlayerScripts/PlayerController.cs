@@ -47,21 +47,29 @@ public class PlayerController : PlayerStateBehavior
 		grabber = GetComponentFromMachine<PlayerGrabber>();
 		//attack = GetComponentFromMachine<PlayerAttackSystem>();
 
-		input.jump.started += BeginActionEvent;
-        input.grabTap.started += BeginActionEvent;
-        input.attackTap.started += BeginActionEvent;
-        input.parry.started += BeginActionEvent;
+		input.jump.performed            += BeginActionEvent;
+        input.attackTap.performed       += BeginActionEvent;
+        input.attackHold.performed      += BeginActionEvent;
+        input.grabTap.performed         += BeginActionEvent;
+        input.grabHold.performed        += BeginActionEvent;
+        input.parry.performed           += BeginActionEvent;
+        input.chargeTap.performed       += BeginActionEvent;
+        input.chargeHold.performed      += BeginActionEvent;
     }
 
 	private void OnDestroy()
 	{
-		input.jump.started -= BeginActionEvent;
-        input.grabTap.started -= BeginActionEvent;
-        input.attackTap.started -= BeginActionEvent;
-        input.parry.started -= BeginActionEvent;
+        input.jump.performed            -= BeginActionEvent;
+        input.attackTap.performed       -= BeginActionEvent;
+        input.attackHold.performed      -= BeginActionEvent;
+        input.grabTap.performed         -= BeginActionEvent;
+        input.grabHold.performed        -= BeginActionEvent;
+        input.parry.performed           -= BeginActionEvent;
+        input.chargeTap.performed       -= BeginActionEvent;
+        input.chargeHold.performed      -= BeginActionEvent;
     }
 
-	public override void OnUpdate()
+    public override void OnUpdate()
 	{
         if (inputQueueDecay.running) inputQueueDecay.Tick(() =>
         {
@@ -108,19 +116,19 @@ public class PlayerController : PlayerStateBehavior
 
 
     public PCA currentAction;
+    [HideProperty]
     public bool readyForNextAction = true;
-	public Queue<InputActionReference> actionQueue;
+    public Queue<InputActionReference> actionQueue = new();
 
     private void BeginActionEvent(InputAction.CallbackContext callbackContext)
     {
         InputActionReference action = callbackContext.action.Reference();
-        if(currentAction.IsActionValid(action))
-            if (readyForNextAction) BeginAction(action);
-            else
-            {
-                actionQueue.Enqueue(action);
-                inputQueueDecay.Begin();
-            }
+        if (readyForNextAction && currentAction.IsActionValid(action)) BeginAction(action);
+        else
+        {
+            actionQueue.Enqueue(action);
+            inputQueueDecay.Begin();
+        }
     }
 
 

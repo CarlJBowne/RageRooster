@@ -53,7 +53,10 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         float deltaTime = Time.fixedDeltaTime / 0.02f;
         Vector3 controlDirection = control.normalized;
         float controlMag = control.magnitude;
-        float speedAlter = 0f;
+
+        bool condition = (!needChargeButton || Input.ChargeHold.IsPressed()) && 
+                         (!needRagingUpgrade || controller.ragingChargeUpgrade)
+                         ;
 
         if (controlMag > 0)
         {
@@ -63,34 +66,41 @@ public class PlayerGroundedMovement : PlayerMovementEffector
                 currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0);
 
             if (!outwardTurn) currentSpeed *= Dot;
-            if (currentSpeed > maxSpeed)
-                speedAlter = (controlMag * -decceleration).Min(maxSpeed) * deltaTime;
-            else if (currentSpeed < maxSpeed)
-                speedAlter = (controlMag * acceleration).Max(maxSpeed) * deltaTime;
-            else if (Condition() && currentSpeed < nextPhase.maxSpeed)
-                speedAlter = (controlMag * nextPhase.acceleration).Max(nextPhase.maxSpeed) * deltaTime;
+
+            if(currentSpeed < maxSpeed || (condition && currentSpeed < nextPhase.maxSpeed))
+            {
+                currentSpeed = !condition
+                    ? (currentSpeed + (controlMag * acceleration)).Max(maxSpeed) * deltaTime
+                    : (currentSpeed + (controlMag * nextPhase.acceleration)).Max(nextPhase.maxSpeed) * deltaTime;
+            }                
+            else if (currentSpeed > maxSpeed)
+                currentSpeed = (currentSpeed - (controlMag * decceleration)).Min(maxSpeed) * deltaTime;
         }
-        else speedAlter = -stopping * deltaTime;
+        else currentSpeed = (currentSpeed - (currentSpeed * stopping * deltaTime)).Min(0);
 
-        currentSpeed += speedAlter;
+        //currentSpeed = (currentSpeed + speedAlter).Min(0);
 
-        if (speedAlter > 0 && currentSpeed >= nextPhaseThreshold && Condition()) nextPhase.state.TransitionTo();
-        else if (speedAlter < 0 && currentSpeed < prevPhaseThreshold) prevPhase.state.TransitionTo();
+        if (currentSpeed >= nextPhaseThreshold && nextPhase != null && condition) nextPhase.state.TransitionTo();
+        else if (currentSpeed < prevPhaseThreshold && prevPhase != null) prevPhase.state.TransitionTo();
 
     }
     
-    private bool Condition() => (!needChargeButton || Input.ChargeHold.IsPressed()) && (!needRagingUpgrade || controller.ragingChargeUpgrade);
-
-    public override void OnEnter(State prev){if(attackCollider != null) attackCollider.enabled = true;}
+    public override void OnEnter(State prev){ base.OnEnter(prev); if (attackCollider != null) attackCollider.enabled = true;}
     public override void OnExit(State next){if(attackCollider != null) attackCollider.enabled = false;}
 }
 
 public abstract class PlayerMovementEffector : PlayerStateBehavior
 {
     [HideInEditMode, DisableInPlayMode] public bool trueActive;
+    private bool check;
 
     public override void OnFixedUpdate()
     {
+        if (check)
+        {
+            trueActive = state.ActiveMain();
+            check = false;
+        }
         if (!trueActive) return;
         this.HorizontalMovement(out float? X, out float? Z);
         this.VerticalMovement(out float? Y);
@@ -108,5 +118,5 @@ public abstract class PlayerMovementEffector : PlayerStateBehavior
             ).Min(-terminalVelocity);
     }
 
-    public override void OnEnter(State prev) => trueActive = state.ActiveMain();
+    public override void OnEnter(State prev) => check = true;
 }

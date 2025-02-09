@@ -99,16 +99,11 @@ public abstract class PlayerStateBehavior : StateBehavior
     #region States
 
     public State sGrounded => M.states["Grounded"];
-    public State sIdleWalk => M.states["IdleWalk"];
     public State sCharge => M.states["Charge"];
     public State sAirborne => M.states["Airborne"];
-    public State sJump1 => M.states["Jump1"];
     public State sFall => M.states["Fall"];
     public State sGlide => M.states["Glide"];
-    public State sWallJump => M.states["WallJump"];
     public State sGroundSlam => M.states["GroundSlam"];
-    public State sBounce => M.states["Bounce"];
-    public State sAirCharge => M.states["AirCharge"];
     public State sAirChargeFall => M.states["AirChargeFall"];
 
     #endregion

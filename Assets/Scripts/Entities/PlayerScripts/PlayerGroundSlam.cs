@@ -18,7 +18,11 @@ public class PlayerGroundSlam : PlayerMovementEffector
 
     }
 
-    public override void OnEnter(State prev) => body.VelocitySet(y: body.velocity.y > gravity ? gravity : body.velocity.y);
+    public override void OnEnter(State prev) 
+    { 
+        base.OnEnter(prev); 
+        body.VelocitySet(y: body.velocity.y > gravity ? gravity : body.velocity.y); 
+    }
 
     private void OnTriggerEnter(Collider other) => BounceShroom.AttemptBounce(other.gameObject, bouncingState);
 

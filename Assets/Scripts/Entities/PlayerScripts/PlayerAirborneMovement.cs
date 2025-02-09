@@ -122,6 +122,8 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
     public override void OnEnter(State prev)
     {
+        base.OnEnter(prev);
+
         if (!upwards || body.jumpPhase != -1) return;
         body.jumpPhase = 0;
         body.VelocitySet(y: jumpPower);

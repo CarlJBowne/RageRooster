@@ -15,7 +15,10 @@ public class Input : Staticon<Input>
 		asset.Enable();
 	}
 
-	public static Vector2 Movement => Get().asset.Gameplay.Movement.ReadValue<Vector2>();
+    public static void Enable() => Get().asset.Enable();
+	public static void Disable() => Get().asset.Disable();
+
+    public static Vector2 Movement => Get().asset.Gameplay.Movement.ReadValue<Vector2>();
 	public static Vector2 Camera => Get().asset.Gameplay.Camera.ReadValue<Vector2>();
 	public static Button Jump => Get().asset.Gameplay.Jump;
 	public static Button AttackTap => Get().asset.Gameplay.AttackTap;
