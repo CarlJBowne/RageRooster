@@ -15,46 +15,27 @@ public class MainMenu : MenuSingleton<MainMenu>
     {
         optionsMenuPanel.SetActive(false);
         creditsPanel.SetActive(false);
-        //AudioManager.Get().InitializeMusic(musicRef);
     }
-
-    //private void PlaySound() => AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
 
     public void PlayGame()
     {
-        //PlaySound();
         Gameplay.BeginMainMenu(0);
         Close();
     }
 
     public void QuitGame()
     {
-        //PlaySound();
         Application.Quit();
-    }
-
-    public void OpenOptionsMenu()
-    {
-        //PlaySound();
-        optionsMenuPanel.SetActive(true);
-    }
-
-    public void CloseOptionsMenu()
-    {
-        //PlaySound();
-        optionsMenuPanel.SetActive(false);
     }
 
     public void ShowCredits()
     {
-        //PlaySound();
         //creditsContent.anchoredPosition = new Vector2(creditsContent.anchoredPosition.x, 0);
         creditsPanel.SetActive(true);
     }
 
     public void HideCredits()
     {
-        //PlaySound();
         creditsPanel.SetActive(false);
     }
 }

@@ -329,6 +329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 268a7e41585d3494ca770b12e65914ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  musicEmitter: {fileID: 0}
   currentZone: {fileID: 0}
   proxies:
     _serializedList: []
@@ -2455,6 +2456,7 @@ GameObject:
   - component: {fileID: 8290631177171356570}
   - component: {fileID: 194076540510180912}
   - component: {fileID: 35559682713893603}
+  - component: {fileID: 8290631177171356571}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3810,6 +3812,19 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1692524693346012608}
   m_Enabled: 1
+--- !u!114 &8290631177171356571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1692524693346012608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 494856522}
 --- !u!222 &8361976120002408442
 CanvasRenderer:
   m_ObjectHideFlags: 0
