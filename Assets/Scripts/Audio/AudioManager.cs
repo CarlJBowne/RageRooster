@@ -7,13 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class AudioManager : SingletonAdvanced<AudioManager>
 {
-     static void Data() => SetData(spawnMethod: InitSavedPrefab, dontDestroyOnLoad: true, spawnOnBoot: true);
+    // Set up the AudioManager with specific settings
+    static void Data() => SetData(spawnMethod: InitSavedPrefab, dontDestroyOnLoad: true, spawnOnBoot: true);
 
-
-    public float masterVolume {set => masterBus.setVolume(value);}
-    public float musicVolume {set => musicBus.setVolume(value);}
-    public float SFXVolume {set => sfxBus.setVolume(value);}
-    public float ambienceVolume {set => ambienceBus.setVolume(value);}
+    // Properties to set the volume for different audio buses
+    public float masterVolume { set => masterBus.setVolume(value); }
+    public float musicVolume { set => musicBus.setVolume(value); }
+    public float SFXVolume { set => sfxBus.setVolume(value); }
+    public float ambienceVolume { set => ambienceBus.setVolume(value); }
 
     private Bus masterBus;
     private Bus musicBus;
@@ -25,27 +26,29 @@ public class AudioManager : SingletonAdvanced<AudioManager>
     private EventInstance ambienceEventInstance;
     public EventInstance musicEventInstance;
 
+    // Called when the script instance is being loaded
     private new void Awake()
     {
-        // Initialize the AudioManager and set up buses and event lists
+        base.Awake();
         DontDestroyOnLoad(gameObject);
 
         eventInstances = new List<EventInstance>();
         eventEmitters = new List<StudioEventEmitter>();
 
+        // Initialize audio buses
         masterBus = RuntimeManager.GetBus("bus:/");
         musicBus = RuntimeManager.GetBus("bus:/Music");
         sfxBus = RuntimeManager.GetBus("bus:/SFX");
         ambienceBus = RuntimeManager.GetBus("bus:/Ambience");
 
+        // Subscribe to scene load and unload events
         SceneManager.sceneLoaded += OnSceneLoaded;
         SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
 
+    // Called when the script is started
     private void Start()
     {
-        // Initialize ambience and music if available
-        ////Debug.Log("AudioManager Start");
         if (FMODEvents.instance != null)
         {
             if (FMODEvents.instance.HasAmbience())
@@ -59,55 +62,53 @@ public class AudioManager : SingletonAdvanced<AudioManager>
         }
     }
 
-    
+    // Initialize and start the ambience event
     private void InitializeAmbience(EventReference ambienceEvent)
     {
-        // Create and start the ambience event instance
         ambienceEventInstance = RuntimeManager.CreateInstance(ambienceEvent);
         ambienceEventInstance.start();
     }
 
+    // Initialize and start the music event
     public void InitializeMusic(EventReference musicEventReference)
     {
-        // Create and start the music event instance
-        //musicEventInstance = RuntimeManager.CreateInstance(musicEventReference);
-        //musicEventInstance.setVolume(musicVolume);
+        musicEventInstance = RuntimeManager.CreateInstance(musicEventReference);
         musicEventInstance.start();
         musicEventInstance.setPaused(false);
     }
 
+    // Set a parameter for the ambience event instance
     public void SetAmbienceParameter(string parameterName, float parameterValue)
     {
-        // Set a parameter for the ambience event instance
         ambienceEventInstance.setParameterByName(parameterName, parameterValue);
     }
 
+    // Play a one-shot sound at the specified position
     public void PlayOneShot(EventReference sound, Vector3 worldPos)
     {
-        // Play a one-shot sound at the specified position
         RuntimeManager.PlayOneShot(sound, worldPos);
     }
 
+    // Create and return a new event instance
     public EventInstance CreateEventInstance(EventReference eventReference)
     {
-        // Create and return a new event instance
         EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
         eventInstances.Add(eventInstance);
         return eventInstance;
     }
 
+    // Create and return a new event emitter
     public StudioEventEmitter CreateEventEmitter(EventReference eventReference, GameObject emitterGameObject)
     {
-        // Create and return a new event emitter
         StudioEventEmitter emitter = emitterGameObject.GetComponent<StudioEventEmitter>();
         emitter.EventReference = eventReference;
         eventEmitters.Add(emitter);
         return emitter;
     }
 
+    // Clean up all event instances and emitters
     private void CleanUp()
     {
-        // Stop and release all event instances and emitters
         foreach (EventInstance eventInstance in eventInstances)
         {
             eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
@@ -120,50 +121,44 @@ public class AudioManager : SingletonAdvanced<AudioManager>
         }
     }
 
+    // Called when the AudioManager is destroyed
     private void OnDestroy()
     {
-        // Clean up when the AudioManager is destroyed
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
         musicEventInstance.setPaused(true);
         CleanUp();
     }
 
+    // Called when a new scene is loaded
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Stop the current scene's music before playing the new scene's music
         StopSceneMusic();
         PlaySceneMusic(scene.name);
     }
 
+    // Called when a scene is unloaded
     private void OnSceneUnloaded(Scene scene)
     {
-        // Stop the current scene's music
         StopSceneMusic();
     }
 
+    // Stop and release the current music event instance
     private void StopSceneMusic()
     {
-        // Stop and release the current music event instance
         if (musicEventInstance.isValid())
         {
-            ////Debug.Log("Stopping current music event instance.");
             musicEventInstance.setPaused(true);
             musicEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             musicEventInstance.release();
-            musicEventInstance.clearHandle(); // Clear the handle to ensure it's properly reset
-        }
-        else
-        {
-            ////Debug.Log("No valid music event instance to stop.");
+            musicEventInstance.clearHandle();
         }
     }
 
+    // Play the appropriate music for the given scene
     private void PlaySceneMusic(string sceneName)
     {
-        // Ensure the current music is stopped before playing the new scene's music
         StopSceneMusic();
-
 
         EventReference musicEvent = new EventReference();
         switch (sceneName)
@@ -178,18 +173,12 @@ public class AudioManager : SingletonAdvanced<AudioManager>
                 musicEvent = FMODEvents.instance.rockyFurrowsHubMusic;
                 break;
             default:
-                ////Debug.LogWarning($"No music event found for scene: {sceneName}");
                 return;
         }
 
         if (musicEvent.Guid != System.Guid.Empty)
         {
-            ////Debug.Log($"Initializing music for scene: {sceneName}");
             InitializeMusic(musicEvent);
-        }
-        else
-        {
-            ////Debug.LogWarning($"Music event reference is empty for scene: {sceneName}");
         }
         musicEventInstance = RuntimeManager.CreateInstance(musicEvent);
     }
