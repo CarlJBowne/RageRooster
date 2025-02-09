@@ -15,7 +15,7 @@ public class MainMenu : MenuSingleton<MainMenu>
     {
         optionsMenuPanel.SetActive(false);
         creditsPanel.SetActive(false);
-        AudioManager.Get().InitializeMusic(musicRef);
+        //AudioManager.Get().InitializeMusic(musicRef);
     }
 
     //private void PlaySound() => AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);

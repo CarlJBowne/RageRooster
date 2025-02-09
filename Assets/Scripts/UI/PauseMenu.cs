@@ -9,7 +9,6 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 {
     public static bool isPaused => Get().isActive;
 
-
     protected override void OnOpen()
     {
         base.OnOpen();
@@ -27,10 +26,10 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
     public void QuitGame()
     {
-        if (AudioManager.Get() != null && FMODEvents.instance != null)
-        {
-            AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
-        }
+        // if (AudioManager.Get() != null && FMODEvents.instance != null)
+        // {
+        //     AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
+        // }
         SceneManager.LoadScene("MainMenu");
     }
 
@@ -58,10 +57,10 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
     public void ReturnToMainMenu()
     {
-        if (AudioManager.Get() != null && FMODEvents.instance != null)
-        {
-            AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
-        }
+        // if (AudioManager.Get() != null && FMODEvents.instance != null)
+        // {
+        //     AudioManager.Get().PlayOneShot(FMODEvents.instance.selectionConfirm, this.transform.position);
+        // }
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
         //eventSystem.enabled = false;
@@ -69,5 +68,4 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
     public void Respawn() => Gameplay.SpawnPlayer();
     public void ReloadSave() => Gameplay.Get().ResetToSaved();
-
 }
