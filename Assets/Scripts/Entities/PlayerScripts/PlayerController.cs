@@ -123,7 +123,7 @@ public class PlayerController : PlayerStateBehavior
     private void BeginActionEvent(InputAction.CallbackContext callbackContext)
     {
         InputActionReference action = callbackContext.action.Reference();
-        if (!readyForNextAction || currentAction == null || currentAction.TryNextAction(action))
+        if (!readyForNextAction || currentAction == null || !currentAction.TryNextAction(action))
         {
             actionQueue.Enqueue(action);
             inputQueueDecay.Begin();
@@ -164,16 +164,10 @@ public class PlayerController : PlayerStateBehavior
 
 
     public void JumpAction()
-    {
+    { 
         if (sGrounded || (sAirborne && body.coyoteTimeLeft > 0)) body.BeginJump();
         else jumpInput = jumpBuffer + Time.fixedDeltaTime;
 
-    }
-
-    public void AttackAction(bool held)
-    {
-        if (sAirborne && groundSlamUpgrade) sGroundSlam.TransitionTo();
-        else M.animator.SetTrigger(punchTriggerName);
     }
 
     public void GrabAction(bool held)

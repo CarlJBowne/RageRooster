@@ -18,9 +18,9 @@ public class PlayerGroundSlam : PlayerMovementEffector
 
     }
 
-    public override void OnEnter(State prev) 
+    public override void OnEnter(State prev, bool isFinal) 
     { 
-        base.OnEnter(prev); 
+        base.OnEnter(prev, isFinal); 
         body.VelocitySet(y: body.velocity.y > gravity ? gravity : body.velocity.y); 
     }
 
