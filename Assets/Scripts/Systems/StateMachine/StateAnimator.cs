@@ -35,7 +35,7 @@ namespace SLS.StateMachineV3
         }
 
         public void Play(string name) => animator.Play(name);
-        public void CrossFade(string name, float time = 0f) => animator.CrossFade(name, time);
+        public void CrossFade(string name, float time = 0f) => animator.CrossFade(name, time, 0);
         public void Trigger(string name) => animator.SetTrigger(name);
 
 

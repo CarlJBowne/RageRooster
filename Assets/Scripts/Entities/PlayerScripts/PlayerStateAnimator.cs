@@ -7,6 +7,7 @@ public class PlayerStateAnimator : StateAnimator
 {
 
     public bool isAction = false;
+    public bool readyOnEnd = false;
     public State onFinishState;
 
     private PlayerController controller;
@@ -23,5 +24,9 @@ public class PlayerStateAnimator : StateAnimator
         if (isAction) controller.currentAction = null;
     }
     
-    public void Finish() {if (onFinishState != null) onFinishState.TransitionTo();}
+    public void Finish() 
+    {
+        if (readyOnEnd) controller.readyForNextAction = true;
+        if (onFinishState != null) onFinishState.TransitionTo();
+    }
 }

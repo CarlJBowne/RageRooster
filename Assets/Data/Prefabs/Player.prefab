@@ -31,7 +31,7 @@ Transform:
   m_Children:
   - {fileID: 8621529309177891415}
   m_Father: {fileID: 3825655863609033182}
-  m_LocalEulerAnglesHint: {x: 0.14499867, y: 11.78775, z: 56.933548}
+  m_LocalEulerAnglesHint: {x: 4.867009, y: 7.1582336, z: 59.332623}
 --- !u!1 &43571758980712038
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +94,7 @@ Transform:
   m_Children:
   - {fileID: 6763783356076930483}
   m_Father: {fileID: 8792377162348387678}
-  m_LocalEulerAnglesHint: {x: 1.6636255, y: -31.322248, z: 6.532749}
+  m_LocalEulerAnglesHint: {x: 0.7985857, y: -14.170237, z: 6.2976084}
 --- !u!1 &153715694443020440
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,7 +189,7 @@ Transform:
   m_Children:
   - {fileID: 8776688145745335546}
   m_Father: {fileID: 4658731633878875590}
-  m_LocalEulerAnglesHint: {x: -13.882337, y: 12.345388, z: 50.45356}
+  m_LocalEulerAnglesHint: {x: 3.3701646, y: -0.09379924, z: 52.346874}
 --- !u!1 &274366656925562652
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,6 +258,7 @@ MonoBehaviour:
   onEnterTime: 0.1
   animator: {fileID: 0}
   isAction: 1
+  readyOnEnd: 0
   onFinishState: {fileID: 1252659914078541581}
 --- !u!114 &1330028443204214403
 MonoBehaviour:
@@ -396,8 +397,9 @@ Transform:
   - {fileID: 8990209623019993376}
   - {fileID: 8101396547878388041}
   - {fileID: 1789038507570394523}
+  - {fileID: 3959319021547547142}
   m_Father: {fileID: 3385882186619424120}
-  m_LocalEulerAnglesHint: {x: -49.32178, y: -37.033432, z: -47.278275}
+  m_LocalEulerAnglesHint: {x: -30.773829, y: -29.278461, z: -29.137445}
 --- !u!1 &594471943774320014
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,7 +431,7 @@ Transform:
   m_Children:
   - {fileID: 430594095961064573}
   m_Father: {fileID: 6910424532621849214}
-  m_LocalEulerAnglesHint: {x: 9.34408, y: 1.9230087, z: 11.818636}
+  m_LocalEulerAnglesHint: {x: -2.7024107, y: -0.4016135, z: 22.034777}
 --- !u!1 &619101134808790287
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,7 +463,7 @@ Transform:
   m_Children:
   - {fileID: 2965703725939741686}
   m_Father: {fileID: 3825655863609033182}
-  m_LocalEulerAnglesHint: {x: 22.861076, y: 35.695194, z: 67.41274}
+  m_LocalEulerAnglesHint: {x: 27.65706, y: 32.942715, z: 64.32569}
 --- !u!1 &622944000673277637
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,6 +476,7 @@ GameObject:
   - component: {fileID: 6397329766730335508}
   - component: {fileID: 7426777796295102642}
   - component: {fileID: 7736482665558727247}
+  - component: {fileID: 7522104212622704532}
   m_Layer: 0
   m_Name: LightPunch2
   m_TagString: Untagged
@@ -572,6 +575,27 @@ MonoBehaviour:
   onEnterName: LightPunch2
   onEnterTime: 0.1
   animator: {fileID: 0}
+--- !u!114 &7522104212622704532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622944000673277637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9941058b321f6b4d9f1f2cec53de651, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  trueActive: 0
+  horizontalNegateType: 1
+  verticalNegateType: 4
+  rate: 0.5
+  dampenPoint: 0
+  savePriorVelocity: 0
 --- !u!1 &624970041063503452
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,6 +606,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9047614155566188650}
   - component: {fileID: 3864174957687219544}
+  - component: {fileID: 1181195091599698405}
+  - component: {fileID: 7492689439726299077}
   m_Layer: 0
   m_Name: AirGrab
   m_TagString: Untagged
@@ -621,6 +647,49 @@ MonoBehaviour:
   onActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1181195091599698405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624970041063503452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9ea06674c3fe044c81dee4e88f1ae12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  trueActive: 0
+  horizontalNegateType: 1
+  verticalNegateType: 1
+  rate: 0.5
+  dampenPoint: 0
+  savePriorVelocity: 0
+  air: 1
+  wasHeld: 0
+  success: 0
+--- !u!114 &7492689439726299077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624970041063503452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c9eaa4b4a6862748b493a792ddc66eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 2
+  onEnterName: Grab
+  onEnterTime: 0.01
+  animator: {fileID: 0}
+  isAction: 1
+  readyOnEnd: 1
+  onFinishState: {fileID: 931477398715445950}
 --- !u!1 &629840051697236276
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,7 +755,7 @@ Transform:
   - {fileID: 1165175849844924605}
   - {fileID: 198170318043150982}
   m_Father: {fileID: 6856472744283411903}
-  m_LocalEulerAnglesHint: {x: -0.3993047, y: -0.16807747, z: 12.663621}
+  m_LocalEulerAnglesHint: {x: 0.88002616, y: 1.6521701, z: 12.784879}
 --- !u!1 &702391210195654505
 GameObject:
   m_ObjectHideFlags: 0
@@ -720,7 +789,7 @@ Transform:
   - {fileID: 2376667544890222276}
   - {fileID: 6119314003130502587}
   m_Father: {fileID: 7768698883904891030}
-  m_LocalEulerAnglesHint: {x: 9.337148, y: -1.9566617, z: -41.78372}
+  m_LocalEulerAnglesHint: {x: -2.6537108, y: 0.6456989, z: -31.265026}
 --- !u!1 &783300293168918713
 GameObject:
   m_ObjectHideFlags: 0
@@ -784,7 +853,7 @@ Transform:
   - {fileID: 7768698883904891030}
   - {fileID: 8225864446363286040}
   m_Father: {fileID: 6049917985640779311}
-  m_LocalEulerAnglesHint: {x: 4.4553337, y: 1.3879622, z: -5.7437067}
+  m_LocalEulerAnglesHint: {x: -0.19175363, y: -0.010839192, z: -1.1132103}
 --- !u!1 &936260266508204397
 GameObject:
   m_ObjectHideFlags: 0
@@ -969,7 +1038,7 @@ Transform:
   m_Children:
   - {fileID: 2444525046181681513}
   m_Father: {fileID: 8621529309177891415}
-  m_LocalEulerAnglesHint: {x: 1.129954, y: 0.000003199306, z: 0.00000013388122}
+  m_LocalEulerAnglesHint: {x: 2.2461123, y: -6.136836, z: -1.0556325}
 --- !u!1 &983945154792591840
 GameObject:
   m_ObjectHideFlags: 0
@@ -1207,7 +1276,7 @@ Transform:
   m_Children:
   - {fileID: 5173575768337105014}
   m_Father: {fileID: 7263763074914503860}
-  m_LocalEulerAnglesHint: {x: -2.3377173, y: 2.4399943, z: -98.7806}
+  m_LocalEulerAnglesHint: {x: 0.7645264, y: 2.0951257, z: -96.5151}
 --- !u!1 &1122395783523706932
 GameObject:
   m_ObjectHideFlags: 0
@@ -1239,7 +1308,7 @@ Transform:
   m_Children:
   - {fileID: 3926069818342537704}
   m_Father: {fileID: 8101396547878388041}
-  m_LocalEulerAnglesHint: {x: 2.0416071, y: -36.802284, z: 6.8886485}
+  m_LocalEulerAnglesHint: {x: 2.1000264, y: -23.12226, z: 10.166658}
 --- !u!1 &1150020201749930359
 GameObject:
   m_ObjectHideFlags: 0
@@ -1273,7 +1342,7 @@ Transform:
   - {fileID: 4658731633878875590}
   - {fileID: 6103255078954430404}
   m_Father: {fileID: 6978498797856380663}
-  m_LocalEulerAnglesHint: {x: -10.70008, y: -9.290509, z: -47.754322}
+  m_LocalEulerAnglesHint: {x: -2.088469, y: -8.473294, z: -27.646568}
 --- !u!1 &1175218730390692762
 GameObject:
   m_ObjectHideFlags: 0
@@ -1462,7 +1531,7 @@ Transform:
   m_Children:
   - {fileID: 8377350900205150748}
   m_Father: {fileID: 6472118728543943946}
-  m_LocalEulerAnglesHint: {x: -10.421326, y: -34.715816, z: -29.942745}
+  m_LocalEulerAnglesHint: {x: -1.3740038, y: -14.905232, z: -19.442257}
 --- !u!1 &1600405943673852407
 GameObject:
   m_ObjectHideFlags: 0
@@ -1494,7 +1563,7 @@ Transform:
   m_Children:
   - {fileID: 8190789354852401008}
   m_Father: {fileID: 5580758618047745797}
-  m_LocalEulerAnglesHint: {x: -1.2673174, y: -16.00525, z: -5.3568206}
+  m_LocalEulerAnglesHint: {x: -3.881674, y: -37.59522, z: -9.755785}
 --- !u!1 &1778405043246633851
 GameObject:
   m_ObjectHideFlags: 0
@@ -1767,7 +1836,7 @@ Transform:
   m_Children:
   - {fileID: 8072541376865006971}
   m_Father: {fileID: 7015834793163874879}
-  m_LocalEulerAnglesHint: {x: 0.5594295, y: 13.972603, z: 39.62423}
+  m_LocalEulerAnglesHint: {x: -0.50476366, y: 10.852177, z: 31.142157}
 --- !u!1 &2354280182447277193
 GameObject:
   m_ObjectHideFlags: 0
@@ -1987,23 +2056,64 @@ MonoBehaviour:
           _Z: 0
           _W: 0
           _Object: {fileID: 0}
-  - input: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 0}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
   - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
-      _PersistentCalls: []
+      _PersistentCalls:
+      - _Target: {fileID: 2714541672873312079}
+        _MemberName: TryGrabThrow
+        _PersistentArguments:
+        - _Type: 13
+          _Int: 0
+          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 1181195091599698405}
+        - _Type: 1
+          _Int: 0
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
-      _PersistentCalls: []
+      _PersistentCalls:
+      - _Target: {fileID: 2714541672873312079}
+        _MemberName: TryGrabThrow
+        _PersistentArguments:
+        - _Type: 13
+          _Int: 0
+          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 1181195091599698405}
+        - _Type: 1
+          _Int: 1
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+  - input: {fileID: -5815494970741274944, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+      type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 8937721864928111967}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
   - input: {fileID: -5811927394845417266, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
       type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 6630164468072911266}
+      - _Target: {fileID: 8937721864928111967}
         _MemberName: TransitionTo
         _PersistentArguments: []
   nextState: {fileID: 0}
@@ -2038,7 +2148,7 @@ Transform:
   m_Children:
   - {fileID: 2724021064250841048}
   m_Father: {fileID: 4032396749619053737}
-  m_LocalEulerAnglesHint: {x: -2.1362817, y: -12.786467, z: -6.718148}
+  m_LocalEulerAnglesHint: {x: -2.2264786, y: -16.08394, z: -25.290543}
 --- !u!1 &2753846029000189943
 GameObject:
   m_ObjectHideFlags: 0
@@ -2101,7 +2211,7 @@ Transform:
   m_Children:
   - {fileID: 2283630068836833606}
   m_Father: {fileID: 4658731633878875590}
-  m_LocalEulerAnglesHint: {x: 2.6532264, y: 9.298012, z: 63.39235}
+  m_LocalEulerAnglesHint: {x: 12.544986, y: 1.2799397, z: 53.21617}
 --- !u!1 &2853206829807409614
 GameObject:
   m_ObjectHideFlags: 0
@@ -2164,7 +2274,7 @@ Transform:
   m_Children:
   - {fileID: 5023826619065575401}
   m_Father: {fileID: 426175620113013059}
-  m_LocalEulerAnglesHint: {x: -2.1921067, y: -20.442291, z: -7.3527923}
+  m_LocalEulerAnglesHint: {x: -1.78473, y: -24.249146, z: -3.675977}
 --- !u!1 &2920140632751408782
 GameObject:
   m_ObjectHideFlags: 0
@@ -2494,7 +2604,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  oneHandedHand: {fileID: 0}
+  oneHandedHand: {fileID: 3959319021547547142}
   twoHandedHand: {fileID: 6163627308343083636}
   groundState: {fileID: 3803531707346265779}
   airBorneState: {fileID: 5123969060782274918}
@@ -2726,6 +2836,7 @@ GameObject:
   - component: {fileID: 6227438277254479290}
   - component: {fileID: 4593476741985153631}
   - component: {fileID: 5054057747023772269}
+  - component: {fileID: 5008061855527923447}
   m_Layer: 0
   m_Name: LightPunch1
   m_TagString: Untagged
@@ -2824,6 +2935,27 @@ MonoBehaviour:
   onEnterName: LightPunch1
   onEnterTime: 0.1
   animator: {fileID: 0}
+--- !u!114 &5008061855527923447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3244875344704272238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9941058b321f6b4d9f1f2cec53de651, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  trueActive: 0
+  horizontalNegateType: 1
+  verticalNegateType: 4
+  rate: 0.5
+  dampenPoint: 0
+  savePriorVelocity: 0
 --- !u!1 &3252850856162051055
 GameObject:
   m_ObjectHideFlags: 0
@@ -2859,7 +2991,7 @@ Transform:
   - {fileID: 8792377162348387678}
   - {fileID: 5575870729952292620}
   m_Father: {fileID: 7922418922289687215}
-  m_LocalEulerAnglesHint: {x: -57.638206, y: -4.2299976, z: -48.125195}
+  m_LocalEulerAnglesHint: {x: -32.877, y: -43.183186, z: -24.299673}
 --- !u!1 &3275911114666956986
 GameObject:
   m_ObjectHideFlags: 0
@@ -3051,7 +3183,7 @@ Transform:
   m_Children:
   - {fileID: 2756405256419203544}
   m_Father: {fileID: 1474748360388731497}
-  m_LocalEulerAnglesHint: {x: 0.02100201, y: -0.000008416411, z: -0.000005218409}
+  m_LocalEulerAnglesHint: {x: -0.1815703, y: 2.518785, z: 2.6053917}
 --- !u!1 &3320372323028835293
 GameObject:
   m_ObjectHideFlags: 0
@@ -3115,7 +3247,7 @@ Transform:
   - {fileID: 6878032534849975789}
   - {fileID: 6472118728543943946}
   m_Father: {fileID: 6049917985640779311}
-  m_LocalEulerAnglesHint: {x: 30.21478, y: -155.01244, z: 10.86535}
+  m_LocalEulerAnglesHint: {x: 29.964636, y: -178.08084, z: -11.400697}
 --- !u!1 &3346736917177530380
 GameObject:
   m_ObjectHideFlags: 0
@@ -3429,7 +3561,7 @@ Transform:
   - {fileID: 3385882186619424120}
   - {fileID: 3949030364235504406}
   m_Father: {fileID: 6119314003130502587}
-  m_LocalEulerAnglesHint: {x: 20.137882, y: -57.034893, z: 1.6813161}
+  m_LocalEulerAnglesHint: {x: -26.088413, y: -68.1395, z: -14.352989}
 --- !u!1 &4124917820233702332
 GameObject:
   m_ObjectHideFlags: 0
@@ -3547,11 +3679,18 @@ MonoBehaviour:
   controller: {fileID: 0}
   lockAction: 0
   possibleActions:
+  - input: {fileID: -5815494970741274944, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+      type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 8937721864928111967}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
   - input: {fileID: -5811927394845417266, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
       type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 6630164468072911266}
+      - _Target: {fileID: 8937721864928111967}
         _MemberName: TransitionTo
         _PersistentArguments: []
   nextState: {fileID: 0}
@@ -3617,7 +3756,7 @@ Transform:
   m_Children:
   - {fileID: 8730721630296804507}
   m_Father: {fileID: 430594095961064573}
-  m_LocalEulerAnglesHint: {x: 7.5258727, y: -102.424355, z: 9.974901}
+  m_LocalEulerAnglesHint: {x: 10.017077, y: -91.70142, z: 17.56527}
 --- !u!1 &4187272217151358159
 GameObject:
   m_ObjectHideFlags: 0
@@ -3983,8 +4122,8 @@ MonoBehaviour:
   - input: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 1371118413310184343}
-        _MemberName: JumpAction
+      - _Target: {fileID: 6062820148927623488}
+        _MemberName: BeginJump
         _PersistentArguments: []
   - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
       type: 3}
@@ -3996,15 +4135,49 @@ MonoBehaviour:
   - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 6901183049837345610}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
+      - _Target: {fileID: 2714541672873312079}
+        _MemberName: TryGrabThrow
+        _PersistentArguments:
+        - _Type: 13
+          _Int: 0
+          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 5639727482222500743}
+        - _Type: 1
+          _Int: 0
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 6901183049837345610}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
+      - _Target: {fileID: 2714541672873312079}
+        _MemberName: TryGrabThrow
+        _PersistentArguments:
+        - _Type: 13
+          _Int: 0
+          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 5639727482222500743}
+        - _Type: 1
+          _Int: 1
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   nextState: {fileID: 0}
 --- !u!114 &5006421896293173243
 MonoBehaviour:
@@ -4055,7 +4228,7 @@ Transform:
   - {fileID: 3825655863609033182}
   - {fileID: 3708816382906302327}
   m_Father: {fileID: 8730721630296804507}
-  m_LocalEulerAnglesHint: {x: -4.6006393, y: -17.87656, z: -39.037624}
+  m_LocalEulerAnglesHint: {x: -2.038529, y: -8.377204, z: -27.30911}
 --- !u!1 &4452476515952936512
 GameObject:
   m_ObjectHideFlags: 0
@@ -4246,7 +4419,6 @@ GameObject:
   - component: {fileID: 6790216793252147034}
   - component: {fileID: 1625394358674883294}
   - component: {fileID: 3698709666984973678}
-  - component: {fileID: 3226011544157808691}
   - component: {fileID: 7633287343120757845}
   - component: {fileID: 3818254776817288668}
   m_Layer: 0
@@ -4323,22 +4495,6 @@ MonoBehaviour:
   jumpPower: 14
   jumpMinHeight: 2
   allowMidFall: 1
---- !u!114 &3226011544157808691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4568227700120816147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 1
-  onEnterName: Jump 1
-  onEnterTime: 0.01
-  animator: {fileID: 0}
 --- !u!114 &7633287343120757845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4360,15 +4516,62 @@ MonoBehaviour:
       type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 6630164468072911266}
+      - _Target: {fileID: 8937721864928111967}
+        _MemberName: TransitionTo
+        _PersistentArguments: []
+  - input: {fileID: -5815494970741274944, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+      type: 3}
+    result:
+      _PersistentCalls:
+      - _Target: {fileID: 8937721864928111967}
         _MemberName: TransitionTo
         _PersistentArguments: []
   - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
-      _PersistentCalls: []
+      _PersistentCalls:
+      - _Target: {fileID: 2714541672873312079}
+        _MemberName: TryGrabThrow
+        _PersistentArguments:
+        - _Type: 13
+          _Int: 0
+          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 1181195091599698405}
+        - _Type: 1
+          _Int: 0
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
-      _PersistentCalls: []
+      _PersistentCalls:
+      - _Target: {fileID: 2714541672873312079}
+        _MemberName: TryGrabThrow
+        _PersistentArguments:
+        - _Type: 13
+          _Int: 0
+          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 1181195091599698405}
+        - _Type: 1
+          _Int: 1
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   nextState: {fileID: 0}
 --- !u!114 &3818254776817288668
 MonoBehaviour:
@@ -4449,7 +4652,7 @@ Transform:
   m_Children:
   - {fileID: 2745291762251493284}
   m_Father: {fileID: 5575870729952292620}
-  m_LocalEulerAnglesHint: {x: 1.0007496, y: 0.37761033, z: 0.76669514}
+  m_LocalEulerAnglesHint: {x: -0.24132133, y: -14.842965, z: 7.3150983}
 --- !u!1 &4847132524298841716
 GameObject:
   m_ObjectHideFlags: 0
@@ -4704,7 +4907,7 @@ Transform:
   m_Children:
   - {fileID: 8092589329398367124}
   m_Father: {fileID: 4658731633878875590}
-  m_LocalEulerAnglesHint: {x: -39.842182, y: -35.585854, z: 39.212746}
+  m_LocalEulerAnglesHint: {x: -35.992413, y: -17.245586, z: 45.166447}
 --- !u!1 &4969915113144856558
 GameObject:
   m_ObjectHideFlags: 0
@@ -4891,7 +5094,7 @@ Transform:
   m_Children:
   - {fileID: 9182283250802229311}
   m_Father: {fileID: 8990209623019993376}
-  m_LocalEulerAnglesHint: {x: -3.324721, y: -28.597286, z: -9.790768}
+  m_LocalEulerAnglesHint: {x: -2.2847817, y: -31.25658, z: -4.610073}
 --- !u!1 &5298102071390176992
 GameObject:
   m_ObjectHideFlags: 0
@@ -5060,9 +5263,9 @@ MonoBehaviour:
   flatGravity: 0
   fallState: {fileID: 8653995511402254534}
   upwards: 1
-  jumpHeight: 1
+  jumpHeight: 2
   jumpPower: 10
-  jumpMinHeight: 1
+  jumpMinHeight: 2
   allowMidFall: 0
 --- !u!135 &1409538746235017687
 SphereCollider:
@@ -5124,8 +5327,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onEntry: 1
-  onEnterName: Jump 1
+  onEntry: 2
+  onEnterName: Somersault
   onEnterTime: 0.01
   animator: {fileID: 0}
 --- !u!114 &7477544725745237100
@@ -5295,7 +5498,7 @@ Transform:
   m_Children:
   - {fileID: 7263763074914503860}
   m_Father: {fileID: 577651859517530263}
-  m_LocalEulerAnglesHint: {x: -16.264265, y: -0.42827898, z: 49.10994}
+  m_LocalEulerAnglesHint: {x: 3.2807515, y: 15.758272, z: 37.171986}
 --- !u!1 &5476920180933388967
 GameObject:
   m_ObjectHideFlags: 0
@@ -5453,8 +5656,8 @@ MonoBehaviour:
   - input: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 1371118413310184343}
-        _MemberName: JumpAction
+      - _Target: {fileID: 3698709666984973678}
+        _MemberName: BeginJump
         _PersistentArguments: []
   - input: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
@@ -5472,15 +5675,49 @@ MonoBehaviour:
   - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 2690473538302802805}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
+      - _Target: {fileID: 2714541672873312079}
+        _MemberName: TryGrabThrow
+        _PersistentArguments:
+        - _Type: 13
+          _Int: 0
+          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 4975428428768240672}
+        - _Type: 1
+          _Int: 0
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 2690473538302802805}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
+      - _Target: {fileID: 2714541672873312079}
+        _MemberName: TryGrabThrow
+        _PersistentArguments:
+        - _Type: 13
+          _Int: 0
+          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 4975428428768240672}
+        - _Type: 1
+          _Int: 1
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   nextState: {fileID: 0}
 --- !u!114 &3271233607042112568
 MonoBehaviour:
@@ -5894,8 +6131,8 @@ MonoBehaviour:
   - input: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 1371118413310184343}
-        _MemberName: JumpAction
+      - _Target: {fileID: 6062820148927623488}
+        _MemberName: BeginJump
         _PersistentArguments: []
   - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
       type: 3}
@@ -5907,15 +6144,49 @@ MonoBehaviour:
   - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 6901183049837345610}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
+      - _Target: {fileID: 2714541672873312079}
+        _MemberName: TryGrabThrow
+        _PersistentArguments:
+        - _Type: 13
+          _Int: 0
+          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 5639727482222500743}
+        - _Type: 1
+          _Int: 0
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 6901183049837345610}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
+      - _Target: {fileID: 2714541672873312079}
+        _MemberName: TryGrabThrow
+        _PersistentArguments:
+        - _Type: 13
+          _Int: 0
+          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 5639727482222500743}
+        - _Type: 1
+          _Int: 1
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   nextState: {fileID: 0}
 --- !u!114 &472102404780835729
 MonoBehaviour:
@@ -6072,10 +6343,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onEntry: 2
-  onEnterName: 
+  onEnterName: SomersaultWindup
   onEnterTime: 0.1
   animator: {fileID: 0}
   isAction: 1
+  readyOnEnd: 1
   onFinishState: {fileID: 6630164468072911266}
 --- !u!1 &6351271714405443707
 GameObject:
@@ -6108,7 +6380,7 @@ Transform:
   m_Children:
   - {fileID: 3225057094629792721}
   m_Father: {fileID: 153912413101986097}
-  m_LocalEulerAnglesHint: {x: 1.9337263, y: -0.0000038707085, z: -0.0000043039754}
+  m_LocalEulerAnglesHint: {x: 2.1208935, y: -6.865208, z: 3.1211164}
 --- !u!1 &6361477669281934816
 GameObject:
   m_ObjectHideFlags: 0
@@ -6205,7 +6477,7 @@ Transform:
   - {fileID: 4394099710664233783}
   - {fileID: 4032396749619053737}
   m_Father: {fileID: 6049917985640779311}
-  m_LocalEulerAnglesHint: {x: -26.903051, y: 178.09065, z: 137.14473}
+  m_LocalEulerAnglesHint: {x: -21.8699, y: 179.34927, z: 168.08577}
 --- !u!1 &6500105468503623956
 GameObject:
   m_ObjectHideFlags: 0
@@ -6416,8 +6688,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onEntry: 1
-  onEnterName: Falling
+  onEntry: 2
+  onEnterName: Somersault
   onEnterTime: 0.01
   animator: {fileID: 0}
 --- !u!114 &1326970059289146713
@@ -6667,8 +6939,8 @@ MonoBehaviour:
   - input: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 1371118413310184343}
-        _MemberName: JumpAction
+      - _Target: {fileID: 3698709666984973678}
+        _MemberName: BeginJump
         _PersistentArguments: []
   - input: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
@@ -6686,15 +6958,49 @@ MonoBehaviour:
   - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 2690473538302802805}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
+      - _Target: {fileID: 2714541672873312079}
+        _MemberName: TryGrabThrow
+        _PersistentArguments:
+        - _Type: 13
+          _Int: 0
+          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 4975428428768240672}
+        - _Type: 1
+          _Int: 0
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
     result:
       _PersistentCalls:
-      - _Target: {fileID: 2690473538302802805}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
+      - _Target: {fileID: 2714541672873312079}
+        _MemberName: TryGrabThrow
+        _PersistentArguments:
+        - _Type: 13
+          _Int: 0
+          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+            PublicKeyToken=null
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 4975428428768240672}
+        - _Type: 1
+          _Int: 1
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   nextState: {fileID: 0}
 --- !u!114 &2556941006449818051
 MonoBehaviour:
@@ -6723,6 +7029,7 @@ GameObject:
   - component: {fileID: 6014019409343752396}
   - component: {fileID: 7788667647418580513}
   - component: {fileID: 1944743326319119010}
+  - component: {fileID: 7855582400919300292}
   m_Layer: 0
   m_Name: HeadSlam
   m_TagString: Untagged
@@ -6778,6 +7085,27 @@ MonoBehaviour:
   onEnterName: Headbutt
   onEnterTime: 0.1
   animator: {fileID: 0}
+--- !u!114 &7855582400919300292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6824799447565327635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9941058b321f6b4d9f1f2cec53de651, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  trueActive: 0
+  horizontalNegateType: 1
+  verticalNegateType: 4
+  rate: 0.5
+  dampenPoint: 0
+  savePriorVelocity: 0
 --- !u!1 &6856651212475842981
 GameObject:
   m_ObjectHideFlags: 0
@@ -6809,7 +7137,7 @@ Transform:
   m_Children:
   - {fileID: 1237757505085222623}
   m_Father: {fileID: 8776688145745335546}
-  m_LocalEulerAnglesHint: {x: -2.332759, y: -0.0000016666412, z: -0.000006663731}
+  m_LocalEulerAnglesHint: {x: -2.844806, y: -14.200976, z: -4.113375}
 --- !u!1 &6867780156947635812
 GameObject:
   m_ObjectHideFlags: 0
@@ -7011,7 +7339,7 @@ Transform:
   m_Children:
   - {fileID: 1006988339830267982}
   m_Father: {fileID: 7004084140024539114}
-  m_LocalEulerAnglesHint: {x: -1.228178, y: -15.405942, z: -5.461367}
+  m_LocalEulerAnglesHint: {x: -3.4544127, y: -34.944603, z: -9.196211}
 --- !u!1 &7096887498379887379
 GameObject:
   m_ObjectHideFlags: 0
@@ -7043,7 +7371,7 @@ Transform:
   m_Children:
   - {fileID: 2486181950448375229}
   m_Father: {fileID: 3825655863609033182}
-  m_LocalEulerAnglesHint: {x: -10.381231, y: 10.727801, z: 58.070045}
+  m_LocalEulerAnglesHint: {x: -4.595527, y: 5.6122775, z: 61.070213}
 --- !u!1 &7135833200255002569
 GameObject:
   m_ObjectHideFlags: 0
@@ -7200,7 +7528,7 @@ Transform:
   m_Children:
   - {fileID: 2483940894785225649}
   m_Father: {fileID: 8092589329398367124}
-  m_LocalEulerAnglesHint: {x: 0.021001626, y: 0.000004564093, z: 0.000010054808}
+  m_LocalEulerAnglesHint: {x: 0.037942633, y: -0.92482066, z: 3.53252}
 --- !u!1 &7428042679747698151
 GameObject:
   m_ObjectHideFlags: 0
@@ -7294,7 +7622,7 @@ Transform:
   m_Children:
   - {fileID: 8695169672284203444}
   m_Father: {fileID: 8072541376865006971}
-  m_LocalEulerAnglesHint: {x: 1.1583666, y: 1.3577458, z: -97.78315}
+  m_LocalEulerAnglesHint: {x: 0.7514342, y: 2.1973505, z: -96.16559}
 --- !u!1 &7834032898238153581
 GameObject:
   m_ObjectHideFlags: 0
@@ -7336,6 +7664,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6608803627792800818}
   - component: {fileID: 6901183049837345610}
+  - component: {fileID: 5639727482222500743}
+  - component: {fileID: 5014071346553676600}
   m_Layer: 0
   m_Name: DashGrab
   m_TagString: Untagged
@@ -7375,6 +7705,49 @@ MonoBehaviour:
   onActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5639727482222500743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7879129699227318313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9ea06674c3fe044c81dee4e88f1ae12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  trueActive: 0
+  horizontalNegateType: 1
+  verticalNegateType: 4
+  rate: 0.5
+  dampenPoint: 0
+  savePriorVelocity: 0
+  air: 0
+  wasHeld: 0
+  success: 0
+--- !u!114 &5014071346553676600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7879129699227318313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c9eaa4b4a6862748b493a792ddc66eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 2
+  onEnterName: Grab
+  onEnterTime: 0.01
+  animator: {fileID: 0}
+  isAction: 1
+  readyOnEnd: 1
+  onFinishState: {fileID: 3812935324549841644}
 --- !u!1 &7933393490922267429
 GameObject:
   m_ObjectHideFlags: 0
@@ -7449,6 +7822,7 @@ GameObject:
   - component: {fileID: 5567832916535865027}
   - component: {fileID: 526751390115838530}
   - component: {fileID: 6960195376670105774}
+  - component: {fileID: 7462901747141470752}
   m_Layer: 0
   m_Name: UpperCut2
   m_TagString: Untagged
@@ -7522,6 +7896,27 @@ MonoBehaviour:
   onEnterName: Uppercut2
   onEnterTime: 0.1
   animator: {fileID: 0}
+--- !u!114 &7462901747141470752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7983757357760064136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9941058b321f6b4d9f1f2cec53de651, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  trueActive: 0
+  horizontalNegateType: 1
+  verticalNegateType: 4
+  rate: 0.5
+  dampenPoint: 0
+  savePriorVelocity: 0
 --- !u!1 &7986475415449474893
 GameObject:
   m_ObjectHideFlags: 0
@@ -7532,6 +7927,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6499787038979050382}
   - component: {fileID: 2690473538302802805}
+  - component: {fileID: 4975428428768240672}
+  - component: {fileID: 1959526410973501731}
   m_Layer: 0
   m_Name: Grab
   m_TagString: Untagged
@@ -7571,6 +7968,49 @@ MonoBehaviour:
   onActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4975428428768240672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986475415449474893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9ea06674c3fe044c81dee4e88f1ae12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  trueActive: 0
+  horizontalNegateType: 1
+  verticalNegateType: 4
+  rate: 0.5
+  dampenPoint: 0
+  savePriorVelocity: 0
+  air: 0
+  wasHeld: 0
+  success: 0
+--- !u!114 &1959526410973501731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986475415449474893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c9eaa4b4a6862748b493a792ddc66eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 2
+  onEnterName: Grab
+  onEnterTime: 0.01
+  animator: {fileID: 0}
+  isAction: 1
+  readyOnEnd: 1
+  onFinishState: {fileID: 4000547645901868762}
 --- !u!1 &8201560870548631416
 GameObject:
   m_ObjectHideFlags: 0
@@ -7604,7 +8044,7 @@ Transform:
   - {fileID: 7015834793163874879}
   - {fileID: 6910424532621849214}
   m_Father: {fileID: 802911248559169720}
-  m_LocalEulerAnglesHint: {x: -0.4004282, y: -47.029263, z: -90.0017}
+  m_LocalEulerAnglesHint: {x: 1.0418746, y: -89.42543, z: -92.35713}
 --- !u!1 &8208979368628364121
 GameObject:
   m_ObjectHideFlags: 0
@@ -7649,6 +8089,7 @@ GameObject:
   - component: {fileID: 3443062856187106688}
   - component: {fileID: 9109306353394988341}
   - component: {fileID: 3847701285562395558}
+  - component: {fileID: 3472734133598976748}
   m_Layer: 0
   m_Name: UpperCut
   m_TagString: Untagged
@@ -7722,6 +8163,27 @@ MonoBehaviour:
   onEnterName: Uppercut1
   onEnterTime: 0.1
   animator: {fileID: 0}
+--- !u!114 &3472734133598976748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8233020272553458984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9941058b321f6b4d9f1f2cec53de651, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  trueActive: 0
+  horizontalNegateType: 1
+  verticalNegateType: 4
+  rate: 0.5
+  dampenPoint: 0
+  savePriorVelocity: 0
 --- !u!1 &8327432973705280282
 GameObject:
   m_ObjectHideFlags: 0
@@ -7753,7 +8215,7 @@ Transform:
   m_Children:
   - {fileID: 153912413101986097}
   m_Father: {fileID: 4658731633878875590}
-  m_LocalEulerAnglesHint: {x: 30.570614, y: 36.67523, z: 77.18243}
+  m_LocalEulerAnglesHint: {x: 35.469402, y: 28.272818, z: 65.09044}
 --- !u!1 &8385373022166331504
 GameObject:
   m_ObjectHideFlags: 0
@@ -7786,6 +8248,37 @@ Transform:
   - {fileID: 765604308254178198}
   m_Father: {fileID: 3636628298995017544}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: -10.843948}
+--- !u!1 &8388760004416237034
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3959319021547547142}
+  m_Layer: 0
+  m_Name: OneHand
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3959319021547547142
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8388760004416237034}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3825655863609033182}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8405729866999695410
 GameObject:
   m_ObjectHideFlags: 0
@@ -7981,7 +8474,7 @@ Transform:
   m_Children:
   - {fileID: 6978498797856380663}
   m_Father: {fileID: 430594095961064573}
-  m_LocalEulerAnglesHint: {x: -9.510064, y: 100.73024, z: -161.18663}
+  m_LocalEulerAnglesHint: {x: -11.860658, y: 94.082794, z: -152.80612}
 --- !u!1 &8527717529813097758
 GameObject:
   m_ObjectHideFlags: 0
@@ -8013,7 +8506,7 @@ Transform:
   m_Children:
   - {fileID: 7060264533571552193}
   m_Father: {fileID: 2965703725939741686}
-  m_LocalEulerAnglesHint: {x: 1.9337415, y: 0.0000020930004, z: -0.0000013629062}
+  m_LocalEulerAnglesHint: {x: 3.5302489, y: -7.3118205, z: 3.3772984}
 --- !u!1 &8547397943309547804
 GameObject:
   m_ObjectHideFlags: 0
@@ -8138,7 +8631,7 @@ Transform:
   m_Children:
   - {fileID: 5223694443028979170}
   m_Father: {fileID: 2283630068836833606}
-  m_LocalEulerAnglesHint: {x: 1.1299666, y: 0.0000017993654, z: 0.000006761584}
+  m_LocalEulerAnglesHint: {x: 0.9165338, y: -11.913608, z: -2.0460215}
 --- !u!1 &8609352716840465281
 GameObject:
   m_ObjectHideFlags: 0
@@ -8234,7 +8727,7 @@ Transform:
   m_Children:
   - {fileID: 5548677124390253457}
   m_Father: {fileID: 1789038507570394523}
-  m_LocalEulerAnglesHint: {x: 2.891308, y: -18.152195, z: 10.067464}
+  m_LocalEulerAnglesHint: {x: -2.1507504, y: -7.6748977, z: 2.1117575}
 --- !u!1 &8652558580763543935
 GameObject:
   m_ObjectHideFlags: 0
@@ -8267,7 +8760,7 @@ Transform:
   - {fileID: 7922418922289687215}
   - {fileID: 8602250085024022621}
   m_Father: {fileID: 2376667544890222276}
-  m_LocalEulerAnglesHint: {x: 6.0281887, y: -68.09158, z: -21.620626}
+  m_LocalEulerAnglesHint: {x: -27.83813, y: -66.4995, z: -12.03189}
 --- !u!1 &8749710009740494907
 GameObject:
   m_ObjectHideFlags: 0
@@ -8331,7 +8824,7 @@ Transform:
   m_Children:
   - {fileID: 4895629718662127355}
   m_Father: {fileID: 2486181950448375229}
-  m_LocalEulerAnglesHint: {x: -2.33276, y: -0.000009309256, z: -0.000002555851}
+  m_LocalEulerAnglesHint: {x: -2.4751492, y: -7.4948916, z: -2.1759953}
 --- !u!1 &8981232258050459337
 GameObject:
   m_ObjectHideFlags: 0
@@ -8395,7 +8888,7 @@ Transform:
   m_Children:
   - {fileID: 1474748360388731497}
   m_Father: {fileID: 3825655863609033182}
-  m_LocalEulerAnglesHint: {x: -37.598404, y: -14.09635, z: 33.29686}
+  m_LocalEulerAnglesHint: {x: -33.593307, y: -36.28728, z: 56.777992}
 --- !u!1 &9149376269122314372
 GameObject:
   m_ObjectHideFlags: 0
@@ -8428,7 +8921,7 @@ Transform:
   - {fileID: 5632459594431853759}
   - {fileID: 8740633168634587922}
   m_Father: {fileID: 430594095961064573}
-  m_LocalEulerAnglesHint: {x: -0.39934644, y: -0.16793433, z: 1.4171207}
+  m_LocalEulerAnglesHint: {x: 0.9176473, y: 1.6234307, z: 1.5094686}
 --- !u!1 &9169919536835946083
 GameObject:
   m_ObjectHideFlags: 0

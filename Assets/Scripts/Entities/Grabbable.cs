@@ -73,11 +73,11 @@ public abstract class Grabber : MonoBehaviour
 
     public bool grabbing => currentGrabbed != null;
 
-    protected bool AttemptGrab(GameObject target)
+    protected bool AttemptGrab(GameObject target, out Grabbable result, bool doGrab = true)
     {
-        if (Grabbable.Grab(target, out Grabbable result))
+        if (Grabbable.Grab(target, out  result))
         {
-            BeginGrab(result);
+            if(doGrab) BeginGrab(result);
             return true;
         }
         else return false;

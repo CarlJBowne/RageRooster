@@ -115,7 +115,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         {
             if (body.velocity.y > 0) Y = 0;
             phase = 3;
-            if (fallState != null) fallState.Begin();
+            if (fallState != null) fallState.Enter();
         }
 
     }
@@ -125,10 +125,14 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         base.OnEnter(prev, isFinal);
         if (!isFinal) return;
 
-        if (!upwards || body.jumpPhase != -1) return;
+        if (!upwards || (body.jumpPhase > 0 && !isDash)) return;
+
         body.jumpPhase = 0;
+        if (isDash) body.currentSpeed = maxSpeed;
+
+        if (!upwards) return;
+
         body.VelocitySet(y: jumpPower);
-        if (jumpPower <= 0) return;
         targetMinHeight = transform.position.y + jumpMinHeight;
         targetHeight = (transform.position.y + jumpHeight) - (jumpPower.P()) / (2 * gravity);
         if (targetHeight <= transform.position.y)
@@ -148,13 +152,8 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     }
     public override void OnExit(State next) => body.jumpPhase = -1;
 
-    public void Begin() => state.TransitionTo();
-    public void BeginJump()
-    {
-        body.jumpPhase = -1;
-        if (isDash) body.currentSpeed = maxSpeed;
-        state.TransitionTo();
-    }
+    public void Enter() => state.TransitionTo();
+    public void BeginJump() => body.TryBeginJump(this);
     public void BeginJump(float power, float height, float minHeight)
     {
         if (!upwards) throw new System.Exception("This isn't an Upward Item.");

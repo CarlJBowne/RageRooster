@@ -14,10 +14,10 @@ public class PlayerMovementNegater : PlayerMovementEffector
     public float dampenPoint;
     public bool savePriorVelocity;
 
-    private bool disabled;
-    private Vector3 savedVelocity;
-    private float savedHorizontalSpeed;
-    private int savedJumpPhase;
+    protected bool disabled;
+    protected Vector3 savedVelocity;
+    protected float savedHorizontalSpeed;
+    protected int savedJumpPhase;
 
     public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
@@ -33,42 +33,42 @@ public class PlayerMovementNegater : PlayerMovementEffector
                 body.currentSpeed = 0;
                 break;
             case NegateType.SmoothNegate:
-                resultX = Mathf.MoveTowards(body.velocity.y, 0, rate);
-                resultZ = Mathf.MoveTowards(body.velocity.y, 0, rate);
+                resultX = Mathf.MoveTowards(body.velocity.x, 0, rate);
+                resultZ = Mathf.MoveTowards(body.velocity.z, 0, rate);
                 body.currentSpeed = Mathf.MoveTowards(body.currentSpeed, 0, rate);
                 break;
             case NegateType.Dampen:
-                resultX = Mathf.Clamp(body.velocity.y, -dampenPoint, dampenPoint);
-                resultZ = Mathf.Clamp(body.velocity.y, -dampenPoint, dampenPoint);
+                resultX = Mathf.Clamp(body.velocity.x, -dampenPoint, dampenPoint);
+                resultZ = Mathf.Clamp(body.velocity.z, -dampenPoint, dampenPoint);
                 body.currentSpeed = Mathf.Min(body.currentSpeed, dampenPoint);
                 break;
             case NegateType.SmoothDampen:
-                resultX = Mathf.MoveTowards(body.velocity.y, dampenPoint * body.velocity.y.Sign(), rate);
-                resultZ = Mathf.MoveTowards(body.velocity.y, dampenPoint * body.velocity.y.Sign(), rate);
+                resultX = Mathf.MoveTowards(body.velocity.x, dampenPoint * body.velocity.x.Sign(), rate);
+                resultZ = Mathf.MoveTowards(body.velocity.z, dampenPoint * body.velocity.z.Sign(), rate);
                 body.currentSpeed = Mathf.MoveTowards(body.currentSpeed, dampenPoint, rate);
                 break;
             default:
                 break;
         }
     }
-    public override void VerticalMovement(out float? result)
+    public override void VerticalMovement(out float? resultY)
     {
-        result = null;
+        resultY = null;
         if (disabled) return;
 
         switch (horizontalNegateType)
         {
             case NegateType.InstantNegate:
-                result = 0;
+                resultY = 0;
                 break;
             case NegateType.SmoothNegate:
-                result = Mathf.MoveTowards(body.velocity.y, 0, rate);
+                resultY = Mathf.MoveTowards(body.velocity.y, 0, rate);
                 break;
             case NegateType.Dampen:
-                result = Mathf.Clamp(body.velocity.y, -dampenPoint, dampenPoint);
+                resultY = Mathf.Clamp(body.velocity.y, -dampenPoint, dampenPoint);
                 break;
             case NegateType.SmoothDampen:
-                result = Mathf.MoveTowards(body.velocity.y, (dampenPoint * body.velocity.y.Sign()), rate);
+                resultY = Mathf.MoveTowards(body.velocity.y, (dampenPoint * body.velocity.y.Sign()), rate);
                 break;
             default:
                 break;

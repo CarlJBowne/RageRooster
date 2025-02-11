@@ -80,24 +80,12 @@ public class PlayerController : PlayerStateBehavior
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
 		camAdjustedMovement = input.movement.ToXZ().Rotate(M.cameraTransform.eulerAngles.y, Vector3.up);
 
-		if ((input.jump.IsPressed() && sFall && !grabber.currentGrabbed) || (!input.jump.IsPressed() && sGlide))
-        {
-            TransitionTo(input.jump.IsPressed() ? sGlide : sFall);
-            M.animator.SetBool("Gliding", sGlide);
-        }
-			
+		if (readyForNextAction && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
+            sGlide.TransitionTo();
+        else if(readyForNextAction && !input.jump.IsPressed() && sGlide) 
+            sFall.TransitionTo();
 
-		//if (input.chargeTap.IsPressed() && sGrounded || !input.chargeTap.IsPressed() && sCharge)
-		//	TransitionTo(input.chargeTap.IsPressed() ? sCharge : sIdleWalk);
-
-        //if (input.chargeTap.WasPressedThisFrame() && sAirborne && !airChargeState.state && !airChargeFallState.state)
-        //{
-        //    airChargeState.BeginJump();
-        //    body.currentSpeed = airChargeState.state.Behavior<PlayerDirectionalMovement>().maxSpeed;
-        //    body.currentDirection = controller.camAdjustedMovement.magnitude > 0.1f ? controller.camAdjustedMovement : transform.forward;
-        //}
-
-		if (M.freeLookCamera != null)
+        if (M.freeLookCamera != null)
         {
             M.freeLookCamera.Follow = transform;
             M.freeLookCamera.LookAt = transform;
@@ -110,7 +98,7 @@ public class PlayerController : PlayerStateBehavior
         jumpInput = 0;
         return result;
     }
-
+    public void BeginJumpInputBuffer() => jumpInput = jumpBuffer + Time.fixedDeltaTime;
 
 
 
@@ -122,6 +110,7 @@ public class PlayerController : PlayerStateBehavior
 
     private void BeginActionEvent(InputAction.CallbackContext callbackContext)
     {
+        if (PauseMenu.Active) return;
         InputActionReference action = callbackContext.action.Reference();
         if (!readyForNextAction || currentAction == null || !currentAction.TryNextAction(action))
         {
@@ -160,19 +149,6 @@ public class PlayerController : PlayerStateBehavior
     {
         if (readyForNextAction && currentAction != null) currentAction.Finish();
         else if (M.currentState.TryGetComponent(out PlayerStateAnimator anim)) anim.Finish();
-    }
-
-
-    public void JumpAction()
-    { 
-        if (sGrounded || (sAirborne && body.coyoteTimeLeft > 0)) body.BeginJump();
-        else jumpInput = jumpBuffer + Time.fixedDeltaTime;
-
-    }
-
-    public void GrabAction(bool held)
-    {
-
     }
 
     public void ParryAction()

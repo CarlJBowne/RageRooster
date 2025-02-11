@@ -1,16 +1,6 @@
-﻿using AYellowpaper.SerializedCollections;
-using FMOD.Studio;
-using SLS.StateMachineV3;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.Events;
+﻿using SLS.StateMachineV3;
 using UnityEngine.InputSystem;
 using UltEvents;
-using EditorAttributes;
-using Timer;
-using UnityEditor;
 
 public class PlayerControlAction : PlayerStateBehavior
 {

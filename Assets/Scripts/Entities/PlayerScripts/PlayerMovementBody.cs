@@ -201,8 +201,8 @@ public class PlayerMovementBody : PlayerStateBehavior
         if (grounded)
         {
             jumpPhase = -1;
-            if (!sGrounded.active)TransitionTo(sGrounded);
-            if (controller.CheckJumpBuffer()) BeginJump();
+            if (!sGrounded.active) TransitionTo(sGrounded);
+            if (controller.CheckJumpBuffer()) controller.currentAction.TryNextAction(this.input.jump.Reference());
         }
         else
         {
@@ -222,12 +222,16 @@ public class PlayerMovementBody : PlayerStateBehavior
         return A < maxSlopeNormalAngle;
     }
 
-    public void BeginJump()
+    public void TryBeginJump(PlayerAirborneMovement target)
     {
-        if (!sCharge.active) jumpState1.BeginJump();
-        else airChargeState.BeginJump();
-        grounded = false;
-        LatchAnchor(null);
+        if ((grounded && sGrounded) || (sAirborne && body.coyoteTimeLeft > 0))
+        {
+            target.state.TransitionTo();
+            grounded = false;
+            LatchAnchor(null);
+        }
+
+        else controller.CheckJumpBuffer();
     }
 
     private void OnCollisionEnter(Collision collision)
