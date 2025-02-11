@@ -71,6 +71,7 @@ public class ZoneManager : Singleton<ZoneManager>
     {
         if (sceneName == currentZone.name) return;
         currentZone = proxies[sceneName].GetRoot();
+        currentZone.OnTransition();
     }
 
     // Checks if the given zone proxy is the current zone.
