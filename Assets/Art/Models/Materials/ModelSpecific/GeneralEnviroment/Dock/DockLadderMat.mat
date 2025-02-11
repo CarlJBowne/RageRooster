@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CavernRailsMat
+  m_Name: DockLadderMat
   m_Shader: {fileID: -6465566751694194690, guid: 2142df523968ecc49b2d499c9bb004a0,
     type: 3}
   m_Parent: {fileID: 0}
@@ -29,11 +29,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 10e12a7f2c9ca584aaf402503a9e4266, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9818b9e4287ba6149a9cc34e0a9b6770, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d7ca4764b07659349b7af60867d46426, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -57,7 +57,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 10e12a7f2c9ca584aaf402503a9e4266, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9818b9e4287ba6149a9cc34e0a9b6770, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -65,11 +65,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Metallic_Map:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 3b31337d51df9b7468907bc417cf1f45, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normal:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d7ca4764b07659349b7af60867d46426, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -81,7 +81,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Roughness_Map:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 4b43f074c45058846b2b80ba4a6437b4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -89,7 +89,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture:
-        m_Texture: {fileID: 2800000, guid: 10e12a7f2c9ca584aaf402503a9e4266, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9818b9e4287ba6149a9cc34e0a9b6770, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_e78998782f17444492658cb79598c1f5_Out_0_Texture2D:
@@ -110,7 +110,6 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AO_Intensity: 1
     - _AdditionalLightThreshold: 0.49
     - _AlphaClip: 0
     - _AlphaToMask: 0
@@ -149,17 +148,17 @@ Material:
     - _UVSec: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
-    - _metallic_value: -2
-    - _smoothness: -0.99
+    - _metallic_value: -0.06
+    - _smoothness: -0.64
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1.4071728, g: 1.4071728, b: 1.4071728, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &5646692127433278905
+--- !u!114 &3766717307688590687
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
