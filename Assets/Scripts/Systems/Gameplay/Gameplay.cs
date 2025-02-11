@@ -21,7 +21,7 @@ public class Gameplay : Singleton<Gameplay>
 
     public static string spawnSceneName = null;
     public static int spawnPointID = -1;
-    
+
 
     public const string GAMEPLAY_SCENE_NAME = "GameplayScene";
 
@@ -35,13 +35,15 @@ public class Gameplay : Singleton<Gameplay>
 
     protected static System.Action PostMaLoad;
 
-
+    // Begins the main menu by loading the gameplay scene and setting the active save file.
     public static void BeginMainMenu(int fileNo)
     {
         if (Gameplay.Active) return;
         GlobalState.activeSaveFile = fileNo;
         SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
     }
+
+    // Begins a new scene by loading the specified scene.
     public static void BeginScene(string sceneToLoad)
     {
         if (Gameplay.Active) return;
@@ -55,6 +57,8 @@ public class Gameplay : Singleton<Gameplay>
         };
         SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
     }
+
+    // Begins a scene from a save point by loading the specified scene and spawn point.
     public static void BeginSavePoint(string sceneToLoad, int spawnID)
     {
         if (Gameplay.Active) return;
@@ -65,9 +69,10 @@ public class Gameplay : Singleton<Gameplay>
         };
         SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
     }
+
+    // Called when the Gameplay singleton is awakened. Loads the global state and initializes the zone manager.
     protected override void OnAwake()
     {
-        
         GlobalState.Load();
 
         PostMaLoad?.Invoke();
@@ -84,6 +89,7 @@ public class Gameplay : Singleton<Gameplay>
         };
     }
 
+    // Called on the first load of the zone manager. Moves the player to the spawn point and activates the player.
     private void OnFirstLoad()
     {
         SavePoint spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
@@ -91,18 +97,24 @@ public class Gameplay : Singleton<Gameplay>
         Player.gameObject.SetActive(true);
     }
 
+    // Spawns the player by starting a coroutine.
     public static void SpawnPlayer() => new CoroutinePlus(Get().SpawnPlayer_CR(), Get());
+
+    // Resets the game to the saved state by starting a coroutine.
     public void ResetToSaved() => new CoroutinePlus(Get().ResetToSaved_CR(), Get());
 
+    // Coroutine for spawning the player. Loads the spawn scene if not already loaded and moves the player to the spawn point.
     private IEnumerator SpawnPlayer_CR()
     {
-        if(!ZoneManager.ZoneIsReady(spawnSceneName)) SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
+        if (!ZoneManager.ZoneIsReady(spawnSceneName)) SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
 
         yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
 
         ZoneManager.DoTransition(spawnSceneName);
         Player.GetComponent<PlayerStateMachine>().InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
     }
+
+    // Coroutine for resetting the game to the saved state. Unloads all zones, loads the global state, and moves the player to the spawn point.
     private IEnumerator ResetToSaved_CR()
     {
         Player.SetActive(false);
@@ -115,8 +127,6 @@ public class Gameplay : Singleton<Gameplay>
         ZoneManager.DoTransition(spawnSceneName);
         Player.GetComponent<PlayerStateMachine>().InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
     }
-
-
 }
 
 #if UNITY_EDITOR
@@ -139,8 +149,6 @@ public class GameplayEditor : Editor
 
         serializedObject.ApplyModifiedProperties();
     }
-
-
 }
 #endif
 
