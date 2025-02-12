@@ -11,6 +11,8 @@ public class PlayerGroundSlam : PlayerMovementEffector
     public PlayerAirborneMovement bouncingState;
     private SphereCollider attackCollider;
 
+    public override void OnAwake() => attackCollider = GetComponent<SphereCollider>();
+
     public override void VerticalMovement(out float? result)
     {
         result = ApplyGravity(gravity, terminalVelocity, flatGravity);

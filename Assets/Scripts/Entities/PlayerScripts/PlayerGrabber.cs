@@ -17,6 +17,7 @@ public class PlayerGrabber : Grabber
     public State groundState;
     public State airBorneState;
     public Upgrade dropLaunchUpgrade;
+    public PlayerAirborneMovement jumpState;
 
     #endregion
     #region Data
@@ -73,6 +74,7 @@ public class PlayerGrabber : Grabber
 
             upcomingLaunchVelocity = Vector3.down * launchVelocity;
             move.VelocitySet(y: launchJumpMult * launchVelocity);
+            jumpState.Enter();
         }
         if(currentGrabbed.TryGetComponent(out EnemyHealth health))
         {

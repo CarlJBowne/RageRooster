@@ -23,10 +23,11 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     public PlayerAirborneMovement fallState;
     [ToggleGroup("Upwards", nameof(jumpHeight), nameof(jumpPower), nameof(jumpMinHeight), nameof(allowMidFall))]
     public bool upwards;
-    [HideInInspector] public float jumpHeight;
-    [HideInInspector] public float jumpPower;
-    [HideInInspector] public float jumpMinHeight;
-    public bool allowMidFall = true;
+    [HideProperty] public float jumpHeight;
+    [HideProperty] public float jumpPower;
+    [HideProperty] public float jumpMinHeight;
+    [HideField(nameof(upwards))] public bool forceDownwards;
+    [ShowField(nameof(upwards))] public bool allowMidFall = true;
 
     protected float targetMinHeight;
     protected float targetHeight;
@@ -125,6 +126,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         base.OnEnter(prev, isFinal);
         if (!isFinal) return;
 
+        if (!upwards && forceDownwards) body.VelocitySet(y: body.velocity.y.Max(0));
         if (!upwards || (body.jumpPhase > 0 && !isDash)) return;
 
         body.jumpPhase = 0;
