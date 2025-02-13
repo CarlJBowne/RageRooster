@@ -151,6 +151,8 @@ public static class __RemappingExtensions
     public static string GetBindingPath(this InputAction This, string group = null) => This.bindings[This.GetBindingIndex(group: group)].path;
     public static string GetBindingEffectivePath(this InputAction This, string group = null) => This.bindings[This.GetBindingIndex(group: group)].effectivePath;
     public static string GetBindingOverridePath(this InputAction This, string group = null) => This.bindings[This.GetBindingIndex(group: group)].overridePath;
+
+    public static InputActionReference Reference(this InputAction This) => InputActionReference.Create(This);
 }
 
 /*

@@ -700,6 +700,7 @@ GameObject:
   - component: {fileID: 6003309191609501265}
   - component: {fileID: 4863964995059642808}
   - component: {fileID: 3332179714480363266}
+  - component: {fileID: 1161913864714086396}
   m_Layer: 7
   m_Name: FloatingEnemy2
   m_TagString: Untagged
@@ -812,21 +813,18 @@ MonoBehaviour:
   depleteEvent:
     m_PersistentCalls:
       m_Calls: []
+  immuneTags: []
   health: 0
   stunTime: 0.2
   poofPrefab: {fileID: 0}
   disableComponents:
   - {fileID: 1878912946628853510}
   - {fileID: 5419231795522299808}
+  enemyLootSpawner: {fileID: 0}
   ragDoll: 1
   minRagdollTime: 2
   maxRagdollTime: 5
   minRagdollVelovity: 0.2
-  thrownAttack:
-    amount: 10
-    name: Enemy Thrown
-    wham: 1
-    velocity: {x: 0, y: 0, z: 0}
   projectile: 0
   hasRagdolled: 0
   respawn: 0
@@ -910,6 +908,26 @@ MonoBehaviour:
     dot: 80
     lineOfSight: 0
     autoRotateDelta: 0.2
+--- !u!114 &1161913864714086396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2551659374973096520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e08d19e70a0a44ba49ccb39b83df8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack:
+    amount: 10
+    velocity: {x: 0, y: 0, z: 0}
+    tags:
+    - name: Thrown
+    - name: ThrownEnemy
+  sourceEntity: {fileID: 0}
+  enabled: 1
 --- !u!1 &2559604377289995549
 GameObject:
   m_ObjectHideFlags: 0

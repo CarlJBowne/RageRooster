@@ -125,12 +125,12 @@ namespace SLS.StateMachineV3
         public void DoUpdate()
         {
             behaviors.DoUpdate();
-            if (childCount>0 && activeChild) activeChild.DoUpdate();
+            if (childCount>0 && activeChild != null) activeChild.DoUpdate();
         }
         public void DoFixedUpdate()
         {
             behaviors.DoFixedUpdate();
-            if (childCount > 0 && activeChild) activeChild.DoFixedUpdate();
+            if (childCount > 0 && activeChild != null) activeChild.DoFixedUpdate(); 
         }
         public State EnterState(State prev, bool specifically = true)
         {
@@ -138,10 +138,10 @@ namespace SLS.StateMachineV3
             active = true;
 
             base.gameObject.SetActive(true);
+             
+            behaviors.DoEnter(prev, specifically && (childCount == 0 || separateFromChildren));
 
-            behaviors.DoEnter(prev);
-
-            if (specifically && childCount > 0 && !separateFromChildren)
+            if (specifically && childCount > 0 && !separateFromChildren) 
             {
                 activeChild = children[0];
                 return activeChild.EnterState(prev, specifically);
@@ -189,7 +189,7 @@ namespace SLS.StateMachineV3
         public virtual void OnAwake() { }
         public virtual void OnUpdate() { }
         public virtual void OnFixedUpdate() { }
-        public virtual void OnEnter(State prev) { }
+        public virtual void OnEnter(State prev, bool isFinal) { }
         public virtual void OnExit(State next) { }
 
         public C GetComponentFromMachine<C>() where C : Component => M.GetComponent<C>();
@@ -216,8 +216,8 @@ namespace SLS.StateMachineV3
         { for (int i = 0; i < beahviors.Length; i++) beahviors[i].OnUpdate(); }
         public static void DoFixedUpdate(this StateBehavior[] beahviors)
         { for (int i = 0; i < beahviors.Length; i++) beahviors[i].OnFixedUpdate(); }
-        public static void DoEnter(this StateBehavior[] states, State prev)
-        { for (int i = 0; i < states.Length; i++) states[i].OnEnter(prev); }
+        public static void DoEnter(this StateBehavior[] states, State prev, bool isFinal)
+        { for (int i = 0; i < states.Length; i++) states[i].OnEnter(prev, isFinal); }
         public static void DoExit(this StateBehavior[] states, State next)
         { for (int i = 0; i < states.Length; i++) states[i].OnExit(next); }
 

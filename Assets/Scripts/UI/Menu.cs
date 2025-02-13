@@ -58,15 +58,15 @@ public class Menu : MonoBehaviour
     // Called when the menu is opened
     protected virtual void OnOpen()
     {
-        // if (!openSound.IsNull)
-        //     AudioManager.Get().PlayOneShot(openSound, transform.position);
+         if (!openSound.IsNull)
+             AudioManager.Get().PlayOneShot(openSound, transform.position);
     }
 
     // Called when the menu is closed
     protected virtual void OnClose()
     {
-        // if (!closeSound.IsNull)
-        //     AudioManager.Get().PlayOneShot(closeSound, transform.position);
+        if (!closeSound.IsNull)
+            AudioManager.Get().PlayOneShot(closeSound, transform.position);
     }
 
     public static class Manager

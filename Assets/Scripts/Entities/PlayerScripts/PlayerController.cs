@@ -4,6 +4,8 @@ using System.Linq;
 using EditorAttributes;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using System.Collections.Generic;
+using PCA = PlayerControlAction;
 
 public class PlayerController : PlayerStateBehavior
 {
@@ -19,10 +21,12 @@ public class PlayerController : PlayerStateBehavior
 	//public State glidingState;
 	//public State groundSlamState;
 	public PlayerWallJump wallJumpState;
-    public PlayerAirborn airChargeState;
-    public PlayerAirborn airChargeFallState;
+    public PlayerAirborneMovement airChargeState;
+    public PlayerAirborneMovement airChargeFallState;
 	public Upgrade groundSlamUpgrade;
 	public Upgrade wallJumpUpgrade;
+    public Upgrade ragingChargeUpgrade;
+    public Timer.OneTime inputQueueDecay = new(1f);
 
     public string punchTriggerName;
 
@@ -32,7 +36,6 @@ public class PlayerController : PlayerStateBehavior
 	[HideInInspector] public float jumpInput;
 	[HideInInspector] public Vector3 camAdjustedMovement;
 	[HideInInspector] public PlayerGrabber grabber;
-	//[HideInInspector] public PlayerAttackSystem attack;
 
 	#endregion
 	#region Getters
@@ -44,84 +47,137 @@ public class PlayerController : PlayerStateBehavior
 		grabber = GetComponentFromMachine<PlayerGrabber>();
 		//attack = GetComponentFromMachine<PlayerAttackSystem>();
 
-		input.jump.started += _ => JumpPress();
-		input.grab.started += _ => grabber.GrabButtonPress();
-		input.attack.started += _ => PunchButtonPress();
-		input.parry.started += _ => ParryButtonPress();
-	}
+		input.jump.performed            += BeginActionEvent;
+        input.attackTap.performed       += BeginActionEvent;
+        input.attackHold.performed      += BeginActionEvent;
+        input.grabTap.performed         += BeginActionEvent;
+        input.grabHold.performed        += BeginActionEvent;
+        input.parry.performed           += BeginActionEvent;
+        input.chargeTap.performed       += BeginActionEvent;
+        input.chargeHold.performed      += BeginActionEvent;
+    }
 
 	private void OnDestroy()
 	{
-		input.jump.started -= _ => JumpPress();
-		input.grab.started -= _ => grabber.GrabButtonPress();
-		input.attack.started -= _ => PunchButtonPress();
-        input.parry.started -= _ => ParryButtonPress();
+        input.jump.performed            -= BeginActionEvent;
+        input.attackTap.performed       -= BeginActionEvent;
+        input.attackHold.performed      -= BeginActionEvent;
+        input.grabTap.performed         -= BeginActionEvent;
+        input.grabHold.performed        -= BeginActionEvent;
+        input.parry.performed           -= BeginActionEvent;
+        input.chargeTap.performed       -= BeginActionEvent;
+        input.chargeHold.performed      -= BeginActionEvent;
     }
 
-	public override void OnUpdate()
+    public override void OnUpdate()
 	{
+        if (inputQueueDecay.running) inputQueueDecay.Tick(() =>
+        {
+            if (actionQueue.Count > 0) actionQueue.Dequeue();
+            if (actionQueue.Count > 0) inputQueueDecay.Begin();
+        });
+
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
 		camAdjustedMovement = input.movement.ToXZ().Rotate(M.cameraTransform.eulerAngles.y, Vector3.up);
 
-		if ((input.jump.WasPressedThisFrame() && sFall && !grabber.currentGrabbed) || (!input.jump.WasReleasedThisFrame() && sGlide))
-			TransitionTo(input.jump.IsPressed() ? sGlide : sFall);
-		M.animator.SetBool("Gliding", sGlide);
+		if (readyForNextAction && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
+            sGlide.TransitionTo();
+        else if(readyForNextAction && !input.jump.IsPressed() && sGlide) 
+            sFall.TransitionTo();
 
-		if (input.charge.IsPressed() && sGrounded || !input.charge.IsPressed() && sCharge)
-			TransitionTo(input.charge.IsPressed() ? sCharge : sIdleWalk);
-
-        if (input.charge.WasPressedThisFrame() && sAirborne && !airChargeState.state && !airChargeFallState.state)
-        {
-            airChargeState.BeginJump();
-            body.currentSpeed = airChargeState.state.Behavior<PlayerDirectionalMovement>().maxSpeed;
-            body.currentDirection = controller.camAdjustedMovement.magnitude > 0.1f ? controller.camAdjustedMovement : transform.forward;
-        }
-
-		if (M.freeLookCamera != null)
+        if (M.freeLookCamera != null)
         {
             M.freeLookCamera.Follow = transform;
             M.freeLookCamera.LookAt = transform;
         }
     }
 
-	private void JumpPress()
-	{
-		if (sGrounded || (sAirborne && body.coyoteTimeLeft > 0)) body.BeginJump();
-		else
-		{
-			jumpInput = jumpBuffer + Time.fixedDeltaTime;
+    public bool CheckJumpBuffer()
+    {
+        bool result = jumpInput > 0;
+        jumpInput = 0;
+        return result;
+    }
+    public void BeginJumpInputBuffer() => jumpInput = jumpBuffer + Time.fixedDeltaTime;
 
-			if (wallJumpUpgrade && (sFall || wallJumpState)
-				&& body.rb.DirectionCast(body.currentDirection, 0.5f, body.checkBuffer, out RaycastHit hit))
-				wallJumpState.WallJump(hit.normal); 
-		} 
-		
-	}
 
-	public bool CheckJumpBuffer()
-	{
-		bool result = jumpInput > 0;
-		jumpInput = 0;
-		return result;
-	}
 
-	public void PunchButtonPress()
-	{
-		if (sAirborne && groundSlamUpgrade) sGroundSlam.TransitionTo();
-		else M.animator.SetTrigger(punchTriggerName);
-	}
 
-	public void ParryButtonPress()
-	{
-		var interactCheck = Physics.OverlapSphere(body.center + body.transform.forward * 2, 1.5f);
-        for (int i = 0; i < interactCheck.Length; i++) 
-			if (interactCheck[i].TryGetComponent(out IInteractable foundInteractable))
+    public PCA currentAction;
+    [HideProperty]
+    public bool readyForNextAction = true;
+    public Queue<InputActionReference> actionQueue = new();
+
+    private void BeginActionEvent(InputAction.CallbackContext callbackContext)
+    {
+        if (PauseMenu.Active) return;
+        InputActionReference action = callbackContext.action.Reference();
+        if (!readyForNextAction || currentAction == null || !currentAction.TryNextAction(action))
+        {
+            actionQueue.Enqueue(action);
+            inputQueueDecay.Begin();
+        }
+    }
+
+
+
+
+
+
+    public void ReadyNextAction()
+    {
+        readyForNextAction = true;
+        if(actionQueue.Count > 0)
+        {
+            if(currentAction.HasAction(actionQueue.Peek())) currentAction.TryNextAction(actionQueue.Dequeue());
+            else
             {
-				foundInteractable.Interact();
-				return;
+                actionQueue.Dequeue();
+                while(actionQueue.Count > 0)
+                {
+                    if (currentAction.HasAction(actionQueue.Peek()))
+                    {
+                        currentAction.TryNextAction(actionQueue.Dequeue());
+                        break;
+                    }
+                    else actionQueue.Dequeue();
+                }
+            }
+        }
+    }
+    public void FinishAction()
+    {
+        if (readyForNextAction && currentAction != null) currentAction.Finish();
+        else if (M.currentState.TryGetComponent(out PlayerStateAnimator anim)) anim.Finish();
+    }
+
+    public void ParryAction()
+    {
+        var interactCheck = Physics.OverlapSphere(body.center + body.transform.forward * 2, 1.5f);
+        for (int i = 0; i < interactCheck.Length; i++)
+            if (interactCheck[i].TryGetComponent(out IInteractable foundInteractable))
+            {
+                foundInteractable.Interact();
+                return;
             }
 
-		//Do Parry move here.
+        //Do Parry move here.
     }
+
+    public void ChargeAction(bool held)
+    {
+
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 }

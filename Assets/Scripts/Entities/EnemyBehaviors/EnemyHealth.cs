@@ -3,9 +3,10 @@ using SLS.StateMachineV3;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class EnemyHealth : Health, IAttacker
+public class EnemyHealth : Health
 {
     public float stunTime;
     public GameObject poofPrefab;
@@ -13,6 +14,7 @@ public class EnemyHealth : Health, IAttacker
     public EnemyLootSpawner enemyLootSpawner;
 
     private Grabbable grabbable;
+    private AttackSourceSingle thrownAttackSource;
     private float stunTimeLeft = 0;
 
     protected override void Awake() 
@@ -20,6 +22,7 @@ public class EnemyHealth : Health, IAttacker
         base.Awake();
         startPosition = transform.position;
         TryGetComponent(out grabbable);
+        if (TryGetComponent(out thrownAttackSource)) thrownAttackSource.enabled = false;
         grabbable.GrabStateEvent.AddListener(OnGrabState);
         enemyLootSpawner = FindObjectOfType<EnemyLootSpawner>();
     }
@@ -27,18 +30,20 @@ public class EnemyHealth : Health, IAttacker
 
     #region Damage
 
+    protected override bool OverrideDamage(Attack attack) => attack.tags.Contains(Attack.Tag.FromEnemy) && !attack.tags.Contains(Attack.Tag.FriendlyFire);
+
     protected override void OnDamage(Attack attack)
     {
         damageEvent?.Invoke(attack.amount);
 
         if(stunTimeLeft == 0) stunEnum = StartCoroutine(StunEnum());
-        stunTimeLeft += stunTime * (attack.wham ? 2 : 1);
+        stunTimeLeft += stunTime * (attack.HasTag(Attack.Tag.Wham) ? 2 : 1);
     }
 
     protected override void OnDeplete(Attack attack)
     {
         depleteEvent?.Invoke();
-        if (attack.wham)
+        if (attack.HasTag(Attack.Tag.Wham))
         {
             StopCoroutine(stunEnum);
             if (ragDoll) Ragdoll(attack);
@@ -86,7 +91,6 @@ public class EnemyHealth : Health, IAttacker
     [HideInInspector] public float minRagdollTime;
     [HideInInspector] public float maxRagdollTime;
     [HideInInspector] public float minRagdollVelovity;
-    public Attack thrownAttack;
 
     [HideInInspector] public bool projectile;
     [HideInInspector] public bool hasRagdolled;
@@ -97,7 +101,7 @@ public class EnemyHealth : Health, IAttacker
     public void Ragdoll(Attack attack)
     {
         SetRagDoll(true);
-        rb.velocity = (attack.source as MonoBehaviour).transform.TransformDirection(attack.velocity);
+        rb.velocity = attack.velocity;
     }
 
     private void SetRagDoll(bool value)
@@ -105,6 +109,7 @@ public class EnemyHealth : Health, IAttacker
         if(value == hasRagdolled) return;
         ragDollTimer = 0;
         hasRagdolled = value;
+        if (hasRagdolled && thrownAttackSource) thrownAttackSource.enabled = true;
         hasHitSomething = false;
         rb = this.GetOrAddComponent<Rigidbody>();
         rb.isKinematic = !value;
@@ -138,9 +143,7 @@ public class EnemyHealth : Health, IAttacker
 
     public void Contact(GameObject target)
     {
-        if (!hasRagdolled || target.layer == Layers.Player) return;
-        hasHitSomething = true;
-        (this as IAttacker).BeginAttack(target, thrownAttack, rb.velocity);
+        if(hasRagdolled) hasHitSomething = true;
     }
 
     private void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);

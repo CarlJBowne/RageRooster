@@ -14,10 +14,9 @@ public class PlayerMovementBody : PlayerStateBehavior
     public float maxSlopeNormalAngle = 20f;
     public float coyoteTime = 0.5f;
     public float tripleJumpTime = 0.3f;
-    public PlayerAirborn jumpState1;
-    public PlayerAirborn jumpState2;
+    public PlayerAirborneMovement jumpState1;
     public PlayerWallJump wallJumpState;
-    public PlayerAirborn airChargeState;
+    public PlayerAirborneMovement airChargeState;
 
     #endregion
 
@@ -29,12 +28,16 @@ public class PlayerMovementBody : PlayerStateBehavior
     [HideInInspector] public bool baseMovability = true;
     [HideInInspector] public bool canJump = true;
     public bool grounded = true;
-    [HideInInspector] public bool secondJump;
     [DisableInPlayMode, DisableInEditMode] public float currentSpeed;
+    [DisableInPlayMode, DisableInEditMode] public int jumpPhase;
+    //-1 = Inactive
+    //0 = PreMinHeight
+    //1 = PreMaxHeight
+    //2 = SlowingDown
+    //3 = Falling
     [HideInInspector] public Vector3 _currentDirection = Vector3.forward; 
 
     [HideInInspector] public float coyoteTimeLeft;
-    float tripleJumpTimeLeft;
     Transform anchorTransform;
     Vector3 prevAnchorPosition;
 
@@ -89,6 +92,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     {
         rb = GetComponentFromMachine<Rigidbody>();
         collider = GetComponentFromMachine<CapsuleCollider>();
+        currentDirection = Vector3.forward;
         //M.physicsCallbacks += Collision;
     }
 
@@ -107,12 +111,6 @@ public class PlayerMovementBody : PlayerStateBehavior
             }
 
             if (coyoteTimeLeft > 0) coyoteTimeLeft -= Time.deltaTime;
-
-            if (sGrounded.active && tripleJumpTimeLeft > 0)
-            {
-                tripleJumpTimeLeft -= Time.deltaTime;
-                if (tripleJumpTimeLeft <= 0) secondJump = false;
-            }
 
 
 
@@ -200,15 +198,20 @@ public class PlayerMovementBody : PlayerStateBehavior
         if (input == grounded || rb.velocity.y > 0.01f) return false;
         grounded = input;
 
-        if (!grounded)
+        if (grounded)
         {
+            jumpPhase = -1;
+            if (!sGrounded.active) TransitionTo(sGrounded);
+            if (controller.CheckJumpBuffer()) controller.currentAction.TryNextAction(this.input.jump.Reference());
+        }
+        else
+        {
+            if(!sAirborne.active && !sCharge.active) TransitionTo(sFall);
+            else if(sCharge.active && !sAirChargeFall.active) TransitionTo(sAirChargeFall);
+
             coyoteTimeLeft = coyoteTime;
             LatchAnchor(null);
         }
-        else tripleJumpTimeLeft = tripleJumpTime;
-        if ((grounded && !sGrounded.active) || (!grounded && !sAirborne.active))
-            TransitionTo(grounded ? sGrounded : sFall);
-        if (grounded && controller.CheckJumpBuffer()) BeginJump();
 
         return true;
     }
@@ -219,24 +222,21 @@ public class PlayerMovementBody : PlayerStateBehavior
         return A < maxSlopeNormalAngle;
     }
 
-    public void BeginJump()
+    public void TryBeginJump(PlayerAirborneMovement target)
     {
-        if (true)
+        if ((grounded && sGrounded) || (sAirborne && body.coyoteTimeLeft > 0))
         {
-            (secondJump ? jumpState2 : jumpState1).BeginJump();
-            secondJump.Toggle();
+            target.state.TransitionTo();
+            grounded = false;
+            LatchAnchor(null);
         }
-        else
-        {
-            airChargeState.BeginJump();
-        }
-        grounded = false;
-        LatchAnchor(null);
+
+        else controller.CheckJumpBuffer();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if ((jumpState1 || jumpState2 || airChargeState) && Vector3.Dot(collision.GetContact(0).normal, Vector3.down) > 0.75f)
+        if ((jumpState1 || airChargeState) && Vector3.Dot(collision.GetContact(0).normal, Vector3.down) > 0.75f)
         {
             sFall.TransitionTo();
             VelocitySet(y: 0);

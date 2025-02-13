@@ -126,6 +126,8 @@ public static class MonoBehaviorHelpers
 		V ??= O.AddComponent<T>();
 		return V;
 	}
+
+    public static void SetPositionAndRotation(this Transform target, Transform influence) => target.SetPositionAndRotation(influence.position, influence.rotation);
 }
 
 public delegate void BasicDelegate();

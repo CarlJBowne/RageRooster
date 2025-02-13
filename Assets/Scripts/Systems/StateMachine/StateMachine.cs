@@ -127,7 +127,7 @@ namespace SLS.StateMachineV3
 
             DoAwake();
 
-            behaviors.DoEnter(null);
+            behaviors.DoEnter(null, false);
             currentState = children[0].EnterState(null, true);
 
             waitforMachineInit?.Invoke();
