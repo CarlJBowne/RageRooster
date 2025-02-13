@@ -1714,8 +1714,8 @@ MonoBehaviour:
   minRagdollVelovity: 0.2
   projectile: 0
   hasRagdolled: 0
-  respawn: 0
-  respawnTime: 0
+  respawn: 1
+  respawnTime: 5
 --- !u!114 &1792390698903161566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2941,6 +2941,21 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 7633a64d46aa9654882bf453bf85b820,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7633a64d46aa9654882bf453bf85b820,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7633a64d46aa9654882bf453bf85b820,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7633a64d46aa9654882bf453bf85b820,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
       objectReference: {fileID: 0}
@@ -2988,6 +3003,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7633a64d46aa9654882bf453bf85b820,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7633a64d46aa9654882bf453bf85b820,
         type: 3}
