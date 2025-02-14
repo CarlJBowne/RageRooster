@@ -64,7 +64,7 @@ public class TrackerEB : StateBehavior
         if (autoCheckRate > 0) autoCheckTimer = new(autoCheckRate, CheckData);
     }
 
-    public override void OnEnter(State prev)
+    public override void OnEnter(State prev, bool isFinal)
     {
         if (target == null)
         {

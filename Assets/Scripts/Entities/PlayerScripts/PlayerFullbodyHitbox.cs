@@ -7,25 +7,24 @@ using UnityEngine;
 public class PlayerFullbodyHitbox : PlayerStateBehavior
 {
     public bool autoActivate = true;
-    public string attackName;
-    public AttackHitBox hitBox;
+    public int attackID;
+    public Collider hitBox;
 
 
 
 
 
-    public override void OnEnter(State prev)
+    public override void OnEnter(State prev, bool isFinal)
     {
         if (autoActivate) SetBoxState(true);
     }
     public override void OnExit(State next)
     {
-        hitBox.Disable();
+        SetBoxState(false);
     }
 
     public void SetBoxState(bool value)
     {
-        hitBox.SetActive(value);
-        if(value) hitBox.currentAttackID = attackName;
+        hitBox.enabled = value;
     }
 }

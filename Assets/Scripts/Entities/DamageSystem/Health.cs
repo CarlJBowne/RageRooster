@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Linq;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -11,12 +13,14 @@ using UnityEditor;
 /// <summary>
 /// A Component managing the Health of an entity, whether that be Player, Enemy, or Destructible Object.
 /// </summary>
+
 public class Health : MonoBehaviour
 {
 	//Config
 	[SerializeField] protected int maxHealth;
 	[SerializeField] protected UnityEvent<int> damageEvent = new();
 	[SerializeField] protected UnityEvent depleteEvent = new();
+	[SerializeField] protected Attack.Tag[] immuneTags;
 
 	//Data
 	[SerializeField, HideInInspector] protected int health;
@@ -29,21 +33,27 @@ public class Health : MonoBehaviour
 
 	protected virtual void Awake() => health = maxHealth;
 
-	public bool Damage(Attack attack)
-	{
-		if (!damagable || attack.amount < 1) return false;
 
-		if (health - attack.amount < 0) attack.amount = health;
+    public bool Damage(Attack attack)
+    {
+        if (!damagable || attack.amount < 1 || immuneTags.IncludesAny(attack.tags) || OverrideDamage(attack)) return false;
 
-		health -= attack.amount;
+        health -= attack.amount;
 
-		OnDamage(attack);
-		if (health == 0) OnDeplete(attack);
+		if(health < 0) health = 0;
 
-		return true;
-	}
+        OnDamage(attack);
+        if (health == 0) OnDeplete(attack);
 
-	public bool Heal(int amount)
+        return true;
+    }
+
+    protected virtual void OnDamage(Attack attack) => damageEvent?.Invoke(attack.amount);
+    protected virtual void OnDeplete(Attack attack) => depleteEvent?.Invoke();
+
+	protected virtual bool OverrideDamage(Attack attack) { return false; }
+
+    public bool Heal(int amount)
 	{
 		if (amount < 1 || health == maxHealth) return false;
 
@@ -54,8 +64,23 @@ public class Health : MonoBehaviour
         return true;
 	}
 
-	protected virtual void OnDamage(Attack attack) => damageEvent?.Invoke(attack.amount);
-	protected virtual void OnDeplete(Attack attack) => depleteEvent?.Invoke();
+
+    public bool Damage(Attack_Old attack)
+    {
+        if (!damagable || attack.amount < 1) return false;
+
+        if (health - attack.amount < 0) attack.amount = health;
+
+        health -= attack.amount;
+
+        OnDamage(attack);
+        if (health == 0) OnDeplete(attack);
+
+        return true;
+    }
+
+    protected virtual void OnDamage(Attack_Old attack) => damageEvent?.Invoke(attack.amount);
+	protected virtual void OnDeplete(Attack_Old attack) => depleteEvent?.Invoke();
 
 }
 
@@ -63,17 +88,17 @@ public class Health : MonoBehaviour
 /// The Data of an Individual Attack.
 /// </summary>
 [Serializable]
-public struct Attack
+public struct Attack_Old
 {
 
 	public int amount;
 	public string name;
 	public bool wham;
 	
-	[HideInInspector] public IAttacker source;
+	[HideInInspector] public IAttacker_Old source;
     [HideInInspector] public Vector3 velocity;
 
-	public Attack(Attack baseData, IAttacker source, Vector3 velocity)
+	public Attack_Old(Attack_Old baseData, IAttacker_Old source, Vector3 velocity)
 	{
 		amount = baseData.amount;
 		name = baseData.name;
@@ -81,7 +106,7 @@ public struct Attack
 		this.source = source;
 		this.velocity = velocity;
 	}	
-	public Attack(Attack baseData)
+	public Attack_Old(Attack_Old baseData)
 	{
 		amount = baseData.amount;
 		name = baseData.name;
@@ -89,7 +114,7 @@ public struct Attack
 		this.source = null;
 		this.velocity = Vector3.zero;
 	}
-	public Attack(int amount, string name, bool wham)
+	public Attack_Old(int amount, string name, bool wham)
 	{
 		this.amount = amount;
 		this.name = name;
@@ -97,7 +122,7 @@ public struct Attack
 		this.source = null;
 		this.velocity = Vector3.zero;
 	}	
-	public Attack(int amount, string name, bool wham, IAttacker source, Vector3 velocity)
+	public Attack_Old(int amount, string name, bool wham, IAttacker_Old source, Vector3 velocity)
 	{
 		this.amount = amount;
 		this.name = name;
@@ -107,6 +132,7 @@ public struct Attack
 	}
 }
 
+/*
 #if UNITY_EDITOR
 [CustomEditor(typeof(Health), true)]
 public class HealthEditor : Editor
@@ -131,3 +157,4 @@ public class HealthEditor : Editor
     }
 }
 #endif
+*/

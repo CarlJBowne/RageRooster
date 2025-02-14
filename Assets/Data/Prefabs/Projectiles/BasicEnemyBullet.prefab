@@ -159,9 +159,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack:
     amount: 1
-    name: BasicProj
-    wham: 0
     velocity: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
+    tags:
+    - name: FromEnemy
+    - name: Projectile
+  sourceEntity: {fileID: 120326915241346108}
+  enabled: 1
   disableOnHit: 1
   disableOnlyWithHealth: 0

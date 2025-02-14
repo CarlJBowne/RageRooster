@@ -31,7 +31,7 @@ public class PlayerHealth : Health
         {
             invincibility = StartCoroutine(InvinceEnum(invincibilityTime));
             damagable = false;
-            if (attack.name == "Pit") Gameplay.SpawnPlayer();
+            if (attack.HasTag(Attack.Tag.Pit)) Gameplay.SpawnPlayer();
         }
         UpdateHealth();
     }

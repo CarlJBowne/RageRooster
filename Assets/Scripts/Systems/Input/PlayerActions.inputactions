@@ -15,15 +15,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Jump",
-                    "type": "Button",
-                    "id": "abe81615-1cc3-4a8b-a884-6a0dbe4e460a",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "AttackTap",
                     "type": "Button",
                     "id": "d2ff477d-04c8-42ba-bb39-de2b0306b134",
@@ -96,12 +87,21 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Charge",
+                    "name": "ChargeTap",
                     "type": "Button",
                     "id": "d89a9dba-9dc2-434e-b13b-db15063013e6",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Tap",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ChargeHold",
+                    "type": "Button",
+                    "id": "8e96f188-8ef5-4b3c-b1cb-3f2b17f7f9d6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 },
                 {
@@ -117,6 +117,15 @@
                     "name": "DebugActivate",
                     "type": "Button",
                     "id": "da5167ff-9329-438b-9a21-5230134c8ae6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "cce96e8d-46e1-4776-add8-9a40a7b7fb76",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -189,28 +198,6 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "61bccea2-8f66-4a22-8b70-c2653ad13384",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "30faba13-0890-4598-9b93-90aad86e2026",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -329,7 +316,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Charge",
+                    "action": "ChargeTap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -340,7 +327,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Charge",
+                    "action": "ChargeTap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -451,6 +438,50 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "GrabHold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5c647621-a24d-4641-a479-4e481ad8d5d0",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "ChargeHold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b9413709-1a87-4ce8-81b8-0a1bcec89a29",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "ChargeHold",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "54bc5f18-bbde-4d4d-8562-7d2bc2034410",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "74c9b6a4-88d8-435b-a3ca-1359fc58e297",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

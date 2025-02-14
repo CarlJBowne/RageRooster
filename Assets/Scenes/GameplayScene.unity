@@ -1489,6 +1489,12 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1261322350529464699, guid: 99d6c4660e13dd04a97aebd573357d85,
+        type: 3}
+      propertyPath: buttons.Array.data[0].main
+      value: 
+      objectReference: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
+        type: 3}
     - target: {fileID: 1764678036907633085, guid: 99d6c4660e13dd04a97aebd573357d85,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -2449,6 +2455,7 @@ GameObject:
   - component: {fileID: 8290631177171356570}
   - component: {fileID: 194076540510180912}
   - component: {fileID: 35559682713893603}
+  - component: {fileID: 8290631177171356571}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3804,6 +3811,19 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1692524693346012608}
   m_Enabled: 1
+--- !u!114 &8290631177171356571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1692524693346012608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 494856522}
 --- !u!222 &8361976120002408442
 CanvasRenderer:
   m_ObjectHideFlags: 0
