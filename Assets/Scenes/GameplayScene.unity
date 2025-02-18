@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: 158189931}
   - component: {fileID: 158189933}
   - component: {fileID: 158189934}
+  - component: {fileID: 158189935}
   m_Layer: 0
   m_Name: GAMEPLAY
   m_TagString: Untagged
@@ -353,6 +354,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldChanges: {fileID: 11400000, guid: 546d60c46cc1b4c4fb90fec693b180d8, type: 2}
   upgrades: {fileID: 11400000, guid: 5096cd543e777e240af87643ae7b164b, type: 2}
+--- !u!114 &158189935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158189928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: -1
+  OverrideMaxDistance: -1
 --- !u!1 &254487094
 GameObject:
   m_ObjectHideFlags: 0

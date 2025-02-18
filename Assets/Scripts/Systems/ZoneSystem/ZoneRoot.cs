@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ public class ZoneRoot : MonoBehaviour
 {
     public ZoneTransition[] transitions;
     public SavePoint defaultPlayerSpawn;
+    public EventReference music;
 
     public SavePoint[] spawns {get{
             if (_spawns == null || _spawns.Length == 0) 
@@ -57,8 +59,8 @@ public class ZoneRoot : MonoBehaviour
     
     public void OnTransition()
     {
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //Put Music Stuff Here.
+        Gameplay.musicEmitter.EventReference = music;
+        Gameplay.musicEmitter.Play();
     }
 
 }
