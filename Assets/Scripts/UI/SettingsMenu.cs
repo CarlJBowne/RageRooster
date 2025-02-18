@@ -28,6 +28,23 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
     protected override void Awake()
     {
         base.Awake();
+
+        masterSlider.minValue = 0f;
+        masterSlider.maxValue = 1f;
+        masterSlider.value = 0.5f;
+
+        musicSlider.minValue = 0f;
+        musicSlider.maxValue = 1f;
+        musicSlider.value = 0.5f;
+
+        SFXSlider.minValue = 0f;
+        SFXSlider.maxValue = 1f;
+        SFXSlider.value = 0.5f;
+
+        AmbSlider.minValue = 0f;
+        AmbSlider.maxValue = 1f;
+        AmbSlider.value = 0.5f;
+
         RevertChanges();
     }
 
