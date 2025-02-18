@@ -1,3 +1,4 @@
+using SLS.StateMachineV3;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,8 @@ using UnityEngine;
 public class PlayerHealth : Health
 {
     public float invincibilityTime;
+    public State damageState;
+    public State damageStateWham;
 
     private Coroutine invincibility;
     private new Collider collider;
@@ -32,6 +35,7 @@ public class PlayerHealth : Health
             invincibility = StartCoroutine(InvinceEnum(invincibilityTime));
             damagable = false;
             if (attack.HasTag(Attack.Tag.Pit)) Gameplay.SpawnPlayer();
+            (attack.HasTag(Attack.Tag.Wham) ? damageStateWham : damageState).TransitionTo();
         }
         UpdateHealth();
     }

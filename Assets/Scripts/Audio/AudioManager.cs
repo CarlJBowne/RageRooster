@@ -27,7 +27,7 @@ public class AudioManager : SingletonAdvanced<AudioManager>
     public EventInstance musicEventInstance;
 
     // Called when the script instance is being loaded
-    private new void Awake()
+    protected override void OnAwake()
     {
         base.Awake();
         DontDestroyOnLoad(gameObject);

@@ -3,6 +3,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using FMODUnity;
+using EditorAttributes;
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -34,6 +38,7 @@ public class Gameplay : Singleton<Gameplay>
     public static GlobalState GlobalState => I.globalState;
 
     protected static System.Action PostMaLoad;
+    public static StudioEventEmitter musicEmitter;
 
     // Begins the main menu by loading the gameplay scene and setting the active save file.
     public static void BeginMainMenu(int fileNo)
@@ -73,6 +78,7 @@ public class Gameplay : Singleton<Gameplay>
     // Called when the Gameplay singleton is awakened. Loads the global state and initializes the zone manager.
     protected override void OnAwake()
     {
+        musicEmitter = GetComponent<StudioEventEmitter>();
         GlobalState.Load();
 
         PostMaLoad?.Invoke();
@@ -87,6 +93,8 @@ public class Gameplay : Singleton<Gameplay>
         {
             Menu.Manager.Escape();
         };
+
+        
     }
 
     // Called on the first load of the zone manager. Moves the player to the spawn point and activates the player.

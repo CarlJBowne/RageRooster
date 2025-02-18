@@ -60,8 +60,8 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
     {
         currentMusicVolume = input;
         AudioManager.Get().musicVolume = input;
-        if (AudioManager.Get().musicEventInstance.isValid())
-            AudioManager.Get().musicEventInstance.setVolume(input);
+        //if (AudioManager.Get().musicEventInstance.isValid())
+        //    AudioManager.Get().musicEventInstance.setVolume(input);
     }
 
     // Sets the sound effects (SFX) volume to the specified input value
