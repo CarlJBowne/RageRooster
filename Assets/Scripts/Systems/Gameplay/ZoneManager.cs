@@ -48,6 +48,7 @@ public class ZoneManager : Singleton<ZoneManager>
             currentZone = zone;
             proxies.Add(zone, new(zone));
             OnFirstLoad?.Invoke();
+            currentZone.OnTransition();
         }
         else
         {

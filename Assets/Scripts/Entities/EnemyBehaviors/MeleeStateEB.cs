@@ -8,6 +8,7 @@ public class MeleeStateEB : StateBehavior
 
     #region Config
     [SerializeField] float attackRate;
+    public Attack attack;
     #endregion
     #region Data
 
@@ -39,7 +40,7 @@ public class MeleeStateEB : StateBehavior
         {
             if(item.TryGetComponent(out PlayerHealth hp))
             {
-                hp.Damage(new Attack(1));
+                hp.Damage(attack);
                 break;
             }
         }
