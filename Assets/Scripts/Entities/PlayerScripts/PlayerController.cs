@@ -23,6 +23,7 @@ public class PlayerController : PlayerStateBehavior
 	public PlayerWallJump wallJumpState;
     public PlayerAirborneMovement airChargeState;
     public PlayerAirborneMovement airChargeFallState;
+    public PlayerAiming aimingState;
 	public Upgrade groundSlamUpgrade;
 	public Upgrade wallJumpUpgrade;
     public Upgrade ragingChargeUpgrade;
@@ -90,6 +91,8 @@ public class PlayerController : PlayerStateBehavior
             M.freeLookCamera.Follow = transform;
             M.freeLookCamera.LookAt = transform;
         }
+
+        if(input.shootMode.IsPressed() && sGrounded && readyForNextAction) aimingState.EnterMode();
     }
 
     public bool CheckJumpBuffer()
