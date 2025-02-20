@@ -202,7 +202,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         {
             jumpPhase = -1;
             if (!sGrounded.active) TransitionTo(sGrounded);
-            if (controller.CheckJumpBuffer()) controller.currentAction.TryNextAction(this.input.jump.Reference());
+            if (controller.CheckJumpBuffer()) M.SendSignal("Jump");
         }
         else
         {

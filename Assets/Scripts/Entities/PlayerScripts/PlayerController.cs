@@ -27,8 +27,6 @@ public class PlayerController : PlayerStateBehavior
 	public Upgrade groundSlamUpgrade;
 	public Upgrade wallJumpUpgrade;
     public Upgrade ragingChargeUpgrade;
-    [System.Obsolete]
-    public Timer.OneTime inputQueueDecay = new(1f);
 
     public string punchTriggerName;
 
@@ -73,18 +71,13 @@ public class PlayerController : PlayerStateBehavior
 
     public override void OnUpdate()
 	{
-        if (inputQueueDecay.running) inputQueueDecay.Tick(() =>
-        {
-            if (actionQueue.Count > 0) actionQueue.Dequeue();
-            if (actionQueue.Count > 0) inputQueueDecay.Begin();
-        });
 
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
 		camAdjustedMovement = input.movement.ToXZ().Rotate(M.cameraTransform.eulerAngles.y, Vector3.up);
 
-		if (readyForNextAction && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
+		if (M.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
             sGlide.TransitionTo();
-        else if(readyForNextAction && !input.jump.IsPressed() && sGlide) 
+        else if(M.signalReady && !input.jump.IsPressed() && sGlide) 
             sFall.TransitionTo();
 
         if (M.freeLookCamera != null)
@@ -93,7 +86,7 @@ public class PlayerController : PlayerStateBehavior
             M.freeLookCamera.LookAt = transform;
         }
 
-        if(input.shootMode.IsPressed() && sGrounded && readyForNextAction) aimingState.EnterMode();
+        if(input.shootMode.IsPressed() && sGrounded && M.signalReady) aimingState.EnterMode();
     }
 
     public bool CheckJumpBuffer()
@@ -105,67 +98,13 @@ public class PlayerController : PlayerStateBehavior
     public void BeginJumpInputBuffer() => jumpInput = jumpBuffer + Time.fixedDeltaTime;
 
 
+    private void BeginActionEvent(InputAction.CallbackContext callbackContext) => M.SendSignal(callbackContext.action.name);
+    private void BeginActionEvent(string name) => M.SendSignal(name);
 
-    [System.Obsolete]
-    public PCA currentAction;
-    [HideProperty, System.Obsolete]
-    public bool readyForNextAction = true;
-    [System.Obsolete] public Queue<InputActionReference> actionQueue = new();
-
-    private void BeginActionEvent(InputAction.CallbackContext callbackContext)
-    {
-        M.SendSignal(callbackContext.action.name);
-
-        /*
-        if (PauseMenu.Active)
-        {
-            Debug.Log(callbackContext.action.Reference().action.name);
-            return;
-        }
-        InputActionReference action = callbackContext.action.Reference();
-        if (!readyForNextAction || currentAction == null || !currentAction.TryNextAction(action))
-        {
-            actionQueue.Enqueue(action);
-            inputQueueDecay.Begin();
-        }*/
-    }
+    public void ReadyNextAction() => M.ReadySignal();
+    public void FinishAction() => M.FinishSignal();
 
 
-
-
-
-
-    public void ReadyNextAction()
-    {
-        M.ReadySignal();
-        /*
-        readyForNextAction = true;
-        if(actionQueue.Count > 0)
-        {
-            if(currentAction.HasAction(actionQueue.Peek())) currentAction.TryNextAction(actionQueue.Dequeue());
-            else
-            {
-                actionQueue.Dequeue();
-                while(actionQueue.Count > 0)
-                {
-                    if (currentAction.HasAction(actionQueue.Peek()))
-                    {
-                        currentAction.TryNextAction(actionQueue.Dequeue());
-                        break;
-                    }
-                    else actionQueue.Dequeue();
-                }
-            }
-        }*/
-    }
-    public void FinishAction()
-    {
-        M.FinishSignal();
-        /*
-        if (readyForNextAction && currentAction != null) currentAction.Finish();
-        else if (M.currentState.TryGetComponent(out PlayerStateAnimator anim)) anim.Finish();
-        */
-    }
 
     public void ParryAction()
     {

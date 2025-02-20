@@ -4,6 +4,7 @@ using UnityEngine;
 using SLS.StateMachineV3;
 using EditorAttributes;
 
+[System.Obsolete]
 public class PlayerStateAnimator : StateAnimator
 {
 
@@ -22,12 +23,12 @@ public class PlayerStateAnimator : StateAnimator
     public override void OnEnter(State prev, bool isFinal)
     {
         base.OnEnter(prev, isFinal);
-        if (isAction) controller.currentAction = null;
+        //if (isAction) controller.currentAction = null;
     }
     
     public void Finish() 
     {
-        if (readyOnEnd) controller.readyForNextAction = true;
+        //if (readyOnEnd) controller.readyForNextAction = true;
         if (onFinishState != null) onFinishState.TransitionTo();
     }
 

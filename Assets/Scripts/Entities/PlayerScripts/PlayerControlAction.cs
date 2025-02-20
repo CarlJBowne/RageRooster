@@ -4,6 +4,7 @@ using UltEvents;
 using FMOD.Studio;
 using EditorAttributes;
 
+[System.Obsolete]
 public class PlayerControlAction : PlayerStateBehavior
 {
     public bool lockAction = true;
@@ -22,8 +23,8 @@ public class PlayerControlAction : PlayerStateBehavior
     public override void OnEnter(State prev, bool isFinal)
     {
         if (!isFinal) return;
-        controller.currentAction = this;
-        if (lockAction) controller.readyForNextAction = false;
+        //controller.currentAction = this;
+        //if (lockAction) controller.readyForNextAction = false;
     }
 
     public bool HasAction(InputActionReference button)
