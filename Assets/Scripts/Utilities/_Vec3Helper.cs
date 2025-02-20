@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public static class Vec3Helper
+public static class _Vec3Helper
 {
 
 	public static Vector3 Scale(this Vector3 v, Vector3 other)

@@ -9,11 +9,11 @@ namespace SLS.StateMachineV3
 
         #region Config
 
-        private enum EntryAnimAction { None, Play, CrossFade, Trigger }
+        public enum EntryAnimAction { None, Play, CrossFade, Trigger }
 
-        [SerializeField] EntryAnimAction onEntry;
-        [SerializeField, ShowField(nameof(__showOnEnterName))] string onEnterName;
-        [SerializeField, ShowField(nameof(__showOnEnterTime))] float onEnterTime;
+        [SerializeField] public EntryAnimAction onEntry;
+        [SerializeField, ShowField(nameof(__showOnEnterName))] public string onEnterName;
+        [SerializeField, ShowField(nameof(__showOnEnterTime))] public float onEnterTime;
 
         #endregion
         #region Data
