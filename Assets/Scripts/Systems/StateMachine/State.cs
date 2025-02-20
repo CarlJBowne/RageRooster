@@ -1,10 +1,13 @@
 using UnityEngine;
-using UnityEngine.Events;
 using EditorAttributes;
 using System.Linq;
+using AYellowpaper.SerializedCollections;
+using UltEvents;
 
 namespace SLS.StateMachineV3
 {
+    //NOTE TO SELF: State Machine inheriting from State and thus gaining all of its State-specific data pieces is a pain in the ass. Look into fixing later with a shared Ancestor.
+
     /// <summary>
     /// The class for an individual State in the State Machine. I wouldn't recommend inheriting from this.
     /// </summary>
@@ -17,7 +20,7 @@ namespace SLS.StateMachineV3
         /// Acts as a separate state from children rather than automating to the first in the list. Only applicable if this State has child states. 
         /// </summary>
         [SerializeField, ShowField(nameof(__showSepFromChildren))] private bool separateFromChildren;
-        [SerializeField, HideField(nameof(__isMachine))] public UnityEvent<State> onActivatedEvent;
+        [SerializeField, HideField(nameof(__isMachine))] public UltEvent<State> onActivatedEvent;
         
 
 
@@ -76,6 +79,7 @@ namespace SLS.StateMachineV3
         protected virtual bool __showSepFromChildren => base.transform.childCount > 0 && __enableSiblingCreation;
         protected virtual bool __enableSiblingCreation => true;
         protected virtual bool __isMachine => false;
+        protected virtual bool __isntMachine => true;
 
 
         #endregion 
@@ -141,11 +145,12 @@ namespace SLS.StateMachineV3
              
             behaviors.DoEnter(prev, specifically && (childCount == 0 || separateFromChildren));
 
-            if (specifically && childCount > 0 && !separateFromChildren) 
+            if (specifically && childCount > 0 && !separateFromChildren)
             {
                 activeChild = children[0];
                 return activeChild.EnterState(prev, specifically);
             }
+            else machine.signalReady = !lockReady; 
             return this;
         }
         public void ExitState(State next)
@@ -157,6 +162,13 @@ namespace SLS.StateMachineV3
         }
 
         public void TransitionTo() => machine.TransitionState(this);
+
+        //Signals
+         
+        [SerializeField, HideField(nameof(__isMachine))] public SerializedDictionary<string, UltEvent> signals;
+        [SerializeField, HideField(nameof(__isMachine))] public bool lockReady;
+
+
     }
 
     /// <summary>

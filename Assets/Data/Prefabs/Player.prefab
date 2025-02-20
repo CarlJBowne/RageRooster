@@ -200,8 +200,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8497233129720556232}
   - component: {fileID: 2948750066402289689}
-  - component: {fileID: 8884847100820217366}
   - component: {fileID: 1330028443204214403}
+  - component: {fileID: 1397031607906035931}
   m_Layer: 0
   m_Name: Windup
   m_TagString: Untagged
@@ -239,27 +239,16 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &8884847100820217366
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 274366656925562652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c9eaa4b4a6862748b493a792ddc66eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: GroundSlamWind
-  onEnterTime: 0.05
-  animator: {fileID: 0}
-  isAction: 1
-  readyOnEnd: 0
-  onFinishState: {fileID: 1252659914078541581}
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 1252659914078541581}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
 --- !u!114 &1330028443204214403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,6 +270,22 @@ MonoBehaviour:
   rate: 0
   dampenPoint: 0
   savePriorVelocity: 0
+--- !u!114 &1397031607906035931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 274366656925562652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 2
+  onEnterName: GroundSlamWind
+  onEnterTime: 0.05
+  animator: {fileID: 0}
 --- !u!1 &299989616005188818
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,7 +512,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8762820116621655547}
   - component: {fileID: 6397329766730335508}
-  - component: {fileID: 7426777796295102642}
   - component: {fileID: 7736482665558727247}
   - component: {fileID: 7522104212622704532}
   m_Layer: 0
@@ -547,51 +551,40 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &7426777796295102642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622944000673277637}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7523fe121ef8b448785881b1f9da12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  lockAction: 1
-  possibleActions:
-  - input: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 6227438277254479290}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 3443062856187106688}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2690473538302802805}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2690473538302802805}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  nextState: {fileID: 4000547645901868762}
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: AttackTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 6227438277254479290}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: AttackHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3443062856187106688}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: GrabHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2690473538302802805}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: GrabTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2690473538302802805}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4000547645901868762}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
 --- !u!114 &7736482665558727247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -640,7 +633,7 @@ GameObject:
   - component: {fileID: 9047614155566188650}
   - component: {fileID: 3864174957687219544}
   - component: {fileID: 1181195091599698405}
-  - component: {fileID: 7492689439726299077}
+  - component: {fileID: 7236256583575087778}
   m_Layer: 0
   m_Name: AirGrab
   m_TagString: Untagged
@@ -678,8 +671,16 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 931477398715445950}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
 --- !u!114 &1181195091599698405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -704,7 +705,7 @@ MonoBehaviour:
   air: 1
   wasHeld: 0
   success: 0
---- !u!114 &7492689439726299077
+--- !u!114 &7236256583575087778
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -713,16 +714,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 624970041063503452}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c9eaa4b4a6862748b493a792ddc66eb, type: 3}
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   onEntry: 2
   onEnterName: Grab
   onEnterTime: 0.01
   animator: {fileID: 0}
-  isAction: 1
-  readyOnEnd: 1
-  onFinishState: {fileID: 931477398715445950}
 --- !u!1 &629840051697236276
 GameObject:
   m_ObjectHideFlags: 0
@@ -1187,8 +1185,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!114 &5823505111254569389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1456,8 +1456,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!114 &750694679335013753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1493,8 +1495,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1206198214367745091}
   - component: {fileID: 3962853144640418389}
-  - component: {fileID: 2712333605991028336}
   - component: {fileID: 631506496026120920}
+  - component: {fileID: 8574800949726413756}
   m_Layer: 0
   m_Name: DamageWhamAir
   m_TagString: Untagged
@@ -1532,27 +1534,16 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &2712333605991028336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1328720359275537980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c9eaa4b4a6862748b493a792ddc66eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 1
-  onEnterName: DamageFall
-  onEnterTime: 0
-  animator: {fileID: 0}
-  isAction: 1
-  readyOnEnd: 0
-  onFinishState: {fileID: 931477398715445950}
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 931477398715445950}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
 --- !u!114 &631506496026120920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1618,6 +1609,22 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   duration: 1
+--- !u!114 &8574800949726413756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328720359275537980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 1
+  onEnterName: DamageFall
+  onEnterTime: 0
+  animator: {fileID: 0}
 --- !u!1 &1384332073924865152
 GameObject:
   m_ObjectHideFlags: 0
@@ -1667,8 +1674,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!1 &1410535090962281780
 GameObject:
   m_ObjectHideFlags: 0
@@ -2093,8 +2102,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!1 &2397960840556432113
 GameObject:
   m_ObjectHideFlags: 0
@@ -2138,7 +2149,6 @@ GameObject:
   - component: {fileID: 931477398715445950}
   - component: {fileID: 2513530225769621494}
   - component: {fileID: 1811448163934562790}
-  - component: {fileID: 5937305982829135018}
   m_Layer: 0
   m_Name: Falling
   m_TagString: Untagged
@@ -2176,8 +2186,91 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Jump
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 802911248559169720}
+          _MemberName: get_forward
+          _PersistentArguments: []
+        - _Target: {fileID: 750694679335013753}
+          _MemberName: WallJump
+          _PersistentArguments:
+          - _Type: 15
+            _Int: 0
+            _String: 
+            _X: 7
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: GrabTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 1181195091599698405}
+          - _Type: 1
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: GrabHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 1181195091599698405}
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: ChargeTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8937721864928111967}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: ChargeHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8937721864928111967}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: AttackHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2948750066402289689}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 0
 --- !u!114 &2513530225769621494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2227,108 +2320,6 @@ MonoBehaviour:
   onEnterName: Fall
   onEnterTime: 0.01
   animator: {fileID: 0}
---- !u!114 &5937305982829135018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2425651879818459153}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7523fe121ef8b448785881b1f9da12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  lockAction: 0
-  possibleActions:
-  - input: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 802911248559169720}
-        _MemberName: get_forward
-        _PersistentArguments: []
-      - _Target: {fileID: 750694679335013753}
-        _MemberName: WallJump
-        _PersistentArguments:
-        - _Type: 15
-          _Int: 0
-          _String: 
-          _X: 7
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 1181195091599698405}
-        - _Type: 1
-          _Int: 0
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 1181195091599698405}
-        - _Type: 1
-          _Int: 1
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  - input: {fileID: -5815494970741274944, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 8937721864928111967}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -5811927394845417266, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 8937721864928111967}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2948750066402289689}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  nextState: {fileID: 0}
 --- !u!1 &2672848381205299414
 GameObject:
   m_ObjectHideFlags: 0
@@ -2719,8 +2710,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
   states:
     _serializedList:
     - Key: Grounded
@@ -2739,6 +2732,13 @@ MonoBehaviour:
       Value: {fileID: 9187357623978728356}
   _variables:
     variables: []
+  signalReady: 1
+  signalQueueDecay:
+    length: 0.5
+    current: 0
+    running: 0
+  defaultSignals:
+    _serializedList: []
   animator: {fileID: 0}
   body: {fileID: 0}
   controller: {fileID: 0}
@@ -3095,7 +3095,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4725053154384593640}
   - component: {fileID: 6227438277254479290}
-  - component: {fileID: 4593476741985153631}
   - component: {fileID: 5054057747023772269}
   - component: {fileID: 5008061855527923447}
   m_Layer: 0
@@ -3135,51 +3134,40 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &4593476741985153631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3244875344704272238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7523fe121ef8b448785881b1f9da12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  lockAction: 1
-  possibleActions:
-  - input: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 6397329766730335508}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 5567832916535865027}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2690473538302802805}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2690473538302802805}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  nextState: {fileID: 4000547645901868762}
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: AttackTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 6397329766730335508}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: AttackHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 5567832916535865027}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: GrabHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2690473538302802805}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: GrabTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2690473538302802805}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4000547645901868762}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
 --- !u!114 &5054057747023772269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3835,7 +3823,6 @@ GameObject:
   - component: {fileID: 6027212184641879295}
   - component: {fileID: 6905962700685548749}
   - component: {fileID: 7896708475051073880}
-  - component: {fileID: 2930471498173644755}
   m_Layer: 0
   m_Name: Gliding
   m_TagString: Untagged
@@ -3873,8 +3860,22 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: ChargeTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8937721864928111967}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: ChargeHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8937721864928111967}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 0
 --- !u!114 &6905962700685548749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3924,38 +3925,6 @@ MonoBehaviour:
   onEnterName: Falling
   onEnterTime: 0.1
   animator: {fileID: 0}
---- !u!114 &2930471498173644755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4124917820233702332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7523fe121ef8b448785881b1f9da12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  lockAction: 0
-  possibleActions:
-  - input: {fileID: -5815494970741274944, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 8937721864928111967}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -5811927394845417266, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 8937721864928111967}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  nextState: {fileID: 0}
 --- !u!1 &4150898326689556692
 GameObject:
   m_ObjectHideFlags: 0
@@ -4225,7 +4194,6 @@ GameObject:
   - component: {fileID: 675394232343518501}
   - component: {fileID: 2302710619165436362}
   - component: {fileID: 7572254650929324686}
-  - component: {fileID: 8089626826423466247}
   - component: {fileID: 5006421896293173243}
   m_Layer: 0
   m_Name: Raging Charge
@@ -4264,8 +4232,68 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Jump
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 6062820148927623488}
+          _MemberName: BeginJump
+          _PersistentArguments: []
+    - Key: AttackHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7788667647418580513}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: GrabTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 5639727482222500743}
+          - _Type: 1
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: GrabHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 5639727482222500743}
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+  lockReady: 0
 --- !u!114 &704825921462216154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4364,83 +4392,6 @@ MonoBehaviour:
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
   enabled: 1
---- !u!114 &8089626826423466247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4366117737136798339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7523fe121ef8b448785881b1f9da12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  lockAction: 0
-  possibleActions:
-  - input: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 6062820148927623488}
-        _MemberName: BeginJump
-        _PersistentArguments: []
-  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 7788667647418580513}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 5639727482222500743}
-        - _Type: 1
-          _Int: 0
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 5639727482222500743}
-        - _Type: 1
-          _Int: 1
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  nextState: {fileID: 0}
 --- !u!114 &5006421896293173243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4681,7 +4632,6 @@ GameObject:
   - component: {fileID: 6790216793252147034}
   - component: {fileID: 1625394358674883294}
   - component: {fileID: 3698709666984973678}
-  - component: {fileID: 7633287343120757845}
   - component: {fileID: 3818254776817288668}
   m_Layer: 0
   m_Name: Jumping
@@ -4723,8 +4673,74 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 1
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: ChargeHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8937721864928111967}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: ChargeTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8937721864928111967}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: GrabTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 1181195091599698405}
+          - _Type: 1
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: GrabHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 1181195091599698405}
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: AttackHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2948750066402289689}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 0
 --- !u!114 &3698709666984973678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4758,91 +4774,6 @@ MonoBehaviour:
   jumpMinHeight: 2
   forceDownwards: 0
   allowMidFall: 1
---- !u!114 &7633287343120757845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4568227700120816147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7523fe121ef8b448785881b1f9da12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  lockAction: 0
-  possibleActions:
-  - input: {fileID: -5811927394845417266, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 8937721864928111967}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -5815494970741274944, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 8937721864928111967}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 1181195091599698405}
-        - _Type: 1
-          _Int: 0
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 1181195091599698405}
-        - _Type: 1
-          _Int: 1
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2948750066402289689}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  nextState: {fileID: 0}
 --- !u!114 &3818254776817288668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4970,7 +4901,6 @@ GameObject:
   - component: {fileID: 5855114282886156849}
   - component: {fileID: 4601588046968553847}
   - component: {fileID: 2199304448062642395}
-  - component: {fileID: 592437508204502361}
   m_Layer: 0
   m_Name: GroundSlam
   m_TagString: Untagged
@@ -5009,8 +4939,22 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 1
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: ChargeHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8937721864928111967}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: ChargeTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8937721864928111967}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 0
 --- !u!114 &646156717812279867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5116,38 +5060,6 @@ MonoBehaviour:
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
   enabled: 1
---- !u!114 &592437508204502361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4861617110333237064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7523fe121ef8b448785881b1f9da12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  lockAction: 0
-  possibleActions:
-  - input: {fileID: -5811927394845417266, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 8937721864928111967}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -5815494970741274944, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 8937721864928111967}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  nextState: {fileID: 0}
 --- !u!1 &4876248843809312373
 GameObject:
   m_ObjectHideFlags: 0
@@ -5620,8 +5532,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!1 &5339412235462586582
 GameObject:
   m_ObjectHideFlags: 0
@@ -5637,7 +5551,6 @@ GameObject:
   - component: {fileID: 2763978919148611411}
   - component: {fileID: 5123427297755334006}
   - component: {fileID: 7477544725745237100}
-  - component: {fileID: 3412285366432573417}
   m_Layer: 0
   m_Name: AirCharge
   m_TagString: Untagged
@@ -5677,8 +5590,62 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 1
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: AttackHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2948750066402289689}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: GrabTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 1181195091599698405}
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: GrabHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 1181195091599698405}
+          - _Type: 1
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+  lockReady: 0
 --- !u!114 &6062820148927623488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5797,77 +5764,6 @@ MonoBehaviour:
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
   enabled: 1
---- !u!114 &3412285366432573417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5339412235462586582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7523fe121ef8b448785881b1f9da12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 8455434200384702600}
-  body: {fileID: 3941225653291784218}
-  controller: {fileID: 1371118413310184343}
-  lockAction: 0
-  possibleActions:
-  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2948750066402289689}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 1181195091599698405}
-        - _Type: 1
-          _Int: 1
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 1181195091599698405}
-        - _Type: 1
-          _Int: 0
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  nextState: {fileID: 0}
 --- !u!1 &5409025126524082839
 GameObject:
   m_ObjectHideFlags: 0
@@ -6069,8 +5965,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!1 &5527142845277668158
 GameObject:
   m_ObjectHideFlags: 0
@@ -6082,7 +5980,6 @@ GameObject:
   - component: {fileID: 2006163882404814382}
   - component: {fileID: 7887553615491649882}
   - component: {fileID: 528938496853295208}
-  - component: {fileID: 8075818614375529959}
   - component: {fileID: 3271233607042112568}
   m_Layer: 0
   m_Name: Walking
@@ -6121,8 +6018,74 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Jump
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3698709666984973678}
+          _MemberName: BeginJump
+          _PersistentArguments: []
+    - Key: AttackTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 6227438277254479290}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: AttackHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7788667647418580513}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: GrabTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 4975428428768240672}
+          - _Type: 1
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: GrabHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 4975428428768240672}
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+  lockReady: 0
 --- !u!114 &528938496853295208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6152,89 +6115,6 @@ MonoBehaviour:
   nextPhaseThreshold: 15
   needChargeButton: 1
   needRagingUpgrade: 0
---- !u!114 &8075818614375529959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5527142845277668158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7523fe121ef8b448785881b1f9da12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  lockAction: 0
-  possibleActions:
-  - input: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 3698709666984973678}
-        _MemberName: BeginJump
-        _PersistentArguments: []
-  - input: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 6227438277254479290}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 7788667647418580513}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 4975428428768240672}
-        - _Type: 1
-          _Int: 0
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 4975428428768240672}
-        - _Type: 1
-          _Int: 1
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  nextState: {fileID: 0}
 --- !u!114 &3271233607042112568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6488,7 +6368,6 @@ GameObject:
   - component: {fileID: 4303229188960523177}
   - component: {fileID: 2532947215877258004}
   - component: {fileID: 4783550702967590489}
-  - component: {fileID: 6206061877201651339}
   - component: {fileID: 472102404780835729}
   m_Layer: 0
   m_Name: Charging
@@ -6527,8 +6406,68 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Jump
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 6062820148927623488}
+          _MemberName: BeginJump
+          _PersistentArguments: []
+    - Key: AttackHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7788667647418580513}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: GrabTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 5639727482222500743}
+          - _Type: 1
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: GrabHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 5639727482222500743}
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+  lockReady: 0
 --- !u!114 &4244649889381608096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6627,83 +6566,6 @@ MonoBehaviour:
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
   enabled: 1
---- !u!114 &6206061877201651339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5936538625018206224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7523fe121ef8b448785881b1f9da12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  lockAction: 0
-  possibleActions:
-  - input: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 6062820148927623488}
-        _MemberName: BeginJump
-        _PersistentArguments: []
-  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 7788667647418580513}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 5639727482222500743}
-        - _Type: 1
-          _Int: 0
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 5639727482222500743}
-        - _Type: 1
-          _Int: 1
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  nextState: {fileID: 0}
 --- !u!114 &472102404780835729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6806,7 +6668,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7671762846807235667}
   - component: {fileID: 8937721864928111967}
-  - component: {fileID: 5400959053371182125}
+  - component: {fileID: 7903285790010872625}
   m_Layer: 0
   m_Name: Windup
   m_TagString: Untagged
@@ -6844,9 +6706,17 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &5400959053371182125
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 6630164468072911266}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
+--- !u!114 &7903285790010872625
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6855,16 +6725,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6275732389334311385}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c9eaa4b4a6862748b493a792ddc66eb, type: 3}
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   onEntry: 2
   onEnterName: SomersaultWindup
   onEnterTime: 0.1
   animator: {fileID: 0}
-  isAction: 1
-  readyOnEnd: 1
-  onFinishState: {fileID: 6630164468072911266}
 --- !u!1 &6351271714405443707
 GameObject:
   m_ObjectHideFlags: 0
@@ -7073,7 +6940,6 @@ GameObject:
   - component: {fileID: 2299099583400383993}
   - component: {fileID: 4312939935764186458}
   - component: {fileID: 1326970059289146713}
-  - component: {fileID: 970315645224185921}
   m_Layer: 0
   m_Name: AirChargeFall
   m_TagString: Untagged
@@ -7111,8 +6977,62 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: AttackHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2948750066402289689}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: GrabTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 1181195091599698405}
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: GrabHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 1181195091599698405}
+          - _Type: 1
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+  lockReady: 0
 --- !u!114 &8653995511402254534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7231,77 +7151,6 @@ MonoBehaviour:
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
   enabled: 1
---- !u!114 &970315645224185921
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6574491177993153932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7523fe121ef8b448785881b1f9da12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 8455434200384702600}
-  body: {fileID: 3941225653291784218}
-  controller: {fileID: 1371118413310184343}
-  lockAction: 0
-  possibleActions:
-  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2948750066402289689}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 1181195091599698405}
-        - _Type: 1
-          _Int: 1
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 1181195091599698405}
-        - _Type: 1
-          _Int: 0
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  nextState: {fileID: 0}
 --- !u!1 &6673240144387602274
 GameObject:
   m_ObjectHideFlags: 0
@@ -7521,7 +7370,6 @@ GameObject:
   - component: {fileID: 4189863658179928102}
   - component: {fileID: 4000547645901868762}
   - component: {fileID: 5394545579396957404}
-  - component: {fileID: 3395112541904045051}
   - component: {fileID: 2556941006449818051}
   m_Layer: 0
   m_Name: Idle
@@ -7560,8 +7408,80 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Jump
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3698709666984973678}
+          _MemberName: BeginJump
+          _PersistentArguments: []
+    - Key: AttackTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 6227438277254479290}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: AttackHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7788667647418580513}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: GrabTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 4975428428768240672}
+          - _Type: 1
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: GrabHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 4975428428768240672}
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: Parry
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 1371118413310184343}
+          _MemberName: ParryAction
+          _PersistentArguments: []
+  lockReady: 0
 --- !u!114 &5394545579396957404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7591,96 +7511,6 @@ MonoBehaviour:
   nextPhaseThreshold: 0.05
   needChargeButton: 0
   needRagingUpgrade: 0
---- !u!114 &3395112541904045051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6820223952866294626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7523fe121ef8b448785881b1f9da12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  lockAction: 0
-  possibleActions:
-  - input: {fileID: -814478824691604390, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 3698709666984973678}
-        _MemberName: BeginJump
-        _PersistentArguments: []
-  - input: {fileID: 3580117932893663846, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 6227438277254479290}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -3996210674432600054, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 7788667647418580513}
-        _MemberName: TransitionTo
-        _PersistentArguments: []
-  - input: {fileID: -153026894928900954, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 4975428428768240672}
-        - _Type: 1
-          _Int: 0
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  - input: {fileID: 2726308765886859107, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 2714541672873312079}
-        _MemberName: TryGrabThrow
-        _PersistentArguments:
-        - _Type: 13
-          _Int: 0
-          _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-            PublicKeyToken=null
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 4975428428768240672}
-        - _Type: 1
-          _Int: 1
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  - input: {fileID: -4783546569566929074, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
-      type: 3}
-    result:
-      _PersistentCalls:
-      - _Target: {fileID: 1371118413310184343}
-        _MemberName: ParryAction
-        _PersistentArguments: []
-  nextState: {fileID: 0}
 --- !u!114 &2556941006449818051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7708,7 +7538,7 @@ GameObject:
   - component: {fileID: 6014019409343752396}
   - component: {fileID: 7788667647418580513}
   - component: {fileID: 7855582400919300292}
-  - component: {fileID: 6085855744880007892}
+  - component: {fileID: 8805499447185113993}
   m_Layer: 0
   m_Name: HeadSlam
   m_TagString: Untagged
@@ -7746,8 +7576,16 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4000547645901868762}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
 --- !u!114 &7855582400919300292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7769,7 +7607,7 @@ MonoBehaviour:
   rate: 0.5
   dampenPoint: 0
   savePriorVelocity: 0
---- !u!114 &6085855744880007892
+--- !u!114 &8805499447185113993
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7778,16 +7616,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6824799447565327635}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c9eaa4b4a6862748b493a792ddc66eb, type: 3}
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   onEntry: 2
   onEnterName: Headbutt
   onEnterTime: 0.1
   animator: {fileID: 0}
-  isAction: 1
-  readyOnEnd: 0
-  onFinishState: {fileID: 4000547645901868762}
 --- !u!1 &6856651212475842981
 GameObject:
   m_ObjectHideFlags: 0
@@ -8321,8 +8156,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!114 &7421260604818229875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8424,7 +8261,7 @@ GameObject:
   - component: {fileID: 6608803627792800818}
   - component: {fileID: 6901183049837345610}
   - component: {fileID: 5639727482222500743}
-  - component: {fileID: 5014071346553676600}
+  - component: {fileID: 7099900386698263642}
   m_Layer: 0
   m_Name: DashGrab
   m_TagString: Untagged
@@ -8462,8 +8299,16 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3812935324549841644}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
 --- !u!114 &5639727482222500743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8488,7 +8333,7 @@ MonoBehaviour:
   air: 0
   wasHeld: 0
   success: 0
---- !u!114 &5014071346553676600
+--- !u!114 &7099900386698263642
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8497,16 +8342,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7879129699227318313}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c9eaa4b4a6862748b493a792ddc66eb, type: 3}
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   onEntry: 2
   onEnterName: Grab
   onEnterTime: 0.01
   animator: {fileID: 0}
-  isAction: 1
-  readyOnEnd: 1
-  onFinishState: {fileID: 3812935324549841644}
 --- !u!1 &7933393490922267429
 GameObject:
   m_ObjectHideFlags: 0
@@ -8579,7 +8421,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5368127178834577373}
   - component: {fileID: 5567832916535865027}
-  - component: {fileID: 526751390115838530}
   - component: {fileID: 6960195376670105774}
   - component: {fileID: 7462901747141470752}
   m_Layer: 0
@@ -8619,26 +8460,16 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &526751390115838530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7983757357760064136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7523fe121ef8b448785881b1f9da12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  lockAction: 1
-  possibleActions: []
-  nextState: {fileID: 4000547645901868762}
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4000547645901868762}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
 --- !u!114 &6960195376670105774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8687,7 +8518,7 @@ GameObject:
   - component: {fileID: 6499787038979050382}
   - component: {fileID: 2690473538302802805}
   - component: {fileID: 4975428428768240672}
-  - component: {fileID: 1959526410973501731}
+  - component: {fileID: 2441142607322890621}
   m_Layer: 0
   m_Name: Grab
   m_TagString: Untagged
@@ -8725,8 +8556,16 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4000547645901868762}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
 --- !u!114 &4975428428768240672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8751,7 +8590,7 @@ MonoBehaviour:
   air: 0
   wasHeld: 0
   success: 0
---- !u!114 &1959526410973501731
+--- !u!114 &2441142607322890621
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8760,16 +8599,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7986475415449474893}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c9eaa4b4a6862748b493a792ddc66eb, type: 3}
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   onEntry: 2
   onEnterName: Grab
   onEnterTime: 0.01
   animator: {fileID: 0}
-  isAction: 1
-  readyOnEnd: 1
-  onFinishState: {fileID: 4000547645901868762}
 --- !u!1 &8201560870548631416
 GameObject:
   m_ObjectHideFlags: 0
@@ -8846,7 +8682,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2910622393535161883}
   - component: {fileID: 3443062856187106688}
-  - component: {fileID: 9109306353394988341}
   - component: {fileID: 3847701285562395558}
   - component: {fileID: 3472734133598976748}
   m_Layer: 0
@@ -8886,26 +8721,16 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &9109306353394988341
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8233020272553458984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb7523fe121ef8b448785881b1f9da12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  M: {fileID: 0}
-  body: {fileID: 0}
-  controller: {fileID: 0}
-  lockAction: 1
-  possibleActions: []
-  nextState: {fileID: 4000547645901868762}
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4000547645901868762}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
 --- !u!114 &3847701285562395558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8954,7 +8779,7 @@ GameObject:
   - component: {fileID: 131760227768400216}
   - component: {fileID: 2827000484517282095}
   - component: {fileID: 5381320718860949658}
-  - component: {fileID: 6144929267960726754}
+  - component: {fileID: 5618519440197409730}
   m_Layer: 0
   m_Name: DamageMinor
   m_TagString: Untagged
@@ -8992,8 +8817,16 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4000547645901868762}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
 --- !u!114 &5381320718860949658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9015,7 +8848,7 @@ MonoBehaviour:
   rate: 0
   dampenPoint: 0
   savePriorVelocity: 1
---- !u!114 &6144929267960726754
+--- !u!114 &5618519440197409730
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9024,16 +8857,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8245773314306325851}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c9eaa4b4a6862748b493a792ddc66eb, type: 3}
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   onEntry: 1
   onEnterName: DamageMinor
   onEnterTime: 0
   animator: {fileID: 0}
-  isAction: 1
-  readyOnEnd: 1
-  onFinishState: {fileID: 4000547645901868762}
 --- !u!1 &8327432973705280282
 GameObject:
   m_ObjectHideFlags: 0
@@ -9139,7 +8969,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3588800786915542142}
   - component: {fileID: 8249939815927584102}
-  - component: {fileID: 3242204630460445627}
+  - component: {fileID: 8756034729405423735}
   m_Layer: 0
   m_Name: DamageWhamLanded
   m_TagString: Untagged
@@ -9177,9 +9007,17 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &3242204630460445627
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4000547645901868762}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
+--- !u!114 &8756034729405423735
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9188,16 +9026,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 8391892417953183193}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c9eaa4b4a6862748b493a792ddc66eb, type: 3}
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   onEntry: 1
   onEnterName: DamageFall
   onEnterTime: 0
   animator: {fileID: 0}
-  isAction: 1
-  readyOnEnd: 1
-  onFinishState: {fileID: 4000547645901868762}
 --- !u!1 &8405729866999695410
 GameObject:
   m_ObjectHideFlags: 0

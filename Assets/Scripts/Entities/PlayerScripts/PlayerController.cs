@@ -27,6 +27,7 @@ public class PlayerController : PlayerStateBehavior
 	public Upgrade groundSlamUpgrade;
 	public Upgrade wallJumpUpgrade;
     public Upgrade ragingChargeUpgrade;
+    [System.Obsolete]
     public Timer.OneTime inputQueueDecay = new(1f);
 
     public string punchTriggerName;
@@ -105,21 +106,28 @@ public class PlayerController : PlayerStateBehavior
 
 
 
-
+    [System.Obsolete]
     public PCA currentAction;
-    [HideProperty]
+    [HideProperty, System.Obsolete]
     public bool readyForNextAction = true;
-    public Queue<InputActionReference> actionQueue = new();
+    [System.Obsolete] public Queue<InputActionReference> actionQueue = new();
 
     private void BeginActionEvent(InputAction.CallbackContext callbackContext)
     {
-        if (PauseMenu.Active) return;
+        M.SendSignal(callbackContext.action.name);
+
+        /*
+        if (PauseMenu.Active)
+        {
+            Debug.Log(callbackContext.action.Reference().action.name);
+            return;
+        }
         InputActionReference action = callbackContext.action.Reference();
         if (!readyForNextAction || currentAction == null || !currentAction.TryNextAction(action))
         {
             actionQueue.Enqueue(action);
             inputQueueDecay.Begin();
-        }
+        }*/
     }
 
 
@@ -129,6 +137,8 @@ public class PlayerController : PlayerStateBehavior
 
     public void ReadyNextAction()
     {
+        M.ReadySignal();
+        /*
         readyForNextAction = true;
         if(actionQueue.Count > 0)
         {
@@ -146,12 +156,15 @@ public class PlayerController : PlayerStateBehavior
                     else actionQueue.Dequeue();
                 }
             }
-        }
+        }*/
     }
     public void FinishAction()
     {
+        M.FinishSignal();
+        /*
         if (readyForNextAction && currentAction != null) currentAction.Finish();
         else if (M.currentState.TryGetComponent(out PlayerStateAnimator anim)) anim.Finish();
+        */
     }
 
     public void ParryAction()
@@ -171,14 +184,6 @@ public class PlayerController : PlayerStateBehavior
     {
 
     }
-
-
-
-
-
-
-
-
 
 
 

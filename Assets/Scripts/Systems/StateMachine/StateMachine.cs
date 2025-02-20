@@ -3,6 +3,8 @@ using System;
 using System.Linq;
 using UnityEngine;
 using EditorAttributes;
+using AYellowpaper.SerializedCollections;
+using UltEvents;
 
 namespace SLS.StateMachineV3
 {
@@ -92,7 +94,15 @@ namespace SLS.StateMachineV3
             stateHolder = root.transform;
         }
 
-        protected virtual void Update() => DoUpdate();
+        protected virtual void Update()
+        {
+            if (signalQueueDecay.running) signalQueueDecay.Tick(() =>
+            {
+                if (signalQueue.Count > 0) signalQueue.Dequeue();
+                if (signalQueue.Count > 0) signalQueueDecay.Begin();
+            });
+            DoUpdate();
+        }
 
         protected virtual void FixedUpdate() => DoFixedUpdate();
 
@@ -162,6 +172,47 @@ namespace SLS.StateMachineV3
             currentState = nextState.EnterState(prevState);
             nextState.onActivatedEvent?.Invoke(prevState);
         }
+
+
+        //Signals
+
+        [HideInEditMode, DisableInPlayMode] public bool signalReady = true;
+        public Queue<string> signalQueue = new();
+        public Timer.OneTime signalQueueDecay = new(1f);
+        public SerializedDictionary<string, UltEvent> globalSignals;
+
+        public bool SendSignal(string name, bool addToQueue = true, bool overrideReady = false)
+        {
+            if ((signalReady || overrideReady) && EnactSignal(name)) return true;
+            else if (addToQueue)
+            {
+                signalQueue.Enqueue(name);
+                if (signalQueueDecay.length > 0) signalQueueDecay.Begin();
+            }
+            return false;
+        }
+
+        public void ReadySignal()
+        {
+            signalReady = true;
+            while(signalQueue.Count > 0)
+                if (EnactSignal(signalQueue.Dequeue())) 
+                    break;
+        }
+
+        private bool EnactSignal(string name)
+        {
+            if (currentState.signals.TryGetValue(name, out UltEvent resultEvent) || globalSignals.TryGetValue(name, out resultEvent))
+            {
+                resultEvent?.Invoke();
+                return true;
+            }
+            return false;
+        }
+
+        public void FinishSignal() => SendSignal("Finish", addToQueue: false, overrideReady: true);
+
+
 
     }
 

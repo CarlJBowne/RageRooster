@@ -1,6 +1,8 @@
 ﻿using SLS.StateMachineV3;
 using UnityEngine.InputSystem;
 using UltEvents;
+using FMOD.Studio;
+using EditorAttributes;
 
 public class PlayerControlAction : PlayerStateBehavior
 {
@@ -49,4 +51,19 @@ public class PlayerControlAction : PlayerStateBehavior
 
     public void Finish() => nextState.TransitionTo();
 
+    [Button]
+    public void MOVE()
+    {
+        State iState = GetComponent<State>();
+        iState.lockReady = lockAction;
+        foreach (PlayerControlAction.ActionEntry posAction in possibleActions)
+            iState.signals.Add(posAction.input.action.name, posAction.result);
+        if (nextState != null)
+        {
+            iState.signals.Add("Finish", new());
+            D next = nextState.TransitionTo;
+            iState.signals["Finish"].AddPersistentCall(next);
+        }
+    }
+    private delegate void D();
 }
