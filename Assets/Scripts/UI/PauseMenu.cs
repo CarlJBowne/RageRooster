@@ -26,6 +26,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
     public void QuitGame()
     {
+        Gameplay.DESTROY(true);
         SceneManager.LoadScene("MainMenu");
     }
 

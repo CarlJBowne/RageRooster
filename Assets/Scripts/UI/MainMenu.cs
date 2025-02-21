@@ -15,6 +15,7 @@ public class MainMenu : MenuSingleton<MainMenu>
     {
         optionsMenuPanel.SetActive(false);
         creditsPanel.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void PlayGame()
@@ -25,7 +26,11 @@ public class MainMenu : MenuSingleton<MainMenu>
 
     public void QuitGame()
     {
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
         Application.Quit();
+        #endif
     }
 
     public void ShowCredits()

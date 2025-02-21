@@ -150,6 +150,12 @@ public class PlayerMovementBody : PlayerStateBehavior
     Vector3 initNormal;
     RaycastHit groundHit;
 
+    /// <summary>
+    /// The Collide and Slide Algorithm.
+    /// </summary>
+    /// <param name="vel">Input Velocity.</param>
+    /// <param name="prevNormal">The Normal of the previous Step.</param>
+    /// <param name="step">The current step. Starts at 0.</param>
     private void Move(Vector3 vel, Vector3 prevNormal, int step = 0)
     {
         if (rb.DirectionCast(vel.normalized, vel.magnitude, checkBuffer, out RaycastHit hit))
@@ -188,11 +194,17 @@ public class PlayerMovementBody : PlayerStateBehavior
         else
         {
             rb.MovePosition(position + vel);
+            //Snap to ground when walking on a downward slope.
             if (grounded && initVelocity.y <= 0 && rb.DirectionCast(Vector3.down, 0.5f, checkBuffer, out RaycastHit groundHit)) 
                 rb.MovePosition(position + Vector3.down * groundHit.distance);
         }
     }
 
+    /// <summary>
+    /// Call to Change the Ground State and do all the logic related to that.
+    /// </summary>
+    /// <param name="input">New Grounded Value (Will early return if the same as the current value.)</param>
+    /// <returns>Whether the Change was Successful.</returns>
     public bool GroundStateChange(bool input)
     {
         if (input == grounded || rb.velocity.y > 0.01f) return false;

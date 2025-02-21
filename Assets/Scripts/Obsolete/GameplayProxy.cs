@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Obsolete] //Replace with a deliberate deletion of Gameplay when going to the Main Menu later.
 public class GameplayProxy : MonoBehaviour
 {
     public bool reverseProxy;
