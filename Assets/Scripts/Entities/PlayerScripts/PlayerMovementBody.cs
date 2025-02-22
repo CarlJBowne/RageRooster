@@ -28,6 +28,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     [HideInInspector] public bool baseMovability = true;
     [HideInInspector] public bool canJump = true;
     public bool grounded = true;
+    public float movementModifier = 1;
     [DisableInPlayMode, DisableInEditMode] public float currentSpeed;
     [DisableInPlayMode, DisableInEditMode] public int jumpPhase;
     //-1 = Inactive
@@ -116,7 +117,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
         } // NonMovement
 
-        initVelocity = velocity;
+        initVelocity = new Vector3(velocity.x * movementModifier, velocity.y, velocity.z * movementModifier);
         initNormal = Vector3.up;
 
         if (PlayerStateMachine.DEBUG_MODE_ACTIVE && Input.Jump.IsPressed()) VelocitySet(y: 10f);
