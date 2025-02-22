@@ -1,17 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 using UnityEngine.Events;
 namespace TMPro
 {
-
-    //Creating actions to interface with code and trigger what we want to happen during or after dialouge
-    [System.Serializable] public class ActionEvent : UnityEvent<string> {}
-    [System.Serializable] public class TextRevealEvent : UnityEvent<char> {}
-    [System.Serializable] public class DialogueEvent : UnityEvent {}
-    public class TMP_Animated : TextMeshProUGUI
-    {
         // Jacob Dreyer
         // Creating a custom text element that can be animated and has a controlled text speed
 
@@ -21,6 +13,14 @@ namespace TMPro
         License
             This project is licensed under the MIT License - see the LICENSE.md file for details
         */
+
+    //Creating actions to interface with code and trigger what we want to happen during or after dialouge
+    [System.Serializable] public class ActionEvent : UnityEvent<string> {}
+    [System.Serializable] public class TextRevealEvent : UnityEvent<char> {}
+    [System.Serializable] public class DialogueEvent : UnityEvent {}
+    public class TMP_Animated : TextMeshProUGUI
+    {
+
 
         [SerializeField] private float textSpeed = 10; //TODO:  Replace with a reference to a global setting for players to control default speed
         public ActionEvent onAction;
@@ -75,7 +75,7 @@ namespace TMPro
                     subCounter++;
                 }
                 yield return null;
-                
+
                 WaitForSeconds EvaluateTag(string tag)
                 {
                     if (tag.Length > 0)
@@ -105,7 +105,7 @@ namespace TMPro
         // check to see if a tag is our own
         bool isCustomTag(string tag)
         {
-            return tag.StartsWith("speed=") || tag.StartsWith("pause=") || tag.StartsWith("emotion=") || tag.StartsWith("action");
+            return tag.StartsWith("speed=") || tag.StartsWith("pause=") || tag.StartsWith("emotion=") || tag.StartsWith("action=");
         }
 
     }
