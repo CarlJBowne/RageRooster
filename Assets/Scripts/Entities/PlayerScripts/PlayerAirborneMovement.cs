@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineV3;
+using static TrackerEB;
 
 public class PlayerAirborneMovement : PlayerMovementEffector
 {
@@ -21,13 +22,14 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     public float terminalVelocity = 100f;
     public bool flatGravity = false;
     public PlayerAirborneMovement fallState;
+    public float fallStateThreshold = 0;
     [ToggleGroup("Upwards", nameof(jumpHeight), nameof(jumpPower), nameof(jumpMinHeight), nameof(allowMidFall))]
     public bool upwards;
     [HideProperty] public float jumpHeight;
     [HideProperty] public float jumpPower;
     [HideProperty] public float jumpMinHeight;
     [HideField(nameof(upwards))] public bool forceDownwards;
-    [ShowField(nameof(upwards))] public bool allowMidFall = true;
+    [HideProperty, ShowField(nameof(upwards))] public bool allowMidFall = true;
 
     protected float targetMinHeight;
     protected float targetHeight;
@@ -53,7 +55,8 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     public override void VerticalMovement(out float? result)
     {
         result = ApplyGravity(gravity, terminalVelocity, flatGravity);
-        if (upwards) VerticalUpwards(ref result, ref body.jumpPhase);
+        if (upwards) VerticalUpwards(ref result);
+        else if (body.velocity.y <= fallStateThreshold) Fall(ref result);
     }
 
     private void HorizontalMain(float deltaTime, ref float currentSpeed, ref Vector3 currentDirection, Vector3 control)
@@ -105,20 +108,23 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     }
 
 
-    private void VerticalUpwards(ref float? Y, ref int phase)
+    private void VerticalUpwards(ref float? Y)
     {
-        if (phase == 0 && transform.position.y >= targetMinHeight) phase = 1;
-        if (phase == 1 && transform.position.y >= targetHeight) phase = 2;
-        if (phase == 2 && body.velocity.y < 0) phase = 3;
+        if (body.jumpPhase == 0 && transform.position.y >= targetMinHeight) body.jumpPhase = 1;
+        if (body.jumpPhase == 1 && transform.position.y >= targetHeight) body.jumpPhase = 2;
 
-        if (phase < 2) Y = jumpPower;
-        if (body.velocity.y <= 0 || (allowMidFall && phase > 0 && !input.jump.IsPressed()))
-        {
-            if (body.velocity.y > 0) Y = 0;
-            phase = 3;
-            if (fallState != null) fallState.Enter();
-        }
+        if (body.jumpPhase < 2) Y = jumpPower;
+        if ((body.velocity.y <= fallStateThreshold) || 
+            (allowMidFall && !input.jump.IsPressed()))
+            Fall(ref Y);
 
+    }
+
+    private void Fall(ref float? Y)
+    {
+        if (body.velocity.y > fallStateThreshold) Y = fallStateThreshold;
+        body.jumpPhase = 3;
+        if (fallState != null) fallState.Enter();
     }
 
     public override void OnEnter(State prev, bool isFinal)
@@ -152,10 +158,14 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         };
 #endif
     }
-    public override void OnExit(State next) => body.jumpPhase = -1;
+    //public override void OnExit(State next) => body.jumpPhase = -1;
 
     public void Enter() => state.TransitionTo();
-    public void BeginJump() => body.TryBeginJump(this);
+    public void BeginJump()
+    {
+        body.GroundStateChange(false);
+        state.TransitionTo();
+    }
     public void BeginJump(float power, float height, float minHeight)
     {
         if (!upwards) throw new System.Exception("This isn't an Upward Item.");

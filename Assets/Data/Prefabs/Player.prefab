@@ -1216,6 +1216,7 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   fallState: {fileID: 2513530225769621494}
+  fallStateThreshold: 0
   upwards: 1
   jumpHeight: 7
   jumpPower: 14
@@ -1408,6 +1409,173 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4394099710664233783}
   m_LocalEulerAnglesHint: {x: -5.5249515, y: 0, z: 0}
+--- !u!1 &1206808908755011029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6649114412980860138}
+  - component: {fileID: 7773577663483693878}
+  - component: {fileID: 1027073189156208793}
+  - component: {fileID: 6099757700044800534}
+  m_Layer: 0
+  m_Name: DropLaunch
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &6649114412980860138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206808908755011029}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6790216793252147034}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7773577663483693878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206808908755011029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 1
+  onActivatedEvent:
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: ChargeHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8937721864928111967}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: ChargeTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8937721864928111967}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: GrabTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 1181195091599698405}
+          - _Type: 1
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: GrabHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrow
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 1181195091599698405}
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: AttackHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2948750066402289689}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 0
+--- !u!114 &1027073189156208793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206808908755011029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89a8416e01b52494193d14c59b41a835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  trueActive: 0
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 10
+  stopping: 0.3
+  maxTurnSpeed: 10
+  isDash: 0
+  minSpeed: 0
+  gravity: 30
+  terminalVelocity: 98.1
+  flatGravity: 0
+  fallState: {fileID: 2513530225769621494}
+  fallStateThreshold: 0
+  upwards: 1
+  jumpHeight: 4
+  jumpPower: 14
+  jumpMinHeight: 2
+  forceDownwards: 0
+  allowMidFall: 0
+--- !u!114 &6099757700044800534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206808908755011029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 2
+  onEnterName: Jump
+  onEnterTime: 0.01
+  animator: {fileID: 0}
 --- !u!1 &1242553937887867047
 GameObject:
   m_ObjectHideFlags: 0
@@ -1541,6 +1709,23 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 931477398715445950}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: GroundStateChange
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 8249939815927584102}
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 1
@@ -2084,6 +2269,8 @@ Transform:
   - {fileID: 4182476368529953341}
   - {fileID: 131760227768400216}
   - {fileID: 3588800786915542142}
+  - {fileID: 5532989216206750302}
+  - {fileID: 2939210796809206182}
   - {fileID: 4425123305009892289}
   m_Father: {fileID: 6385669238997089540}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2270,6 +2457,23 @@ MonoBehaviour:
         - _Target: {fileID: 2948750066402289689}
           _MemberName: TransitionTo
           _PersistentArguments: []
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: GroundStateChange
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 7887553615491649882}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
   lockReady: 0
 --- !u!114 &2513530225769621494
 MonoBehaviour:
@@ -2288,7 +2492,7 @@ MonoBehaviour:
   controller: {fileID: 0}
   trueActive: 0
   acceleration: 0.35
-  decceleration: 0.5
+  decceleration: 0
   maxSpeed: 10
   stopping: 0.3
   maxTurnSpeed: 10
@@ -2298,6 +2502,7 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   fallState: {fileID: 2513530225769621494}
+  fallStateThreshold: 0
   upwards: 0
   jumpHeight: 0
   jumpPower: 0
@@ -2627,6 +2832,115 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &2937903117368929439
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5532989216206750302}
+  - component: {fileID: 1074639858917870420}
+  - component: {fileID: 651157846730441489}
+  m_Layer: 0
+  m_Name: CoyoteWalk
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5532989216206750302
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2937903117368929439}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 542910149066364657}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1074639858917870420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2937903117368929439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Jump
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3698709666984973678}
+          _MemberName: BeginJump
+          _PersistentArguments: []
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: GroundStateChange
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 7887553615491649882}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 0
+--- !u!114 &651157846730441489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2937903117368929439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89a8416e01b52494193d14c59b41a835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  trueActive: 0
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 10
+  stopping: 0.3
+  maxTurnSpeed: 10
+  isDash: 0
+  minSpeed: 0
+  gravity: 50
+  terminalVelocity: 98.1
+  flatGravity: 0
+  fallState: {fileID: 2513530225769621494}
+  fallStateThreshold: -9
+  upwards: 0
+  jumpHeight: 0
+  jumpPower: 0
+  jumpMinHeight: 0
+  forceDownwards: 0
+  allowMidFall: 0
 --- !u!1 &2950555048310845610
 GameObject:
   m_ObjectHideFlags: 0
@@ -2737,7 +3051,7 @@ MonoBehaviour:
     length: 0.5
     current: 0
     running: 0
-  defaultSignals:
+  globalSignals:
     _serializedList: []
   animator: {fileID: 0}
   body: {fileID: 0}
@@ -2823,7 +3137,7 @@ MonoBehaviour:
   airBorneState: {fileID: 5123969060782274918}
   dropLaunchUpgrade: {fileID: 3210499484089810659, guid: 5096cd543e777e240af87643ae7b164b,
     type: 2}
-  jumpState: {fileID: 3698709666984973678}
+  jumpState: {fileID: 1027073189156208793}
 --- !u!114 &4810220497755855147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2875,16 +3189,10 @@ MonoBehaviour:
     type: 2}
   ragingChargeUpgrade: {fileID: -8222721850088587547, guid: 5096cd543e777e240af87643ae7b164b,
     type: 2}
-  inputQueueDecay:
-    length: 0.5
-    current: 0
-    running: 0
   punchTriggerName: Punch
   jumpInput: 0
   camAdjustedMovement: {x: 0, y: 0, z: 0}
   grabber: {fileID: 0}
-  currentAction: {fileID: 0}
-  readyForNextAction: 1
 --- !u!114 &3941225653291784218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2913,6 +3221,7 @@ MonoBehaviour:
   baseMovability: 1
   canJump: 1
   grounded: 1
+  movementModifier: 1
   currentSpeed: 0
   jumpPhase: 0
   _currentDirection: {x: 0, y: 0, z: 0}
@@ -3875,6 +4184,23 @@ MonoBehaviour:
         - _Target: {fileID: 8937721864928111967}
           _MemberName: TransitionTo
           _PersistentArguments: []
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: GroundStateChange
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 7887553615491649882}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
   lockReady: 0
 --- !u!114 &6905962700685548749
 MonoBehaviour:
@@ -3903,6 +4229,7 @@ MonoBehaviour:
   terminalVelocity: 5.89
   flatGravity: 0
   fallState: {fileID: 2513530225769621494}
+  fallStateThreshold: 0
   upwards: 0
   jumpHeight: 0
   jumpPower: 0
@@ -4656,6 +4983,7 @@ Transform:
   - {fileID: 7977943911182383535}
   - {fileID: 1846500094994641161}
   - {fileID: 8409826796498701612}
+  - {fileID: 6649114412980860138}
   m_Father: {fileID: 7427727485705586250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1625394358674883294
@@ -4768,6 +5096,7 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   fallState: {fileID: 2513530225769621494}
+  fallStateThreshold: 0
   upwards: 1
   jumpHeight: 4
   jumpPower: 14
@@ -4952,6 +5281,23 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 8937721864928111967}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: GroundStateChange
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 4000547645901868762}
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
@@ -5673,6 +6019,7 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   fallState: {fileID: 8653995511402254534}
+  fallStateThreshold: 0
   upwards: 1
   jumpHeight: 2
   jumpPower: 10
@@ -6085,6 +6432,12 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
+    - Key: WalkOff
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 1074639858917870420}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
   lockReady: 0
 --- !u!114 &528938496853295208
 MonoBehaviour:
@@ -6354,6 +6707,115 @@ Transform:
   - {fileID: 7524271378720441421}
   m_Father: {fileID: 2358839026724236349}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5918171649529982201
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2939210796809206182}
+  - component: {fileID: 8736705224105400998}
+  - component: {fileID: 5137664638109459586}
+  m_Layer: 0
+  m_Name: CoyoteCharge
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2939210796809206182
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5918171649529982201}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 542910149066364657}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8736705224105400998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5918171649529982201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Jump
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 6062820148927623488}
+          _MemberName: BeginJump
+          _PersistentArguments: []
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: GroundStateChange
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 3812935324549841644}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 0
+--- !u!114 &5137664638109459586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5918171649529982201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89a8416e01b52494193d14c59b41a835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  trueActive: 0
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 20
+  stopping: 0.15
+  maxTurnSpeed: 10
+  isDash: 1
+  minSpeed: 0
+  gravity: 50
+  terminalVelocity: 98.1
+  flatGravity: 0
+  fallState: {fileID: 2513530225769621494}
+  fallStateThreshold: -9
+  upwards: 0
+  jumpHeight: 0
+  jumpPower: 0
+  jumpMinHeight: 0
+  forceDownwards: 0
+  allowMidFall: 0
 --- !u!1 &5936538625018206224
 GameObject:
   m_ObjectHideFlags: 0
@@ -6467,6 +6929,12 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
+    - Key: WalkOff
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8736705224105400998}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
   lockReady: 0
 --- !u!114 &4244649889381608096
 MonoBehaviour:
@@ -7032,6 +7500,23 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: GroundStateChange
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 3812935324549841644}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
   lockReady: 0
 --- !u!114 &8653995511402254534
 MonoBehaviour:
@@ -7060,6 +7545,7 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   fallState: {fileID: 0}
+  fallStateThreshold: 0
   upwards: 0
   jumpHeight: 0
   jumpPower: 0
