@@ -32,6 +32,15 @@ public class SpeakerScript : MonoBehaviour
         animatedText = ConversationManager.instance.animatedText;
         animatedText.onAction.AddListener((action) => SetAction(action));
     }
+    public void EmotionChanger(Emotion e)
+    {
+        if (this != ConversationManager.instance.currentSpeaker)
+            return;
+
+        //Trigger animation based on current emotion
+        animator.SetTrigger(e.ToString());
+    }
+
     //This function controls the "action" of the speaker to determine what effect to apply or sound to play
     public void SetAction(string action)
     {

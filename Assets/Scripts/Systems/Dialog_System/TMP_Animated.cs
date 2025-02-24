@@ -15,6 +15,8 @@ namespace TMPro
         */
 
     //Creating actions to interface with code and trigger what we want to happen during or after dialouge
+    public enum Emotion { neutral, happy, suprised, angry, confused };
+    [System.Serializable] public class EmotionEvent : UnityEvent<Emotion> { }
     [System.Serializable] public class ActionEvent : UnityEvent<string> {}
     [System.Serializable] public class TextRevealEvent : UnityEvent<char> {}
     [System.Serializable] public class DialogueEvent : UnityEvent {}
@@ -23,6 +25,7 @@ namespace TMPro
 
 
         [SerializeField] private float textSpeed = 10; //TODO:  Replace with a reference to a global setting for players to control default speed
+        public EmotionEvent onEmotionChange;
         public ActionEvent onAction;
         public TextRevealEvent onTextReveal;
         public DialogueEvent onDialogueFinish;
@@ -76,7 +79,7 @@ namespace TMPro
                 }
                 yield return null;
 
-                WaitForSeconds EvaluateTag(string tag)
+                WaitForSeconds EvaluateTag(string tag) //Check the tag being used. All tags have to be coded into this location
                 {
                     if (tag.Length > 0)
                     {
@@ -91,6 +94,10 @@ namespace TMPro
                         else if (tag.StartsWith("action="))
                         {
                             onAction.Invoke(tag.Split('=')[1]);
+                        }
+                        else if (tag.StartsWith("emotion="))
+                        {
+                            onEmotionChange.Invoke((Emotion)System.Enum.Parse(typeof(Emotion), tag.Split('=')[1]));
                         }
                     }
                     return null;
