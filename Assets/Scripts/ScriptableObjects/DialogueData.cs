@@ -1,3 +1,12 @@
+
+/*
+Original Authors
+    André Cardoso - Github
+License
+    This project is licensed under the MIT License - see the LICENSE.md file for details
+*/
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
