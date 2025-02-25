@@ -50,6 +50,74 @@ public class ConversationManager : MonoBehaviour
     {
         animatedText.onDialogueFinish.AddListener(() => FinishDialogue());
     }
+    private void Update()
+    {
+        
+        if (inDialogue)
+        {
+            if (canExit)
+            {
+                CameraChange(false);
+                FadeUI(false, .2f, 0);
+                Sequence s = DOTween.Sequence();
+                s.AppendInterval(.8f);
+                s.AppendCallback(() => ResetState());
+            }
+
+            if (nextDialogue)
+            {
+                animatedText.ReadText(currentSpeaker.dialogue.conversationBlock[dialogueIndex]);
+            }
+        }
+    }
+
+    public void FadeUI(bool show, float time, float delay)
+    {
+        Sequence s = DOTween.Sequence();
+        s.AppendInterval(delay);
+        s.Append(canvasGroup.DOFade(show ? 1 : 0, time));
+        if (show)
+        {
+            dialogueIndex = 0;
+            s.Join(canvasGroup.transform.DOScale(0, time * 2).From().SetEase(Ease.OutBack));
+            s.AppendCallback(() => animatedText.ReadText(currentSpeaker.dialogue.conversationBlock[0]));
+        }
+    }
+
+    public void SetCharNameAndColor()
+    {
+        nameTMP.text = currentSpeaker.data.npcName;
+
+    }
+
+    public void CameraChange(bool dialogue)
+    {
+        gameCamera.SetActive(!dialogue);
+        dialogueCamera.SetActive(dialogue);
+
+        //Depth of field modifier
+        float dofWeight = dialogueCamera.activeSelf ? 1 : 0;
+        DOVirtual.Float(dialogueDof.weight, dofWeight, .8f, DialogueDOF);
+    }
+
+    public void DialogueDOF(float x)
+    {
+        dialogueDof.weight = x;
+    }
+
+    public void ClearText()
+    {
+        animatedText.text = string.Empty;
+    }
+
+    public void ResetState()
+    {
+        currentSpeaker.Reset();
+        //Interface to stop player movement while in dialogue by disabling the component for movement
+        //FindObjectOfType<MovementInput>().active = true;
+        inDialogue = false;
+        canExit = false;
+    }
 
     public void FinishDialogue()
     {
