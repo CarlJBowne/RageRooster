@@ -49,7 +49,8 @@ public class SpeakerScript : MonoBehaviour
 
         if (action == "shake")
         {
-            Camera.main.GetComponent<CinemachineImpulseSource>().GenerateImpulse();
+            //TODO: Change this to not grab the Camera main and create our own static reference to the main camera to be more performant
+            //Camera.main.GetComponent<CinemachineImpulseSource>().GenerateImpulse();
         }
         else
         {
