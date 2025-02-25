@@ -52,7 +52,7 @@ public class ConversationManager : MonoBehaviour
     }
     private void Update()
     {
-        
+        /*
         if (inDialogue)
         {
             if (canExit)
@@ -69,6 +69,7 @@ public class ConversationManager : MonoBehaviour
                 animatedText.ReadText(currentSpeaker.dialogue.conversationBlock[dialogueIndex]);
             }
         }
+        */
     }
 
     public void FadeUI(bool show, float time, float delay)
