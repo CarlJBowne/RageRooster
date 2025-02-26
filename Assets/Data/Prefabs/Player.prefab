@@ -3031,6 +3031,7 @@ MonoBehaviour:
   controller: {fileID: 0}
   cameraTransform: {fileID: 0}
   freeLookCamera: {fileID: 0}
+  pauseState: {fileID: 2078276186862268811}
 --- !u!54 &1838944232945776554
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4838,6 +4839,7 @@ Transform:
   m_Children:
   - {fileID: 542910149066364657}
   - {fileID: 7427727485705586250}
+  - {fileID: 3146629290765188103}
   m_Father: {fileID: 802911248559169720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4517806838389897866
@@ -9175,6 +9177,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8479078116207083057}
   m_LocalEulerAnglesHint: {x: 6.032185, y: 0, z: 0}
+--- !u!1 &7768039867893722896
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3146629290765188103}
+  - component: {fileID: 2078276186862268811}
+  - component: {fileID: 2155104673095359994}
+  m_Layer: 0
+  m_Name: Paused
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &3146629290765188103
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7768039867893722896}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6385669238997089540}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2078276186862268811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7768039867893722896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 1
+--- !u!114 &2155104673095359994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7768039867893722896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9941058b321f6b4d9f1f2cec53de651, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  trueActive: 0
+  horizontalNegateType: 0
+  verticalNegateType: 0
+  rate: 0
+  dampenPoint: 0
+  savePriorVelocity: 1
 --- !u!1 &7879129699227318313
 GameObject:
   m_ObjectHideFlags: 0
