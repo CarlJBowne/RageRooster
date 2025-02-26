@@ -29,7 +29,10 @@ ModelImporter:
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
-    extraExposedTransformPaths: []
+    extraExposedTransformPaths:
+    - model:Hips/model:Spine/model:Spine1/model:Spine2/model:RightShoulder/model:RightArm/model:RightForeArm
+    - model:Hips/model:Spine/model:Spine1/model:Spine2/model:LeftShoulder/model:LeftArm/model:LeftForeArm
+    - model:Hips/model:Spine/model:Spine1/model:Spine2/model:Neck/model:Head
     extraUserProperties: []
     clipAnimations: []
     isReadable: 0
@@ -91,7 +94,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: 
+    rootMotionBoneName: model:Hips
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
@@ -99,7 +102,7 @@ ModelImporter:
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0

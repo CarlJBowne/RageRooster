@@ -13,13 +13,6 @@ public class PlayerController : PlayerStateBehavior
 
 	public float jumpBuffer = 0.3f;
 
-	//public State groundedState;
-	//public State idleWalkState;
-	//public State chargingState;
-	//public State airborneState;
-	//public State fallingState;
-	//public State glidingState;
-	//public State groundSlamState;
 	public PlayerWallJump wallJumpState;
     public PlayerAirborneMovement airChargeState;
     public PlayerAirborneMovement airChargeFallState;
@@ -28,14 +21,14 @@ public class PlayerController : PlayerStateBehavior
 	public Upgrade wallJumpUpgrade;
     public Upgrade ragingChargeUpgrade;
 
-    public string punchTriggerName;
+    public System.Action onAnimatorMove;
 
 	#endregion
 	#region Data
 
 	[HideInInspector] public float jumpInput;
 	[HideInInspector] public Vector3 camAdjustedMovement;
-	[HideInInspector] public PlayerGrabber grabber;
+	[HideInInspector] public PlayerRanged grabber;
 
 	#endregion
 	#region Getters
@@ -44,7 +37,7 @@ public class PlayerController : PlayerStateBehavior
 
 	public override void OnAwake()
 	{
-		grabber = GetComponentFromMachine<PlayerGrabber>();
+		grabber = GetComponentFromMachine<PlayerRanged>();
 		//attack = GetComponentFromMachine<PlayerAttackSystem>();
 
 		input.jump.performed            += BeginActionEvent;
@@ -55,6 +48,7 @@ public class PlayerController : PlayerStateBehavior
         input.parry.performed           += BeginActionEvent;
         input.chargeTap.performed       += BeginActionEvent;
         input.chargeHold.performed      += BeginActionEvent;
+        input.shoot.performed           += BeginActionEvent;
     }
 
 	private void OnDestroy()
@@ -67,6 +61,7 @@ public class PlayerController : PlayerStateBehavior
         input.parry.performed           -= BeginActionEvent;
         input.chargeTap.performed       -= BeginActionEvent;
         input.chargeHold.performed      -= BeginActionEvent;
+        input.shoot.performed           -= BeginActionEvent;
     }
 
     public override void OnUpdate()
@@ -86,7 +81,10 @@ public class PlayerController : PlayerStateBehavior
             M.freeLookCamera.LookAt = transform;
         }
 
-        if(input.shootMode.IsPressed() && sGrounded && M.signalReady) aimingState.EnterMode();
+        if (aimingState.eggAmount < aimingState.eggCapacity) aimingState.UpdateEggTimer();
+        if (input.shootMode.IsPressed() && M.signalReady && sGrounded 
+            && (aimingState.eggAmount >= 1 || grabber.currentGrabbed != null)) 
+            aimingState.EnterMode();
     }
 
     public bool CheckJumpBuffer()
@@ -97,9 +95,11 @@ public class PlayerController : PlayerStateBehavior
     }
     public void BeginJumpInputBuffer() => jumpInput = jumpBuffer + Time.fixedDeltaTime;
 
+    private void OnAnimatorMove() => onAnimatorMove?.Invoke();
+
 
     private void BeginActionEvent(InputAction.CallbackContext callbackContext) => M.SendSignal(callbackContext.action.name);
-    private void BeginActionEvent(string name) => M.SendSignal(name);
+    public void BeginActionEvent(string name) => M.SendSignal(name);
 
     public void ReadyNextAction() => M.ReadySignal();
     public void FinishAction() => M.FinishSignal();
@@ -118,13 +118,6 @@ public class PlayerController : PlayerStateBehavior
 
         //Do Parry move here.
     }
-
-    public void ChargeAction(bool held)
-    {
-
-    }
-
-
 
 
 }
