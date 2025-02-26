@@ -72,6 +72,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -106,6 +110,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _AO_Intensity: 1
     - _AdditionalLightThreshold: 0.49
     - _AlphaClip: 0
     - _AlphaToMask: 0
@@ -125,10 +130,12 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _HeightAmplitude: 0
     - _Max: 1.37
     - _Metallic: 0
     - _Min: 0.31
     - _Mode: 0
+    - _NormalStrength: 5
     - _OcclusionStrength: 1
     - _Opacity: 1
     - _Parallax: 0.02
