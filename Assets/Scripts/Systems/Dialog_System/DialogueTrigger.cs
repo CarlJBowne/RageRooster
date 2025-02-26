@@ -61,7 +61,7 @@ public class DialogueTrigger : MonoBehaviour
         
         if (!ui.inDialogue && currentSpeaker != null)
         {
-            targetGroup.m_Targets[1].target = currentSpeaker.transform;
+            targetGroup.m_Targets[1].target = this.transform;
             //movement.active = false;
             ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().Follow = targetGroup.transform;
             ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
@@ -70,7 +70,7 @@ public class DialogueTrigger : MonoBehaviour
             ui.CameraChange(true);
             ui.ClearText();
             ui.FadeUI(true, .2f, .65f);
-            currentSpeaker.TurnToPlayer(transform.position);
+            currentSpeaker.TurnToPlayer(this.transform.position);
         }
     }
 }

@@ -107,6 +107,7 @@ public class SpeakerScript : MonoBehaviour, IInteractable
     {
         Debug.Log("Speaker is activated");
         onSpeakerActivate?.Invoke();
+        dialogue = data.dialogueList[0];
         return true;
     }
 }

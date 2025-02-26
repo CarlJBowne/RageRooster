@@ -29,7 +29,7 @@ public class SpeakerAim : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
-            aimTarget = other.transform;
+            aimTarget = other.gameObject.transform;
     }
 
     private void OnTriggerExit(Collider other)
