@@ -26,7 +26,7 @@ public class DialogueAudio : MonoBehaviour
 
         animatedText = ConversationManager.instance.animatedText;
 
-        animatedText.onTextReveal.AddListener((newChar) => ReproduceSound(newChar));
+        //animatedText.onTextReveal.AddListener((newChar) => ReproduceSound(newChar));
     }
 
     public void ReproduceSound(char c)

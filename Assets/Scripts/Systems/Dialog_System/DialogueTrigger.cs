@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Cinemachine;
+using UnityEngine.Assertions.Must;
 
 public class DialogueTrigger : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class DialogueTrigger : MonoBehaviour
     private SpeakerScript currentSpeaker;
     //private MovementInput movement;
     public CinemachineTargetGroup targetGroup;
+    public CinemachineVirtualCamera dialogueCamera;
 
     [Space]
 
@@ -26,35 +28,49 @@ public class DialogueTrigger : MonoBehaviour
     void Update()
     {
         //Move everything in the Update into a different section to trigger the iteraction of talking
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("NPC"))
+        {
+            currentSpeaker = other.GetComponent<SpeakerScript>();
+            ui.currentSpeaker = currentSpeaker;
+            targetGroup = currentSpeaker.targetGroup;
+            currentSpeaker.onSpeakerActivate += StartConversation;
+            
+
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("NPC"))
+        {            
+            currentSpeaker.onSpeakerActivate -= StartConversation;
+            currentSpeaker = null;
+            ui.currentSpeaker = currentSpeaker;
+
+        }
+    }
+
+    public void StartConversation()
+    {
+        Debug.Log("Conversation is starting");
+        
         if (!ui.inDialogue && currentSpeaker != null)
         {
             targetGroup.m_Targets[1].target = currentSpeaker.transform;
             //movement.active = false;
+            ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().Follow = targetGroup.transform;
+            ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
             ui.SetCharNameAndColor();
             ui.inDialogue = true;
             ui.CameraChange(true);
             ui.ClearText();
             ui.FadeUI(true, .2f, .65f);
             currentSpeaker.TurnToPlayer(transform.position);
-        }
-    }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Villager"))
-        {
-            currentSpeaker = other.GetComponent<SpeakerScript>();
-            ui.currentSpeaker = currentSpeaker;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Villager"))
-        {
-            currentSpeaker = null;
-            ui.currentSpeaker = currentSpeaker;
         }
     }
 }

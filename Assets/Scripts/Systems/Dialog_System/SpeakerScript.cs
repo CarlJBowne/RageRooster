@@ -12,7 +12,8 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 using Cinemachine;
-public class SpeakerScript : MonoBehaviour
+using System;
+public class SpeakerScript : MonoBehaviour, IInteractable
 {
     public NPC_Data data;
     public DialogueData dialogue;
@@ -24,6 +25,11 @@ public class SpeakerScript : MonoBehaviour
     private Animator animator;
 
     public Transform particlesParent;
+
+    bool IInteractable.canInteract => true;
+
+    public event Action onSpeakerActivate;
+    public CinemachineTargetGroup targetGroup;
 
     void Start()
     {
@@ -55,7 +61,7 @@ public class SpeakerScript : MonoBehaviour
         else
         {
             //These will be replaced with our own custom actions that the speakers can do when the tag is parsed for them
-            PlayParticle(action);
+            //PlayParticle(action);
 
             if (action == "sparkle")
             {
@@ -97,4 +103,10 @@ public class SpeakerScript : MonoBehaviour
         return dir > 0f;
     }
 
+    bool IInteractable.Interaction()
+    {
+        Debug.Log("Speaker is activated");
+        onSpeakerActivate?.Invoke();
+        return true;
+    }
 }

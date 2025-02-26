@@ -15,6 +15,8 @@ using TMPro;
 using DG.Tweening;
 using UnityEngine.Rendering;
 using Cinemachine;
+using UnityEngine.InputSystem;
+using System;
 
 public class ConversationManager : MonoBehaviour
 {
@@ -41,9 +43,24 @@ public class ConversationManager : MonoBehaviour
     [Space]
 
     public Volume dialogueDof;
+    bool isAdvancingText;
     private void Awake()
     {
         instance = this;
+    }
+    private void OnEnable()
+    {
+        Input.Parry.performed += TryAdvanceText;
+    }
+    private void OnDisable()
+    {
+        Input.Parry.performed -= TryAdvanceText;
+    }
+
+    private void TryAdvanceText(InputAction.CallbackContext context)
+    {
+        isAdvancingText = true;
+        Debug.Log("Trying to advance text");
     }
 
     private void Start()
@@ -52,8 +69,8 @@ public class ConversationManager : MonoBehaviour
     }
     private void Update()
     {
-        /*
-        if (inDialogue)
+        
+        if (isAdvancingText && inDialogue)
         {
             if (canExit)
             {
@@ -69,7 +86,8 @@ public class ConversationManager : MonoBehaviour
                 animatedText.ReadText(currentSpeaker.dialogue.conversationBlock[dialogueIndex]);
             }
         }
-        */
+        isAdvancingText = false;
+        
     }
 
     public void FadeUI(bool show, float time, float delay)
@@ -98,7 +116,7 @@ public class ConversationManager : MonoBehaviour
 
         //Depth of field modifier
         float dofWeight = dialogueCamera.activeSelf ? 1 : 0;
-        DOVirtual.Float(dialogueDof.weight, dofWeight, .8f, DialogueDOF);
+//        DOVirtual.Float(dialogueDof.weight, dofWeight, .8f, DialogueDOF);
     }
 
     public void DialogueDOF(float x)
