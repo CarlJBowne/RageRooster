@@ -3,18 +3,86 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MainMenu : MenuSingleton<MainMenu>
 {
-    public GameObject optionsMenuPanel;
+    private enum MenuState
+    {
+        Home,
+        Credits
+    }
+
+    private MenuState currentState = MenuState.Home;
+    private List<Button> menuButtons;
     public GameObject creditsPanel;
+    public Button creditsPanelFirstButton;
     public EventReference musicRef;
-    //public RectTransform creditsContent;
+    public RectTransform creditsContent;
+
+    private int currentButtonIndex = 0;
 
     private void Start()
     {
-        optionsMenuPanel.SetActive(false);
         creditsPanel.SetActive(false);
+        menuButtons = new List<Button>(GetComponentsInChildren<Button>());
+        if (menuButtons.Count > 0)
+        {
+            EventSystem.current.SetSelectedGameObject(menuButtons[currentButtonIndex].gameObject);
+        }
+    }
+
+    private void Update()
+    {
+        HandleControllerInput();
+    }
+
+    private void HandleControllerInput()
+    {
+        switch (currentState)
+        {
+            case MenuState.Home:
+                HandleHomeInput();
+                break;
+            case MenuState.Credits:
+                HandleCreditsInput();
+                break;
+        }
+    }
+
+    private void HandleHomeInput()
+    {
+        if (Input.Movement.y > 0)
+        {
+            NavigateUp();
+        }
+        else if (Input.Movement.y < 0)
+        {
+            NavigateDown();
+        }
+
+        if (Input.Interact.triggered)
+        {
+            menuButtons[currentButtonIndex].onClick.Invoke();
+        }
+    }
+
+    private void HandleCreditsInput()
+    {
+        // Handle input for credits panel if needed
+    }
+
+    private void NavigateUp()
+    {
+        currentButtonIndex = (currentButtonIndex - 1 + menuButtons.Count) % menuButtons.Count;
+        EventSystem.current.SetSelectedGameObject(menuButtons[currentButtonIndex].gameObject);
+    }
+
+    private void NavigateDown()
+    {
+        currentButtonIndex = (currentButtonIndex + 1) % menuButtons.Count;
+        EventSystem.current.SetSelectedGameObject(menuButtons[currentButtonIndex].gameObject);
     }
 
     public void PlayGame()
@@ -30,12 +98,26 @@ public class MainMenu : MenuSingleton<MainMenu>
 
     public void ShowCredits()
     {
-        //creditsContent.anchoredPosition = new Vector2(creditsContent.anchoredPosition.x, 0);
+        creditsContent.anchoredPosition = new Vector2(creditsContent.anchoredPosition.x, 0);
         creditsPanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(creditsPanelFirstButton.gameObject);
+        SetMenuButtonsInteractable(false);
+        currentState = MenuState.Credits;
     }
 
     public void HideCredits()
     {
         creditsPanel.SetActive(false);
+        EventSystem.current.SetSelectedGameObject(menuButtons[currentButtonIndex].gameObject);
+        SetMenuButtonsInteractable(true);
+        currentState = MenuState.Home;
+    }
+
+    private void SetMenuButtonsInteractable(bool interactable)
+    {
+        foreach (var button in menuButtons)
+        {
+            button.interactable = interactable;
+        }
     }
 }
