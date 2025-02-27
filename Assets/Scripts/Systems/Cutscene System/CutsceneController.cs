@@ -23,6 +23,9 @@ public class CutsceneController : MonoBehaviour
 
     private InputAction action;
 
+    [Tooltip("If true, cameras will move between eachother in a linear order.")]
+    public bool fixedCameraChanges = true;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -49,6 +52,12 @@ public class CutsceneController : MonoBehaviour
         //Leave room for non-linear camera changes
 
         //Send a trigger to the animator to cause a linear change
-        animator.SetTrigger("NextCamera");
+        //animator.SetTrigger("NextCamera");
+    }
+
+    //This function is for controlling the specific camera that should be advanced toward, based on the current system.
+    private void ChangeCamera(string cameraName)
+    {
+        animator.Play(cameraName);
     }
 }
