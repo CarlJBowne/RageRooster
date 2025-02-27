@@ -15,7 +15,7 @@ public class Grabbable : MonoBehaviour
     #endregion
     #region Data
 
-    private IGrabber grabber;
+    private Grabber grabber;
     public bool grabbed => grabber != null;
 
     public new Collider collider {  get; private set; }
@@ -33,7 +33,7 @@ public class Grabbable : MonoBehaviour
 
     public static bool Grab(GameObject target, out Grabbable result) => target.TryGetComponent(out result) && result.enabled && result.UnderThreshold() ? true : false;
 
-    public Grabbable Grab(IGrabber grabber)
+    public Grabbable Grab(Grabber grabber)
     {
         this.grabber = grabber;
         GrabStateEvent?.Invoke(true);
@@ -66,12 +66,13 @@ public class Grabbable : MonoBehaviour
 
 }
 
-public interface IGrabber
+[System.Serializable]
+public class Grabber
 {
-    public Grabbable currentGrabbed { get; set; }
-    public UltEvents.UltEvent<bool> GrabStateEvent { get; set; }
+    public Grabbable currentGrabbed;
+    public UltEvents.UltEvent<bool> GrabStateEvent;
 
-    bool AttemptGrab(GameObject target, out Grabbable result, bool doGrab = true)
+    public bool AttemptGrab(GameObject target, out Grabbable result, bool doGrab = true)
     {
         if (Grabbable.Grab(target, out  result))
         {
@@ -97,6 +98,6 @@ public interface IGrabber
         GrabStateEvent?.Invoke(false);
     }
 
-    protected void OnGrab() { }
-    protected void OnRelease() { }
+    protected virtual void OnGrab() { }
+    protected virtual void OnRelease() { }
 }

@@ -16,6 +16,7 @@ public class PlayerController : PlayerStateBehavior
 	public PlayerWallJump wallJumpState;
     public PlayerAirborneMovement airChargeState;
     public PlayerAirborneMovement airChargeFallState;
+    public PlayerRanged ranged;
     public PlayerAiming aimingState;
 	public Upgrade groundSlamUpgrade;
 	public Upgrade wallJumpUpgrade;
@@ -81,10 +82,9 @@ public class PlayerController : PlayerStateBehavior
             M.freeLookCamera.LookAt = transform;
         }
 
-        if (aimingState.eggAmount < aimingState.eggCapacity) aimingState.UpdateEggTimer();
         if (input.shootMode.IsPressed() && M.signalReady && sGrounded 
-            && (aimingState.eggAmount >= 1 || grabber.currentGrabbed != null)) 
-            aimingState.EnterMode();
+            && !ranged.aimingState && (ranged.hasEggsToShoot || grabber.currentGrabbed != null)) 
+            ranged.EnterAiming();
     }
 
     public bool CheckJumpBuffer()
