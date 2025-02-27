@@ -60,4 +60,10 @@ public class CutsceneController : MonoBehaviour
     {
         animator.Play(cameraName);
     }
+
+    public void BeginCutscene()
+    {
+        //Animator should move to the first camera
+        animator.SetTrigger("BeginCutscene");
+    }
 }
