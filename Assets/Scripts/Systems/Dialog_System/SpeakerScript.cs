@@ -14,7 +14,6 @@ using DG.Tweening;
 using Cinemachine;
 using System;
 [RequireComponent(typeof(DialogueAudio))]
-[RequireComponent(typeof(SpeakerAim))]
 [RequireComponent(typeof(Animator))]
 public class SpeakerScript : MonoBehaviour, IInteractable
 {
