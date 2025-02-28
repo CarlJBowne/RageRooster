@@ -13,6 +13,7 @@ using TMPro;
 using DG.Tweening;
 using Cinemachine;
 using System;
+[RequireComponent(typeof(DialogueAudio))]
 public class SpeakerScript : MonoBehaviour, IInteractable
 {
     public NPC_Data data;
