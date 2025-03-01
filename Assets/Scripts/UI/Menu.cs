@@ -3,16 +3,18 @@ using FMODUnity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// A Base Menu class intended to form an easy-to-use extensible Menu system. (Admittedly not up to snuff.)
+/// </summary>
 public class Menu : MonoBehaviour
 {
     //Config
     [DisableInPlayMode] public bool isActive;
     [DisableInPlayMode] public Menu parent;
-    [SerializeField] private string putInDictionary;
+    [SerializeField] private string dictionaryName;
     [SerializeField] private bool closeOverride;
     [SerializeField, ShowField(nameof(closeOverride))] private UnityEvent closeEvent;
     [SerializeField] private EventReference openSound;
@@ -22,7 +24,9 @@ public class Menu : MonoBehaviour
     public bool isCurrent => Manager.currentMenu == this;
     public bool isSubMenu => parent != null;
 
-    // Called when the script instance is being loaded
+    /// <summary>
+    /// Called when the script instance is being loaded
+    /// </summary>
     protected virtual void Awake()
     {
         if (isActive) Manager.Open(this);
@@ -31,44 +35,59 @@ public class Menu : MonoBehaviour
             gameObject.SetActive(false);
         }
 
-        if (!string.IsNullOrEmpty(putInDictionary)) Manager.menuDictionary.Add(putInDictionary, this);
+        if (!string.IsNullOrEmpty(dictionaryName)) Manager.menuDictionary.Add(dictionaryName, this);
     }
 
-    // Called when the MonoBehaviour will be destroyed
+    /// <summary>
+    /// Called when the MonoBehaviour will be destroyed
+    /// </summary>
     protected virtual void OnDestroy()
     {
-        if (!string.IsNullOrEmpty(putInDictionary)) Manager.menuDictionary.Remove(putInDictionary);
+        if (!string.IsNullOrEmpty(dictionaryName)) Manager.menuDictionary.Remove(dictionaryName);
         isActive = false;
         Manager.Close(this);
     }
 
-    // Opens the menu
+    /// <summary>
+    /// Opens the menu
+    /// </summary>
     public void Open() => Manager.Open(this);
 
-    // Closes the menu
+    /// <summary>
+    /// Closes the menu (Invokes Override if present.)
+    /// </summary>
     public void Close()
     {
         if (!closeOverride) Manager.Close(this);
         else closeEvent?.Invoke();
     }
 
-    // Forcefully closes the menu
+    /// <summary>
+    /// Closes the menu (Closes even if Override is present.)
+    /// </summary>
     public void TrueClose() => Manager.Close(this);
 
-    // Called when the menu is opened
+    /// <summary>
+    /// Called when the menu is opened
+    /// </summary>
     protected virtual void OnOpen()
     {
          if (!openSound.IsNull)
              AudioManager.Get().PlayOneShot(openSound, transform.position);
     }
 
-    // Called when the menu is closed
+    /// <summary>
+    /// Called when the menu is closed
+    /// </summary>
     protected virtual void OnClose()
     {
         if (!closeSound.IsNull)
             AudioManager.Get().PlayOneShot(closeSound, transform.position);
     }
 
+    /// <summary>
+    /// The Global Manager in charge of Menus.
+    /// </summary>
     public static class Manager
     {
         public static Menu currentMenu => currentMenus[^1];
@@ -76,7 +95,10 @@ public class Menu : MonoBehaviour
         public static Dictionary<string, Menu> menuDictionary = new();
         public static bool disableEscape;
 
-        // Opens the specified menu
+        /// <summary>
+        /// Opens the specified menu
+        /// </summary>
+        /// <param name="menu">The Menu to be opened.</param>
         public static void Open(Menu menu)
         {
             if (menu.isActive) return;
@@ -88,7 +110,10 @@ public class Menu : MonoBehaviour
             menu.OnOpen();
         }
 
-        // Closes the specified menu
+        /// <summary>
+        /// Closes the specified menu
+        /// </summary>
+        /// <param name="menu">The Menu to be closed.</param>
         public static void Close(Menu menu)
         {
             if (!menu.isActive) return;
@@ -100,7 +125,9 @@ public class Menu : MonoBehaviour
             menu.OnClose();
         }
 
-        // Handles the escape action
+        /// <summary>
+        /// Handles the escape action (Bound to Escape / Start Button by Default.)
+        /// </summary>
         public static void Escape()
         {
             if (PauseMenu.Loaded && !PauseMenu.Active)
@@ -110,43 +137,64 @@ public class Menu : MonoBehaviour
         }
     }
 }
-
+/// <summary>
+/// A Singletonized version of the Menu base class. (The main reason I'm looking into Interface based Singletons for the future.)
+/// </summary>
+/// <typeparam name="T">The Type, should be the same as the class name.</typeparam>
 public abstract class MenuSingleton<T> : Menu where T : MenuSingleton<T>
 {
     private static T _instance;
     public static bool Loaded;
 
-    // Gets the singleton instance
+    /// <summary>
+    /// Gets the singleton instance
+    /// </summary>
     public static T Get() => InitFind();
 
-    // Gets the singleton instance
+    /// <summary>
+    /// Gets the singleton instance
+    /// </summary>
     public static T I => InitFind();
 
-    // Tries to get the singleton instance
+    /// <summary>
+    /// Tries to get the singleton instance
+    /// </summary>
+    /// <param name="output"></param>
     public static bool TryGet(out T output)
     {
         output = InitFind();
         return output != null;
     }
 
-    // Checks if the singleton instance is active
+    /// <summary>
+    /// Checks if the singleton instance is active
+    /// </summary>
+    /// <param name="output"></param>
     public static bool IsActive(out T output)
     {
         output = InitFind();
         return output != null;
     }
 
-    // Gets the singleton instance or throws an exception if not found
+    /// <summary>
+    /// Gets the singleton instance or throws an exception if not found
+    /// </summary>
+    /// <param name="output"></param>
+    /// <exception cref="Exception"></exception>
     public static void Get(out T output)
     {
         output = InitFind();
         if (output == null) throw new Exception("Singleton not active.");
     }
 
-    // Checks if the singleton instance is active
+    /// <summary>
+    /// Checks if the singleton instance is active
+    /// </summary>
     public static bool Active => Get().isActive;
 
-    // Initializes and finds the singleton instance
+    /// <summary>
+    /// Initializes and finds the singleton instance
+    /// </summary>
     protected static T InitFind()
     {
 #if UNITY_EDITOR
@@ -172,7 +220,10 @@ public abstract class MenuSingleton<T> : Menu where T : MenuSingleton<T>
         }
     }
 
-    // Attempts to find the singleton instance
+    /// <summary>
+    /// Attempts to find the singleton instance
+    /// </summary>
+    /// <param name="result"></param>
     protected static bool AttemptFind(out T result)
     {
         T findAttempt = FindFirstObjectByType<T>();
@@ -191,7 +242,9 @@ public abstract class MenuSingleton<T> : Menu where T : MenuSingleton<T>
         }
     }
 
-    // Called when the script instance is being loaded
+    /// <summary>
+    /// Called when the script instance is being loaded
+    /// </summary>
     protected override void Awake()
     {
         base.Awake();
@@ -201,7 +254,9 @@ public abstract class MenuSingleton<T> : Menu where T : MenuSingleton<T>
         Loaded = true;
     }
 
-    // Called when the MonoBehaviour will be destroyed
+    /// <summary>
+    /// Called when the MonoBehaviour will be destroyed
+    /// </summary>
     protected override void OnDestroy()
     {
         base.OnDestroy();

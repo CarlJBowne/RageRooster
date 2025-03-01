@@ -5,6 +5,7 @@ using UnityEngine;
 using EditorAttributes;
 using AYellowpaper.SerializedCollections;
 using UltEvents;
+using static UnityEngine.InputSystem.OnScreen.OnScreenStick;
 
 namespace SLS.StateMachineV3
 {
@@ -133,11 +134,11 @@ namespace SLS.StateMachineV3
             else SetupChildren(stateHolder);
 
             behaviors = GetComponents<StateBehavior>();
-            behaviors.DoInit(this);
+            for (int i = 0; i < behaviors.Length; i++) behaviors[i].InitializeP(this);
 
             DoAwake();
 
-            behaviors.DoEnter(null, false);
+            for (int i = 0; i < behaviors.Length; i++) behaviors[i].OnEnter(null, false);
             currentState = children[0].EnterState(null, true);
 
             waitforMachineInit?.Invoke();

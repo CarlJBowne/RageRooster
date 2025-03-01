@@ -9,7 +9,7 @@ public class PoolableObject : MonoBehaviour
     [HideInInspector] public float timeExisting;
 
     /// <summary>
-    /// If nothing calls this action when this object instance is done the object will never be available for reuse.
+    /// If nothing calls this action when this object instance is done the object will never be available for reuse. (???)
     /// </summary>
     public Action<PoolableObject> onDeactivate;
 

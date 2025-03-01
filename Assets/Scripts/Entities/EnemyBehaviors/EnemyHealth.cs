@@ -72,7 +72,7 @@ public class EnemyHealth : Health
     {
         if (poofPrefab) Instantiate(poofPrefab);
         if (enemyLootSpawner != null) enemyLootSpawner.SpawnLoot(transform.position);
-        else
+        if(respawn)
         {
             gameObject.SetActive(false);
             Invoke(nameof(Respawn), respawnTime);

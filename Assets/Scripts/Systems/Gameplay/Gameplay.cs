@@ -40,7 +40,10 @@ public class Gameplay : Singleton<Gameplay>
     protected static System.Action PostMaLoad;
     public static StudioEventEmitter musicEmitter;
 
-    // Begins the main menu by loading the gameplay scene and setting the active save file.
+    /// <summary>
+    /// Begins the main menu by loading the gameplay scene and setting the active save file.
+    /// </summary>
+    /// <param name="fileNo">The File Number. Intended to be set somewhere in the Main Menu.</param>
     public static void BeginMainMenu(int fileNo)
     {
         if (Gameplay.Active) return;
@@ -48,7 +51,10 @@ public class Gameplay : Singleton<Gameplay>
         SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
     }
 
-    // Begins a new scene by loading the specified scene.
+    /// <summary>
+    /// Begins a new scene by loading the specified scene.
+    /// </summary>
+    /// <param name="sceneToLoad">The name of the Scene to Load.</param>
     public static void BeginScene(string sceneToLoad)
     {
         if (Gameplay.Active) return;
@@ -63,7 +69,11 @@ public class Gameplay : Singleton<Gameplay>
         SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
     }
 
-    // Begins a scene from a save point by loading the specified scene and spawn point.
+    /// <summary>
+    /// Begins a scene from a save point by loading the specified scene and spawn point.
+    /// </summary>
+    /// <param name="sceneToLoad">The name of the Scene to Load.</param>
+    /// <param name="spawnID">The Intended Spawn Point ID.</param>
     public static void BeginSavePoint(string sceneToLoad, int spawnID)
     {
         if (Gameplay.Active) return;
@@ -75,7 +85,9 @@ public class Gameplay : Singleton<Gameplay>
         SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
     }
 
-    // Called when the Gameplay singleton is awakened. Loads the global state and initializes the zone manager.
+    /// <summary>
+    /// Called when the Gameplay singleton is awakened. Loads the global state and initializes the zone manager.
+    /// </summary>
     protected override void OnAwake()
     {
         musicEmitter = GetComponent<StudioEventEmitter>();
@@ -97,7 +109,9 @@ public class Gameplay : Singleton<Gameplay>
         
     }
 
-    // Called on the first load of the zone manager. Moves the player to the spawn point and activates the player.
+    /// <summary>
+    /// Called on the first load of the zone manager. Moves the player to the spawn point and activates the player.
+    /// </summary>
     private void OnFirstLoad()
     {
         SavePoint spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
@@ -105,13 +119,19 @@ public class Gameplay : Singleton<Gameplay>
         Player.gameObject.SetActive(true);
     }
 
-    // Spawns the player by starting a coroutine.
+    /// <summary>
+    /// Spawns the player by starting a coroutine.
+    /// </summary>
     public static void SpawnPlayer() => new CoroutinePlus(Get().SpawnPlayer_CR(), Get());
 
-    // Resets the game to the saved state by starting a coroutine.
+    /// <summary>
+    /// Resets the game to the saved state by starting a coroutine.
+    /// </summary>
     public void ResetToSaved() => new CoroutinePlus(Get().ResetToSaved_CR(), Get());
 
-    // Coroutine for spawning the player. Loads the spawn scene if not already loaded and moves the player to the spawn point.
+    /// <summary>
+    /// Coroutine for spawning the player. Loads the spawn scene if not already loaded and moves the player to the spawn point.
+    /// </summary>
     private IEnumerator SpawnPlayer_CR()
     {
         if (!ZoneManager.ZoneIsReady(spawnSceneName)) SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
@@ -122,7 +142,9 @@ public class Gameplay : Singleton<Gameplay>
         Player.GetComponent<PlayerStateMachine>().InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
     }
 
-    // Coroutine for resetting the game to the saved state. Unloads all zones, loads the global state, and moves the player to the spawn point.
+    /// <summary>
+    /// Coroutine for resetting the game to the saved state. Unloads all zones, loads the global state, and moves the player to the spawn point.
+    /// </summary>
     private IEnumerator ResetToSaved_CR()
     {
         Player.SetActive(false);
@@ -134,6 +156,19 @@ public class Gameplay : Singleton<Gameplay>
         yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
         ZoneManager.DoTransition(spawnSceneName);
         Player.GetComponent<PlayerStateMachine>().InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
+    }
+
+
+    public static void DESTROY(bool areYouSure = false)
+    {
+        if (!areYouSure)
+        {
+            #if UNITY_EDITOR
+            Debug.Log("Someone is trying to Destroy the gameplay without realizing the gravity of that situation.");
+            #endif
+            return;
+        }
+        DestroyS();
     }
 }
 

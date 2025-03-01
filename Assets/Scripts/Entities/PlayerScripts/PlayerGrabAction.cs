@@ -12,12 +12,12 @@ public class PlayerGrabAction : PlayerMovementNegater
     [HideProperty] public bool success;
 
     private Grabbable selectedGrabbable;
-    private PlayerGrabber grabber;
+    private PlayerRanged grabber;
 
 
     public override void OnAwake()
     {
-        grabber = GetComponentFromMachine<PlayerGrabber>();
+        grabber = GetComponentFromMachine<PlayerRanged>();
     }
 
     public void AttemptGrab(Grabbable attempt, bool held)

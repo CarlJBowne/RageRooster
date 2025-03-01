@@ -12,8 +12,6 @@ public class PlayerMovementBody : PlayerStateBehavior
     public int movementProjectionSteps;
     public float checkBuffer = 0.005f;
     public float maxSlopeNormalAngle = 20f;
-    public float coyoteTime = 0.5f;
-    public float tripleJumpTime = 0.3f;
     public PlayerAirborneMovement jumpState1;
     public PlayerWallJump wallJumpState;
     public PlayerAirborneMovement airChargeState;
@@ -28,6 +26,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     [HideInInspector] public bool baseMovability = true;
     [HideInInspector] public bool canJump = true;
     public bool grounded = true;
+    public float movementModifier = 1;
     [DisableInPlayMode, DisableInEditMode] public float currentSpeed;
     [DisableInPlayMode, DisableInEditMode] public int jumpPhase;
     //-1 = Inactive
@@ -37,7 +36,6 @@ public class PlayerMovementBody : PlayerStateBehavior
     //3 = Falling
     [HideInInspector] public Vector3 _currentDirection = Vector3.forward; 
 
-    [HideInInspector] public float coyoteTimeLeft;
     Transform anchorTransform;
     Vector3 prevAnchorPosition;
 
@@ -110,18 +108,15 @@ public class PlayerMovementBody : PlayerStateBehavior
                 rb.MovePosition(rb.position - anchorOffset);
             }
 
-            if (coyoteTimeLeft > 0) coyoteTimeLeft -= Time.deltaTime;
-
-
 
         } // NonMovement
 
-        initVelocity = velocity;
+        initVelocity = new Vector3(velocity.x * movementModifier, velocity.y, velocity.z * movementModifier);
         initNormal = Vector3.up;
 
         if (PlayerStateMachine.DEBUG_MODE_ACTIVE && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
-        if (velocity.y <= 0.01f ||(sGrounded && velocity.y > 0.1f)) 
+        if (velocity.y < 0.01f ||(grounded && velocity.y >= 0.1f)) 
         {
             if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out groundHit))
             {
@@ -131,8 +126,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                 initNormal = groundHit.normal;
                 if (WithinSlopeAngle(groundHit.normal))
                 {
-                    GroundStateChange(true);
-                    LatchAnchor(groundHit.transform);
+                    GroundStateChange(true, groundHit.transform);
                     velocity.y = 0;
                     initVelocity.y = 0;
                     initVelocity = initVelocity.ProjectAndScale(groundHit.normal);
@@ -150,6 +144,12 @@ public class PlayerMovementBody : PlayerStateBehavior
     Vector3 initNormal;
     RaycastHit groundHit;
 
+    /// <summary>
+    /// The Collide and Slide Algorithm.
+    /// </summary>
+    /// <param name="vel">Input Velocity.</param>
+    /// <param name="prevNormal">The Normal of the previous Step.</param>
+    /// <param name="step">The current step. Starts at 0.</param>
     private void Move(Vector3 vel, Vector3 prevNormal, int step = 0)
     {
         if (rb.DirectionCast(vel.normalized, vel.magnitude, checkBuffer, out RaycastHit hit))
@@ -170,8 +170,7 @@ public class PlayerMovementBody : PlayerStateBehavior
             if(!grounded && vel.y < 0 && hit.normal.y > 0) 
                 if (WithinSlopeAngle(hit.normal))
                 {
-                    GroundStateChange(true);
-                    LatchAnchor(hit.transform);
+                    GroundStateChange(true, hit.transform);
                     leftover.y = 0;
                 }
                 else leftover = leftover.ProjectAndScale(hit.normal.XZ().normalized);
@@ -188,33 +187,44 @@ public class PlayerMovementBody : PlayerStateBehavior
         else
         {
             rb.MovePosition(position + vel);
-            if (grounded && initVelocity.y <= 0 && rb.DirectionCast(Vector3.down, 0.5f, checkBuffer, out RaycastHit groundHit)) 
-                rb.MovePosition(position + Vector3.down * groundHit.distance);
+            //Snap to ground when walking on a downward slope.
+            if (grounded && initVelocity.y <= 0)
+            {
+                if (rb.DirectionCast(Vector3.down, 0.5f, checkBuffer, out RaycastHit groundHit))
+                    rb.MovePosition(position + Vector3.down * groundHit.distance);
+                else
+                {
+                    GroundStateChange(false);
+                    M.SendSignal("WalkOff", overrideReady: true);
+                }
+            }
         }
     }
 
-    public bool GroundStateChange(bool input)
+    /// <summary>
+    /// Call to Change the Ground State and do all the logic related to that.
+    /// </summary>
+    /// <param name="input">New Grounded Value (Will early return if the same as the current value.)</param>
+    /// <returns>Whether the Change was Successful.</returns>
+    public bool GroundStateChange(bool input, Transform anchor)
     {
         if (input == grounded || rb.velocity.y > 0.01f) return false;
         grounded = input;
 
+        anchorTransform = anchor && !anchor.gameObject.isStatic ? anchor : null;
         if (grounded)
         {
             jumpPhase = -1;
-            if (!sGrounded.active) TransitionTo(sGrounded);
-            if (controller.CheckJumpBuffer()) M.SendSignal("Jump");
-        }
-        else
-        {
-            if(!sAirborne.active && !sCharge.active) TransitionTo(sFall);
-            else if(sCharge.active && !sAirChargeFall.active) TransitionTo(sAirChargeFall);
 
-            coyoteTimeLeft = coyoteTime;
-            LatchAnchor(null);
+            if(anchor) prevAnchorPosition = anchor.position;
+            M.SendSignal("Land", overrideReady: true);
+
+            if (controller.CheckJumpBuffer()) M.SendSignal("Jump");
         }
 
         return true;
     }
+    public bool GroundStateChange(bool input) => GroundStateChange(input, null);
 
     private bool WithinSlopeAngle(Vector3 inNormal)
     {
@@ -222,38 +232,44 @@ public class PlayerMovementBody : PlayerStateBehavior
         return A < maxSlopeNormalAngle;
     }
 
-    public void TryBeginJump(PlayerAirborneMovement target)
-    {
-        if ((grounded && sGrounded) || (sAirborne && body.coyoteTimeLeft > 0))
-        {
-            target.state.TransitionTo();
-            grounded = false;
-            LatchAnchor(null);
-        }
-
-        else controller.CheckJumpBuffer();
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
-        if ((jumpState1 || airChargeState) && Vector3.Dot(collision.GetContact(0).normal, Vector3.down) > 0.75f)
+        float contactUpwardDot = Vector3.Dot(collision.GetContact(0).normal, Vector3.up);
+        if (!grounded && velocity.y > 0.01f && contactUpwardDot < -0.75f)
         {
             sFall.TransitionTo();
             VelocitySet(y: 0);
         }
+        else if (!grounded && contactUpwardDot > 0)
+            GroundStateChange(true, collision.transform);
     }
 
-    public void LatchAnchor(Transform newAnchor)
-    {
-        if(newAnchor == null)
-        {
-            anchorTransform = null;
-            return;
-        }
-        if (anchorTransform == newAnchor || newAnchor.gameObject.isStatic) return;
-        anchorTransform = newAnchor;
-        prevAnchorPosition = newAnchor.localPosition;
-    }
+
+    //[System.Obsolete]
+    //public void TryBeginJump(PlayerAirborneMovement target)
+    //{
+    //    if ((grounded && sGrounded) || (sAirborne && body.coyoteTimeLeft > 0))
+    //    {
+    //        target.state.TransitionTo();
+    //        grounded = false;
+    //        anchorTransform = null;
+    //    }
+    //
+    //    else controller.CheckJumpBuffer();
+    //}
+
+    //[System.Obsolete]
+    //public void LatchAnchor(Transform newAnchor)
+    //{
+    //    if(newAnchor == null)
+    //    {
+    //        anchorTransform = null;
+    //        return;
+    //    }
+    //    if (anchorTransform == newAnchor || newAnchor.gameObject.isStatic) return;
+    //    anchorTransform = newAnchor;
+    //    prevAnchorPosition = newAnchor.localPosition;
+    //}
 
 #if UNITY_EDITOR
 
