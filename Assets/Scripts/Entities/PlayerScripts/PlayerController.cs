@@ -27,9 +27,10 @@ public class PlayerController : PlayerStateBehavior
 	#endregion
 	#region Data
 
-	[HideInInspector] public float jumpInput;
-	[HideInInspector] public Vector3 camAdjustedMovement;
-	[HideInInspector] public PlayerRanged grabber;
+	[HideProperty] public float jumpInput;
+	[HideProperty] public Vector3 camAdjustedMovement;
+	[HideProperty] public PlayerRanged grabber;
+    [HideProperty] public PlayerInteracter interacter;
 
 	#endregion
 	#region Getters
@@ -38,8 +39,8 @@ public class PlayerController : PlayerStateBehavior
 
 	public override void OnAwake()
 	{
-		grabber = GetComponentFromMachine<PlayerRanged>();
-		//attack = GetComponentFromMachine<PlayerAttackSystem>();
+		if(!grabber) grabber = GetComponentFromMachine<PlayerRanged>();
+        if(!interacter) interacter = GetComponentFromMachine<PlayerInteracter>();
 
 		input.jump.performed            += BeginActionEvent;
         input.attackTap.performed       += BeginActionEvent;
@@ -108,13 +109,7 @@ public class PlayerController : PlayerStateBehavior
 
     public void ParryAction()
     {
-        var interactCheck = Physics.OverlapSphere(body.center + body.transform.forward * 2, 1.5f);
-        for (int i = 0; i < interactCheck.Length; i++)
-            if (interactCheck[i].TryGetComponent(out IInteractable foundInteractable))
-            {
-                foundInteractable.Interact();
-                return;
-            }
+        if(interacter.TryInteract()) return;
 
         //Do Parry move here.
     }

@@ -2884,6 +2884,7 @@ GameObject:
   - component: {fileID: 2714541672873312079}
   - component: {fileID: 3941225653291784218}
   - component: {fileID: 2783735533672575433}
+  - component: {fileID: 4521176707265603731}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -3089,7 +3090,8 @@ MonoBehaviour:
     type: 2}
   jumpInput: 0
   camAdjustedMovement: {x: 0, y: 0, z: 0}
-  grabber: {fileID: 0}
+  grabber: {fileID: 2714541672873312079}
+  interacter: {fileID: 4521176707265603731}
 --- !u!114 &2714541672873312079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3209,6 +3211,23 @@ MonoBehaviour:
     animated: 0
   wind: {x: 0, y: 0, z: 0}
   debugDraw: 0
+--- !u!114 &4521176707265603731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f637f6957bf69f4c94d18114ed17245, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  M: {fileID: 0}
+  body: {fileID: 0}
+  controller: {fileID: 0}
+  radius: 1.5
+  frontOffset: 2
 --- !u!1 &2975349023816060615
 GameObject:
   m_ObjectHideFlags: 0

@@ -165,22 +165,34 @@ public class PlayerMovementBody : PlayerStateBehavior
 
             if (step == movementProjectionSteps) return;
 
-            if (grounded && hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
-                nextNormal = prevNormal.XZ().normalized;
+            //Runs into wall/to high incline.
+            {
+                if (grounded && hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
+                    nextNormal = prevNormal.XZ().normalized;
+            }
 
-            if(!grounded && vel.y < 0 && hit.normal.y > 0) 
-                if (WithinSlopeAngle(hit.normal))
-                {
-                    GroundStateChange(true, hit.transform);
-                    leftover.y = 0;
-                }
-                else leftover = leftover.ProjectAndScale(hit.normal.XZ().normalized);
+            //Landing
+            {
+                if (!grounded && vel.y < 0 && hit.normal.y > 0)
+                    if (WithinSlopeAngle(hit.normal))
+                    {
+                        GroundStateChange(true, hit.transform);
+                        leftover.y = 0;
+                    }
+                    else leftover = leftover.ProjectAndScale(hit.normal.XZ().normalized);
+            }
 
             //Floor Ceiling Lock
-            if (prevNormal.y > 0 && hit.normal.y < 0) //Hit Floor First
-                nextNormal = (prevNormal.y != prevNormal.magnitude ? prevNormal : hit.normal).XZ().normalized;
-            else if(prevNormal.y < 0 && hit.normal.y > 0) //Hit Cieling First
-                nextNormal = (hit.normal.y != hit.normal.magnitude ? hit.normal : prevNormal).XZ().normalized;
+            if (prevNormal.y > 0 && hit.normal.y < 0) //Floor to Cieling
+                FloorCeilingLock(prevNormal, hit.normal);
+            else if (prevNormal.y < 0 && hit.normal.y > 0) //Ceiling to Floor
+                FloorCeilingLock(hit.normal, prevNormal);
+
+            void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
+            {
+                nextNormal = (floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal).XZ().normalized;
+
+            }
 
             Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1); 
             Move(newDir, nextNormal, step + 1);
