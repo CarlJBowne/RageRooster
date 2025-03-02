@@ -161,38 +161,47 @@ public class PlayerMovementBody : PlayerStateBehavior
             Vector3 snapToSurface = vel.normalized * hit.distance;
             Vector3 leftover = vel - snapToSurface;
             Vector3 nextNormal = hit.normal;
+            bool stopped = false;
             rb.MovePosition(position + snapToSurface);
 
             if (step == movementProjectionSteps) return;
 
-            //Runs into wall/to high incline.
+            if (grounded)
             {
-                if (grounded && hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
-                    nextNormal = prevNormal.XZ().normalized;
+                //Runs into wall/to high incline.
+                if (Mathf.Approximately(hit.normal.y, 0) || (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))) 
+                    Stop(prevNormal);
+
+                if (grounded && prevNormal.y > 0 && hit.normal.y < 0) //Floor to Cieling
+                    FloorCeilingLock(prevNormal, hit.normal);
+                else if (grounded && prevNormal.y < 0 && hit.normal.y > 0) //Ceiling to Floor
+                    FloorCeilingLock(hit.normal, prevNormal);
+            }
+            else
+            {
+                if(vel.y < .1f && WithinSlopeAngle(hit.normal))
+                {
+                    GroundStateChange(true, hit.transform);
+                    leftover.y = 0;
+                }
+                else
+                {
+                    leftover = leftover.ProjectAndScale(hit.normal);
+                    stopped = true;
+                }
             }
 
-            //Landing
-            {
-                if (!grounded && vel.y < 0 && hit.normal.y > 0)
-                    if (WithinSlopeAngle(hit.normal))
-                    {
-                        GroundStateChange(true, hit.transform);
-                        leftover.y = 0;
-                    }
-                    else leftover = leftover.ProjectAndScale(hit.normal.XZ().normalized);
-            }
+                void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal) => 
+                    Stop(floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal);
 
-            //Floor Ceiling Lock
-            if (prevNormal.y > 0 && hit.normal.y < 0) //Floor to Cieling
-                FloorCeilingLock(prevNormal, hit.normal);
-            else if (prevNormal.y < 0 && hit.normal.y > 0) //Ceiling to Floor
-                FloorCeilingLock(hit.normal, prevNormal);
+                void Stop(Vector3 newNormal)
+                {
+                    nextNormal = newNormal.XZ().normalized;
+                    //if (Vector3.Dot(newNormal, vel.XZ()) <= -.75f)
+                        stopped = true;
+                }
 
-            void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
-            {
-                nextNormal = (floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal).XZ().normalized;
-
-            }
+            if (stopped && M.SendSignal("Bonk", overrideReady: true, addToQueue: false)) return;
 
             Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1); 
             Move(newDir, nextNormal, step + 1);
@@ -240,21 +249,17 @@ public class PlayerMovementBody : PlayerStateBehavior
     }
     public bool GroundStateChange(bool input) => GroundStateChange(input, null);
 
-    private bool WithinSlopeAngle(Vector3 inNormal)
-    {
-        float A = Vector3.Angle(Vector3.up, inNormal);
-        return A < maxSlopeNormalAngle;
-    }
+    private bool WithinSlopeAngle(Vector3 inNormal) => Vector3.Angle(Vector3.up, inNormal) < maxSlopeNormalAngle;
 
     private void OnCollisionEnter(Collision collision)
     {
-        float contactUpwardDot = Vector3.Dot(collision.GetContact(0).normal, Vector3.up);
-        if (!grounded && velocity.y > 0.01f && contactUpwardDot < -0.75f)
+        Vector3 contactPoint = collision.GetContact(0).normal;
+        if (!grounded && velocity.y > .1f && Vector3.Dot(contactPoint, Vector3.up) < -0.75f)
         {
             sFall.TransitionTo();
             VelocitySet(y: 0);
         }
-        else if (!grounded && contactUpwardDot > 0)
+        else if (!grounded && WithinSlopeAngle(contactPoint))
             GroundStateChange(true, collision.transform);
     }
 
