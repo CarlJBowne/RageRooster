@@ -26,6 +26,7 @@ public class MainMenu : MenuSingleton<MainMenu>
     private void Start()
     {
         creditsPanel.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
         menuButtons = new List<Button>(GetComponentsInChildren<Button>());
         if (menuButtons.Count > 0)
         {
@@ -93,7 +94,11 @@ public class MainMenu : MenuSingleton<MainMenu>
 
     public void QuitGame()
     {
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
         Application.Quit();
+        #endif
     }
 
     public void ShowCredits()

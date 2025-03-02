@@ -66,14 +66,13 @@ public class Grabbable : MonoBehaviour
 
 }
 
-public abstract class Grabber : MonoBehaviour
+[System.Serializable]
+public class Grabber
 {
     public Grabbable currentGrabbed;
-    public UnityEvent<bool> GrabStateEvent;
+    public UltEvents.UltEvent<bool> GrabStateEvent;
 
-    public bool grabbing => currentGrabbed != null;
-
-    protected bool AttemptGrab(GameObject target, out Grabbable result, bool doGrab = true)
+    public bool AttemptGrab(GameObject target, out Grabbable result, bool doGrab = true)
     {
         if (Grabbable.Grab(target, out  result))
         {

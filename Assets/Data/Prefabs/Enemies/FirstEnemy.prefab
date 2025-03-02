@@ -454,8 +454,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!114 &6736125751645189697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -701,8 +703,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!114 &738354572120715908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1298,8 +1302,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!114 &2577799525791025946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1629,12 +1635,21 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
   states:
     _serializedList: []
   _variables:
     variables: []
+  signalReady: 1
+  signalQueueDecay:
+    length: 1
+    current: 0
+    running: 0
+  globalSignals:
+    _serializedList: []
 --- !u!54 &8342515642707079088
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1713,7 +1728,7 @@ MonoBehaviour:
   - {fileID: 6738454064187818541}
   - {fileID: 3182761241942017665}
   enemyLootSpawner: {fileID: 0}
-  ragDoll: 0
+  ragDoll: 1
   minRagdollTime: 2
   maxRagdollTime: 5
   minRagdollVelovity: 0.2

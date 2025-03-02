@@ -18,6 +18,7 @@ public class PlayerStateMachine : StateMachine
     [HideInInspector] public PlayerController controller;
     public Transform cameraTransform;
     public CinemachineFreeLook freeLookCamera;
+    public State pauseState;
 
     #endregion
 
@@ -77,6 +78,17 @@ public class PlayerStateMachine : StateMachine
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);
     }
 
+
+    private State prevState;
+    public void PauseState()
+    {
+        prevState = currentState;
+        pauseState.TransitionTo();
+    }
+    public void UnPauseState()
+    {
+        prevState.TransitionTo();
+    }
 
 }
 public abstract class PlayerStateBehavior : StateBehavior
