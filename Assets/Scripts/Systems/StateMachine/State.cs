@@ -3,8 +3,6 @@ using EditorAttributes;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
 using UltEvents;
-using static UnityEngine.InputSystem.OnScreen.OnScreenStick;
-using static UnityEditor.VersionControl.Asset;
 
 namespace SLS.StateMachineV3
 {

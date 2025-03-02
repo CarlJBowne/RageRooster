@@ -101,12 +101,13 @@ public class PlayerMovementBody : PlayerStateBehavior
             M.animator.SetFloat("CurrentSpeed", currentSpeed);
             rb.velocity = Vector3.zero;
 
-            if (anchorTransform && !anchorTransform.gameObject.isStatic)
-            {
-                Vector3 anchorOffset = prevAnchorPosition - anchorTransform.localPosition;
-                prevAnchorPosition = anchorTransform.localPosition;
-                rb.MovePosition(rb.position - anchorOffset);
-            }
+            //Anchor System is busted. Fix later.
+            //if (anchorTransform)
+            //{
+            //    Vector3 anchorOffset = prevAnchorPosition - anchorTransform.localPosition;
+            //    prevAnchorPosition = anchorTransform.localPosition;
+            //    rb.MovePosition(rb.position - anchorOffset);
+            //}
 
 
         } // NonMovement
@@ -211,7 +212,8 @@ public class PlayerMovementBody : PlayerStateBehavior
         if (input == grounded || rb.velocity.y > 0.01f) return false;
         grounded = input;
 
-        anchorTransform = anchor && !anchor.gameObject.isStatic ? anchor : null;
+        //Anchor System is busted. Fix later.
+        //anchorTransform = anchor && !anchor.gameObject.isStatic ? anchor : null;
         if (grounded)
         {
             jumpPhase = -1;
@@ -244,7 +246,13 @@ public class PlayerMovementBody : PlayerStateBehavior
             GroundStateChange(true, collision.transform);
     }
 
-
+    public void InstantSnapToFloor()
+    {
+        rb.DirectionCast(Vector3.down, 1000, .5f, out RaycastHit hit);
+        rb.MovePosition(position + Vector3.down * hit.distance);
+    }
+    
+    
     //[System.Obsolete]
     //public void TryBeginJump(PlayerAirborneMovement target)
     //{

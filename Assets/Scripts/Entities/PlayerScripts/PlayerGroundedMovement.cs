@@ -105,6 +105,13 @@ public abstract class PlayerMovementEffector : PlayerStateBehavior
     public virtual void HorizontalMovement(out float? resultX, out float? resultZ) { resultX = null; resultZ = null; }
     public virtual void VerticalMovement(out float? result) { result = null; }
 
+    //Probably not actually helpfull.
+    protected virtual bool HorizontalCast(float vX, float vZ, out RaycastHit hit)
+    {
+        Vector3 velocity = new(vX, 0, vZ);
+        return body.rb.DirectionCast(velocity.normalized, velocity.magnitude, 0, out hit);
+    }
+
     protected float ApplyGravity(float gravity, float terminalVelocity, bool flatGravity = false)
     {
         return (!flatGravity
