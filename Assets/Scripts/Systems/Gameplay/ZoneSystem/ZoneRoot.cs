@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections;
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
@@ -43,9 +44,13 @@ public class ZoneRoot : MonoBehaviour
         directionalLights = gameObject.GetComponentsInChildren<Light>().Where(l => l.type == LightType.Directional).ToArray();
         foreach (var item in directionalLights) item.enabled = false;
 
+        LoadEvents();
+
         ZoneManager.LoadZone(this);
 
     }
+
+    private void OnDestroy() => UnloadEvents();
 
     public void Update_()
     {
@@ -62,6 +67,20 @@ public class ZoneRoot : MonoBehaviour
         Gameplay.musicEmitter.EventReference = music;
         Gameplay.musicEmitter.Stop();
         Gameplay.musicEmitter.Play();
+    }
+
+    public SerializedDictionary<WorldChange, UltEvents.UltEvent> worldChangeEvents;
+
+    private void LoadEvents()
+    {
+        foreach (KeyValuePair<WorldChange, UltEvents.UltEvent> item in worldChangeEvents)
+            if (item.Key.Enabled) item.Value?.Invoke();
+            else item.Key.Action += item.Value.InvokeSafe;
+    }
+    private void UnloadEvents()
+    {
+        foreach (KeyValuePair<WorldChange, UltEvents.UltEvent> item in worldChangeEvents)
+            item.Key.Action -= item.Value.InvokeSafe;
     }
 
 }
