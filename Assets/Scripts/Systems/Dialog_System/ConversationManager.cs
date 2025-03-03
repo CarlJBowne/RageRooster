@@ -59,8 +59,14 @@ public class ConversationManager : MonoBehaviour
 
     private void TryAdvanceText(InputAction.CallbackContext context)
     {
-        isAdvancingText = true;
-        Debug.Log("Trying to advance text");
+        if(!inDialogue)
+        {
+            return;
+        }
+            isAdvancingText = true;
+            Debug.Log("Trying to advance text");
+        
+
     }
 
     private void Start()
