@@ -5,7 +5,7 @@ using EditorAttributes;
 using UnityEngine.InputSystem;
 using Cinemachine;
 using System.Collections.Generic;
-using PCA = PlayerControlAction;
+using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
 
 public class PlayerController : PlayerStateBehavior
 {
@@ -32,12 +32,12 @@ public class PlayerController : PlayerStateBehavior
 	[HideProperty] public PlayerRanged grabber;
     [HideProperty] public PlayerInteracter interacter;
 
-	#endregion
-	#region Getters
+    #endregion
+    #region Getters
 
-	#endregion
+    #endregion
 
-	public override void OnAwake()
+    public override void OnAwake()
 	{
 		if(!grabber) grabber = GetComponentFromMachine<PlayerRanged>();
         if(!interacter) interacter = GetComponentFromMachine<PlayerInteracter>();
@@ -51,7 +51,12 @@ public class PlayerController : PlayerStateBehavior
         input.chargeTap.performed       += BeginActionEvent;
         input.chargeHold.performed      += BeginActionEvent;
         input.shoot.performed           += BeginActionEvent;
+
+        input.jump.canceled             += JumpRelease;
+        input.shootMode.performed       += ShootModeActivate;
+        input.shootMode.canceled        += ShootModeDeactivate;
     }
+
 
 	private void OnDestroy()
 	{
@@ -64,6 +69,11 @@ public class PlayerController : PlayerStateBehavior
         input.chargeTap.performed       -= BeginActionEvent;
         input.chargeHold.performed      -= BeginActionEvent;
         input.shoot.performed           -= BeginActionEvent;
+
+        input.jump.canceled             -= JumpRelease;
+        input.shootMode.performed       -= ShootModeActivate;
+        input.shootMode.canceled        -= ShootModeDeactivate;
+
     }
 
     public override void OnUpdate()
@@ -113,6 +123,13 @@ public class PlayerController : PlayerStateBehavior
 
         //Do Parry move here.
     }
+
+    //Other events.
+    private void JumpRelease(CTX ctx) => StateMachine.SendSignal("JumpRelease", false, true);
+    private void ShootModeActivate(CTX ctx) => StateMachine.SendSignal("ShootMode", true, true);
+    private void ShootModeDeactivate(CTX ctx) => StateMachine.SendSignal("ShootModeExit", true, true);
+
+
 
 
 }
