@@ -3769,6 +3769,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2513530225769621494, guid: 355f3506676c06e439e5fd057490efe1,
+        type: 3}
+      propertyPath: decceleration
+      value: 0.001
+      objectReference: {fileID: 0}
     - target: {fileID: 2714541672873312079, guid: 355f3506676c06e439e5fd057490efe1,
         type: 3}
       propertyPath: shootingVCam
@@ -3804,11 +3809,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3698709666984973678, guid: 355f3506676c06e439e5fd057490efe1,
+        type: 3}
+      propertyPath: decceleration
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 3812935324549841644, guid: 355f3506676c06e439e5fd057490efe1,
+        type: 3}
+      propertyPath: signals._serializedList.Array.data[0].Value._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 2906842210355217736}
     - target: {fileID: 4381159357081905340, guid: 355f3506676c06e439e5fd057490efe1,
         type: 3}
       propertyPath: dialogueCamera
       value: 
       objectReference: {fileID: 1875867179}
+    - target: {fileID: 6062820148927623488, guid: 355f3506676c06e439e5fd057490efe1,
+        type: 3}
+      propertyPath: jumpHeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6062820148927623488, guid: 355f3506676c06e439e5fd057490efe1,
+        type: 3}
+      propertyPath: jumpMinHeight
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8455434200384702600, guid: 355f3506676c06e439e5fd057490efe1,
         type: 3}
       propertyPath: freeLookCamera
@@ -3824,6 +3849,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 355f3506676c06e439e5fd057490efe1, type: 3}
+--- !u!114 &2906842210355217736 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3698709666984973678, guid: 355f3506676c06e439e5fd057490efe1,
+    type: 3}
+  m_PrefabInstance: {fileID: 2906842210355217735}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89a8416e01b52494193d14c59b41a835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2906842210355217737 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 802911248559169720, guid: 355f3506676c06e439e5fd057490efe1,
