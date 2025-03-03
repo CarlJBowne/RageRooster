@@ -64,7 +64,7 @@ public class DialogueTrigger : MonoBehaviour
         {
             
             targetGroup.m_Targets[1].target = Gameplay.I.player.transform;
-            //movement.active = false;
+            Gameplay.Player.GetComponent<PlayerStateMachine>().PauseState();
             ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().Follow = targetGroup.transform;
             ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
             ui.SetCharNameAndColor();

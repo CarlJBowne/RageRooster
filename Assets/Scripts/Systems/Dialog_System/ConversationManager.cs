@@ -85,6 +85,7 @@ public class ConversationManager : MonoBehaviour
                 Sequence s = DOTween.Sequence();
                 s.AppendInterval(.8f);
                 s.AppendCallback(() => ResetState());
+
             }
 
             if (nextDialogue)
@@ -139,7 +140,7 @@ public class ConversationManager : MonoBehaviour
     {
         currentSpeaker.Reset();
         //Interface to stop player movement while in dialogue by disabling the component for movement
-        //FindObjectOfType<MovementInput>().active = true;
+        Gameplay.Player.GetComponent<PlayerStateMachine>().UnPauseState();
         inDialogue = false;
         canExit = false;
     }
