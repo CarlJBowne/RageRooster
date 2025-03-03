@@ -70,20 +70,20 @@ public class PlayerController : PlayerStateBehavior
 	{
 
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
-		camAdjustedMovement = input.movement.ToXZ().Rotate(M.cameraTransform.eulerAngles.y, Vector3.up);
+		camAdjustedMovement = input.movement.ToXZ().Rotate(StateMachine.cameraTransform.eulerAngles.y, Vector3.up);
 
-		if (M.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
+		if (StateMachine.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
             sGlide.TransitionTo();
-        else if(M.signalReady && !input.jump.IsPressed() && sGlide) 
+        else if(StateMachine.signalReady && !input.jump.IsPressed() && sGlide) 
             sFall.TransitionTo();
 
-        if (M.freeLookCamera != null)
+        if (StateMachine.freeLookCamera != null)
         {
-            M.freeLookCamera.Follow = transform;
-            M.freeLookCamera.LookAt = transform;
+            StateMachine.freeLookCamera.Follow = transform;
+            StateMachine.freeLookCamera.LookAt = transform;
         }
 
-        if (input.shootMode.IsPressed() && M.signalReady && sGrounded 
+        if (input.shootMode.IsPressed() && StateMachine.signalReady && sGrounded 
             && !ranged.aimingState && (ranged.hasEggsToShoot || grabber.currentGrabbed != null)) 
             ranged.EnterAiming();
     }
@@ -99,11 +99,11 @@ public class PlayerController : PlayerStateBehavior
     private void OnAnimatorMove() => onAnimatorMove?.Invoke();
 
 
-    private void BeginActionEvent(InputAction.CallbackContext callbackContext) => M.SendSignal(callbackContext.action.name);
-    public void BeginActionEvent(string name) => M.SendSignal(name);
+    private void BeginActionEvent(InputAction.CallbackContext callbackContext) => StateMachine.SendSignal(callbackContext.action.name);
+    public void BeginActionEvent(string name) => StateMachine.SendSignal(name);
 
-    public void ReadyNextAction() => M.ReadySignal();
-    public void FinishAction() => M.FinishSignal();
+    public void ReadyNextAction() => StateMachine.ReadySignal();
+    public void FinishAction() => StateMachine.FinishSignal();
 
 
 

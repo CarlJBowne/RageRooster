@@ -172,7 +172,7 @@ public static class Direction
 
 }
 
-public static class Vector2Helper
+public static class _Vector2Helper
 {
 	public static Vector2 Randomize(this Vector2 v)
 	{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public static class ExtensionMethods
+public static class _ExtensionMethods
 {
 	public static bool Toggle(this ref bool boolean) => boolean = !boolean;
 	public static bool IsTrue(this bool boolean) => boolean == true;
@@ -26,7 +26,7 @@ public static class ExtensionMethods
 
 }
 
-public static class EasierMathExtensions
+public static class _EasierMathExtensions
 {
 	public static float P(this float F) => Mathf.Pow(F, 2);
 	public static float P(this float F, int power) => Mathf.Pow(F, power);
@@ -65,7 +65,7 @@ public static class EasierMathExtensions
 
 }
 
-public static class MonoBehaviorHelpers
+public static class _MonoBehaviorHelpers
 {
 	public static void LateAwake(this MonoBehaviour m, BasicDelegate result) => m.StartCoroutine(LateWakeENUM(result));
 	

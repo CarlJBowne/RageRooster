@@ -13,7 +13,7 @@ public class PlayerInteracter : PlayerStateBehavior
     /// <returns>Whether the interaction happened.</returns>
     public bool TryInteract()
     {
-        var interactCheck = Physics.OverlapSphere(body.center + body.transform.forward * frontOffset, 1.5f);
+        var interactCheck = Physics.OverlapSphere(playerMovementBody.center + playerMovementBody.transform.forward * frontOffset, 1.5f);
         for (int i = 0; i < interactCheck.Length; i++)
             if (interactCheck[i].TryGetComponent(out IInteractable foundInteractable))
             {

@@ -214,16 +214,14 @@ namespace SLS.StateMachineV3
         public void FinishSignal() => SendSignal("Finish", addToQueue: false, overrideReady: true);
 
 
-
-    }
-
-    /// <summary>
-    /// A class tracking designer-defined variables kept across the whole StateMachine. <br />
-    /// Basic and untested. Possibly not fully functional.<br />
-    /// Available Types include: Bool, Int, Float, Vector2, Vector3, String, Char.
-    /// </summary>
-    [Serializable]
-    public class SMVariables
+        /// <summary>
+        /// A class tracking designer-defined variables kept across the whole StateMachine. <br />
+        /// Basic and untested. Possibly not fully functional.<br />
+        /// Available Types include: Bool, Int, Float, Vector2, Vector3, String, Char. <br />
+        /// Probably not relevant.
+        /// </summary>
+        [Serializable]
+        public class SMVariables
         {
 
             [Serializable]
@@ -292,5 +290,6 @@ namespace SLS.StateMachineV3
             public bool Exists<T>(string key) => Vars.ContainsKey(key) && typeof(T) == Vars[key].GetType();
 
         }
+    }
 }
 

@@ -16,14 +16,14 @@ public class PlayerGroundSlam : PlayerMovementEffector
     public override void VerticalMovement(out float? result)
     {
         result = ApplyGravity(gravity, terminalVelocity, flatGravity);
-        attackCollider.center = Vector3.up * (.6f + (body.velocity.y * Time.fixedDeltaTime * 2));
+        attackCollider.center = Vector3.up * (.6f + (playerMovementBody.velocity.y * Time.fixedDeltaTime * 2));
 
     }
 
     public override void OnEnter(State prev, bool isFinal) 
     { 
         base.OnEnter(prev, isFinal); 
-        body.VelocitySet(y: body.velocity.y > gravity ? gravity : body.velocity.y); 
+        playerMovementBody.VelocitySet(y: playerMovementBody.velocity.y > gravity ? gravity : playerMovementBody.velocity.y); 
     }
 
     private void OnTriggerEnter(Collider other) => BounceShroom.AttemptBounce(other.gameObject, bouncingState);

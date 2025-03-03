@@ -61,7 +61,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         {
             if (_currentDirection == value) return;
             _currentDirection = value;
-            if(body) body.rotation = _currentDirection.DirToRot();
+            if(playerMovementBody) playerMovementBody.rotation = _currentDirection.DirToRot();
         }
     }
 
@@ -98,7 +98,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     {
         Vector3 prevPosition = rb.position;
         {
-            M.animator.SetFloat("CurrentSpeed", currentSpeed);
+            StateMachine.animator.SetFloat("CurrentSpeed", currentSpeed);
             rb.velocity = Vector3.zero;
 
             //Anchor System is busted. Fix later.
@@ -138,7 +138,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
         Move(initVelocity * Time.fixedDeltaTime, initNormal);
 
-        M.freeLookCamera.transform.position += transform.position - prevPosition;
+        StateMachine.freeLookCamera.transform.position += transform.position - prevPosition;
     }
 
     Vector3 initVelocity;
@@ -201,7 +201,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                         stopped = true;
                 }
 
-            if (stopped && M.SendSignal("Bonk", overrideReady: true, addToQueue: false)) return;
+            if (stopped && StateMachine.SendSignal("Bonk", overrideReady: true, addToQueue: false)) return;
 
             Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1); 
             Move(newDir, nextNormal, step + 1);
@@ -217,7 +217,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                 else
                 {
                     GroundStateChange(false);
-                    M.SendSignal("WalkOff", overrideReady: true);
+                    StateMachine.SendSignal("WalkOff", overrideReady: true);
                 }
             }
         }
@@ -240,9 +240,9 @@ public class PlayerMovementBody : PlayerStateBehavior
             jumpPhase = -1;
 
             if(anchor) prevAnchorPosition = anchor.position;
-            M.SendSignal("Land", overrideReady: true);
+            StateMachine.SendSignal("Land", overrideReady: true);
 
-            if (controller.CheckJumpBuffer()) M.SendSignal("Jump");
+            if (playerController.CheckJumpBuffer()) StateMachine.SendSignal("Jump");
         }
 
         return true;
@@ -314,20 +314,21 @@ public class PlayerMovementBody : PlayerStateBehavior
 
 #endif
 
+
+    public struct HitNormalDisplay
+    {
+        public Vector3 position;
+        public Vector3 normal;
+        public HitNormalDisplay(Vector3 position, Vector3 normal)
+        {
+            this.position = position;
+            this.normal = normal;
+        }
+        public HitNormalDisplay(RaycastHit fromHit)
+        {
+            this.position = fromHit.point;
+            this.normal = fromHit.normal;
+        }
+    }
 }
 
-public struct HitNormalDisplay
-{
-    public Vector3 position;
-    public Vector3 normal;
-    public HitNormalDisplay(Vector3 position, Vector3 normal)
-    {
-        this.position = position;
-        this.normal = normal;
-    }
-    public HitNormalDisplay(RaycastHit fromHit)
-    {
-        this.position = fromHit.point;
-        this.normal = fromHit.normal;
-    }
-}

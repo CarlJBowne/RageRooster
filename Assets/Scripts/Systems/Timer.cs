@@ -1,110 +1,13 @@
 ﻿using EditorAttributes;
 using System;
 using System.Collections.Generic;
-using Timer;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-[Serializable, System.Obsolete]
-public struct Timer_Old
-{
-    public float value;
-    public float lowerEdge;
-    public float higherEdge;
-    public delegate void Delegate(); 
-    public Delegate action;
-    private bool active;
 
-    public Timer_Old(float higherEdge, Delegate action = null)
-    {
-        value = 0;
-        this.lowerEdge = 0;
-        this.higherEdge = higherEdge;
-        this.action = action;
-        active = true;
-    }
-    public Timer_Old(float lowerEdge, float higherEdge, Delegate action = null)
-    {
-        value = 0;
-        this.lowerEdge = lowerEdge;
-        this.higherEdge = higherEdge;
-        this.action = action;
-        active = true;
-    }
-    public Timer_Old(float begin, float lowerEdge, float higherEdge, Delegate action = null)
-    {
-        value = begin;
-        this.lowerEdge = lowerEdge;
-        this.higherEdge = higherEdge;
-        this.action = action;
-        active = true;
-    }
-
-    public static implicit operator bool(Timer_Old timer) => timer.active;
-    public static implicit operator float(Timer_Old timer) => timer.value;
-
-    public static Timer_Old operator +(Timer_Old timer, float value)
-    {
-        if (!timer) return timer;
-        timer.value += value;
-        if(timer.value >= timer.higherEdge)
-        {
-            timer.action?.Invoke();
-            timer.value = timer.value - timer.higherEdge + timer.lowerEdge;
-        }
-        return timer;
-    }
-    public static Timer_Old operator -(Timer_Old timer, float value)
-    {
-        if (!timer) return timer;
-        timer.value -= value;
-        if (timer.value <= timer.lowerEdge)
-        {
-            timer.action?.Invoke();
-            timer.value += timer.value + timer.higherEdge - timer.lowerEdge;
-        }
-        return timer;
-    }
-
-    public bool Increment(float amount, Delegate action = null)
-    {
-        if(!this) return false;
-        value += amount;
-        bool act = false;
-        if (amount>0 && value >= higherEdge)
-        {
-            value = value - higherEdge + lowerEdge;
-            act = true;
-        }
-        if (amount<0 &&value <= lowerEdge)
-        {
-            value += value + higherEdge - lowerEdge;
-            act = true;
-        }
-        if (act) (action ?? this.action)?.Invoke();
-        return act;
-    }
-
-    public static bool Time(ref float time, float amount, float higherEdge, float lowerEdge = 0f)
-    {
-        time += amount;
-        if (amount > 0 && time >= higherEdge)
-        {
-            time = time - higherEdge + lowerEdge;
-            return true;
-        }
-        else if (amount < 0 && time <= lowerEdge)
-        {
-            time += time + higherEdge - lowerEdge;
-            return true;
-        }
-        else return false;
-    }
-}
-
-namespace Timer
+public static class Timer
 {
 
     [System.Serializable]
@@ -170,7 +73,7 @@ namespace Timer
 }
 
 #if UNITY_EDITOR
-[CustomPropertyDrawer(typeof(Loop))]
+[CustomPropertyDrawer(typeof(Timer.Loop))]
 public class LoopPropertyDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -204,7 +107,7 @@ public class LoopPropertyDrawer : PropertyDrawer
         EditorGUI.EndProperty();
     }
 }
-[CustomPropertyDrawer(typeof(OneTime))]
+[CustomPropertyDrawer(typeof(Timer.OneTime))]
 public class OneTimePropertyDrawer : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -240,3 +143,100 @@ public class OneTimePropertyDrawer : PropertyDrawer
 }
 
 #endif
+
+[Serializable, System.Obsolete]
+public struct Timer_Old
+{
+    public float value;
+    public float lowerEdge;
+    public float higherEdge;
+    public delegate void Delegate();
+    public Delegate action;
+    private bool active;
+
+    public Timer_Old(float higherEdge, Delegate action = null)
+    {
+        value = 0;
+        this.lowerEdge = 0;
+        this.higherEdge = higherEdge;
+        this.action = action;
+        active = true;
+    }
+    public Timer_Old(float lowerEdge, float higherEdge, Delegate action = null)
+    {
+        value = 0;
+        this.lowerEdge = lowerEdge;
+        this.higherEdge = higherEdge;
+        this.action = action;
+        active = true;
+    }
+    public Timer_Old(float begin, float lowerEdge, float higherEdge, Delegate action = null)
+    {
+        value = begin;
+        this.lowerEdge = lowerEdge;
+        this.higherEdge = higherEdge;
+        this.action = action;
+        active = true;
+    }
+
+    public static implicit operator bool(Timer_Old timer) => timer.active;
+    public static implicit operator float(Timer_Old timer) => timer.value;
+
+    public static Timer_Old operator +(Timer_Old timer, float value)
+    {
+        if (!timer) return timer;
+        timer.value += value;
+        if (timer.value >= timer.higherEdge)
+        {
+            timer.action?.Invoke();
+            timer.value = timer.value - timer.higherEdge + timer.lowerEdge;
+        }
+        return timer;
+    }
+    public static Timer_Old operator -(Timer_Old timer, float value)
+    {
+        if (!timer) return timer;
+        timer.value -= value;
+        if (timer.value <= timer.lowerEdge)
+        {
+            timer.action?.Invoke();
+            timer.value += timer.value + timer.higherEdge - timer.lowerEdge;
+        }
+        return timer;
+    }
+
+    public bool Increment(float amount, Delegate action = null)
+    {
+        if (!this) return false;
+        value += amount;
+        bool act = false;
+        if (amount > 0 && value >= higherEdge)
+        {
+            value = value - higherEdge + lowerEdge;
+            act = true;
+        }
+        if (amount < 0 && value <= lowerEdge)
+        {
+            value += value + higherEdge - lowerEdge;
+            act = true;
+        }
+        if (act) (action ?? this.action)?.Invoke();
+        return act;
+    }
+
+    public static bool Time(ref float time, float amount, float higherEdge, float lowerEdge = 0f)
+    {
+        time += amount;
+        if (amount > 0 && time >= higherEdge)
+        {
+            time = time - higherEdge + lowerEdge;
+            return true;
+        }
+        else if (amount < 0 && time <= lowerEdge)
+        {
+            time += time + higherEdge - lowerEdge;
+            return true;
+        }
+        else return false;
+    }
+}

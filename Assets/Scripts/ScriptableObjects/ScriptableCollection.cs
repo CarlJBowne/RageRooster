@@ -69,7 +69,7 @@ public class ScriptableCollection : ScriptableObject, ICustomSerialized
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(ScriptableCollection), true)]
-public class ScriptableCollectionEditor : Editor
+public class _ScriptableCollectionEditor : Editor
 {
     ScriptableCollection This;
     bool initialized;

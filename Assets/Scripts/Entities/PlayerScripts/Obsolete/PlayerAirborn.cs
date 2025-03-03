@@ -28,18 +28,18 @@ public class PlayerAirborn : PlayerStateBehavior
 
     public override void OnFixedUpdate()
     {
-        body.VelocitySet(y: ApplyGravity());
+        playerMovementBody.VelocitySet(y: ApplyGravity());
 
         if (jumpHeight <= 0) return;
 
         if (phase == 0 && transform.position.y >= targetMinHeight) phase = 1;
         if (phase == 1 && transform.position.y >= targetHeight) phase = 2;
-        if (phase == 2 && body.velocity.y < 0) phase = 3; 
+        if (phase == 2 && playerMovementBody.velocity.y < 0) phase = 3; 
 
-        if (phase < 2) body.VelocitySet(y: jumpPower);
-        if (body.velocity.y <= 0 || (allowMidFall && phase > 0 && !input.jump.IsPressed()))
+        if (phase < 2) playerMovementBody.VelocitySet(y: jumpPower);
+        if (playerMovementBody.velocity.y <= 0 || (allowMidFall && phase > 0 && !input.jump.IsPressed()))
         {
-            if (body.velocity.y > 0) body.VelocitySet(y: 0);
+            if (playerMovementBody.velocity.y > 0) playerMovementBody.VelocitySet(y: 0);
             phase = 3;
             if (fallState != null) TransitionTo(fallState.state);
         }
@@ -50,18 +50,18 @@ public class PlayerAirborn : PlayerStateBehavior
     {
         if (jumpPower == 0) return;
         phase = 0;
-        body.VelocitySet(y: jumpPower);
+        playerMovementBody.VelocitySet(y: jumpPower);
         if (jumpPower <= 0) return;
         targetMinHeight = transform.position.y + jumpMinHeight;
         targetHeight = (transform.position.y + jumpHeight) - (jumpPower.P()) / (2 * gravity);
         if (targetHeight <= transform.position.y)
         {
-            body.VelocitySet(y: Mathf.Sqrt(2 * gravity * jumpHeight));
+            playerMovementBody.VelocitySet(y: Mathf.Sqrt(2 * gravity * jumpHeight));
             targetMinHeight = transform.position.y;
         }
 
 #if UNITY_EDITOR
-        body.jumpMarkers = new()
+        playerMovementBody.jumpMarkers = new()
         {
             transform.position,
             transform.position + Vector3.up * targetHeight,
@@ -74,7 +74,7 @@ public class PlayerAirborn : PlayerStateBehavior
     protected float ApplyGravity()
     {
         return  (!flatGravity 
-            ? body.velocity.y - (gravity * Time.deltaTime) 
+            ? playerMovementBody.velocity.y - (gravity * Time.deltaTime) 
             : -gravity * Time.deltaTime
             ).Min(-terminalVelocity);
     }
