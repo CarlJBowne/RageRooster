@@ -17,4 +17,9 @@ public class NewBehaviourScript : MonoBehaviour
     {
         RenderSettings.skybox.SetFloat("_Rotation", Time.time * speed);
     }
+
+    private void OnDestroy()
+    {
+        RenderSettings.skybox.SetFloat("_Rotation", 0);
+    }
 }
