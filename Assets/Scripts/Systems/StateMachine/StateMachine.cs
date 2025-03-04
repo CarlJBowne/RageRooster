@@ -34,7 +34,7 @@ namespace SLS.StateMachineV3
             NSGO.AddComponent<State>();
         }
         [Button(nameof(__enableSiblingCreation), ConditionResult.ShowHide)]
-        protected override void AddSibling() { } 
+        protected override void AddSibling() { }
 
         #endregion Buttons
 
@@ -99,17 +99,8 @@ namespace SLS.StateMachineV3
         {
             if (signalQueueDecay.running) signalQueueDecay.Tick(() =>
             {
-                Signal signal = signalQueue.Peek();
-                if(signal.decayOverride == null || signal.decayOverride.Invoke(signal))
-                {
-                    if (signalQueue.Count > 0) signalQueue.Dequeue();
-                    if (signalQueue.Count > 0)
-                    {
-                        signal = signalQueue.Peek();
-                        signalQueueDecay.length = signal.decayTime != null ? signal.decayTime.Value : defaultSignalQueueDecay;
-                        signalQueueDecay.Begin();
-                    }
-                }
+                if (signalQueue.Count > 0) signalQueue.Dequeue();
+                if (signalQueue.Count > 0) signalQueueDecay.Begin();
             });
             DoUpdate();
         }
@@ -168,16 +159,16 @@ namespace SLS.StateMachineV3
                 prevState == this ||
                 !prevState.active
                ) return;
-             
+
 
             int i = prevState.lineage.Length - 1;
             for (; i >= 0;)
             {
                 prevState.lineage[i].ExitState(nextState);
-                if (i==0 || nextState.lineage.Contains(prevState.lineage[i-1])) break;  
+                if (i == 0 || nextState.lineage.Contains(prevState.lineage[i - 1])) break;
                 i--;
             }
-            for (; i < nextState.lineage.Length-1; i++)
+            for (; i < nextState.lineage.Length - 1; i++)
                 nextState.lineage[i].EnterState(prevState, false);
             currentState = nextState.EnterState(prevState);
             nextState.onActivatedEvent?.Invoke(prevState);
@@ -187,39 +178,26 @@ namespace SLS.StateMachineV3
         //Signals
 
         [HideInEditMode, DisableInPlayMode] public bool signalReady = true;
+        public Queue<string> signalQueue = new();
+        public Timer.OneTime signalQueueDecay = new(1f);
         public SerializedDictionary<string, UltEvent> globalSignals;
-        public Queue<Signal> signalQueue = new();
-        private float defaultSignalQueueDecay = 0.5f;
-        private Timer.OneTime signalQueueDecay = new(0.5f);
 
-        public bool SendSignal(string name, bool addToQueue = true, bool overrideReady = false, float? decayTime = null,
-            Signal.Check decayOverride = null, Signal.Check readyCheckOverride = null) 
-            => SendSignal(new(name, addToQueue, overrideReady, decayTime, decayOverride, readyCheckOverride));
-
-        public bool SendSignal(Signal signal)
+        public bool SendSignal(string name, bool addToQueue = true, bool overrideReady = false)
         {
-            if (CheckSignalReady(signal) && EnactSignal(name)) return true;
-            else if (signal.addToQueue)
+            if ((signalReady || overrideReady) && EnactSignal(name)) return true;
+            else if (addToQueue)
             {
-                signalQueue.Enqueue(signal);
-                signalQueueDecay.length = signal.decayTime != null ? signal.decayTime.Value : defaultSignalQueueDecay;
-                signalQueueDecay.Begin();
+                signalQueue.Enqueue(name);
+                if (signalQueueDecay.length > 0) signalQueueDecay.Begin();
             }
             return false;
         }
 
-        public bool CheckSignalReady(Signal signal) => 
-            signal.overrideReady ? 
-                true : 
-                signalReady ? 
-                    true : 
-                    signal.decayOverride.Invoke(signal);
-
         public void ReadySignal()
         {
             signalReady = true;
-            while(signalQueue.Count > 0)
-                if (EnactSignal(signalQueue.Dequeue().name)) 
+            while (signalQueue.Count > 0)
+                if (EnactSignal(signalQueue.Dequeue()))
                     break;
         }
 
@@ -234,50 +212,6 @@ namespace SLS.StateMachineV3
         }
 
         public void FinishSignal() => SendSignal("Finish", addToQueue: false, overrideReady: true);
-
-
-        public struct Signal
-        {
-            /// <summary>
-            /// The official name. Used to compare in serialized dictionaries for events on States.
-            /// </summary>
-            public string name;
-            /// <summary>
-            /// Whether or not it bothers to add to the Signal queue.
-            /// </summary>
-            public bool addToQueue;
-            /// <summary>
-            /// Whether or not it doesn't care about the readyValue;
-            /// </summary>
-            public bool overrideReady;
-            /// <summary>
-            /// The decay timer of this action when in the Signal Queue. If none is given defaults to the default set on the State Machine.
-            /// </summary>
-            public float? decayTime;
-            /// <summary>
-            /// An override event for when this Signal decays. Returns a bool.(If true, does normal decay behavior.)
-            /// </summary>
-            public Check decayOverride;
-            /// <summary>
-            /// An override event for when this Signal checks if it can activate. Returns a bool.(Determines whether the Signal fires.)
-            /// </summary>
-            public Check readyCheckOverride;
-
-            public delegate bool Check(Signal singal);
-
-            public Signal(string name, bool addToQueue = true, bool overrideReady = false, float? decayTime = null,
-                Check decayOverride = null, Check readyCheckOverride = null)
-            {
-                this.name = name;
-                this.addToQueue = addToQueue;
-                this.overrideReady = overrideReady;
-                this.decayTime = decayTime;
-                this.decayOverride = decayOverride;
-                this.readyCheckOverride = readyCheckOverride;
-            }
-        }
-
-
 
 
         /// <summary>
