@@ -98,7 +98,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     {
         Vector3 prevPosition = rb.position;
         {
-            StateMachine.animator.SetFloat("CurrentSpeed", currentSpeed);
+            Machine.animator.SetFloat("CurrentSpeed", currentSpeed);
             rb.velocity = Vector3.zero;
 
             //Anchor System is busted. Fix later.
@@ -138,7 +138,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
         Move(initVelocity * Time.fixedDeltaTime, initNormal);
 
-        StateMachine.freeLookCamera.transform.position += transform.position - prevPosition;
+        Machine.freeLookCamera.transform.position += transform.position - prevPosition;
     }
 
     Vector3 initVelocity;
@@ -201,7 +201,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                         stopped = true;
                 }
 
-            if (stopped && StateMachine.SendSignal("Bonk", overrideReady: true, addToQueue: false)) return;
+            if (stopped && Machine.SendSignal("Bonk", overrideReady: true, addToQueue: false)) return;
 
             Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1); 
             Move(newDir, nextNormal, step + 1);
@@ -217,7 +217,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                 else
                 {
                     GroundStateChange(false);
-                    StateMachine.SendSignal("WalkOff", overrideReady: true);
+                    Machine.SendSignal("WalkOff", overrideReady: true);
                 }
             }
         }
@@ -240,9 +240,9 @@ public class PlayerMovementBody : PlayerStateBehavior
             jumpPhase = -1;
 
             if(anchor) prevAnchorPosition = anchor.position;
-            StateMachine.SendSignal("Land", overrideReady: true);
+            Machine.SendSignal("Land", overrideReady: true);
 
-            if (playerController.CheckJumpBuffer()) StateMachine.SendSignal("Jump");
+            if (playerController.CheckJumpBuffer()) Machine.SendSignal("Jump");
         }
 
         return true;

@@ -80,20 +80,20 @@ public class PlayerController : PlayerStateBehavior
 	{
 
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
-		camAdjustedMovement = input.movement.ToXZ().Rotate(StateMachine.cameraTransform.eulerAngles.y, Vector3.up);
+		camAdjustedMovement = input.movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
 
-		if (StateMachine.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
+		if (Machine.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
             sGlide.TransitionTo();
-        else if(StateMachine.signalReady && !input.jump.IsPressed() && sGlide) 
+        else if(Machine.signalReady && !input.jump.IsPressed() && sGlide) 
             sFall.TransitionTo();
 
-        if (StateMachine.freeLookCamera != null)
+        if (Machine.freeLookCamera != null)
         {
-            StateMachine.freeLookCamera.Follow = transform;
-            StateMachine.freeLookCamera.LookAt = transform;
+            Machine.freeLookCamera.Follow = transform;
+            Machine.freeLookCamera.LookAt = transform;
         }
 
-        if (input.shootMode.IsPressed() && StateMachine.signalReady && sGrounded 
+        if (input.shootMode.IsPressed() && Machine.signalReady && sGrounded 
             && !ranged.aimingState && (ranged.hasEggsToShoot || grabber.currentGrabbed != null)) 
             ranged.EnterAiming();
     }
@@ -109,11 +109,11 @@ public class PlayerController : PlayerStateBehavior
     private void OnAnimatorMove() => onAnimatorMove?.Invoke();
 
 
-    private void BeginActionEvent(InputAction.CallbackContext callbackContext) => StateMachine.SendSignal(callbackContext.action.name);
-    public void BeginActionEvent(string name) => StateMachine.SendSignal(name);
+    private void BeginActionEvent(InputAction.CallbackContext callbackContext) => Machine.SendSignal(callbackContext.action.name);
+    public void BeginActionEvent(string name) => Machine.SendSignal(name);
 
-    public void ReadyNextAction() => StateMachine.ReadySignal();
-    public void FinishAction() => StateMachine.FinishSignal();
+    public void ReadyNextAction() => Machine.ReadySignal();
+    public void FinishAction() => Machine.FinishSignal();
 
 
 
@@ -125,9 +125,9 @@ public class PlayerController : PlayerStateBehavior
     }
 
     //Other events.
-    private void JumpRelease(CTX ctx) => StateMachine.SendSignal("JumpRelease", false, true);
-    private void ShootModeActivate(CTX ctx) => StateMachine.SendSignal("ShootMode", true, true);
-    private void ShootModeDeactivate(CTX ctx) => StateMachine.SendSignal("ShootModeExit", true, true);
+    private void JumpRelease(CTX ctx) => Machine.SendSignal("JumpRelease", false, true);
+    private void ShootModeActivate(CTX ctx) => Machine.SendSignal("ShootMode", true, true);
+    private void ShootModeDeactivate(CTX ctx) => Machine.SendSignal("ShootModeExit", true, true);
 
 
 

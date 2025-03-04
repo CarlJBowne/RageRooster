@@ -11,8 +11,8 @@ public class StatePhysicsCaller : StateBehavior
 
     protected override void Initialize()
     {
-        collisions = StateMachine.stateHolder.GetComponentsInChildren<StateBehaviorPhysicsCollision>();
-        triggers = StateMachine.stateHolder.GetComponentsInChildren<StateBehaviorPhysicsTrigger>();
+        collisions = Machine.stateHolder.GetComponentsInChildren<StateBehaviorPhysicsCollision>();
+        triggers = Machine.stateHolder.GetComponentsInChildren<StateBehaviorPhysicsTrigger>();
     }
 
 

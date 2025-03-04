@@ -13,15 +13,15 @@ namespace SLS.StateMachineV3
         /// The State Machine owning this behavior. Likely the most important field you'll be referencing a lot.<br />
         /// Override with the "new" keyword with an expression like "=> M as MyStateMachine" to get a custom StateMachine
         /// </summary>
-        public StateMachine StateMachine { get; private set; }
+        public StateMachine Machine { get; private set; }
         /// <summary>
         /// An indirection to access the State Machine's gameObject property.
         /// </summary>
-        public new GameObject gameObject => StateMachine.gameObject;
+        public new GameObject gameObject => Machine.gameObject;
         /// <summary>
         /// An indirection to access the State Machine's transform property.
         /// </summary>
-        public new Transform transform => StateMachine.transform;
+        public new Transform transform => Machine.transform;
         /// <summary>
         /// The current State. Usefull for referencing this SubObject.
         /// </summary>
@@ -30,7 +30,7 @@ namespace SLS.StateMachineV3
 
         public void InitializeP(State @state)
         {
-            StateMachine = @state.machine;
+            Machine = @state.machine;
             this.state = @state;
 
             this.Initialize();
@@ -44,10 +44,10 @@ namespace SLS.StateMachineV3
         public virtual void OnEnter(State prev, bool isFinal) { }
         public virtual void OnExit(State next) { }
 
-        public C GetComponentFromMachine<C>() where C : Component => StateMachine.GetComponent<C>();
-        public bool TryGetComponentFromMachine<C>(out C result) where C : Component => StateMachine.TryGetComponent(out result);
+        public C GetComponentFromMachine<C>() where C : Component => Machine.GetComponent<C>();
+        public bool TryGetComponentFromMachine<C>(out C result) where C : Component => Machine.TryGetComponent(out result);
 
-        public void TransitionTo(State nextState) => StateMachine.TransitionState(nextState);
+        public void TransitionTo(State nextState) => Machine.TransitionState(nextState);
 
         public virtual void Activate() => state.TransitionTo();
 

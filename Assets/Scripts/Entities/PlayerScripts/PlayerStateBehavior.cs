@@ -3,7 +3,7 @@ using SLS.StateMachineV3;
 
 public abstract class PlayerStateBehavior : StateBehavior
 {
-    [HideInInspector] public new PlayerStateMachine StateMachine;
+    [HideInInspector] public new PlayerStateMachine Machine;
     [HideInInspector] public Input input;
     [HideInInspector] public PlayerMovementBody playerMovementBody;
     [HideInInspector] public PlayerController playerController;
@@ -11,22 +11,22 @@ public abstract class PlayerStateBehavior : StateBehavior
 
     protected override void Initialize()
     {
-        StateMachine = base.StateMachine as PlayerStateMachine;
-        input = StateMachine.input;
-        playerMovementBody = StateMachine.body;
-        playerController = StateMachine.controller;
+        Machine = base.Machine as PlayerStateMachine;
+        input = Machine.input;
+        playerMovementBody = Machine.body;
+        playerController = Machine.controller;
     }
         
 
     #region States
 
-    public State sGrounded => StateMachine.states["Grounded"];
-    public State sCharge => StateMachine.states["Charge"];
-    public State sAirborne => StateMachine.states["Airborne"];
-    public State sFall => StateMachine.states["Fall"];
-    public State sGlide => StateMachine.states["Glide"];
-    public State sGroundSlam => StateMachine.states["GroundSlam"];
-    public State sAirChargeFall => StateMachine.states["AirChargeFall"];
+    public State sGrounded => Machine.states["Grounded"];
+    public State sCharge => Machine.states["Charge"];
+    public State sAirborne => Machine.states["Airborne"];
+    public State sFall => Machine.states["Fall"];
+    public State sGlide => Machine.states["Glide"];
+    public State sGroundSlam => Machine.states["GroundSlam"];
+    public State sAirChargeFall => Machine.states["AirChargeFall"];
 
     #endregion
 
