@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerMovementNegater : PlayerMovementEffector
 {
-    public enum NegateType { InstantNegate, SmoothNegate, Dampen, SmoothDampen, None}
+    public enum NegateType { InstantNegate, SmoothNegate, Dampen, SmoothDampen, Gravity, None}
 
     public NegateType horizontalNegateType;
     public NegateType verticalNegateType;
@@ -13,6 +13,9 @@ public class PlayerMovementNegater : PlayerMovementEffector
     public float rate;
     public float dampenPoint;
     public bool savePriorVelocity;
+    public float gravity;
+    public float terminalVelocity;
+
 
     protected bool disabled;
     protected Vector3 savedVelocity;
@@ -30,22 +33,22 @@ public class PlayerMovementNegater : PlayerMovementEffector
             case NegateType.InstantNegate:
                 resultX = 0;
                 resultZ = 0;
-                body.currentSpeed = 0;
+                playerMovementBody.currentSpeed = 0;
                 break;
             case NegateType.SmoothNegate:
-                resultX = Mathf.MoveTowards(body.velocity.x, 0, rate);
-                resultZ = Mathf.MoveTowards(body.velocity.z, 0, rate);
-                body.currentSpeed = Mathf.MoveTowards(body.currentSpeed, 0, rate);
+                resultX = Mathf.MoveTowards(playerMovementBody.velocity.x, 0, rate * Time.deltaTime);
+                resultZ = Mathf.MoveTowards(playerMovementBody.velocity.z, 0, rate * Time.deltaTime);
+                playerMovementBody.currentSpeed = Mathf.MoveTowards(playerMovementBody.currentSpeed, 0, rate * Time.deltaTime);
                 break;
             case NegateType.Dampen:
-                resultX = Mathf.Clamp(body.velocity.x, -dampenPoint, dampenPoint);
-                resultZ = Mathf.Clamp(body.velocity.z, -dampenPoint, dampenPoint);
-                body.currentSpeed = Mathf.Min(body.currentSpeed, dampenPoint);
+                resultX = Mathf.Clamp(playerMovementBody.velocity.x, -dampenPoint, dampenPoint);
+                resultZ = Mathf.Clamp(playerMovementBody.velocity.z, -dampenPoint, dampenPoint);
+                playerMovementBody.currentSpeed = Mathf.Min(playerMovementBody.currentSpeed, dampenPoint);
                 break;
             case NegateType.SmoothDampen:
-                resultX = Mathf.MoveTowards(body.velocity.x, dampenPoint * body.velocity.x.Sign(), rate);
-                resultZ = Mathf.MoveTowards(body.velocity.z, dampenPoint * body.velocity.z.Sign(), rate);
-                body.currentSpeed = Mathf.MoveTowards(body.currentSpeed, dampenPoint, rate);
+                resultX = Mathf.MoveTowards(playerMovementBody.velocity.x, dampenPoint * playerMovementBody.velocity.x.Sign(), rate * Time.deltaTime);
+                resultZ = Mathf.MoveTowards(playerMovementBody.velocity.z, dampenPoint * playerMovementBody.velocity.z.Sign(), rate * Time.deltaTime);
+                playerMovementBody.currentSpeed = Mathf.MoveTowards(playerMovementBody.currentSpeed, dampenPoint, rate * Time.deltaTime);
                 break;
             default:
                 break;
@@ -56,19 +59,22 @@ public class PlayerMovementNegater : PlayerMovementEffector
         resultY = null;
         if (disabled) return;
 
-        switch (horizontalNegateType)
+        switch (verticalNegateType) 
         {
             case NegateType.InstantNegate:
                 resultY = 0;
                 break;
             case NegateType.SmoothNegate:
-                resultY = Mathf.MoveTowards(body.velocity.y, 0, rate);
+                resultY = Mathf.MoveTowards(playerMovementBody.velocity.y, 0, rate * Time.deltaTime);
                 break;
             case NegateType.Dampen:
-                resultY = Mathf.Clamp(body.velocity.y, -dampenPoint, dampenPoint);
+                resultY = Mathf.Clamp(playerMovementBody.velocity.y, -dampenPoint, dampenPoint);
                 break;
             case NegateType.SmoothDampen:
-                resultY = Mathf.MoveTowards(body.velocity.y, (dampenPoint * body.velocity.y.Sign()), rate);
+                resultY = Mathf.MoveTowards(playerMovementBody.velocity.y, (dampenPoint * playerMovementBody.velocity.y.Sign()), rate * Time.deltaTime);
+                break;
+            case NegateType.Gravity:
+                resultY = ApplyGravity(gravity, terminalVelocity);
                 break;
             default:
                 break;
@@ -78,20 +84,21 @@ public class PlayerMovementNegater : PlayerMovementEffector
     {
         base.OnEnter(prev, isFinal);
         disabled = false;
+        if (verticalNegateType == NegateType.Gravity) playerMovementBody.VelocitySet(y: 0);
         if (savePriorVelocity)
         {
-            savedVelocity = body.velocity;
-            savedHorizontalSpeed = body.currentSpeed;
-            savedJumpPhase = body.jumpPhase;
+            savedVelocity = playerMovementBody.velocity;
+            savedHorizontalSpeed = playerMovementBody.currentSpeed;
+            savedJumpPhase = playerMovementBody.jumpPhase;
         }
     }
     public override void OnExit(State next)
     {
         if (savePriorVelocity)
         {
-            body.velocity = savedVelocity;
-            body.currentSpeed = savedHorizontalSpeed;
-            body.jumpPhase = savedJumpPhase;
+            playerMovementBody.velocity = savedVelocity;
+            playerMovementBody.currentSpeed = savedHorizontalSpeed;
+            playerMovementBody.jumpPhase = savedJumpPhase;
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using EditorAttributes;
 using Newtonsoft.Json.Linq;
-using JToken = Newtonsoft.Json.Linq.JToken;
 using static UnityEngine.Rendering.DebugUI;
 
 [CreateAssetMenu(fileName = "SaveTester", menuName = "ScriptableObjects/SaveTester")]
@@ -17,21 +16,6 @@ public class SaveTester : ScriptableObject
     public void Save() => coll.Serialize().SaveToFile(Application.dataPath + path, fileName);
     [Button]
     public void Load() => coll.Deserialize(new JObject().LoadJsonFromFile(Application.dataPath + path, fileName));
-}
-
-public interface ICustomSerialized
-{
-    /// <summary>
-    /// Serializes the object into a JToken. (Can be overridden along with its Deserialize Counterpart.)
-    /// </summary>
-    /// <returns> The Json representation.</returns>
-    public JToken Serialize();
-    /// <summary>
-    /// Deserializes a JToken and populates this object with its data. (Can be overridden along with its Serialize Counterpart.)
-    /// </summary>
-    /// <param name="Data">The Json representation to be Deserialized.</param>
-    public void Deserialize(JToken Data);
-
 }
 
 /*

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Cinemachine;
 using UnityEngine.Assertions.Must;
+using Unity.VisualScripting;
 
 public class DialogueTrigger : MonoBehaviour
 {
@@ -61,8 +62,9 @@ public class DialogueTrigger : MonoBehaviour
         
         if (!ui.inDialogue && currentSpeaker != null)
         {
-            targetGroup.m_Targets[1].target = this.transform;
-            //movement.active = false;
+            
+            targetGroup.m_Targets[1].target = Gameplay.I.player.transform;
+            Gameplay.Player.GetComponent<PlayerStateMachine>().PauseState();
             ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().Follow = targetGroup.transform;
             ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
             ui.SetCharNameAndColor();
@@ -70,7 +72,7 @@ public class DialogueTrigger : MonoBehaviour
             ui.CameraChange(true);
             ui.ClearText();
             ui.FadeUI(true, .2f, .65f);
-            currentSpeaker.TurnToPlayer(this.transform.position);
+            currentSpeaker.TurnToPlayer(Gameplay.I.player.transform.position);
         }
     }
 }

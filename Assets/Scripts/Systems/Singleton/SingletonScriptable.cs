@@ -6,7 +6,7 @@ using UnityEngine;
 /// A global Singleton Scriptable Object. Must be added to Preloaded Assets in the Player Settings.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class SingletonScriptable<T> : SingletonScriptable where T : SingletonScriptable<T>
+public class SingletonScriptable<T> : _SingletonScriptableBase where T : SingletonScriptable<T>
 {
     private static T _instance;
 
@@ -38,7 +38,7 @@ public class SingletonScriptable<T> : SingletonScriptable where T : SingletonScr
 
 }
 
-public abstract class SingletonScriptable : ScriptableObject
+public abstract class _SingletonScriptableBase : ScriptableObject
 {
     protected virtual void OnAwake() { }
     protected abstract void OnEnable();
@@ -46,14 +46,14 @@ public abstract class SingletonScriptable : ScriptableObject
 }
 
 #if UNITY_EDITOR
-class SingletonScriptableAPP : UnityEditor.AssetPostprocessor
+class _SingletonScriptableAPP : UnityEditor.AssetPostprocessor
 {
     static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)
     {
         Object[] objs = UnityEditor.PlayerSettings.GetPreloadedAssets();
         foreach (Object item in objs)
         {
-            if (item is SingletonScriptable) (item as SingletonScriptable).Awake();
+            if (item is _SingletonScriptableBase) (item as _SingletonScriptableBase).Awake();
         }
     }
 }

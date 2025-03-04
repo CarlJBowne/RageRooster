@@ -24,8 +24,8 @@ public class PlayerWallJump : PlayerMovementEffector
         resultX = fixedDirection.x * outwardVelocity;
         resultZ = fixedDirection.z * outwardVelocity;
 
-        body.currentSpeed = outwardVelocity;
-        body.currentDirection = fixedDirection;
+        playerMovementBody.currentSpeed = outwardVelocity;
+        playerMovementBody.currentDirection = fixedDirection;
 
         float distance = (transform.position - startPoint).XZ().magnitude;
         if (distance >= minDistance) sFall.TransitionTo();
@@ -35,18 +35,18 @@ public class PlayerWallJump : PlayerMovementEffector
 
     public void WallJump(Vector3 direction)
     {
-        if(upgrade && body.rb.DirectionCast(body.currentDirection, 0.5f, body.checkBuffer, out RaycastHit hit))
+        if(upgrade && playerMovementBody.rb.DirectionCast(playerMovementBody.currentDirection, 0.5f, playerMovementBody.checkBuffer, out RaycastHit hit))
         {
             if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return;
             direction = direction.XZ().Rotate(180, Vector3.up);
 
             if (!state.active) state.TransitionTo();
-            body.VelocitySet(y: jumpPower);
+            playerMovementBody.VelocitySet(y: jumpPower);
 
             startPoint = transform.position;
             fixedDirection = direction;
 
-            body.currentDirection = fixedDirection;
+            playerMovementBody.currentDirection = fixedDirection;
 
             state.TransitionTo();
         }
