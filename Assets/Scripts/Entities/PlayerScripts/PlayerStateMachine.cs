@@ -68,14 +68,7 @@ public class PlayerStateMachine : StateMachine
         freeLookCamera.PreviousStateIsValid = false;
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);
         body.velocity = Vector3.zero;
-    }
-    public void Spawn(SavePoint spawn)
-    {
-        Vector3 camDelta = spawn.SpawnPoint.position - transform.position;
-        body.position = spawn.SpawnPoint.position;
-        body.rotation = new(0, spawn.SpawnPoint.eulerAngles.y, 0);
-        freeLookCamera.PreviousStateIsValid = false;
-        freeLookCamera.OnTargetObjectWarped(transform, camDelta);
+        body.InstantSnapToFloor();
     }
 
 
@@ -89,35 +82,5 @@ public class PlayerStateMachine : StateMachine
     {
         prevState.TransitionTo();
     }
-
-}
-public abstract class PlayerStateBehavior : StateBehavior
-{
-    [HideInInspector] public new PlayerStateMachine M;
-    [HideInInspector] public Input input;
-    [HideInInspector] public PlayerMovementBody body;
-    [HideInInspector] public PlayerController controller;
-    
-
-    protected override void Initialize()
-    {
-        M = base.M as PlayerStateMachine;
-        input = M.input;
-        body = M.body;
-        controller = M.controller;
-    }
-        
-
-    #region States
-
-    public State sGrounded => M.states["Grounded"];
-    public State sCharge => M.states["Charge"];
-    public State sAirborne => M.states["Airborne"];
-    public State sFall => M.states["Fall"];
-    public State sGlide => M.states["Glide"];
-    public State sGroundSlam => M.states["GroundSlam"];
-    public State sAirChargeFall => M.states["AirChargeFall"];
-
-    #endregion
 
 }

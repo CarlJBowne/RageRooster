@@ -33,13 +33,13 @@ public class PlayerGroundedMovement : PlayerMovementEffector
 
     public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
-        float currentSpeed = body.currentSpeed;
-        Vector3 currentDirection = body.currentDirection;
+        float currentSpeed = playerMovementBody.currentSpeed;
+        Vector3 currentDirection = playerMovementBody.currentDirection;
 
-        HorizontalMain(ref currentSpeed, ref currentDirection, controller.camAdjustedMovement);
+        HorizontalMain(ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement);
 
-        body.currentDirection = currentDirection;
-        body.currentSpeed = currentSpeed;
+        playerMovementBody.currentDirection = currentDirection;
+        playerMovementBody.currentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
 
@@ -55,7 +55,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         float controlMag = control.magnitude;
 
         bool condition = (!needChargeButton || Input.ChargeHold.IsPressed()) && 
-                         (!needRagingUpgrade || controller.ragingChargeUpgrade)
+                         (!needRagingUpgrade || playerController.ragingChargeUpgrade)
                          ;
 
         if (controlMag > 0)
@@ -87,31 +87,4 @@ public class PlayerGroundedMovement : PlayerMovementEffector
     
     public override void OnEnter(State prev, bool isFinal){ base.OnEnter(prev, isFinal); if (attackCollider != null) attackCollider.enabled = true;}
     public override void OnExit(State next){if(attackCollider != null) attackCollider.enabled = false;}
-}
-
-public abstract class PlayerMovementEffector : PlayerStateBehavior
-{
-    [HideInEditMode, DisableInPlayMode] public bool trueActive;
-    private bool check;
-
-    public override void OnFixedUpdate()
-    {
-        if (!trueActive) return;
-        this.HorizontalMovement(out float? X, out float? Z);
-        this.VerticalMovement(out float? Y);
-        body.VelocitySet(X, Y, Z);
-    }
-
-    public virtual void HorizontalMovement(out float? resultX, out float? resultZ) { resultX = null; resultZ = null; }
-    public virtual void VerticalMovement(out float? result) { result = null; }
-
-    protected float ApplyGravity(float gravity, float terminalVelocity, bool flatGravity = false)
-    {
-        return (!flatGravity
-            ? body.velocity.y - (gravity * Time.deltaTime)
-            : -gravity * Time.deltaTime
-            ).Min(-terminalVelocity);
-    }
-
-    public override void OnEnter(State prev, bool isFinal) => trueActive = isFinal;
 }

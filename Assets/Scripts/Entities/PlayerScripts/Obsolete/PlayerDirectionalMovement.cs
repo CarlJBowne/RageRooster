@@ -24,17 +24,17 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
     public override void OnAwake()
     {
         base.OnAwake();
-        body.currentDirection = transform.forward;
+        playerMovementBody.currentDirection = transform.forward;
     }
 
     public override void OnFixedUpdate()
     {
         float deltaTime = Time.fixedDeltaTime / 0.02f;
-        float currentSpeed = body.currentSpeed;
-        Vector3 currentDirection = body.currentDirection;
+        float currentSpeed = playerMovementBody.currentSpeed;
+        Vector3 currentDirection = playerMovementBody.currentDirection;
 
-        Vector3 controlDirection = controller.camAdjustedMovement.normalized;
-        float controlMag = controller.camAdjustedMovement.sqrMagnitude;
+        Vector3 controlDirection = playerController.camAdjustedMovement.normalized;
+        float controlMag = playerController.camAdjustedMovement.sqrMagnitude;
 
         if (!forceMaxVelocity)
         {
@@ -68,12 +68,12 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
             MaxSpeedChange(true);
         }
 
-        body.currentDirection = currentDirection;
-        body.currentSpeed = currentSpeed;
+        playerMovementBody.currentDirection = currentDirection;
+        playerMovementBody.currentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
 
-        body.VelocitySet(x: literalDirection.x, z: literalDirection.z);
+        playerMovementBody.VelocitySet(x: literalDirection.x, z: literalDirection.z);
 
         
         

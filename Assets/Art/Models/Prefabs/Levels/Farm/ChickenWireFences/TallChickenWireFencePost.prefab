@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4053019702560312355}
   - component: {fileID: 5651323726893126017}
   - component: {fileID: 1581515890055401371}
-  - component: {fileID: 246318246152384342}
+  - component: {fileID: 3519216306869137380}
   m_Layer: 0
   m_Name: TallFrame
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &246318246152384342
-MeshCollider:
+--- !u!65 &3519216306869137380
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,10 +102,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 2757008601600030908, guid: b7b6a61891a42f946b2c7e71666b7197, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.002430532, y: 0.056317627, z: 0.07591519}
+  m_Center: {x: 0.000000059604645, y: 0.000035472207, z: 0.00014957596}
 --- !u!1 &5378840427299243818
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,7 +129,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5378840427299243818}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.707107, z: -0, w: 0.7071066}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -21.693035, y: 0.012476206, z: 6.3311124}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -150,7 +149,7 @@ GameObject:
   - component: {fileID: 3157487407874296482}
   - component: {fileID: 3345266361406130648}
   - component: {fileID: 4065278433659015239}
-  - component: {fileID: 2258977564805343706}
+  - component: {fileID: 4716918388502082107}
   m_Layer: 0
   m_Name: TallPlane
   m_TagString: Untagged
@@ -223,8 +222,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2258977564805343706
-MeshCollider:
+--- !u!65 &4716918388502082107
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -241,7 +240,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 3865234275484723057, guid: b7b6a61891a42f946b2c7e71666b7197, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.072446644, y: 0.05320482, z: 0.00011103477}
+  m_Center: {x: -0.0000000055864455, y: 1.4899494e-12, z: -0.0000500596}

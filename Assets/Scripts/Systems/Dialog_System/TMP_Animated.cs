@@ -4,22 +4,22 @@ using UnityEngine;
 using UnityEngine.Events;
 namespace TMPro
 {
-        // Jacob Dreyer
-        // Creating a custom text element that can be animated and has a controlled text speed
+    // Jacob Dreyer
+    // Creating a custom text element that can be animated and has a controlled text speed
 
-        /*
-        Original Authors
-            André Cardoso - Github
-        License
-            This project is licensed under the MIT License - see the LICENSE.md file for details
-        */
+    /*
+    Original Authors
+        André Cardoso - Github
+    License
+        This project is licensed under the MIT License - see the LICENSE.md file for details
+    */
 
     //Creating actions to interface with code and trigger what we want to happen during or after dialouge
     public enum Emotion { neutral, happy, suprised, angry, confused };
     [System.Serializable] public class EmotionEvent : UnityEvent<Emotion> { }
-    [System.Serializable] public class ActionEvent : UnityEvent<string> {}
-    [System.Serializable] public class TextRevealEvent : UnityEvent<char> {}
-    [System.Serializable] public class DialogueEvent : UnityEvent {}
+    [System.Serializable] public class ActionEvent : UnityEvent<string> { }
+    [System.Serializable] public class TextRevealEvent : UnityEvent<char> { }
+    [System.Serializable] public class DialogueEvent : UnityEvent { }
     public class TMP_Animated : TextMeshProUGUI
     {
 
@@ -37,7 +37,7 @@ namespace TMPro
             //Even numbers in the array are text, odd numbers are tags
             string[] subTexts = newText.Split('<', '>');
 
-            
+
             // textmeshpro still needs to parse its built-in tags, so we only include noncustom tags
             string displayText = "";
             for (int i = 0; i < subTexts.Length; i++)
@@ -107,7 +107,7 @@ namespace TMPro
 
         }
 
-        
+
 
         // check to see if a tag is our own
         bool isCustomTag(string tag)

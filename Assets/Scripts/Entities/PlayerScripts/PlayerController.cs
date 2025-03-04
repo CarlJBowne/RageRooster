@@ -5,7 +5,7 @@ using EditorAttributes;
 using UnityEngine.InputSystem;
 using Cinemachine;
 using System.Collections.Generic;
-using PCA = PlayerControlAction;
+using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
 
 public class PlayerController : PlayerStateBehavior
 {
@@ -27,19 +27,20 @@ public class PlayerController : PlayerStateBehavior
 	#endregion
 	#region Data
 
-	[HideInInspector] public float jumpInput;
-	[HideInInspector] public Vector3 camAdjustedMovement;
-	[HideInInspector] public PlayerRanged grabber;
+	[HideProperty] public float jumpInput;
+	[HideProperty] public Vector3 camAdjustedMovement;
+	[HideProperty] public PlayerRanged grabber;
+    [HideProperty] public PlayerInteracter interacter;
 
-	#endregion
-	#region Getters
+    #endregion
+    #region Getters
 
-	#endregion
+    #endregion
 
-	public override void OnAwake()
+    public override void OnAwake()
 	{
-		grabber = GetComponentFromMachine<PlayerRanged>();
-		//attack = GetComponentFromMachine<PlayerAttackSystem>();
+		if(!grabber) grabber = GetComponentFromMachine<PlayerRanged>();
+        if(!interacter) interacter = GetComponentFromMachine<PlayerInteracter>();
 
 		input.jump.performed            += BeginActionEvent;
         input.attackTap.performed       += BeginActionEvent;
@@ -50,7 +51,12 @@ public class PlayerController : PlayerStateBehavior
         input.chargeTap.performed       += BeginActionEvent;
         input.chargeHold.performed      += BeginActionEvent;
         input.shoot.performed           += BeginActionEvent;
+
+        input.jump.canceled             += JumpRelease;
+        input.shootMode.performed       += ShootModeActivate;
+        input.shootMode.canceled        += ShootModeDeactivate;
     }
+
 
 	private void OnDestroy()
 	{
@@ -63,26 +69,31 @@ public class PlayerController : PlayerStateBehavior
         input.chargeTap.performed       -= BeginActionEvent;
         input.chargeHold.performed      -= BeginActionEvent;
         input.shoot.performed           -= BeginActionEvent;
+
+        input.jump.canceled             -= JumpRelease;
+        input.shootMode.performed       -= ShootModeActivate;
+        input.shootMode.canceled        -= ShootModeDeactivate;
+
     }
 
     public override void OnUpdate()
 	{
 
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
-		camAdjustedMovement = input.movement.ToXZ().Rotate(M.cameraTransform.eulerAngles.y, Vector3.up);
+		camAdjustedMovement = input.movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
 
-		if (M.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
+		if (Machine.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
             sGlide.TransitionTo();
-        else if(M.signalReady && !input.jump.IsPressed() && sGlide) 
+        else if(Machine.signalReady && !input.jump.IsPressed() && sGlide) 
             sFall.TransitionTo();
 
-        if (M.freeLookCamera != null)
+        if (Machine.freeLookCamera != null)
         {
-            M.freeLookCamera.Follow = transform;
-            M.freeLookCamera.LookAt = transform;
+            Machine.freeLookCamera.Follow = transform;
+            Machine.freeLookCamera.LookAt = transform;
         }
 
-        if (input.shootMode.IsPressed() && M.signalReady && sGrounded 
+        if (input.shootMode.IsPressed() && Machine.signalReady && sGrounded 
             && !ranged.aimingState && (ranged.hasEggsToShoot || grabber.currentGrabbed != null)) 
             ranged.EnterAiming();
     }
@@ -98,26 +109,27 @@ public class PlayerController : PlayerStateBehavior
     private void OnAnimatorMove() => onAnimatorMove?.Invoke();
 
 
-    private void BeginActionEvent(InputAction.CallbackContext callbackContext) => M.SendSignal(callbackContext.action.name);
-    public void BeginActionEvent(string name) => M.SendSignal(name);
+    private void BeginActionEvent(InputAction.CallbackContext callbackContext) => Machine.SendSignal(callbackContext.action.name);
+    public void BeginActionEvent(string name) => Machine.SendSignal(name);
 
-    public void ReadyNextAction() => M.ReadySignal();
-    public void FinishAction() => M.FinishSignal();
+    public void ReadyNextAction() => Machine.ReadySignal();
+    public void FinishAction() => Machine.FinishSignal();
 
 
 
     public void ParryAction()
     {
-        var interactCheck = Physics.OverlapSphere(body.center + body.transform.forward * 2, 1.5f);
-        for (int i = 0; i < interactCheck.Length; i++)
-            if (interactCheck[i].TryGetComponent(out IInteractable foundInteractable))
-            {
-                foundInteractable.Interact();
-                return;
-            }
+        if(interacter.TryInteract()) return;
 
         //Do Parry move here.
     }
+
+    //Other events.
+    private void JumpRelease(CTX ctx) => Machine.SendSignal("JumpRelease", false, true);
+    private void ShootModeActivate(CTX ctx) => Machine.SendSignal("ShootMode", true, true);
+    private void ShootModeDeactivate(CTX ctx) => Machine.SendSignal("ShootModeExit", true, true);
+
+
 
 
 }

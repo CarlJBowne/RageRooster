@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6340054578136047018}
   - component: {fileID: 4281552967703079287}
   - component: {fileID: 8795225109622187589}
-  - component: {fileID: 4081600904705796503}
+  - component: {fileID: 8907584981273522802}
   m_Layer: 0
   m_Name: SquareFrame
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4081600904705796503
-MeshCollider:
+--- !u!65 &8907584981273522802
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,10 +102,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 876902264518851408, guid: 66aa837af856d454d85d23b1f610091b, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.002430532, y: 0.05338068, z: 0.055678952}
+  m_Center: {x: -0.000000059604645, y: 0.000035471276, z: 0.00014957876}
 --- !u!1 &5381898563313442151
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,7 +116,7 @@ GameObject:
   - component: {fileID: 996089946970798331}
   - component: {fileID: 3869101121489272204}
   - component: {fileID: 7004045939883179409}
-  - component: {fileID: 7367113628181478681}
+  - component: {fileID: 7549445195042835929}
   m_Layer: 0
   m_Name: SquarePlane
   m_TagString: Untagged
@@ -190,8 +189,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7367113628181478681
-MeshCollider:
+--- !u!65 &7549445195042835929
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -208,10 +207,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 7876021989498319818, guid: 66aa837af856d454d85d23b1f610091b, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.052847024, y: 0.050901607, z: 0.00010691177}
+  m_Center: {x: -0.0000000037238004, y: -0.000000059603156, z: -0.000049940394}
 --- !u!1 &6414420471345059231
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,7 +234,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6414420471345059231}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.70710677, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -21.985947, y: 0.012475491, z: 12.84}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

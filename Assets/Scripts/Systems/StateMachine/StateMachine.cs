@@ -34,7 +34,7 @@ namespace SLS.StateMachineV3
             NSGO.AddComponent<State>();
         }
         [Button(nameof(__enableSiblingCreation), ConditionResult.ShowHide)]
-        protected override void AddSibling() { } 
+        protected override void AddSibling() { }
 
         #endregion Buttons
 
@@ -159,16 +159,16 @@ namespace SLS.StateMachineV3
                 prevState == this ||
                 !prevState.active
                ) return;
-             
+
 
             int i = prevState.lineage.Length - 1;
             for (; i >= 0;)
             {
                 prevState.lineage[i].ExitState(nextState);
-                if (i==0 || nextState.lineage.Contains(prevState.lineage[i-1])) break;  
+                if (i == 0 || nextState.lineage.Contains(prevState.lineage[i - 1])) break;
                 i--;
             }
-            for (; i < nextState.lineage.Length-1; i++)
+            for (; i < nextState.lineage.Length - 1; i++)
                 nextState.lineage[i].EnterState(prevState, false);
             currentState = nextState.EnterState(prevState);
             nextState.onActivatedEvent?.Invoke(prevState);
@@ -196,8 +196,8 @@ namespace SLS.StateMachineV3
         public void ReadySignal()
         {
             signalReady = true;
-            while(signalQueue.Count > 0)
-                if (EnactSignal(signalQueue.Dequeue())) 
+            while (signalQueue.Count > 0)
+                if (EnactSignal(signalQueue.Dequeue()))
                     break;
         }
 
@@ -214,16 +214,14 @@ namespace SLS.StateMachineV3
         public void FinishSignal() => SendSignal("Finish", addToQueue: false, overrideReady: true);
 
 
-
-    }
-
-    /// <summary>
-    /// A class tracking designer-defined variables kept across the whole StateMachine. <br />
-    /// Basic and untested. Possibly not fully functional.<br />
-    /// Available Types include: Bool, Int, Float, Vector2, Vector3, String, Char.
-    /// </summary>
-    [Serializable]
-    public class SMVariables
+        /// <summary>
+        /// A class tracking designer-defined variables kept across the whole StateMachine. <br />
+        /// Basic and untested. Possibly not fully functional.<br />
+        /// Available Types include: Bool, Int, Float, Vector2, Vector3, String, Char. <br />
+        /// Probably not relevant.
+        /// </summary>
+        [Serializable]
+        public class SMVariables
         {
 
             [Serializable]
@@ -292,5 +290,6 @@ namespace SLS.StateMachineV3
             public bool Exists<T>(string key) => Vars.ContainsKey(key) && typeof(T) == Vars[key].GetType();
 
         }
+    }
 }
 
