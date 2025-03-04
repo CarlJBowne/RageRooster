@@ -64,8 +64,10 @@ public class ZoneRoot : MonoBehaviour
     
     public void OnTransition()
     {
-        Gameplay.musicEmitter.EventReference = music;
         Gameplay.musicEmitter.Stop();
+
+        Gameplay.musicEmitter.ChangeEvent(music);
+        //Gameplay.musicEmitter
         Gameplay.musicEmitter.Play();
     }
 
