@@ -38,14 +38,14 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
     public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
-        float currentSpeed = body.currentSpeed;
-        Vector3 currentDirection = body.currentDirection;
+        float currentSpeed = playerMovementBody.currentSpeed;
+        Vector3 currentDirection = playerMovementBody.currentDirection;
 
-        if (!isDash) HorizontalMain (Time.fixedDeltaTime / 0.02f, ref currentSpeed, ref currentDirection, controller.camAdjustedMovement);
-        else HorizontalCharge       (Time.fixedDeltaTime / 0.02f, ref currentSpeed, ref currentDirection, controller.camAdjustedMovement);
+        if (!isDash) HorizontalMain (Time.fixedDeltaTime / 0.02f, ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement);
+        else HorizontalCharge       (Time.fixedDeltaTime / 0.02f, ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement);
 
-        body.currentDirection = currentDirection;
-        body.currentSpeed = currentSpeed;
+        playerMovementBody.currentDirection = currentDirection;
+        playerMovementBody.currentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
 
@@ -56,7 +56,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     {
         result = ApplyGravity(gravity, terminalVelocity, flatGravity);
         if (upwards) VerticalUpwards(ref result);
-        else if (body.velocity.y <= fallStateThreshold) Fall(ref result);
+        else if (playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref result);
     }
 
     private void HorizontalMain(float deltaTime, ref float currentSpeed, ref Vector3 currentDirection, Vector3 control)
@@ -101,8 +101,8 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
         if (maxTurnSpeed > 0)
             currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0);
-        body.currentDirection = currentDirection;
-        body.currentSpeed = currentSpeed;
+        playerMovementBody.currentDirection = currentDirection;
+        playerMovementBody.currentSpeed = currentSpeed;
 
 
     }
@@ -110,11 +110,11 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
     private void VerticalUpwards(ref float? Y)
     {
-        if (body.jumpPhase == 0 && transform.position.y >= targetMinHeight) body.jumpPhase = 1;
-        if (body.jumpPhase == 1 && transform.position.y >= targetHeight) body.jumpPhase = 2;
+        if (playerMovementBody.jumpPhase == 0 && transform.position.y >= targetMinHeight) playerMovementBody.jumpPhase = 1;
+        if (playerMovementBody.jumpPhase == 1 && transform.position.y >= targetHeight) playerMovementBody.jumpPhase = 2;
 
-        if (body.jumpPhase < 2) Y = jumpPower;
-        if ((body.velocity.y <= fallStateThreshold) || 
+        if (playerMovementBody.jumpPhase < 2) Y = jumpPower;
+        if ((playerMovementBody.velocity.y <= fallStateThreshold) || 
             (allowMidFall && !input.jump.IsPressed()))
             Fall(ref Y);
 
@@ -122,8 +122,8 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
     private void Fall(ref float? Y)
     {
-        if (body.velocity.y > fallStateThreshold) Y = fallStateThreshold;
-        body.jumpPhase = 3;
+        if (playerMovementBody.velocity.y > fallStateThreshold) Y = fallStateThreshold;
+        playerMovementBody.jumpPhase = 3;
         if (fallState != null) fallState.Enter();
     }
 
@@ -132,25 +132,25 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         base.OnEnter(prev, isFinal);
         if (!isFinal) return;
 
-        if (!upwards && forceDownwards) body.VelocitySet(y: body.velocity.y.Max(0));
-        if (!upwards || (body.jumpPhase > 0 && !isDash)) return;
+        if (!upwards && forceDownwards) playerMovementBody.VelocitySet(y: playerMovementBody.velocity.y.Max(0));
+        if (!upwards || (playerMovementBody.jumpPhase > 0 && !isDash)) return;
 
-        body.jumpPhase = 0;
-        if (isDash) body.currentSpeed = maxSpeed;
+        playerMovementBody.jumpPhase = 0;
+        if (isDash) playerMovementBody.currentSpeed = maxSpeed;
 
         if (!upwards) return;
 
-        body.VelocitySet(y: jumpPower);
+        playerMovementBody.VelocitySet(y: jumpPower);
         targetMinHeight = transform.position.y + jumpMinHeight;
         targetHeight = (transform.position.y + jumpHeight) - (jumpPower.P()) / (2 * gravity);
         if (targetHeight <= transform.position.y)
         {
-            body.VelocitySet(y: Mathf.Sqrt(2 * gravity * jumpHeight));
+            playerMovementBody.VelocitySet(y: Mathf.Sqrt(2 * gravity * jumpHeight));
             targetMinHeight = transform.position.y;
         }
 
 #if UNITY_EDITOR
-        body.jumpMarkers = new()
+        playerMovementBody.jumpMarkers = new()
         {
             transform.position,
             transform.position + Vector3.up * targetHeight,
@@ -163,7 +163,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     public void Enter() => state.TransitionTo();
     public void BeginJump()
     {
-        body.GroundStateChange(false);
+        playerMovementBody.GroundStateChange(false);
         state.TransitionTo();
     }
     public void BeginJump(float power, float height, float minHeight)

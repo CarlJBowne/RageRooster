@@ -21,8 +21,8 @@ public class GlobalPrefabs : SingletonScriptable<GlobalPrefabs>
 #endif
     }
 
-    public List<SingletonAncestor> singletons;
-    public static List<SingletonAncestor> Singletons => Get().singletons;
+    public List<_SingletonBase> singletons;
+    public static List<_SingletonBase> Singletons => Get().singletons;
 
 #if AYellowPaper
     [SerializeField] AYellowpaper.SerializedCollections.SerializedDictionary<string, GameObject> dictionary;

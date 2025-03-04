@@ -11,7 +11,7 @@ using UnityEngine;
 /// Basic form that functions out of the box. (Inheret from SingletonAdvanced instead for special functionality.)
 /// </summary>
 /// <typeparam name="T">The Behavior's Type</typeparam>
-public abstract class Singleton<T> : SingletonAncestor where T : Singleton<T>
+public abstract class Singleton<T> : _SingletonBase where T : Singleton<T>
 {
     #region Data and Setup
 
@@ -221,7 +221,7 @@ public abstract class SingletonAdvanced<T> : Singleton<SingletonAdvanced<T>> whe
         DontDestoryOnLoad = dontDestroyOnLoad;
         if (spawnMethod == InitSavedPrefab)
         {
-            SingletonAncestor S = GlobalPrefabs.Singletons.FirstOrDefault(x => x is T);
+            _SingletonBase S = GlobalPrefabs.Singletons.FirstOrDefault(x => x is T);
             prefab = S
                 ? S.gameObject
                 : throw new Exception($"Singleton {typeof(T)} is set to use a saved prefab but isn't set up in the Global Prefabs Asset.");
@@ -382,30 +382,6 @@ public abstract class SingletonAdvanced<T> : Singleton<SingletonAdvanced<T>> whe
 }
 
 
-public abstract class SingletonAncestor : MonoBehaviour
-{
-    public static Dictionary<Type, SingletonAncestor> activeSingletons = new();
-    public static T Get<T>() where T : SingletonAncestor => activeSingletons[typeof(T)] as T;
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static void Boot()
-    {
-#if UNITY_EDITOR
-        Debug.Log("Loading Singletons");
-#endif
-
-        Type[] types = typeof(SingletonAdvanced<>).GetAllChildTypes(false);
-
-        foreach (Type item in types)
-        {
-            MethodInfo M = item.GetMethod("Data", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod);
-            M?.Invoke(null, null);
-
-        }
-    }
-
-}
-
 /* Example Use --------------------------------------------------------------------------------------------------------------------------------------------
 
 public class ExampleSingleton : SingletonAdvanced<ExampleSingleton>
@@ -434,7 +410,33 @@ InitAddressablePrefab
 
  */
 
-public static class TypeHelpers
+
+public abstract class _SingletonBase : MonoBehaviour
+{
+    public static Dictionary<Type, _SingletonBase> activeSingletons = new();
+    public static T Get<T>() where T : _SingletonBase => activeSingletons[typeof(T)] as T;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void Boot()
+    {
+#if UNITY_EDITOR
+        Debug.Log("Loading Singletons");
+#endif
+
+        Type[] types = typeof(SingletonAdvanced<>).GetAllChildTypes(false);
+
+        foreach (Type item in types)
+        {
+            MethodInfo M = item.GetMethod("Data", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.InvokeMethod);
+            M?.Invoke(null, null);
+
+        }
+    }
+
+}
+
+
+public static class _TypeHelpers
 {
     public static Type[] GetAllChildTypes(this Type T, bool noAbstracts = false)
     => Assembly.GetAssembly(T).GetTypes().Where(i => 

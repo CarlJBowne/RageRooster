@@ -9,8 +9,8 @@ public class StatePhysicsCaller2D : StateBehavior
 
     protected override void Initialize()
     {
-        collisions2D = M.stateHolder.GetComponentsInChildren<StateBehaviorPhysicsCollision2D>();
-        triggers2D = M.stateHolder.GetComponentsInChildren<StateBehaviorPhysicsTrigger2D>();
+        collisions2D = Machine.stateHolder.GetComponentsInChildren<StateBehaviorPhysicsCollision2D>();
+        triggers2D = Machine.stateHolder.GetComponentsInChildren<StateBehaviorPhysicsTrigger2D>();
     }
 
 

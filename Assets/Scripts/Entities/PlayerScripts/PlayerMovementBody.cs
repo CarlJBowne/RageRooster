@@ -61,7 +61,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         {
             if (_currentDirection == value) return;
             _currentDirection = value;
-            if(body) body.rotation = _currentDirection.DirToRot();
+            if(playerMovementBody) playerMovementBody.rotation = _currentDirection.DirToRot();
         }
     }
 
@@ -98,15 +98,16 @@ public class PlayerMovementBody : PlayerStateBehavior
     {
         Vector3 prevPosition = rb.position;
         {
-            M.animator.SetFloat("CurrentSpeed", currentSpeed);
+            Machine.animator.SetFloat("CurrentSpeed", currentSpeed);
             rb.velocity = Vector3.zero;
 
-            if (anchorTransform && !anchorTransform.gameObject.isStatic)
-            {
-                Vector3 anchorOffset = prevAnchorPosition - anchorTransform.localPosition;
-                prevAnchorPosition = anchorTransform.localPosition;
-                rb.MovePosition(rb.position - anchorOffset);
-            }
+            //Anchor System is busted. Fix later.
+            //if (anchorTransform)
+            //{
+            //    Vector3 anchorOffset = prevAnchorPosition - anchorTransform.localPosition;
+            //    prevAnchorPosition = anchorTransform.localPosition;
+            //    rb.MovePosition(rb.position - anchorOffset);
+            //}
 
 
         } // NonMovement
@@ -137,7 +138,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
         Move(initVelocity * Time.fixedDeltaTime, initNormal);
 
-        M.freeLookCamera.transform.position += transform.position - prevPosition;
+        Machine.freeLookCamera.transform.position += transform.position - prevPosition;
     }
 
     Vector3 initVelocity;
@@ -160,26 +161,47 @@ public class PlayerMovementBody : PlayerStateBehavior
             Vector3 snapToSurface = vel.normalized * hit.distance;
             Vector3 leftover = vel - snapToSurface;
             Vector3 nextNormal = hit.normal;
+            bool stopped = false;
             rb.MovePosition(position + snapToSurface);
 
             if (step == movementProjectionSteps) return;
 
-            if (grounded && hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
-                nextNormal = prevNormal.XZ().normalized;
+            if (grounded)
+            {
+                //Runs into wall/to high incline.
+                if (Mathf.Approximately(hit.normal.y, 0) || (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))) 
+                    Stop(prevNormal);
 
-            if(!grounded && vel.y < 0 && hit.normal.y > 0) 
-                if (WithinSlopeAngle(hit.normal))
+                if (grounded && prevNormal.y > 0 && hit.normal.y < 0) //Floor to Cieling
+                    FloorCeilingLock(prevNormal, hit.normal);
+                else if (grounded && prevNormal.y < 0 && hit.normal.y > 0) //Ceiling to Floor
+                    FloorCeilingLock(hit.normal, prevNormal);
+            }
+            else
+            {
+                if(vel.y < .1f && WithinSlopeAngle(hit.normal))
                 {
                     GroundStateChange(true, hit.transform);
                     leftover.y = 0;
                 }
-                else leftover = leftover.ProjectAndScale(hit.normal.XZ().normalized);
+                else
+                {
+                    leftover = leftover.ProjectAndScale(hit.normal);
+                    stopped = true;
+                }
+            }
 
-            //Floor Ceiling Lock
-            if (prevNormal.y > 0 && hit.normal.y < 0) //Hit Floor First
-                nextNormal = (prevNormal.y != prevNormal.magnitude ? prevNormal : hit.normal).XZ().normalized;
-            else if(prevNormal.y < 0 && hit.normal.y > 0) //Hit Cieling First
-                nextNormal = (hit.normal.y != hit.normal.magnitude ? hit.normal : prevNormal).XZ().normalized;
+                void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal) => 
+                    Stop(floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal);
+
+                void Stop(Vector3 newNormal)
+                {
+                    nextNormal = newNormal.XZ().normalized;
+                    //if (Vector3.Dot(newNormal, vel.XZ()) <= -.75f)
+                        stopped = true;
+                }
+
+            if (stopped && Machine.SendSignal("Bonk", overrideReady: true, addToQueue: false)) return;
 
             Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1); 
             Move(newDir, nextNormal, step + 1);
@@ -195,7 +217,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                 else
                 {
                     GroundStateChange(false);
-                    M.SendSignal("WalkOff", overrideReady: true);
+                    Machine.SendSignal("WalkOff", overrideReady: true);
                 }
             }
         }
@@ -211,40 +233,43 @@ public class PlayerMovementBody : PlayerStateBehavior
         if (input == grounded || rb.velocity.y > 0.01f) return false;
         grounded = input;
 
-        anchorTransform = anchor && !anchor.gameObject.isStatic ? anchor : null;
+        //Anchor System is busted. Fix later.
+        //anchorTransform = anchor && !anchor.gameObject.isStatic ? anchor : null;
         if (grounded)
         {
             jumpPhase = -1;
 
             if(anchor) prevAnchorPosition = anchor.position;
-            M.SendSignal("Land", overrideReady: true);
+            Machine.SendSignal("Land", overrideReady: true);
 
-            if (controller.CheckJumpBuffer()) M.SendSignal("Jump");
+            if (playerController.CheckJumpBuffer()) Machine.SendSignal("Jump");
         }
 
         return true;
     }
     public bool GroundStateChange(bool input) => GroundStateChange(input, null);
 
-    private bool WithinSlopeAngle(Vector3 inNormal)
-    {
-        float A = Vector3.Angle(Vector3.up, inNormal);
-        return A < maxSlopeNormalAngle;
-    }
+    private bool WithinSlopeAngle(Vector3 inNormal) => Vector3.Angle(Vector3.up, inNormal) < maxSlopeNormalAngle;
 
     private void OnCollisionEnter(Collision collision)
     {
-        float contactUpwardDot = Vector3.Dot(collision.GetContact(0).normal, Vector3.up);
-        if (!grounded && velocity.y > 0.01f && contactUpwardDot < -0.75f)
+        Vector3 contactPoint = collision.GetContact(0).normal;
+        if (!grounded && velocity.y > .1f && Vector3.Dot(contactPoint, Vector3.up) < -0.75f)
         {
             sFall.TransitionTo();
             VelocitySet(y: 0);
         }
-        else if (!grounded && contactUpwardDot > 0)
+        else if (!grounded && WithinSlopeAngle(contactPoint))
             GroundStateChange(true, collision.transform);
     }
 
-
+    public void InstantSnapToFloor()
+    {
+        rb.DirectionCast(Vector3.down, 1000, .5f, out RaycastHit hit);
+        rb.MovePosition(position + Vector3.down * hit.distance);
+    }
+    
+    
     //[System.Obsolete]
     //public void TryBeginJump(PlayerAirborneMovement target)
     //{
@@ -289,20 +314,21 @@ public class PlayerMovementBody : PlayerStateBehavior
 
 #endif
 
+
+    public struct HitNormalDisplay
+    {
+        public Vector3 position;
+        public Vector3 normal;
+        public HitNormalDisplay(Vector3 position, Vector3 normal)
+        {
+            this.position = position;
+            this.normal = normal;
+        }
+        public HitNormalDisplay(RaycastHit fromHit)
+        {
+            this.position = fromHit.point;
+            this.normal = fromHit.normal;
+        }
+    }
 }
 
-public struct HitNormalDisplay
-{
-    public Vector3 position;
-    public Vector3 normal;
-    public HitNormalDisplay(Vector3 position, Vector3 normal)
-    {
-        this.position = position;
-        this.normal = normal;
-    }
-    public HitNormalDisplay(RaycastHit fromHit)
-    {
-        this.position = fromHit.point;
-        this.normal = fromHit.normal;
-    }
-}

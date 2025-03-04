@@ -191,6 +191,8 @@ namespace FMODUnity
 
         public void Play()
         {
+            Lookup();
+
             if (TriggerOnce && hasTriggered)
             {
                 return;
@@ -392,6 +394,14 @@ namespace FMODUnity
                 return (playbackState != FMOD.Studio.PLAYBACK_STATE.STOPPED);
             }
             return false;
+        }
+
+        public void ChangeEvent(EventReference newEvent)
+        {
+            EventReference = newEvent;
+
+            Lookup();
+
         }
     }
 }
