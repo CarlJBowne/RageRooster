@@ -64,11 +64,7 @@ public class ZoneRoot : MonoBehaviour
     
     public void OnTransition()
     {
-        Gameplay.musicEmitter.Stop();
-
-        Gameplay.musicEmitter.ChangeEvent(music);
-        //Gameplay.musicEmitter
-        Gameplay.musicEmitter.Play();
+        Gameplay.musicEmitter.CrossFadeMusic(music);
     }
 
     public SerializedDictionary<WorldChange, UltEvents.UltEvent> worldChangeEvents;
