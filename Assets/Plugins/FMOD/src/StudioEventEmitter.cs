@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FMOD.Studio;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -191,7 +192,6 @@ namespace FMODUnity
 
         public void Play()
         {
-            Lookup();
 
             if (TriggerOnce && hasTriggered)
             {
@@ -206,9 +206,7 @@ namespace FMODUnity
             cachedParams.Clear();
 
             if (!eventDescription.isValid())
-            {
-                Lookup();
-            }
+            Lookup();
 
             bool isSnapshot;
             eventDescription.isSnapshot(out isSnapshot);
@@ -251,7 +249,7 @@ namespace FMODUnity
             bool is3D;
             eventDescription.is3D(out is3D);
 
-            if (!instance.isValid())
+            if (!instance.isValid() || instance.Equals(default(EventInstance)))
             {
                 eventDescription.createInstance(out instance);
 
@@ -402,6 +400,15 @@ namespace FMODUnity
 
             Lookup();
 
+        }
+
+        public void CrossFadeMusic(EventReference nextMusic)
+        {
+            StopInstance();
+            EventReference = nextMusic;
+            Lookup();
+            instance = default;
+            PlayInstance();
         }
     }
 }
