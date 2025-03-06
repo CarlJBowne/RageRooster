@@ -369,6 +369,7 @@ Transform:
   - {fileID: 1126458982731898759}
   - {fileID: 4539423522286854144}
   - {fileID: 1900392146}
+  - {fileID: 673734963}
   - {fileID: 1480791775}
   - {fileID: 6200643390166357455}
   - {fileID: 2048139103}
@@ -1045,6 +1046,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.5
+--- !u!1 &673734962
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 673734963}
+  m_Layer: 6
+  m_Name: ShootMuzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &673734963
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673734962}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 10.08}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 158189929}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &728026943
 GameObject:
   m_ObjectHideFlags: 0
@@ -3578,6 +3610,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2714541672873312079, guid: 355f3506676c06e439e5fd057490efe1,
         type: 3}
+      propertyPath: shootMuzzle
+      value: 
+      objectReference: {fileID: 673734963}
+    - target: {fileID: 2714541672873312079, guid: 355f3506676c06e439e5fd057490efe1,
+        type: 3}
       propertyPath: shootingVCam
       value: 
       objectReference: {fileID: 1815900688}
@@ -3601,11 +3638,21 @@ PrefabInstance:
       propertyPath: eggPool.parent
       value: 
       objectReference: {fileID: 158189929}
+    - target: {fileID: 2714541672873312079, guid: 355f3506676c06e439e5fd057490efe1,
+        type: 3}
+      propertyPath: eggPool.spawnPoint
+      value: 
+      objectReference: {fileID: 673734963}
     - target: {fileID: 2950555048310845610, guid: 355f3506676c06e439e5fd057490efe1,
         type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7399860152319485187, guid: 355f3506676c06e439e5fd057490efe1,
+        type: 3}
+      propertyPath: m_Data.m_SourceObjects.m_Item0.transform
+      value: 
+      objectReference: {fileID: 1480791775}
     - target: {fileID: 8455434200384702600, guid: 355f3506676c06e439e5fd057490efe1,
         type: 3}
       propertyPath: freeLookCamera

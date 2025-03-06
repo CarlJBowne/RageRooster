@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
@@ -154,12 +155,14 @@ public class PlayerRanged : MonoBehaviour
     public Transform rightUpperArm;
     public Transform rightWrist;
     public Transform shootMuzzle;
+    public Transform shootMuzzleFake;
     public float pointerDistance;
     public LayerMask pointerLayerMask;
     public Cinemachine.CinemachineVirtualCamera shootingVCam;
     public State idleState;
     public ObjectPool eggPool;
     public float playerRotationSpeed = 10;
+    public Rig aimingRig;
 
     [HideProperty] public float eggAmount = 10;
     [HideProperty] public int eggCapacity = 10;
@@ -210,6 +213,10 @@ public class PlayerRanged : MonoBehaviour
         //shootMuzzle.rotation.SetLookRotation(pointerTarget.position - shootMuzzle.position);
         ////rightWrist.eulerAngles += shootMuzzle.localEulerAngles - baseShootMuzzleRotation.eulerAngles;
         ////shootMuzzle.localRotation = baseShootMuzzleRotation;
+        shootMuzzle.position = shootMuzzleFake.position;
+        Quaternion Q = shootMuzzle.rotation;
+        Q.SetLookRotation(pointerTarget.position - shootMuzzle.position);
+        shootMuzzle.rotation = Q;
     }
 
     public void NonAimingFixedUpdate()
@@ -226,6 +233,7 @@ public class PlayerRanged : MonoBehaviour
     {
         animator.CrossFade("GrabAim.GunAim", 0.1f);
         aimingState.state.TransitionTo();
+        aimingRig.weight = 1;
         shootingVCam.Priority = 11;
         shootingVCam.gameObject.SetActive(true);
         active = true;
@@ -235,6 +243,7 @@ public class PlayerRanged : MonoBehaviour
         machine.freeLookCamera.m_XAxis.Value = pointerH;
         animator.CrossFade("GrabAim.Null", 0.1f);
         nextState.TransitionTo();
+        aimingRig.weight = 0;
         shootingVCam.Priority = 9;
         shootingVCam.gameObject.SetActive(false);
         active = false;
@@ -252,7 +261,10 @@ public class PlayerRanged : MonoBehaviour
 
         }
         else if (eggAmount >= 1)
+        {
             eggPool.Pump();
+            eggAmount--;
+        }
 
     }
 }
