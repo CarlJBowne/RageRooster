@@ -28,6 +28,7 @@ public class PlayerRanged : MonoBehaviour
     public Grabbable currentGrabbed => grabber.currentGrabbed;
 
     private Quaternion baseShootMuzzleRotation;
+    private UIHUDSystem UI;
     #endregion
 
     private void Awake()
@@ -37,6 +38,7 @@ public class PlayerRanged : MonoBehaviour
         machine = GetComponent<PlayerStateMachine>();
         body = GetComponent<PlayerMovementBody>();
         animator = GetComponent<Animator>();
+        UIHUDSystem.TryGet(out UI);
         grabber.animator = animator;
         if(aimingState == null) aimingState = FindObjectOfType<PlayerAiming>(true);
         eggPool.Initialize();
@@ -45,11 +47,7 @@ public class PlayerRanged : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (eggAmount < eggCapacity)
-        {
-            eggAmount += Time.deltaTime;
-            if (eggAmount > eggCapacity) eggAmount = eggCapacity;
-        }
+        if (eggAmount < eggCapacity) eggReplenishRate.Tick(() => ChangeAmmoAmount(1));
 
         pointerStartH.position = body.position + Vector3.up;
 
@@ -58,15 +56,8 @@ public class PlayerRanged : MonoBehaviour
     }
     private void LateUpdate()
     {
-        if (aimingState.state) AimingPostUpdate();
+        if (aimingState.state) AimingPostUpdate(); 
     }
-
-
-    //private void OnAnimatorMove()
-    //{
-    //    if (aimingState.state) AimingPostUpdate();
-    //    grabber.LateUpdate();
-    //}
 
     #region Grabbing Throwing
 
@@ -162,9 +153,10 @@ public class PlayerRanged : MonoBehaviour
     public State idleState;
     public ObjectPool eggPool;
     public float playerRotationSpeed = 10;
+    public Timer.Loop eggReplenishRate = new(1f);
     public Rig aimingRig;
 
-    [HideProperty] public float eggAmount = 10;
+    [HideProperty] public int eggAmount = 10;
     [HideProperty] public int eggCapacity = 10;
     [HideProperty] public float currentTargetDistance = 10f;
 
@@ -263,8 +255,14 @@ public class PlayerRanged : MonoBehaviour
         else if (eggAmount >= 1)
         {
             eggPool.Pump();
-            eggAmount--;
+            ChangeAmmoAmount(-1);
         }
 
+    }
+
+    void ChangeAmmoAmount(int offset)
+    {
+        eggAmount += offset;
+        UI.UpdateAmmo(eggAmount);
     }
 }
