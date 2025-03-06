@@ -12,7 +12,7 @@ public class PlayerAiming : PlayerMovementEffector
     /// <summary>
     /// The Player Ranged Component managing everything.
     /// </summary>
-    public PlayerRanged R;
+    public PlayerRanged playerRanged;
 
 
     [HideProperty] public float pointerVRot = 0;
@@ -23,15 +23,15 @@ public class PlayerAiming : PlayerMovementEffector
     {
         Vector2 mouseInput = Input.Camera;
 
-        R.pointerH = Mathf.MoveTowards(R.pointerH,
-            R.pointerH + mouseInput.x,
+        playerRanged.pointerH = Mathf.MoveTowards(playerRanged.pointerH,
+            playerRanged.pointerH + mouseInput.x,
             rotationSpeed.x * Mathf.PI * Time.fixedTime);
 
         pointerVRot = Mathf.MoveTowards(
-            pointerVRot, pointerVRot - mouseInput.y,
+            pointerVRot, pointerVRot - (mouseInput.y * rotationSpeed.y),
             rotationSpeed.y * Mathf.PI * Time.fixedTime
             ).Clamp(yRotationLimit.x, yRotationLimit.y);
-        R.pointerV = pointerVRot;
+        playerRanged.pointerV = pointerVRot;
 
         base.OnFixedUpdate();
     }
@@ -63,7 +63,7 @@ public class PlayerAiming : PlayerMovementEffector
     public void ResetPointerStartRotation()
     {
         pointerVRot = 0;
-        R.pointerStartV.localEulerAngles = new Vector3(0, 0, 0);
+        playerRanged.pointerStartV.localEulerAngles = new Vector3(0, 0, 0);
     }
 
 }

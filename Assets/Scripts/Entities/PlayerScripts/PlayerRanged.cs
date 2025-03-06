@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class PlayerRanged : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class PlayerRanged : MonoBehaviour
 
     #endregion
     #region Data
+    private bool active;
     Vector3 upcomingLaunchVelocity;
     PlayerStateMachine machine;
     PlayerMovementBody body;
@@ -24,16 +26,20 @@ public class PlayerRanged : MonoBehaviour
     [HideProperty] public PlayerAiming aimingState;
     public Grabbable currentGrabbed => grabber.currentGrabbed;
 
-
+    private Quaternion baseShootMuzzleRotation;
     #endregion
 
     private void Awake()
     {
-        grabber.R = this;
-        TryGetComponent(out machine);
-        TryGetComponent(out body);
-        TryGetComponent(out animator);
+        baseShootMuzzleRotation = shootMuzzle.localRotation;
+        grabber.ranged = this;
+        machine = GetComponent<PlayerStateMachine>();
+        body = GetComponent<PlayerMovementBody>();
+        animator = GetComponent<Animator>();
+        grabber.animator = animator;
         if(aimingState == null) aimingState = FindObjectOfType<PlayerAiming>(true);
+        eggPool.Initialize();
+        Input.Shoot.performed += Shoot;
     }
 
     private void FixedUpdate()
@@ -46,18 +52,20 @@ public class PlayerRanged : MonoBehaviour
 
         pointerStartH.position = body.position + Vector3.up;
 
-        if (aimingState.state) AimingUpdate();
-        else NonAimingUpdate();
+        if (aimingState.state) AimingFixedUpdate();
+        else NonAimingFixedUpdate();
     }
-
-
-
-    private void OnAnimatorMove()
+    private void LateUpdate()
     {
-        //animator.Update(0f);
         if (aimingState.state) AimingPostUpdate();
-        grabber.LateUpdate();
     }
+
+
+    //private void OnAnimatorMove()
+    //{
+    //    if (aimingState.state) AimingPostUpdate();
+    //    grabber.LateUpdate();
+    //}
 
     #region Grabbing Throwing
 
@@ -75,21 +83,26 @@ public class PlayerRanged : MonoBehaviour
         public Transform twoHandedHand;
 
         //Data
-        [HideInInspector] public PlayerRanged R;
+        [HideInInspector] public PlayerRanged ranged;
+        [HideInInspector] public Animator animator;
         [HideInInspector] public bool twoHanded;
 
         public void LateUpdate()
         {
-            if (currentGrabbed != null) currentGrabbed.transform.SetPositionAndRotation(twoHanded ? twoHandedHand : oneHandedHand);
+            if (currentGrabbed != null)
+            {
+                //animator.Update(0);
+                currentGrabbed.transform.SetPositionAndRotation(twoHanded ? twoHandedHand : oneHandedHand);
+            }
         }
 
 
         protected override void OnGrab() => twoHanded = currentGrabbed.twoHanded;
-        protected override void OnRelease() => currentGrabbed.rb.velocity = R.upcomingLaunchVelocity;
+        protected override void OnRelease() => currentGrabbed.rb.velocity = ranged.upcomingLaunchVelocity;
 
         public Grabbable CheckForGrabbable()
         {
-            Collider[] results = Physics.OverlapSphere(R.transform.position + GetRealOffset(R.transform), checkSphereRadius, layerMask);
+            Collider[] results = Physics.OverlapSphere(ranged.transform.position + GetRealOffset(ranged.transform), checkSphereRadius, layerMask);
             foreach (Collider r in results)
                 if (AttemptGrab(r.gameObject, out Grabbable result, false))
                     return result;
@@ -138,6 +151,7 @@ public class PlayerRanged : MonoBehaviour
     public Transform pointerStartV;
     public Transform pointerTarget;
     public Transform spine1;
+    public Transform rightUpperArm;
     public Transform rightWrist;
     public Transform shootMuzzle;
     public float pointerDistance;
@@ -149,6 +163,7 @@ public class PlayerRanged : MonoBehaviour
 
     [HideProperty] public float eggAmount = 10;
     [HideProperty] public int eggCapacity = 10;
+    [HideProperty] public float currentTargetDistance = 10f;
 
     public float pointerH 
     { 
@@ -163,23 +178,41 @@ public class PlayerRanged : MonoBehaviour
 
     public bool hasEggsToShoot => eggAmount > 0;
 
-    private Vector3 rightWristBaseRotationForward = new(44.7700844f, 277.249939f, 5.11955166f);
 
-    public void AimingUpdate()
+    public void AimingFixedUpdate()
     {
-        if (machine.signalReady && Input.Shoot.WasPressedThisFrame()) Shoot();
         if (machine.signalReady && !Input.ShootMode.IsPressed()) ExitAiming(idleState);
 
         body.currentDirection = Vector3.RotateTowards(
             body.currentDirection, pointerStartH.forward, 
             playerRotationSpeed * Mathf.PI * Time.fixedTime, 0);
 
-        pointerTarget.position = Physics.Raycast(pointerStartV.position, pointerStartV.forward, out RaycastHit hit, pointerDistance, pointerLayerMask)
-            ? hit.point
-            : pointerStartV.position + pointerStartV.forward * pointerDistance;
+        if (Physics.Raycast(pointerStartV.position, pointerStartV.forward, out RaycastHit hit, pointerDistance, pointerLayerMask))
+        {
+            pointerTarget.position = hit.point;
+            currentTargetDistance = hit.distance;
+        }
+        else
+        {
+            pointerTarget.position = pointerStartV.position + pointerStartV.forward * pointerDistance;
+            currentTargetDistance = pointerDistance;
+        }
     }
 
-    public void NonAimingUpdate()
+    public void AimingPostUpdate()
+    {
+        animator.Update(0);
+
+        spine1.localEulerAngles -= Vector3.forward * pointerV;
+        //
+        ////Vector3 initialAimPosition = shootMuzzle.position + shootMuzzle.forward * (currentTargetDistance -(shootMuzzle.position - pointerStartH.position).magnitude);
+        //
+        //shootMuzzle.rotation.SetLookRotation(pointerTarget.position - shootMuzzle.position);
+        ////rightWrist.eulerAngles += shootMuzzle.localEulerAngles - baseShootMuzzleRotation.eulerAngles;
+        ////shootMuzzle.localRotation = baseShootMuzzleRotation;
+    }
+
+    public void NonAimingFixedUpdate()
     {
         pointerH = machine.freeLookCamera.State.FinalOrientation.eulerAngles.y;
         pointerTarget.localPosition = Vector3.MoveTowards(pointerTarget.localPosition, Vector3.forward * pointerDistance, .5f);
@@ -187,13 +220,7 @@ public class PlayerRanged : MonoBehaviour
         pointerV = Mathf.MoveTowardsAngle(pointerV, 0, 1);
     }
 
-    public void AimingPostUpdate()
-    {
-        spine1.eulerAngles -= Vector3.forward * pointerV;
 
-        rightWrist.LookAt(pointerTarget);
-        rightWrist.localEulerAngles += rightWristBaseRotationForward;
-    }
 
     public void EnterAiming()
     {
@@ -201,6 +228,7 @@ public class PlayerRanged : MonoBehaviour
         aimingState.state.TransitionTo();
         shootingVCam.Priority = 11;
         shootingVCam.gameObject.SetActive(true);
+        active = true;
     }
     public void ExitAiming(State nextState)
     {
@@ -208,19 +236,23 @@ public class PlayerRanged : MonoBehaviour
         animator.CrossFade("GrabAim.Null", 0.1f);
         nextState.TransitionTo();
         shootingVCam.Priority = 9;
-        shootingVCam.gameObject.SetActive(false); 
+        shootingVCam.gameObject.SetActive(false);
+        active = false;
         //aimingState.ResetPointerStartRotation();
         //pointerTarget.position = pointerStartV.position + pointerStartV.forward * pointerDistance;
     }
 
-    public void Shoot()
+    public void Shoot(InputAction.CallbackContext ctx)
     {
+        AimingPostUpdate();
+
+        if (!active) return;
         if (grabber.currentGrabbed != null)
         {
 
         }
         else if (eggAmount >= 1)
-            eggPool.Pump().PlaceAtMuzzle(shootMuzzle);
+            eggPool.Pump();
 
     }
 }

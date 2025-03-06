@@ -10,10 +10,11 @@ public class AttackProjectile : AttackSourceSingle
 
     public override void Contact(GameObject target)
     {
-        if (!enabled || !target.TryGetComponent(out Health targetHealth)) return;
+        if (!enabled) return;
 
-        if (targetHealth.Damage(GetAttack()))
+        if(target.TryGetComponent(out Health targetHealth))
         {
+            targetHealth.Damage(GetAttack());
             if (disableOnHit) Disable();
         }
         else
