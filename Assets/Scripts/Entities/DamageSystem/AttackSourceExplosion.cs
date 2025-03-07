@@ -19,19 +19,22 @@ public class AttackSourceExplosion : AttackSourceBase
     public override void Contact(GameObject target)
     {
 
-        if (enabled)
+        if (!enabled)
         {
-            Collider[] collisions = Physics.OverlapSphere(transform.position, explosionRadius);
-            foreach (Collider collider in collisions)
-            {
-                currentCollider = collider;
-                if (target.TryGetComponent(out Health health))
-                {
-                    health.Damage(GetAttack());
-                }
-
-            }
+            return;
         }
+        //Get all colliders within the defined range
+        Collider[] collisions = Physics.OverlapSphere(transform.position, explosionRadius);
+        foreach (Collider collider in collisions)
+        {
+            currentCollider = collider; //Store the current collider for use in the GetAttack function
+            if (target.TryGetComponent(out Health health))
+            {
+                health.Damage(GetAttack());
+            }
+
+        }
+    
     }
 
     public override Attack GetAttack()
@@ -39,7 +42,7 @@ public class AttackSourceExplosion : AttackSourceBase
         //When the bomb is triggered
         Attack result = attack;
         Vector3 contact = currentCollider.ClosestPoint(transform.position);
-        result.velocity = CalculateKnockback(contact);
+        result.velocity = CalculateKnockback(contact); //Simple function to find the opposite direction and apply knockback based on the closest contact point
         return result;
     }
 
