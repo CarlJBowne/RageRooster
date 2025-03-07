@@ -133,7 +133,11 @@ public class PlayerMovementBody : PlayerStateBehavior
                     initVelocity = initVelocity.ProjectAndScale(groundHit.normal);
                 }
             }
-            else GroundStateChange(false);
+            else
+            {
+                GroundStateChange(false);
+                Machine.SendSignal("WalkOff", overrideReady: true);
+            }
         }
 
         Move(initVelocity * Time.fixedDeltaTime, initNormal);
