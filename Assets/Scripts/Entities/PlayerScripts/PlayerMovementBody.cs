@@ -34,6 +34,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     //1 = PreMaxHeight
     //2 = SlowingDown
     //3 = Falling
+
     [HideInInspector] public Vector3 _currentDirection = Vector3.forward; 
 
     Transform anchorTransform;
@@ -336,3 +337,11 @@ public class PlayerMovementBody : PlayerStateBehavior
     }
 }
 
+public enum JumpPhase
+{
+    Inactive = -1,
+    PreMinHeight = 0,
+    PreMaxHeight = 1,
+    SlowingDown = 2,
+    Falling = 3
+}

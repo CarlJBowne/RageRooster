@@ -63,7 +63,7 @@ public class PlayerAiming : PlayerMovementEffector
     public void ResetPointerStartRotation()
     {
         pointerVRot = 0;
-        playerRanged.pointerStartV.localEulerAngles = new Vector3(0, 0, 0);
+        playerRanged.pointer.startV.localEulerAngles = new Vector3(0, 0, 0);
     }
 
 }

@@ -39,7 +39,11 @@ public class Grabbable : MonoBehaviour
         GrabStateEvent?.Invoke(true);
 
 
-        if(rb) rb.isKinematic = true;
+        if (rb)
+        {
+            rb.isKinematic = true;
+            rb.velocity = Vector3.zero;
+        }
         collider.enabled = false;
 
         if (wiggleFreeTime > 0) StartCoroutine(WiggleEnum(wiggleFreeTime));
@@ -49,16 +53,21 @@ public class Grabbable : MonoBehaviour
     private IEnumerator WiggleEnum(float wiggleTime)
     {
         yield return new WaitForSeconds(wiggleTime);
-        Release();
+        Release(Vector3.zero);
     }
 
-    public void Release()
+    public void Release(Vector3 velocity)
     {
         if (!grabbed) return;
+        Physics.IgnoreCollision(collider, grabber.collider, true);
         grabber = null;
         GrabStateEvent?.Invoke(false);
 
-        if(rb) rb.isKinematic = false;
+        if (rb)
+        {
+            rb.isKinematic = false;
+            rb.velocity = velocity;
+        }
         collider.enabled = true;
     }
 

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using EditorAttributes;
 using SLS.StateMachineV3;
 using System;
@@ -14,49 +15,59 @@ public class PlayerRanged : MonoBehaviour
     public State groundState;
     public State airBorneState;
     public PlayerAirborneMovement jumpState;
-    public Transform muzzle;
+    public State throwState;
+    public State airThrowState;
+    public State dropLaunchState;
+    //public Transform muzzle;
     public Upgrade dropLaunchUpgrade;
 
     #endregion
     #region Data
     private bool active;
-    Vector3 upcomingLaunchVelocity;
+    Vector3 launchVelocity;
     PlayerStateMachine machine;
     PlayerMovementBody body;
     Animator animator;
     [HideProperty] public PlayerAiming aimingState;
     public Grabbable currentGrabbed => grabber.currentGrabbed;
 
-    private Quaternion baseShootMuzzleRotation;
     private UIHUDSystem UI;
     #endregion
 
     private void Awake()
     {
-        baseShootMuzzleRotation = shootMuzzle.localRotation;
-        grabber.ranged = this;
         machine = GetComponent<PlayerStateMachine>();
         body = GetComponent<PlayerMovementBody>();
         animator = GetComponent<Animator>();
         UIHUDSystem.TryGet(out UI);
+        if (aimingState == null) aimingState = FindObjectOfType<PlayerAiming>(true);
+
+        grabber.ranged = this;
         grabber.animator = animator;
-        if(aimingState == null) aimingState = FindObjectOfType<PlayerAiming>(true);
-        eggPool.Initialize();
+        TryGetComponent(out grabber.collider); 
+        
+        pointer.target.position = pointer.startV.position + pointer.startV.forward * pointer.distance;
         Input.Shoot.performed += Shoot;
+
+        eggPool.Initialize();
+        eggCapacity = GlobalState.maxAmmo;
+        eggAmount = eggCapacity;
+        UI.UpdateAmmo(eggAmount);
     }
 
     private void FixedUpdate()
     {
         if (eggAmount < eggCapacity) eggReplenishRate.Tick(() => ChangeAmmoAmount(1));
 
-        pointerStartH.position = body.position + Vector3.up;
+        pointer.startH.position = body.position + Vector3.up;
 
         if (aimingState.state) AimingFixedUpdate();
         else NonAimingFixedUpdate();
     }
     private void LateUpdate()
     {
-        if (aimingState.state) AimingPostUpdate(); 
+        if (aimingState.state) AimingPostUpdate();
+        grabber.LateUpdate();
     }
 
     #region Grabbing Throwing
@@ -90,7 +101,19 @@ public class PlayerRanged : MonoBehaviour
 
 
         protected override void OnGrab() => twoHanded = currentGrabbed.twoHanded;
-        protected override void OnRelease() => currentGrabbed.rb.velocity = ranged.upcomingLaunchVelocity;
+        protected override void OnRelease() => currentGrabbed.rb.velocity = ranged.launchVelocity;
+
+        public override void BeginGrab(Grabbable grabbed)
+        {
+            base.BeginGrab(grabbed);
+            animator.CrossFade(grabbed.twoHanded ? "GrabAim.Hold2" : "GrabAim.Hold1", 0.2f);
+        }
+
+        public override void Release(Vector3 velocity)
+        {
+            base.Release(velocity);
+            animator.CrossFade("GrabAim.Null", 0.2f);
+        }
 
         public Grabbable CheckForGrabbable()
         {
@@ -109,46 +132,53 @@ public class PlayerRanged : MonoBehaviour
 
     public void TryGrabThrow(PlayerGrabAction state, bool held)
     {
-        if (grabber.currentGrabbed != null) Throw();
+        if (machine.signalReady && grabber.currentGrabbed != null)
+        {
+            body.transform.DOBlendableRotateBy(new(0, pointer.startH.eulerAngles.y - body.transform.eulerAngles.y, 0), 0.1f);
+            BeginThrow(!body.grounded);
+        }
         else state.AttemptGrab(grabber.CheckForGrabbable(), held);
     }
 
+    public void BeginThrow(bool air) => (!air ? throwState : !dropLaunchUpgrade ? airThrowState : dropLaunchState).TransitionTo();
+
     public void GrabPoint() => machine.SendSignal("FinishGrab", overrideReady: true);
 
-    public void Throw()
+    public void ThrowPoint()
     {
-        if (body.grounded || !dropLaunchUpgrade)
-        {
-            currentGrabbed.transform.position = muzzle.position;
-            upcomingLaunchVelocity = muzzle.forward * grabber.launchVelocity;
-        }
-        else
-        {
-            currentGrabbed.transform.position = transform.position + Vector3.down; //REMOVE WHEN PROPER THROWING ANIMATION IS IMPLEMENTED
 
-            upcomingLaunchVelocity = Vector3.down * grabber.launchVelocity;
-            body.VelocitySet(y: grabber.launchJumpMult * grabber.launchVelocity);
-            jumpState.Enter();
+        currentGrabbed.transform.position = muzzle.position;
+        launchVelocity = muzzle.forward * grabber.launchVelocity;
+
+        if (!body.grounded && dropLaunchUpgrade)
+        {
+            //body.VelocitySet(y: grabber.launchJumpMult * grabber.launchVelocity);
+            jumpState.BeginJump();
         }
         if (currentGrabbed.TryGetComponent(out EnemyHealth health))
         {
-            health.Ragdoll(new(0, upcomingLaunchVelocity, "Throwing"));
+            health.Ragdoll(new(0, launchVelocity, "Throwing"));
             health.projectile = true;
-        }
-        grabber.Release();
+        } 
+        grabber.Release(launchVelocity);
     }
-    #endregion Grabbing Throwing
 
-    public Transform pointerStartH;
-    public Transform pointerStartV;
-    public Transform pointerTarget;
+
+    #endregion Grabbing Throwing    
+
+    public Pointer pointer;
+    [Serializable] public class Pointer
+    {
+        public Transform startH;
+        public Transform startV;
+        public Transform target;
+        public float distance;
+        public Transform shootMuzzlePos;
+        public LayerMask layerMask;
+    }
+
+    public Transform muzzle;
     public Transform spine1;
-    public Transform rightUpperArm;
-    public Transform rightWrist;
-    public Transform shootMuzzle;
-    public Transform shootMuzzleFake;
-    public float pointerDistance;
-    public LayerMask pointerLayerMask;
     public Cinemachine.CinemachineVirtualCamera shootingVCam;
     public State idleState;
     public ObjectPool eggPool;
@@ -162,13 +192,13 @@ public class PlayerRanged : MonoBehaviour
 
     public float pointerH 
     { 
-        get => pointerStartH.localEulerAngles.y; 
-        set => pointerStartH.localEulerAngles = new(0, value, 0); 
+        get => pointer.startH.localEulerAngles.y; 
+        set => pointer.startH.localEulerAngles = new(0, value, 0); 
     }
     public float pointerV 
     { 
-        get => pointerStartV.localEulerAngles.x; 
-        set => pointerStartV.localEulerAngles = new(value, 0, 0); 
+        get => pointer.startV.localEulerAngles.x; 
+        set => pointer.startV.localEulerAngles = new(value, 0, 0); 
     }
 
     public bool hasEggsToShoot => eggAmount > 0;
@@ -179,18 +209,18 @@ public class PlayerRanged : MonoBehaviour
         if (machine.signalReady && !Input.ShootMode.IsPressed()) ExitAiming(idleState);
 
         body.currentDirection = Vector3.RotateTowards(
-            body.currentDirection, pointerStartH.forward, 
+            body.currentDirection, pointer.startH.forward, 
             playerRotationSpeed * Mathf.PI * Time.fixedTime, 0);
 
-        if (Physics.Raycast(pointerStartV.position, pointerStartV.forward, out RaycastHit hit, pointerDistance, pointerLayerMask))
+        if (Physics.Raycast(pointer.startV.position, pointer.startV.forward, out RaycastHit hit, pointer.distance, pointer.layerMask))
         {
-            pointerTarget.position = hit.point;
+            pointer.target.position = hit.point;
             currentTargetDistance = hit.distance;
         }
         else
         {
-            pointerTarget.position = pointerStartV.position + pointerStartV.forward * pointerDistance;
-            currentTargetDistance = pointerDistance;
+            pointer.target.position = pointer.startV.position + pointer.startV.forward * pointer.distance;
+            currentTargetDistance = pointer.distance;
         }
     }
 
@@ -199,24 +229,29 @@ public class PlayerRanged : MonoBehaviour
         animator.Update(0);
 
         spine1.localEulerAngles -= Vector3.forward * pointerV;
-        //
-        ////Vector3 initialAimPosition = shootMuzzle.position + shootMuzzle.forward * (currentTargetDistance -(shootMuzzle.position - pointerStartH.position).magnitude);
-        //
-        //shootMuzzle.rotation.SetLookRotation(pointerTarget.position - shootMuzzle.position);
-        ////rightWrist.eulerAngles += shootMuzzle.localEulerAngles - baseShootMuzzleRotation.eulerAngles;
-        ////shootMuzzle.localRotation = baseShootMuzzleRotation;
-        shootMuzzle.position = shootMuzzleFake.position;
-        Quaternion Q = shootMuzzle.rotation;
-        Q.SetLookRotation(pointerTarget.position - shootMuzzle.position);
-        shootMuzzle.rotation = Q;
+
+        muzzle.position = pointer.shootMuzzlePos.position;
+        Quaternion Q = muzzle.rotation;
+        Q.SetLookRotation(pointer.target.position - muzzle.position);
+        muzzle.rotation = Q;
     }
 
     public void NonAimingFixedUpdate()
     {
         pointerH = machine.freeLookCamera.State.FinalOrientation.eulerAngles.y;
-        pointerTarget.localPosition = Vector3.MoveTowards(pointerTarget.localPosition, Vector3.forward * pointerDistance, .5f);
+        pointer.target.position = Vector3.MoveTowards(pointer.target.position, pointer.startV.position + pointer.startV.forward * pointer.distance, .5f);
         aimingState.pointerVRot = Mathf.MoveTowardsAngle(aimingState.pointerVRot, 0, 1);
         pointerV = Mathf.MoveTowardsAngle(pointerV, 0, 1);
+        if(!body.grounded && dropLaunchUpgrade)
+        {
+            muzzle.position = pointer.startH.position - pointer.startH.up;
+            muzzle.eulerAngles = Vector3.right * 90;
+        }
+        else
+        {
+            muzzle.position = pointer.startH.position + pointer.startH.forward;
+            muzzle.rotation = pointer.startH.rotation;
+        }
     }
 
 
@@ -250,7 +285,7 @@ public class PlayerRanged : MonoBehaviour
         if (!active) return;
         if (grabber.currentGrabbed != null)
         {
-
+            AimThrow();
         }
         else if (eggAmount >= 1)
         {
@@ -259,6 +294,8 @@ public class PlayerRanged : MonoBehaviour
         }
 
     }
+
+    public void AimThrow() => animator.Play("GrabAim.Throw");
 
     void ChangeAmmoAmount(int offset)
     {
