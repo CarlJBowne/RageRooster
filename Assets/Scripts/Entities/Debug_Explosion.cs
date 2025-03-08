@@ -14,10 +14,6 @@ public class Debug_Explosion : MonoBehaviour
     {
         timer.Tick(RemoveExplosion);
     }
-    public void OnEnterTrigger()
-    {
-        Debug.Log("Boom!");
-    }
 
     public void RemoveExplosion()
     {

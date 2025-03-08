@@ -23,7 +23,14 @@ public class AttackSourceExplosion : AttackSourceBase
         {
             return;
         }
-        //Get all colliders within the defined range
+
+        currentCollider = target.GetComponent<Collider>();
+        if (target.TryGetComponent(out Health health))
+        {
+            health.Damage(GetAttack());
+        }
+
+        /*//Get all colliders within the defined range
         Collider[] collisions = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (Collider collider in collisions)
         {
@@ -31,9 +38,10 @@ public class AttackSourceExplosion : AttackSourceBase
             if (target.TryGetComponent(out Health health))
             {
                 health.Damage(GetAttack());
+                Debug.Log(collider.name);
             }
 
-        }
+        }*/
     
     }
 

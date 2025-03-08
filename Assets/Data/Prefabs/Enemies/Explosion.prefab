@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 3603821501232557606}
   - component: {fileID: 1713318019536060330}
   - component: {fileID: 7878784433530344352}
-  - component: {fileID: 9115011193037710248}
-  - component: {fileID: 675888384417426043}
+  - component: {fileID: 2032060295242502234}
+  - component: {fileID: 9006788347581250000}
+  - component: {fileID: 6013012112359380672}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: Untagged
@@ -85,7 +86,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &9115011193037710248
+--- !u!135 &2032060295242502234
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,7 +107,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 9
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &675888384417426043
+--- !u!114 &9006788347581250000
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -119,6 +120,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer:
-    length: 1
+    length: 0.0001
     current: 0
     running: 0
+--- !u!114 &6013012112359380672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6457618748278707287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b7e2277f829354e9701372ac1078e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack:
+    amount: 1
+    velocity: {x: 0, y: 0, z: 0}
+    tags:
+    - name: Wham
+  sourceEntity: {fileID: 0}
+  explosionRadius: 9
+  explosionForce: 5
+  explosionOrigin: {fileID: 3603821501232557606}
