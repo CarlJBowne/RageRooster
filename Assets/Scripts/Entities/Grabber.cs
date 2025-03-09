@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using EditorAttributes;
+using UnityEngine;
 
 [System.Serializable]
 public class Grabber
@@ -6,7 +7,9 @@ public class Grabber
     public Grabbable currentGrabbed;
     public UltEvents.UltEvent<bool> GrabStateEvent;
 
-    public bool AttemptGrab(GameObject target, out Grabbable result, bool doGrab = true)
+    [HideInEditMode, HideInPlayMode] public Collider collider;
+
+    public virtual bool AttemptGrab(GameObject target, out Grabbable result, bool doGrab = true)
     {
         if (Grabbable.Grab(target, out  result))
         {
@@ -16,7 +19,7 @@ public class Grabber
         else return false;
     }
 
-    public void BeginGrab(Grabbable target)
+    public virtual void BeginGrab(Grabbable target)
     {
         currentGrabbed = target;
         currentGrabbed.Grab(this);
@@ -24,9 +27,9 @@ public class Grabber
         GrabStateEvent?.Invoke(true);
     }
 
-    public void Release()
+    public virtual void Release(Vector3 velocity)
     {
-        currentGrabbed.Release();
+        currentGrabbed.Throw(velocity);
         this.OnRelease();
         currentGrabbed = null;
         GrabStateEvent?.Invoke(false);
