@@ -5,30 +5,62 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class EnemyHealth : Health
 {
+    #region Config
+
     public float stunTime;
     public GameObject poofPrefab;
     public Behaviour[] disableComponents;
     public EnemyLootSpawner enemyLootSpawner;
 
+    [ToggleGroup("Ragdoll", nameof(minRagdollTime), nameof(maxRagdollTime), nameof(minRagdollVelovity))]
+    public bool ragDoll;
+
+    [HideInInspector] public float minRagdollTime;
+    [HideInInspector] public float maxRagdollTime;
+    [HideInInspector] public float minRagdollVelovity;
+
+    [ToggleGroup("SingleRespawn", nameof(respawnTime))]
+    public bool respawn;
+    [HideInInspector] public float respawnTime;
+    
+
+    #endregion Config
+    #region Data
+
+    [HideInEditMode, DisableInPlayMode] public EntityState currentState;
     private Grabbable grabbable;
-    private AttackSourceSingle thrownAttackSource;
+    private Rigidbody rb;
+    private CoroutinePlus stunEnum;
     private float stunTimeLeft = 0;
+    private float ragDollTimer;
+    private Vector3 startPosition;
+
+
+    #endregion Config
 
     protected override void Awake() 
     { 
         base.Awake();
         startPosition = transform.position;
-        TryGetComponent(out grabbable);
-        if (TryGetComponent(out thrownAttackSource)) thrownAttackSource.enabled = false;
-        grabbable.GrabStateEvent.AddListener(OnGrabState);
+        if (TryGetComponent(out grabbable)) grabbable.GrabStateEvent += SetEntityState;
         enemyLootSpawner = FindObjectOfType<EnemyLootSpawner>();
     }
 
+    private void Update()
+    {
+        if (currentState == EntityState.RagDoll)
+        {
+            ragDollTimer += Time.deltaTime;
+            if (ragDollTimer > minRagdollTime && (rb.velocity.magnitude < minRagdollVelovity || ragDollTimer > maxRagdollTime))
+                Destroy();
+        }
+    }
 
-    #region Damage
+    #region DamageOverrides
 
     protected override bool OverrideDamage(Attack attack) => attack.tags.Contains(Attack.Tag.FromEnemy) && !attack.tags.Contains(Attack.Tag.FriendlyFire);
 
@@ -36,8 +68,28 @@ public class EnemyHealth : Health
     {
         damageEvent?.Invoke(attack.amount);
 
-        if(stunTimeLeft == 0) stunEnum = StartCoroutine(StunEnum());
+        if (stunTimeLeft == 0) stunEnum = new(StunEnum(), this);
         stunTimeLeft += stunTime * (attack.HasTag(Attack.Tag.Wham) ? 2 : 1);
+
+        IEnumerator StunEnum()
+        {
+            SetCompsActive(false);
+
+            yield return null;
+            while (stunTimeLeft > 0)
+            {
+                stunTimeLeft -= Time.deltaTime;
+                yield return null;
+            }
+            stunTimeLeft = 0;
+
+            if (health <= 0)
+            {
+                if (ragDoll) SetEntityState(EntityState.RagDoll);
+                else Destroy();
+            }
+            else SetCompsActive(true);
+        }
     }
 
     protected override void OnDeplete(Attack attack)
@@ -46,27 +98,17 @@ public class EnemyHealth : Health
         if (attack.HasTag(Attack.Tag.Wham))
         {
             StopCoroutine(stunEnum);
-            if (ragDoll) Ragdoll(attack);
+            if (ragDoll)
+            {
+                SetEntityState(EntityState.RagDoll);
+                rb.velocity = attack.velocity;
+            }
             else Destroy();
         }
     }
 
-    private Coroutine stunEnum;
-    private IEnumerator StunEnum()
-    {
-        SetCompsActive(false);
+    #endregion DamageOverrides
 
-        yield return null;
-        while (stunTimeLeft > 0)
-        {
-            stunTimeLeft -= Time.deltaTime;
-            yield return null;
-        }
-        stunTimeLeft = 0;
-
-        if (health <= 0 && !hasRagdolled) Destroy();
-        else SetCompsActive(true);
-    }
 
     public void Destroy()
     {
@@ -81,41 +123,36 @@ public class EnemyHealth : Health
         else Destroy(gameObject);
     }
 
-    #endregion Damage
-
-    #region Ragdoll
-
-    [ToggleGroup("Ragdoll", nameof(minRagdollTime), nameof(maxRagdollTime), nameof(minRagdollVelovity))]
-    public bool ragDoll;
-
-    [HideInInspector] public float minRagdollTime;
-    [HideInInspector] public float maxRagdollTime;
-    [HideInInspector] public float minRagdollVelovity;
-
-    [HideInInspector] public bool projectile;
-    [HideInInspector] public bool hasRagdolled;
-    private bool hasHitSomething;
-    private Rigidbody rb;
-    private float ragDollTimer;
-
-    public void Ragdoll(Attack attack)
+    private void SetEntityState(EntityState newState)
     {
-        SetRagDoll(true);
-        rb.velocity = attack.velocity;
-    }
+        if (currentState == newState) return;
+        currentState = newState;
+        if (grabbable) grabbable.currentState = newState;
+        switch (newState)
+        {
+            case EntityState.Default:
+                ragDollTimer = 0;
+                rb = this.GetOrAddComponent<Rigidbody>();
+                rb.isKinematic = true;
+                rb.useGravity = false;
+                rb.gameObject.layer = Layers.Enemy;
+                SetCompsActive(true);
+                break;
+            case EntityState.Grabbed:
+                SetCompsActive(false);
+                break;
+            case EntityState.Thrown:
 
-    private void SetRagDoll(bool value)
-    {
-        if(value == hasRagdolled) return;
-        ragDollTimer = 0;
-        hasRagdolled = value;
-        if (hasRagdolled && thrownAttackSource) thrownAttackSource.enabled = true;
-        hasHitSomething = false;
-        rb = this.GetOrAddComponent<Rigidbody>();
-        rb.isKinematic = !value;
-        rb.useGravity = value;
-        rb.gameObject.layer = value ? Layers.NonSolid : Layers.Enemy;
-        SetCompsActive(!value);
+                break;
+            case EntityState.RagDoll:
+                ragDollTimer = 0;
+                rb = this.GetOrAddComponent<Rigidbody>();
+                rb.isKinematic = false;
+                rb.useGravity = true;
+                rb.gameObject.layer = Layers.NonSolid;
+                SetCompsActive(false);
+                break;
+        }
     }
 
     private void SetCompsActive(bool value)
@@ -125,61 +162,21 @@ public class EnemyHealth : Health
                 if (B != null) B.enabled = value;
     }
 
-    private void Update()
-    {
-        if (hasRagdolled)
-        {
-            ragDollTimer += Time.deltaTime;
-            if (!(projectile && !hasHitSomething))
-                if (ragDollTimer > minRagdollTime && (rb.velocity.magnitude < minRagdollVelovity || ragDollTimer > maxRagdollTime))
-                    Destroy();
-        }
-    }
-
-    #endregion Ragdoll
-
-
-    #region Thrown
-
-    public void Contact(GameObject target)
-    {
-        if(hasRagdolled) hasHitSomething = true;
-    }
-
-    private void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);
-    private void OnTriggerEnter(Collider other) => Contact(other.gameObject);
-
-    private void OnGrabState(bool value)
-    {
-        if (value)
-        {
-            health = 0;
-            SetCompsActive(false);
-        }
-        if (hasRagdolled && value) hasRagdolled = false;
-    }
-
-    #endregion Thrown
-
-    #region Respawn
-
-    [ToggleGroup("SingleRespawn", nameof(respawnTime))]
-    public bool respawn;
-    [HideInInspector] public float respawnTime;
-    private Vector3 startPosition;
-
     private void Respawn()
     {
         gameObject.SetActive(true);
         transform.position = startPosition;
         if (TryGetComponent(out StateMachine machine)) machine.TransitionState(machine[0]);
-        if (hasRagdolled)
-        {
-            SetRagDoll(false);
-            transform.rotation = Quaternion.identity;
-            health = maxHealth;
-        }
+        SetEntityState(EntityState.Default);
+        transform.rotation = Quaternion.identity;
+        health = maxHealth;
     }
 
-    #endregion Respawn
+}
+public enum EntityState
+{
+    Default,
+    Grabbed,
+    Thrown,
+    RagDoll
 }

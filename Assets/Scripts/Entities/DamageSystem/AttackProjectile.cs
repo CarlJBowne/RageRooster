@@ -7,6 +7,9 @@ public class AttackProjectile : AttackSourceSingle
     public bool disableOnHit;
     public bool disableOnlyWithHealth;
 
+    private void OnTriggerEnter(Collider other) => Contact(other.gameObject);
+    private void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);
+
 
     public override void Contact(GameObject target)
     {

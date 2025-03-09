@@ -155,11 +155,6 @@ public class PlayerRanged : MonoBehaviour
             //body.VelocitySet(y: grabber.launchJumpMult * grabber.launchVelocity);
             jumpState.BeginJump();
         }
-        if (currentGrabbed.TryGetComponent(out EnemyHealth health))
-        {
-            health.Ragdoll(new(0, launchVelocity, "Throwing"));
-            health.projectile = true;
-        } 
         grabber.Release(launchVelocity);
     }
 

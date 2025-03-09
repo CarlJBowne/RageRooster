@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackSourceExplosion : AttackSourceBase
+public class AttackSourceExplosion : AttackSourceSingle
 {
 
-    public Attack attack;
-    public MonoBehaviour sourceEntity;
+    //public Attack attack;
+    //public MonoBehaviour sourceEntity;
 
     [Header("Explosion Properties")]
     [SerializeField] private float explosionRadius;

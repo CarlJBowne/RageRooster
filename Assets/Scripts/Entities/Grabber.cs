@@ -29,7 +29,7 @@ public class Grabber
 
     public virtual void Release(Vector3 velocity)
     {
-        currentGrabbed.Release(velocity);
+        currentGrabbed.Throw(velocity);
         this.OnRelease();
         currentGrabbed = null;
         GrabStateEvent?.Invoke(false);

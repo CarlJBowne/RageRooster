@@ -1,8 +1,9 @@
+using EditorAttributes;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Grabbable : MonoBehaviour
+public class Grabbable : MonoBehaviour, IAttackSource
 {
     #region Config
 
@@ -10,7 +11,16 @@ public class Grabbable : MonoBehaviour
     public float weight;
     public float wiggleFreeTime;
     public int maxHealthToGrab;
-    public UnityEvent<bool> GrabStateEvent;
+    [HideInEditMode, HideInPlayMode] public UltEvents.UltEvent<EntityState> GrabStateEvent;
+
+    [FoldoutGroup("Entity State Change Events", nameof(defaultEvent),nameof(grabbedEvent),nameof(thrownEvent),nameof(bounceEvent))]
+    public Void _EntityStateEvents;
+    [HideInInspector] public UltEvents.UltEvent defaultEvent;
+    [HideInInspector] public UltEvents.UltEvent grabbedEvent;
+    [HideInInspector] public UltEvents.UltEvent thrownEvent;
+    [HideInInspector] public UltEvents.UltEvent bounceEvent;
+
+    public Attack thrownAttack = new(1, "Thrown");
 
     #endregion
     #region Data
@@ -21,6 +31,9 @@ public class Grabbable : MonoBehaviour
     public new Collider collider {  get; private set; }
     public Rigidbody rb { get; private set; }
     public EnemyHealth health { get; private set; }
+    public CoroutinePlus wiggleCoroutine;
+
+    [HideInEditMode, DisableInPlayMode] public EntityState currentState;
 
     #endregion
 
@@ -36,8 +49,7 @@ public class Grabbable : MonoBehaviour
     public Grabbable Grab(Grabber grabber)
     {
         this.grabber = grabber;
-        GrabStateEvent?.Invoke(true);
-
+        SetState(EntityState.Grabbed);
 
         if (rb)
         {
@@ -46,22 +58,22 @@ public class Grabbable : MonoBehaviour
         }
         collider.enabled = false;
 
-        if (wiggleFreeTime > 0) StartCoroutine(WiggleEnum(wiggleFreeTime));
+        if (wiggleFreeTime > 0) wiggleCoroutine = new(WiggleEnum(), this);
+        IEnumerator WiggleEnum()
+        {
+            yield return new WaitForSeconds(wiggleFreeTime);
+            Release();
+        }
 
         return this;
     }
-    private IEnumerator WiggleEnum(float wiggleTime)
-    {
-        yield return new WaitForSeconds(wiggleTime);
-        Release(Vector3.zero);
-    }
 
-    public void Release(Vector3 velocity)
+
+    public void Throw(Vector3 velocity)
     {
         if (!grabbed) return;
         Physics.IgnoreCollision(collider, grabber.collider, true);
-        grabber = null;
-        GrabStateEvent?.Invoke(false);
+        SetState(EntityState.Thrown);
 
         if (rb)
         {
@@ -70,7 +82,55 @@ public class Grabbable : MonoBehaviour
         }
         collider.enabled = true;
     }
+    public void Release()
+    {
+        if (!grabbed) return;
+        //Physics.IgnoreCollision(collider, grabber.collider, true);
+        grabber = null;
+        SetState(EntityState.Default);
 
-    public bool UnderThreshold() => !health || maxHealthToGrab < 15 || health.GetCurrentHealth() <= maxHealthToGrab;
+        if (rb)
+        {
+            rb.isKinematic = false;
+            rb.velocity = Vector3.zero;
+        }
+        collider.enabled = true;
+    }
 
+    public bool UnderThreshold() => !health || maxHealthToGrab < 0 || health.GetCurrentHealth() <= maxHealthToGrab;
+
+    private void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);
+    private void OnTriggerEnter(Collider other) => Contact(other.gameObject);
+
+    public virtual void Contact(GameObject target)
+    {
+        if(currentState == EntityState.Thrown)
+        {
+            SetState(EntityState.RagDoll);
+            if (thrownAttack.amount > 0 && target.TryGetComponent(out Health health)) health.Damage(GetAttack());
+            Physics.IgnoreCollision(collider, grabber.collider, false);
+            grabber = null;
+        }
+    }
+
+    public void SetState(EntityState newState)
+    {
+        currentState = newState;
+        GrabStateEvent?.Invoke(currentState);
+
+        (newState switch
+        {
+            EntityState.Grabbed => grabbedEvent,
+            EntityState.Thrown => thrownEvent,
+            EntityState.RagDoll => bounceEvent,
+            _ => defaultEvent,
+        })?.Invoke();
+    }
+
+    public Attack GetAttack()
+    {
+        Attack result = thrownAttack;
+        if(rb) result.velocity = rb.velocity;
+        return result;
+    }
 }

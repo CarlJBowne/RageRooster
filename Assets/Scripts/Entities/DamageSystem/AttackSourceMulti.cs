@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class AttackSourceMulti : AttackSourceBase
+public class AttackSourceMulti : MonoBehaviour, IAttackSource
 {
     public int currentAttackID;
     public MonoBehaviour sourceEntity;
@@ -12,7 +12,10 @@ public class AttackSourceMulti : AttackSourceBase
     public Attack.Tag[] additionalTags;
     public new bool enabled = true;
 
-    public override Attack GetAttack()
+    private void OnTriggerEnter(Collider other) => Contact(other.gameObject);
+    private void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);
+
+    public Attack GetAttack()
     {
         Attack result = attacks[currentAttackID];
         result.velocity = transform.TransformDirection(result.velocity);
@@ -20,7 +23,7 @@ public class AttackSourceMulti : AttackSourceBase
         return result;
     }
 
-    public override void Contact(GameObject target)
+    public void Contact(GameObject target)
     {
         if(enabled && target.TryGetComponent(out Health health)) health.Damage(GetAttack());
     }

@@ -18,8 +18,8 @@ public class Health : MonoBehaviour
 {
 	//Config
 	[SerializeField] protected int maxHealth;
-	[SerializeField] protected UnityEvent<int> damageEvent = new();
-	[SerializeField] protected UnityEvent depleteEvent = new();
+	[SerializeField] protected UltEvents.UltEvent<int> damageEvent = new();
+	[SerializeField] protected UltEvents.UltEvent depleteEvent = new();
 	[SerializeField] protected Attack.Tag[] immuneTags;
 
 	//Data
@@ -37,6 +37,7 @@ public class Health : MonoBehaviour
     public bool Damage(Attack attack)
     {
         if (!damagable || attack.amount < 1 || immuneTags.IncludesAny(attack.tags) || OverrideDamage(attack)) return false;
+        OverrideDamageValue(ref attack);
 
         health -= attack.amount;
 
@@ -52,6 +53,7 @@ public class Health : MonoBehaviour
     protected virtual void OnDeplete(Attack attack) => depleteEvent?.Invoke();
 
 	protected virtual bool OverrideDamage(Attack attack) { return false; }
+	protected virtual void OverrideDamageValue(ref Attack attack) { }
 
     public bool Heal(int amount)
 	{
