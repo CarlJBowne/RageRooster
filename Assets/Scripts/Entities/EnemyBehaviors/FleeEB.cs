@@ -3,6 +3,8 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 
+// Based on ChaseEB. Enemy will back up instead of move forward.
+
 public class FleeEB : StateBehavior
 {
     [SerializeField] float speed;
@@ -28,6 +30,7 @@ public class FleeEB : StateBehavior
         UpdateDestination();
     }
 
+    // Here, the enemy's phase transition happens when distance is *greater than* or equal to reach distance
     public override void OnFixedUpdate()
     {
         if (playerTracker.Distance(false) >= reachDistance)
@@ -41,6 +44,7 @@ public class FleeEB : StateBehavior
         destUpdateTimer += Time.fixedDeltaTime;
     }
 
+    // Here, a flee point is calculated by adding the difference between the player's position and the enemy's position to the enemy's position.
     void UpdateDestination()
     {
         Vector3 playerPosition = playerTracker.target.transform.position;
