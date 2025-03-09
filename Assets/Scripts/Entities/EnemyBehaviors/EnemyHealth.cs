@@ -114,12 +114,12 @@ public class EnemyHealth : Health
     {
         if (poofPrefab) Instantiate(poofPrefab);
         if (enemyLootSpawner != null) enemyLootSpawner.SpawnLoot(transform.position);
-        if(respawn)
+        if (respawn)
         {
             gameObject.SetActive(false);
             Invoke(nameof(Respawn), respawnTime);
         }
-        if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Disable();
+        else if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Disable();
         else Destroy(gameObject);
     }
 

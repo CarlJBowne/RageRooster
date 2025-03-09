@@ -56,6 +56,7 @@ public class PlayerStateMachine : StateMachine
         Vector3 camDelta = newPosition - transform.position;
         body.position = newPosition;
         if (yRot != null) body.rotation = new(0, yRot.Value, 0);
+        ResetState();
         freeLookCamera.PreviousStateIsValid = false;
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);
         body.velocity = Vector3.zero;
@@ -65,12 +66,18 @@ public class PlayerStateMachine : StateMachine
         Vector3 camDelta = savePoint.SpawnPoint.position - transform.position;
         body.position = savePoint.SpawnPoint.position;
         body.rotation = new(0, savePoint.SpawnPoint.eulerAngles.y, 0);
+        ResetState();
         freeLookCamera.PreviousStateIsValid = false;
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);
         body.velocity = Vector3.zero;
         body.InstantSnapToFloor();
     }
 
+    public void ResetState()
+    {
+        children[0].TransitionTo();
+        signalReady = true;
+    }
 
     private State prevState;
     public void PauseState()
