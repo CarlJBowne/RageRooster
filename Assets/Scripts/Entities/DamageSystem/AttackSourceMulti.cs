@@ -25,7 +25,7 @@ public class AttackSourceMulti : MonoBehaviour, IAttackSource
 
     public void Contact(GameObject target)
     {
-        if(enabled && target.TryGetComponent(out Health health)) health.Damage(GetAttack());
+        if(enabled && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(GetAttack());
     }
 
 }

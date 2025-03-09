@@ -15,9 +15,9 @@ public class AttackProjectile : AttackSourceSingle
     {
         if (!enabled) return;
 
-        if(target.TryGetComponent(out Health targetHealth))
+        if(target.TryGetComponent(out IDamagable targetDamagable))
         {
-            targetHealth.Damage(GetAttack());
+            targetDamagable.Damage(GetAttack());
             if (disableOnHit) Disable();
         }
         else

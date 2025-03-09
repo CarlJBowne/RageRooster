@@ -107,7 +107,7 @@ public class Grabbable : MonoBehaviour, IAttackSource
         if(currentState == EntityState.Thrown)
         {
             SetState(EntityState.RagDoll);
-            if (thrownAttack.amount > 0 && target.TryGetComponent(out Health health)) health.Damage(GetAttack());
+            if (thrownAttack.amount > 0 && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(GetAttack());
             Physics.IgnoreCollision(collider, grabber.collider, false);
             grabber = null;
         }

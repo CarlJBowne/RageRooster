@@ -23,7 +23,7 @@ public class AttackSourceSingle : MonoBehaviour, IAttackSource
 
     public virtual void Contact(GameObject target)
     {
-        if (enabled && target.TryGetComponent(out Health health)) health.Damage(GetAttack());
+        if (enabled && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(GetAttack());
     }
 
 }

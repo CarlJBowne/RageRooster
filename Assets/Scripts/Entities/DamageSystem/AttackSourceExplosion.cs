@@ -25,10 +25,7 @@ public class AttackSourceExplosion : AttackSourceSingle
         }
 
         currentCollider = target.GetComponent<Collider>();
-        if (target.TryGetComponent(out Health health))
-        {
-            health.Damage(GetAttack());
-        }
+        if (target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(GetAttack());
 
         /*//Get all colliders within the defined range
         Collider[] collisions = Physics.OverlapSphere(transform.position, explosionRadius);
@@ -42,7 +39,7 @@ public class AttackSourceExplosion : AttackSourceSingle
             }
 
         }*/
-    
+
     }
 
     public override Attack GetAttack()

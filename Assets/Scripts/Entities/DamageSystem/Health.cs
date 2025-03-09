@@ -14,7 +14,7 @@ using UnityEditor;
 /// A Component managing the Health of an entity, whether that be Player, Enemy, or Destructible Object.
 /// </summary>
 
-public class Health : MonoBehaviour
+public class Health : MonoBehaviour, IDamagable
 {
 	//Config
 	[SerializeField] protected int maxHealth;
@@ -36,7 +36,7 @@ public class Health : MonoBehaviour
 
     public bool Damage(Attack attack)
     {
-        if (!damagable || attack.amount < 1 || immuneTags.IncludesAny(attack.tags) || OverrideDamage(attack)) return false;
+        if (!damagable || attack.amount < 1 || immuneTags.IncludesAny(attack.tags) || OverrideDamageable(attack)) return false;
         OverrideDamageValue(ref attack);
 
         health -= attack.amount;
@@ -52,7 +52,7 @@ public class Health : MonoBehaviour
     protected virtual void OnDamage(Attack attack) => damageEvent?.Invoke(attack.amount);
     protected virtual void OnDeplete(Attack attack) => depleteEvent?.Invoke();
 
-	protected virtual bool OverrideDamage(Attack attack) { return false; }
+	protected virtual bool OverrideDamageable(Attack attack) { return false; }
 	protected virtual void OverrideDamageValue(ref Attack attack) { }
 
     public bool Heal(int amount)
@@ -66,7 +66,7 @@ public class Health : MonoBehaviour
         return true;
 	}
 
-
+    [System.Obsolete]
     public bool Damage(Attack_Old attack)
     {
         if (!damagable || attack.amount < 1) return false;
@@ -81,7 +81,7 @@ public class Health : MonoBehaviour
         return true;
     }
 
-    protected virtual void OnDamage(Attack_Old attack) => damageEvent?.Invoke(attack.amount);
-	protected virtual void OnDeplete(Attack_Old attack) => depleteEvent?.Invoke();
+    [System.Obsolete] protected virtual void OnDamage(Attack_Old attack) => damageEvent?.Invoke(attack.amount);
+    [System.Obsolete] protected virtual void OnDeplete(Attack_Old attack) => depleteEvent?.Invoke();
 
 }
