@@ -71,4 +71,21 @@ public class PlayerHealth : Health
         UpdateHealth();
     }
 
+    protected override void OverrideDamageValue(ref Attack attack)
+    {
+        if (attack.amount < 1) return;
+        attack.amount = 1;
+        for (int i = 0; i < attack.tags.Length; i++)
+        {
+            string iTag = attack.tags[i];
+            if (iTag[0] == 'P' && 
+                iTag.StartsWith("PlayerPoints=") && 
+                int.TryParse(iTag[13..], out int result))
+            {
+                attack.amount = result;
+                break;
+            }
+        }
+    }
+
 }
