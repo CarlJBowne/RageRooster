@@ -124,23 +124,14 @@ public class PlayerMovementBody : PlayerStateBehavior
         } // NonMovement
 
 
-        if (animateVelocity)
-        {
-            velocity = transform.TransformDirection(animatedVelocity);
-        }
+        if (animateVelocity) velocity = transform.TransformDirection(animatedVelocity);
         else if (animateMovement)
         {
             Vector3 controlVector = playerController.camAdjustedMovement;
-            float controlMag = controlVector.magnitude;
             if (animatedMovementTurn > 0) currentDirection = Vector3.RotateTowards(currentDirection, controlVector.normalized, animatedMovementTurn * Mathf.PI * Time.fixedDeltaTime, 0);
-            if (controlVector.sqrMagnitude > 0)
-            {
-                if (currentSpeed < animatedMovementMaxSpeed)
-                    currentSpeed = (currentSpeed + (controlMag * animatedMovementSpeedChange * Time.fixedDeltaTime)).Max(animatedMovementMaxSpeed);
-                else if (currentSpeed > animatedMovementMaxSpeed)
-                    currentSpeed = (currentSpeed - (animatedMovementSpeedChange * Time.fixedDeltaTime)).Min(animatedMovementMaxSpeed);
-            }
-            else currentSpeed = (currentSpeed - (animatedMovementSpeedChange * Time.fixedDeltaTime)).Min(animatedMovementMinSpeed);
+            currentSpeed = controlVector.sqrMagnitude > 0
+                ? currentSpeed.MoveTowards(controlVector.magnitude * animatedMovementSpeedChange * (Time.deltaTime * 50), animatedMovementMaxSpeed)
+                : currentSpeed.MoveTowards(animatedMovementSpeedChange * (Time.deltaTime * 50), animatedMovementMinSpeed);
 
             velocity = transform.forward * currentSpeed;
         }
