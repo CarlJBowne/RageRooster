@@ -76,6 +76,8 @@ public class _AttackTagPropertyDrawer : PropertyDrawer
     {
         EditorGUI.BeginProperty(position, label, property);
 
+        position.xMin -= 10; 
+
         // Retrieve the serialized fields
         SerializedProperty nameProperty = property.FindPropertyRelative("name");
         EditorGUI.PropertyField(position, nameProperty, GUIContent.none);

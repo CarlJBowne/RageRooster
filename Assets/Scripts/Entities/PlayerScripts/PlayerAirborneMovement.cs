@@ -18,11 +18,15 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     public bool isDash;
     public float minSpeed;
     [Header("Vertical")]
+
+    public int defaultPhase;
     public float gravity = 9.81f;
     public float terminalVelocity = 100f;
     public bool flatGravity = false;
     public PlayerAirborneMovement fallState;
     public float fallStateThreshold = 0;
+
+
     [ToggleGroup("Upwards", nameof(jumpHeight), nameof(jumpPower), nameof(jumpMinHeight), nameof(allowMidFall))]
     public bool upwards;
     [HideProperty] public float jumpHeight;
@@ -132,31 +136,60 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         base.OnEnter(prev, isFinal);
         if (!isFinal) return;
 
-        if (!upwards && forceDownwards) playerMovementBody.VelocitySet(y: playerMovementBody.velocity.y.Max(0));
-        if (!upwards || (playerMovementBody.jumpPhase > 0 && !isDash)) return;
+        playerMovementBody.GroundStateChange(false);
 
-        playerMovementBody.jumpPhase = 0;
-        if (isDash) playerMovementBody.currentSpeed = maxSpeed;
-
-        if (!upwards) return;
-
-        playerMovementBody.VelocitySet(y: jumpPower);
-        targetMinHeight = transform.position.y + jumpMinHeight;
-        targetHeight = (transform.position.y + jumpHeight) - (jumpPower.P()) / (2 * gravity);
-        if (targetHeight <= transform.position.y)
+        int nextJumpPhase = defaultPhase;
+        if(nextJumpPhase == -1)
         {
-            playerMovementBody.VelocitySet(y: Mathf.Sqrt(2 * gravity * jumpHeight));
-            targetMinHeight = transform.position.y;
+            nextJumpPhase = playerMovementBody.jumpPhase;
+            if (nextJumpPhase == -1) nextJumpPhase = 0;
         }
 
-#if UNITY_EDITOR
-        playerMovementBody.jumpMarkers = new()
+        playerMovementBody.jumpPhase = nextJumpPhase;
+        switch (nextJumpPhase)
         {
-            transform.position,
-            transform.position + Vector3.up * targetHeight,
-            transform.position + Vector3.up * jumpHeight
-        };
-#endif
+            case 0: StartFrom0(); break;
+            case 1: StartFrom1(); break;
+            case 2: StartFrom2(); break;
+            case 3: StartFrom3(); break;
+        }
+
+        void StartFrom0()
+        {
+            if (isDash) playerMovementBody.currentSpeed = maxSpeed;
+
+            if (!upwards) return;
+
+            playerMovementBody.VelocitySet(y: jumpPower);
+            targetMinHeight = transform.position.y + jumpMinHeight;
+            targetHeight = (transform.position.y + jumpHeight) - (jumpPower.P()) / (2 * gravity);
+            if (targetHeight <= transform.position.y)
+            {
+                playerMovementBody.VelocitySet(y: Mathf.Sqrt(2 * gravity * jumpHeight));
+                targetMinHeight = transform.position.y;
+            }
+
+            #if UNITY_EDITOR
+            playerMovementBody.jumpMarkers = new()
+                {
+                    transform.position,
+                    transform.position + Vector3.up * targetHeight,
+                    transform.position + Vector3.up * jumpHeight
+                };
+            #endif
+        }
+        void StartFrom1()
+        {
+
+        }
+        void StartFrom2()
+        {
+
+        }
+        void StartFrom3()
+        {
+            playerMovementBody.VelocitySet(y: playerMovementBody.velocity.y.Max(0));
+        }
     }
     //public override void OnExit(State next) => body.jumpPhase = -1;
 
@@ -164,7 +197,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     public void BeginJump()
     {
         playerMovementBody.GroundStateChange(false);
-        state.TransitionTo();
+        if(!state) state.TransitionTo();
     }
     public void BeginJump(float power, float height, float minHeight)
     {

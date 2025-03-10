@@ -7,13 +7,17 @@ public class AttackProjectile : AttackSourceSingle
     public bool disableOnHit;
     public bool disableOnlyWithHealth;
 
+    private void OnTriggerEnter(Collider other) => Contact(other.gameObject);
+    private void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);
+
 
     public override void Contact(GameObject target)
     {
-        if (!enabled || !target.TryGetComponent(out Health targetHealth)) return;
+        if (!enabled) return;
 
-        if (targetHealth.Damage(GetAttack()))
+        if(target.TryGetComponent(out IDamagable targetDamagable))
         {
+            targetDamagable.Damage(GetAttack());
             if (disableOnHit) Disable();
         }
         else

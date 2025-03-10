@@ -18,6 +18,7 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
     public TextMeshProUGUI comboCounterText;
     public TextMeshProUGUI comboFlavorText;
     public ComboLevel[] comboLevels;
+    public TextMeshProUGUI ammoText;
 
     private int activeMaxHealth = 1;
     private float hintTimer;
@@ -26,7 +27,8 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
     // Called when the singleton instance is awakened
     protected override void OnAwake()
     {
-        currencyText.text = "0";
+        SetCurrencyText(GlobalState.currency.ToString());
+        UpdateAmmo(GlobalState.maxAmmo);
     }
 
     // Called every frame to update the HUD
@@ -102,5 +104,12 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
         // Flavor text for this combo level
         public string flavorText;
     }
+
+    public void UpdateAmmo(int current)
+    {
+        ammoText.transform.parent.gameObject.SetActive(GlobalState.maxAmmo > 0);
+        ammoText.text = $"{current}/{GlobalState.maxAmmo}";
+    }
+
 
 }
