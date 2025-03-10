@@ -27,8 +27,8 @@ public class PlayerMovementBody : PlayerStateBehavior
     [HideInInspector] public bool canJump = true;
     public bool grounded = true;
     public float movementModifier = 1;
-    [DisableInPlayMode, DisableInEditMode] public float currentSpeed;
-    [DisableInPlayMode, DisableInEditMode] public int jumpPhase;
+    [HideInEditMode, DisableInPlayMode] public float currentSpeed;
+    [HideInEditMode, DisableInPlayMode] public int jumpPhase;
     //-1 = Inactive
     //0 = PreMinHeight
     //1 = PreMaxHeight
@@ -40,7 +40,17 @@ public class PlayerMovementBody : PlayerStateBehavior
     Transform anchorTransform;
     Vector3 prevAnchorPosition;
 
-    [DisableInPlayMode, DisableInEditMode] public Vector3 velocity;
+    [HideInEditMode, DisableInPlayMode] public Vector3 velocity;
+
+
+    [HideInEditMode, DisableInPlayMode] public bool animateMovement = false;
+    [HideInEditMode, DisableInPlayMode] public float animatedMovementTurn = 0;
+    [HideInEditMode, DisableInPlayMode] public float animatedMovementMaxSpeed = 0;
+    [HideInEditMode, DisableInPlayMode] public float animatedMovementMinSpeed = 0;
+    [HideInEditMode, DisableInPlayMode] public float animatedMovementSpeedChange = 15;
+    [HideInEditMode, DisableInPlayMode] public bool animateVelocity = false;
+    [HideInEditMode, DisableInPlayMode] public Vector3 animatedVelocity = Vector3.zero;
+
     #endregion
 
     #region GetSet
@@ -112,6 +122,28 @@ public class PlayerMovementBody : PlayerStateBehavior
 
 
         } // NonMovement
+
+
+        if (animateVelocity)
+        {
+            velocity = transform.TransformDirection(animatedVelocity);
+        }
+        else if (animateMovement)
+        {
+            Vector3 controlVector = playerController.camAdjustedMovement;
+            float controlMag = controlVector.magnitude;
+            if (animatedMovementTurn > 0) currentDirection = Vector3.RotateTowards(currentDirection, controlVector.normalized, animatedMovementTurn * Mathf.PI * Time.fixedDeltaTime, 0);
+            if (controlVector.sqrMagnitude > 0)
+            {
+                if (currentSpeed < animatedMovementMaxSpeed)
+                    currentSpeed = (currentSpeed + (controlMag * animatedMovementSpeedChange * Time.fixedDeltaTime)).Max(animatedMovementMaxSpeed);
+                else if (currentSpeed > animatedMovementMaxSpeed)
+                    currentSpeed = (currentSpeed - (animatedMovementSpeedChange * Time.fixedDeltaTime)).Min(animatedMovementMaxSpeed);
+            }
+            else currentSpeed = (currentSpeed - (animatedMovementSpeedChange * Time.fixedDeltaTime)).Min(animatedMovementMinSpeed);
+
+            velocity = transform.forward * currentSpeed;
+        }
 
         initVelocity = new Vector3(velocity.x * movementModifier, velocity.y, velocity.z * movementModifier);
         initNormal = Vector3.up;
