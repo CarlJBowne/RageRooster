@@ -44,6 +44,7 @@ public class ConversationManager : MonoBehaviour
 
     public Volume dialogueDof;
     bool isAdvancingText;
+    
     private void Awake()
     {
         instance = this;
@@ -85,6 +86,10 @@ public class ConversationManager : MonoBehaviour
                 Sequence s = DOTween.Sequence();
                 s.AppendInterval(.8f);
                 s.AppendCallback(() => ResetState());
+
+                //Trigger anything that should happen when the given conversation ends
+                //Pass in the current index of the conversation
+                currentSpeaker.CheckForNextConversation(currentSpeaker.currentConversationIndex);
 
             }
 

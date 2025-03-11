@@ -33,6 +33,11 @@ public class SpeakerScript : MonoBehaviour, IInteractable
     public event Action onSpeakerActivate;
     public CinemachineTargetGroup targetGroup;
 
+    public int currentConversationIndex = 0;
+
+
+    public UltEvents.UltEvent onConversationEnd;
+
     void Start()
     {
         dialogueAudio = GetComponent<DialogueAudio>();
@@ -110,7 +115,16 @@ public class SpeakerScript : MonoBehaviour, IInteractable
     {
         Debug.Log("Speaker is activated");
         onSpeakerActivate?.Invoke();
-        dialogue = data.dialogueList[0];
+        dialogue = data.dialogueList[currentConversationIndex];
         return true;
     }
+
+    public virtual void CheckForNextConversation(int index)
+    {
+        //Read the index that is passed in an compare it to the given cases
+        //
+    }
+
+
+
 }
