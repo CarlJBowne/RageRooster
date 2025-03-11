@@ -23,6 +23,8 @@ public class PlayerMovementBody : PlayerStateBehavior
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public new CapsuleCollider collider;
 
+    [HideInEditMode, DisableInPlayMode] public Vector3 velocity;
+
     [HideInInspector] public bool baseMovability = true;
     [HideInInspector] public bool canJump = true;
     public bool grounded = true;
@@ -40,14 +42,17 @@ public class PlayerMovementBody : PlayerStateBehavior
     Transform anchorTransform;
     Vector3 prevAnchorPosition;
 
-    [HideInEditMode, DisableInPlayMode] public Vector3 velocity;
 
+    private VolcanicVent _currentVent;
 
+    [FoldoutGroup("Animated Properties", nameof(animateMovement), nameof(animatedMovementTurn), nameof(animatedMovementMaxSpeed), nameof(animatedMovementMinSpeed), nameof(animatedMovementSpeedChange), nameof(animateMovementVertical), nameof(animatedMovementVertical), nameof(animateVelocity), nameof(animatedVelocity))] private Void _animateSet;
     [HideInEditMode, DisableInPlayMode] public bool animateMovement = false;
     [HideInEditMode, DisableInPlayMode] public float animatedMovementTurn = 0;
     [HideInEditMode, DisableInPlayMode] public float animatedMovementMaxSpeed = 0;
     [HideInEditMode, DisableInPlayMode] public float animatedMovementMinSpeed = 0;
     [HideInEditMode, DisableInPlayMode] public float animatedMovementSpeedChange = 15;
+    [HideInEditMode, DisableInPlayMode] public bool animateMovementVertical = false;
+    [HideInEditMode, DisableInPlayMode] public float animatedMovementVertical = 0;
     [HideInEditMode, DisableInPlayMode] public bool animateVelocity = false;
     [HideInEditMode, DisableInPlayMode] public Vector3 animatedVelocity = Vector3.zero;
 
@@ -93,6 +98,17 @@ public class PlayerMovementBody : PlayerStateBehavior
             );
     }
 
+    public VolcanicVent currentVent
+    {
+        get => _currentVent;
+        set
+        {
+            _currentVent = value;
+            Machine.SendSignal(value != null ? "EnterVent" : "ExitVent", addToQueue: false, overrideReady: true);
+        }
+    }
+    public bool isOverVent => _currentVent != null;
+
     #endregion GetSet
 
 
@@ -133,7 +149,9 @@ public class PlayerMovementBody : PlayerStateBehavior
                 ? currentSpeed.MoveTowards(controlVector.magnitude * animatedMovementSpeedChange * (Time.deltaTime * 50), animatedMovementMaxSpeed)
                 : currentSpeed.MoveTowards(animatedMovementSpeedChange * (Time.deltaTime * 50), animatedMovementMinSpeed);
 
-            velocity = transform.forward * currentSpeed;
+            if (animateMovementVertical) velocity.y = !grounded ? animatedMovementVertical : 0;
+
+            velocity = (transform.forward * currentSpeed) + (velocity.y * Vector3.up);
         }
 
         initVelocity = new Vector3(velocity.x * movementModifier, velocity.y, velocity.z * movementModifier);

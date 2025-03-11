@@ -13,14 +13,19 @@ public class PlayerController : PlayerStateBehavior
 
 	public float jumpBuffer = 0.3f;
 
-	public PlayerWallJump wallJumpState;
     public PlayerAirborneMovement airChargeState;
     public PlayerAirborneMovement airChargeFallState;
+	public PlayerWallJump wallJumpState;
     public PlayerRanged ranged;
     public PlayerAiming aimingState;
-	public Upgrade groundSlamUpgrade;
+    public State groundedSpin;
+    public State airSpin;
+    public PlayerHellcopterMovement airUpwardTornado;
+    public State ventGlideState; 
+    public Upgrade groundSlamUpgrade;
 	public Upgrade wallJumpUpgrade;
     public Upgrade ragingChargeUpgrade;
+    public Upgrade hellcopterUpgrade;
 
     public System.Action onAnimatorMove;
 
@@ -82,10 +87,10 @@ public class PlayerController : PlayerStateBehavior
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
 		camAdjustedMovement = input.movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
 
-		if (Machine.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
-            sGlide.TransitionTo();
-        else if(Machine.signalReady && !input.jump.IsPressed() && sGlide) 
-            sFall.TransitionTo();
+		//if (Machine.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
+        //    sGlide.TransitionTo();
+        //else if(Machine.signalReady && !input.jump.IsPressed() && sGlide) 
+        //    sFall.TransitionTo();
 
         if (Machine.freeLookCamera != null)
         {
@@ -117,11 +122,27 @@ public class PlayerController : PlayerStateBehavior
 
 
 
-    public void ParryAction()
+    public void ParryActionGrounded()
     {
         if(interacter.TryInteract()) return;
 
-        //Do Parry move here.
+        groundedSpin.TransitionTo();
+    }
+    public void ParryActionAirborne()
+    {
+        if(hellcopterUpgrade)
+        {
+            airSpin.TransitionTo();
+            if (playerMovementBody.isOverVent) Machine.SendSignal("EnterVent", addToQueue: false, overrideReady: true);
+        }
+    }
+
+    public void MidJumpJumpAction()
+    {
+        if (!wallJumpState.WallJump(transform.forward))
+        {
+            (!playerMovementBody.isOverVent ? sGlide : ventGlideState).TransitionTo();
+        }
     }
 
     //Other events.

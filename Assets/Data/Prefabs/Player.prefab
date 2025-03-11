@@ -864,7 +864,7 @@ MonoBehaviour:
   jumpPower: 14
   jumpMinHeight: 2
   forceDownwards: 0
-  allowMidFall: 1
+  allowMidFall: 0
 --- !u!114 &1178113904624510868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1153,7 +1153,7 @@ Transform:
   - {fileID: 8240657446396116129}
   - {fileID: 3858517113413183086}
   m_Father: {fileID: 1495339210815947155}
-  m_LocalEulerAnglesHint: {x: -7.451391, y: -100.639114, z: -107.27829}
+  m_LocalEulerAnglesHint: {x: 10.936, y: 11.838, z: -15.23}
 --- !u!1 &1242553937887867047
 GameObject:
   m_ObjectHideFlags: 0
@@ -2012,7 +2012,7 @@ Transform:
   - {fileID: 1858017805129491221}
   - {fileID: 2680535561233752795}
   m_Father: {fileID: 802911248559169720}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: -94.44818}
+  m_LocalEulerAnglesHint: {x: 0.978, y: -90.91, z: -92.385}
 --- !u!1 &1904596639792479847
 GameObject:
   m_ObjectHideFlags: 0
@@ -2370,20 +2370,9 @@ MonoBehaviour:
     - Key: Jump
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 802911248559169720}
-          _MemberName: get_forward
+        - _Target: {fileID: 1371118413310184343}
+          _MemberName: MidJumpJumpAction
           _PersistentArguments: []
-        - _Target: {fileID: 750694679335013753}
-          _MemberName: WallJump
-          _PersistentArguments:
-          - _Type: 15
-            _Int: 0
-            _String: 
-            _X: 7
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
     - Key: GrabTap
       Value:
         _PersistentCalls:
@@ -2464,6 +2453,12 @@ MonoBehaviour:
             _Object: {fileID: 0}
         - _Target: {fileID: 7887553615491649882}
           _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: Parry
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 1371118413310184343}
+          _MemberName: ParryActionAirborne
           _PersistentArguments: []
   lockReady: 0
 --- !u!114 &2513530225769621494
@@ -2759,7 +2754,7 @@ Transform:
   m_Children:
   - {fileID: 1336325588524243921}
   m_Father: {fileID: 5779348743443458172}
-  m_LocalEulerAnglesHint: {x: -18.439636, y: 89.19036, z: -150.84578}
+  m_LocalEulerAnglesHint: {x: -11.861, y: 94.083, z: -153.24277}
 --- !u!1 &2773190596053569390
 GameObject:
   m_ObjectHideFlags: 0
@@ -3312,16 +3307,22 @@ MonoBehaviour:
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   jumpBuffer: 0.3
-  wallJumpState: {fileID: 750694679335013753}
   airChargeState: {fileID: 3698709666984973678}
   airChargeFallState: {fileID: 6062820148927623488}
+  wallJumpState: {fileID: 750694679335013753}
   ranged: {fileID: 2714541672873312079}
   aimingState: {fileID: 7421260604818229875}
+  groundedSpin: {fileID: 906556439848370587}
+  airSpin: {fileID: 1615186036512262025}
+  airUpwardTornado: {fileID: 4470159406448367370}
+  ventGlideState: {fileID: 7624032393984206640}
   groundSlamUpgrade: {fileID: 3684892169369894683, guid: 5096cd543e777e240af87643ae7b164b,
     type: 2}
   wallJumpUpgrade: {fileID: -5908332654645760598, guid: 5096cd543e777e240af87643ae7b164b,
     type: 2}
-  ragingChargeUpgrade: {fileID: -8222721850088587547, guid: 5096cd543e777e240af87643ae7b164b,
+  ragingChargeUpgrade: {fileID: -5536983315783184865, guid: 5096cd543e777e240af87643ae7b164b,
+    type: 2}
+  hellcopterUpgrade: {fileID: -8222721850088587547, guid: 5096cd543e777e240af87643ae7b164b,
     type: 2}
   jumpInput: 0
   camAdjustedMovement: {x: 0, y: 0, z: 0}
@@ -3420,6 +3421,7 @@ MonoBehaviour:
   airChargeState: {fileID: 6062820148927623488}
   rb: {fileID: 0}
   collider: {fileID: 0}
+  velocity: {x: 0, y: 0, z: 0}
   baseMovability: 1
   canJump: 1
   grounded: 1
@@ -3427,7 +3429,15 @@ MonoBehaviour:
   currentSpeed: 0
   jumpPhase: 0
   _currentDirection: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
+  animateMovement: 0
+  animatedMovementTurn: 0
+  animatedMovementMaxSpeed: 0
+  animatedMovementMinSpeed: 0
+  animatedMovementSpeedChange: 15
+  animateMovementVertical: 0
+  animatedMovementVertical: 0
+  animateVelocity: 0
+  animatedVelocity: {x: 0, y: 0, z: 0}
   jumpMarkers: []
 --- !u!114 &2783735533672575433
 MonoBehaviour:
@@ -4278,6 +4288,137 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5597610054362293769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3645675676112704684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5577900753218004323}
+  - component: {fileID: 7624032393984206640}
+  - component: {fileID: 2095790091468025607}
+  - component: {fileID: 500976742858355256}
+  m_Layer: 0
+  m_Name: VentGliding
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5577900753218004323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645675676112704684}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6790216793252147034}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7624032393984206640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645675676112704684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: ChargeTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8937721864928111967}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: ChargeHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8937721864928111967}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: GroundStateChange
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 7887553615491649882}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: ExitVent
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 6027212184641879295}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 0
+--- !u!114 &2095790091468025607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645675676112704684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b99ed78f039d85e41ae053d8e7266e81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  trueActive: 0
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 8
+  stopping: 0.3
+  maxTurnSpeed: 10
+  gravity: 3.04
+  terminalVelocity: 5.89
+  flatGravity: 0
+  fallState: {fileID: 2513530225769621494}
+  isVentGlide: 1
+  raiseRate: 4
+--- !u!114 &500976742858355256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645675676112704684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 2
+  onEnterName: Falling
+  onEnterTime: 0.1
+  animator: {fileID: 0}
 --- !u!1 &3709786810941767551
 GameObject:
   m_ObjectHideFlags: 0
@@ -4573,7 +4714,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1846500094994641161}
   - component: {fileID: 6027212184641879295}
-  - component: {fileID: 6905962700685548749}
+  - component: {fileID: 1150588390469737330}
   - component: {fileID: 7896708475051073880}
   m_Layer: 0
   m_Name: Gliding
@@ -4644,8 +4785,14 @@ MonoBehaviour:
         - _Target: {fileID: 7887553615491649882}
           _MemberName: TransitionTo
           _PersistentArguments: []
+    - Key: EnterVent
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7624032393984206640}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
   lockReady: 0
---- !u!114 &6905962700685548749
+--- !u!114 &1150588390469737330
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4654,7 +4801,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4124917820233702332}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89a8416e01b52494193d14c59b41a835, type: 3}
+  m_Script: {fileID: 11500000, guid: b99ed78f039d85e41ae053d8e7266e81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Machine: {fileID: 0}
@@ -4666,20 +4813,12 @@ MonoBehaviour:
   maxSpeed: 8
   stopping: 0.3
   maxTurnSpeed: 10
-  isDash: 0
-  minSpeed: 0
-  defaultPhase: 3
   gravity: 3.04
   terminalVelocity: 5.89
   flatGravity: 0
   fallState: {fileID: 2513530225769621494}
-  fallStateThreshold: 0
-  upwards: 0
-  jumpHeight: 0
-  jumpPower: 0
-  jumpMinHeight: 0
-  forceDownwards: 1
-  allowMidFall: 1
+  isVentGlide: 0
+  raiseRate: 0
 --- !u!114 &7896708475051073880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5199,6 +5338,7 @@ Transform:
   - {fileID: 542910149066364657}
   - {fileID: 7427727485705586250}
   - {fileID: 3146629290765188103}
+  - {fileID: 1261920261987571038}
   m_Father: {fileID: 802911248559169720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4517806838389897866
@@ -5266,6 +5406,7 @@ Transform:
   m_Children:
   - {fileID: 7977943911182383535}
   - {fileID: 1846500094994641161}
+  - {fileID: 5577900753218004323}
   - {fileID: 8409826796498701612}
   - {fileID: 6649114412980860138}
   m_Father: {fileID: 7427727485705586250}
@@ -5352,6 +5493,12 @@ MonoBehaviour:
         - _Target: {fileID: 2948750066402289689}
           _MemberName: TransitionTo
           _PersistentArguments: []
+    - Key: Parry
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 1371118413310184343}
+          _MemberName: ParryActionAirborne
+          _PersistentArguments: []
   lockReady: 0
 --- !u!114 &3698709666984973678
 MonoBehaviour:
@@ -5435,6 +5582,86 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1262491231416579091}
   m_LocalEulerAnglesHint: {x: 0.37888286, y: -0.1556041, z: 6.6624327}
+--- !u!1 &4673781514129227438
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2559043128292996688}
+  - component: {fileID: 1615186036512262025}
+  - component: {fileID: 4534952952498977717}
+  m_Layer: 0
+  m_Name: ParrySpinA
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2559043128292996688
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4673781514129227438}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1261920261987571038}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1615186036512262025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4673781514129227438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 1
+  onActivatedEvent:
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 931477398715445950}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: EnterVent
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 1527121421165085625}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
+--- !u!114 &4534952952498977717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4673781514129227438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 2
+  onEnterName: Parry
+  onEnterTime: 0.02
+  animator: {fileID: 0}
 --- !u!1 &4847283882173391290
 GameObject:
   m_ObjectHideFlags: 0
@@ -5720,6 +5947,111 @@ Transform:
   m_Children: []
   m_Father: {fileID: 107765510827790769}
   m_LocalEulerAnglesHint: {x: 0, y: 62.266747, z: 0}
+--- !u!1 &5075024688237253571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4394942687003372090}
+  - component: {fileID: 1527121421165085625}
+  - component: {fileID: 4470159406448367370}
+  - component: {fileID: 5219758685107371746}
+  m_Layer: 0
+  m_Name: Hellcopter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &4394942687003372090
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5075024688237253571}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1261920261987571038}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1527121421165085625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5075024688237253571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4000547645901868762}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 0
+--- !u!114 &4470159406448367370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5075024688237253571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b5f2b45bcd7f8141a29e77220e38de8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  trueActive: 0
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 7.5
+  stopping: 0.75
+  maxTurnSpeed: 25
+  forceOutward: 0
+  minSpeed: 0
+  defaultPhase: 1
+  gravity: 30.4
+  terminalVelocity: 4.5
+  flatGravity: 0
+  fallState: {fileID: 3877140044969608344}
+  fallStateThreshold: 0
+  upwards: 1
+--- !u!114 &5219758685107371746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5075024688237253571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 1
+  onEnterName: Hellcopter
+  onEnterTime: 0.1
+  animator: {fileID: 0}
 --- !u!1 &5162917169200034039
 GameObject:
   m_ObjectHideFlags: 0
@@ -6336,6 +6668,135 @@ MonoBehaviour:
   additionalTags:
   - name: FromPlayer
   enabled: 1
+--- !u!1 &5361885281466735368
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1261920261987571038}
+  - component: {fileID: 6141681725959390025}
+  - component: {fileID: 6283726564688637529}
+  - component: {fileID: 1285737906182916520}
+  - component: {fileID: 3587290060280392779}
+  m_Layer: 0
+  m_Name: Parrying
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1261920261987571038
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5361885281466735368}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6993975061325138571}
+  - {fileID: 2559043128292996688}
+  - {fileID: 4394942687003372090}
+  - {fileID: 5014433089004609597}
+  m_Father: {fileID: 6385669238997089540}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6141681725959390025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5361885281466735368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
+--- !u!114 &6283726564688637529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5361885281466735368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdcb53954806c0041a5753e0e75ba272, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseAttack:
+    amount: 1
+    velocity: {x: 1, y: 0, z: 0}
+    tags: []
+  hellUpgradedAttack:
+    amount: 5
+    velocity: {x: 3, y: 0, z: 0}
+    tags: []
+  hellcopterUpgrade: {fileID: -8222721850088587547, guid: 5096cd543e777e240af87643ae7b164b,
+    type: 2}
+  collider: {fileID: 3587290060280392779}
+--- !u!54 &1285737906182916520
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5361885281466735368}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!135 &3587290060280392779
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5361885281466735368}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.96
+  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!1 &5467346788979988012
 GameObject:
   m_ObjectHideFlags: 0
@@ -6631,6 +7092,12 @@ MonoBehaviour:
         _PersistentCalls:
         - _Target: {fileID: 1074639858917870420}
           _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: Parry
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 1371118413310184343}
+          _MemberName: ParryActionGrounded
           _PersistentArguments: []
   lockReady: 0
 --- !u!114 &528938496853295208
@@ -7317,6 +7784,12 @@ MonoBehaviour:
         - _Target: {fileID: 881160624330373794}
           _MemberName: TransitionTo
           _PersistentArguments: []
+    - Key: Parry
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 1371118413310184343}
+          _MemberName: ParryActionGrounded
+          _PersistentArguments: []
   lockReady: 0
 --- !u!114 &4244649889381608096
 MonoBehaviour:
@@ -7594,7 +8067,7 @@ Transform:
   - {fileID: 176165724537986964}
   - {fileID: 167776559115597949}
   m_Father: {fileID: 5735276715730193203}
-  m_LocalEulerAnglesHint: {x: 2.1690025, y: 9.885986, z: -43.88961}
+  m_LocalEulerAnglesHint: {x: -33.671597, y: -18.905743, z: -43.88961}
 --- !u!1 &6055514174411675304
 GameObject:
   m_ObjectHideFlags: 0
@@ -8331,7 +8804,7 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 1371118413310184343}
-          _MemberName: ParryAction
+          _MemberName: ParryActionGrounded
           _PersistentArguments: []
   lockReady: 0
 --- !u!114 &5394545579396957404
@@ -8593,7 +9066,7 @@ Transform:
   - {fileID: 1843710722454031686}
   - {fileID: 1474029645955272187}
   m_Father: {fileID: 1336325588524243921}
-  m_LocalEulerAnglesHint: {x: -24.653313, y: -20.138395, z: -97.80718}
+  m_LocalEulerAnglesHint: {x: -2.088, y: -8.473, z: -4.309}
 --- !u!1 &6885496698341775711
 GameObject:
   m_ObjectHideFlags: 0
@@ -9066,7 +9539,7 @@ Transform:
   - {fileID: 2235979652216157829}
   - {fileID: 515695939648151693}
   m_Father: {fileID: 1013759457902555881}
-  m_LocalEulerAnglesHint: {x: -30.121632, y: 12.533218, z: -83.64391}
+  m_LocalEulerAnglesHint: {x: -2.039, y: -8.377, z: 1.936}
 --- !u!1 &7224132573033648796
 GameObject:
   m_ObjectHideFlags: 0
@@ -9130,7 +9603,7 @@ Transform:
   - {fileID: 5735276715730193203}
   - {fileID: 4791203585736954220}
   m_Father: {fileID: 362155934586423713}
-  m_LocalEulerAnglesHint: {x: 0.50152874, y: -92.33415, z: -101.86157}
+  m_LocalEulerAnglesHint: {x: 2.508, y: 3.294, z: -10.834852}
 --- !u!1 &7257209901777955179
 GameObject:
   m_ObjectHideFlags: 0
@@ -9557,6 +10030,123 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.12591784, y: 0.1035408, z: 0}
     m_Extent: {x: 0.0459397, y: 0.052527852, z: 0.123307884}
   m_DirtyAABB: 0
+--- !u!1 &7640004567042433024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5014433089004609597}
+  - component: {fileID: 8300575896908681866}
+  - component: {fileID: 3877140044969608344}
+  - component: {fileID: 5448032004612991685}
+  m_Layer: 0
+  m_Name: HellcopterFall
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5014433089004609597
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7640004567042433024}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1261920261987571038}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8300575896908681866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7640004567042433024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4000547645901868762}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: EnterVent
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 1527121421165085625}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: AttackHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2948750066402289689}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 0
+--- !u!114 &3877140044969608344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7640004567042433024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b5f2b45bcd7f8141a29e77220e38de8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  trueActive: 0
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 7.5
+  stopping: 0.75
+  maxTurnSpeed: 25
+  forceOutward: 1
+  minSpeed: 7.5
+  defaultPhase: 3
+  gravity: 3.04
+  terminalVelocity: 4.5
+  flatGravity: 0
+  fallState: {fileID: 3877140044969608344}
+  fallStateThreshold: 0
+  upwards: 0
+--- !u!114 &5448032004612991685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7640004567042433024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 2
+  onEnterName: Hellcopter
+  onEnterTime: 0.1
+  animator: {fileID: 0}
 --- !u!1 &7650120129292485692
 GameObject:
   m_ObjectHideFlags: 0
@@ -10258,7 +10848,7 @@ Transform:
   m_Children:
   - {fileID: 1013759457902555881}
   m_Father: {fileID: 5779348743443458172}
-  m_LocalEulerAnglesHint: {x: 15.431211, y: -83.2584, z: 31.225943}
+  m_LocalEulerAnglesHint: {x: 19.278, y: -105.204, z: -9.389}
 --- !u!1 &8080908558534702520
 GameObject:
   m_ObjectHideFlags: 0
@@ -10321,6 +10911,80 @@ Transform:
   m_Children: []
   m_Father: {fileID: 107765510827790769}
   m_LocalEulerAnglesHint: {x: 0, y: -17.734755, z: 0}
+--- !u!1 &8181037630459571021
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6993975061325138571}
+  - component: {fileID: 906556439848370587}
+  - component: {fileID: 2805571998771508225}
+  m_Layer: 0
+  m_Name: ParrySpinG
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &6993975061325138571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8181037630459571021}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1261920261987571038}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &906556439848370587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8181037630459571021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4000547645901868762}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
+--- !u!114 &2805571998771508225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8181037630459571021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 2
+  onEnterName: Parry
+  onEnterTime: 0.02
+  animator: {fileID: 0}
 --- !u!1 &8199037953781554914
 GameObject:
   m_ObjectHideFlags: 0
@@ -11000,7 +11664,7 @@ Transform:
   - {fileID: 7131444296845478749}
   - {fileID: 5356928931328244855}
   m_Father: {fileID: 8240657446396116129}
-  m_LocalEulerAnglesHint: {x: 24.919235, y: 9.254089, z: -74.38333}
+  m_LocalEulerAnglesHint: {x: -10.921363, y: -19.53764, z: -74.38333}
 --- !u!1 &8509128218806431394
 GameObject:
   m_ObjectHideFlags: 0
