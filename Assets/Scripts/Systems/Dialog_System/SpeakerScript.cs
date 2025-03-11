@@ -38,6 +38,8 @@ public class SpeakerScript : MonoBehaviour, IInteractable
 
     public UltEvents.UltEvent onConversationEnd;
 
+    public List<SpeakerEvent> speakerEvents;
+
     void Start()
     {
         dialogueAudio = GetComponent<DialogueAudio>();
@@ -79,6 +81,14 @@ public class SpeakerScript : MonoBehaviour, IInteractable
             {
                 dialogueAudio.effectSource.clip = dialogueAudio.rainClip;
                 dialogueAudio.effectSource.Play();
+            }
+        }
+        
+        foreach(SpeakerEvent theEvent in speakerEvents)
+        {
+            if(action == theEvent.eventName)
+            {
+                theEvent.onSpeakerEvent?.Invoke();
             }
         }
     }
