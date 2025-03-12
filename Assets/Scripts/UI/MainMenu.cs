@@ -86,7 +86,7 @@ public class MainMenu : MenuSingleton<MainMenu>
         EventSystem.current.SetSelectedGameObject(menuButtons[currentButtonIndex].gameObject);
     }
 
-    public void PlayGame()
+    public void PlayGameDebug()
     {
         Gameplay.BeginMainMenu(0);
         Close();

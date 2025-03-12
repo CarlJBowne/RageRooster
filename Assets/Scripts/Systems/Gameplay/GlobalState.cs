@@ -1,6 +1,7 @@
 using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class GlobalState : Singleton<GlobalState>, ICustomSerialized
@@ -14,13 +15,14 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
     public static int maxHealth = 3;
     public static int activeSaveFile = 0;
 
+    public double saveFileTime;
     public static ScriptableCollection WorldChanges => Get().worldChanges;
     public static ScriptableCollection Upgrades => Get().upgrades;
 
-    public static string SaveFilePath => Application.persistentDataPath + "\\Saves";
-    public static string SaveFileName => $"SaveFile{activeSaveFile}"; 
+    public static string SaveFilePath => Application.persistentDataPath + "/Saves";
+    public static string SaveFileName => $"SaveFile{activeSaveFile}";
 
-
+    private double lastLoadTime;
 
 
     public static void Save() => Get().Serialize().SaveToFile(SaveFilePath, SaveFileName);
@@ -42,6 +44,8 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
         currency = Data[nameof(currency)].As<int>();
         maxAmmo = Data[nameof(maxAmmo)].As<int>();
         maxHealth = Data[nameof(maxHealth)].As<int>();
+        saveFileTime = Data["Time"].As<double>();
+        lastLoadTime = Time.time;
 
         worldChanges.Deserialize(Data[nameof(worldChanges)]);
         upgrades.Deserialize(Data[nameof(upgrades)]);
@@ -49,6 +53,7 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
     public JToken Serialize() => new JObject(
         new JProperty("CurrentZone", Gameplay.spawnSceneName),
         new JProperty("SpawnPoint", Gameplay.spawnPointID),
+        new JProperty("Time", saveFileTime + (Time.time - lastLoadTime)),
         new JProperty(nameof(currency), currency),
         new JProperty(nameof(maxAmmo), maxAmmo),
         new JProperty(nameof(maxHealth), maxHealth),
@@ -62,6 +67,11 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
         GlobalState.currency += currency;
         if (GlobalState.currency < 0) GlobalState.currency = 0;
         UIHUDSystem.SetCurrencyText(GlobalState.currency > 0 ? GlobalState.currency.ToString() : "Broke.");
+    }
+
+    public static void DeleteSaveFile(int id)
+    {
+        if(File.Exists($"{SaveFilePath}/SaveFile{id}.json")) File.Delete($"{SaveFilePath}/{SaveFileName}.json");
     }
 
 }
