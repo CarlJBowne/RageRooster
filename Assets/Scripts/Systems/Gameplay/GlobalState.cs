@@ -44,7 +44,9 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
         currency = Data[nameof(currency)].As<int>();
         maxAmmo = Data[nameof(maxAmmo)].As<int>();
         maxHealth = Data[nameof(maxHealth)].As<int>();
-        saveFileTime = Data["Time"].As<double>();
+
+        JToken timeToken = Data["Time"];
+        saveFileTime = timeToken != null ? timeToken.As<double>() : 0;
         lastLoadTime = Time.time;
 
         worldChanges.Deserialize(Data[nameof(worldChanges)]);
