@@ -17,7 +17,8 @@ public class MovementAnimator : MonoBehaviour
     {
         if(influence > 0)
         {
-            rb.velocity = Vector3.MoveTowards(rb.velocity, relativeVelocity, (relativeVelocity.magnitude - rb.velocity.magnitude) * influence);
+            Vector3 trueRelativeVelocity = transform.TransformDirection(relativeVelocity);
+            rb.velocity = Vector3.MoveTowards(rb.velocity, trueRelativeVelocity, (trueRelativeVelocity - rb.velocity).magnitude * influence);
 
             float tempAngularVelocity = rb.angularVelocity.y;
 
