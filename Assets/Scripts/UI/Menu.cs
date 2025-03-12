@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 /// <summary>
 /// A Base Menu class intended to form an easy-to-use extensible Menu system. (Admittedly not up to snuff.)
@@ -13,6 +14,7 @@ public class Menu : MonoBehaviour
     //Config
     [DisableInPlayMode] public bool isActive;
     [DisableInPlayMode] public Menu parent;
+    [SerializeField] public Button defaultSelection;
     [SerializeField] private string dictionaryName;
     [SerializeField] private bool closeOverride;
     [SerializeField, ShowField(nameof(closeOverride))] private UnityEvent closeEvent;
@@ -106,6 +108,7 @@ public class Menu : MonoBehaviour
 
             menu.isActive = true;
             menu.gameObject.SetActive(true);
+            menu.defaultSelection.Select();
             menu.OnOpen();
         }
 
@@ -121,6 +124,10 @@ public class Menu : MonoBehaviour
 
             menu.gameObject.SetActive(false);
             menu.isActive = false;
+            if (currentMenus.Count > 0)
+            {
+                currentMenus[currentMenus.Count - 1].defaultSelection.Select();
+            }
             menu.OnClose();
         }
 

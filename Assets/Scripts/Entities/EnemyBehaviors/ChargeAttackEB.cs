@@ -9,12 +9,14 @@ public class ChargeAttackEB : StateBehavior
 {
     Rigidbody rb;
     Vector3 direction;
+    Transform playerTransform;
     public State vulnerableState;
-    float wallCheckDistance = 2f;
+    float wallCheckDistance = 0.5f;
     public override void OnEnter(State prev, bool isFinal)
     {
         rb = GetComponentFromMachine<Rigidbody>();
-        direction = (Gameplay.Player.transform.position - rb.transform.position).normalized;
+        playerTransform = Gameplay.Player.transform;
+        direction = (playerTransform.position - rb.transform.position).XZ().normalized;
         rb.transform.rotation = Quaternion.LookRotation(direction);
     }
 
