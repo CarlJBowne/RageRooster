@@ -9,10 +9,41 @@ public class SpeakerEvent : MonoBehaviour
 
     public UltEvents.UltEvent onSpeakerEvent;
 
+    SpeakerScript speaker;
 
-    public void OnSpeakerEvent()
+    public void Start()
     {
-        Debug.Log("Event has fired!");
+        speaker = GetComponent<SpeakerScript>();
+        if(speaker != null)
+        {
+            speaker.onActionTrigger += CheckSpeakerEvent;
+        }
+
+    }
+    void OnDisable()
+    {
+        speaker = GetComponent<SpeakerScript>();
+        if(speaker != null)
+        {
+            speaker.onActionTrigger += CheckSpeakerEvent;
+        }
+    }
+
+    
+
+    public void CheckSpeakerEvent(string action)
+    {
+        if(action == eventName)
+        {
+            OnSpeakerEvent();
+        }
+    }
+
+    public virtual void OnSpeakerEvent()
+    {
+
+        //Always trigger the speaker event
+        onSpeakerEvent?.Invoke();
     }
 
 }

@@ -38,7 +38,7 @@ public class SpeakerScript : MonoBehaviour, IInteractable
 
     public UltEvents.UltEvent onConversationEnd;
 
-    public List<SpeakerEvent> speakerEvents;
+    public UltEvents.UltEvent<string> onActionTrigger;
 
     void Start()
     {
@@ -83,14 +83,9 @@ public class SpeakerScript : MonoBehaviour, IInteractable
                 dialogueAudio.effectSource.Play();
             }
         }
+
+        onActionTrigger?.Invoke(action);
         
-        foreach(SpeakerEvent theEvent in speakerEvents)
-        {
-            if(action == theEvent.eventName)
-            {
-                theEvent.onSpeakerEvent?.Invoke();
-            }
-        }
     }
 
     public void PlayParticle(string x)
