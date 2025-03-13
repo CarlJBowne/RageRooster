@@ -69,16 +69,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""id"": ""6aca6c86-42d1-46eb-ba71-bf1d7f27a72d"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Tap"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""GrabHold"",
-                    ""type"": ""Button"",
-                    ""id"": ""aac66e46-a341-4fc4-9693-c0d566be1f45"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
@@ -94,15 +85,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""name"": ""ShootMode"",
                     ""type"": ""Button"",
                     ""id"": ""44cac5cc-1e7a-4e0a-9b11-f2a174e0f97b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Shoot"",
-                    ""type"": ""Button"",
-                    ""id"": ""67061b6e-da04-45fd-9108-f5ff9f280cb6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -257,7 +239,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""28df4f8b-4845-4e82-a34a-75d29ec21fb8"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -267,10 +249,10 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""49a280b3-5bc9-4264-80ae-981b395a2d0f"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""id"": ""6a8339c1-c319-4f33-9cb6-da79f89f9414"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""Normalize(max=1)"",
                     ""groups"": ""Gamepad"",
                     ""action"": ""GrabTap"",
                     ""isComposite"": false,
@@ -306,28 +288,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""ShootMode"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5e27a2a3-33db-40c5-b46a-ccf96b66def0"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""0df3dd72-06a3-463f-8955-bad0ac191f4d"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -378,7 +338,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f7af283d-dd19-4bf2-9fc6-ddd6ee521048"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -438,28 +398,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""AttackHold"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""982d5812-bb1a-4b08-83c2-408fff3f520b"",
-                    ""path"": ""<Gamepad>/buttonNorth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""GrabHold"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""be66bcaf-e163-4809-9161-a056ef4fb6b2"",
-                    ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""GrabHold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -902,28 +840,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""4c3b7b27-6112-4162-9143-450e0961a661"",
-                    ""path"": ""*/{Submit}"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Submit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c0598ee0-dcee-408f-8e77-ba35474038c8"",
-                    ""path"": ""*/{Cancel}"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Cancel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""67409cc8-4540-48c2-8ab2-443db35c30d1"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
@@ -1053,6 +969,94 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""action"": ""TrackedDeviceOrientation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a513e4d3-f0c2-4d99-a786-ee6b84c7ecbc"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""02c0dacd-6d38-4bef-9e49-1a79d5509277"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fd42d6a8-b397-48a6-ad4f-9da6a8b0d815"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cfa10d5f-91ca-4bc2-bf7f-dbd97fd84280"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4966c2ef-271a-4456-bfc7-1dcb40916266"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9100852d-317c-4fc6-8e93-23ccb95b6382"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a4a8f101-c5a7-4a2e-8e68-94555dd6ccad"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e153698b-1a1d-4e75-a94c-f24d523bd988"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Submit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1094,10 +1098,8 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         m_Gameplay_AttackHold = m_Gameplay.FindAction("AttackHold", throwIfNotFound: true);
         m_Gameplay_Parry = m_Gameplay.FindAction("Parry", throwIfNotFound: true);
         m_Gameplay_GrabTap = m_Gameplay.FindAction("GrabTap", throwIfNotFound: true);
-        m_Gameplay_GrabHold = m_Gameplay.FindAction("GrabHold", throwIfNotFound: true);
         m_Gameplay_Camera = m_Gameplay.FindAction("Camera", throwIfNotFound: true);
         m_Gameplay_ShootMode = m_Gameplay.FindAction("ShootMode", throwIfNotFound: true);
-        m_Gameplay_Shoot = m_Gameplay.FindAction("Shoot", throwIfNotFound: true);
         m_Gameplay_ChargeTap = m_Gameplay.FindAction("ChargeTap", throwIfNotFound: true);
         m_Gameplay_ChargeHold = m_Gameplay.FindAction("ChargeHold", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
@@ -1182,10 +1184,8 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_AttackHold;
     private readonly InputAction m_Gameplay_Parry;
     private readonly InputAction m_Gameplay_GrabTap;
-    private readonly InputAction m_Gameplay_GrabHold;
     private readonly InputAction m_Gameplay_Camera;
     private readonly InputAction m_Gameplay_ShootMode;
-    private readonly InputAction m_Gameplay_Shoot;
     private readonly InputAction m_Gameplay_ChargeTap;
     private readonly InputAction m_Gameplay_ChargeHold;
     private readonly InputAction m_Gameplay_Interact;
@@ -1200,10 +1200,8 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         public InputAction @AttackHold => m_Wrapper.m_Gameplay_AttackHold;
         public InputAction @Parry => m_Wrapper.m_Gameplay_Parry;
         public InputAction @GrabTap => m_Wrapper.m_Gameplay_GrabTap;
-        public InputAction @GrabHold => m_Wrapper.m_Gameplay_GrabHold;
         public InputAction @Camera => m_Wrapper.m_Gameplay_Camera;
         public InputAction @ShootMode => m_Wrapper.m_Gameplay_ShootMode;
-        public InputAction @Shoot => m_Wrapper.m_Gameplay_Shoot;
         public InputAction @ChargeTap => m_Wrapper.m_Gameplay_ChargeTap;
         public InputAction @ChargeHold => m_Wrapper.m_Gameplay_ChargeHold;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
@@ -1233,18 +1231,12 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @GrabTap.started += instance.OnGrabTap;
             @GrabTap.performed += instance.OnGrabTap;
             @GrabTap.canceled += instance.OnGrabTap;
-            @GrabHold.started += instance.OnGrabHold;
-            @GrabHold.performed += instance.OnGrabHold;
-            @GrabHold.canceled += instance.OnGrabHold;
             @Camera.started += instance.OnCamera;
             @Camera.performed += instance.OnCamera;
             @Camera.canceled += instance.OnCamera;
             @ShootMode.started += instance.OnShootMode;
             @ShootMode.performed += instance.OnShootMode;
             @ShootMode.canceled += instance.OnShootMode;
-            @Shoot.started += instance.OnShoot;
-            @Shoot.performed += instance.OnShoot;
-            @Shoot.canceled += instance.OnShoot;
             @ChargeTap.started += instance.OnChargeTap;
             @ChargeTap.performed += instance.OnChargeTap;
             @ChargeTap.canceled += instance.OnChargeTap;
@@ -1279,18 +1271,12 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @GrabTap.started -= instance.OnGrabTap;
             @GrabTap.performed -= instance.OnGrabTap;
             @GrabTap.canceled -= instance.OnGrabTap;
-            @GrabHold.started -= instance.OnGrabHold;
-            @GrabHold.performed -= instance.OnGrabHold;
-            @GrabHold.canceled -= instance.OnGrabHold;
             @Camera.started -= instance.OnCamera;
             @Camera.performed -= instance.OnCamera;
             @Camera.canceled -= instance.OnCamera;
             @ShootMode.started -= instance.OnShootMode;
             @ShootMode.performed -= instance.OnShootMode;
             @ShootMode.canceled -= instance.OnShootMode;
-            @Shoot.started -= instance.OnShoot;
-            @Shoot.performed -= instance.OnShoot;
-            @Shoot.canceled -= instance.OnShoot;
             @ChargeTap.started -= instance.OnChargeTap;
             @ChargeTap.performed -= instance.OnChargeTap;
             @ChargeTap.canceled -= instance.OnChargeTap;
@@ -1474,10 +1460,8 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         void OnAttackHold(InputAction.CallbackContext context);
         void OnParry(InputAction.CallbackContext context);
         void OnGrabTap(InputAction.CallbackContext context);
-        void OnGrabHold(InputAction.CallbackContext context);
         void OnCamera(InputAction.CallbackContext context);
         void OnShootMode(InputAction.CallbackContext context);
-        void OnShoot(InputAction.CallbackContext context);
         void OnChargeTap(InputAction.CallbackContext context);
         void OnChargeHold(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);

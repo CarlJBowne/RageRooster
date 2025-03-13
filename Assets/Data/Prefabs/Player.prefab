@@ -1577,6 +1577,113 @@ Transform:
   - {fileID: 7797816273129980962}
   m_Father: {fileID: 9001384091169506472}
   m_LocalEulerAnglesHint: {x: 5.950311, y: -66.838646, z: 1.0303785}
+--- !u!1 &1361126184771140769
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4818673746425317357}
+  - component: {fileID: 9208219928828260688}
+  - component: {fileID: 6335918389759328459}
+  - component: {fileID: 9062652384064462090}
+  m_Layer: 0
+  m_Name: AimGrab X
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4818673746425317357
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361126184771140769}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 542910149066364657}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9208219928828260688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361126184771140769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    _PersistentCalls: []
+  signals:
+    _serializedList:
+    - Key: FinishGrab
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 6335918389759328459}
+          _MemberName: GrabPoint
+          _PersistentArguments: []
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4687384188506420108}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+  lockReady: 1
+--- !u!114 &6335918389759328459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361126184771140769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9ea06674c3fe044c81dee4e88f1ae12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  trueActive: 0
+  horizontalNegateType: 1
+  verticalNegateType: 5
+  rate: 15
+  dampenPoint: 0
+  savePriorVelocity: 0
+  gravity: 0
+  terminalVelocity: 0
+  air: 0
+  wasHeld: 0
+  success: 0
+--- !u!114 &9062652384064462090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361126184771140769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 3
+  onEnterName: Grab
+  onEnterTime: 0.01
+  animator: {fileID: 0}
 --- !u!1 &1384332073924865152
 GameObject:
   m_ObjectHideFlags: 0
@@ -2293,6 +2400,7 @@ Transform:
   - {fileID: 5532989216206750302}
   - {fileID: 2939210796809206182}
   - {fileID: 4425123305009892289}
+  - {fileID: 4818673746425317357}
   - {fileID: 7602196013696354627}
   m_Father: {fileID: 6385669238997089540}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3354,8 +3462,7 @@ MonoBehaviour:
     GrabStateEvent:
       _PersistentCalls: []
     collider: {fileID: 0}
-    launchVelocity: 12
-    launchJumpMult: 2
+    launchVelocity: 21
     checkSphereRadius: 1
     checkSphereOffset: {x: 0, y: 0.5, z: 1}
     layerMask:
@@ -7096,8 +7203,8 @@ MonoBehaviour:
     - Key: Parry
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 1371118413310184343}
-          _MemberName: ParryActionGrounded
+        - _Target: {fileID: 906556439848370587}
+          _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
 --- !u!114 &528938496853295208
@@ -7787,8 +7894,8 @@ MonoBehaviour:
     - Key: Parry
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 1371118413310184343}
-          _MemberName: ParryActionGrounded
+        - _Target: {fileID: 906556439848370587}
+          _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
 --- !u!114 &4244649889381608096
@@ -8803,8 +8910,8 @@ MonoBehaviour:
     - Key: Parry
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 1371118413310184343}
-          _MemberName: ParryActionGrounded
+        - _Target: {fileID: 906556439848370587}
+          _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
 --- !u!114 &5394545579396957404
@@ -9829,13 +9936,25 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
-          _MemberName: AimThrow
+          _MemberName: Shoot
           _PersistentArguments: []
     - Key: GrabHold
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
-          _MemberName: AimThrow
+          _MemberName: Shoot
+          _PersistentArguments: []
+    - Key: AttackTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: Shoot
+          _PersistentArguments: []
+    - Key: AttackHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: Shoot
           _PersistentArguments: []
   lockReady: 0
 --- !u!114 &7421260604818229875

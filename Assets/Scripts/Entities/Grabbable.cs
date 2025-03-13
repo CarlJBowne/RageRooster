@@ -11,6 +11,7 @@ public class Grabbable : MonoBehaviour, IAttackSource
     public float weight;
     public float wiggleFreeTime;
     public int maxHealthToGrab;
+    public float additionalThrowDistance;
     [HideInEditMode, HideInPlayMode] public UltEvents.UltEvent<EntityState> GrabStateEvent;
 
     [FoldoutGroup("Entity State Change Events", nameof(defaultEvent),nameof(grabbedEvent),nameof(thrownEvent),nameof(bounceEvent))]
