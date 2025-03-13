@@ -5,21 +5,23 @@ public class DistanceAttackChooserBB : StateBehavior
 {
 
     public DistancePhase[] distances;
+    [System.Serializable]
     public class DistancePhase
     {
         public float higherDistance;
         public float timerTime;
         public PossibleAttack[] attacks;
+        [System.Serializable]
         public struct PossibleAttack
         {
             public string signalName;
             public float chance;
         }
-        public float attacksRandLength;
+        [HideInInspector] public float attacksRandLength;
     }
     private int currentDistance;
 
-    private Timer.Loop timer;
+    public Timer.Loop timer;
     private Transform playerTransform;
 
     public override void OnAwake()

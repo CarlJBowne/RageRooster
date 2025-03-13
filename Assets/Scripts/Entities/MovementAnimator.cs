@@ -36,7 +36,7 @@ public class MovementAnimator : MonoBehaviour
 
             Vector3 targetDirection = target.position - transform.position;
             targetDirection.y = 0;
-            transform.eulerAngles = Vector3.RotateTowards(transform.forward, targetDirection, influence * turnToVelocity * 2 * Mathf.PI, 0);
+            transform.eulerAngles = Vector3.RotateTowards(transform.forward, targetDirection, influence * turnToVelocity * 2 * Mathf.PI, 0).DirToRot();
         }
     }
 }
