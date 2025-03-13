@@ -15,6 +15,15 @@ public class Input : Staticon<Input>
 		asset.Enable();
 	}
 
+    
+    private void ResetAsset_()
+	{
+        asset.Disable();
+        asset = new();
+        asset.Enable();
+    }
+    public static void ResetAsset() => Get().ResetAsset_();
+
     public static void Enable() => Get().asset.Enable();
 	public static void Disable() => Get().asset.Disable();
 
@@ -27,7 +36,6 @@ public class Input : Staticon<Input>
 	public static Button GrabTap => Get().asset.Gameplay.GrabTap;
 	public static Button ShootMode => Get().asset.Gameplay.ShootMode;
 	public static Button ChargeTap => Get().asset.Gameplay.ChargeTap;
-	public static Button ChargeHold => Get().asset.Gameplay.ChargeHold;
 	public static Button Interact => Get().asset.Gameplay.Interact;
 
 	public Vector2 movement => asset.Gameplay.Movement.ReadValue<Vector2>();
@@ -39,7 +47,6 @@ public class Input : Staticon<Input>
 	public Button grabTap => asset.Gameplay.GrabTap;
 	public Button shootMode => asset.Gameplay.ShootMode;
 	public Button chargeTap => asset.Gameplay.ChargeTap;
-	public Button chargeHold => asset.Gameplay.ChargeHold;
 	public Button interact => asset.Gameplay.Interact;
 
 	public static class UI

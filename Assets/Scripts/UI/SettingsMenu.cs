@@ -45,6 +45,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
         AmbSlider.maxValue = 1f;
         AmbSlider.value = 0.5f;
 
+        remap.TargetInput();
         RevertChanges();
     }
 

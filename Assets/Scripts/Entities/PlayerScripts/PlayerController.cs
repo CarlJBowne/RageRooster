@@ -53,7 +53,6 @@ public class PlayerController : PlayerStateBehavior
         input.grabTap.performed         += BeginActionEvent;
         input.parry.performed           += BeginActionEvent;
         input.chargeTap.performed       += BeginActionEvent;
-        input.chargeHold.performed      += BeginActionEvent;
         input.interact.performed        += BeginActionEvent;
 
         input.jump.canceled             += JumpRelease;
@@ -70,7 +69,6 @@ public class PlayerController : PlayerStateBehavior
         input.grabTap.performed         -= BeginActionEvent;
         input.parry.performed           -= BeginActionEvent;
         input.chargeTap.performed       -= BeginActionEvent;
-        input.chargeHold.performed      -= BeginActionEvent;
         input.interact.performed        -= BeginActionEvent;
 
         input.jump.canceled             -= JumpRelease;

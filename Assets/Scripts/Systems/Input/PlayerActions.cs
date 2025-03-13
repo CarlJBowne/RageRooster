@@ -96,16 +96,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""id"": ""d89a9dba-9dc2-434e-b13b-db15063013e6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Tap"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ChargeHold"",
-                    ""type"": ""Button"",
-                    ""id"": ""8e96f188-8ef5-4b3c-b1cb-3f2b17f7f9d6"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": ""Hold"",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
@@ -398,28 +389,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""AttackHold"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5c647621-a24d-4641-a479-4e481ad8d5d0"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""ChargeHold"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b9413709-1a87-4ce8-81b8-0a1bcec89a29"",
-                    ""path"": ""<Keyboard>/leftShift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""ChargeHold"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1101,7 +1070,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         m_Gameplay_Camera = m_Gameplay.FindAction("Camera", throwIfNotFound: true);
         m_Gameplay_ShootMode = m_Gameplay.FindAction("ShootMode", throwIfNotFound: true);
         m_Gameplay_ChargeTap = m_Gameplay.FindAction("ChargeTap", throwIfNotFound: true);
-        m_Gameplay_ChargeHold = m_Gameplay.FindAction("ChargeHold", throwIfNotFound: true);
         m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
         m_Gameplay_DebugActivate = m_Gameplay.FindAction("DebugActivate", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
@@ -1187,7 +1155,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Camera;
     private readonly InputAction m_Gameplay_ShootMode;
     private readonly InputAction m_Gameplay_ChargeTap;
-    private readonly InputAction m_Gameplay_ChargeHold;
     private readonly InputAction m_Gameplay_Interact;
     private readonly InputAction m_Gameplay_DebugActivate;
     private readonly InputAction m_Gameplay_Jump;
@@ -1203,7 +1170,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         public InputAction @Camera => m_Wrapper.m_Gameplay_Camera;
         public InputAction @ShootMode => m_Wrapper.m_Gameplay_ShootMode;
         public InputAction @ChargeTap => m_Wrapper.m_Gameplay_ChargeTap;
-        public InputAction @ChargeHold => m_Wrapper.m_Gameplay_ChargeHold;
         public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
         public InputAction @DebugActivate => m_Wrapper.m_Gameplay_DebugActivate;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
@@ -1240,9 +1206,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @ChargeTap.started += instance.OnChargeTap;
             @ChargeTap.performed += instance.OnChargeTap;
             @ChargeTap.canceled += instance.OnChargeTap;
-            @ChargeHold.started += instance.OnChargeHold;
-            @ChargeHold.performed += instance.OnChargeHold;
-            @ChargeHold.canceled += instance.OnChargeHold;
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
@@ -1280,9 +1243,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @ChargeTap.started -= instance.OnChargeTap;
             @ChargeTap.performed -= instance.OnChargeTap;
             @ChargeTap.canceled -= instance.OnChargeTap;
-            @ChargeHold.started -= instance.OnChargeHold;
-            @ChargeHold.performed -= instance.OnChargeHold;
-            @ChargeHold.canceled -= instance.OnChargeHold;
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
@@ -1463,7 +1423,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         void OnCamera(InputAction.CallbackContext context);
         void OnShootMode(InputAction.CallbackContext context);
         void OnChargeTap(InputAction.CallbackContext context);
-        void OnChargeHold(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnDebugActivate(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
