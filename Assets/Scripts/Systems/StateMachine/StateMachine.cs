@@ -192,6 +192,7 @@ namespace SLS.StateMachineV3
             }
             return false;
         }
+        public bool SendSignalBasic(string name) => SendSignal(name);
 
         public void ReadySignal()
         {
