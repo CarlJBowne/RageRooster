@@ -106,6 +106,8 @@ public partial class ZoneManager : Singleton<ZoneManager>
     // Updates the offset of the current zone and proxies based on the player's position.
     private void UpdateOffset()
     {
+        if (true) return; //This System brings up too much potential for problems if scenes aren't setup properly. Disabling unless we have time.
+
         if (playerMachine.IsStableForOriginShift() &&
            playerTransform.position.x > distanceToOriginShift || playerTransform.position.x < -distanceToOriginShift ||
            playerTransform.position.y > distanceToOriginShift || playerTransform.position.y < -distanceToOriginShift ||

@@ -8,24 +8,27 @@ using UnityEngine.Rendering;
 public class ChargeAttackEB : StateBehavior
 {
     Rigidbody rb;
-    Vector3 direction;
-    Transform playerTransform;
+    //Vector3 direction;
+    //Transform playerTransform;
+
     public State vulnerableState;
-    float wallCheckDistance = 0.5f;
+    public LayerMask layerMask;
+    //float wallCheckDistance = 0.5f;
     public override void OnEnter(State prev, bool isFinal)
     {
         rb = GetComponentFromMachine<Rigidbody>();
-        playerTransform = Gameplay.Player.transform;
-        direction = (playerTransform.position - rb.transform.position).XZ().normalized;
-        rb.transform.rotation = Quaternion.LookRotation(direction);
+        //playerTransform = Gameplay.Player.transform;
+        //direction = (playerTransform.position - rb.transform.position).XZ().normalized;
+        //rb.transform.rotation = Quaternion.LookRotation(direction);
     }
 
     public override void OnFixedUpdate()
     {
-        RaycastHit hit;
-        if (rb.DirectionCast(direction, wallCheckDistance, 1f, out hit))
-        {
-            TransitionTo(vulnerableState);
-        }
+        //if (rb.DirectionCast(transform.forward, wallCheckDistance, 1f, out RaycastHit hit))
+        //{
+        //    TransitionTo(vulnerableState);
+        //}
+        if (Physics.Raycast(transform.position + rb.centerOfMass, transform.forward, out RaycastHit hitInfo, (rb.velocity.magnitude * .02f)+2, layerMask, QueryTriggerInteraction.Ignore)) 
+            vulnerableState.TransitionTo();
     }
 }

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7815176843664437473}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8261728353243970714}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9086802304838005708}
   - component: {fileID: 953434745740265925}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Phase1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 8707086896814208181}
   - component: {fileID: 6511756477185167322}
   - component: {fileID: 71745842849904986}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Charge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,6 +201,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vulnerableState: {fileID: 3128797529520384670}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1025
 --- !u!1 &744316381230554085
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,7 +214,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2590894817797085478}
   - component: {fileID: 4175073151408061761}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Rig 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -247,6 +250,74 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Weight: 1
   m_Effectors: []
+--- !u!1 &765075479904172420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3404926481743665677}
+  - component: {fileID: 3171191755811396228}
+  - component: {fileID: 1006520017088488862}
+  m_Layer: 0
+  m_Name: Jumping
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3404926481743665677
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765075479904172420}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.70710707, z: -0, w: 0.70710653}
+  m_LocalPosition: {x: 56.96007, y: 0, z: 103.360016}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7621598487352454049}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3171191755811396228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765075479904172420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  locked: 0
+  separateFromChildren: 0
+  onActivatedEvent:
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
+--- !u!114 &1006520017088488862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 765075479904172420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 2
+  onEnterName: PhaseJump
+  onEnterTime: 0.1
+  animator: {fileID: 0}
 --- !u!1 &1053733621983007493
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,7 +329,7 @@ GameObject:
   - component: {fileID: 8894511086499521612}
   - component: {fileID: 3717492717591553122}
   - component: {fileID: 5780807699411459987}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Throw3Rocks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -330,7 +401,7 @@ GameObject:
   - component: {fileID: 4284968270464446879}
   - component: {fileID: 6428935015596433519}
   - component: {fileID: 3592638069182583911}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RightArmBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -434,7 +505,7 @@ GameObject:
   - component: {fileID: 5671127776208421113}
   - component: {fileID: 126441974074823178}
   - component: {fileID: 7217852629601543181}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HipsModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -517,7 +588,7 @@ GameObject:
   - component: {fileID: 4416563722316714777}
   - component: {fileID: 7424439547202899152}
   - component: {fileID: 6921931795675474696}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LArm2Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -601,7 +672,7 @@ GameObject:
   - component: {fileID: 603129085413971593}
   - component: {fileID: 4941204392850179246}
   - component: {fileID: 5420644829033431600}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WeakSpotHurtbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -696,7 +767,7 @@ GameObject:
   - component: {fileID: 519527631174952274}
   - component: {fileID: 6595548230148645859}
   - component: {fileID: 447304858857718919}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -780,7 +851,7 @@ GameObject:
   - component: {fileID: 161146035714112281}
   - component: {fileID: 572962550077989463}
   - component: {fileID: 7043564596891620169}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ChasePlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -895,7 +966,7 @@ GameObject:
   - component: {fileID: 7004386730100220366}
   - component: {fileID: 6980216592906173303}
   - component: {fileID: 7971453679277788648}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -976,7 +1047,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5984864944636918018}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1014,7 +1085,7 @@ GameObject:
   - component: {fileID: 2570159531908848333}
   - component: {fileID: 3358284324010869056}
   - component: {fileID: 4678523740298185455}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftArmHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1121,7 +1192,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 186755011472331060}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hips
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1156,7 +1227,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7621598487352454049}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: States
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1179,6 +1250,7 @@ Transform:
   - {fileID: 9086802304838005708}
   - {fileID: 6805546873660904409}
   - {fileID: 5844054968010383813}
+  - {fileID: 3404926481743665677}
   m_Father: {fileID: 4078672756610422405}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3711165476588370282
@@ -1193,7 +1265,7 @@ GameObject:
   - component: {fileID: 3573454440156196816}
   - component: {fileID: 5597870731239093975}
   - component: {fileID: 427377163140771581}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ChasePlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1300,7 +1372,7 @@ GameObject:
   - component: {fileID: 395331820501537528}
   - component: {fileID: 5552823822182501099}
   - component: {fileID: 8980094618035980736}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RArm2Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1382,7 +1454,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5844054968010383813}
   - component: {fileID: 983292371214125114}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Phase3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1441,7 +1513,7 @@ GameObject:
   - component: {fileID: 8916514798593899701}
   - component: {fileID: 6720987100034364506}
   - component: {fileID: 2384545872010017458}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Charge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1511,6 +1583,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vulnerableState: {fileID: 3546595742029006264}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 1025
 --- !u!1 &4466370110768821873
 GameObject:
   m_ObjectHideFlags: 0
@@ -1522,7 +1597,7 @@ GameObject:
   - component: {fileID: 7769443845967271072}
   - component: {fileID: 2124956681229868727}
   - component: {fileID: 3170870904362827581}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftLegModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1605,7 +1680,7 @@ GameObject:
   - component: {fileID: 8344197361559154074}
   - component: {fileID: 3128797529520384670}
   - component: {fileID: 7767763112658540258}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Vulnerable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1678,7 +1753,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6805546873660904409}
   - component: {fileID: 4840119504684331582}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Phase2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1731,7 +1806,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3544026637098969033}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftArm1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1766,7 +1841,7 @@ GameObject:
   - component: {fileID: 2946308092194881263}
   - component: {fileID: 7479023952342656700}
   - component: {fileID: 7807774449391776637}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SwatAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1839,7 +1914,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6512358775618095996}
   - component: {fileID: 7549086005159183272}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlaceholderRig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1907,7 +1982,7 @@ GameObject:
   - component: {fileID: 204135290507255750}
   - component: {fileID: 4227452142175699255}
   - component: {fileID: 7852378517922579102}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HeadModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1990,7 +2065,7 @@ GameObject:
   - component: {fileID: 914777500303450075}
   - component: {fileID: 8368739555346919557}
   - component: {fileID: 1176491135061824422}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Throw1Rocks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2059,7 +2134,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7827564249205947857}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RightArm2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2093,7 +2168,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3889901919883287322}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TopTorso
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2129,7 +2204,7 @@ GameObject:
   - component: {fileID: 2044919127443180719}
   - component: {fileID: 6642991369353550652}
   - component: {fileID: 3137832566649525915}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SwatAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2203,7 +2278,7 @@ GameObject:
   - component: {fileID: 5657760233383904877}
   - component: {fileID: 8717797945929106956}
   - component: {fileID: 1396798583408545350}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RArm1Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2284,7 +2359,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 929289257612687621}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2318,7 +2393,7 @@ GameObject:
   - component: {fileID: 7141326887600916597}
   - component: {fileID: 3546595742029006264}
   - component: {fileID: 2476655579889791895}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Vulnerable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2392,7 +2467,7 @@ GameObject:
   - component: {fileID: 4978804873895793031}
   - component: {fileID: 5355607866151976127}
   - component: {fileID: 1352703260072354423}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Throw3Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2469,7 +2544,7 @@ GameObject:
   - component: {fileID: 5792973645718825114}
   - component: {fileID: 4525405636842459293}
   - component: {fileID: 8314770680826068013}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Boss1Entity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2484,7 +2559,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6859160403900326409}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.70710707, z: -0, w: 0.70710653}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 80.16, y: 2.11, z: 23.2}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
@@ -2548,11 +2623,20 @@ MonoBehaviour:
   health: 0
   phase2Trigger: 125
   phase2Event:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 4760835121399366669}
+      _MemberName: TransitionTo
+      _PersistentArguments: []
   phase3Event:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 3573454440156196816}
+      _MemberName: TransitionTo
+      _PersistentArguments: []
+  jumpState: {fileID: 3171191755811396228}
   phase1Charge: {fileID: 8707086896814208181}
   phase3Charge: {fileID: 8916514798593899701}
+  phase2StartPos: {fileID: 0}
+  phase3StartPos: {fileID: 0}
   bossPhase: 0
 --- !u!54 &946219792292038393
 Rigidbody:
@@ -2579,7 +2663,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!136 &5910765145464477198
 CapsuleCollider:
@@ -2641,6 +2725,10 @@ MonoBehaviour:
   relativeVelocity: {x: 0, y: 0, z: 0}
   angularVelocity: 0
   turnToVelocity: 0
+  snapToGround: 1
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 1025
 --- !u!114 &4525405636842459293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2669,9 +2757,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d1732c013cfa754e8931789c70ea390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inaccuracy: 0
-  throwTime: 0
-  minVelocity: 0
+  inaccuracy: 3
+  throwTime: 2.5
+  minVelocity: 12
   projectiles:
     prefabObject: {fileID: 0}
     defaultPoolDepth: 1
@@ -2690,7 +2778,7 @@ MonoBehaviour:
     spawnPoint: {fileID: 0}
     rotate: 0
     autoSpawnRate: 0
-  muzzle: {fileID: 0}
+  muzzle: {fileID: 929289257612687621}
 --- !u!1 &7141971393007925235
 GameObject:
   m_ObjectHideFlags: 0
@@ -2700,7 +2788,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5800229572919715843}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RightArm1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2736,7 +2824,7 @@ GameObject:
   - component: {fileID: 8451743392824780223}
   - component: {fileID: 2782611196710878471}
   - component: {fileID: 6227484332247728622}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FaceHurtbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2831,7 +2919,7 @@ GameObject:
   - component: {fileID: 9149342833619030586}
   - component: {fileID: 2751140090907164859}
   - component: {fileID: 817791736415041344}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Throw1Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2902,7 +2990,7 @@ GameObject:
   - component: {fileID: 8670041928756778405}
   - component: {fileID: 585565042491448912}
   - component: {fileID: 6324266695107465005}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RightLegModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2983,7 +3071,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9114849381045086429}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RightLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3018,7 +3106,7 @@ GameObject:
   - component: {fileID: 4760835121399366669}
   - component: {fileID: 7488454010871324752}
   - component: {fileID: 3032780605950577628}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Idle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3123,7 +3211,7 @@ GameObject:
   - component: {fileID: 5099614604116702221}
   - component: {fileID: 4043978131617953225}
   - component: {fileID: 2585895933577777035}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LArm1Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3206,7 +3294,7 @@ GameObject:
   - component: {fileID: 4640864258986914409}
   - component: {fileID: 737240169945218950}
   - component: {fileID: 3957137454057866434}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TorsoModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3287,7 +3375,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2931243066232935674}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftArm2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
