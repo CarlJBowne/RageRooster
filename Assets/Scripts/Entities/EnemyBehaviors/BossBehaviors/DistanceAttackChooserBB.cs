@@ -19,59 +19,61 @@ public class DistanceAttackChooserBB : StateBehavior
         }
         [HideInInspector] public float attacksRandLength;
     }
-    private int currentDistance;
+    public Timer.Loop distanceCheckTimer;
 
-    public Timer.Loop timer;
+    private int currentDistance;
+    private Timer.Loop attackTimer = new(100f);
     private Transform playerTransform;
 
     public override void OnAwake()
     {
         playerTransform = Gameplay.Player.transform;
-        for (int i = 0; i < distances.Length; i++)
-            for (int j = 0; j < distances[i].attacks.Length; j++)
-                distances[i].attacksRandLength += distances[i].attacks[j].chance;
+        for (int i1 = 0; i1 < distances.Length; i1++)
+            for (int i2 = 0; i2 < distances[i1].attacks.Length; i2++)
+                distances[i1].attacksRandLength += distances[i1].attacks[i2].chance;
     }
 
     public override void OnFixedUpdate()
     {
-        timer.Tick(() =>
-        {
-            float activeDistance = (playerTransform.position - transform.position).XZ().magnitude;
-
-            if (activeDistance > distances[currentDistance].higherDistance)
-            {
-                do currentDistance++;
-                while (activeDistance > distances[currentDistance].higherDistance);
-                timer.rate = distances[currentDistance].timerTime;
-            }
-            if (currentDistance != 0 && activeDistance <= distances[currentDistance-1].higherDistance)
-            {
-                do currentDistance--;
-                while (currentDistance != 0 && activeDistance <= distances[currentDistance - 1].higherDistance);
-                timer.rate = distances[currentDistance].timerTime;
-            }
-
-            if (!Machine.signalReady) return;
-
-            float diceRoll = Random.Range(0f, distances[currentDistance].attacksRandLength);
-
-            int i = 0;
-            float passedChances = 0;
-            for (; i < distances[currentDistance].attacks.Length-1; )
-            {
-                if (diceRoll < distances[currentDistance].attacks[i + 1].chance) break;
-
-                i++;
-                passedChances += distances[currentDistance].attacks[i].chance;
-            }
-
-            Machine.SendSignal(distances[currentDistance].attacks[i].signalName, addToQueue: false);
-
-        });
+        distanceCheckTimer.Tick(UpdateDistance);
+        attackTimer.Tick(DoAttack);
     }
 
     public override void OnEnter(State prev, bool isFinal)
     {
-        timer.rate = distances[0].timerTime;
+        UpdateDistance();
+    }
+
+    public void UpdateDistance()
+    {
+        float checkDistance = (playerTransform.position - transform.position).XZ().magnitude;
+        int i = 0;
+        for (; i < distances.Length-1; i++) 
+            if (checkDistance < distances[i].higherDistance) 
+                break;
+        if(i != currentDistance)
+        {
+            currentDistance = i;
+            attackTimer.rate = distances[currentDistance].timerTime;
+        }
+    }
+
+    public void DoAttack()
+    {
+        if (!Machine.signalReady) return;
+
+        float diceRoll = Random.Range(0f, distances[currentDistance].attacksRandLength);
+
+        int i = 0;
+        float passedChances = 0;
+        for (; i < distances[currentDistance].attacks.Length - 1;)
+        {
+            if (diceRoll < distances[currentDistance].attacks[i].chance + passedChances) break;
+
+            i++;
+            passedChances += distances[currentDistance].attacks[i].chance;
+        }
+
+        Machine.SendSignal(distances[currentDistance].attacks[i].signalName, addToQueue: false);
     }
 }

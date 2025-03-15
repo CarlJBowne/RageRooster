@@ -22,6 +22,8 @@ public class BoulderThrowerBB : StateBehavior
 
     public void Launch()
     {
+        if (projectiles.prefabObject == null) return;
+
         Vector3 trueTarget = target.position + inaccuracy * Random.insideUnitCircle.ToXZ();
         Vector3 targetDistance = trueTarget - muzzle.position;
         Vector2 targetDistanceXY = new(targetDistance.XZ().magnitude, targetDistance.y);

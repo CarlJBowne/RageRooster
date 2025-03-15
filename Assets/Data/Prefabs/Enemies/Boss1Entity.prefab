@@ -945,14 +945,14 @@ MonoBehaviour:
     timerTime: 13
     attacks:
     - signalName: Nothing
-      chance: 0.7
+      chance: 1
     - signalName: Slam
       chance: 0.05
     - signalName: Charge
-      chance: 0.05
+      chance: 0.03
     attacksRandLength: 0
-  timer:
-    rate: 15
+  distanceCheckTimer:
+    rate: 1
     current: 0
     disabled: 0
 --- !u!1 &2567291271474092431
@@ -1357,8 +1357,8 @@ MonoBehaviour:
     - signalName: Charge
       chance: 0.02
     attacksRandLength: 0
-  timer:
-    rate: 2
+  distanceCheckTimer:
+    rate: 1
     current: 0
     disabled: 0
 --- !u!1 &3776284308157290650
@@ -2614,19 +2614,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 759470255da7d7941a38202edb95d10a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 200
+  maxHealth: 60
   damageEvent:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
   immuneTags: []
   health: 0
-  phase2Trigger: 125
+  phase2Trigger: 30
   phase2Event:
     _PersistentCalls:
     - _Target: {fileID: 4760835121399366669}
       _MemberName: TransitionTo
       _PersistentArguments: []
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
   phase3Event:
     _PersistentCalls:
     - _Target: {fileID: 3573454440156196816}
@@ -2637,7 +2648,7 @@ MonoBehaviour:
   phase3Charge: {fileID: 8916514798593899701}
   phase2StartPos: {fileID: 0}
   phase3StartPos: {fileID: 0}
-  bossPhase: 0
+  bossPhase: 1
 --- !u!54 &946219792292038393
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2721,7 +2732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20b4ae94135168a48850941761780279, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  influence: 0
+  influence: 1
   relativeVelocity: {x: 0, y: 0, z: 0}
   angularVelocity: 0
   turnToVelocity: 0
@@ -2729,6 +2740,7 @@ MonoBehaviour:
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 1025
+  velocityDisplay: {x: 0, y: 0, z: 0}
 --- !u!114 &4525405636842459293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2761,20 +2773,22 @@ MonoBehaviour:
   throwTime: 2.5
   minVelocity: 12
   projectiles:
-    prefabObject: {fileID: 0}
-    defaultPoolDepth: 1
+    prefabObject: {fileID: 8587716749453340891, guid: aca5f8b51cba47f4f88293234a23a13a,
+      type: 3}
+    defaultPoolDepth: 3
     canGrow: 1
     parent: {fileID: 0}
-    autoDisableTime: -1
-    spawnPoint: {fileID: 0}
+    autoDisableTime: 4
+    spawnPoint: {fileID: 929289257612687621}
     rotate: 0
     autoSpawnRate: 0
   warnings:
-    prefabObject: {fileID: 0}
-    defaultPoolDepth: 1
+    prefabObject: {fileID: 2443813439036209627, guid: eec77a9687cfe27479375d795d5f8bbf,
+      type: 3}
+    defaultPoolDepth: 3
     canGrow: 1
     parent: {fileID: 0}
-    autoDisableTime: -1
+    autoDisableTime: 2
     spawnPoint: {fileID: 0}
     rotate: 0
     autoSpawnRate: 0
@@ -2840,8 +2854,8 @@ Transform:
   m_GameObject: {fileID: 7422678674422534723}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.144, y: 0.189, z: 0}
-  m_LocalScale: {x: 0.08190065, y: 0.27168, z: 0.27168}
+  m_LocalPosition: {x: -0.278, y: 0.189, z: -0}
+  m_LocalScale: {x: 0.87265635, y: 0.47224545, z: 0.43646663}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5984864944636918018}
@@ -3196,8 +3210,8 @@ MonoBehaviour:
     - signalName: Throw3
       chance: 0.3333333
     attacksRandLength: 0
-  timer:
-    rate: 3
+  distanceCheckTimer:
+    rate: 0
     current: 0
     disabled: 0
 --- !u!1 &8132431002819998383

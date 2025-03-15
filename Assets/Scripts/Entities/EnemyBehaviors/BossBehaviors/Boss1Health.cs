@@ -14,7 +14,7 @@ public class Boss1Health : Health
     public Transform phase2StartPos;
     public Transform phase3StartPos;
 
-    [HideInEditMode] public int bossPhase = 0;
+    [HideInEditMode] public int bossPhase = 1;
     private bool phase2TriggerTriggered;
     private int stunCounter = 0;
     private Animator animator;
@@ -29,13 +29,13 @@ public class Boss1Health : Health
 
     protected override bool OverrideDamageable(Attack attack)
     {
-        if (attack.HasTag("OnWeakSpot")) return false;
+        if (attack.HasTag("OnWeakSpot") && attack.HasTag("GroundSlam")) return true;
         if (attack.HasTag("InEyes") && attack.HasTag("Egg"))
         {
             stunCounter++;
-            if (stunCounter == 3) Stun();
+            if (stunCounter == 3) Enrage();
         }
-        return true;
+        return false;
     }
 
 
@@ -50,7 +50,9 @@ public class Boss1Health : Health
     {
         moveAnim.SetTarget(phase2StartPos);
         jumpState.TransitionTo();
+        phase2TriggerTriggered = true;
         damagable = false;
+        bossPhase = 2;
     }
 
     public void BeginPhase3()
@@ -68,7 +70,7 @@ public class Boss1Health : Health
             3 => phase3StartPos,
             _ => null
         };
-        transform.position = dest.position + Vector3.up * 10f;
+        GetComponent<Rigidbody>().MovePosition(dest.position + Vector3.up * 10f);
     }
     public void EndPhaseLand()
     {
@@ -81,9 +83,14 @@ public class Boss1Health : Health
         moveAnim.SetTarget(Gameplay.Player.transform);
     }
 
-    public void Stun()
+    public void Enrage()
     {
         stunCounter = 0;
+        (bossPhase switch { 
+            1 => phase1Charge, 
+            3 => phase3Charge, 
+            _ => null 
+        }).TransitionTo();
     }
 
 

@@ -1,3 +1,4 @@
+using EditorAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class MovementAnimator : MonoBehaviour
 
     private Rigidbody rb;
     private Transform target;
+    [SerializeField, DisableInPlayMode, HideInEditMode] private Vector3 velocityDisplay;
     private void Awake()
     {
         TryGetComponent(out rb);
@@ -26,7 +28,22 @@ public class MovementAnimator : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(influence > 0)
+        if(influence == 1)
+        {
+            rb.velocity = transform.TransformDirection(relativeVelocity);
+
+            if (!Mathf.Approximately(angularVelocity, 0)) transform.eulerAngles = transform.eulerAngles + angularVelocity * transform.up;
+            else if (turnToVelocity > 0)
+            {
+                Vector3 targetDirection = target.position - transform.position;
+                targetDirection.y = 0;
+                transform.eulerAngles = Vector3.RotateTowards(transform.forward, targetDirection, turnToVelocity * 2 * Mathf.PI, 0).DirToRot();
+            }
+
+            if (snapToGround && Physics.Raycast(rb.centerOfMass, Vector3.down, out RaycastHit hitInfo, 100f, groundLayerMask))
+                transform.position = hitInfo.point;
+        }
+        else if(influence > 0)
         {
             Vector3 trueRelativeVelocity = transform.TransformDirection(relativeVelocity);
             rb.velocity = Vector3.MoveTowards(rb.velocity, trueRelativeVelocity, influence * (trueRelativeVelocity - rb.velocity).magnitude);
@@ -45,6 +62,7 @@ public class MovementAnimator : MonoBehaviour
             if (snapToGround && Physics.Raycast(rb.centerOfMass, Vector3.down, out RaycastHit hitInfo, 100f, groundLayerMask))
                 transform.position = hitInfo.point;
         }
+        velocityDisplay = rb.velocity;
     }
 
     public void SetTarget(Transform newTarget) => target = newTarget;

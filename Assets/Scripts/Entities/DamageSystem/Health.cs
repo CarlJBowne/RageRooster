@@ -23,7 +23,7 @@ public class Health : MonoBehaviour, IDamagable
 	[SerializeField] protected Attack.Tag[] immuneTags;
 
 	//Data
-	[SerializeField, HideInInspector] protected int health;
+	[SerializeField, HideInEditMode, DisableInPlayMode] protected int health;
 	protected bool damagable = true;
 
 	//Getters
@@ -36,7 +36,7 @@ public class Health : MonoBehaviour, IDamagable
 
     public bool Damage(Attack attack)
     {
-        if (!damagable || attack.amount < 1 || immuneTags.IncludesAny(attack.tags) || OverrideDamageable(attack)) return false;
+        if (!damagable || attack.amount < 1 || immuneTags.IncludesAny(attack.tags) || !OverrideDamageable(attack)) return false;
         OverrideDamageValue(ref attack);
 
         health -= attack.amount;
@@ -52,7 +52,12 @@ public class Health : MonoBehaviour, IDamagable
     protected virtual void OnDamage(Attack attack) => damageEvent?.Invoke(attack.amount);
     protected virtual void OnDeplete(Attack attack) => depleteEvent?.Invoke();
 
-	protected virtual bool OverrideDamageable(Attack attack) { return false; }
+    /// <summary>
+    /// Overrides whether this thing can be damaged under certain conditions
+    /// </summary>
+    /// <param name="attack">The attack fed in.</param>
+    /// <returns>Whether the attack successfully connects.</returns>
+	protected virtual bool OverrideDamageable(Attack attack) { return true; }
 	protected virtual void OverrideDamageValue(ref Attack attack) { }
 
     public bool Heal(int amount)
