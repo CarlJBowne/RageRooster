@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoulderThrowerBB : StateBehavior
+public class BoulderThrowerBB : MonoBehaviour
 {
     public float inaccuracy;
     public float throwTime;
@@ -11,31 +11,40 @@ public class BoulderThrowerBB : StateBehavior
 
     public ObjectPool projectiles;
     public ObjectPool warnings;
-    public Transform muzzle;
+    public Transform fakeMuzzle;
+    public Transform trueMuzzle;
 
     private Transform target;
 
-    public override void OnAwake()
+    public void Awake()
     {
         target = Gameplay.Player.transform;
+    }
+
+    private void Update()
+    {
+        warnings.Update();
+        projectiles.Update();
     }
 
     public void Launch()
     {
         if (projectiles.prefabObject == null) return;
 
-        Vector3 trueTarget = target.position + inaccuracy * Random.insideUnitCircle.ToXZ();
-        Vector3 targetDistance = trueTarget - muzzle.position;
+        Vector3 trueTarget = target.position + (inaccuracy * Random.insideUnitCircle.ToXZ());
+        trueMuzzle.position = fakeMuzzle.position;
+        Vector3 targetDistance = trueTarget - trueMuzzle.position;
+        trueMuzzle.eulerAngles = targetDistance.XZ().DirToRot();
         Vector2 targetDistanceXY = new(targetDistance.XZ().magnitude, targetDistance.y);
 
         warnings.Pump().SetPosition(trueTarget);
 
-        muzzle.eulerAngles = (trueTarget - muzzle.position).XZ().DirToRot();
-        PoolableObject boulder = projectiles.Pump();
-
         PhysicsPro.ThrowAt.WithTimeAndMinVelocity(targetDistanceXY, throwTime, -Physics.gravity.y, minVelocity, out float initialVelocity, out float angle);
-        muzzle.eulerAngles.Rotate(angle, muzzle.right);
-        boulder.rb.velocity = initialVelocity * muzzle.forward;
+
+        trueMuzzle.eulerAngles = trueMuzzle.eulerAngles - (Vector3.right * angle);
+        PoolableObject boulder = projectiles.Pump();
+        boulder.SetPosition(trueMuzzle.position);
+        boulder.rb.velocity = initialVelocity * trueMuzzle.forward; 
 
     }
 

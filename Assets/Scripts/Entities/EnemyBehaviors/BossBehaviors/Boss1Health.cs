@@ -8,6 +8,7 @@ public class Boss1Health : Health
     public int phase2Trigger;
     public UltEvents.UltEvent phase2Event;
     public UltEvents.UltEvent phase3Event;
+    public State phase1IdleState;
     public State jumpState;
     public State phase1Charge;
     public State phase3Charge;
@@ -19,12 +20,14 @@ public class Boss1Health : Health
     private int stunCounter = 0;
     private Animator animator;
     private MovementAnimator moveAnim;
+    private Vector3 respawnPoint;
 
     protected override void Awake()
     {
         base.Awake();
         animator = GetComponent<Animator>();
         moveAnim = GetComponent<MovementAnimator>();
+        respawnPoint = transform.position;
     }
 
     protected override bool OverrideDamageable(Attack attack)
@@ -43,7 +46,7 @@ public class Boss1Health : Health
     {
         damageEvent?.Invoke(attack.amount);
 
-        if (!phase2TriggerTriggered && GetCurrentHealth() < phase2Trigger) BeginPhase2();
+        if (!phase2TriggerTriggered && GetCurrentHealth() <= phase2Trigger) BeginPhase2();
     }
 
     public void BeginPhase2()
@@ -93,7 +96,14 @@ public class Boss1Health : Health
         }).TransitionTo();
     }
 
-
+    public void ResetBoss()
+    {
+        GetComponent<Rigidbody>().MovePosition(respawnPoint);
+        gameObject.SetActive(false);
+        health = maxHealth;
+        phase2TriggerTriggered = false;
+        phase1IdleState.TransitionTo();
+    }
 
 
 

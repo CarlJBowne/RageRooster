@@ -40,8 +40,11 @@ public class MovementAnimator : MonoBehaviour
                 transform.eulerAngles = Vector3.RotateTowards(transform.forward, targetDirection, turnToVelocity * 2 * Mathf.PI, 0).DirToRot();
             }
 
-            if (snapToGround && Physics.Raycast(rb.centerOfMass, Vector3.down, out RaycastHit hitInfo, 100f, groundLayerMask))
-                transform.position = hitInfo.point;
+            if (snapToGround && Physics.Raycast(rb.centerOfMass, Vector3.down, out RaycastHit hitInfo, 300f, groundLayerMask))
+            {
+                rb.MovePosition(hitInfo.point);
+                rb.velocity = rb.velocity.XZ();
+            }
         }
         else if(influence > 0)
         {
@@ -59,8 +62,12 @@ public class MovementAnimator : MonoBehaviour
                 transform.eulerAngles = Vector3.RotateTowards(transform.forward, targetDirection, influence * turnToVelocity * 2 * Mathf.PI, 0).DirToRot();
             }
 
-            if (snapToGround && Physics.Raycast(rb.centerOfMass, Vector3.down, out RaycastHit hitInfo, 100f, groundLayerMask))
-                transform.position = hitInfo.point;
+            if (snapToGround && Physics.Raycast(rb.centerOfMass, Vector3.down, out RaycastHit hitInfo, 300f, groundLayerMask))
+            {
+                rb.MovePosition(hitInfo.point);
+                rb.velocity = rb.velocity.XZ();
+            }
+                
         }
         velocityDisplay = rb.velocity;
     }

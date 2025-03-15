@@ -26,7 +26,8 @@ public static class Timer
 
         public void Tick(Action callback)
         {
-            if (disabled) return;
+            if (disabled || rate < 0) return;
+            if (rate == 0) callback?.Invoke();
             current += Time.deltaTime;
             if(current > rate)
             {

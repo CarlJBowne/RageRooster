@@ -19,7 +19,7 @@ public class DistanceAttackChooserBB : StateBehavior
         }
         [HideInInspector] public float attacksRandLength;
     }
-    public Timer.Loop distanceCheckTimer;
+    public Timer.Loop distanceCheckTimer = new(1f);
 
     private int currentDistance;
     private Timer.Loop attackTimer = new(100f);
@@ -39,10 +39,7 @@ public class DistanceAttackChooserBB : StateBehavior
         attackTimer.Tick(DoAttack);
     }
 
-    public override void OnEnter(State prev, bool isFinal)
-    {
-        UpdateDistance();
-    }
+    public override void OnEnter(State prev, bool isFinal) => UpdateDistance();
 
     public void UpdateDistance()
     {
@@ -51,11 +48,8 @@ public class DistanceAttackChooserBB : StateBehavior
         for (; i < distances.Length-1; i++) 
             if (checkDistance < distances[i].higherDistance) 
                 break;
-        if(i != currentDistance)
-        {
-            currentDistance = i;
-            attackTimer.rate = distances[currentDistance].timerTime;
-        }
+        currentDistance = i;
+        attackTimer.rate = distances[currentDistance].timerTime;
     }
 
     public void DoAttack()
