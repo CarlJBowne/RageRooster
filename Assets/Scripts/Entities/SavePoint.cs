@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class SavePoint : MonoBehaviour, IInteractable
 {
     public Transform SpawnPoint;
+    public UltEvents.UltEvent onSpawnEvent;
 
     bool canInteract = true;
     bool IInteractable.canInteract => canInteract;
@@ -44,21 +45,21 @@ public class SavePoint : MonoBehaviour, IInteractable
     bool IInteractable.Interaction()
     {
         new CoroutinePlus(Save_CR(), this);
-        return true;
-    }
-    private IEnumerator Save_CR()
-    {
-        Save();
-
-        Light light = gameObject.GetOrAddComponent<Light>();
-        light.type = LightType.Point;
-        light.intensity = 10;
-        light.color = Color.green;
-        while(light.intensity > 0)
+        IEnumerator Save_CR()
         {
-            yield return null;
-            light.intensity -= 0.1f; 
+            Save();
+
+            Light light = gameObject.GetOrAddComponent<Light>();
+            light.type = LightType.Point;
+            light.intensity = 10;
+            light.color = Color.green;
+            while (light.intensity > 0)
+            {
+                yield return null;
+                light.intensity -= 0.1f;
+            }
         }
+        return true;
     }
 
 }
