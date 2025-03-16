@@ -170,7 +170,21 @@ MonoBehaviour:
   onActivatedEvent:
     _PersistentCalls: []
   signals:
-    _serializedList: []
+    _serializedList:
+    - Key: Charge
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7810229896687099392}
+          _MemberName: Play
+          _PersistentArguments:
+          - _Type: 2
+            _Int: 0
+            _String: Charge
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 0
 --- !u!114 &6511756477185167322
 MonoBehaviour:
@@ -204,6 +218,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1025
+  checkDistance: 3.5
 --- !u!1 &765075479904172420
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,7 +374,7 @@ GameObject:
   - component: {fileID: 6428935015596433519}
   - component: {fileID: 3592638069182583911}
   m_Layer: 7
-  m_Name: RightArmBox
+  m_Name: LeftArmBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -848,6 +863,20 @@ MonoBehaviour:
     _PersistentCalls: []
   signals:
     _serializedList:
+    - Key: Flinch
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7810229896687099392}
+          _MemberName: Play
+          _PersistentArguments:
+          - _Type: 2
+            _Int: 0
+            _String: Flinch
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
     - Key: Slam
       Value:
         _PersistentCalls:
@@ -1043,7 +1072,7 @@ GameObject:
   - component: {fileID: 3358284324010869056}
   - component: {fileID: 4678523740298185455}
   m_Layer: 7
-  m_Name: LeftArmHitbox
+  m_Name: RightArmHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1261,7 +1290,45 @@ MonoBehaviour:
   onActivatedEvent:
     _PersistentCalls: []
   signals:
-    _serializedList: []
+    _serializedList:
+    - Key: Flinch
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7810229896687099392}
+          _MemberName: Play
+          _PersistentArguments:
+          - _Type: 2
+            _Int: 0
+            _String: Flinch
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: Slam
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 6642991369353550652}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: Throw1
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8368739555346919557}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: Throw3
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3717492717591553122}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
+    - Key: Charge
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8916514798593899701}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
   lockReady: 0
 --- !u!114 &5597870731239093975
 MonoBehaviour:
@@ -1509,7 +1576,21 @@ MonoBehaviour:
   onActivatedEvent:
     _PersistentCalls: []
   signals:
-    _serializedList: []
+    _serializedList:
+    - Key: Charge
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7810229896687099392}
+          _MemberName: Play
+          _PersistentArguments:
+          - _Type: 2
+            _Int: 0
+            _String: Charge
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 0
 --- !u!114 &6720987100034364506
 MonoBehaviour:
@@ -1543,6 +1624,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1025
+  checkDistance: 3.5
 --- !u!1 &4466370110768821873
 GameObject:
   m_ObjectHideFlags: 0
@@ -1677,6 +1759,20 @@ MonoBehaviour:
     _PersistentCalls: []
   signals:
     _serializedList:
+    - Key: Hit
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7810229896687099392}
+          _MemberName: Play
+          _PersistentArguments:
+          - _Type: 2
+            _Int: 0
+            _String: Damage
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
     - Key: ReturnFromStun
       Value:
         _PersistentCalls:
@@ -2393,6 +2489,20 @@ MonoBehaviour:
     _PersistentCalls: []
   signals:
     _serializedList:
+    - Key: Hit
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7810229896687099392}
+          _MemberName: Play
+          _PersistentArguments:
+          - _Type: 2
+            _Int: 0
+            _String: Damage
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
     - Key: ReturnFromStun
       Value:
         _PersistentCalls:
@@ -2523,7 +2633,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 80.16, y: 2.11, z: 23.2}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7621598487352454049}
@@ -2626,10 +2736,7 @@ MonoBehaviour:
     - _Target: {fileID: 3573454440156196816}
       _MemberName: TransitionTo
       _PersistentArguments: []
-  phase1IdleState: {fileID: 0}
   jumpState: {fileID: 3171191755811396228}
-  phase1Charge: {fileID: 8707086896814208181}
-  phase3Charge: {fileID: 8916514798593899701}
   phase2StartPos: {fileID: 0}
   phase3StartPos: {fileID: 0}
   bossPhase: 1
@@ -2737,7 +2844,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d1732c013cfa754e8931789c70ea390, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inaccuracy: 3
+  inaccuracy: 7
   throwTime: 2.5
   minVelocity: 12
   projectiles:
@@ -3175,7 +3282,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distances:
   - higherDistance: 200000
-    timerTime: 3
+    timerTime: 1
     attacks:
     - signalName: Throw1
       chance: 0.6666666

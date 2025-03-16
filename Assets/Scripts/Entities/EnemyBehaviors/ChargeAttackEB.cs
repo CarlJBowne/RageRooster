@@ -13,6 +13,7 @@ public class ChargeAttackEB : StateBehavior
 
     public State vulnerableState;
     public LayerMask layerMask;
+    public float checkDistance;
     //float wallCheckDistance = 0.5f;
     public override void OnEnter(State prev, bool isFinal)
     {
@@ -28,7 +29,7 @@ public class ChargeAttackEB : StateBehavior
         //{
         //    TransitionTo(vulnerableState);
         //}
-        if (Physics.Raycast(transform.position + rb.centerOfMass, transform.forward, out RaycastHit hitInfo, (rb.velocity.magnitude * .02f)+2, layerMask, QueryTriggerInteraction.Ignore)) 
+        if (Physics.Raycast(transform.position + rb.centerOfMass, transform.forward, out RaycastHit hitInfo, (rb.velocity.magnitude * .02f)+ checkDistance, layerMask, QueryTriggerInteraction.Ignore)) 
             vulnerableState.TransitionTo();
     }
 }

@@ -42,7 +42,7 @@ public class MovementAnimator : MonoBehaviour
 
             if (snapToGround && Physics.Raycast(rb.centerOfMass, Vector3.down, out RaycastHit hitInfo, 300f, groundLayerMask))
             {
-                rb.MovePosition(hitInfo.point);
+                rb.MovePosition(rb.position - Vector3.up * hitInfo.distance);
                 rb.velocity = rb.velocity.XZ();
             }
         }
@@ -64,7 +64,7 @@ public class MovementAnimator : MonoBehaviour
 
             if (snapToGround && Physics.Raycast(rb.centerOfMass, Vector3.down, out RaycastHit hitInfo, 300f, groundLayerMask))
             {
-                rb.MovePosition(hitInfo.point);
+                rb.MovePosition(rb.position - Vector3.up * hitInfo.distance);
                 rb.velocity = rb.velocity.XZ();
             }
                 
