@@ -8,6 +8,7 @@ public class PlayerAiming : PlayerMovementEffector
 {
     public float walkingSpeed;
     public Vector2 rotationSpeed;
+    public float rotationAccelleration;
     public Vector2 yRotationLimit = new(-90, 45);
     /// <summary>
     /// The Player Ranged Component managing everything.
@@ -17,23 +18,18 @@ public class PlayerAiming : PlayerMovementEffector
 
     [HideProperty] public float pointerVRot = 0;
     // private Vector3 spine1Offset = new(-0.447f, -0.728f, 6.168f); Let this be a warning to all those who oppose me.
-
+    private Vector2 cursorSpaceVelocity;
 
     public override void OnFixedUpdate()
     {
-        Vector2 mouseInput = Input.Camera;
+        cursorSpaceVelocity = Vector2.MoveTowards(cursorSpaceVelocity, Input.Camera.Sign() * rotationSpeed, rotationAccelleration);
 
-        playerRanged.pointerH = Mathf.MoveTowards(playerRanged.pointerH,
-            playerRanged.pointerH + mouseInput.x,
-            rotationSpeed.x * Mathf.PI * Time.fixedTime);
+        playerRanged.pointerH += cursorSpaceVelocity.x * Mathf.PI * Time.fixedTime; 
 
-        pointerVRot = Mathf.MoveTowards(
-            pointerVRot, pointerVRot - (mouseInput.y * rotationSpeed.y),
-            rotationSpeed.y * Mathf.PI * Time.fixedTime
-            ).Clamp(yRotationLimit.x, yRotationLimit.y);
+        pointerVRot = (pointerVRot - cursorSpaceVelocity.y * Mathf.PI * Time.fixedTime).Clamp(yRotationLimit.x, yRotationLimit.y);
         playerRanged.pointerV = pointerVRot;
 
-        base.OnFixedUpdate();
+        base.OnFixedUpdate(); 
     }
     //public void EnterMode()
     //{

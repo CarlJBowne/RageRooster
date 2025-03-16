@@ -24,6 +24,9 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
 
     private double lastLoadTime;
 
+    public static System.Action maxAmmoUpdateCallback;
+    public static System.Action currencyUpdateCallback;
+
 
     public static void Save() => Get().Serialize().SaveToFile(SaveFilePath, SaveFileName);
 
@@ -69,6 +72,13 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
         GlobalState.currency += currency;
         if (GlobalState.currency < 0) GlobalState.currency = 0;
         UIHUDSystem.SetCurrencyText(GlobalState.currency > 0 ? GlobalState.currency.ToString() : "Broke.");
+        currencyUpdateCallback?.Invoke();
+    }
+
+    public static void AddMaxAmmo(int offset)
+    {
+        maxAmmo += offset;
+        maxAmmoUpdateCallback?.Invoke();
     }
 
     public static void DeleteSaveFile(int id)

@@ -52,6 +52,7 @@ public class PlayerRanged : MonoBehaviour
         eggCapacity = GlobalState.maxAmmo;
         eggAmount = eggCapacity;
         UI.UpdateAmmo(eggAmount);
+        GlobalState.maxAmmoUpdateCallback += UpdateMaxAmmo;
     }
 
     private void FixedUpdate()
@@ -69,6 +70,10 @@ public class PlayerRanged : MonoBehaviour
         grabber.LateUpdate();
     }
 
+    private void OnDestroy()
+    {
+        GlobalState.maxAmmoUpdateCallback -= UpdateMaxAmmo;
+    }
 
     public void GrabWhenAiming(PlayerGrabAction grabState, bool held)
     {
@@ -313,4 +318,10 @@ public class PlayerRanged : MonoBehaviour
         eggAmount += offset;
         UI.UpdateAmmo(eggAmount);
     }
+    void UpdateMaxAmmo()
+    {
+        eggCapacity = GlobalState.maxAmmo;
+        UI.UpdateAmmo(eggAmount);
+    }
+
 }

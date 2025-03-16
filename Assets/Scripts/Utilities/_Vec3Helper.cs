@@ -235,7 +235,15 @@ public static class _Vector2Helper
 		v.y = Random.Range(0, y);
 		return v;
 	}
-						 
+	
+	public static Vector2 Sign(this Vector2 v)
+	{
+        Vector2 result = v;
+		v.x = Mathf.Sign(v.x);
+		v.y = Mathf.Sign(v.y);
+		return result;
+	}
+
 }
 
 public static class Eular

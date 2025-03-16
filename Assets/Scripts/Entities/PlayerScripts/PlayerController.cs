@@ -27,8 +27,6 @@ public class PlayerController : PlayerStateBehavior
     public Upgrade ragingChargeUpgrade;
     public Upgrade hellcopterUpgrade;
 
-    public System.Action onAnimatorMove;
-
 	#endregion
 	#region Data
 
@@ -107,10 +105,13 @@ public class PlayerController : PlayerStateBehavior
     }
     public void BeginJumpInputBuffer() => jumpInput = jumpBuffer + Time.fixedDeltaTime;
 
-    private void OnAnimatorMove() => onAnimatorMove?.Invoke();
 
 
-    private void BeginActionEvent(InputAction.CallbackContext callbackContext) => Machine.SendSignal(callbackContext.action.name);
+    private void BeginActionEvent(InputAction.CallbackContext callbackContext)
+    {
+        if (gameObject.activeSelf == false || Time.timeScale == 0 || PauseMenu.Active) return;
+        Machine.SendSignal(callbackContext.action.name);
+    }
     public void BeginActionEvent(string name) => Machine.SendSignal(name);
 
     public void ReadyNextAction() => Machine.ReadySignal();
