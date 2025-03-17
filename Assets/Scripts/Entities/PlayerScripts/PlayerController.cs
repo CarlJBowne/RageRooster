@@ -13,16 +13,19 @@ public class PlayerController : PlayerStateBehavior
 
 	public float jumpBuffer = 0.3f;
 
-	public PlayerWallJump wallJumpState;
     public PlayerAirborneMovement airChargeState;
     public PlayerAirborneMovement airChargeFallState;
+	public PlayerWallJump wallJumpState;
     public PlayerRanged ranged;
     public PlayerAiming aimingState;
-	public Upgrade groundSlamUpgrade;
+    public State groundedSpin;
+    public State airSpin;
+    public PlayerHellcopterMovement airUpwardTornado;
+    public State ventGlideState; 
+    public Upgrade groundSlamUpgrade;
 	public Upgrade wallJumpUpgrade;
     public Upgrade ragingChargeUpgrade;
-
-    public System.Action onAnimatorMove;
+    public Upgrade hellcopterUpgrade;
 
 	#endregion
 	#region Data
@@ -46,11 +49,9 @@ public class PlayerController : PlayerStateBehavior
         input.attackTap.performed       += BeginActionEvent;
         input.attackHold.performed      += BeginActionEvent;
         input.grabTap.performed         += BeginActionEvent;
-        input.grabHold.performed        += BeginActionEvent;
         input.parry.performed           += BeginActionEvent;
         input.chargeTap.performed       += BeginActionEvent;
-        input.chargeHold.performed      += BeginActionEvent;
-        input.shoot.performed           += BeginActionEvent;
+        input.interact.performed        += BeginActionEvent;
 
         input.jump.canceled             += JumpRelease;
         input.shootMode.performed       += ShootModeActivate;
@@ -64,11 +65,9 @@ public class PlayerController : PlayerStateBehavior
         input.attackTap.performed       -= BeginActionEvent;
         input.attackHold.performed      -= BeginActionEvent;
         input.grabTap.performed         -= BeginActionEvent;
-        input.grabHold.performed        -= BeginActionEvent;
         input.parry.performed           -= BeginActionEvent;
         input.chargeTap.performed       -= BeginActionEvent;
-        input.chargeHold.performed      -= BeginActionEvent;
-        input.shoot.performed           -= BeginActionEvent;
+        input.interact.performed        -= BeginActionEvent;
 
         input.jump.canceled             -= JumpRelease;
         input.shootMode.performed       -= ShootModeActivate;
@@ -82,10 +81,10 @@ public class PlayerController : PlayerStateBehavior
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
 		camAdjustedMovement = input.movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
 
-		if (Machine.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
-            sGlide.TransitionTo();
-        else if(Machine.signalReady && !input.jump.IsPressed() && sGlide) 
-            sFall.TransitionTo();
+		//if (Machine.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
+        //    sGlide.TransitionTo();
+        //else if(Machine.signalReady && !input.jump.IsPressed() && sGlide) 
+        //    sFall.TransitionTo();
 
         if (Machine.freeLookCamera != null)
         {
@@ -106,10 +105,13 @@ public class PlayerController : PlayerStateBehavior
     }
     public void BeginJumpInputBuffer() => jumpInput = jumpBuffer + Time.fixedDeltaTime;
 
-    private void OnAnimatorMove() => onAnimatorMove?.Invoke();
 
 
-    private void BeginActionEvent(InputAction.CallbackContext callbackContext) => Machine.SendSignal(callbackContext.action.name);
+    private void BeginActionEvent(InputAction.CallbackContext callbackContext)
+    {
+        if (gameObject.activeSelf == false || Time.timeScale == 0 || PauseMenu.Active) return;
+        Machine.SendSignal(callbackContext.action.name);
+    }
     public void BeginActionEvent(string name) => Machine.SendSignal(name);
 
     public void ReadyNextAction() => Machine.ReadySignal();
@@ -117,11 +119,21 @@ public class PlayerController : PlayerStateBehavior
 
 
 
-    public void ParryAction()
+    public void ParryActionAirborne()
     {
-        if(interacter.TryInteract()) return;
+        if(hellcopterUpgrade)
+        {
+            airSpin.TransitionTo();
+            if (playerMovementBody.isOverVent) Machine.SendSignal("EnterVent", addToQueue: false, overrideReady: true);
+        }
+    }
 
-        //Do Parry move here.
+    public void MidJumpJumpAction()
+    {
+        if (!wallJumpState.WallJump(transform.forward))
+        {
+            (!playerMovementBody.isOverVent ? sGlide : ventGlideState).TransitionTo();
+        }
     }
 
     //Other events.

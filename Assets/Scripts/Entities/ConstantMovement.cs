@@ -50,4 +50,6 @@ public class ConstantMovement : MonoBehaviour
         this.speed = speed;
         this.direction = direction;
     }
+
+    public void ResetDownwardVelocity() => downwardsVelocity = 0;
 }

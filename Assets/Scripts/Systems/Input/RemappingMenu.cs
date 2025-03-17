@@ -25,7 +25,7 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
     public void UpdateAllIcons()
     {foreach (ButtonEntry item in buttons) item.UpdateImages();}
     public void ClearAllOverrides() 
-    {foreach (var item in buttons) item.ClearOverrides();}
+    {foreach (ButtonEntry item in buttons) item.ClearOverrides();}
 
     public JToken Serialize()=> new JObject(
         new JProperty("Jump",       buttons[0].Serialize()),
@@ -33,7 +33,7 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
         new        JProperty("Parry",      buttons[2].Serialize()),
         new        JProperty("Grab",       buttons[3].Serialize()),
         new        JProperty("Shoot",      buttons[4].Serialize()),
-        new        JProperty("ShootMode",  buttons[5].Serialize()),
+        new        JProperty("Interact",  buttons[5].Serialize()),
         new        JProperty("Charge",     buttons[6].Serialize())
             );
     public void Deserialize(JToken Data)
@@ -43,8 +43,23 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
         buttons[2].Deserialize(Data["Parry"]);
         buttons[3].Deserialize(Data["Grab"]);
         buttons[4].Deserialize(Data["Shoot"]);
-        buttons[5].Deserialize(Data["ShootMode"]);
+        buttons[5].Deserialize(Data["Interact"] ?? Data["ShootMode"]);
         buttons[6].Deserialize(Data["Charge"]);
+    }
+
+    /// <summary>
+    /// Rebinding appears to not work on the Input class because it creates a new instance and this system makes changes to the base asset. This Method fixes that on startup.
+    /// </summary>
+    public void TargetInput()
+    {
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].main = Input.Get().asset.FindAction(buttons[i].main.action.name).Reference();
+            for (int j = 0; j < buttons[i].relatives.Length; j++)
+            {
+                buttons[i].relatives[j] = Input.Get().asset.FindAction(buttons[i].relatives[j].action.name).Reference();
+            }
+        }
     }
 
     [System.Serializable]

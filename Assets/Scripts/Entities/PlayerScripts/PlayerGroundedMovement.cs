@@ -50,11 +50,11 @@ public class PlayerGroundedMovement : PlayerMovementEffector
 
     private void HorizontalMain(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control)
     {
-        float deltaTime = Time.fixedDeltaTime / 0.02f;
+        float deltaTime = Time.deltaTime * 50;
         Vector3 controlDirection = control.normalized;
         float controlMag = control.magnitude;
 
-        bool condition = (!needChargeButton || Input.ChargeHold.IsPressed()) && 
+        bool condition = (!needChargeButton || Input.ChargeTap.IsPressed()) && 
                          (!needRagingUpgrade || playerController.ragingChargeUpgrade)
                          ;
 
@@ -63,22 +63,20 @@ public class PlayerGroundedMovement : PlayerMovementEffector
             float Dot = Vector3.Dot(controlDirection, currentDirection);
 
             if (maxTurnSpeed > 0)
-                currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0);
+                currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.deltaTime, 0);
 
             if (!outwardTurn) currentSpeed *= Dot;
 
-            if(currentSpeed < maxSpeed || (condition && currentSpeed < nextPhase.maxSpeed))
+            if (currentSpeed < maxSpeed || (condition && currentSpeed < nextPhase.maxSpeed))
             {
                 currentSpeed = !condition
-                    ? (currentSpeed + (controlMag * acceleration)).Max(maxSpeed) * deltaTime
-                    : (currentSpeed + (controlMag * nextPhase.acceleration)).Max(nextPhase.maxSpeed) * deltaTime;
-            }                
+                    ? currentSpeed.MoveUp(controlMag * acceleration * deltaTime, maxSpeed)
+                    : currentSpeed.MoveUp(controlMag * nextPhase.acceleration * deltaTime, nextPhase.maxSpeed);
+            }
             else if (currentSpeed > maxSpeed)
-                currentSpeed = (currentSpeed - (controlMag * decceleration)).Min(maxSpeed) * deltaTime;
+                currentSpeed = currentSpeed.MoveDown((1 - controlMag) * decceleration * deltaTime, maxSpeed);
         }
-        else currentSpeed = (currentSpeed - (currentSpeed * stopping * deltaTime)).Min(0);
-
-        //currentSpeed = (currentSpeed + speedAlter).Min(0);
+        else currentSpeed = currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0);
 
         if (currentSpeed >= nextPhaseThreshold && nextPhase != null && condition) nextPhase.state.TransitionTo();
         else if (currentSpeed < prevPhaseThreshold && prevPhase != null) prevPhase.state.TransitionTo();
