@@ -11,7 +11,6 @@ public class SavePoint : MonoBehaviour, IInteractable
 
     bool canInteract = true;
     bool IInteractable.canInteract => canInteract;
-
     
     public void Checkpoint()
     {
@@ -21,11 +20,11 @@ public class SavePoint : MonoBehaviour, IInteractable
     
     public void Save() => GlobalState.Save();
 #if UNITY_EDITOR
-    [Button]
-    private void BeginFromHere()
+    [Button("Play from here.")]
+    public void BeginFromHere()
     {
-        UnityEditor.EditorApplication.isPlaying = true;
-        GetComponentInParent<ZoneRoot>().SetSpawn(this);
+        EditorState.LoadFromSavePointID = GetID();
+        UnityEditor.EditorApplication.isPlaying = true; 
     }
 #endif
 
