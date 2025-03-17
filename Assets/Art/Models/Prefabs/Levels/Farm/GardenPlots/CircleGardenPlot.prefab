@@ -27,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1078973625177037416}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7069848, y: 0, z: -0, w: 0.7072287}
+  m_LocalRotation: {x: -0.6531689, y: 0.27055126, z: 0.27064458, w: 0.6533942}
   m_LocalPosition: {x: -0.1214447, y: 10.628018, z: 0.023245472}
   m_LocalScale: {x: 152.04399, y: 152.04399, z: 152.04399}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2147865054203475836}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 45}
 --- !u!33 &8050318406830918773
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -180,6 +180,7 @@ GameObject:
   - component: {fileID: 6831069827031662443}
   - component: {fileID: 8808293033202724747}
   - component: {fileID: 5855406557426765657}
+  - component: {fileID: 6111344605498251500}
   m_Layer: 0
   m_Name: CirclePlotDirt
   m_TagString: Untagged
@@ -252,6 +253,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6111344605498251500
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6205989951670905173}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -434770755016519346, guid: 77be7b1d81163dd4d8eb950772b194fe, type: 3}
 --- !u!1 &8435923858358599885
 GameObject:
   m_ObjectHideFlags: 0
