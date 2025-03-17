@@ -2026,11 +2026,6 @@ PrefabInstance:
       propertyPath: phase2Event._PersistentCalls.Array.data[1]._Target
       value: 
       objectReference: {fileID: 5673445301558417442}
-    - target: {fileID: 1883925095344967230, guid: a8017b446c517a548afe1c06a922d484,
-        type: 3}
-      propertyPath: depleteEvent._PersistentCalls.Array.data[1]._Target
-      value: 
-      objectReference: {fileID: 6080435258496747350}
     - target: {fileID: 4078672756610422405, guid: a8017b446c517a548afe1c06a922d484,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2135,6 +2130,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1896234128061659670}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &5212784016330976280 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 5910765145464477198, guid: a8017b446c517a548afe1c06a922d484,
+    type: 3}
+  m_PrefabInstance: {fileID: 1896234128061659670}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4154597852111928961
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2146,7 +2147,7 @@ PrefabInstance:
     - target: {fileID: 1397913793775387855, guid: 6ec54ea628c80164a8279f37f545e574,
         type: 3}
       propertyPath: onSpawnEvent._PersistentCalls.Array.size
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1397913793775387855, guid: 6ec54ea628c80164a8279f37f545e574,
         type: 3}
@@ -2185,6 +2186,11 @@ PrefabInstance:
       objectReference: {fileID: 5673445301558417442}
     - target: {fileID: 1397913793775387855, guid: 6ec54ea628c80164a8279f37f545e574,
         type: 3}
+      propertyPath: onSpawnEvent._PersistentCalls.Array.data[7]._Target
+      value: 
+      objectReference: {fileID: 5212784016330976280}
+    - target: {fileID: 1397913793775387855, guid: 6ec54ea628c80164a8279f37f545e574,
+        type: 3}
       propertyPath: onSpawnEvent._PersistentCalls.Array.data[0]._MemberName
       value: ResetBoss
       objectReference: {fileID: 0}
@@ -2217,6 +2223,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onSpawnEvent._PersistentCalls.Array.data[6]._MemberName
       value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 1397913793775387855, guid: 6ec54ea628c80164a8279f37f545e574,
+        type: 3}
+      propertyPath: onSpawnEvent._PersistentCalls.Array.data[7]._MemberName
+      value: set_enabled
       objectReference: {fileID: 0}
     - target: {fileID: 1397913793775387855, guid: 6ec54ea628c80164a8279f37f545e574,
         type: 3}
@@ -2255,6 +2266,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1397913793775387855, guid: 6ec54ea628c80164a8279f37f545e574,
         type: 3}
+      propertyPath: onSpawnEvent._PersistentCalls.Array.data[7]._PersistentArguments.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1397913793775387855, guid: 6ec54ea628c80164a8279f37f545e574,
+        type: 3}
       propertyPath: onSpawnEvent._PersistentCalls.Array.data[3]._PersistentArguments.Array.data[0]._Int
       value: 1
       objectReference: {fileID: 0}
@@ -2271,6 +2287,11 @@ PrefabInstance:
     - target: {fileID: 1397913793775387855, guid: 6ec54ea628c80164a8279f37f545e574,
         type: 3}
       propertyPath: onSpawnEvent._PersistentCalls.Array.data[6]._PersistentArguments.Array.data[0]._Int
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1397913793775387855, guid: 6ec54ea628c80164a8279f37f545e574,
+        type: 3}
+      propertyPath: onSpawnEvent._PersistentCalls.Array.data[7]._PersistentArguments.Array.data[0]._Int
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1397913793775387855, guid: 6ec54ea628c80164a8279f37f545e574,
@@ -2306,6 +2327,11 @@ PrefabInstance:
     - target: {fileID: 1397913793775387855, guid: 6ec54ea628c80164a8279f37f545e574,
         type: 3}
       propertyPath: onSpawnEvent._PersistentCalls.Array.data[6]._PersistentArguments.Array.data[0]._Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1397913793775387855, guid: 6ec54ea628c80164a8279f37f545e574,
+        type: 3}
+      propertyPath: onSpawnEvent._PersistentCalls.Array.data[7]._PersistentArguments.Array.data[0]._Type
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2096329586177861930, guid: 6ec54ea628c80164a8279f37f545e574,
