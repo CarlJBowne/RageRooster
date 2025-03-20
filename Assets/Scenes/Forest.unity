@@ -2108,12 +2108,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack:
-    amount: 1
-    name: Pit
-    wham: 0
-    velocity: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
+  currentAttackID: 0
+  sourceEntity: {fileID: 0}
+  attacks: []
+  additionalTags: []
+  enabled: 1
 --- !u!65 &114423467
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -13261,12 +13260,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack:
-    amount: 1
-    name: Pit
-    wham: 0
-    velocity: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
+  currentAttackID: 0
+  sourceEntity: {fileID: 0}
+  attacks: []
+  additionalTags: []
+  enabled: 1
 --- !u!64 &616305896
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -20695,12 +20693,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack:
-    amount: 1
-    name: Pit
-    wham: 0
-    velocity: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
+  currentAttackID: 0
+  sourceEntity: {fileID: 0}
+  attacks: []
+  additionalTags: []
+  enabled: 1
 --- !u!65 &987959025
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -28246,12 +28243,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack:
-    amount: 1
-    name: Pit
-    wham: 0
-    velocity: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
+  currentAttackID: 0
+  sourceEntity: {fileID: 0}
+  attacks: []
+  additionalTags: []
+  enabled: 1
 --- !u!1 &1339061309 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7035370390711983531, guid: bb24ceefa3fa3834aa9e96ed072561cf,
@@ -30842,12 +30838,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack:
-    amount: 1
-    name: Pit
-    wham: 0
-    velocity: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
+  currentAttackID: 0
+  sourceEntity: {fileID: 0}
+  attacks: []
+  additionalTags: []
+  enabled: 1
 --- !u!65 &1468575930
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -38208,12 +38203,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack:
-    amount: 1
-    name: Pit
-    wham: 0
-    velocity: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
+  currentAttackID: 0
+  sourceEntity: {fileID: 0}
+  attacks: []
+  additionalTags: []
+  enabled: 1
 --- !u!1001 &1838482498
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40543,10 +40537,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transitions: []
-  _spawns: []
   defaultPlayerSpawn: {fileID: 1261835430}
+  music:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   name: 
   originOffset: {x: 0, y: 0, z: 0}
+  worldChangeEvents:
+    _serializedList: []
 --- !u!4 &1937013319
 Transform:
   m_ObjectHideFlags: 0
@@ -40663,12 +40665,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack:
-    amount: 1
-    name: Pit
-    wham: 0
-    velocity: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
+  currentAttackID: 0
+  sourceEntity: {fileID: 0}
+  attacks: []
+  additionalTags: []
+  enabled: 1
 --- !u!4 &1940984905 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 933070626322647178, guid: 7c2d9c7c1e05ab74c8285817d7d5f4dc,
@@ -42615,12 +42616,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack:
-    amount: 1
-    name: Pit
-    wham: 0
-    velocity: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
+  currentAttackID: 0
+  sourceEntity: {fileID: 0}
+  attacks: []
+  additionalTags: []
+  enabled: 1
 --- !u!65 &2052931596
 BoxCollider:
   m_ObjectHideFlags: 0
