@@ -11,6 +11,7 @@ using EditorAttributes;
 using UnityEditor;
 #endif
 
+[DefaultExecutionOrder(-100)]
 public class Gameplay : Singleton<Gameplay>
 {
 

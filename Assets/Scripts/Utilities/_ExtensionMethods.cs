@@ -63,6 +63,39 @@ public static class _EasierMathExtensions
 
 	public static bool RandomChance(this float input) => UnityEngine.Random.Range(0f, 1f) >= input;
 
+    public static float MoveTowards(this float current, float rate, float target)
+    {
+		return current == target
+			? target
+			: target > current
+				? target - current <= rate
+					? target
+					: current + rate
+				: current - target <= rate
+						? target
+						: current - rate;
+    }
+    public static float MoveUp(this float current, float amount, float limit)
+    {
+        return current == limit
+            ? limit
+            : current < limit
+				? limit - current <= amount 
+					? limit 
+					: current + amount
+			: throw new System.Exception("You are trying to move a float upwards to something below it.");
+    }
+    public static float MoveDown(this float current, float amount, float limit)
+    {
+        return current == limit
+            ? limit
+            : current > limit
+				? current - limit <= amount 
+					? limit 
+					: current - amount
+			: throw new System.Exception("You are trying to move a float downwards to something above it.");
+    }
+
 }
 
 public static class _MonoBehaviorHelpers

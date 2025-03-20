@@ -71,6 +71,7 @@ public class PlayerStateMachine : StateMachine
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);
         body.velocity = Vector3.zero;
         body.InstantSnapToFloor();
+        savePoint.onSpawnEvent?.Invoke();
     }
 
     public void ResetState()

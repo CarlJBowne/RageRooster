@@ -47,12 +47,12 @@ public class PlayerRanged : MonoBehaviour
         TryGetComponent(out grabber.collider); 
         
         pointer.target.position = pointer.startV.position + pointer.startV.forward * pointer.distance;
-        Input.Shoot.performed += Shoot;
 
         eggPool.Initialize();
         eggCapacity = GlobalState.maxAmmo;
         eggAmount = eggCapacity;
         UI.UpdateAmmo(eggAmount);
+        GlobalState.maxAmmoUpdateCallback += UpdateMaxAmmo;
     }
 
     private void FixedUpdate()
@@ -70,6 +70,28 @@ public class PlayerRanged : MonoBehaviour
         grabber.LateUpdate();
     }
 
+    private void OnDestroy()
+    {
+        GlobalState.maxAmmoUpdateCallback -= UpdateMaxAmmo;
+    }
+
+    public void GrabWhenAiming(PlayerGrabAction grabState, bool held)
+    {
+        if (grabber.currentGrabbed)
+        {
+            Shoot();
+            return;
+        }
+        Grabbable grabCheck = grabber.CheckForGrabbable();
+        if (grabCheck != null)
+        {
+            animator.Play("Grab");
+            animator.Play("GrabAim.Grab");
+            grabState.AttemptGrab(grabCheck, held);
+        }
+        else Shoot();
+    }
+
     #region Grabbing Throwing
 
     public PlayerGrabber grabber = new();
@@ -78,7 +100,6 @@ public class PlayerRanged : MonoBehaviour
     {
         //Config
         public float launchVelocity;
-        public float launchJumpMult;
         public float checkSphereRadius;
         public Vector3 checkSphereOffset;
         public LayerMask layerMask;
@@ -239,12 +260,12 @@ public class PlayerRanged : MonoBehaviour
         pointerV = Mathf.MoveTowardsAngle(pointerV, 0, 1);
         if(!body.grounded && dropLaunchUpgrade)
         {
-            muzzle.position = pointer.startH.position - pointer.startH.up;
+            muzzle.position = pointer.startH.position - (pointer.startH.up * (1 + (currentGrabbed == null ? 0 : currentGrabbed.additionalThrowDistance)));
             muzzle.eulerAngles = Vector3.right * 90;
         }
         else
         {
-            muzzle.position = pointer.startH.position + pointer.startH.forward;
+            muzzle.position = pointer.startH.position + (pointer.startH.forward * (1 + (currentGrabbed == null ? 0 : currentGrabbed.additionalThrowDistance)));
             muzzle.rotation = pointer.startH.rotation;
         }
     }
@@ -273,7 +294,7 @@ public class PlayerRanged : MonoBehaviour
         //pointerTarget.position = pointerStartV.position + pointerStartV.forward * pointerDistance;
     }
 
-    public void Shoot(InputAction.CallbackContext ctx)
+    public void Shoot()
     {
         AimingPostUpdate();
 
@@ -297,4 +318,10 @@ public class PlayerRanged : MonoBehaviour
         eggAmount += offset;
         UI.UpdateAmmo(eggAmount);
     }
+    void UpdateMaxAmmo()
+    {
+        eggCapacity = GlobalState.maxAmmo;
+        UI.UpdateAmmo(eggAmount);
+    }
+
 }

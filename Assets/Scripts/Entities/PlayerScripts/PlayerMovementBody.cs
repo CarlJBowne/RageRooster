@@ -23,12 +23,14 @@ public class PlayerMovementBody : PlayerStateBehavior
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public new CapsuleCollider collider;
 
+    [HideInEditMode, DisableInPlayMode] public Vector3 velocity;
+
     [HideInInspector] public bool baseMovability = true;
     [HideInInspector] public bool canJump = true;
     public bool grounded = true;
     public float movementModifier = 1;
-    [DisableInPlayMode, DisableInEditMode] public float currentSpeed;
-    [DisableInPlayMode, DisableInEditMode] public int jumpPhase;
+    [HideInEditMode, DisableInPlayMode] public float currentSpeed;
+    [HideInEditMode, DisableInPlayMode] public int jumpPhase;
     //-1 = Inactive
     //0 = PreMinHeight
     //1 = PreMaxHeight
@@ -40,7 +42,20 @@ public class PlayerMovementBody : PlayerStateBehavior
     Transform anchorTransform;
     Vector3 prevAnchorPosition;
 
-    [DisableInPlayMode, DisableInEditMode] public Vector3 velocity;
+
+    private VolcanicVent _currentVent;
+
+    [FoldoutGroup("Animated Properties", nameof(animateMovement), nameof(animatedMovementTurn), nameof(animatedMovementMaxSpeed), nameof(animatedMovementMinSpeed), nameof(animatedMovementSpeedChange), nameof(animateMovementVertical), nameof(animatedMovementVertical), nameof(animateVelocity), nameof(animatedVelocity))] private Void _animateSet;
+    [HideInEditMode, DisableInPlayMode] public bool animateMovement = false;
+    [HideInEditMode, DisableInPlayMode] public float animatedMovementTurn = 0;
+    [HideInEditMode, DisableInPlayMode] public float animatedMovementMaxSpeed = 0;
+    [HideInEditMode, DisableInPlayMode] public float animatedMovementMinSpeed = 0;
+    [HideInEditMode, DisableInPlayMode] public float animatedMovementSpeedChange = 15;
+    [HideInEditMode, DisableInPlayMode] public bool animateMovementVertical = false;
+    [HideInEditMode, DisableInPlayMode] public float animatedMovementVertical = 0;
+    [HideInEditMode, DisableInPlayMode] public bool animateVelocity = false;
+    [HideInEditMode, DisableInPlayMode] public Vector3 animatedVelocity = Vector3.zero;
+
     #endregion
 
     #region GetSet
@@ -83,6 +98,17 @@ public class PlayerMovementBody : PlayerStateBehavior
             );
     }
 
+    public VolcanicVent currentVent
+    {
+        get => _currentVent;
+        set
+        {
+            _currentVent = value;
+            Machine.SendSignal(value != null ? "EnterVent" : "ExitVent", addToQueue: false, overrideReady: true);
+        }
+    }
+    public bool isOverVent => _currentVent != null;
+
     #endregion GetSet
 
 
@@ -113,12 +139,27 @@ public class PlayerMovementBody : PlayerStateBehavior
 
         } // NonMovement
 
+
+        if (animateVelocity) velocity = transform.TransformDirection(animatedVelocity);
+        else if (animateMovement)
+        {
+            Vector3 controlVector = playerController.camAdjustedMovement;
+            if (animatedMovementTurn > 0) currentDirection = Vector3.RotateTowards(currentDirection, controlVector.normalized, animatedMovementTurn * Mathf.PI * Time.fixedDeltaTime, 0);
+            currentSpeed = controlVector.sqrMagnitude > 0
+                ? currentSpeed.MoveTowards(controlVector.magnitude * animatedMovementSpeedChange * (Time.deltaTime * 50), animatedMovementMaxSpeed)
+                : currentSpeed.MoveTowards(animatedMovementSpeedChange * (Time.deltaTime * 50), animatedMovementMinSpeed);
+
+            if (animateMovementVertical) velocity.y = !grounded ? animatedMovementVertical : 0;
+
+            velocity = (transform.forward * currentSpeed) + (velocity.y * Vector3.up);
+        }
+
         initVelocity = new Vector3(velocity.x * movementModifier, velocity.y, velocity.z * movementModifier);
         initNormal = Vector3.up;
 
         if (PlayerStateMachine.DEBUG_MODE_ACTIVE && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
-        if (velocity.y < 0.01f ||(grounded && velocity.y >= 0.1f)) 
+        if (velocity.y < 0.01f ||(grounded && (velocity.y >= 0.1f || rb.velocity.y >= 0.1f))) 
         {
             if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out groundHit))
             {

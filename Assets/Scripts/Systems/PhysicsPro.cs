@@ -90,6 +90,26 @@ public static class PhysicsPro
     }
     */
 
+    public static class ThrowAt
+    {
+        public static void WithTimeAndMinVelocity(Vector2 destination, float t, float g, float minVelocity, out float initialVelocity, out float angle)
+        {
+            // Compute required velocity
+            float v_x = destination.x / t;
+            float v_y = (destination.y + .5f * g * t * t) / t;
+            initialVelocity = Mathf.Sqrt(v_x * v_x + v_y * v_y);
+            angle = Mathf.Atan2(v_y, v_x) * (180 / Mathf.PI);
+
+            // Adjust angle if velocity is too low
+            if (initialVelocity < minVelocity)
+            {
+                initialVelocity = minVelocity;
+                float v_y_adjusted = Mathf.Sqrt(minVelocity * minVelocity - v_x * v_x);
+                angle = Mathf.Atan2(v_y_adjusted, v_x) * (180 / Mathf.PI);
+            }
+        }
+    }
+
 
 
 }

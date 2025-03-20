@@ -45,8 +45,8 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         float currentSpeed = playerMovementBody.currentSpeed;
         Vector3 currentDirection = playerMovementBody.currentDirection;
 
-        if (!isDash) HorizontalMain (Time.fixedDeltaTime / 0.02f, ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement);
-        else HorizontalCharge       (Time.fixedDeltaTime / 0.02f, ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement);
+        if (!isDash) HorizontalMain (ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
+        else HorizontalCharge       (ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
 
         playerMovementBody.currentDirection = currentDirection;
         playerMovementBody.currentSpeed = currentSpeed;
@@ -63,7 +63,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         else if (playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref result);
     }
 
-    private void HorizontalMain(float deltaTime, ref float currentSpeed, ref Vector3 currentDirection, Vector3 control)
+    private void HorizontalMain(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control, float deltaTime)
     {
         Vector3 controlDirection = control.normalized;
         float controlMag = control.magnitude;
@@ -77,14 +77,14 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
             currentSpeed *= Dot;
             if (currentSpeed < maxSpeed)
-                currentSpeed = (currentSpeed + (controlMag * acceleration)).Max(maxSpeed) * deltaTime;
+                currentSpeed = currentSpeed.MoveUp(controlMag * acceleration * deltaTime, maxSpeed);
             else if (currentSpeed > maxSpeed)
-                currentSpeed = (currentSpeed - (controlMag * decceleration)).Min(maxSpeed) * deltaTime;
+                currentSpeed = currentSpeed.MoveDown(controlMag * decceleration * deltaTime, maxSpeed);
 
         }
-        else currentSpeed -= currentSpeed * stopping * deltaTime;
+        else currentSpeed = currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0);
     }
-    private void HorizontalCharge(float deltaTime, ref float currentSpeed, ref Vector3 currentDirection, Vector3 control)
+    private void HorizontalCharge(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control, float deltaTime)
     {
         Vector3 controlDirection = control.normalized;
         float controlMag = control.magnitude;
@@ -93,14 +93,14 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         if (controlMag > 0.1f)
         {
             if (currentSpeed < maxSpeed)
-                currentSpeed = (currentSpeed + (controlMag * acceleration)).Max(maxSpeed) * deltaTime;
+                currentSpeed = currentSpeed.MoveUp(controlMag * acceleration * deltaTime, maxSpeed);
         }
         else
         {
             if (currentSpeed < minSpeed)
-                currentSpeed = (currentSpeed + (controlMag * acceleration)).Max(maxSpeed) * deltaTime;
+                currentSpeed = currentSpeed.MoveUp(controlMag * acceleration * deltaTime, minSpeed);
             if (currentSpeed > minSpeed)
-                currentSpeed = (currentSpeed - (controlMag * decceleration)).Min(maxSpeed) * deltaTime;
+                currentSpeed = currentSpeed.MoveDown(controlMag * decceleration * deltaTime, maxSpeed);
         }
 
         if (maxTurnSpeed > 0)

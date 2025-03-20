@@ -126,8 +126,8 @@ public static class _Vec3Helper
 	}
 
 
-	public static Vector3 DirToRot(this Vector3 value) => Quaternion.LookRotation(value.normalized).eulerAngles;
-	public static Vector3 RotToDir(this Vector3 value) => Quaternion.Euler(value) * Vector3.forward;
+	public static Vector3 DirToRot(this Vector3 value) => Quaternion.LookRotation(value, Vector3.up).eulerAngles;
+	public static Vector3 RotToDir(this Vector3 value) => Quaternion.Euler(value) * Vector3.forward; 
 
 	public static Vector3 ProjectAndScale(this Vector3 value, Vector3 normal) => Vector3.ProjectOnPlane(value, normal).normalized * value.magnitude;
 
@@ -235,7 +235,15 @@ public static class _Vector2Helper
 		v.y = Random.Range(0, y);
 		return v;
 	}
-						 
+	
+	public static Vector2 Sign(this Vector2 v)
+	{
+        Vector2 result = v;
+		v.x = Mathf.Sign(v.x);
+		v.y = Mathf.Sign(v.y);
+		return result;
+	}
+
 }
 
 public static class Eular

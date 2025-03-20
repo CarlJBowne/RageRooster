@@ -33,11 +33,11 @@ public class PlayerWallJump : PlayerMovementEffector
     }
     public override void VerticalMovement(out float? result) => result = ApplyGravity(gravity, terminalVelocity, flatGravity);
 
-    public void WallJump(Vector3 direction)
+    public bool WallJump(Vector3 direction)
     {
         if(upgrade && playerMovementBody.rb.DirectionCast(playerMovementBody.currentDirection, 0.5f, playerMovementBody.checkBuffer, out RaycastHit hit))
         {
-            if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return;
+            if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return false;
             direction = direction.XZ().Rotate(180, Vector3.up);
 
             if (!state.active) state.TransitionTo();
@@ -49,6 +49,8 @@ public class PlayerWallJump : PlayerMovementEffector
             playerMovementBody.currentDirection = fixedDirection;
 
             state.TransitionTo();
+            return true;
         }
+        return false;
     }
 }
