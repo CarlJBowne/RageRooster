@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 6779214952761593281}
   - component: {fileID: 2153201430838911460}
   - component: {fileID: 4186740458772095101}
+  - component: {fileID: 4584053813128580898}
+  - component: {fileID: 3680343156891590521}
   m_Layer: 0
   m_Name: Pickup_Single Variant (23)
   m_TagString: Untagged
@@ -137,6 +139,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4584053813128580898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24654479091257680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
+--- !u!135 &3680343156891590521
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 24654479091257680}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1583487047535324692
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,6 +190,8 @@ GameObject:
   - component: {fileID: 5456856549140083333}
   - component: {fileID: 598854786101092000}
   - component: {fileID: 3437495876862402361}
+  - component: {fileID: 1876452639161276843}
+  - component: {fileID: 8794227877680929179}
   m_Layer: 0
   m_Name: Pickup_Single Variant (22)
   m_TagString: Untagged
@@ -274,6 +315,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1876452639161276843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1583487047535324692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
+--- !u!135 &8794227877680929179
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1583487047535324692}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2358636692458942191
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,6 +366,8 @@ GameObject:
   - component: {fileID: 9149208438204789374}
   - component: {fileID: 4399363478862224987}
   - component: {fileID: 1942831336921309122}
+  - component: {fileID: 1401609487933659043}
+  - component: {fileID: 3911090427367368151}
   m_Layer: 0
   m_Name: Pickup_Single Variant (24)
   m_TagString: Untagged
@@ -411,6 +491,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1401609487933659043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2358636692458942191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
+--- !u!135 &3911090427367368151
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2358636692458942191}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2886769291453948428
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,6 +542,8 @@ GameObject:
   - component: {fileID: 8524423949262143133}
   - component: {fileID: 3871405957913318072}
   - component: {fileID: 1315614306797671201}
+  - component: {fileID: 7123829908031384490}
+  - component: {fileID: 7919604179714017706}
   m_Layer: 0
   m_Name: Pickup_Single Variant (17)
   m_TagString: Untagged
@@ -548,6 +667,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7123829908031384490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2886769291453948428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
+--- !u!135 &7919604179714017706
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2886769291453948428}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3779226842886355097
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,6 +775,8 @@ GameObject:
   - component: {fileID: 7353921669289311593}
   - component: {fileID: 2736862099640832332}
   - component: {fileID: 144315971833401557}
+  - component: {fileID: 7742678058103202360}
+  - component: {fileID: 4410401019616939860}
   m_Layer: 0
   m_Name: Pickup_Single Variant (25)
   m_TagString: Untagged
@@ -742,6 +900,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7742678058103202360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4057017317933785592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
+--- !u!135 &4410401019616939860
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4057017317933785592}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5156517884371063044
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,6 +951,8 @@ GameObject:
   - component: {fileID: 1859048456952647061}
   - component: {fileID: 6501372566131548592}
   - component: {fileID: 9061942770060779561}
+  - component: {fileID: 6495555245169393999}
+  - component: {fileID: 2991835578049121050}
   m_Layer: 0
   m_Name: Pickup_Single Variant (21)
   m_TagString: Untagged
@@ -879,3 +1076,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6495555245169393999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5156517884371063044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
+--- !u!135 &2991835578049121050
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5156517884371063044}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}

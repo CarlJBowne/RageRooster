@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 7328737035775783357}
   - component: {fileID: 3611757201009072877}
   - component: {fileID: 1680026418820635566}
+  - component: {fileID: 1934553364208941980}
+  - component: {fileID: 3310515686557171860}
   m_Layer: 0
   m_Name: Collectable (182)
   m_TagString: Untagged
@@ -100,6 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   upgradeName: 
+  activateUpgrade: {fileID: 0}
   hintString: 
   addAmount: 1
 --- !u!64 &3611757201009072877
@@ -136,6 +139,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &1934553364208941980
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78220385247983479}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3310515686557171860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 78220385247983479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
 --- !u!1 &953933904358470463
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,6 +190,8 @@ GameObject:
   - component: {fileID: 4453436627719750630}
   - component: {fileID: 2273313645090995351}
   - component: {fileID: 7305989425598612949}
+  - component: {fileID: 1060819700369987087}
+  - component: {fileID: 1145064855661614468}
   m_Layer: 0
   m_Name: Collectable (70)
   m_TagString: Untagged
@@ -236,6 +278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   upgradeName: 
+  activateUpgrade: {fileID: 0}
   hintString: 
   addAmount: 1
 --- !u!64 &2273313645090995351
@@ -272,6 +315,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &1060819700369987087
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953933904358470463}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1145064855661614468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 953933904358470463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
 --- !u!1 &1153177269052069733
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,6 +366,8 @@ GameObject:
   - component: {fileID: 4491327624313604954}
   - component: {fileID: 6353521924206849555}
   - component: {fileID: 611648492946726686}
+  - component: {fileID: 2186033817539066721}
+  - component: {fileID: 201779240360456203}
   m_Layer: 0
   m_Name: Collectable (187)
   m_TagString: Untagged
@@ -372,6 +454,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   upgradeName: 
+  activateUpgrade: {fileID: 0}
   hintString: 
   addAmount: 1
 --- !u!64 &6353521924206849555
@@ -408,6 +491,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &2186033817539066721
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153177269052069733}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &201779240360456203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153177269052069733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
 --- !u!1 &1740664898243475339
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,6 +542,8 @@ GameObject:
   - component: {fileID: 1597867733757394266}
   - component: {fileID: 7332123264783515981}
   - component: {fileID: 7399883184731245357}
+  - component: {fileID: 6549936124777563965}
+  - component: {fileID: 7304056367442294745}
   m_Layer: 0
   m_Name: Collectable (183)
   m_TagString: Untagged
@@ -508,6 +630,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   upgradeName: 
+  activateUpgrade: {fileID: 0}
   hintString: 
   addAmount: 1
 --- !u!64 &7332123264783515981
@@ -544,6 +667,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &6549936124777563965
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1740664898243475339}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7304056367442294745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1740664898243475339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
 --- !u!1 &2217322271272314828
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,6 +718,8 @@ GameObject:
   - component: {fileID: 4199464621662221273}
   - component: {fileID: 4924858044021559966}
   - component: {fileID: 5337052285876144038}
+  - component: {fileID: 2415381206303696675}
+  - component: {fileID: 4891022795681833673}
   m_Layer: 0
   m_Name: Collectable (181)
   m_TagString: Untagged
@@ -644,6 +806,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   upgradeName: 
+  activateUpgrade: {fileID: 0}
   hintString: 
   addAmount: 1
 --- !u!64 &4924858044021559966
@@ -680,6 +843,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &2415381206303696675
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2217322271272314828}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4891022795681833673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2217322271272314828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
 --- !u!1 &4436846110683476202
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,6 +894,8 @@ GameObject:
   - component: {fileID: 4920605910136812560}
   - component: {fileID: 4495855567789127294}
   - component: {fileID: 1711839581321531163}
+  - component: {fileID: 3497874755586056446}
+  - component: {fileID: 1144298733473184623}
   m_Layer: 0
   m_Name: Collectable (186)
   m_TagString: Untagged
@@ -780,6 +982,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   upgradeName: 
+  activateUpgrade: {fileID: 0}
   hintString: 
   addAmount: 1
 --- !u!64 &4495855567789127294
@@ -816,6 +1019,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &3497874755586056446
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4436846110683476202}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1144298733473184623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4436846110683476202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
 --- !u!1 &4544867804757013878
 GameObject:
   m_ObjectHideFlags: 0
@@ -830,6 +1070,8 @@ GameObject:
   - component: {fileID: 3504845777904162497}
   - component: {fileID: 7414223973170897543}
   - component: {fileID: 8300847741814177523}
+  - component: {fileID: 8150882663615738760}
+  - component: {fileID: 3061546509138230986}
   m_Layer: 0
   m_Name: Collectable (184)
   m_TagString: Untagged
@@ -916,6 +1158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   upgradeName: 
+  activateUpgrade: {fileID: 0}
   hintString: 
   addAmount: 1
 --- !u!64 &7414223973170897543
@@ -952,6 +1195,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &8150882663615738760
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4544867804757013878}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3061546509138230986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4544867804757013878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
 --- !u!1 &5211761260790500116
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,6 +1306,8 @@ GameObject:
   - component: {fileID: 6368217731573309004}
   - component: {fileID: 4302769594771663126}
   - component: {fileID: 7326952753290118514}
+  - component: {fileID: 25259603512206880}
+  - component: {fileID: 4616293502839555231}
   m_Layer: 0
   m_Name: Collectable (185)
   m_TagString: Untagged
@@ -1112,6 +1394,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   upgradeName: 
+  activateUpgrade: {fileID: 0}
   hintString: 
   addAmount: 1
 --- !u!64 &4302769594771663126
@@ -1148,6 +1431,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &25259603512206880
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6566854569969220553}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4616293502839555231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6566854569969220553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
 --- !u!1 &8367626745094885718
 GameObject:
   m_ObjectHideFlags: 0
@@ -1162,6 +1482,8 @@ GameObject:
   - component: {fileID: 6409967879967106986}
   - component: {fileID: 5559998302489472736}
   - component: {fileID: 368296922905273383}
+  - component: {fileID: 3319643584420757484}
+  - component: {fileID: 7904658416622956649}
   m_Layer: 0
   m_Name: Collectable (188)
   m_TagString: Untagged
@@ -1248,6 +1570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   upgradeName: 
+  activateUpgrade: {fileID: 0}
   hintString: 
   addAmount: 1
 --- !u!64 &5559998302489472736
@@ -1284,3 +1607,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1f70ba40b6a1c4db2f208c7d1cd367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &3319643584420757484
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8367626745094885718}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.01
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7904658416622956649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8367626745094885718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
