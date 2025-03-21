@@ -28,7 +28,7 @@ public class MovementAnimator : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(influence == 1)
+        if (influence == 1)
         {
             rb.velocity = transform.TransformDirection(relativeVelocity);
 
@@ -39,35 +39,30 @@ public class MovementAnimator : MonoBehaviour
                 targetDirection.y = 0;
                 transform.eulerAngles = Vector3.RotateTowards(transform.forward, targetDirection, turnToVelocity * 2 * Mathf.PI, 0).DirToRot();
             }
-
-            if (snapToGround && Physics.Raycast(rb.centerOfMass, Vector3.down, out RaycastHit hitInfo, 300f, groundLayerMask))
-            {
-                rb.MovePosition(rb.position - Vector3.up * hitInfo.distance);
-                rb.velocity = rb.velocity.XZ();
-            }
         }
-        else if(influence > 0)
+        else if (influence > 0)
         {
             Vector3 trueRelativeVelocity = transform.TransformDirection(relativeVelocity);
             rb.velocity = Vector3.MoveTowards(rb.velocity, trueRelativeVelocity, influence * (trueRelativeVelocity - rb.velocity).magnitude);
 
-            if(!Mathf.Approximately(angularVelocity, 0))
+            if (!Mathf.Approximately(angularVelocity, 0))
             {
                 transform.eulerAngles = transform.eulerAngles + influence * angularVelocity * transform.up;
             }
-            else if(turnToVelocity > 0)
+            else if (turnToVelocity > 0)
             {
                 Vector3 targetDirection = target.position - transform.position;
                 targetDirection.y = 0;
                 transform.eulerAngles = Vector3.RotateTowards(transform.forward, targetDirection, influence * turnToVelocity * 2 * Mathf.PI, 0).DirToRot();
             }
-
-            if (snapToGround && Physics.Raycast(rb.centerOfMass, Vector3.down, out RaycastHit hitInfo, 300f, groundLayerMask))
+        }
+        if (influence > 0)
+        {
+            if (snapToGround && Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, 300f, groundLayerMask))
             {
-                rb.MovePosition(rb.position - Vector3.up * hitInfo.distance);
+                rb.MovePosition(hitInfo.point + Vector3.up * 0.001f);
                 rb.velocity = rb.velocity.XZ();
             }
-                
         }
         velocityDisplay = rb.velocity;
     }
