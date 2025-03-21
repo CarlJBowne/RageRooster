@@ -10,15 +10,22 @@ public class Boss2CentralController : MonoBehaviour
     public Boss2Health health;
 
     Timer.Loop testTimer = new(10);
+    Timer.Loop testTimer2 = new(15);
 
-    private void Awake()
+    private void Start()
     {
-        
+        Pecky.animator.Play("Idle_Pecky");
+        Slasher.animator.Play("Idle_Slasher");
+        Stumpy.animator.Play("Idle_Stumpy");
     }
 
     private void FixedUpdate()
     {
         testTimer.Tick(() => { Pecky.attack1State.TransitionTo(); });
+        testTimer2.Tick(() => 
+        { 
+            Slasher.attack1State.TransitionTo(); 
+        });
     }
 
 }

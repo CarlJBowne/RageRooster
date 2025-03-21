@@ -13,9 +13,11 @@ public class Boss2HeadStateMachine : StateMachine
     public State attack2State;
 
     [HideInInspector] public Boss2CentralController controller;
+    [HideInInspector] public Animator animator;
 
     protected override void Initialize()
     {
+        animator = GetComponent<Animator>();
         controller = GetComponentInParent<Boss2CentralController>();
     }
 }

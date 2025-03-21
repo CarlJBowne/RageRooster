@@ -10,7 +10,6 @@ public class B2A_Peck : Boss2HeadStateBehavior
     public Transform realHeadTransform;
     public float followPlayerRate;
     public float yPosition;
-    public float moveToYpositionRate;
 
 
     public override void OnFixedUpdate()
@@ -26,6 +25,6 @@ public class B2A_Peck : Boss2HeadStateBehavior
 
     public override void OnEnter(State prev, bool isFinal)
     {
-        headTargetTransform.position = realHeadTransform.position;
+        //headTargetTransform.position = realHeadTransform.position;
     }
 }
