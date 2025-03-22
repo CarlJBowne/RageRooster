@@ -73,6 +73,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lazer
       objectReference: {fileID: 0}
+    - target: {fileID: 6878630923043910821, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: m_UpdateMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8179016111888240989, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: onActivatedEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._String
+      value: Pecky_Peck1
+      objectReference: {fileID: 0}
     - target: {fileID: 8179016111888240989, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
       propertyPath: onActivatedEvent._PersistentCalls.Array.data[1]._PersistentArguments.Array.data[0]._String
@@ -90,12 +100,6 @@ PrefabInstance:
 --- !u!4 &2255289724989571800 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7202377404876909184, guid: 7644558c67485ae49ad2ecb504b79b2a,
-    type: 3}
-  m_PrefabInstance: {fileID: 8989072814634657880}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &8190448740147168518 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 942883596667972958, guid: 7644558c67485ae49ad2ecb504b79b2a,
     type: 3}
   m_PrefabInstance: {fileID: 8989072814634657880}
   m_PrefabAsset: {fileID: 0}
@@ -119,6 +123,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   headTargetTransform: {fileID: 2255289724989571800}
   playerProxyTransform: {fileID: 0}
-  realHeadTransform: {fileID: 8190448740147168518}
+  animatedTargetTransform: {fileID: 8552962402240195986}
   followPlayerRate: 0
-  yPosition: 0
+  yPosition: 8.19
+--- !u!4 &8552962402240195986 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 724415314903107018, guid: 7644558c67485ae49ad2ecb504b79b2a,
+    type: 3}
+  m_PrefabInstance: {fileID: 8989072814634657880}
+  m_PrefabAsset: {fileID: 0}
