@@ -9,8 +9,8 @@ public class Boss2CentralController : MonoBehaviour
     public Boss2HeadStateMachine Stumpy;
     public Boss2Health health;
 
-    Timer.Loop testTimer = new(10);
-    Timer.Loop testTimer2 = new(15);
+    public UltEvents.UltEvent ResetBossEvent;
+    public UltEvents.UltEvent FinishBossEvent;
 
     private void Start()
     {
@@ -21,11 +21,11 @@ public class Boss2CentralController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        testTimer.Tick(() => { Pecky.attack1State.TransitionTo(); });
-        testTimer2.Tick(() => 
-        { 
-            Slasher.attack1State.TransitionTo(); 
-        });
+
     }
+
+    public void ResetBoss() => ResetBossEvent?.Invoke();
+
+    public void FinishBoss() => FinishBossEvent?.Invoke();
 
 }

@@ -5,12 +5,12 @@ using System.Linq;
 
 public class DamageReciever : MonoBehaviour, IDamagable
 {
-    public Health targetHealth;
+    public IDamagable targetHealth;
     public string attachTag;
 
     private void Awake()
     {
-        if (targetHealth == null) targetHealth = GetComponentInParent<Health>();
+        if (targetHealth == null) targetHealth = GetComponentInParent<IDamagable>();
         if (targetHealth == null) Destroy(this); 
     }
 
