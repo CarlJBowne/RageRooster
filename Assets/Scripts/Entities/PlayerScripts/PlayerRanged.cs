@@ -256,7 +256,8 @@ public class PlayerRanged : MonoBehaviour
     {
         pointerH = machine.freeLookCamera.State.FinalOrientation.eulerAngles.y;
         pointer.target.position = Vector3.MoveTowards(pointer.target.position, pointer.startV.position + pointer.startV.forward * pointer.distance, .5f);
-        aimingState.pointerVRot = Mathf.MoveTowardsAngle(aimingState.pointerVRot, 0, 1);
+        aimingState.hAxis.Value = pointerH; 
+        aimingState.vAxis.Value = Mathf.MoveTowardsAngle(aimingState.vAxis.Value, 0, 1);
         pointerV = Mathf.MoveTowardsAngle(pointerV, 0, 1);
         if(!body.grounded && dropLaunchUpgrade)
         {

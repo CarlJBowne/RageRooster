@@ -1,23 +1,27 @@
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using FMOD;
+using FMODUnity;
 
 public class DialogueAudio : MonoBehaviour
 {
     private SpeakerScript speaker;
     private TMP_Animated animatedText;
-    public Transform mouthQuad;
 
-    public AudioClip[] voices;
-    public AudioClip[] punctuations;
-    [Space]
-    public AudioSource voiceSource;
-    public AudioSource punctuationSource;
-    public AudioSource effectSource;
+    [SerializeField] private EventReference NPC_bark;
 
-    [Space]
-    public AudioClip sparkleClip;
-    public AudioClip rainClip;
+    //leaving this here to remember implementation incase of future changes
+    /*
+    #region Old Audio References
+        public AudioClip[] voices;
+        public AudioClip[] punctuations;
+        [Space]
+        public AudioSource voiceSource;
+        public AudioSource punctuationSource;
+        public AudioSource effectSource;
+    #endregion
+    */
 
     // Start is called before the first frame update
     void Start()
@@ -27,8 +31,13 @@ public class DialogueAudio : MonoBehaviour
         animatedText = ConversationManager.instance.animatedText;
 
         //animatedText.onTextReveal.AddListener((newChar) => ReproduceSound(newChar));
+
+        //Code for running a runtime oneshot of a given sound or event.
+        //Have all NPC's use the same sound event for their barks, to reduce complexity
+        //RuntimeManager.PlayOneShot(NPC_bark, transform.position);
     }
 
+    /*
     public void ReproduceSound(char c)
     {
 
@@ -47,12 +56,10 @@ public class DialogueAudio : MonoBehaviour
             punctuationSource.Stop();
             voiceSource.clip = voices[Random.Range(0, voices.Length)];
             voiceSource.Play();
-
-            mouthQuad.localScale = new Vector3(1, 0, 1);
-            mouthQuad.DOScaleY(1, .2f).OnComplete(() => mouthQuad.DOScaleY(0, .2f));
         }
 
     }
+    */
 
 
 

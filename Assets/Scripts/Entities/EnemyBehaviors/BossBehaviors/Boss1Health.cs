@@ -12,6 +12,10 @@ public class Boss1Health : Health
     public Transform phase2StartPos;
     public Transform phase3StartPos;
 
+    public UltEvents.UltEvent ResetBossEvent;
+    public UltEvents.UltEvent FinishBossEvent;
+    public WorldChange finishedBossWorldChange;
+
     [HideInEditMode] public int bossPhase = 1;
     private bool phase2TriggerTriggered;
     private int stunCounter = 0;
@@ -27,6 +31,7 @@ public class Boss1Health : Health
         TryGetComponent(out moveAnim);
         TryGetComponent(out machine);
         respawnPoint = transform.position;
+        if (finishedBossWorldChange.Enabled) FinishBossEvent?.Invoke();
     }
 
     protected override bool OverrideDamageable(Attack attack)
@@ -102,6 +107,7 @@ public class Boss1Health : Health
 
     public void ResetBoss()
     {
+        if (finishedBossWorldChange.Enabled) return;
         if (!gameObject.activeSelf) return;
         transform.position = respawnPoint;
         GetComponent<Rigidbody>().MovePosition(respawnPoint);
@@ -109,8 +115,14 @@ public class Boss1Health : Health
         health = maxHealth;
         phase2TriggerTriggered = false;
         machine[0][0].TransitionTo();
+        ResetBossEvent?.Invoke();
     }
 
+    public void FinishBoss()
+    {
+        finishedBossWorldChange.Activate();
+        FinishBossEvent?.Invoke();
+    }
 
 
 }

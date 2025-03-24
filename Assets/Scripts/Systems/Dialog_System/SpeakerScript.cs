@@ -33,6 +33,13 @@ public class SpeakerScript : MonoBehaviour, IInteractable
     public event Action onSpeakerActivate;
     public CinemachineTargetGroup targetGroup;
 
+    public int currentConversationIndex = 0;
+
+
+    public UltEvents.UltEvent onConversationEnd;
+
+    public UltEvents.UltEvent<string> onActionTrigger;
+
     void Start()
     {
         dialogueAudio = GetComponent<DialogueAudio>();
@@ -55,27 +62,8 @@ public class SpeakerScript : MonoBehaviour, IInteractable
         if (this != ConversationManager.instance.currentSpeaker)
             return;
 
-        if (action == "shake")
-        {
-            //TODO: Change this to not grab the Camera main and create our own static reference to the main camera to be more performant
-            //Camera.main.GetComponent<CinemachineImpulseSource>().GenerateImpulse();
-        }
-        else
-        {
-            //These will be replaced with our own custom actions that the speakers can do when the tag is parsed for them
-            //PlayParticle(action);
-
-            if (action == "sparkle")
-            {
-                dialogueAudio.effectSource.clip = dialogueAudio.sparkleClip;
-                dialogueAudio.effectSource.Play();
-            }
-            else if (action == "rain")
-            {
-                dialogueAudio.effectSource.clip = dialogueAudio.rainClip;
-                dialogueAudio.effectSource.Play();
-            }
-        }
+        onActionTrigger?.Invoke(action);
+        
     }
 
     public void PlayParticle(string x)
@@ -110,7 +98,16 @@ public class SpeakerScript : MonoBehaviour, IInteractable
     {
         Debug.Log("Speaker is activated");
         onSpeakerActivate?.Invoke();
-        dialogue = data.dialogueList[0];
+        dialogue = data.dialogueList[currentConversationIndex];
         return true;
     }
+
+    public virtual void CheckForNextConversation(int index)
+    {
+        //Read the index that is passed in an compare it to the given cases
+        //
+    }
+
+
+
 }

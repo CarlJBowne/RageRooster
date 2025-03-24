@@ -3,48 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EditorAttributes;
+using UnityEngine.Windows;
 
 public class PlayerAiming : PlayerMovementEffector
 {
     public float walkingSpeed;
-    public Vector2 rotationSpeed;
-    public float rotationAccelleration;
-    public Vector2 yRotationLimit = new(-90, 45);
     /// <summary>
     /// The Player Ranged Component managing everything.
     /// </summary>
     public PlayerRanged playerRanged;
 
-
-    [HideProperty] public float pointerVRot = 0;
-    // private Vector3 spine1Offset = new(-0.447f, -0.728f, 6.168f); Let this be a warning to all those who oppose me.
-    private Vector2 cursorSpaceVelocity;
+    public Cinemachine.AxisState hAxis;
+    public Cinemachine.AxisState vAxis;
+    public Vector2 dInput; 
 
     public override void OnFixedUpdate()
     {
-        cursorSpaceVelocity = Vector2.MoveTowards(cursorSpaceVelocity, Input.Camera.Sign() * rotationSpeed, rotationAccelleration);
 
-        playerRanged.pointerH += cursorSpaceVelocity.x * Mathf.PI * Time.fixedTime; 
+        dInput = Input.Camera;
 
-        pointerVRot = (pointerVRot - cursorSpaceVelocity.y * Mathf.PI * Time.fixedTime).Clamp(yRotationLimit.x, yRotationLimit.y);
-        playerRanged.pointerV = pointerVRot;
+        hAxis.m_InputAxisValue = Input.Camera.x;
+        hAxis.Update(Time.deltaTime);
+        playerRanged.pointerH = hAxis.Value;
+
+        vAxis.m_InputAxisValue = Input.Camera.y;
+        vAxis.Update(Time.deltaTime);
+        playerRanged.pointerV = vAxis.Value;
 
         base.OnFixedUpdate(); 
     }
-    //public void EnterMode()
-    //{
-    //    M.animator.CrossFade("GrabAim.GunAim", 0.1f);
-    //    state.TransitionTo();
-    //    shootingVCam.Priority = 11;
-    //}
-    //public void ExitMode()
-    //{
-    //    M.animator.CrossFade("GrabAim.Null", 0.1f);
-    //    idleState.TransitionTo();
-    //    shootingVCam.Priority = 9;
-    //    pointerStart.localEulerAngles = new(0, 0, 0);
-    //    pointerTarget.position = pointerStart.position + pointerStart.forward * pointerDistance;
-    //}
+
 
     public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
@@ -58,7 +46,7 @@ public class PlayerAiming : PlayerMovementEffector
 
     public void ResetPointerStartRotation()
     {
-        pointerVRot = 0;
+        //pointerVRot = 0;
         playerRanged.pointer.startV.localEulerAngles = new Vector3(0, 0, 0);
     }
 
