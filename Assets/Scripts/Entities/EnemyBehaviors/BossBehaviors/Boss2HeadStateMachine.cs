@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EditorAttributes;
 using SLS.StateMachineV3;
 
 public class Boss2HeadStateMachine : StateMachine, IDamagable
@@ -17,11 +18,11 @@ public class Boss2HeadStateMachine : StateMachine, IDamagable
     public State attack1State;
     public State attack2State;
 
-    [HideInInspector] public Boss2CentralController controller;
-    [HideInInspector] public Animator animator;
-    [HideInInspector] public int damageTaken;
-    [HideInInspector] public int individualDamageCounter;
-    [HideInInspector] public Timer.Loop attackTimer;
+    [HideInEditMode, HideInPlayMode] public Boss2CentralController controller;
+    [HideInEditMode, HideInPlayMode] public Animator animator;
+    [HideInEditMode, HideInPlayMode] public int damageTaken;
+    [HideInEditMode, HideInPlayMode] public int individualDamageCounter;
+    [HideInEditMode, HideInPlayMode] public Timer.Loop attackTimer;
 
 
     public bool Damage(Attack attack)
@@ -72,6 +73,7 @@ public class Boss2HeadStateMachine : StateMachine, IDamagable
     {
         animator = GetComponent<Animator>();
         controller = GetComponentInParent<Boss2CentralController>();
+        attackTimer.rate = Random.Range(attackTimeLower, attackTimeHigher);
     }
 
     protected override void FixedUpdate()
@@ -83,7 +85,7 @@ public class Boss2HeadStateMachine : StateMachine, IDamagable
             {
                 attackTimer.rate = Random.Range(attackTimeLower, attackTimeHigher);
 
-                (damageTaken < damageUntilNewAttack || Random.Range(1, 4) < 3 
+                (damageTaken < damageUntilNewAttack || Random.Range(0, 2) == 1
                     ? attack1State 
                     : attack2State)
                     .TransitionTo();

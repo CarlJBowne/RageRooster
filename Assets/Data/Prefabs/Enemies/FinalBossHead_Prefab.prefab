@@ -1371,6 +1371,10 @@ MonoBehaviour:
     running: 0
   globalSignals:
     _serializedList: []
+  headID: 0
+  damageUntilNewAttack: 0
+  attackTimeLower: 3
+  attackTimeHigher: 9
   idleState: {fileID: 6683858802788931802}
   guardingState: {fileID: 5386658540739873795}
   knockedState: {fileID: 5708287346249755220}
@@ -1378,6 +1382,12 @@ MonoBehaviour:
   attack2State: {fileID: 1055755058256071099}
   controller: {fileID: 0}
   animator: {fileID: 0}
+  damageTaken: 0
+  individualDamageCounter: 0
+  attackTimer:
+    rate: 0
+    current: 0
+    disabled: 0
 --- !u!95 &6878630923043910821
 Animator:
   serializedVersion: 5
@@ -1564,7 +1574,13 @@ MonoBehaviour:
   onActivatedEvent:
     _PersistentCalls: []
   signals:
-    _serializedList: []
+    _serializedList:
+    - Key: Finish
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 6683858802788931802}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
   lockReady: 0
 --- !u!1 &5136110572211674251
 GameObject:
@@ -1928,8 +1944,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1818811419819814878}
   - component: {fileID: 5526411214919600854}
-  - component: {fileID: 8361976167485759043}
   - component: {fileID: 3991965722909949575}
+  - component: {fileID: 8361976167485759043}
   - component: {fileID: 3528423458726450671}
   m_Layer: 0
   m_Name: Head
@@ -1965,60 +1981,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48948dfe9d76b07488dacd46a7955fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8361976167485759043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7463755248251819927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3c430f382484144e925c097c2d33cfe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Weight: 1
-  m_Data:
-    m_ConstrainedObject: {fileID: 942883596667972958}
-    m_SourceObjects:
-      m_Length: 1
-      m_Item0:
-        transform: {fileID: 0}
-        weight: 1
-      m_Item1:
-        transform: {fileID: 0}
-        weight: 0
-      m_Item2:
-        transform: {fileID: 0}
-        weight: 0
-      m_Item3:
-        transform: {fileID: 0}
-        weight: 0
-      m_Item4:
-        transform: {fileID: 0}
-        weight: 0
-      m_Item5:
-        transform: {fileID: 0}
-        weight: 0
-      m_Item6:
-        transform: {fileID: 0}
-        weight: 0
-      m_Item7:
-        transform: {fileID: 0}
-        weight: 0
-    m_Offset: {x: 0, y: 0, z: 0}
-    m_MinLimit: -180
-    m_MaxLimit: 180
-    m_AimAxis: 4
-    m_UpAxis: 2
-    m_WorldUpType: 0
-    m_WorldUpObject: {fileID: 0}
-    m_WorldUpAxis: 2
-    m_MaintainOffset: 0
-    m_ConstrainedAxes:
-      x: 1
-      y: 1
-      z: 1
 --- !u!114 &3991965722909949575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2070,6 +2032,60 @@ MonoBehaviour:
       z: 1
     m_MaintainPositionOffset: 0
     m_MaintainRotationOffset: 0
+--- !u!114 &8361976167485759043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7463755248251819927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3c430f382484144e925c097c2d33cfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 0.5
+  m_Data:
+    m_ConstrainedObject: {fileID: 1818811419819814878}
+    m_SourceObjects:
+      m_Length: 1
+      m_Item0:
+        transform: {fileID: 0}
+        weight: 1
+      m_Item1:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item2:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item3:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item4:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item5:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item6:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item7:
+        transform: {fileID: 0}
+        weight: 0
+    m_Offset: {x: 0, y: 0, z: 0}
+    m_MinLimit: -180
+    m_MaxLimit: 180
+    m_AimAxis: 4
+    m_UpAxis: 2
+    m_WorldUpType: 0
+    m_WorldUpObject: {fileID: 0}
+    m_WorldUpAxis: 2
+    m_MaintainOffset: 0
+    m_ConstrainedAxes:
+      x: 1
+      y: 1
+      z: 1
 --- !u!114 &3528423458726450671
 MonoBehaviour:
   m_ObjectHideFlags: 0
