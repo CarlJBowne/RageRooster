@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6402251889940720377}
   - component: {fileID: 1379741155112482241}
-  - component: {fileID: 3084232220694739423}
   m_Layer: 0
   m_Name: FinalBossEntity
   m_TagString: Untagged
@@ -48,33 +47,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54e5e807d7ab63e48890027e267fe3df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 0
+  damageEvent:
+    _PersistentCalls: []
+  depleteEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 1379741155112482241}
+      _MemberName: FinishBoss
+      _PersistentArguments: []
+  immuneTags: []
+  health: 0
   Pecky: {fileID: 6931067895969434382}
   Slasher: {fileID: 8700716878835570007}
   Stumpy: {fileID: 3756140131326966666}
-  health: {fileID: 3084232220694739423}
   ResetBossEvent:
     _PersistentCalls: []
   FinishBossEvent:
     _PersistentCalls: []
---- !u!114 &3084232220694739423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3580229023811511725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6347850dc85e21448aee519628344138, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 500
-  damageEvent:
-    _PersistentCalls: []
-  depleteEvent:
-    _PersistentCalls: []
-  immuneTags: []
-  health: 0
 --- !u!1001 &1173625098344898257
 PrefabInstance:
   m_ObjectHideFlags: 0
