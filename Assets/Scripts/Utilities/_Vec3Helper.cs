@@ -136,39 +136,39 @@ public static class _Vec3Helper
 
 public static class Direction
 {
-	public static Vector3 up => Vector3.up;
-	public static Vector3 down => Vector3.down;
-	public static Vector3 left => Vector3.left;
-	public static Vector3 right => Vector3.right;
-	public static Vector3 forward => Vector3.forward;
-	public static Vector3 front => Vector3.forward;
-	public static Vector3 back => Vector3.back;
+	public static Vector3 up = new(0, 1, 0);
+	public static Vector3 down = new(0, -1, 0);
+    public static Vector3 left = new(-1, 0, 0);
+    public static Vector3 right = new(1, 0, 0);
+    public static Vector3 forward = new(0, 0, 1);
+    public static Vector3 front = new(0, 0, 1);
+    public static Vector3 back = new(0, 0, -1);
 
-	public static Vector3 one => Vector3.one;
-	public static Vector3 zero => Vector3.zero;
+    public static Vector3 one = new(1, 1, 1);
+    public static Vector3 zero = new(0, 0, 0);
 
-	public static Vector3 two = Vector3.one * 2;
-	public static Vector3 five = Vector3.one * 5;
-	public static Vector3 ten = Vector3.one * 10;
-	public static Vector3 nOne = Vector3.one * -1;
+    public static Vector3 two = new(2,2,2);
+    public static Vector3 five = new(5,5,5);
+    public static Vector3 ten = new(10,10,10);
+    public static Vector3 nOne = new(-1,-1,-1);
 
-	public static Vector3 inf = Vector3.one * float.PositiveInfinity;
-	public static Vector3 nInf = Vector3.one * float.NegativeInfinity;
+    public static Vector3 inf = new(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
+	public static Vector3 nInf = new(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity);
 
-	public static Vector3 upRight = Vector3.right + Vector3.up;
-	public static Vector3 frontRight = Vector3.right + Vector3.forward;
-	public static Vector3 downRight = Vector3.right + Vector3.down;
-	public static Vector3 backRight = Vector3.right + Vector3.back;
+    public static Vector3 upRight =		new(1, 1, 0);
+    public static Vector3 frontRight =	new(1, 0, 1);
+    public static Vector3 downRight =	new(1, -1, 0);
+    public static Vector3 backRight =	new(1, 0, -1);
 
-	public static Vector3 upLeft = Vector3.left + Vector3.up;
-	public static Vector3 frontLeft = Vector3.left + Vector3.forward;
-	public static Vector3 downLeft = Vector3.left + Vector3.down;
-	public static Vector3 backLeft = Vector3.left + Vector3.back;
+    public static Vector3 upLeft = new(-1, 1, 0);
+    public static Vector3 frontLeft = new(-1, 0, 1);
+	public static Vector3 downLeft = new(-1, -1, 0);
+	public static Vector3 backLeft = new(-1, 0, -1);
 
-	public static Vector3 upFront = Vector3.up + Vector3.forward;
-	public static Vector3 upBack = Vector3.up + Vector3.back;
-	public static Vector3 downFront = Vector3.down + Vector3.forward;
-	public static Vector3 downBack = Vector3.down + Vector3.back;
+	public static Vector3 upFront = new(0, 1, 1);
+    public static Vector3 upBack = new(0, 1, -1);
+    public static Vector3 downFront = new(0, -1, 1);
+    public static Vector3 downBack = new(0, -1, -1);
 
 }
 

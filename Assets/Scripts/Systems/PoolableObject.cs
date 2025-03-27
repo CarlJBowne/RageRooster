@@ -50,15 +50,28 @@ public class PoolableObject : MonoBehaviour
 
     public static PoolableObject Is(GameObject subject)
     {
-        PoolableObject pool = subject.GetComponent<PoolableObject>(); 
-        if (!pool) return null;
-        if (pool.pool == null) return null;
-        return pool;
+        PoolableObject poolable = subject.GetComponent<PoolableObject>(); 
+        if (!poolable) return null;
+        if (poolable.pool == null) return null;
+        return poolable;
     }
     public static bool Is(GameObject subject, out PoolableObject result)
     {
         result = subject.GetComponent<PoolableObject>();
         return result && result.pool != null;
+    }
+    public static bool DisableOrDestroy(GameObject subject)
+    {
+        if (subject.TryGetComponent(out PoolableObject poolable) && poolable.pool != null)
+        {
+            poolable.Disable();
+            return true;
+        }
+        else
+        {
+            Destroy(subject);
+            return false;
+        }
     }
 
     public void SetPosition(Vector3 position) => transform.position = position;
