@@ -4,7 +4,7 @@ using UnityEngine;
 using EditorAttributes;
 using SLS.StateMachineV3;
 
-public class PlayerGrabAction : PlayerMovementNegater
+public class PlayerGrabAction : PlayerStateBehavior
 {
     public bool air;
     
@@ -13,11 +13,13 @@ public class PlayerGrabAction : PlayerMovementNegater
 
     private Grabbable selectedGrabbable;
     private PlayerRanged grabber;
-
+    private PlayerMovementAnimator movementNegator;
 
     public override void OnAwake()
     {
         grabber = GetComponentFromMachine<PlayerRanged>();
+        movementNegator = GetComponent<PlayerMovementAnimator>();
+        movementNegator = GetComponent<PlayerMovementAnimator>();
     }
 
     public void AttemptGrab(Grabbable attempt, bool held)
@@ -28,10 +30,12 @@ public class PlayerGrabAction : PlayerMovementNegater
             selectedGrabbable = attempt;
             wasHeld = held;
             success = true;
+            movementNegator.locked = false;
         }
         else
         {
             success = false;
+            movementNegator.locked = true;
         }
     }
 
@@ -45,19 +49,5 @@ public class PlayerGrabAction : PlayerMovementNegater
         selectedGrabbable = null;
     }
 
-    public override void HorizontalMovement(out float? resultX, out float? resultZ)
-    {
-        if(success) base.HorizontalMovement(out resultX, out resultZ);
-        else
-        {
-            resultX = null;
-            resultZ = null;
-        }
-    }
 
-    public override void VerticalMovement(out float? result)
-    {
-        if(success) base.VerticalMovement(out result);
-        else result = null;
-    }
 }

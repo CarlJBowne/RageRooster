@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6402251889940720377}
   - component: {fileID: 1379741155112482241}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FinalBossEntity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54e5e807d7ab63e48890027e267fe3df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
+  maxHealth: 3
   damageEvent:
     _PersistentCalls: []
   depleteEvent:
@@ -158,6 +158,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6402251889940720377}
     m_Modifications:
+    - target: {fileID: 286311558763046249, guid: 5a6fcef714c60374d81806c0d9adf3b0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5542664512783061589, guid: 5a6fcef714c60374d81806c0d9adf3b0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -244,6 +249,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6402251889940720377}
     m_Modifications:
+    - target: {fileID: 1160370893239140184, guid: 930d8b83b56410a4faaefc09fded5c5d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3753939126430004422, guid: 930d8b83b56410a4faaefc09fded5c5d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4715656254332120057, guid: 930d8b83b56410a4faaefc09fded5c5d,
         type: 3}
       propertyPath: m_Name
@@ -298,6 +313,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8575953490364095381, guid: 930d8b83b56410a4faaefc09fded5c5d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

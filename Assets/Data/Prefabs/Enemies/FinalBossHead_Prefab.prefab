@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5013342029670201880}
   - component: {fileID: 5820944650713837424}
   - component: {fileID: 7026332248618871329}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,8 @@ GameObject:
   - component: {fileID: 1319092960425900744}
   - component: {fileID: 3240432354715200359}
   - component: {fileID: 7859294499147574042}
-  m_Layer: 0
+  - component: {fileID: 3660974009663208977}
+  m_Layer: 7
   m_Name: Hurtbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,6 +176,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Machine: {fileID: 7395447686736054723}
+--- !u!54 &3660974009663208977
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487865010022234302}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &507870616322406382
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +214,8 @@ GameObject:
   - component: {fileID: 2812783477905160020}
   - component: {fileID: 8933774297968890610}
   - component: {fileID: 7099956406392742638}
-  m_Layer: 0
+  - component: {fileID: 1053461408697496698}
+  m_Layer: 7
   m_Name: Peck Hitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -256,6 +285,33 @@ MonoBehaviour:
   - name: FromBoss
   - name: FromPecky
   enabled: 1
+--- !u!54 &1053461408697496698
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 507870616322406382}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1121759351169611735
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,7 +321,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 697349699033959018}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Neck0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -298,7 +354,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1913316833220930705}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Neck3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -334,7 +390,7 @@ GameObject:
   - component: {fileID: 5656608656460676808}
   - component: {fileID: 1841348440366963893}
   - component: {fileID: 4898419176583352896}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: NeckModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -436,7 +492,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7595021220038085506}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Neck5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -470,7 +526,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7202377404876909184}
   - component: {fileID: 8249956582018885704}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CalculatedChainIK
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -514,7 +570,7 @@ GameObject:
   m_Component:
   - component: {fileID: 724415314903107018}
   - component: {fileID: 8588785677064241813}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AnimatedChainIK
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -560,7 +616,7 @@ GameObject:
   - component: {fileID: 6981733237451698954}
   - component: {fileID: 4488187754639161414}
   - component: {fileID: 65669655809949120}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: NeckModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -662,7 +718,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7981951938185274258}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Neck4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -698,7 +754,7 @@ GameObject:
   - component: {fileID: 8329348147415606703}
   - component: {fileID: 1617561355445173358}
   - component: {fileID: 4953801811173542693}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: NeckModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -800,7 +856,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6387367677343055288}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Neck2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -836,7 +892,7 @@ GameObject:
   - component: {fileID: 772326695712532645}
   - component: {fileID: 6956694541222354644}
   - component: {fileID: 589678809926721120}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Beak2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -925,7 +981,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -941,7 +997,7 @@ GameObject:
   - component: {fileID: 8205768024781476695}
   - component: {fileID: 7799623617631218562}
   - component: {fileID: 5928730742954304838}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: NeckModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1046,7 +1102,7 @@ GameObject:
   - component: {fileID: 6317496358930638827}
   - component: {fileID: 4986664604465684138}
   - component: {fileID: 4513329489952597058}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1153,7 +1209,7 @@ GameObject:
   - component: {fileID: 7395447686736054723}
   - component: {fileID: 6878630923043910821}
   - component: {fileID: 3208637134217996091}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FinalBossHead_Prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1193,6 +1249,16 @@ MonoBehaviour:
   attackTimeLower: 3
   attackTimeHigher: 9
   currentState: NULL
+  projectilePool:
+    prefabObject: {fileID: 0}
+    defaultPoolDepth: 1
+    canGrow: 1
+    parent: {fileID: 0}
+    autoDisableTime: -1
+    spawnPoint: {fileID: 0}
+    rotate: 0
+    autoSpawnRate: 0
+  projectileChance: 0.33333334
   controller: {fileID: 0}
   animator: {fileID: 0}
   damageTaken: 0
@@ -1263,7 +1329,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2170217901783979613}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Neck1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1299,7 +1365,7 @@ GameObject:
   - component: {fileID: 5202016352167980436}
   - component: {fileID: 1239580547542290080}
   - component: {fileID: 8970928591366304848}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: NeckModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1401,7 +1467,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1148595864032086845}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Neck6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1435,7 +1501,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7636212919369332536}
   - component: {fileID: 5441114174062157936}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Rig 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1510,7 +1576,7 @@ GameObject:
   - component: {fileID: 1650275642042340277}
   - component: {fileID: 1316261911884095916}
   - component: {fileID: 637902648406824897}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mohawk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1616,7 +1682,7 @@ GameObject:
   - component: {fileID: 3991965722909949575}
   - component: {fileID: 8361976167485759043}
   - component: {fileID: 3528423458726450671}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1790,7 +1856,7 @@ GameObject:
   - component: {fileID: 8443037220204202061}
   - component: {fileID: 5047426800531204544}
   - component: {fileID: 7781401508858217571}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Eye (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1895,7 +1961,7 @@ GameObject:
   - component: {fileID: 8162390937263060786}
   - component: {fileID: 4081133487813783934}
   - component: {fileID: 761089820658245228}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: NeckModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1998,7 +2064,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1806340084148691328}
   - component: {fileID: 3569723424799584854}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ModelRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2062,7 +2128,7 @@ GameObject:
   - component: {fileID: 2972254301345865261}
   - component: {fileID: 305142891600229929}
   - component: {fileID: 1078435161811304789}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Beak1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2151,7 +2217,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -2167,7 +2233,7 @@ GameObject:
   - component: {fileID: 2004486522015563073}
   - component: {fileID: 8392128253026547731}
   - component: {fileID: 6198143362661725368}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: NeckModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2272,7 +2338,7 @@ GameObject:
   - component: {fileID: 6261100390312859108}
   - component: {fileID: 8666014099513690787}
   - component: {fileID: 9047027338559296078}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}

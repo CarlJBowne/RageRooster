@@ -37,7 +37,7 @@ public class Boss2CentralController : Health
     {
         if(Pecky.currentState == Boss2HeadStateMachine.knockedState && Slasher.currentState == Boss2HeadStateMachine.knockedState)
         {
-            Invoke(nameof(StartStumpyVulnerable), 5f);
+            Invoke(nameof(StartStumpyVulnerable), 3f);
         }
     }
     private void StartStumpyVulnerable()

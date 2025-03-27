@@ -54,7 +54,7 @@ MonoBehaviour:
   zMax: -51.16
   xPercentage: 0
   zPercentage: 0
-  yPos: 2.705396
+  yPos: 1.4
   headMovementMaxDelta: 2
   zMaxMaxDelta: 25
 --- !u!1001 &5855695946392785149
@@ -190,6 +190,32 @@ PrefabInstance:
       propertyPath: headID
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: damageUntilNewAttack
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: projectilePool.canGrow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: projectilePool.spawnPoint
+      value: 
+      objectReference: {fileID: 6653602061332004259}
+    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: projectilePool.prefabObject
+      value: 
+      objectReference: {fileID: 5822478214020923678, guid: 939b237b4b774974cb47426b47cbd53c,
+        type: 3}
+    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: projectilePool.defaultPoolDepth
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8179016111888240989, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
       propertyPath: onActivatedEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._String
@@ -266,3 +292,4 @@ MonoBehaviour:
     spawnPoint: {fileID: 6653602061332004259}
     rotate: 0
     autoSpawnRate: 0
+  bossID: 0

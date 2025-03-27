@@ -331,7 +331,7 @@ PrefabInstance:
         type: 3}
       propertyPath: signals._serializedList.Array.data[0].Value._PersistentCalls.Array.data[0]._Target
       value: 
-      objectReference: {fileID: 2341392635747463298}
+      objectReference: {fileID: 0}
     - target: {fileID: 1055755058256071099, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
       propertyPath: onActivatedEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[1]._X
@@ -427,6 +427,32 @@ PrefabInstance:
       propertyPath: m_UpdateMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: projectileChance
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: damageUntilNewAttack
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: projectilePool.canGrow
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: projectilePool.spawnPoint
+      value: 
+      objectReference: {fileID: 8190448740147168518}
+    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: projectilePool.prefabObject
+      value: 
+      objectReference: {fileID: 6923573311895071158, guid: 1aaffbd4f25f46e4890f744a62d0b45c,
+        type: 3}
     - target: {fileID: 8179016111888240989, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
       propertyPath: onActivatedEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._String
@@ -466,18 +492,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8989072814634657880}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2341392635747463298 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6683858802788931802, guid: 7644558c67485ae49ad2ecb504b79b2a,
-    type: 3}
-  m_PrefabInstance: {fileID: 8989072814634657880}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &2578966611220749565 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6878630923043910821, guid: 7644558c67485ae49ad2ecb504b79b2a,

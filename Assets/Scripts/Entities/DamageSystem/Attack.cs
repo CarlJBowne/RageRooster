@@ -56,7 +56,12 @@ public struct Attack
 
     }
 
-    public bool HasTag(Tag tag) => tags.Includes(tag);
+    public readonly bool HasTag(Tag tag)
+    {
+        for (int i = 0; i < tags.Length; i++)
+            if (tags[i].name == tag.name) return true;
+        return false;
+    }
 }
 public static class _AttackTagOverrides
 {
