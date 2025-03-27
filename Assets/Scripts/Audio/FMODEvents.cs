@@ -12,7 +12,7 @@ public class FMODEvents : SingletonScriptable<FMODEvents>
     public bool HasAmbience()
     {
         // Check if any ambience events are assigned
-        return ireGorgeAmbience.Guid != System.Guid.Empty || rockyFurrowsAmbience.Guid != System.Guid.Empty;
+        return ireGorgeAmbience.Guid != System.Guid.Empty || rockyFurrowsAmbience.Guid != System.Guid.Empty || seethingDepthsAmbience.Guid != System.Guid.Empty || rancorPeakAmbience.Guid != System.Guid.Empty;
     }
 
     public EventReference GetAmbience()
@@ -25,6 +25,14 @@ public class FMODEvents : SingletonScriptable<FMODEvents>
         else if (rockyFurrowsAmbience.Guid != System.Guid.Empty)
         {
             return rockyFurrowsAmbience;
+        }
+        else if (seethingDepthsAmbience.Guid != System.Guid.Empty)
+        {
+            return seethingDepthsAmbience;
+        }
+        else if (rancorPeakAmbience.Guid != System.Guid.Empty)
+        {
+            return rancorPeakAmbience;
         }
         else
         {
@@ -67,6 +75,8 @@ public class FMODEvents : SingletonScriptable<FMODEvents>
     [field: SerializeField] public EventReference playerHover { get; private set; }
     [field: SerializeField] public EventReference playerFootsteps { get; private set; }
     [field: SerializeField] public EventReference playerMeleeSwings { get; private set; }
+    [field: SerializeField] public EventReference playerPunch1 { get; private set; }
+    [field: SerializeField] public EventReference playerPunch2 { get; private set; }
     [field: SerializeField] public EventReference playerGrab { get; private set; }
     [field: SerializeField] public EventReference playerThrow { get; private set; }
     [field: SerializeField] public EventReference playerButtSlam { get; private set; }
@@ -121,6 +131,8 @@ public class FMODEvents : SingletonScriptable<FMODEvents>
     [field: Header("Ambience")]
     [field: SerializeField] public EventReference ireGorgeAmbience { get; private set; }
     [field: SerializeField] public EventReference rockyFurrowsAmbience { get; private set; }
+    [field: SerializeField] public EventReference seethingDepthsAmbience { get; private set; }
+    [field: SerializeField] public EventReference rancorPeakAmbience { get; private set; }
     [field: SerializeField] public EventReference waterSplash { get; private set; }
     [field: SerializeField] public EventReference bossAmbience { get; private set; }
     [field: SerializeField] public EventReference transitionAmbience { get; private set; }

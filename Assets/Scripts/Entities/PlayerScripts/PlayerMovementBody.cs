@@ -15,6 +15,8 @@ public class PlayerMovementBody : PlayerStateBehavior
     public PlayerAirborneMovement jumpState1;
     public PlayerWallJump wallJumpState;
     public PlayerAirborneMovement airChargeState;
+    public Vector3 frontCheckDefaultOffset;
+    public float frontCheckDefaultRadius;
 
     #endregion
 
@@ -140,22 +142,27 @@ public class PlayerMovementBody : PlayerStateBehavior
         } // NonMovement
 
 
-        if (animateVelocity) velocity = transform.TransformDirection(animatedVelocity);
-        else if (animateMovement)
+        if (false)
         {
-            Vector3 controlVector = playerController.camAdjustedMovement;
-            if (animatedMovementTurn > 0) currentDirection = Vector3.RotateTowards(currentDirection, controlVector.normalized, animatedMovementTurn * Mathf.PI * Time.fixedDeltaTime, 0);
-            currentSpeed = controlVector.sqrMagnitude > 0
-                ? currentSpeed.MoveTowards(controlVector.magnitude * animatedMovementSpeedChange * (Time.deltaTime * 50), animatedMovementMaxSpeed)
-                : currentSpeed.MoveTowards(animatedMovementSpeedChange * (Time.deltaTime * 50), animatedMovementMinSpeed);
+            if (animateVelocity) velocity = transform.TransformDirection(animatedVelocity);
+            else if (animateMovement)
+            {
+                Vector3 controlVector = playerController.camAdjustedMovement;
+                if (animatedMovementTurn > 0) currentDirection = Vector3.RotateTowards(currentDirection, controlVector.normalized, animatedMovementTurn * Mathf.PI * Time.fixedDeltaTime, 0);
+                currentSpeed = controlVector.sqrMagnitude > 0
+                    ? currentSpeed.MoveTowards(controlVector.magnitude * animatedMovementSpeedChange * (Time.deltaTime * 50), animatedMovementMaxSpeed)
+                    : currentSpeed.MoveTowards(animatedMovementSpeedChange * (Time.deltaTime * 50), animatedMovementMinSpeed);
 
-            if (animateMovementVertical) velocity.y = !grounded ? animatedMovementVertical : 0;
+                if (animateMovementVertical) velocity.y = !grounded ? animatedMovementVertical : 0;
 
-            velocity = (transform.forward * currentSpeed) + (velocity.y * Vector3.up);
+                velocity = (transform.forward * currentSpeed) + (velocity.y * Vector3.up);
+            }
+
         }
 
+
         initVelocity = new Vector3(velocity.x * movementModifier, velocity.y, velocity.z * movementModifier);
-        initNormal = Vector3.up;
+        initNormal = Vector3.up; 
 
         if (PlayerStateMachine.DEBUG_MODE_ACTIVE && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
@@ -341,6 +348,25 @@ public class PlayerMovementBody : PlayerStateBehavior
     //    anchorTransform = newAnchor;
     //    prevAnchorPosition = newAnchor.localPosition;
     //}
+
+    public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
+    {
+        Collider[] results = Physics.OverlapSphere(position + transform.TransformDirection(sphereOffset),
+                                                   checkSphereRadius);
+        foreach (Collider r in results)
+            if (r.TryGetComponent(out T result))
+                return result;
+        return default;
+    }
+    public T CheckForTypeInFront<T>()
+    {
+        Collider[] results = Physics.OverlapSphere(position + transform.TransformDirection(frontCheckDefaultOffset),
+                                                   frontCheckDefaultRadius);
+        foreach (Collider r in results)
+            if (r.gameObject != gameObject && r.TryGetComponent(out T result))
+                return result;
+        return default;
+    }
 
 #if UNITY_EDITOR
 

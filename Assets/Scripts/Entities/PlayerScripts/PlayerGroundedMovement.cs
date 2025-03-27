@@ -54,7 +54,8 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         Vector3 controlDirection = control.normalized;
         float controlMag = control.magnitude;
 
-        bool condition = (!needChargeButton || Input.ChargeTap.IsPressed()) && 
+        bool condition = nextPhase != null &&
+                         (!needChargeButton || Input.ChargeTap.IsPressed()) && 
                          (!needRagingUpgrade || playerController.ragingChargeUpgrade)
                          ;
 

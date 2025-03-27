@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Obsolete]
 public class PlayerMovementNegater : PlayerMovementEffector
 {
     public enum NegateType { InstantNegate, SmoothNegate, Dampen, SmoothDampen, Gravity, None}
