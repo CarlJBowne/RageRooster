@@ -74,9 +74,7 @@ public class Menu : MonoBehaviour
     public void EnableButtons()
     {
         for (int i = 0; i < allButtons.Length; i++)
-        {
             allButtons[i].interactable = true;
-        }
     }
 
     /// <summary>
@@ -85,9 +83,8 @@ public class Menu : MonoBehaviour
     public void DisableButtons()
     {
         for (int i = 0; i < allButtons.Length; i++)
-        {
-            allButtons[i].interactable = false;
-        }
+            if (allButtons[i] != null)
+                allButtons[i].interactable = false;
     }
 
     /// <summary>
@@ -131,9 +128,9 @@ public class Menu : MonoBehaviour
             menu.isActive = true;
             menu.gameObject.SetActive(true);
             menu.EnableButtons();
-            if (currentMenus.Count > 1)
+            if (currentMenus.Count > 1 && currentMenus[^2])
             {
-                currentMenus[currentMenus.Count - 2].DisableButtons();
+                currentMenus[^2].DisableButtons();
             }
             menu.defaultSelection.Select();
             menu.OnOpen();
@@ -151,10 +148,10 @@ public class Menu : MonoBehaviour
 
             menu.gameObject.SetActive(false);
             menu.isActive = false;
-            if (currentMenus.Count > 0)
+            if (currentMenus.Count > 0 && currentMenus[^1] != null)
             {
-                currentMenus[currentMenus.Count - 1].EnableButtons();
-                currentMenus[currentMenus.Count - 1].defaultSelection.Select();
+                currentMenus[^1].EnableButtons();
+                currentMenus[^1].defaultSelection.Select();
             }
             menu.OnClose();
         }

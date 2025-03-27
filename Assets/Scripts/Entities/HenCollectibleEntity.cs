@@ -10,11 +10,12 @@ public class HenCollectibleEntity : MonoBehaviour, IInteractable
 
     private void Awake()
     {
-        if (worldChange) gameObject.SetActive(false);
+        if (worldChange.Enabled) gameObject.SetActive(false);
     }
     bool IInteractable.Interaction()
     {
         GlobalState.AddMaxAmmo(1);
+        worldChange.Activate();
         gameObject.SetActive(false);
         return true;
     }
