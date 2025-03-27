@@ -15,12 +15,12 @@ public class Menu : MonoBehaviour
     [DisableInPlayMode] public bool isActive;
     [DisableInPlayMode] public Menu parent;
     [SerializeField] public Button defaultSelection;
+    [SerializeField] public Selectable[] allButtons;
     [SerializeField] private string dictionaryName;
     [SerializeField] private bool closeOverride;
     [SerializeField, ShowField(nameof(closeOverride))] private UnityEvent closeEvent;
     [SerializeField] private EventReference openSound;
     [SerializeField] private EventReference closeSound;
-
     //Data
     public bool isCurrent => Manager.currentMenu == this;
     public bool isSubMenu => parent != null;
@@ -69,6 +69,28 @@ public class Menu : MonoBehaviour
     public void TrueClose() => Manager.Close(this);
 
     /// <summary>
+    /// Enable all of the buttons in a menu. Buttons listed in allButtons.
+    /// </summary>
+    public void EnableButtons()
+    {
+        for (int i = 0; i < allButtons.Length; i++)
+        {
+            allButtons[i].interactable = true;
+        }
+    }
+
+    /// <summary>
+    /// Disables all of the buttons in a menu. Buttons listed in allButtons.
+    /// </summary>
+    public void DisableButtons()
+    {
+        for (int i = 0; i < allButtons.Length; i++)
+        {
+            allButtons[i].interactable = false;
+        }
+    }
+
+    /// <summary>
     /// Called when the menu is opened
     /// </summary>
     protected virtual void OnOpen()
@@ -108,6 +130,11 @@ public class Menu : MonoBehaviour
 
             menu.isActive = true;
             menu.gameObject.SetActive(true);
+            menu.EnableButtons();
+            if (currentMenus.Count > 1)
+            {
+                currentMenus[currentMenus.Count - 2].DisableButtons();
+            }
             menu.defaultSelection.Select();
             menu.OnOpen();
         }
@@ -126,13 +153,8 @@ public class Menu : MonoBehaviour
             menu.isActive = false;
             if (currentMenus.Count > 0)
             {
-                //if(currentMenus[^1] == null)
-                //{
-                //    currentMenus.Remove(currentMenus[^1]);
-                //    menu.OnClose();
-                //    return;
-                //} // Pause Fix
-                currentMenus[^1].defaultSelection.Select();
+                currentMenus[currentMenus.Count - 1].EnableButtons();
+                currentMenus[currentMenus.Count - 1].defaultSelection.Select();
             }
             menu.OnClose();
         }
