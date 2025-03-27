@@ -135,6 +135,7 @@ public class PlayerController : PlayerStateBehavior
             (!playerMovementBody.isOverVent ? sGlide : ventGlideState).TransitionTo();
         }
     }
+    public void MidWallJumpJumpAction() => wallJumpState.WallJump(transform.forward);
 
     //Other events.
     private void JumpRelease(CTX ctx) => Machine.SendSignal("JumpRelease", false, true);
