@@ -30,7 +30,7 @@ public class Menu : MonoBehaviour
     /// </summary>
     protected virtual void Awake()
     {
-        if (isActive) Manager.Open(this);
+        if (isActive) Manager.Open(this, true);
         else
         {
             gameObject.SetActive(false);
@@ -100,9 +100,9 @@ public class Menu : MonoBehaviour
         /// Opens the specified menu
         /// </summary>
         /// <param name="menu">The Menu to be opened.</param>
-        public static void Open(Menu menu)
+        public static void Open(Menu menu, bool overrideRedundancyCheck = false)
         {
-            if (menu.isActive) return;
+            if (menu.isActive && !overrideRedundancyCheck) return;
 
             currentMenus.Add(menu);
 
@@ -126,7 +126,13 @@ public class Menu : MonoBehaviour
             menu.isActive = false;
             if (currentMenus.Count > 0)
             {
-                currentMenus[currentMenus.Count - 1].defaultSelection.Select();
+                //if(currentMenus[^1] == null)
+                //{
+                //    currentMenus.Remove(currentMenus[^1]);
+                //    menu.OnClose();
+                //    return;
+                //} // Pause Fix
+                currentMenus[^1].defaultSelection.Select();
             }
             menu.OnClose();
         }
