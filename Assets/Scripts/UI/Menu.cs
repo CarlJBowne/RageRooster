@@ -15,12 +15,12 @@ public class Menu : MonoBehaviour
     [DisableInPlayMode] public bool isActive;
     [DisableInPlayMode] public Menu parent;
     [SerializeField] public Button defaultSelection;
+    [SerializeField] public Selectable[] allButtons;
     [SerializeField] private string dictionaryName;
     [SerializeField] private bool closeOverride;
     [SerializeField, ShowField(nameof(closeOverride))] private UnityEvent closeEvent;
     [SerializeField] private EventReference openSound;
     [SerializeField] private EventReference closeSound;
-
     //Data
     public bool isCurrent => Manager.currentMenu == this;
     public bool isSubMenu => parent != null;
@@ -30,7 +30,7 @@ public class Menu : MonoBehaviour
     /// </summary>
     protected virtual void Awake()
     {
-        if (isActive) Manager.Open(this);
+        if (isActive) Manager.Open(this, true);
         else
         {
             gameObject.SetActive(false);
@@ -69,6 +69,28 @@ public class Menu : MonoBehaviour
     public void TrueClose() => Manager.Close(this);
 
     /// <summary>
+    /// Enable all of the buttons in a menu. Buttons listed in allButtons.
+    /// </summary>
+    public void EnableButtons()
+    {
+        for (int i = 0; i < allButtons.Length; i++)
+        {
+            allButtons[i].interactable = true;
+        }
+    }
+
+    /// <summary>
+    /// Disables all of the buttons in a menu. Buttons listed in allButtons.
+    /// </summary>
+    public void DisableButtons()
+    {
+        for (int i = 0; i < allButtons.Length; i++)
+        {
+            allButtons[i].interactable = false;
+        }
+    }
+
+    /// <summary>
     /// Called when the menu is opened
     /// </summary>
     protected virtual void OnOpen()
@@ -100,14 +122,19 @@ public class Menu : MonoBehaviour
         /// Opens the specified menu
         /// </summary>
         /// <param name="menu">The Menu to be opened.</param>
-        public static void Open(Menu menu)
+        public static void Open(Menu menu, bool overrideRedundancyCheck = false)
         {
-            if (menu.isActive) return;
+            if (menu.isActive && !overrideRedundancyCheck) return;
 
             currentMenus.Add(menu);
 
             menu.isActive = true;
             menu.gameObject.SetActive(true);
+            menu.EnableButtons();
+            if (currentMenus.Count > 1)
+            {
+                currentMenus[currentMenus.Count - 2].DisableButtons();
+            }
             menu.defaultSelection.Select();
             menu.OnOpen();
         }
@@ -126,6 +153,7 @@ public class Menu : MonoBehaviour
             menu.isActive = false;
             if (currentMenus.Count > 0)
             {
+                currentMenus[currentMenus.Count - 1].EnableButtons();
                 currentMenus[currentMenus.Count - 1].defaultSelection.Select();
             }
             menu.OnClose();
