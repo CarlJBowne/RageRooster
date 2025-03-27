@@ -38,13 +38,12 @@ public class PlayerWallJump : PlayerMovementEffector
         if(upgrade && playerMovementBody.rb.DirectionCast(playerMovementBody.currentDirection, 0.5f, playerMovementBody.checkBuffer, out RaycastHit hit))
         {
             if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return false;
-            direction = direction.XZ().Rotate(180, Vector3.up);
 
             if (!state.active) state.TransitionTo();
             playerMovementBody.VelocitySet(y: jumpPower);
 
             startPoint = transform.position;
-            fixedDirection = direction;
+            fixedDirection = hit.normal.XZ();
 
             playerMovementBody.currentDirection = fixedDirection;
 
