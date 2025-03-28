@@ -26,10 +26,11 @@ Transform:
   m_GameObject: {fileID: 1384627988123839968}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.109371185, y: -31.270933, z: 65.92987}
+  m_LocalPosition: {x: -6.46, y: -31.270933, z: 55.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3953720561206041468}
   m_Father: {fileID: 2843296489540364817}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2673925103474088344
@@ -78,6 +79,89 @@ Transform:
   - {fileID: 246659514663194431}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7355239833499419491
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3953720561206041468}
+  - component: {fileID: 7586375557445184625}
+  - component: {fileID: 5754786163739716346}
+  m_Layer: 0
+  m_Name: RefCapsule
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &3953720561206041468
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7355239833499419491}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.82952034, y: 0.82952034, z: 0.82952034}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 246659514663194431}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &7586375557445184625
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7355239833499419491}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &5754786163739716346
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7355239833499419491}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1001 &1000911723188704476
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -345,27 +429,7 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2843296489540364817}
     m_Modifications:
-    - target: {fileID: 46243738527031215, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
-        type: 3}
-      propertyPath: m_Data.m_SourceObjects.m_Item0.transform
-      value: 
-      objectReference: {fileID: 246659514663194431}
-    - target: {fileID: 910349298440463262, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
-        type: 3}
-      propertyPath: playerProxy
-      value: 
-      objectReference: {fileID: 246659514663194431}
-    - target: {fileID: 1389869196944829197, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
-        type: 3}
-      propertyPath: m_Data.playerProxy
-      value: 
-      objectReference: {fileID: 246659514663194431}
     - target: {fileID: 2777068353241705482, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
-        type: 3}
-      propertyPath: m_Data.m_SourceObjects.m_Item0.transform
-      value: 
-      objectReference: {fileID: 246659514663194431}
-    - target: {fileID: 3507359015083688533, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
         type: 3}
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
       value: 
@@ -375,6 +439,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: FinalBossEntity
       objectReference: {fileID: 0}
+    - target: {fileID: 3781266721430699976, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
+        type: 3}
+      propertyPath: m_Data.sourceObject
+      value: 
+      objectReference: {fileID: 246659514663194431}
+    - target: {fileID: 3851119871068477604, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
+        type: 3}
+      propertyPath: m_Data.sourceObject
+      value: 
+      objectReference: {fileID: 246659514663194431}
     - target: {fileID: 3915773413549851134, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
         type: 3}
       propertyPath: m_Data.sourceObject
@@ -430,11 +504,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7099225785188312380, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
+    - target: {fileID: 6931067895969434382, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
         type: 3}
-      propertyPath: playerProxyTransform
+      propertyPath: projectilePool.parent
       value: 
-      objectReference: {fileID: 246659514663194431}
+      objectReference: {fileID: 2843296489540364817}
     - target: {fileID: 7644150767722103511, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
         type: 3}
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
@@ -445,8 +519,12 @@ PrefabInstance:
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
       value: 
       objectReference: {fileID: 246659514663194431}
-    m_RemovedComponents:
-    - {fileID: 4495293185652764342, guid: 6f318437c1ef5bf458dfc50f9f1926ee, type: 3}
+    - target: {fileID: 8700716878835570007, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
+        type: 3}
+      propertyPath: projectilePool.parent
+      value: 
+      objectReference: {fileID: 2843296489540364817}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

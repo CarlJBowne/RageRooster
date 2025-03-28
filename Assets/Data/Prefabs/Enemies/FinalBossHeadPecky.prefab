@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2612433410836081480}
   - component: {fileID: 5719438475009929777}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PeckAction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4099229458292232}
   - component: {fileID: 5510704790576425835}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LazerAction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 5699307283567168322}
   - component: {fileID: 7971239698693665952}
   - component: {fileID: 8123118466828152560}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Lazer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ PrefabInstance:
     - target: {fileID: 2136989299893519016, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.66
+      value: -13.54
       objectReference: {fileID: 0}
     - target: {fileID: 2136989299893519016, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
@@ -429,8 +429,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
+      propertyPath: attackTimeLower
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: attackTimeHigher
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
       propertyPath: projectileChance
-      value: 0.33333334
+      value: 0.3333333
       objectReference: {fileID: 0}
     - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
@@ -440,7 +450,7 @@ PrefabInstance:
     - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
       propertyPath: projectilePool.canGrow
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
@@ -478,7 +488,11 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 687400988733187202}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7463755248251819927, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 365276113826852106}
   m_SourcePrefab: {fileID: 100100000, guid: 7644558c67485ae49ad2ecb504b79b2a, type: 3}
 --- !u!4 &1533155888379633504 stripped
 Transform:
@@ -486,6 +500,63 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 8989072814634657880}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1957675796687142863 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7463755248251819927, guid: 7644558c67485ae49ad2ecb504b79b2a,
+    type: 3}
+  m_PrefabInstance: {fileID: 8989072814634657880}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &365276113826852106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957675796687142863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8935e03361a14ec4b8edc872f76bc822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 1
+  m_Data:
+    m_ConstrainedObject: {fileID: 7314458501053663110}
+    m_SourceObjects:
+      m_Length: 2
+      m_Item0:
+        transform: {fileID: 8552962402240195986}
+        weight: 1
+      m_Item1:
+        transform: {fileID: 2255289724989571800}
+        weight: 0
+      m_Item2:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item3:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item4:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item5:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item6:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item7:
+        transform: {fileID: 0}
+        weight: 0
+    m_ConstrainedPositionAxes:
+      x: 1
+      y: 1
+      z: 1
+    m_ConstrainedRotationAxes:
+      x: 1
+      y: 1
+      z: 1
+    m_MaintainPositionOffset: 0
+    m_MaintainRotationOffset: 0
 --- !u!4 &2255289724989571800 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7202377404876909184, guid: 7644558c67485ae49ad2ecb504b79b2a,

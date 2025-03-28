@@ -28,15 +28,16 @@ public class B2AC_Peck : RigConstraint<THIS.Job, THIS.Data, THIS.Binder>
             float yPosition = this.yPosition.Get(stream);
 
             Vector3 newPosition = constrained.GetPosition(stream);
+            Vector3 sourcePosition = source.GetPosition(stream);
 
             if (followPlayerRate > 0)
                 try
                 {
-                    newPosition = Vector3.MoveTowards(constrained.GetPosition(stream).XZ(), source.GetPosition(stream).XZ(), followPlayerRate * Time.deltaTime);
+                    newPosition = Vector3.MoveTowards(newPosition.XZ(), sourcePosition.XZ(), followPlayerRate * Time.deltaTime);
                 }
                 catch
                 {
-                    newPosition = Vector3.MoveTowards(constrained.GetPosition(stream).XZ(), source.GetPosition(stream).XZ(), followPlayerRate);
+                    newPosition = Vector3.MoveTowards(newPosition.XZ(), sourcePosition.XZ(), followPlayerRate);
                 }
 
             newPosition.y = yPosition;

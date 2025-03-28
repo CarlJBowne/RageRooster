@@ -33,13 +33,16 @@ public class B2AC_Slash : RigConstraint<THIS.Job, THIS.Data, THIS.Binder>
         public FloatProperty headMovementMaxDelta;
         public FloatProperty zMaxMaxDelta;
 
+        public Transform relativeSpace;
+
+        public Matrix4x4 relativeSpaceMatrix;
 
         public void ProcessRootMotion(UnityEngine.Animations.AnimationStream stream) { }
         public void ProcessAnimation(UnityEngine.Animations.AnimationStream stream)
         {
             if (!stream.isValid) return; // Ensure valid data before proceeding
 
-            zMax.Set(stream, zMax.Get(stream).MoveTowards(zMaxMaxDelta.Get(stream), source.GetPosition(stream).z));
+            zMax.Set(stream, zMax.Get(stream).MoveTowards(zMaxMaxDelta.Get(stream), relativeSpaceMatrix.inverse.MultiplyPoint3x4(source.GetPosition(stream)).z));
 
             Vector3 targetPos = new(Mathf.LerpUnclamped(xMin.Get(stream), xMax.Get(stream), xPercentage.Get(stream)), 
                                     yPos.Get(stream), 
@@ -48,14 +51,14 @@ public class B2AC_Slash : RigConstraint<THIS.Job, THIS.Data, THIS.Binder>
             try
             {
                 float delta = headMovementMaxDelta.Get(stream) * Time.deltaTime;
-                constrained.SetPosition(stream, Vector3.Lerp(constrained.GetPosition(stream),
-                                                            Vector3.MoveTowards(constrained.GetPosition(stream), targetPos, delta),
+                constrained.SetLocalPosition(stream, Vector3.Lerp(constrained.GetLocalPosition(stream),
+                                                            Vector3.MoveTowards(constrained.GetLocalPosition(stream), targetPos, delta),
                                                             jobWeight.Get(stream)
                                                             ));
             }
             catch
             {
-                constrained.SetPosition(stream, Vector3.Lerp(constrained.GetPosition(stream),
+                constrained.SetLocalPosition(stream, Vector3.Lerp(constrained.GetLocalPosition(stream),
                                             targetPos,
                                             jobWeight.Get(stream)
                                             ));
@@ -70,12 +73,24 @@ public class B2AC_Slash : RigConstraint<THIS.Job, THIS.Data, THIS.Binder>
     {
         public Transform constrainedObject;
         [SyncSceneToStream] public Transform sourceObject;
+        [SyncSceneToStream] public Transform relativeSpace;
 
         public bool IsValid() => !(constrainedObject == null || sourceObject == null);
         public void SetDefaultValues()
         {
             constrainedObject = null;
             sourceObject = null;
+        }
+
+        public Matrix4x4 GetRSM()
+        {
+            Matrix4x4 matrixTrans = Matrix4x4.identity;
+            matrixTrans.SetTRS(relativeSpace.position, relativeSpace.rotation, Vector3.one);
+            return matrixTrans;
+
+            ////Matrix4x4 version of Transform.InverseTransformPoint
+            //Vector3 localPosition = matrixTrans.inverse.MultiplyPoint3x4(worldPositon);
+
         }
     }
 
@@ -94,7 +109,9 @@ public class B2AC_Slash : RigConstraint<THIS.Job, THIS.Data, THIS.Binder>
                 zPercentage = FloatProperty.Bind(animator, component, nameof(B2AC_Slash.zPercentage)),
                 yPos = FloatProperty.Bind(animator, component, nameof(B2AC_Slash.yPos)),
                 headMovementMaxDelta = FloatProperty.Bind(animator, component, nameof(B2AC_Slash.headMovementMaxDelta)),
-                zMaxMaxDelta = FloatProperty.Bind(animator, component, nameof(B2AC_Slash.zMaxMaxDelta))
+                zMaxMaxDelta = FloatProperty.Bind(animator, component, nameof(B2AC_Slash.zMaxMaxDelta)),
+                relativeSpace = data.relativeSpace,
+                relativeSpaceMatrix = data.GetRSM()
             };
 
         public override void Destroy(Job job) { }

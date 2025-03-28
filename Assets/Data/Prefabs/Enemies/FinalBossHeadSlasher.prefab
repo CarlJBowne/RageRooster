@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8562774672212065215}
   - component: {fileID: 8873377585175753633}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SwipeAction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Data:
     constrainedObject: {fileID: 3652525294345206397}
     sourceObject: {fileID: 0}
+    relativeSpace: {fileID: 4087820684635285445}
   xMin: 47.48
   xMax: 23.96
   zMin: -28.63
@@ -118,7 +119,7 @@ PrefabInstance:
     - target: {fileID: 2136989299893519016, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.66
+      value: 13.54
       objectReference: {fileID: 0}
     - target: {fileID: 2136989299893519016, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
@@ -192,6 +193,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
+      propertyPath: attackTimeLower
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: attackTimeHigher
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
       propertyPath: damageUntilNewAttack
       value: 1
       objectReference: {fileID: 0}
@@ -234,11 +245,7 @@ PrefabInstance:
         type: 3}
       insertIndex: 1
       addedObject: {fileID: 8562774672212065215}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4453772482238464929, guid: 7644558c67485ae49ad2ecb504b79b2a,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8160292451142116063}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7644558c67485ae49ad2ecb504b79b2a, type: 3}
 --- !u!95 &1024096200261067864 stripped
 Animator:
@@ -264,32 +271,3 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5855695946392785149}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7822020318923592540 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4453772482238464929, guid: 7644558c67485ae49ad2ecb504b79b2a,
-    type: 3}
-  m_PrefabInstance: {fileID: 5855695946392785149}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8160292451142116063
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7822020318923592540}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6000bd9289ebf28418c0ef3d6b8d8bfd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pool:
-    prefabObject: {fileID: 5822478214020923678, guid: 939b237b4b774974cb47426b47cbd53c,
-      type: 3}
-    defaultPoolDepth: 3
-    canGrow: 0
-    parent: {fileID: 0}
-    autoDisableTime: -1
-    spawnPoint: {fileID: 6653602061332004259}
-    rotate: 0
-    autoSpawnRate: 0
-  bossID: 0
