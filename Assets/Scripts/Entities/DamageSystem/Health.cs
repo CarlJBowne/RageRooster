@@ -19,8 +19,8 @@ public class Health : MonoBehaviour, IDamagable
 	//Config
 	[SerializeField] protected int maxHealth;
 	[SerializeField] protected UltEvents.UltEvent<int> damageEvent = new();
-	[SerializeField] protected UltEvents.UltEvent depleteEvent = new();
-	[SerializeField] protected Attack.Tag[] immuneTags;
+    [SerializeField] public UltEvents.UltEvent depleteEvent = new();
+    [SerializeField] protected Attack.Tag[] immuneTags;
 
 	//Data
 	[SerializeField, HideInEditMode, DisableInPlayMode] protected int health;
