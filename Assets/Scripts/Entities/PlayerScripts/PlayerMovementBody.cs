@@ -17,6 +17,9 @@ public class PlayerMovementBody : PlayerStateBehavior
     public PlayerAirborneMovement airChargeState;
     public Vector3 frontCheckDefaultOffset;
     public float frontCheckDefaultRadius;
+    public bool Mario64StyleAntiVoid;
+    public LayerMask nonVoidLayerMask;
+    public int overVoidCounter;
 
     #endregion
 
@@ -215,9 +218,10 @@ public class PlayerMovementBody : PlayerStateBehavior
             Vector3 leftover = vel - snapToSurface;
             Vector3 nextNormal = hit.normal;
             bool stopped = false;
-            rb.MovePosition(position + snapToSurface);
 
             if (step == movementProjectionSteps) return;
+
+            if(!MoveForward(snapToSurface)) return;
 
             if (grounded)
             {
@@ -250,7 +254,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                 void Stop(Vector3 newNormal)
                 {
                     nextNormal = newNormal.XZ().normalized;
-                    //if (Vector3.Dot(newNormal, vel.XZ()) <= -.75f)
+                    if (Vector3.Dot(newNormal, vel.normalized.XZ()) <= -.75f)
                         stopped = true;
                 }
 
@@ -261,7 +265,10 @@ public class PlayerMovementBody : PlayerStateBehavior
         }
         else
         {
-            rb.MovePosition(position + vel);
+
+            if (step == movementProjectionSteps) return;
+            if (!MoveForward(vel)) return;
+
             //Snap to ground when walking on a downward slope.
             if (grounded && initVelocity.y <= 0)
             {
@@ -272,6 +279,21 @@ public class PlayerMovementBody : PlayerStateBehavior
                     GroundStateChange(false);
                     Machine.SendSignal("WalkOff", overrideReady: true);
                 }
+            }
+        }
+
+        bool MoveForward(Vector3 offset)
+        {
+            if(Mario64StyleAntiVoid && !Physics.Raycast(transform.position + Vector3.up + offset, Vector3.down, 5000, nonVoidLayerMask, QueryTriggerInteraction.Collide))
+            {
+                velocity = Vector3.zero;
+                overVoidCounter++;
+                return false;
+            }
+            else
+            {
+                rb.MovePosition(position + offset);
+                return true;
             }
         }
     }
