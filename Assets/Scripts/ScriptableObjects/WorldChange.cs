@@ -10,19 +10,27 @@ public class WorldChange : ScriptableObject, ICustomSerialized
 {
     [SerializeField, DisableInEditMode, DisableInPlayMode] private bool _enabled;
 
-    public bool Enabled => _enabled;
+    public bool Enabled
+    {
+        get
+        {
+            return _enabled;
+        }
+        set
+        {
+            _enabled = value;
+            if (_enabled) Action?.Invoke();
+        } 
+    }
+
     [JsonIgnore]
     public System.Action Action;
 
     [JsonIgnore]
     public bool defaultValue;
 
-    public void Activate()
-    {
-        Action?.Invoke();
-        _enabled = true;
-    }
-    public void Deactivate() => _enabled = false;
+    public void Enable() => Enabled = true;
+    public void Disable() => Enabled = false;
 
     public JToken Serialize()
     {

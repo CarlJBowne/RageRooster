@@ -120,7 +120,7 @@ public class Boss1Health : Health
 
     public void FinishBoss()
     {
-        finishedBossWorldChange.Activate();
+        finishedBossWorldChange.Enable();
         FinishBossEvent?.Invoke();
     }
 

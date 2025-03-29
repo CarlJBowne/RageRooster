@@ -15,7 +15,7 @@ public class HenCollectibleEntity : MonoBehaviour, IInteractable
     bool IInteractable.Interaction()
     {
         GlobalState.AddMaxAmmo(1);
-        worldChange.Activate();
+        worldChange.Enable();
         gameObject.SetActive(false);
         return true;
     }
