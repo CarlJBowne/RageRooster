@@ -6,12 +6,14 @@ using TMPro;
 public class WaveController : MonoBehaviour
 {
     [Header("Wave Settings")]
-    public GameObject[] enemyPrefabs;
-    public Transform[] spawnPoints;
-    public Transform enemyParent;
+    public ObjectPool enemyPool;
     public int waves = 3;
     public int enemiesPerWave = 5;
     public float timeBetweenWaves = 3f;
+
+    [Header("Spawn Area")]
+    [SerializeField] private Vector3 spawnAreaCenter;
+    [SerializeField] private Vector3 spawnAreaSize;
 
     [Header("UI")]
     public TextMeshProUGUI waveTimerText;
@@ -30,6 +32,8 @@ public class WaveController : MonoBehaviour
 
     private void Start()
     {
+        enemyPool.Initialize();
+
         if (!SaveOverride && worldChange != null && worldChange.Enabled)
         {
             Destroy(gameObject);
@@ -62,7 +66,6 @@ public class WaveController : MonoBehaviour
             SpawnWave();
             currentWave++;
 
-            // Wait for all enemies to be cleared
             while (activeEnemies > 0)
             {
                 yield return null;
@@ -70,17 +73,16 @@ public class WaveController : MonoBehaviour
 
             Debug.Log($"[WaveController] Wave {currentWave} cleared.");
 
-            // Timer before next wave
             float timer = timeBetweenWaves;
-            // if (waveTimerText != null) waveTimerText.gameObject.SetActive(true);
+            if (waveTimerText != null) waveTimerText.gameObject.SetActive(true);
             while (timer > 0)
             {
-                // if (waveTimerText != null)
-                //     waveTimerText.text = $"Next wave in {Mathf.Ceil(timer)}s";
+                if (waveTimerText != null)
+                    waveTimerText.text = $"Next wave in {Mathf.Ceil(timer)}s";
                 timer -= Time.deltaTime;
                 yield return null;
             }
-            // if (waveTimerText != null) waveTimerText.gameObject.SetActive(false);
+            if (waveTimerText != null) waveTimerText.gameObject.SetActive(false);
         }
 
         EndWave();
@@ -88,21 +90,40 @@ public class WaveController : MonoBehaviour
 
     void SpawnWave()
     {
-        Debug.Log($"[WaveController] Spawning {enemiesPerWave} enemies.");
+        Debug.Log($"[WaveController] Spawning {enemiesPerWave} enemies within area.");
         for (int i = 0; i < enemiesPerWave; i++)
         {
-            var prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
-            var point = spawnPoints[Random.Range(0, spawnPoints.Length)];
-            var enemy = Instantiate(prefab, point.position, Quaternion.identity, enemyParent);
+            Vector3 randomPosition = spawnAreaCenter + new Vector3(
+                Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2),
+                Random.Range(-spawnAreaSize.y / 2, spawnAreaSize.y / 2),
+                Random.Range(-spawnAreaSize.z / 2, spawnAreaSize.z / 2)
+            );
 
-            if (enemy.TryGetComponent(out EnemyHealth health))
+            PoolableObject pooledEnemy = enemyPool.Pump();
+
+            if (pooledEnemy != null)
             {
-                activeEnemies++;
-                health.depleteEvent += () =>
+                pooledEnemy.SetPosition(randomPosition);
+                pooledEnemy.SetRotation(Vector3.zero);
+
+                if (pooledEnemy.TryGetComponent(out EnemyHealth health))
                 {
-                    activeEnemies--;
-                    Debug.Log($"[WaveController] Enemy defeated. {activeEnemies} remaining.");
-                };
+                    activeEnemies++;
+                    health.depleteEvent += () =>
+                    {
+                        activeEnemies--;
+                        pooledEnemy.Disable();
+                        Debug.Log($"[WaveController] Enemy defeated. {activeEnemies} remaining.");
+                    };
+                }
+                else
+                {
+                    Debug.LogError("[WaveController] Spawned enemy lacks EnemyHealth component!");
+                }
+            }
+            else
+            {
+                Debug.LogError("[WaveController] Enemy pool exhausted or unable to spawn enemy!");
             }
         }
     }
@@ -123,5 +144,16 @@ public class WaveController : MonoBehaviour
         }
 
         Destroy(this);
+    }
+
+    private void Update()
+    {
+        enemyPool.Update();
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(spawnAreaCenter, spawnAreaSize);
     }
 }

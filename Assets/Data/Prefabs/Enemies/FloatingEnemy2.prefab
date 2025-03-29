@@ -701,6 +701,7 @@ GameObject:
   - component: {fileID: 4863964995059642808}
   - component: {fileID: 3332179714480363266}
   - component: {fileID: 1161913864714086396}
+  - component: {fileID: -1435134813268415645}
   m_Layer: 7
   m_Name: FloatingEnemy2
   m_TagString: Untagged
@@ -765,12 +766,21 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
   states:
     _serializedList: []
   _variables:
     variables: []
+  signalReady: 1
+  signalQueueDecay:
+    length: 1
+    current: 0
+    running: 0
+  globalSignals:
+    _serializedList: []
 --- !u!136 &892225924213003653
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -808,11 +818,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   damageEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   depleteEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   immuneTags: []
   health: 0
   stunTime: 0.2
@@ -825,10 +833,9 @@ MonoBehaviour:
   minRagdollTime: 2
   maxRagdollTime: 5
   minRagdollVelovity: 0.2
-  projectile: 0
-  hasRagdolled: 0
   respawn: 0
   respawnTime: 0
+  currentState: 0
 --- !u!114 &6003309191609501265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -845,9 +852,23 @@ MonoBehaviour:
   weight: 1
   wiggleFreeTime: 0
   maxHealthToGrab: 0
+  additionalThrowDistance: 0
   GrabStateEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  defaultEvent:
+    _PersistentCalls: []
+  grabbedEvent:
+    _PersistentCalls: []
+  thrownEvent:
+    _PersistentCalls: []
+  bounceEvent:
+    _PersistentCalls: []
+  thrownAttack:
+    amount: 1
+    velocity: {x: 0, y: 0, z: 0}
+    tags:
+    - name: Thrown
+  currentState: 0
 --- !u!54 &4863964995059642808
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -928,6 +949,29 @@ MonoBehaviour:
     - name: ThrownEnemy
   sourceEntity: {fileID: 0}
   enabled: 1
+--- !u!114 &-1435134813268415645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2551659374973096520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92f681152c991af4b9201548f05c7e9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool:
+    prefabObject: {fileID: 0}
+    defaultPoolDepth: 1
+    canGrow: 1
+    parent: {fileID: 0}
+    autoDisableTime: -1
+    spawnPoint: {fileID: 0}
+    rotate: 0
+    autoSpawnRate: 0
+  Active: 0
+  timeExisting: 0
 --- !u!1 &2559604377289995549
 GameObject:
   m_ObjectHideFlags: 0
@@ -1160,8 +1204,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!114 &1272519012975716007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1352,8 +1398,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!114 &8677131897453068850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1434,8 +1482,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!114 &8979188299765350674
 MonoBehaviour:
   m_ObjectHideFlags: 0
