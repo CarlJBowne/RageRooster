@@ -1311,7 +1311,7 @@ Transform:
   - {fileID: 8240657446396116129}
   - {fileID: 3858517113413183086}
   m_Father: {fileID: 1495339210815947155}
-  m_LocalEulerAnglesHint: {x: -0.3216942, y: -48.991932, z: -7.0936437}
+  m_LocalEulerAnglesHint: {x: -8.195, y: 32.132, z: -24.692}
 --- !u!1 &1242553937887867047
 GameObject:
   m_ObjectHideFlags: 0
@@ -2278,7 +2278,7 @@ Transform:
   - {fileID: 1858017805129491221}
   - {fileID: 2680535561233752795}
   m_Father: {fileID: 802911248559169720}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: -94.44818}
+  m_LocalEulerAnglesHint: {x: 1.0418746, y: -89.42543, z: -92.35713}
 --- !u!114 &1743517778221320810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3182,7 +3182,7 @@ Transform:
   m_Children:
   - {fileID: 1336325588524243921}
   m_Father: {fileID: 5779348743443458172}
-  m_LocalEulerAnglesHint: {x: 1.6161712, y: 89.84695, z: -149.4475}
+  m_LocalEulerAnglesHint: {x: -11.861, y: 94.083, z: -179.7}
 --- !u!1 &2773190596053569390
 GameObject:
   m_ObjectHideFlags: 0
@@ -3863,15 +3863,7 @@ MonoBehaviour:
   currentSpeed: 0
   jumpPhase: 0
   _currentDirection: {x: 0, y: 0, z: 0}
-  animateMovement: 0
-  animatedMovementTurn: 0
-  animatedMovementMaxSpeed: 0
-  animatedMovementMinSpeed: 0
-  animatedMovementSpeedChange: 15
-  animateMovementVertical: 0
-  animatedMovementVertical: 0
-  animateVelocity: 0
-  animatedVelocity: {x: 0, y: 0, z: 0}
+  literalVelocity: {x: 0, y: 0, z: 0}
   jumpMarkers: []
 --- !u!114 &2783735533672575433
 MonoBehaviour:
@@ -5929,6 +5921,7 @@ GameObject:
   - component: {fileID: 2559043128292996688}
   - component: {fileID: 1615186036512262025}
   - component: {fileID: 4534952952498977717}
+  - component: {fileID: 3201008532590326604}
   m_Layer: 6
   m_Name: ParrySpinA
   m_TagString: Untagged
@@ -5998,6 +5991,35 @@ MonoBehaviour:
   onEnterName: Parry
   onEnterTime: 0.02
   animator: {fileID: 0}
+--- !u!114 &3201008532590326604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4673781514129227438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  trueActive: 0
+  influence: 0.75
+  fullStop: 0
+  maxSpeed: 0
+  minSpeed: 0
+  speedChangeRate: 15
+  turnability: 15
+  verticalAddSpeed: 0
+  setVerticalInfluence: 0
+  setVerticalVelocity: 0
+  defaultGravity: 50
+  worldspaceInfluence: 0
+  worldspaceVelocity: {x: 0, y: 0, z: 0}
+  locked: 0
 --- !u!1 &4847283882173391290
 GameObject:
   m_ObjectHideFlags: 0
@@ -9533,7 +9555,7 @@ Transform:
   - {fileID: 1843710722454031686}
   - {fileID: 1474029645955272187}
   m_Father: {fileID: 1336325588524243921}
-  m_LocalEulerAnglesHint: {x: -37.655838, y: -21.990223, z: -94.74815}
+  m_LocalEulerAnglesHint: {x: -2.088, y: -8.473, z: -92.21}
 --- !u!1 &6885496698341775711
 GameObject:
   m_ObjectHideFlags: 0
@@ -10006,7 +10028,7 @@ Transform:
   - {fileID: 2235979652216157829}
   - {fileID: 515695939648151693}
   m_Father: {fileID: 1013759457902555881}
-  m_LocalEulerAnglesHint: {x: -18.876396, y: 12.838817, z: -87.71366}
+  m_LocalEulerAnglesHint: {x: -2.039, y: -8.377, z: -72.017}
 --- !u!1 &7224132573033648796
 GameObject:
   m_ObjectHideFlags: 0
@@ -10070,7 +10092,7 @@ Transform:
   - {fileID: 5735276715730193203}
   - {fileID: 4791203585736954220}
   m_Father: {fileID: 362155934586423713}
-  m_LocalEulerAnglesHint: {x: 7.310693, y: -31.388235, z: -2.6837962}
+  m_LocalEulerAnglesHint: {x: 2.508, y: 3.294, z: -49.337}
 --- !u!1 &7257209901777955179
 GameObject:
   m_ObjectHideFlags: 0
@@ -11405,7 +11427,7 @@ Transform:
   m_Children:
   - {fileID: 1013759457902555881}
   m_Father: {fileID: 5779348743443458172}
-  m_LocalEulerAnglesHint: {x: -3.1507668, y: -83.80227, z: 32.731945}
+  m_LocalEulerAnglesHint: {x: 10.017, y: -91.701, z: 36.899}
 --- !u!1 &8080908558534702520
 GameObject:
   m_ObjectHideFlags: 0
@@ -11479,6 +11501,7 @@ GameObject:
   - component: {fileID: 6993975061325138571}
   - component: {fileID: 906556439848370587}
   - component: {fileID: 2805571998771508225}
+  - component: {fileID: 6484935563616080972}
   m_Layer: 6
   m_Name: ParrySpinG
   m_TagString: Untagged
@@ -11542,6 +11565,35 @@ MonoBehaviour:
   onEnterName: Parry
   onEnterTime: 0.02
   animator: {fileID: 0}
+--- !u!114 &6484935563616080972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8181037630459571021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  trueActive: 0
+  influence: 0.75
+  fullStop: 0
+  maxSpeed: 0
+  minSpeed: 0
+  speedChangeRate: 15
+  turnability: 15
+  verticalAddSpeed: 0
+  setVerticalInfluence: 0
+  setVerticalVelocity: 0
+  defaultGravity: 50
+  worldspaceInfluence: 0
+  worldspaceVelocity: {x: 0, y: 0, z: 0}
+  locked: 0
 --- !u!1 &8199037953781554914
 GameObject:
   m_ObjectHideFlags: 0

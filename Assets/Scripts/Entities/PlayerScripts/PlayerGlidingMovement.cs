@@ -28,13 +28,13 @@ public class PlayerGlidingMovement : PlayerMovementEffector
 
     public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
-        float currentSpeed = playerMovementBody.currentSpeed;
+        float currentSpeed = playerMovementBody.CurrentSpeed;
         Vector3 currentDirection = playerMovementBody.currentDirection;
 
         HorizontalMain(ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
 
         playerMovementBody.currentDirection = currentDirection;
-        playerMovementBody.currentSpeed = currentSpeed;
+        playerMovementBody.CurrentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
 
@@ -72,7 +72,7 @@ public class PlayerGlidingMovement : PlayerMovementEffector
                 currentSpeed = currentSpeed.MoveDown(controlMag * decceleration * deltaTime, maxSpeed);
 
         }
-        else currentSpeed = currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0);
+        else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
     }
 
 

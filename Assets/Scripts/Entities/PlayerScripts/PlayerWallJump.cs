@@ -24,7 +24,7 @@ public class PlayerWallJump : PlayerMovementEffector
         resultX = fixedDirection.x * outwardVelocity;
         resultZ = fixedDirection.z * outwardVelocity;
 
-        playerMovementBody.currentSpeed = outwardVelocity;
+        playerMovementBody.CurrentSpeed = outwardVelocity;
         playerMovementBody.currentDirection = fixedDirection;
 
         float distance = (transform.position - startPoint).XZ().magnitude;

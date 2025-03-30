@@ -13,12 +13,13 @@ public class PlayerMovementAnimator : PlayerMovementEffector
     public float maxSpeed = 0;
     public float minSpeed = 0;
     public float speedChangeRate = 15;
-    public float turnability = 0;
+    public float turnability = 10;
     public float verticalAddSpeed;
 
     [Tooltip("Sets/Lerps the velocity to a specific point rather than adding it.")]
     [Range(0, 1)] public float setVerticalInfluence;
     public float setVerticalVelocity;
+    [Tooltip("Only active if locked.")]
     public float defaultGravity;
 
     [Range(0, 1)] public float worldspaceInfluence;
@@ -43,7 +44,7 @@ public class PlayerMovementAnimator : PlayerMovementEffector
             Vector3 controlVector = playerController.camAdjustedMovement;
 
             Vector3 targetDirection = playerMovementBody.currentDirection;
-            float targetSpeed = playerMovementBody.currentSpeed;
+            float targetSpeed = playerMovementBody.CurrentSpeed;
 
             if (turnability > 0) targetDirection = Vector3.RotateTowards(targetDirection, controlVector.normalized, turnability * Mathf.PI * Time.fixedDeltaTime, 0);
 
@@ -53,14 +54,14 @@ public class PlayerMovementAnimator : PlayerMovementEffector
 
             if (influence == 1)
             {
-                playerMovementBody.currentSpeed = targetSpeed;
+                playerMovementBody.CurrentSpeed = targetSpeed;
                 playerMovementBody.currentDirection = targetDirection;
                 resultX = targetDirection.x * targetSpeed;
                 resultZ = targetDirection.z * targetSpeed;
             }
             else
             {
-                playerMovementBody.currentSpeed = Mathf.Lerp(playerMovementBody.currentSpeed, targetSpeed, influence);
+                playerMovementBody.CurrentSpeed = Mathf.Lerp(playerMovementBody.CurrentSpeed, targetSpeed, influence);
                 playerMovementBody.currentDirection = Vector3.Lerp(playerMovementBody.currentDirection, targetDirection, influence); ;
                 resultX = Mathf.Lerp(resultX.Value, targetDirection.x * targetSpeed, influence);
                 resultZ = Mathf.Lerp(resultZ.Value, targetDirection.z * targetSpeed, influence);

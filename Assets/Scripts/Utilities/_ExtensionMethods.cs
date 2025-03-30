@@ -68,10 +68,10 @@ public static class _EasierMathExtensions
 		return current == target
 			? target
 			: target > current
-				? target - current <= rate
+				? current + rate >= target
 					? target
 					: current + rate
-				: current - target <= rate
+				: current - rate <= target
 						? target
 						: current - rate;
     }
