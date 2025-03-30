@@ -20,7 +20,8 @@ public class PlayerMovementBody : PlayerStateBehavior
     public float frontCheckDefaultRadius;
     public bool Mario64StyleAntiVoid;
     public LayerMask nonVoidLayerMask;
-    public int overVoidCounter;
+    public State idleState;
+    public State airNeutralState;
 
     #endregion
 
@@ -169,7 +170,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
         if (PlayerStateMachine.DEBUG_MODE_ACTIVE && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
-        if (velocity.y < 0.01f ||(grounded && (velocity.y >= 0.1f || rb.velocity.y >= 0.1f))) 
+        if (velocity.y < 0.01f ||(grounded && velocity.y >= 0.1f)) 
         {
             if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out groundHit))
             {
@@ -287,7 +288,6 @@ public class PlayerMovementBody : PlayerStateBehavior
             if(Mario64StyleAntiVoid && !Physics.Raycast(transform.position + Vector3.up + offset, Vector3.down, 5000, nonVoidLayerMask, QueryTriggerInteraction.Collide))
             {
                 velocity = Vector3.zero;
-                overVoidCounter++;
                 return false;
             }
             else
@@ -347,32 +347,6 @@ public class PlayerMovementBody : PlayerStateBehavior
         rb.MovePosition(position + Vector3.down * hit.distance);
         jiggles.FinishTeleport();
     }
-    
-    //[System.Obsolete]
-    //public void TryBeginJump(PlayerAirborneMovement target)
-    //{
-    //    if ((grounded && sGrounded) || (sAirborne && body.coyoteTimeLeft > 0))
-    //    {
-    //        target.state.TransitionTo();
-    //        grounded = false;
-    //        anchorTransform = null;
-    //    }
-    //
-    //    else controller.CheckJumpBuffer();
-    //}
-
-    //[System.Obsolete]
-    //public void LatchAnchor(Transform newAnchor)
-    //{
-    //    if(newAnchor == null)
-    //    {
-    //        anchorTransform = null;
-    //        return;
-    //    }
-    //    if (anchorTransform == newAnchor || newAnchor.gameObject.isStatic) return;
-    //    anchorTransform = newAnchor;
-    //    prevAnchorPosition = newAnchor.localPosition;
-    //}
 
     public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
     {
@@ -391,6 +365,14 @@ public class PlayerMovementBody : PlayerStateBehavior
             if (r.gameObject != gameObject && r.TryGetComponent(out T result))
                 return result;
         return default;
+    }
+
+    public void ReturnToNeutral()
+    {
+        if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out RaycastHit groundHit))
+            idleState.TransitionTo();
+        else 
+            airNeutralState.TransitionTo();
     }
 
 #if UNITY_EDITOR

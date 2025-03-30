@@ -13,7 +13,7 @@ public class PlayerHealth : Health
     private Coroutine invincibility;
     private new Collider collider;
     private UIHUDSystem UI;
-    private Rigidbody rb;
+    private PlayerMovementBody body;
     private PlayerStateMachine machine;
 
 
@@ -22,7 +22,7 @@ public class PlayerHealth : Health
         base.Awake();
         collider = GetComponent<Collider>();
         UIHUDSystem.TryGet(out UI);
-        TryGetComponent(out rb);
+        TryGetComponent(out body);
         TryGetComponent(out machine);
         UpdateHealth();
     }
@@ -35,7 +35,14 @@ public class PlayerHealth : Health
             invincibility = StartCoroutine(InvinceEnum(invincibilityTime));
             damagable = false;
             if (attack.HasTag(Attack.Tag.Pit)) Gameplay.SpawnPlayer();
-            (attack.HasTag(Attack.Tag.Wham) ? damageStateWham : damageState).TransitionTo();
+            if (!attack.HasTag(Attack.Tag.Wham))
+                damageState.TransitionTo();
+            else
+            {
+                damageStateWham.TransitionTo();
+                body.GroundStateChange(false);
+                body.VelocitySet(y: 14);
+            }
         }
         UpdateHealth();
     }

@@ -71,16 +71,12 @@ public class PlayerMovementAnimator : PlayerMovementEffector
         if (worldspaceInfluence > 0)
         {
             Vector3 relative = transform.TransformDirection(worldspaceVelocity);
-            if (worldspaceInfluence == 1)
-            {
-                resultX = worldspaceVelocity.x;
-                resultZ = worldspaceVelocity.z;
-            }
-            else
-            {
-                resultX = Mathf.Lerp(resultX.Value, worldspaceVelocity.x, worldspaceInfluence);
-                resultZ = Mathf.Lerp(resultZ.Value, worldspaceVelocity.z, worldspaceInfluence);
-            }
+            resultX = worldspaceInfluence == 1
+                ? relative.x
+                : Mathf.Lerp(resultX.Value, relative.x, worldspaceInfluence);
+            resultZ = worldspaceInfluence == 1
+                ? relative.z
+                : Mathf.Lerp(resultZ.Value, relative.z, worldspaceInfluence);
         }
         if (fullStop)
         {

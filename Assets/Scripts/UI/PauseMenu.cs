@@ -33,6 +33,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
     public void ReturnToMainMenu()
     {
         Time.timeScale = 1f;
+        Close();
         SceneManager.LoadScene("MainMenu");
     }
 
