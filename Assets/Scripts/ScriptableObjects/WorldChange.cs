@@ -23,6 +23,8 @@ public class WorldChange : ScriptableObject, ICustomSerialized
         } 
     }
 
+    public static implicit operator bool(WorldChange upgrade) => upgrade._enabled;
+
     [JsonIgnore]
     public System.Action Action;
 
@@ -31,6 +33,10 @@ public class WorldChange : ScriptableObject, ICustomSerialized
 
     public void Enable() => Enabled = true;
     public void Disable() => Enabled = false;
+
+
+    private void OnEnable() => _enabled = defaultValue;
+    private void OnDisable() => _enabled = defaultValue;
 
     public JToken Serialize()
     {
