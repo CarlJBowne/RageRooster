@@ -74,7 +74,7 @@ public class Menu : MonoBehaviour
     public void EnableButtons()
     {
         for (int i = 0; i < allButtons.Length; i++)
-            allButtons[i].interactable = true;
+            if(allButtons[i] != null) allButtons[i].interactable = true;
     }
 
     /// <summary>
@@ -83,8 +83,7 @@ public class Menu : MonoBehaviour
     public void DisableButtons()
     {
         for (int i = 0; i < allButtons.Length; i++)
-            if (allButtons[i] != null)
-                allButtons[i].interactable = false;
+            if (allButtons[i] != null) allButtons[i].interactable = false;
     }
 
     /// <summary>
