@@ -1,4 +1,5 @@
 using EditorAttributes;
+using JigglePhysics;
 using SLS.StateMachineV3;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,13 +18,21 @@ public class PlayerMovementBody : PlayerStateBehavior
     public PlayerAirborneMovement airChargeState;
     public Vector3 frontCheckDefaultOffset;
     public float frontCheckDefaultRadius;
+    public bool Mario64StyleAntiVoid;
+    public LayerMask nonVoidLayerMask;
+    public State idleState;
+    public State airNeutralState;
 
     #endregion
 
     #region Data
 
+    public static PlayerMovementBody Get() => _instance;
+    private static PlayerMovementBody _instance;
+
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public new CapsuleCollider collider;
+    [HideInInspector] public JiggleRigBuilder jiggles;
 
     [HideInEditMode, DisableInPlayMode] public Vector3 velocity;
 
@@ -31,7 +40,12 @@ public class PlayerMovementBody : PlayerStateBehavior
     [HideInInspector] public bool canJump = true;
     public bool grounded = true;
     public float movementModifier = 1;
-    [HideInEditMode, DisableInPlayMode] public float currentSpeed;
+    public float CurrentSpeed
+    {
+        get => currentSpeed;
+        set => currentSpeed = value.Min(0);
+    }
+    [HideInEditMode, DisableInPlayMode, SerializeField] private float currentSpeed;
     [HideInEditMode, DisableInPlayMode] public int jumpPhase;
     //-1 = Inactive
     //0 = PreMinHeight
@@ -39,25 +53,13 @@ public class PlayerMovementBody : PlayerStateBehavior
     //2 = SlowingDown
     //3 = Falling
 
-    [HideInInspector] public Vector3 _currentDirection = Vector3.forward; 
+    [HideInInspector] public Vector3 _currentDirection = Vector3.forward;
 
-    Transform anchorTransform;
-    Vector3 prevAnchorPosition;
+    [HideInEditMode, DisableInPlayMode] public Vector3 literalVelocity;
 
+    public static IMovablePlatform currentAnchor;
 
     private VolcanicVent _currentVent;
-
-    [FoldoutGroup("Animated Properties", nameof(animateMovement), nameof(animatedMovementTurn), nameof(animatedMovementMaxSpeed), nameof(animatedMovementMinSpeed), nameof(animatedMovementSpeedChange), nameof(animateMovementVertical), nameof(animatedMovementVertical), nameof(animateVelocity), nameof(animatedVelocity))] private Void _animateSet;
-    [HideInEditMode, DisableInPlayMode] public bool animateMovement = false;
-    [HideInEditMode, DisableInPlayMode] public float animatedMovementTurn = 0;
-    [HideInEditMode, DisableInPlayMode] public float animatedMovementMaxSpeed = 0;
-    [HideInEditMode, DisableInPlayMode] public float animatedMovementMinSpeed = 0;
-    [HideInEditMode, DisableInPlayMode] public float animatedMovementSpeedChange = 15;
-    [HideInEditMode, DisableInPlayMode] public bool animateMovementVertical = false;
-    [HideInEditMode, DisableInPlayMode] public float animatedMovementVertical = 0;
-    [HideInEditMode, DisableInPlayMode] public bool animateVelocity = false;
-    [HideInEditMode, DisableInPlayMode] public Vector3 animatedVelocity = Vector3.zero;
-
     #endregion
 
     #region GetSet
@@ -117,10 +119,11 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     public override void OnAwake()
     {
-        rb = GetComponentFromMachine<Rigidbody>();
-        collider = GetComponentFromMachine<CapsuleCollider>();
+        TryGetComponent(out rb);
+        TryGetComponent(out collider);
+        TryGetComponent(out jiggles);
         currentDirection = Vector3.forward;
-        //M.physicsCallbacks += Collision;
+        _instance = this;
     }
 
     public override void OnFixedUpdate()
@@ -141,8 +144,9 @@ public class PlayerMovementBody : PlayerStateBehavior
 
         } // NonMovement
 
+        literalVelocity = rb.velocity;
 
-        if (false)
+        /*
         {
             if (animateVelocity) velocity = transform.TransformDirection(animatedVelocity);
             else if (animateMovement)
@@ -159,14 +163,14 @@ public class PlayerMovementBody : PlayerStateBehavior
             }
 
         }
-
+        */
 
         initVelocity = new Vector3(velocity.x * movementModifier, velocity.y, velocity.z * movementModifier);
         initNormal = Vector3.up; 
 
         if (PlayerStateMachine.DEBUG_MODE_ACTIVE && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
-        if (velocity.y < 0.01f ||(grounded && (velocity.y >= 0.1f || rb.velocity.y >= 0.1f))) 
+        if (velocity.y < 0.01f ||(grounded && velocity.y >= 0.1f)) 
         {
             if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out groundHit))
             {
@@ -215,15 +219,16 @@ public class PlayerMovementBody : PlayerStateBehavior
             Vector3 leftover = vel - snapToSurface;
             Vector3 nextNormal = hit.normal;
             bool stopped = false;
-            rb.MovePosition(position + snapToSurface);
 
             if (step == movementProjectionSteps) return;
+
+            if(!MoveForward(snapToSurface)) return;
 
             if (grounded)
             {
                 //Runs into wall/to high incline.
                 if (Mathf.Approximately(hit.normal.y, 0) || (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))) 
-                    Stop(prevNormal);
+                    Stop(hit.normal);
 
                 if (grounded && prevNormal.y > 0 && hit.normal.y < 0) //Floor to Cieling
                     FloorCeilingLock(prevNormal, hit.normal);
@@ -250,7 +255,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                 void Stop(Vector3 newNormal)
                 {
                     nextNormal = newNormal.XZ().normalized;
-                    //if (Vector3.Dot(newNormal, vel.XZ()) <= -.75f)
+                    if (Vector3.Dot(newNormal, vel.normalized.XZ()) <= -.75f)
                         stopped = true;
                 }
 
@@ -261,7 +266,10 @@ public class PlayerMovementBody : PlayerStateBehavior
         }
         else
         {
-            rb.MovePosition(position + vel);
+
+            if (step == movementProjectionSteps) return;
+            if (!MoveForward(vel)) return;
+
             //Snap to ground when walking on a downward slope.
             if (grounded && initVelocity.y <= 0)
             {
@@ -272,6 +280,20 @@ public class PlayerMovementBody : PlayerStateBehavior
                     GroundStateChange(false);
                     Machine.SendSignal("WalkOff", overrideReady: true);
                 }
+            }
+        }
+
+        bool MoveForward(Vector3 offset)
+        {
+            if(Mario64StyleAntiVoid && !Physics.Raycast(transform.position + Vector3.up + offset, Vector3.down, 5000, nonVoidLayerMask, QueryTriggerInteraction.Collide))
+            {
+                velocity = Vector3.zero;
+                return false;
+            }
+            else
+            {
+                rb.MovePosition(position + offset);
+                return true;
             }
         }
     }
@@ -286,17 +308,18 @@ public class PlayerMovementBody : PlayerStateBehavior
         if (input == grounded || rb.velocity.y > 0.01f) return false;
         grounded = input;
 
-        //Anchor System is busted. Fix later.
-        //anchorTransform = anchor && !anchor.gameObject.isStatic ? anchor : null;
         if (grounded)
         {
             jumpPhase = -1;
 
-            if(anchor) prevAnchorPosition = anchor.position;
             Machine.SendSignal("Land", overrideReady: true);
 
             if (playerController.CheckJumpBuffer()) Machine.SendSignal("Jump");
         }
+
+        currentAnchor = anchor == null || !anchor.transform.TryGetComponent(out IMovablePlatform movingAnchor) 
+            ? null 
+            : movingAnchor;
 
         return true;
     }
@@ -319,35 +342,11 @@ public class PlayerMovementBody : PlayerStateBehavior
     public void InstantSnapToFloor()
     {
         rb.DirectionCast(Vector3.down, 1000, .5f, out RaycastHit hit);
-        rb.MovePosition(position + Vector3.down * hit.distance);
-    }
-    
-    
-    //[System.Obsolete]
-    //public void TryBeginJump(PlayerAirborneMovement target)
-    //{
-    //    if ((grounded && sGrounded) || (sAirborne && body.coyoteTimeLeft > 0))
-    //    {
-    //        target.state.TransitionTo();
-    //        grounded = false;
-    //        anchorTransform = null;
-    //    }
-    //
-    //    else controller.CheckJumpBuffer();
-    //}
 
-    //[System.Obsolete]
-    //public void LatchAnchor(Transform newAnchor)
-    //{
-    //    if(newAnchor == null)
-    //    {
-    //        anchorTransform = null;
-    //        return;
-    //    }
-    //    if (anchorTransform == newAnchor || newAnchor.gameObject.isStatic) return;
-    //    anchorTransform = newAnchor;
-    //    prevAnchorPosition = newAnchor.localPosition;
-    //}
+        jiggles.PrepareTeleport();
+        rb.MovePosition(position + Vector3.down * hit.distance);
+        jiggles.FinishTeleport();
+    }
 
     public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
     {
@@ -366,6 +365,14 @@ public class PlayerMovementBody : PlayerStateBehavior
             if (r.gameObject != gameObject && r.TryGetComponent(out T result))
                 return result;
         return default;
+    }
+
+    public void ReturnToNeutral()
+    {
+        if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out RaycastHit groundHit))
+            idleState.TransitionTo();
+        else 
+            airNeutralState.TransitionTo();
     }
 
 #if UNITY_EDITOR

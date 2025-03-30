@@ -33,13 +33,13 @@ public class PlayerGroundedMovement : PlayerMovementEffector
 
     public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
-        float currentSpeed = playerMovementBody.currentSpeed;
+        float currentSpeed = playerMovementBody.CurrentSpeed;
         Vector3 currentDirection = playerMovementBody.currentDirection;
 
         HorizontalMain(ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement);
 
         playerMovementBody.currentDirection = currentDirection;
-        playerMovementBody.currentSpeed = currentSpeed;
+        playerMovementBody.CurrentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
 
@@ -77,11 +77,10 @@ public class PlayerGroundedMovement : PlayerMovementEffector
             else if (currentSpeed > maxSpeed)
                 currentSpeed = currentSpeed.MoveDown((1 - controlMag) * decceleration * deltaTime, maxSpeed);
         }
-        else currentSpeed = currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0);
+        else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
 
         if (currentSpeed >= nextPhaseThreshold && nextPhase != null && condition) nextPhase.state.TransitionTo();
         else if (currentSpeed < prevPhaseThreshold && prevPhase != null) prevPhase.state.TransitionTo();
-
     }
     
     public override void OnEnter(State prev, bool isFinal){ base.OnEnter(prev, isFinal); if (attackCollider != null) attackCollider.enabled = true;}

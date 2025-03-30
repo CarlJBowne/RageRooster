@@ -54,7 +54,9 @@ public class PlayerStateMachine : StateMachine
     public void InstantMove(Vector3 newPosition, float? yRot = null)
     {
         Vector3 camDelta = newPosition - transform.position;
+        body.jiggles.PrepareTeleport();
         body.position = newPosition;
+        body.jiggles.FinishTeleport();
         if (yRot != null) body.rotation = new(0, yRot.Value, 0);
         ResetState();
         freeLookCamera.PreviousStateIsValid = false;
@@ -64,8 +66,10 @@ public class PlayerStateMachine : StateMachine
     public void InstantMove(SavePoint savePoint)
     {
         Vector3 camDelta = savePoint.SpawnPoint.position - transform.position;
+        body.jiggles.PrepareTeleport();
         body.position = savePoint.SpawnPoint.position;
         body.rotation = new(0, savePoint.SpawnPoint.eulerAngles.y, 0);
+        body.jiggles.FinishTeleport();
         ResetState();
         freeLookCamera.PreviousStateIsValid = false;
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);

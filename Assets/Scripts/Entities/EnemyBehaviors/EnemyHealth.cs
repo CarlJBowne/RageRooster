@@ -169,6 +169,8 @@ public class EnemyHealth : Health
         if (TryGetComponent(out StateMachine machine)) machine.TransitionState(machine[0]);
         SetEntityState(EntityState.Default);
         transform.rotation = Quaternion.identity;
+
+        Debug.Log($"[EnemyHealth] Respawning with maxHealth: {maxHealth}");
         health = maxHealth;
     }
 

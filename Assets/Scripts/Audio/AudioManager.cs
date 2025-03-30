@@ -133,14 +133,14 @@ public class AudioManager : SingletonAdvanced<AudioManager>
     // Called when a new scene is loaded
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        StopSceneMusic();
-        PlaySceneMusic(scene.name);
+        //StopSceneMusic();
+        //PlaySceneMusic(scene.name);
     }
 
     // Called when a scene is unloaded
     private void OnSceneUnloaded(Scene scene)
     {
-        StopSceneMusic();
+        //StopSceneMusic();
     }
 
     // Stop and release the current music event instance

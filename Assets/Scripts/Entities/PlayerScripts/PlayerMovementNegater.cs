@@ -34,22 +34,22 @@ public class PlayerMovementNegater : PlayerMovementEffector
             case NegateType.InstantNegate:
                 resultX = 0;
                 resultZ = 0;
-                playerMovementBody.currentSpeed = 0;
+                playerMovementBody.CurrentSpeed = 0;
                 break;
             case NegateType.SmoothNegate:
                 resultX = Mathf.MoveTowards(playerMovementBody.velocity.x, 0, rate * Time.deltaTime);
                 resultZ = Mathf.MoveTowards(playerMovementBody.velocity.z, 0, rate * Time.deltaTime);
-                playerMovementBody.currentSpeed = Mathf.MoveTowards(playerMovementBody.currentSpeed, 0, rate * Time.deltaTime);
+                playerMovementBody.CurrentSpeed = Mathf.MoveTowards(playerMovementBody.CurrentSpeed, 0, rate * Time.deltaTime);
                 break;
             case NegateType.Dampen:
                 resultX = Mathf.Clamp(playerMovementBody.velocity.x, -dampenPoint, dampenPoint);
                 resultZ = Mathf.Clamp(playerMovementBody.velocity.z, -dampenPoint, dampenPoint);
-                playerMovementBody.currentSpeed = Mathf.Min(playerMovementBody.currentSpeed, dampenPoint);
+                playerMovementBody.CurrentSpeed = Mathf.Min(playerMovementBody.CurrentSpeed, dampenPoint);
                 break;
             case NegateType.SmoothDampen:
                 resultX = Mathf.MoveTowards(playerMovementBody.velocity.x, dampenPoint * playerMovementBody.velocity.x.Sign(), rate * Time.deltaTime);
                 resultZ = Mathf.MoveTowards(playerMovementBody.velocity.z, dampenPoint * playerMovementBody.velocity.z.Sign(), rate * Time.deltaTime);
-                playerMovementBody.currentSpeed = Mathf.MoveTowards(playerMovementBody.currentSpeed, dampenPoint, rate * Time.deltaTime);
+                playerMovementBody.CurrentSpeed = Mathf.MoveTowards(playerMovementBody.CurrentSpeed, dampenPoint, rate * Time.deltaTime);
                 break;
             default:
                 break;
@@ -89,7 +89,7 @@ public class PlayerMovementNegater : PlayerMovementEffector
         if (savePriorVelocity)
         {
             savedVelocity = playerMovementBody.velocity;
-            savedHorizontalSpeed = playerMovementBody.currentSpeed;
+            savedHorizontalSpeed = playerMovementBody.CurrentSpeed;
             savedJumpPhase = playerMovementBody.jumpPhase;
         }
     }
@@ -98,7 +98,7 @@ public class PlayerMovementNegater : PlayerMovementEffector
         if (savePriorVelocity)
         {
             playerMovementBody.velocity = savedVelocity;
-            playerMovementBody.currentSpeed = savedHorizontalSpeed;
+            playerMovementBody.CurrentSpeed = savedHorizontalSpeed;
             playerMovementBody.jumpPhase = savedJumpPhase;
         }
     }
