@@ -30,7 +30,7 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
     public override void OnFixedUpdate()
     {
         float deltaTime = Time.fixedDeltaTime / 0.02f;
-        float currentSpeed = playerMovementBody.currentSpeed;
+        float currentSpeed = playerMovementBody.CurrentSpeed;
         Vector3 currentDirection = playerMovementBody.currentDirection;
 
         Vector3 controlDirection = playerController.camAdjustedMovement.normalized;
@@ -69,7 +69,7 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
         }
 
         playerMovementBody.currentDirection = currentDirection;
-        playerMovementBody.currentSpeed = currentSpeed;
+        playerMovementBody.CurrentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
 

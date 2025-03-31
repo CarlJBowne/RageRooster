@@ -42,14 +42,14 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
     public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
-        float currentSpeed = playerMovementBody.currentSpeed;
+        float currentSpeed = playerMovementBody.CurrentSpeed;
         Vector3 currentDirection = playerMovementBody.currentDirection;
 
         if (!isDash) HorizontalMain (ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
         else HorizontalCharge       (ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
 
         playerMovementBody.currentDirection = currentDirection;
-        playerMovementBody.currentSpeed = currentSpeed;
+        playerMovementBody.CurrentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
 
@@ -82,7 +82,8 @@ public class PlayerAirborneMovement : PlayerMovementEffector
                 currentSpeed = currentSpeed.MoveDown(controlMag * decceleration * deltaTime, maxSpeed);
 
         }
-        else currentSpeed = currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0);
+        else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
+
     }
     private void HorizontalCharge(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control, float deltaTime)
     {
@@ -106,7 +107,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         if (maxTurnSpeed > 0)
             currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0);
         playerMovementBody.currentDirection = currentDirection;
-        playerMovementBody.currentSpeed = currentSpeed;
+        playerMovementBody.CurrentSpeed = currentSpeed;
 
 
     }
@@ -156,7 +157,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
         void StartFrom0()
         {
-            if (isDash) playerMovementBody.currentSpeed = maxSpeed;
+            if (isDash) playerMovementBody.CurrentSpeed = maxSpeed;
 
             if (!upwards) return;
 

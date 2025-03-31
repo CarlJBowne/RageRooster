@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 8696975838928533410}
   - component: {fileID: 6531542561807786389}
   - component: {fileID: 4704537948975615930}
+  - component: {fileID: 1589917241675397782}
   m_Layer: 7
   m_Name: GroundedShooterEnemy
   m_TagString: Untagged
@@ -417,11 +418,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 30
   damageEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   depleteEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   immuneTags: []
   health: 0
   stunTime: 0.2
@@ -435,10 +434,9 @@ MonoBehaviour:
   minRagdollTime: 2
   maxRagdollTime: 5
   minRagdollVelovity: 0.2
-  projectile: 0
-  hasRagdolled: 0
   respawn: 0
   respawnTime: 0
+  currentState: 0
 --- !u!114 &8696975838928533410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,9 +453,23 @@ MonoBehaviour:
   weight: 1
   wiggleFreeTime: 0
   maxHealthToGrab: 10
+  additionalThrowDistance: 0
   GrabStateEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  defaultEvent:
+    _PersistentCalls: []
+  grabbedEvent:
+    _PersistentCalls: []
+  thrownEvent:
+    _PersistentCalls: []
+  bounceEvent:
+    _PersistentCalls: []
+  thrownAttack:
+    amount: 1
+    velocity: {x: 0, y: 0, z: 0}
+    tags:
+    - name: Thrown
+  currentState: 0
 --- !u!114 &6531542561807786389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,6 +528,29 @@ MonoBehaviour:
     - name: FromPlayer
   sourceEntity: {fileID: 2118259414133081454}
   enabled: 1
+--- !u!114 &1589917241675397782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4906831177318307996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92f681152c991af4b9201548f05c7e9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pool:
+    prefabObject: {fileID: 0}
+    defaultPoolDepth: 1
+    canGrow: 1
+    parent: {fileID: 0}
+    autoDisableTime: -1
+    spawnPoint: {fileID: 0}
+    rotate: 0
+    autoSpawnRate: 0
+  Active: 0
+  timeExisting: 0
 --- !u!1 &5534826233225650947
 GameObject:
   m_ObjectHideFlags: 0

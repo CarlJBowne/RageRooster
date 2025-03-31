@@ -18,7 +18,6 @@ public class MainMenu : MenuSingleton<MainMenu>
     private List<Button> menuButtons;
     public GameObject creditsPanel;
     public Button creditsPanelFirstButton;
-    public EventReference musicRef;
     public RectTransform creditsContent;
 
     private int currentButtonIndex = 0;
@@ -27,11 +26,10 @@ public class MainMenu : MenuSingleton<MainMenu>
     {
         creditsPanel.SetActive(false);
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         menuButtons = new List<Button>(GetComponentsInChildren<Button>());
         if (menuButtons.Count > 0)
-        {
             EventSystem.current.SetSelectedGameObject(menuButtons[currentButtonIndex].gameObject);
-        }
     }
 
     private void Update()

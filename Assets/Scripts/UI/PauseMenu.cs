@@ -26,13 +26,14 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
     public void QuitGame()
     {
-        Gameplay.DESTROY(true);
+        Gameplay.DESTROY(areYouSure: true);
         SceneManager.LoadScene("MainMenu");
     }
 
     public void ReturnToMainMenu()
     {
         Time.timeScale = 1f;
+        Close();
         SceneManager.LoadScene("MainMenu");
     }
 

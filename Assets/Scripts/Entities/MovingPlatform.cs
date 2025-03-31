@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MovingPlatform : MonoBehaviour
+public class MovingPlatform : MonoBehaviour, IMovablePlatform
 {
     public Transform pointA;
     public Transform pointB;
@@ -17,48 +17,14 @@ public class MovingPlatform : MonoBehaviour
 
     void FixedUpdate()
     {
-        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.fixedDeltaTime);
+        Vector3 offset = speed * Time.fixedDeltaTime * (target - transform.position).normalized;
+
+        transform.position = transform.position + offset;
+        IMovablePlatform.DoAnchorMove(this, offset);
 
         if (Vector3.Distance(transform.position, target) < 0.1f)
         {
             target = target == pointA.position ? pointB.position : pointA.position;
         }
     }
-
-    /*
-    void OnTriggerEnter(Collider other)
-    {
-        
-        if (other.CompareTag("Player"))
-        {
-            player = other.transform;
-            originalParent = player.parent;
-            player.SetParent(transform);
-
-            var playerController = player.GetComponentInChildren<PlayerController>();
-            if (playerController != null)
-            {
-                playerController.enabled = true;
-            }
-        }
-        
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        
-        if (other.CompareTag("Player"))
-        {
-            player.SetParent(originalParent);
-            player = null;
-
-            var playerController = other.GetComponentInChildren<PlayerController>();
-            if (playerController != null)
-            {
-                playerController.enabled = true;
-            }
-        }
-        
-    }
-    */
 }

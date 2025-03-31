@@ -106,6 +106,7 @@ MonoBehaviour:
     tags:
     - name: Boss1Charge
     - name: PlayerPoints=2
+    - name: Wham
   additionalTags:
   - name: FromEnemy
   - name: FromBoss
@@ -804,7 +805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c9b06bf6ccf67445b2fe07fbd05622c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetHealth: {fileID: 1883925095344967230}
+  target: {fileID: 1883925095344967230}
   attachTag: OnWeakSpot
 --- !u!65 &3462325170673791437
 BoxCollider:
@@ -2421,7 +2422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c9b06bf6ccf67445b2fe07fbd05622c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetHealth: {fileID: 1883925095344967230}
+  target: {fileID: 0}
   attachTag: OnWeakSpot
 --- !u!65 &4941204392850179246
 BoxCollider:
@@ -6732,7 +6733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c9b06bf6ccf67445b2fe07fbd05622c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetHealth: {fileID: 1883925095344967230}
+  target: {fileID: 1883925095344967230}
   attachTag: InEyes
 --- !u!54 &8972169266198248213
 Rigidbody:
@@ -8036,7 +8037,7 @@ MonoBehaviour:
         _Object: {fileID: 0}
     - _Target: {fileID: 6408496147376855679, guid: 546d60c46cc1b4c4fb90fec693b180d8,
         type: 2}
-      _MemberName: Activate
+      _MemberName: Enable
       _PersistentArguments: []
   immuneTags: []
   health: 0
@@ -8065,6 +8066,191 @@ MonoBehaviour:
   jumpState: {fileID: 3171191755811396228}
   phase2StartPos: {fileID: 0}
   phase3StartPos: {fileID: 0}
+  ResetBossEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 1883925095344967230}
+      _MemberName: ResetBoss
+      _PersistentArguments: []
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 5910765145464477198}
+      _MemberName: set_enabled
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  FinishBossEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 5910765145464477198}
+      _MemberName: set_enabled
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+    - _Target: {fileID: 0}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  finishedBossWorldChange: {fileID: 6408496147376855679, guid: 546d60c46cc1b4c4fb90fec693b180d8,
+    type: 2}
   bossPhase: 1
 --- !u!54 &946219792292038393
 Rigidbody:
@@ -8646,7 +8832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c9b06bf6ccf67445b2fe07fbd05622c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetHealth: {fileID: 1883925095344967230}
+  target: {fileID: 0}
   attachTag: InEyes
 --- !u!54 &6227484332247728622
 Rigidbody:
