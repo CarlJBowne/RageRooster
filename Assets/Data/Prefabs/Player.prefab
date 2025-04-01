@@ -63,7 +63,7 @@ Transform:
   m_Children:
   - {fileID: 607292570192004129}
   m_Father: {fileID: 1858017805129491221}
-  m_LocalEulerAnglesHint: {x: -0.097981386, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -5.781255, y: 0, z: 0}
 --- !u!1 &214909014890575270
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,104 +95,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 107765510827790769}
   m_LocalEulerAnglesHint: {x: 0, y: -62.312653, z: 0}
---- !u!1 &274366656925562652
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8497233129720556232}
-  - component: {fileID: 2948750066402289689}
-  - component: {fileID: 1330028443204214403}
-  - component: {fileID: 1397031607906035931}
-  m_Layer: 6
-  m_Name: Windup
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8497233129720556232
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 274366656925562652}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4840406343167883971}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2948750066402289689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 274366656925562652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onActivatedEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Finish
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 1252659914078541581}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-  lockReady: 1
---- !u!114 &1330028443204214403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 274366656925562652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9941058b321f6b4d9f1f2cec53de651, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
-  trueActive: 0
-  horizontalNegateType: 0
-  verticalNegateType: 0
-  rate: 0
-  dampenPoint: 0
-  savePriorVelocity: 0
-  gravity: 0
-  terminalVelocity: 0
---- !u!114 &1397031607906035931
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 274366656925562652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: GroundSlam_Start
-  onEnterTime: 0.05
-  animator: {fileID: 0}
 --- !u!1 &290288612479347808
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,7 +126,7 @@ Transform:
   m_Children:
   - {fileID: 4966123876549837000}
   m_Father: {fileID: 1858017805129491221}
-  m_LocalEulerAnglesHint: {x: 3.2807515, y: 15.758272, z: 37.171986}
+  m_LocalEulerAnglesHint: {x: -17.34376, y: 0.0000017888815, z: 71.345924}
 --- !u!1 &400420858113421900
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,7 +158,7 @@ Transform:
   m_Children:
   - {fileID: 4050914387091275796}
   m_Father: {fileID: 167776559115597949}
-  m_LocalEulerAnglesHint: {x: -0.24132133, y: -14.842965, z: 7.3150983}
+  m_LocalEulerAnglesHint: {x: 1.6726309, y: 4.6807585, z: -14.817927}
 --- !u!1 &459786801788715542
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,7 +190,7 @@ Transform:
   m_Children:
   - {fileID: 8939347847130576805}
   m_Father: {fileID: 7800904279591170895}
-  m_LocalEulerAnglesHint: {x: -0.1815703, y: 2.518785, z: 2.6053917}
+  m_LocalEulerAnglesHint: {x: 0.07091104, y: 0.8439548, z: -6.7746587}
 --- !u!1 &469540947907413664
 GameObject:
   m_ObjectHideFlags: 0
@@ -350,7 +252,7 @@ MonoBehaviour:
     - Key: AttackHold
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2948750066402289689}
+        - _Target: {fileID: 1252659914078541581}
           _MemberName: TransitionTo
           _PersistentArguments: []
     - Key: GrabHold
@@ -368,9 +270,17 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 931477398715445950}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!114 &8888853140960008680
 MonoBehaviour:
@@ -411,6 +321,7 @@ MonoBehaviour:
   speedChangeRate: 15
   turnability: 0
   verticalAddSpeed: 0
+  terminalVelocity: 98.1
   setVerticalInfluence: 0.5
   setVerticalVelocity: 0
   defaultGravity: 50
@@ -575,9 +486,17 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4000547645901868762}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!114 &7736482665558727247
 MonoBehaviour:
@@ -618,6 +537,7 @@ MonoBehaviour:
   speedChangeRate: 15
   turnability: 0
   verticalAddSpeed: 0
+  terminalVelocity: 98.1
   setVerticalInfluence: 0
   setVerticalVelocity: 0
   defaultGravity: 0
@@ -692,9 +612,17 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 931477398715445950}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
     - Key: Land
       Value:
         _PersistentCalls:
@@ -770,6 +698,7 @@ MonoBehaviour:
   speedChangeRate: 15
   turnability: 0
   verticalAddSpeed: 0
+  terminalVelocity: 98.1
   setVerticalInfluence: 0
   setVerticalVelocity: 0
   defaultGravity: 50
@@ -806,7 +735,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: -0.97050846, y: -129.48557, z: 178.82234}
+  m_LocalEulerAnglesHint: {x: 7.0167083e-15, y: -129.47813, z: 180}
 --- !u!1 &687889684402466875
 GameObject:
   m_ObjectHideFlags: 0
@@ -869,7 +798,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 107765510827790769}
-  m_LocalEulerAnglesHint: {x: 0, y: 55.78955, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 55.789543, z: 0}
 --- !u!1 &913705240674346624
 GameObject:
   m_ObjectHideFlags: 0
@@ -901,7 +830,7 @@ Transform:
   m_Children:
   - {fileID: 6248451968428804049}
   m_Father: {fileID: 1336325588524243921}
-  m_LocalEulerAnglesHint: {x: -1.1193112, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 11.852031, y: 0, z: 0}
 --- !u!1 &1022511735685379741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1224,7 +1153,7 @@ MonoBehaviour:
     - Key: AttackHold
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2948750066402289689}
+        - _Target: {fileID: 1252659914078541581}
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 1
@@ -1311,7 +1240,7 @@ Transform:
   - {fileID: 8240657446396116129}
   - {fileID: 3858517113413183086}
   m_Father: {fileID: 1495339210815947155}
-  m_LocalEulerAnglesHint: {x: 10.936, y: 11.838, z: -15.23}
+  m_LocalEulerAnglesHint: {x: 21.081856, y: 5.396076, z: -15.086342}
 --- !u!1 &1242553937887867047
 GameObject:
   m_ObjectHideFlags: 0
@@ -1367,6 +1296,17 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 3941225653291784218}
           _MemberName: GroundStateChange
           _PersistentArguments:
           - _Type: 1
@@ -1377,9 +1317,17 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-        - _Target: {fileID: 3812935324549841644}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 8579594802138283692}
+          _MemberName: Play
+          _PersistentArguments:
+          - _Type: 2
+            _Int: 0
+            _String: Land
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
     - Key: Jump
       Value:
         _PersistentCalls:
@@ -1443,7 +1391,7 @@ Transform:
   m_Children:
   - {fileID: 3408567397223948204}
   m_Father: {fileID: 5735276715730193203}
-  m_LocalEulerAnglesHint: {x: -5.8782535, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.35313702, y: 0, z: 0}
 --- !u!1 &1296871140194544751
 GameObject:
   m_ObjectHideFlags: 0
@@ -1673,6 +1621,7 @@ MonoBehaviour:
   speedChangeRate: 15
   turnability: 10
   verticalAddSpeed: 0
+  terminalVelocity: 98.1
   setVerticalInfluence: 0
   setVerticalVelocity: 0
   defaultGravity: 0
@@ -1710,106 +1659,7 @@ Transform:
   m_Children:
   - {fileID: 7797816273129980962}
   m_Father: {fileID: 9001384091169506472}
-  m_LocalEulerAnglesHint: {x: 0.9165338, y: -11.913608, z: -2.0460215}
---- !u!1 &1361126184771140769
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4818673746425317357}
-  - component: {fileID: 9208219928828260688}
-  - component: {fileID: 6335918389759328459}
-  - component: {fileID: 9062652384064462090}
-  m_Layer: 6
-  m_Name: AimGrab X
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4818673746425317357
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361126184771140769}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 542910149066364657}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9208219928828260688
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361126184771140769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onActivatedEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: FinishGrab
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 6335918389759328459}
-          _MemberName: GrabPoint
-          _PersistentArguments: []
-    - Key: Finish
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 4687384188506420108}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-  lockReady: 1
---- !u!114 &6335918389759328459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361126184771140769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9ea06674c3fe044c81dee4e88f1ae12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
-  air: 0
-  wasHeld: 0
-  success: 0
---- !u!114 &9062652384064462090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361126184771140769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 3
-  onEnterName: Grab
-  onEnterTime: 0.01
-  animator: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0.8608607, y: 5.1527414, z: 5.977095}
 --- !u!1 &1384332073924865152
 GameObject:
   m_ObjectHideFlags: 0
@@ -1897,7 +1747,7 @@ Transform:
   m_Children:
   - {fileID: 117627124187634055}
   m_Father: {fileID: 623109168336613573}
-  m_LocalEulerAnglesHint: {x: -3.4544127, y: -34.944603, z: -9.196211}
+  m_LocalEulerAnglesHint: {x: -0.46870014, y: -2.5174482, z: 3.924854}
 --- !u!1 &1538063396066996421
 GameObject:
   m_ObjectHideFlags: 0
@@ -1959,7 +1809,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0.9705045, y: -50.51444, z: -1.1776417}
+  m_LocalEulerAnglesHint: {x: 0, y: -50.52186, z: 0}
 --- !u!1 &1600631366863650440
 GameObject:
   m_ObjectHideFlags: 0
@@ -2053,7 +1903,7 @@ Transform:
   m_Children:
   - {fileID: 803023330293522026}
   m_Father: {fileID: 3167158787834191802}
-  m_LocalEulerAnglesHint: {x: 2.1000264, y: -23.12226, z: 10.166658}
+  m_LocalEulerAnglesHint: {x: -0.55908245, y: -19.9193, z: -3.2687404}
 --- !u!1 &1838506262058880858
 GameObject:
   m_ObjectHideFlags: 0
@@ -2084,7 +1934,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 1.5259701, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1881955946668647644
 GameObject:
   m_ObjectHideFlags: 0
@@ -2248,7 +2098,7 @@ Transform:
   - {fileID: 1858017805129491221}
   - {fileID: 2680535561233752795}
   m_Father: {fileID: 802911248559169720}
-  m_LocalEulerAnglesHint: {x: -2.1218002, y: -110.94895, z: -90.10704}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: -94.44818}
 --- !u!114 &1743517778221320810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2438,7 +2288,7 @@ Transform:
   - {fileID: 4526751030249330902}
   - {fileID: 9182058685849620617}
   m_Father: {fileID: 5771110087808811478}
-  m_LocalEulerAnglesHint: {x: 0.88002616, y: 1.6521701, z: 12.784879}
+  m_LocalEulerAnglesHint: {x: -5.539376e-32, y: 2.7904499e-31, z: -9.279344}
 --- !u!1 &1962748867875158061
 GameObject:
   m_ObjectHideFlags: 0
@@ -2643,7 +2493,7 @@ Transform:
   m_Children:
   - {fileID: 966123755836798842}
   m_Father: {fileID: 176165724537986964}
-  m_LocalEulerAnglesHint: {x: 0.7985857, y: -14.170237, z: 6.2976084}
+  m_LocalEulerAnglesHint: {x: -0.55908096, y: -19.9193, z: -3.2687404}
 --- !u!1 &2354280182447277193
 GameObject:
   m_ObjectHideFlags: 0
@@ -2684,7 +2534,6 @@ Transform:
   - {fileID: 5532989216206750302}
   - {fileID: 2939210796809206182}
   - {fileID: 4425123305009892289}
-  - {fileID: 4818673746425317357}
   - {fileID: 7602196013696354627}
   m_Father: {fileID: 6385669238997089540}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2832,12 +2681,23 @@ MonoBehaviour:
     - Key: AttackHold
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2948750066402289689}
+        - _Target: {fileID: 1252659914078541581}
           _MemberName: TransitionTo
           _PersistentArguments: []
     - Key: Land
       Value:
         _PersistentCalls:
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
         - _Target: {fileID: 3941225653291784218}
           _MemberName: GroundStateChange
           _PersistentArguments:
@@ -2849,9 +2709,17 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-        - _Target: {fileID: 7887553615491649882}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 8579594802138283692}
+          _MemberName: Play
+          _PersistentArguments:
+          - _Type: 2
+            _Int: 0
+            _String: Land
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
     - Key: Parry
       Value:
         _PersistentCalls:
@@ -2908,7 +2776,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onEntry: 2
   onEnterName: Fall
-  onEnterTime: 0.01
+  onEnterTime: 0.2
   animator: {fileID: 0}
 --- !u!1 &2515008206219138531
 GameObject:
@@ -3120,7 +2988,7 @@ Transform:
   m_Children:
   - {fileID: 2996069801756204323}
   m_Father: {fileID: 1991288485900147151}
-  m_LocalEulerAnglesHint: {x: -2.1507504, y: -7.6748977, z: 2.1117575}
+  m_LocalEulerAnglesHint: {x: 1.6726317, y: 4.6807594, z: -14.817927}
 --- !u!1 &2660924070909395955
 GameObject:
   m_ObjectHideFlags: 0
@@ -3152,7 +3020,7 @@ Transform:
   m_Children:
   - {fileID: 1336325588524243921}
   m_Father: {fileID: 5779348743443458172}
-  m_LocalEulerAnglesHint: {x: -11.861, y: 94.083, z: -157.00217}
+  m_LocalEulerAnglesHint: {x: 44.619843, y: 101.34231, z: -161.30243}
 --- !u!1 &2773190596053569390
 GameObject:
   m_ObjectHideFlags: 0
@@ -3184,7 +3052,7 @@ Transform:
   m_Children:
   - {fileID: 1792655390282577440}
   m_Father: {fileID: 3493459175929092484}
-  m_LocalEulerAnglesHint: {x: 2.1208935, y: -6.865208, z: 3.1211164}
+  m_LocalEulerAnglesHint: {x: 1.9352915, y: 2.353553, z: -0.07448695}
 --- !u!1 &2863929371712086765
 GameObject:
   m_ObjectHideFlags: 0
@@ -3827,6 +3695,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   collider: {fileID: 0}
   jiggles: {fileID: 0}
+  animator: {fileID: 0}
   velocity: {x: 0, y: 0, z: 0}
   baseMovability: 1
   canJump: 1
@@ -3945,7 +3814,7 @@ Transform:
   m_Children:
   - {fileID: 8595673336906404351}
   m_Father: {fileID: 2235979652216157829}
-  m_LocalEulerAnglesHint: {x: -4.595527, y: 5.6122775, z: 61.070213}
+  m_LocalEulerAnglesHint: {x: 8.786878, y: -6.5978703, z: 43.78186}
 --- !u!1 &3015113785128034345
 GameObject:
   m_ObjectHideFlags: 0
@@ -4067,7 +3936,7 @@ Transform:
   m_Children:
   - {fileID: 649473815463013265}
   m_Father: {fileID: 6711681285055233071}
-  m_LocalEulerAnglesHint: {x: 2.2461123, y: -6.136836, z: -1.0556325}
+  m_LocalEulerAnglesHint: {x: 0.8608591, y: 5.152743, z: 5.977095}
 --- !u!1 &3142001384897984004
 GameObject:
   m_ObjectHideFlags: 0
@@ -4162,7 +4031,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3183256197336686995}
-  m_LocalEulerAnglesHint: {x: -5.8782535, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.35313702, y: 0, z: 0}
 --- !u!1 &3192652428292773103
 GameObject:
   m_ObjectHideFlags: 0
@@ -4225,7 +4094,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0.5624142, y: -68.37851, z: -1.4185694}
+  m_LocalEulerAnglesHint: {x: 0, y: -68.3821, z: 0}
 --- !u!1 &3236555439406268692
 GameObject:
   m_ObjectHideFlags: 0
@@ -4257,7 +4126,7 @@ Transform:
   m_Children:
   - {fileID: 3834352168240870593}
   m_Father: {fileID: 5303980009881695466}
-  m_LocalEulerAnglesHint: {x: 3.5302489, y: -7.3118205, z: 3.3772984}
+  m_LocalEulerAnglesHint: {x: 1.93529, y: 2.3535542, z: -0.07448691}
 --- !u!1 &3244875344704272238
 GameObject:
   m_ObjectHideFlags: 0
@@ -4319,7 +4188,7 @@ MonoBehaviour:
     - Key: AttackHold
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 5567832916535865027}
+        - _Target: {fileID: 3443062856187106688}
           _MemberName: TransitionTo
           _PersistentArguments: []
     - Key: GrabHold
@@ -4337,9 +4206,17 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4000547645901868762}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!114 &5054057747023772269
 MonoBehaviour:
@@ -4380,6 +4257,7 @@ MonoBehaviour:
   speedChangeRate: 15
   turnability: 0
   verticalAddSpeed: 0
+  terminalVelocity: 98.1
   setVerticalInfluence: 0
   setVerticalVelocity: 0
   defaultGravity: 0
@@ -4479,7 +4357,7 @@ Transform:
   m_Children:
   - {fileID: 1973264757699722387}
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: -0.29531324, y: -9.930403, z: 0.054450043}
+  m_LocalEulerAnglesHint: {x: 0.00000004860525, y: -9.931691, z: -0.000000008961783}
 --- !u!1 &3452394626786213421
 GameObject:
   m_ObjectHideFlags: 0
@@ -4512,7 +4390,7 @@ Transform:
   - {fileID: 4979379062830307293}
   - {fileID: 5788834958485409761}
   m_Father: {fileID: 2290438708623670232}
-  m_LocalEulerAnglesHint: {x: -0.19175363, y: -0.010839192, z: -1.1132103}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.00000053879586}
 --- !u!1 &3474216825182463027
 GameObject:
   m_ObjectHideFlags: 0
@@ -4543,7 +4421,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7868241083879984591}
-  m_LocalEulerAnglesHint: {x: -0.097981386, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -5.781255, y: 0, z: 0}
 --- !u!1 &3510662445348264541
 GameObject:
   m_ObjectHideFlags: 0
@@ -4643,6 +4521,17 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 3941225653291784218}
           _MemberName: GroundStateChange
           _PersistentArguments:
           - _Type: 1
@@ -4653,9 +4542,17 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-        - _Target: {fileID: 7887553615491649882}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 8579594802138283692}
+          _MemberName: Play
+          _PersistentArguments:
+          - _Type: 2
+            _Int: 0
+            _String: Land
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
     - Key: ExitVent
       Value:
         _PersistentCalls:
@@ -4737,7 +4634,7 @@ Transform:
   m_Children:
   - {fileID: 4777414735926822176}
   m_Father: {fileID: 8595673336906404351}
-  m_LocalEulerAnglesHint: {x: -2.4751492, y: -7.4948916, z: -2.1759953}
+  m_LocalEulerAnglesHint: {x: -2.2266035, y: -2.6504076, z: 4.5886545}
 --- !u!1 &3730508859436989519
 GameObject:
   m_ObjectHideFlags: 0
@@ -4768,7 +4665,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 107765510827790769}
-  m_LocalEulerAnglesHint: {x: 0, y: 60.465122, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 60.465115, z: 0}
 --- !u!1 &3790908113773791160
 GameObject:
   m_ObjectHideFlags: 0
@@ -4831,7 +4728,7 @@ Transform:
   m_Children:
   - {fileID: 3493459175929092484}
   m_Father: {fileID: 1843710722454031686}
-  m_LocalEulerAnglesHint: {x: 35.469402, y: 28.272818, z: 65.09044}
+  m_LocalEulerAnglesHint: {x: 19.569395, y: 40.155674, z: 78.28977}
 --- !u!1 &3871232000662767217
 GameObject:
   m_ObjectHideFlags: 0
@@ -4863,7 +4760,7 @@ Transform:
   m_Children:
   - {fileID: 6160283659054376205}
   m_Father: {fileID: 5771110087808811478}
-  m_LocalEulerAnglesHint: {x: 0.7089807, y: 0.17129168, z: 6.2968974}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -10.253635}
 --- !u!1 &3891853534095089435
 GameObject:
   m_ObjectHideFlags: 0
@@ -4895,7 +4792,7 @@ Transform:
   m_Children:
   - {fileID: 7800904279591170895}
   m_Father: {fileID: 2235979652216157829}
-  m_LocalEulerAnglesHint: {x: -33.593307, y: -36.28728, z: 56.777992}
+  m_LocalEulerAnglesHint: {x: -44.40681, y: -22.24763, z: 35.137707}
 --- !u!1 &3961416142194591544
 GameObject:
   m_ObjectHideFlags: 0
@@ -4958,7 +4855,7 @@ Transform:
   m_Children:
   - {fileID: 5499737714371279999}
   m_Father: {fileID: 7214892127163713643}
-  m_LocalEulerAnglesHint: {x: -2.2847817, y: -31.25658, z: -4.610073}
+  m_LocalEulerAnglesHint: {x: -0.88061804, y: -12.638891, z: 1.0327294}
 --- !u!1 &4050727503730904888
 GameObject:
   m_ObjectHideFlags: 0
@@ -4990,7 +4887,7 @@ Transform:
   m_Children:
   - {fileID: 3873723486330190406}
   m_Father: {fileID: 4587243299707619477}
-  m_LocalEulerAnglesHint: {x: -2.2264786, y: -16.08394, z: -25.290543}
+  m_LocalEulerAnglesHint: {x: 4.903952, y: 11.416547, z: 10.925509}
 --- !u!1 &4124917820233702332
 GameObject:
   m_ObjectHideFlags: 0
@@ -5059,6 +4956,17 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 3941225653291784218}
           _MemberName: GroundStateChange
           _PersistentArguments:
           - _Type: 1
@@ -5069,9 +4977,17 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-        - _Target: {fileID: 7887553615491649882}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 8579594802138283692}
+          _MemberName: Play
+          _PersistentArguments:
+          - _Type: 2
+            _Int: 0
+            _String: Land
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
     - Key: EnterVent
       Value:
         _PersistentCalls:
@@ -5155,7 +5071,7 @@ Transform:
   - {fileID: 362155934586423713}
   - {fileID: 1495339210815947155}
   m_Father: {fileID: 5788834958485409761}
-  m_LocalEulerAnglesHint: {x: -2.6537108, y: 0.6456989, z: -31.265026}
+  m_LocalEulerAnglesHint: {x: -1.8343145e-30, y: 1.0602238e-30, z: -29.136448}
 --- !u!1 &4227211285194161474
 GameObject:
   m_ObjectHideFlags: 0
@@ -5285,7 +5201,6 @@ GameObject:
   - component: {fileID: 675394232343518501}
   - component: {fileID: 2302710619165436362}
   - component: {fileID: 7572254650929324686}
-  - component: {fileID: 5006421896293173243}
   m_Layer: 6
   m_Name: Raging Charge
   m_TagString: Untagged
@@ -5490,22 +5405,6 @@ MonoBehaviour:
     - name: RagingCharge
   sourceEntity: {fileID: 8455434200384702600}
   enabled: 1
---- !u!114 &5006421896293173243
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4366117737136798339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: GroundBasic
-  onEnterTime: 0.1
-  animator: {fileID: 0}
 --- !u!1 &4439709818119911506
 GameObject:
   m_ObjectHideFlags: 0
@@ -5536,7 +5435,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 1.4558196, y: -17.444313, z: -0.45740414}
+  m_LocalEulerAnglesHint: {x: 0, y: -17.438503, z: 0}
 --- !u!1 &4442479507630211551
 GameObject:
   m_ObjectHideFlags: 0
@@ -5568,7 +5467,7 @@ Transform:
   m_Children:
   - {fileID: 5899751091713101155}
   m_Father: {fileID: 1013759457902555881}
-  m_LocalEulerAnglesHint: {x: -11.508241, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 10.35361, y: 0, z: 0}
 --- !u!1 &4472181365031472309
 GameObject:
   m_ObjectHideFlags: 0
@@ -5599,7 +5498,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 107765510827790769}
-  m_LocalEulerAnglesHint: {x: 0, y: -60.465122, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -60.465115, z: 0}
 --- !u!1 &4480388050272498084
 GameObject:
   m_ObjectHideFlags: 0
@@ -5665,7 +5564,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: -0.5624205, y: -111.62148, z: 178.58142}
+  m_LocalEulerAnglesHint: {x: 7.016709e-15, y: -111.6179, z: 180}
 --- !u!1 &4568227700120816147
 GameObject:
   m_ObjectHideFlags: 0
@@ -5790,7 +5689,7 @@ MonoBehaviour:
     - Key: AttackHold
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2948750066402289689}
+        - _Target: {fileID: 1252659914078541581}
           _MemberName: TransitionTo
           _PersistentArguments: []
     - Key: Parry
@@ -5881,7 +5780,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1262491231416579091}
-  m_LocalEulerAnglesHint: {x: 0.70662105, y: 0.21421878, z: 6.2961106}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -10.253634}
 --- !u!1 &4673781514129227438
 GameObject:
   m_ObjectHideFlags: 0
@@ -5986,6 +5885,7 @@ MonoBehaviour:
   speedChangeRate: 15
   turnability: 15
   verticalAddSpeed: 0
+  terminalVelocity: 98.1
   setVerticalInfluence: 0
   setVerticalVelocity: 1
   defaultGravity: 50
@@ -6022,7 +5922,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 107765510827790769}
-  m_LocalEulerAnglesHint: {x: 0, y: -55.78955, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -55.789543, z: 0}
 --- !u!1 &4861617110333237064
 GameObject:
   m_ObjectHideFlags: 0
@@ -6033,6 +5933,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4840406343167883971}
   - component: {fileID: 1252659914078541581}
+  - component: {fileID: 8573759899251756715}
+  - component: {fileID: 6329160560242998881}
   - component: {fileID: 646156717812279867}
   - component: {fileID: 5855114282886156849}
   - component: {fileID: 4601588046968553847}
@@ -6057,7 +5959,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8497233129720556232}
   - {fileID: 5004547793418751161}
   m_Father: {fileID: 3675384103904257216}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6120,6 +6021,52 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 0
+--- !u!114 &8573759899251756715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861617110333237064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEntry: 2
+  onEnterName: GroundSlam_Start
+  onEnterTime: 0.1
+  animator: {fileID: 0}
+--- !u!114 &6329160560242998881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861617110333237064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  trueActive: 0
+  influence: 0
+  fullStop: 0
+  maxSpeed: 0
+  minSpeed: 0
+  speedChangeRate: 15
+  turnability: 10
+  verticalAddSpeed: -80
+  terminalVelocity: 98.1
+  setVerticalInfluence: 1
+  setVerticalVelocity: 0
+  defaultGravity: 0
+  worldspaceInfluence: 0
+  worldspaceVelocity: {x: 0, y: 0, z: 0}
+  locked: 0
 --- !u!114 &646156717812279867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6136,9 +6083,6 @@ MonoBehaviour:
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   trueActive: 0
-  gravity: 80
-  terminalVelocity: 147.15
-  flatGravity: 0
   bouncingState: {fileID: 5823505111254569389}
 --- !u!135 &5855114282886156849
 SphereCollider:
@@ -6157,7 +6101,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.84
   m_Center: {x: 0, y: 0.6, z: 0}
@@ -6271,7 +6215,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 107765510827790769}
-  m_LocalEulerAnglesHint: {x: 0, y: 62.266754, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 62.266747, z: 0}
 --- !u!1 &5075024688237253571
 GameObject:
   m_ObjectHideFlags: 0
@@ -6408,7 +6352,7 @@ Transform:
   m_Children:
   - {fileID: 5001198678599861603}
   m_Father: {fileID: 7021510372728876682}
-  m_LocalEulerAnglesHint: {x: 0.037942633, y: -0.92482066, z: 3.53252}
+  m_LocalEulerAnglesHint: {x: 0.07091098, y: 0.8439543, z: -6.7746587}
 --- !u!1 &5165479597960252976
 GameObject:
   m_ObjectHideFlags: 0
@@ -6440,7 +6384,7 @@ Transform:
   m_Children:
   - {fileID: 5303980009881695466}
   m_Father: {fileID: 2235979652216157829}
-  m_LocalEulerAnglesHint: {x: 27.65706, y: 32.942715, z: 64.32569}
+  m_LocalEulerAnglesHint: {x: 19.569399, y: 40.155674, z: 78.28977}
 --- !u!1 &5240960325302126777
 GameObject:
   m_ObjectHideFlags: 0
@@ -6471,7 +6415,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: -1.4558178, y: -162.55568, z: 179.54259}
+  m_LocalEulerAnglesHint: {x: 7.016709e-15, y: -162.56148, z: 180}
 --- !u!1 &5300167671746722696
 GameObject:
   m_ObjectHideFlags: 0
@@ -6652,7 +6596,7 @@ MonoBehaviour:
     - Key: AttackHold
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2948750066402289689}
+        - _Target: {fileID: 1252659914078541581}
           _MemberName: TransitionTo
           _PersistentArguments: []
     - Key: GrabTap
@@ -6705,6 +6649,17 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 3941225653291784218}
           _MemberName: GroundStateChange
           _PersistentArguments:
           - _Type: 1
@@ -6715,9 +6670,17 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-        - _Target: {fileID: 3812935324549841644}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 8579594802138283692}
+          _MemberName: Play
+          _PersistentArguments:
+          - _Type: 2
+            _Int: 0
+            _String: Land
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
     - Key: Bonk
       Value:
         _PersistentCalls:
@@ -7238,7 +7201,6 @@ Transform:
   - {fileID: 4725053154384593640}
   - {fileID: 8762820116621655547}
   - {fileID: 2910622393535161883}
-  - {fileID: 5368127178834577373}
   - {fileID: 6014019409343752396}
   - {fileID: 6499787038979050382}
   - {fileID: 6608803627792800818}
@@ -7295,7 +7257,7 @@ Transform:
   m_Children:
   - {fileID: 3073134984744117967}
   m_Father: {fileID: 5752581404150150080}
-  m_LocalEulerAnglesHint: {x: 0.7514342, y: 2.1973505, z: -96.16559}
+  m_LocalEulerAnglesHint: {x: -2.2828937, y: 0.18608733, z: -116.20804}
 --- !u!1 &5527142845277668158
 GameObject:
   m_ObjectHideFlags: 0
@@ -7307,7 +7269,6 @@ GameObject:
   - component: {fileID: 2006163882404814382}
   - component: {fileID: 7887553615491649882}
   - component: {fileID: 528938496853295208}
-  - component: {fileID: 3271233607042112568}
   m_Layer: 6
   m_Name: Walking
   m_TagString: Untagged
@@ -7454,22 +7415,6 @@ MonoBehaviour:
   nextPhaseThreshold: 15
   needChargeButton: 1
   needRagingUpgrade: 0
---- !u!114 &3271233607042112568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5527142845277668158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: GroundBasic
-  onEnterTime: 0.1
-  animator: {fileID: 0}
 --- !u!1 &5549163275917385519
 GameObject:
   m_ObjectHideFlags: 0
@@ -7500,7 +7445,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 107765510827790769}
-  m_LocalEulerAnglesHint: {x: 0, y: -62.266754, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -62.266747, z: 0}
 --- !u!1 &5616308193838800911
 GameObject:
   m_ObjectHideFlags: 0
@@ -7532,7 +7477,7 @@ Transform:
   m_Children:
   - {fileID: 8223577994529571659}
   m_Father: {fileID: 6160359505296045728}
-  m_LocalEulerAnglesHint: {x: -1.78473, y: -24.249146, z: -3.675977}
+  m_LocalEulerAnglesHint: {x: -0.8806165, y: -12.638891, z: 1.0327293}
 --- !u!1 &5627539061402960759
 GameObject:
   m_ObjectHideFlags: 0
@@ -7563,7 +7508,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 1.5259701, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5656290339705626899
 GameObject:
   m_ObjectHideFlags: 0
@@ -7706,7 +7651,7 @@ Transform:
   m_Children:
   - {fileID: 1289324306660635235}
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: -0.29531324, y: 9.930403, z: -0.054450043}
+  m_LocalEulerAnglesHint: {x: 0.00000004860525, y: 9.931691, z: 0.000000008961783}
 --- !u!1 &5810941962839966450
 GameObject:
   m_ObjectHideFlags: 0
@@ -7737,7 +7682,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 278327566310101171}
-  m_LocalEulerAnglesHint: {x: -0.590681, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -2.5203097, y: 0, z: 0}
 --- !u!1 &5837539354396237054
 GameObject:
   m_ObjectHideFlags: 0
@@ -7770,7 +7715,7 @@ Transform:
   - {fileID: 278327566310101171}
   - {fileID: 3303590720151803541}
   m_Father: {fileID: 2290438708623670232}
-  m_LocalEulerAnglesHint: {x: 29.964636, y: -178.08084, z: -11.400697}
+  m_LocalEulerAnglesHint: {x: 17.783613, y: 179.96533, z: -50.49321}
 --- !u!1 &5854764962895957783
 GameObject:
   m_ObjectHideFlags: 0
@@ -7801,7 +7746,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4791203585736954220}
-  m_LocalEulerAnglesHint: {x: -1.1193112, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 11.852031, y: 0, z: 0}
 --- !u!1 &5872976668483300997
 GameObject:
   m_ObjectHideFlags: 0
@@ -7998,7 +7943,6 @@ GameObject:
   - component: {fileID: 4303229188960523177}
   - component: {fileID: 2532947215877258004}
   - component: {fileID: 4783550702967590489}
-  - component: {fileID: 472102404780835729}
   m_Layer: 6
   m_Name: Charging
   m_TagString: Untagged
@@ -8214,22 +8158,6 @@ MonoBehaviour:
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
   enabled: 1
---- !u!114 &472102404780835729
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5936538625018206224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: GroundBasic
-  onEnterTime: 0.1
-  animator: {fileID: 0}
 --- !u!1 &6005523312454311402
 GameObject:
   m_ObjectHideFlags: 0
@@ -8261,7 +8189,7 @@ Transform:
   m_Children:
   - {fileID: 9001384091169506472}
   m_Father: {fileID: 1843710722454031686}
-  m_LocalEulerAnglesHint: {x: 12.544986, y: 1.2799397, z: 53.21617}
+  m_LocalEulerAnglesHint: {x: 12.564891, y: 3.4239278, z: 59.267487}
 --- !u!1 &6037221318812275477
 GameObject:
   m_ObjectHideFlags: 0
@@ -8392,7 +8320,7 @@ Transform:
   - {fileID: 176165724537986964}
   - {fileID: 167776559115597949}
   m_Father: {fileID: 5735276715730193203}
-  m_LocalEulerAnglesHint: {x: -32.877, y: -43.183186, z: -24.299673}
+  m_LocalEulerAnglesHint: {x: -18.793993, y: -7.675183, z: -43.327686}
 --- !u!1 &6055514174411675304
 GameObject:
   m_ObjectHideFlags: 0
@@ -8424,7 +8352,7 @@ Transform:
   m_Children:
   - {fileID: 6869476211955867676}
   m_Father: {fileID: 2680535561233752795}
-  m_LocalEulerAnglesHint: {x: -0.590681, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -2.5203097, y: 0, z: 0}
 --- !u!1 &6163583669192012189
 GameObject:
   m_ObjectHideFlags: 0
@@ -8486,7 +8414,7 @@ MonoBehaviour:
     - Key: AttackHold
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2948750066402289689}
+        - _Target: {fileID: 1252659914078541581}
           _MemberName: TransitionTo
           _PersistentArguments: []
     - Key: GrabHold
@@ -8504,9 +8432,17 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 931477398715445950}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!114 &317580744614931402
 MonoBehaviour:
@@ -8547,6 +8483,7 @@ MonoBehaviour:
   speedChangeRate: 15
   turnability: 0
   verticalAddSpeed: 0
+  terminalVelocity: 98.1
   setVerticalInfluence: 0.5
   setVerticalVelocity: 0
   defaultGravity: 50
@@ -8627,7 +8564,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onEntry: 2
   onEnterName: SomersaultWindup
-  onEnterTime: 0.1
+  onEnterTime: 0.2
   animator: {fileID: 0}
 --- !u!1 &6354224165937590527
 GameObject:
@@ -8723,7 +8660,7 @@ Transform:
   m_Children:
   - {fileID: 7021510372728876682}
   m_Father: {fileID: 1843710722454031686}
-  m_LocalEulerAnglesHint: {x: -35.992413, y: -17.245586, z: 45.166447}
+  m_LocalEulerAnglesHint: {x: -44.406815, y: -22.247627, z: 35.137707}
 --- !u!1 &6574491177993153932
 GameObject:
   m_ObjectHideFlags: 0
@@ -8782,7 +8719,7 @@ MonoBehaviour:
     - Key: AttackHold
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2948750066402289689}
+        - _Target: {fileID: 1252659914078541581}
           _MemberName: TransitionTo
           _PersistentArguments: []
     - Key: GrabTap
@@ -8835,6 +8772,17 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 3941225653291784218}
           _MemberName: GroundStateChange
           _PersistentArguments:
           - _Type: 1
@@ -8845,9 +8793,6 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-        - _Target: {fileID: 3812935324549841644}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
     - Key: Bonk
       Value:
         _PersistentCalls:
@@ -9150,7 +9095,6 @@ GameObject:
   - component: {fileID: 4189863658179928102}
   - component: {fileID: 4000547645901868762}
   - component: {fileID: 5394545579396957404}
-  - component: {fileID: 2556941006449818051}
   m_Layer: 6
   m_Name: Idle
   m_TagString: Untagged
@@ -9297,22 +9241,6 @@ MonoBehaviour:
   nextPhaseThreshold: 0.05
   needChargeButton: 0
   needRagingUpgrade: 0
---- !u!114 &2556941006449818051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6820223952866294626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: GroundBasic
-  onEnterTime: 0.1
-  animator: {fileID: 0}
 --- !u!1 &6824799447565327635
 GameObject:
   m_ObjectHideFlags: 0
@@ -9323,8 +9251,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6014019409343752396}
   - component: {fileID: 7788667647418580513}
-  - component: {fileID: 7855582400919300292}
   - component: {fileID: 8805499447185113993}
+  - component: {fileID: 6979073167908032003}
   m_Layer: 6
   m_Name: HeadSlam
   m_TagString: Untagged
@@ -9368,33 +9296,18 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4000547645901868762}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
---- !u!114 &7855582400919300292
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6824799447565327635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9941058b321f6b4d9f1f2cec53de651, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
-  trueActive: 0
-  horizontalNegateType: 1
-  verticalNegateType: 5
-  rate: 5
-  dampenPoint: 0
-  savePriorVelocity: 0
-  gravity: 0
-  terminalVelocity: 0
 --- !u!114 &8805499447185113993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9411,6 +9324,36 @@ MonoBehaviour:
   onEnterName: Headbutt
   onEnterTime: 0.1
   animator: {fileID: 0}
+--- !u!114 &6979073167908032003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6824799447565327635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  trueActive: 0
+  influence: 0.5
+  fullStop: 0
+  maxSpeed: 0
+  minSpeed: 0
+  speedChangeRate: 15
+  turnability: 10
+  verticalAddSpeed: 0
+  terminalVelocity: 98.1
+  setVerticalInfluence: 0
+  setVerticalVelocity: 0
+  defaultGravity: 0
+  worldspaceInfluence: 0
+  worldspaceVelocity: {x: 0, y: 0, z: 0}
+  locked: 0
 --- !u!1 &6840937366610314507
 GameObject:
   m_ObjectHideFlags: 0
@@ -9527,7 +9470,7 @@ Transform:
   - {fileID: 1843710722454031686}
   - {fileID: 1474029645955272187}
   m_Father: {fileID: 1336325588524243921}
-  m_LocalEulerAnglesHint: {x: -2.088, y: -8.473, z: -4.309}
+  m_LocalEulerAnglesHint: {x: 34.399277, y: -0.123104826, z: -3.9681334}
 --- !u!1 &6885496698341775711
 GameObject:
   m_ObjectHideFlags: 0
@@ -9694,7 +9637,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 1.5806518, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7011906604276923133
 GameObject:
   m_ObjectHideFlags: 0
@@ -9838,7 +9781,7 @@ Transform:
   - {fileID: 7868241083879984591}
   - {fileID: 4587243299707619477}
   m_Father: {fileID: 2290438708623670232}
-  m_LocalEulerAnglesHint: {x: -21.8699, y: 179.34927, z: 168.08577}
+  m_LocalEulerAnglesHint: {x: -15.18985, y: 172.96529, z: -140.94118}
 --- !u!1 &7073008420584510336
 GameObject:
   m_ObjectHideFlags: 0
@@ -9966,7 +9909,7 @@ Transform:
   m_Children:
   - {fileID: 9154178742155163141}
   m_Father: {fileID: 871982966420425774}
-  m_LocalEulerAnglesHint: {x: -2.844806, y: -14.200976, z: -4.113375}
+  m_LocalEulerAnglesHint: {x: -2.226602, y: -2.650409, z: 4.5886545}
 --- !u!1 &7202455593599374418
 GameObject:
   m_ObjectHideFlags: 0
@@ -10000,7 +9943,7 @@ Transform:
   - {fileID: 2235979652216157829}
   - {fileID: 515695939648151693}
   m_Father: {fileID: 1013759457902555881}
-  m_LocalEulerAnglesHint: {x: -2.039, y: -8.377, z: 1.936}
+  m_LocalEulerAnglesHint: {x: 30.712337, y: -0.40517986, z: -3.910876}
 --- !u!1 &7224132573033648796
 GameObject:
   m_ObjectHideFlags: 0
@@ -10031,7 +9974,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0.72932917, y: -61.02027, z: -1.310787}
+  m_LocalEulerAnglesHint: {x: 0, y: -61.73458, z: 0}
 --- !u!1 &7236015119662936257
 GameObject:
   m_ObjectHideFlags: 0
@@ -10064,7 +10007,7 @@ Transform:
   - {fileID: 5735276715730193203}
   - {fileID: 4791203585736954220}
   m_Father: {fileID: 362155934586423713}
-  m_LocalEulerAnglesHint: {x: 2.508, y: 3.294, z: -10.071951}
+  m_LocalEulerAnglesHint: {x: 14.526614, y: -3.7135596, z: 15.790379}
 --- !u!1 &7257209901777955179
 GameObject:
   m_ObjectHideFlags: 0
@@ -10183,9 +10126,17 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4000547645901868762}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!114 &5841719628916661894
 MonoBehaviour:
@@ -10234,7 +10185,7 @@ Transform:
   m_Children:
   - {fileID: 871982966420425774}
   m_Father: {fileID: 1843710722454031686}
-  m_LocalEulerAnglesHint: {x: 3.3701646, y: -0.09379924, z: 52.346874}
+  m_LocalEulerAnglesHint: {x: 8.786878, y: -6.5978703, z: 43.78186}
 --- !u!1 &7471342363894119853
 GameObject:
   m_ObjectHideFlags: 0
@@ -10604,7 +10555,7 @@ MonoBehaviour:
     - Key: AttackHold
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2948750066402289689}
+        - _Target: {fileID: 0}
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
@@ -10716,7 +10667,7 @@ Transform:
   m_Children:
   - {fileID: 1176947240285938664}
   m_Father: {fileID: 8240657446396116129}
-  m_LocalEulerAnglesHint: {x: 5.6778183, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.13334464, y: 0, z: 0}
 --- !u!1 &7687921319952885065
 GameObject:
   m_ObjectHideFlags: 0
@@ -10748,7 +10699,7 @@ Transform:
   m_Children:
   - {fileID: 5752581404150150080}
   m_Father: {fileID: 2680535561233752795}
-  m_LocalEulerAnglesHint: {x: -0.50476366, y: 10.852177, z: 31.142157}
+  m_LocalEulerAnglesHint: {x: -8.438546, y: 0.000000005649987, z: 0.002331565}
 --- !u!1 &7756656762688251476
 GameObject:
   m_ObjectHideFlags: 0
@@ -10780,7 +10731,7 @@ Transform:
   m_Children:
   - {fileID: 8922394875303098419}
   m_Father: {fileID: 3343154836349968328}
-  m_LocalEulerAnglesHint: {x: -3.881674, y: -37.59522, z: -9.755785}
+  m_LocalEulerAnglesHint: {x: -0.46870163, y: -2.5174468, z: 3.924854}
 --- !u!1 &7757866779982890630
 GameObject:
   m_ObjectHideFlags: 0
@@ -10811,7 +10762,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 1.2385958, y: -34.44295, z: -0.8461284}
+  m_LocalEulerAnglesHint: {x: 0, y: -35.11199, z: 0}
 --- !u!1 &7763240431029852604
 GameObject:
   m_ObjectHideFlags: 0
@@ -10842,7 +10793,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8479078116207083057}
-  m_LocalEulerAnglesHint: {x: 5.6778183, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.13334464, y: 0, z: 0}
 --- !u!1 &7768039867893722896
 GameObject:
   m_ObjectHideFlags: 0
@@ -10980,9 +10931,17 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3812935324549841644}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!114 &5639727482222500743
 MonoBehaviour:
@@ -11041,6 +11000,7 @@ MonoBehaviour:
   speedChangeRate: 15
   turnability: 0
   verticalAddSpeed: 0
+  terminalVelocity: 98.1
   setVerticalInfluence: 0
   setVerticalVelocity: 0
   defaultGravity: 0
@@ -11078,7 +11038,7 @@ Transform:
   m_Children:
   - {fileID: 3887420343133292225}
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -3.274405}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -4.855064}
 --- !u!1 &7954612019771168692
 GameObject:
   m_ObjectHideFlags: 0
@@ -11110,104 +11070,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7250269832979079049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7983757357760064136
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5368127178834577373}
-  - component: {fileID: 5567832916535865027}
-  - component: {fileID: 6960195376670105774}
-  - component: {fileID: 7462901747141470752}
-  m_Layer: 6
-  m_Name: UpperCut2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5368127178834577373
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7983757357760064136}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 36.25, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4182476368529953341}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5567832916535865027
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7983757357760064136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onActivatedEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Finish
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 4000547645901868762}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-  lockReady: 1
---- !u!114 &6960195376670105774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7983757357760064136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: Uppercut2
-  onEnterTime: 0.1
-  animator: {fileID: 0}
---- !u!114 &7462901747141470752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7983757357760064136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9941058b321f6b4d9f1f2cec53de651, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
-  trueActive: 0
-  horizontalNegateType: 1
-  verticalNegateType: 5
-  rate: 15
-  dampenPoint: 0
-  savePriorVelocity: 0
-  gravity: 0
-  terminalVelocity: 0
 --- !u!1 &7986475415449474893
 GameObject:
   m_ObjectHideFlags: 0
@@ -11270,9 +11132,17 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4000547645901868762}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!114 &4975428428768240672
 MonoBehaviour:
@@ -11331,6 +11201,7 @@ MonoBehaviour:
   speedChangeRate: 15
   turnability: 0
   verticalAddSpeed: 0
+  terminalVelocity: 98.1
   setVerticalInfluence: 0
   setVerticalVelocity: 0
   defaultGravity: 0
@@ -11399,7 +11270,7 @@ Transform:
   m_Children:
   - {fileID: 1013759457902555881}
   m_Father: {fileID: 5779348743443458172}
-  m_LocalEulerAnglesHint: {x: 19.278, y: -105.204, z: -9.389}
+  m_LocalEulerAnglesHint: {x: -38.79524, y: -95.51721, z: 11.941606}
 --- !u!1 &8080908558534702520
 GameObject:
   m_ObjectHideFlags: 0
@@ -11560,6 +11431,7 @@ MonoBehaviour:
   speedChangeRate: 15
   turnability: 15
   verticalAddSpeed: 0
+  terminalVelocity: 98.1
   setVerticalInfluence: 0
   setVerticalVelocity: 0
   defaultGravity: 50
@@ -11596,7 +11468,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3858517113413183086}
-  m_LocalEulerAnglesHint: {x: -11.508241, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 10.35361, y: 0, z: 0}
 --- !u!1 &8217506179758699186
 GameObject:
   m_ObjectHideFlags: 0
@@ -11627,7 +11499,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: -0.72934705, y: -118.97971, z: 178.6892}
+  m_LocalEulerAnglesHint: {x: 7.0167083e-15, y: -118.2654, z: 180}
 --- !u!1 &8233020272553458984
 GameObject:
   m_ObjectHideFlags: 0
@@ -11639,7 +11511,7 @@ GameObject:
   - component: {fileID: 2910622393535161883}
   - component: {fileID: 3443062856187106688}
   - component: {fileID: 3847701285562395558}
-  - component: {fileID: 3472734133598976748}
+  - component: {fileID: 3599153407553307017}
   m_Layer: 6
   m_Name: UpperCut
   m_TagString: Untagged
@@ -11683,9 +11555,17 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4000547645901868762}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!114 &3847701285562395558
 MonoBehaviour:
@@ -11700,10 +11580,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onEntry: 2
-  onEnterName: Uppercut1
+  onEnterName: Uppercut
   onEnterTime: 0.1
   animator: {fileID: 0}
---- !u!114 &3472734133598976748
+--- !u!114 &3599153407553307017
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11712,20 +11592,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 8233020272553458984}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9941058b321f6b4d9f1f2cec53de651, type: 3}
+  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   trueActive: 0
-  horizontalNegateType: 1
-  verticalNegateType: 5
-  rate: 15
-  dampenPoint: 0
-  savePriorVelocity: 0
-  gravity: 0
-  terminalVelocity: 0
+  influence: 0
+  fullStop: 0
+  maxSpeed: 0
+  minSpeed: 0
+  speedChangeRate: 15
+  turnability: 0
+  verticalAddSpeed: 0
+  terminalVelocity: 98.1
+  setVerticalInfluence: 0
+  setVerticalVelocity: 0
+  defaultGravity: 0
+  worldspaceInfluence: 0
+  worldspaceVelocity: {x: 0, y: 0, z: 0}
+  locked: 0
 --- !u!1 &8245773314306325851
 GameObject:
   m_ObjectHideFlags: 0
@@ -11783,7 +11670,15 @@ MonoBehaviour:
         _PersistentCalls:
         - _Target: {fileID: 3941225653291784218}
           _MemberName: ReturnToNeutral
-          _PersistentArguments: []
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!114 &5381320718860949658
 MonoBehaviour:
@@ -11856,7 +11751,7 @@ Transform:
   - {fileID: 7250269832979079049}
   - {fileID: 1262491231416579091}
   m_Father: {fileID: 5779348743443458172}
-  m_LocalEulerAnglesHint: {x: 0.9176473, y: 1.6234307, z: 1.5094686}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -10.27221}
 --- !u!1 &8291585736164761318
 GameObject:
   m_ObjectHideFlags: 0
@@ -11911,9 +11806,17 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 931477398715445950}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!114 &3202945699952535314
 MonoBehaviour:
@@ -12017,9 +11920,17 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4000547645901868762}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!114 &8756034729405423735
 MonoBehaviour:
@@ -12060,6 +11971,7 @@ MonoBehaviour:
   speedChangeRate: 15
   turnability: 10
   verticalAddSpeed: 0
+  terminalVelocity: 98.1
   setVerticalInfluence: 0
   setVerticalVelocity: 0
   defaultGravity: 0
@@ -12096,7 +12008,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: -1.2385972, y: -145.55704, z: 179.15385}
+  m_LocalEulerAnglesHint: {x: 7.016709e-15, y: -144.888, z: 180}
 --- !u!1 &8456721909318098692
 GameObject:
   m_ObjectHideFlags: 0
@@ -12185,6 +12097,17 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 3941225653291784218}
           _MemberName: GroundStateChange
           _PersistentArguments:
           - _Type: 1
@@ -12195,9 +12118,6 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-        - _Target: {fileID: 4000547645901868762}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
   lockReady: 0
 --- !u!114 &3132885803422821456
 MonoBehaviour:
@@ -12275,7 +12195,7 @@ Transform:
   - {fileID: 7131444296845478749}
   - {fileID: 5356928931328244855}
   m_Father: {fileID: 8240657446396116129}
-  m_LocalEulerAnglesHint: {x: -30.773829, y: -29.278461, z: -29.137445}
+  m_LocalEulerAnglesHint: {x: -18.793995, y: -7.6751814, z: -43.327686}
 --- !u!1 &8509128218806431394
 GameObject:
   m_ObjectHideFlags: 0
@@ -12498,7 +12418,7 @@ Transform:
   m_Children:
   - {fileID: 5331686706469530154}
   m_Father: {fileID: 3303590720151803541}
-  m_LocalEulerAnglesHint: {x: -1.3740038, y: -14.905232, z: -19.442257}
+  m_LocalEulerAnglesHint: {x: 4.6708198, y: -7.9479, z: -2.5888968}
 --- !u!1 &8776230784378080119
 GameObject:
   m_ObjectHideFlags: 0
@@ -12530,7 +12450,7 @@ Transform:
   m_Children:
   - {fileID: 6711681285055233071}
   m_Father: {fileID: 2235979652216157829}
-  m_LocalEulerAnglesHint: {x: 4.867009, y: 7.1582336, z: 59.332623}
+  m_LocalEulerAnglesHint: {x: 12.56489, y: 3.4239235, z: 59.267487}
 --- !u!1 &8822378987506164119
 GameObject:
   m_ObjectHideFlags: 0
@@ -12586,9 +12506,17 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4000547645901868762}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 0
 --- !u!114 &4163722583769128138
 MonoBehaviour:
@@ -12714,9 +12642,17 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4000547645901868762}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!1 &8959225014369038086
 GameObject:
@@ -12749,7 +12685,7 @@ Transform:
   m_Children:
   - {fileID: 5779348743443458172}
   m_Father: {fileID: 6624796882083950603}
-  m_LocalEulerAnglesHint: {x: -2.7024107, y: -0.4016135, z: 22.034777}
+  m_LocalEulerAnglesHint: {x: -9.277011e-31, y: 3.6997032e-31, z: 23.257717}
 --- !u!1 &9018897039512757404
 GameObject:
   m_ObjectHideFlags: 0
@@ -12781,7 +12717,7 @@ Transform:
   m_Children:
   - {fileID: 4020530439917054758}
   m_Father: {fileID: 4966123876549837000}
-  m_LocalEulerAnglesHint: {x: 0.7645264, y: 2.0951257, z: -96.5151}
+  m_LocalEulerAnglesHint: {x: 0.751433, y: 2.1973596, z: -96.16554}
 --- !u!1 &9139940253498331008
 GameObject:
   m_ObjectHideFlags: 0

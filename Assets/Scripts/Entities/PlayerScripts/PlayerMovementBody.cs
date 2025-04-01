@@ -33,6 +33,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     [HideInInspector] public Rigidbody rb;
     [HideInInspector] public new CapsuleCollider collider;
     [HideInInspector] public JiggleRigBuilder jiggles;
+    [HideInInspector] public Animator animator;
 
     [HideInEditMode, DisableInPlayMode] public Vector3 velocity;
 
@@ -122,6 +123,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         TryGetComponent(out rb);
         TryGetComponent(out collider);
         TryGetComponent(out jiggles);
+        TryGetComponent(out animator);
         currentDirection = Vector3.forward;
         _instance = this;
     }
@@ -367,10 +369,14 @@ public class PlayerMovementBody : PlayerStateBehavior
         return default;
     }
 
-    public void ReturnToNeutral()
+    public void ReturnToNeutral(bool doCrossFade = true)
     {
         if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out RaycastHit groundHit))
+        {
             idleState.TransitionTo();
+            //animator.SetTrigger("ReturnToGroundNeutral");
+            if (doCrossFade) animator.CrossFade("GroundBasic", .1f);
+        }
         else 
             airNeutralState.TransitionTo();
     }
