@@ -15,6 +15,7 @@ public class PlayerMovementAnimator : PlayerMovementEffector
     public float speedChangeRate = 15;
     public float turnability = 10;
     public float verticalAddSpeed;
+    public float terminalVelocity = 98.1f;
 
     [Tooltip("Sets/Lerps the velocity to a specific point rather than adding it.")]
     [Range(0, 1)] public float setVerticalInfluence;
@@ -95,7 +96,7 @@ public class PlayerMovementAnimator : PlayerMovementEffector
 
         result = playerMovementBody.velocity.y;
 
-        if (!Mathf.Approximately(verticalAddSpeed, 0)) result += verticalAddSpeed * .02f;
+        if (!Mathf.Approximately(verticalAddSpeed, 0)) result = (result.Value + verticalAddSpeed * Time.fixedDeltaTime).Min(-terminalVelocity);
         if(setVerticalInfluence > 0) 
             result = setVerticalInfluence == 1 
                 ? setVerticalVelocity 
