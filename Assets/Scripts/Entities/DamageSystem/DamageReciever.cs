@@ -5,15 +5,13 @@ using System.Linq;
 
 public class DamageReciever : MonoBehaviour, IDamagable
 {
-    public MonoBehaviour target;
-    public IDamagable targetHealth;
+    public IRef<IDamagable> target;
     public string attachTag;
 
     private void Awake()
     {
-        if (targetHealth == null && target != null) targetHealth = target as IDamagable;
-        if (targetHealth == null) targetHealth = GetComponentInParent<IDamagable>();
-        if (targetHealth == null) Destroy(this); 
+        if (!target) target = GetComponentInParent<IDamagable>() as IRef<IDamagable>;
+        if (!target) Destroy(this); 
     }
 
     public bool Damage(Attack attack)
@@ -22,6 +20,6 @@ public class DamageReciever : MonoBehaviour, IDamagable
 
         attack.tags = attack.tags.ToArray().Append(attachTag).ToArray();
 
-        return targetHealth.Damage(attack);
+        return target.I.Damage(attack);
     }
 }
