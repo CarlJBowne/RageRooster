@@ -100,8 +100,12 @@ public class PlayerMovementBody : PlayerStateBehavior
             );
     }
 
-    public void DirectionSet(float maxTurnSpeed, Vector3 target) => currentDirection = Vector3.RotateTowards(currentDirection, target, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
-    public void DirectionSet(float maxTurnSpeed) => DirectionSet(maxTurnSpeed, playerController.camAdjustedMovement);
+    public void DirectionSet(float maxTurnSpeed, Vector3 target)
+    {
+        if (target == Vector3.zero) return; 
+        currentDirection = Vector3.RotateTowards(currentDirection, target, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
+    }
+    public void DirectionSet(float maxTurnSpeed) => DirectionSet(maxTurnSpeed, playerController.camAdjustedMovement); 
 
     public VolcanicVent currentVent
     {

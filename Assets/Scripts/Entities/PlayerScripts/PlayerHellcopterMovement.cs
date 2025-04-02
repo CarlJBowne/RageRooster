@@ -40,7 +40,6 @@ public class PlayerHellcopterMovement : PlayerMovementEffector
         if (!forceOutward) HorizontalMain(ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
         else HorizontalCharge(ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
 
-        playerMovementBody.currentDirection = currentDirection;
         playerMovementBody.CurrentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
@@ -94,8 +93,7 @@ public class PlayerHellcopterMovement : PlayerMovementEffector
                 currentSpeed = currentSpeed.MoveDown(controlMag * decceleration * deltaTime, maxSpeed);
         }
 
-        if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
-        playerMovementBody.currentDirection = currentDirection;
+        if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed); 
         playerMovementBody.CurrentSpeed = currentSpeed;
 
 

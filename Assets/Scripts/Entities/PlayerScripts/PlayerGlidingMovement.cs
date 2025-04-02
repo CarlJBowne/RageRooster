@@ -33,7 +33,6 @@ public class PlayerGlidingMovement : PlayerMovementEffector
 
         HorizontalMain(ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
 
-        playerMovementBody.currentDirection = currentDirection;
         playerMovementBody.CurrentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
