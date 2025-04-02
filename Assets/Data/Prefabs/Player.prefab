@@ -3364,6 +3364,7 @@ GameObject:
   - component: {fileID: 4521176707265603731}
   - component: {fileID: 8350213507187708695}
   - component: {fileID: 6199145597115895703}
+  - component: {fileID: 1988227033855750315}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -3484,6 +3485,7 @@ MonoBehaviour:
   cameraTransform: {fileID: 0}
   freeLookCamera: {fileID: 0}
   pauseState: {fileID: 2078276186862268811}
+  queuedSignals: []
 --- !u!54 &1838944232945776554
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3590,6 +3592,8 @@ MonoBehaviour:
     type: 2}
   hellcopterUpgrade: {fileID: -8222721850088587547, guid: 5096cd543e777e240af87643ae7b164b,
     type: 2}
+  overrideMovementControl: 0
+  overrideMovementVector: {x: 0, y: 0}
   jumpInput: 0
   camAdjustedMovement: {x: 0, y: 0, z: 0}
   grabber: {fileID: 2714541672873312079}
@@ -3704,7 +3708,6 @@ MonoBehaviour:
   currentSpeed: 0
   jumpPhase: 0
   _currentDirection: {x: 0, y: 0, z: 0}
-  literalVelocity: {x: 0, y: 0, z: 0}
   jumpMarkers: []
 --- !u!114 &2783735533672575433
 MonoBehaviour:
@@ -3783,6 +3786,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   events:
     _serializedList: []
+--- !u!114 &1988227033855750315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eff0be652ec44049b5129f56cae9038, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Pools:
+    _serializedList:
+    - Key: GroundSlam
+      Value:
+        prefabObject: {fileID: 5362260789150255817, guid: eede06116798a8b4f84b46c3727f0d64,
+          type: 3}
+        defaultPoolDepth: 1
+        canGrow: 1
+        parent: {fileID: 0}
+        autoDisableTime: 1
+        spawnPoint: {fileID: 802911248559169720}
+        rotate: 0
+        autoSpawnRate: 0
 --- !u!1 &2975349023816060615
 GameObject:
   m_ObjectHideFlags: 0
