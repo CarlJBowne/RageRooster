@@ -102,11 +102,7 @@ public class SpeakerScript : MonoBehaviour, IInteractable
         return true;
     }
 
-    public virtual void CheckForNextConversation(int index)
-    {
-        //Read the index that is passed in an compare it to the given cases
-        //
-    }
+    public virtual void CheckForNextConversation(int index) => data.OnConversationFinished();
 
 
 
