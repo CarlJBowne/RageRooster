@@ -4,6 +4,7 @@ using UnityEngine;
 using SLS.StateMachineV3;
 using System;
 using Cinemachine;
+using System.Linq;
 
 public class PlayerStateMachine : StateMachine
 {
@@ -95,4 +96,12 @@ public class PlayerStateMachine : StateMachine
         prevState.TransitionTo();
     }
 
+#if UNITY_EDITOR
+    protected override void Update()
+    {
+        base.Update();
+        queuedSignals = signalQueue.ToList();
+    }
+    public List<string> queuedSignals;
+#endif
 }
