@@ -66,7 +66,6 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
             MaxSpeedChange(true);
         }
 
-        playerMovementBody.currentDirection = currentDirection;
         playerMovementBody.CurrentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;

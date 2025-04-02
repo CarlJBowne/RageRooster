@@ -48,7 +48,6 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         if (!isDash) HorizontalMain (ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
         else HorizontalCharge       (ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
 
-        playerMovementBody.currentDirection = currentDirection;
         playerMovementBody.CurrentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
@@ -104,8 +103,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         }
 
         if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
-        playerMovementBody.currentDirection = currentDirection;
-        playerMovementBody.CurrentSpeed = currentSpeed;
+        playerMovementBody.CurrentSpeed = currentSpeed; 
 
 
     }
