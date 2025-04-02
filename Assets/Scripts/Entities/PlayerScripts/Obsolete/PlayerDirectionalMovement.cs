@@ -42,8 +42,7 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
             {
                 float Dot = Vector3.Dot(controlDirection, currentDirection);
 
-                if (maxTurnSpeed > 0)
-                    currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0);
+                if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
 
                 if (!outwardTurn) currentSpeed *= Dot;
                 if (currentSpeed < maxSpeed)
@@ -63,12 +62,10 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
         else
         {
             currentSpeed = maxSpeed;
-            if (maxTurnSpeed > 0)
-                currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0);
+            if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
             MaxSpeedChange(true);
         }
 
-        playerMovementBody.currentDirection = currentDirection;
         playerMovementBody.CurrentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
