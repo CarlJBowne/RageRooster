@@ -64,8 +64,16 @@ public class ConversationManager : MonoBehaviour
         {
             return;
         }
+        if(nextDialogue)
+        {
+            FinishDialogue();
+        }
+
             isAdvancingText = true;
             Debug.Log("Trying to advance text");
+
+
+
         
 
     }
@@ -90,11 +98,12 @@ public class ConversationManager : MonoBehaviour
                 //Trigger anything that should happen when the given conversation ends
                 //Pass in the current index of the conversation
                 currentSpeaker.CheckForNextConversation(currentSpeaker.currentConversationIndex);
+                dialogueIndex = 0;
 
             }
 
             if (nextDialogue)
-            {
+            {   
                 animatedText.ReadText(currentSpeaker.dialogue.conversationBlock[dialogueIndex]);
             }
         }
