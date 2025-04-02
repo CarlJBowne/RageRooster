@@ -72,8 +72,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         {
             float Dot = Vector3.Dot(controlDirection, currentDirection);
 
-            if (maxTurnSpeed > 0)
-                currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0);
+            if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
 
             currentSpeed *= Dot;
             if (currentSpeed < maxSpeed)
@@ -104,8 +103,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
                 currentSpeed = currentSpeed.MoveDown(controlMag * decceleration * deltaTime, maxSpeed);
         }
 
-        if (maxTurnSpeed > 0)
-            currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0);
+        if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
         playerMovementBody.currentDirection = currentDirection;
         playerMovementBody.CurrentSpeed = currentSpeed;
 

@@ -27,6 +27,9 @@ public class PlayerController : PlayerStateBehavior
     public Upgrade ragingChargeUpgrade;
     public Upgrade hellcopterUpgrade;
 
+    public bool overrideMovementControl;
+    public Vector2 overrideMovementVector;
+
 	#endregion
 	#region Data
 
@@ -79,7 +82,8 @@ public class PlayerController : PlayerStateBehavior
 	{
 
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
-		camAdjustedMovement = input.movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
+		if(!overrideMovementControl) camAdjustedMovement = input.movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
+		else camAdjustedMovement = overrideMovementVector.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
 
 		//if (Machine.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
         //    sGlide.TransitionTo();

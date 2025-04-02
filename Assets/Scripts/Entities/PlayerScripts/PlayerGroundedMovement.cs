@@ -63,8 +63,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         {
             float Dot = Vector3.Dot(controlDirection, currentDirection);
 
-            if (maxTurnSpeed > 0)
-                currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.deltaTime, 0);
+            if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed); 
 
             if (!outwardTurn) currentSpeed *= Dot;
 
