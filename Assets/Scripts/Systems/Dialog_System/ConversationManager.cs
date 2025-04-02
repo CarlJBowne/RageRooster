@@ -51,11 +51,11 @@ public class ConversationManager : MonoBehaviour
     }
     private void OnEnable()
     {
-        Input.Parry.performed += TryAdvanceText;
+        Input.Interact.performed += TryAdvanceText;
     }
     private void OnDisable()
     {
-        Input.Parry.performed -= TryAdvanceText;
+        Input.Interact.performed -= TryAdvanceText;
     }
 
     private void TryAdvanceText(InputAction.CallbackContext context)
