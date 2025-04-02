@@ -56,15 +56,12 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     [HideInInspector] public Vector3 _currentDirection = Vector3.forward;
 
-    [HideInEditMode, DisableInPlayMode] public Vector3 literalVelocity;
-
     public static IMovablePlatform currentAnchor;
 
     private VolcanicVent _currentVent;
     #endregion
 
     #region GetSet
-    //public Vector3 velocity { get => rb.velocity; set => rb.velocity = value; }
     public Vector3 position { 
         get => rb.position;
         set => rb.MovePosition(value); }
@@ -103,6 +100,13 @@ public class PlayerMovementBody : PlayerStateBehavior
             );
     }
 
+    public void DirectionSet(float maxTurnSpeed, Vector3 target)
+    {
+        if (target == Vector3.zero) return; 
+        currentDirection = Vector3.RotateTowards(currentDirection, target, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
+    }
+    public void DirectionSet(float maxTurnSpeed) => DirectionSet(maxTurnSpeed, playerController.camAdjustedMovement); 
+
     public VolcanicVent currentVent
     {
         get => _currentVent;
@@ -134,38 +138,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         {
             Machine.animator.SetFloat("CurrentSpeed", currentSpeed);
             rb.velocity = Vector3.zero;
-
-            //Anchor System is busted. Fix later.
-            //if (anchorTransform)
-            //{
-            //    Vector3 anchorOffset = prevAnchorPosition - anchorTransform.localPosition;
-            //    prevAnchorPosition = anchorTransform.localPosition;
-            //    rb.MovePosition(rb.position - anchorOffset);
-            //}
-
-
-        } // NonMovement
-
-        literalVelocity = rb.velocity;
-
-        /*
-        {
-            if (animateVelocity) velocity = transform.TransformDirection(animatedVelocity);
-            else if (animateMovement)
-            {
-                Vector3 controlVector = playerController.camAdjustedMovement;
-                if (animatedMovementTurn > 0) currentDirection = Vector3.RotateTowards(currentDirection, controlVector.normalized, animatedMovementTurn * Mathf.PI * Time.fixedDeltaTime, 0);
-                currentSpeed = controlVector.sqrMagnitude > 0
-                    ? currentSpeed.MoveTowards(controlVector.magnitude * animatedMovementSpeedChange * (Time.deltaTime * 50), animatedMovementMaxSpeed)
-                    : currentSpeed.MoveTowards(animatedMovementSpeedChange * (Time.deltaTime * 50), animatedMovementMinSpeed);
-
-                if (animateMovementVertical) velocity.y = !grounded ? animatedMovementVertical : 0;
-
-                velocity = (transform.forward * currentSpeed) + (velocity.y * Vector3.up);
-            }
-
         }
-        */
 
         initVelocity = new Vector3(velocity.x * movementModifier, velocity.y, velocity.z * movementModifier);
         initNormal = Vector3.up; 
@@ -188,7 +161,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                     initVelocity = initVelocity.ProjectAndScale(groundHit.normal);
                 }
             }
-            else
+            else if (grounded)
             {
                 GroundStateChange(false);
                 Machine.SendSignal("WalkOff", overrideReady: true);

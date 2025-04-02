@@ -33,7 +33,6 @@ public class PlayerGlidingMovement : PlayerMovementEffector
 
         HorizontalMain(ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
 
-        playerMovementBody.currentDirection = currentDirection;
         playerMovementBody.CurrentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
@@ -62,8 +61,7 @@ public class PlayerGlidingMovement : PlayerMovementEffector
         {
             float Dot = Vector3.Dot(controlDirection, currentDirection);
 
-            if (maxTurnSpeed > 0)
-                currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.fixedDeltaTime, 0);
+            if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
 
             currentSpeed *= Dot;
             if (currentSpeed < maxSpeed)

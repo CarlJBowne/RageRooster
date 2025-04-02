@@ -36,9 +36,8 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         float currentSpeed = playerMovementBody.CurrentSpeed;
         Vector3 currentDirection = playerMovementBody.currentDirection;
 
-        HorizontalMain(ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement);
+        HorizontalMain(ref currentSpeed, currentDirection, playerController.camAdjustedMovement);
 
-        playerMovementBody.currentDirection = currentDirection;
         playerMovementBody.CurrentSpeed = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
@@ -48,7 +47,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
 
     }
 
-    private void HorizontalMain(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control)
+    private void HorizontalMain(ref float currentSpeed, Vector3 currentDirection, Vector3 control)
     {
         float deltaTime = Time.deltaTime * 50;
         Vector3 controlDirection = control.normalized;
@@ -63,8 +62,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         {
             float Dot = Vector3.Dot(controlDirection, currentDirection);
 
-            if (maxTurnSpeed > 0)
-                currentDirection = Vector3.RotateTowards(currentDirection, controlDirection, maxTurnSpeed * Mathf.PI * Time.deltaTime, 0);
+            if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed); 
 
             if (!outwardTurn) currentSpeed *= Dot;
 
