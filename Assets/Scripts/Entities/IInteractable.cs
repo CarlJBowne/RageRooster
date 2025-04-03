@@ -7,4 +7,6 @@
     }
     protected bool canInteract { get; }
     protected bool Interaction();
+
+    public void ShowHidePopup(bool value);
 }

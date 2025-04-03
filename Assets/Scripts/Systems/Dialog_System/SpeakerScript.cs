@@ -13,12 +13,15 @@ using TMPro;
 using DG.Tweening;
 using Cinemachine;
 using System;
+using static Input;
 [RequireComponent(typeof(DialogueAudio))]
 [RequireComponent(typeof(Animator))]
 public class SpeakerScript : MonoBehaviour, IInteractable
 {
     public NPC_Data data;
     public DialogueData dialogue;
+
+    public GameObject interactablePopup;
 
     public bool villagerIsTalking;
 
@@ -96,18 +99,37 @@ public class SpeakerScript : MonoBehaviour, IInteractable
 
     bool IInteractable.Interaction()
     {
-        Debug.Log("Speaker is activated");
+        //Debug.Log("Speaker is activated");
+
+        ConversationManager UI = ConversationManager.instance;
+
+        if (!UI.inDialogue)
+        {
+            UI.currentSpeaker = this;
+
+            targetGroup.m_Targets[1].target = Gameplay.I.player.transform;
+            Gameplay.PlayerStateMachine.PauseState();
+            UI.dialogueCamera.GetComponent<CinemachineVirtualCamera>().Follow = targetGroup.transform;
+            UI.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
+            UI.SetCharNameAndColor();
+            UI.inDialogue = true;
+            UI.CameraChange(true);
+            UI.ClearText();
+            UI.FadeUI(true, .2f, .65f);
+            TurnToPlayer(Gameplay.I.player.transform.position);
+        }
+
+        ShowHidePopup(false);
+        dialogue = data.dialogueList[data.dialogueID];
         onSpeakerActivate?.Invoke();
-        dialogue = data.dialogueList[currentConversationIndex];
+
         return true;
     }
 
-    public virtual void CheckForNextConversation(int index)
-    {
-        //Read the index that is passed in an compare it to the given cases
-        //
-    }
+    public virtual void CheckForNextConversation(int index) => data.OnConversationFinished();
 
+    public void ShowHidePopup(bool value)
+    { if (interactablePopup) interactablePopup.SetActive(value); }
 
 
 }

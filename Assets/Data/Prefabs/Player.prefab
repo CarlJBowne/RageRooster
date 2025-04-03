@@ -3361,9 +3361,9 @@ GameObject:
   - component: {fileID: 2714541672873312079}
   - component: {fileID: 3941225653291784218}
   - component: {fileID: 2783735533672575433}
-  - component: {fileID: 4521176707265603731}
   - component: {fileID: 8350213507187708695}
   - component: {fileID: 6199145597115895703}
+  - component: {fileID: 1988227033855750315}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -3390,6 +3390,7 @@ Transform:
   - {fileID: 6163627308343083636}
   - {fileID: 190071413214983404}
   - {fileID: 569189176742516144}
+  - {fileID: 2317801469333080837}
   - {fileID: 1688309323495038770}
   - {fileID: 4280192529947532437}
   - {fileID: 545893734947515597}
@@ -3484,6 +3485,7 @@ MonoBehaviour:
   cameraTransform: {fileID: 0}
   freeLookCamera: {fileID: 0}
   pauseState: {fileID: 2078276186862268811}
+  queuedSignals: []
 --- !u!54 &1838944232945776554
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3590,10 +3592,12 @@ MonoBehaviour:
     type: 2}
   hellcopterUpgrade: {fileID: -8222721850088587547, guid: 5096cd543e777e240af87643ae7b164b,
     type: 2}
+  overrideMovementControl: 0
+  overrideMovementVector: {x: 0, y: 0}
   jumpInput: 0
   camAdjustedMovement: {x: 0, y: 0, z: 0}
   grabber: {fileID: 2714541672873312079}
-  interacter: {fileID: 4521176707265603731}
+  interacter: {fileID: 0}
 --- !u!114 &2714541672873312079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3704,7 +3708,6 @@ MonoBehaviour:
   currentSpeed: 0
   jumpPhase: 0
   _currentDirection: {x: 0, y: 0, z: 0}
-  literalVelocity: {x: 0, y: 0, z: 0}
   jumpMarkers: []
 --- !u!114 &2783735533672575433
 MonoBehaviour:
@@ -3734,23 +3737,6 @@ MonoBehaviour:
     animated: 0
   wind: {x: 0, y: 0, z: 0}
   debugDraw: 0
---- !u!114 &4521176707265603731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2950555048310845610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f637f6957bf69f4c94d18114ed17245, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
-  radius: 1.5
-  frontOffset: 2
 --- !u!114 &8350213507187708695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3783,6 +3769,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   events:
     _serializedList: []
+--- !u!114 &1988227033855750315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eff0be652ec44049b5129f56cae9038, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Pools:
+    _serializedList:
+    - Key: GroundSlam
+      Value:
+        prefabObject: {fileID: 5362260789150255817, guid: eede06116798a8b4f84b46c3727f0d64,
+          type: 3}
+        defaultPoolDepth: 1
+        canGrow: 1
+        parent: {fileID: 0}
+        autoDisableTime: 1
+        spawnPoint: {fileID: 802911248559169720}
+        rotate: 0
+        autoSpawnRate: 0
 --- !u!1 &2975349023816060615
 GameObject:
   m_ObjectHideFlags: 0
@@ -7379,6 +7390,12 @@ MonoBehaviour:
         - _Target: {fileID: 1074639858917870420}
           _MemberName: TransitionTo
           _PersistentArguments: []
+    - Key: Interact
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8950658755825157513}
+          _MemberName: TryInteract
+          _PersistentArguments: []
     - Key: Parry
       Value:
         _PersistentCalls:
@@ -8566,6 +8583,100 @@ MonoBehaviour:
   onEnterName: SomersaultWindup
   onEnterTime: 0.2
   animator: {fileID: 0}
+--- !u!1 &6330798485065663893
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2317801469333080837}
+  - component: {fileID: 8950658755825157513}
+  - component: {fileID: 5551334412560319931}
+  - component: {fileID: 3456762118593766446}
+  m_Layer: 6
+  m_Name: InteractSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2317801469333080837
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6330798485065663893}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0.94}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 802911248559169720}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8950658755825157513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6330798485065663893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f637f6957bf69f4c94d18114ed17245, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!135 &5551334412560319931
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6330798485065663893}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &3456762118593766446
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6330798485065663893}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6354224165937590527
 GameObject:
   m_ObjectHideFlags: 0
@@ -9208,7 +9319,7 @@ MonoBehaviour:
     - Key: Interact
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4521176707265603731}
+        - _Target: {fileID: 8950658755825157513}
           _MemberName: TryInteract
           _PersistentArguments: []
   lockReady: 0
@@ -12214,7 +12325,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1688309323495038770
 Transform:
   m_ObjectHideFlags: 0
