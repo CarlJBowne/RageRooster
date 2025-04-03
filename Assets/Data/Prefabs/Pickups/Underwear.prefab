@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2809419660867067653
+--- !u!1 &292819995508324230
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,88 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6075854560825143946}
-  - component: {fileID: 7699538068488894909}
-  - component: {fileID: 632557751662745436}
-  m_Layer: 0
-  m_Name: Underwear
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6075854560825143946
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2809419660867067653}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.60876137, z: 0, w: 0.7933534}
-  m_LocalPosition: {x: -63.194588, y: 0.96589, z: 30.012112}
-  m_LocalScale: {x: 0.32118, y: 0.32118, z: 0.32118}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3061866748758159473}
-  - {fileID: 3633912533412764531}
-  - {fileID: 5257096083644009443}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 75, z: 0}
---- !u!205 &7699538068488894909
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2809419660867067653}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0.04370743, y: -0.2920689, z: -0.035483122}
-  m_Size: 2.800013
-  m_FadeMode: 0
-  m_AnimateCrossFading: 0
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.25
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 2656510182775841277}
-  - screenRelativeHeight: 0.125
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 831890404895393323}
-  - screenRelativeHeight: 0.01
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 8484029715833779348}
-  m_Enabled: 1
---- !u!114 &632557751662745436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2809419660867067653}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bobSpeed: 1
-  bobHeight: 0.5
-  turnSpeed: 1
-  turnAngle: 0
---- !u!1 &3429003967811799286
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3633912533412764531}
-  - component: {fileID: 4594843814390452588}
-  - component: {fileID: 831890404895393323}
+  - component: {fileID: 413452942552258883}
+  - component: {fileID: 4237044284717292044}
+  - component: {fileID: 7131482696939876455}
   m_Layer: 0
   m_Name: Underwear_LOD1
   m_TagString: Untagged
@@ -97,36 +18,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3633912533412764531
+--- !u!4 &413452942552258883
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3429003967811799286}
+  m_GameObject: {fileID: 292819995508324230}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071069, y: 0, z: 0, w: 0.7071067}
   m_LocalPosition: {x: -0, y: -0.000000029802322, z: 0}
   m_LocalScale: {x: 45.350475, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6075854560825143946}
+  m_Father: {fileID: 1518675008632112005}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4594843814390452588
+--- !u!33 &4237044284717292044
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3429003967811799286}
-  m_Mesh: {fileID: 5633664701861033779, guid: 69581f2eabaa58d48b9986d2f004a61f, type: 3}
---- !u!23 &831890404895393323
+  m_GameObject: {fileID: 292819995508324230}
+  m_Mesh: {fileID: 5633664701861033779, guid: 862916b7c77240e4e883ba5ebf6f8f8a, type: 3}
+--- !u!23 &7131482696939876455
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3429003967811799286}
+  m_GameObject: {fileID: 292819995508324230}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -140,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e668931b6f30d384bbdb02836c42a2ef, type: 2}
+  - {fileID: 2100000, guid: 4510c649d51146b47bbb2dd4b22a2ba3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -162,7 +83,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &5741291629912215368
+--- !u!1 &5263696527143162563
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -170,11 +91,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3061866748758159473}
-  - component: {fileID: 4834105312419617550}
-  - component: {fileID: 2656510182775841277}
-  - component: {fileID: 5251761141512577815}
-  - component: {fileID: 2515876816269897584}
+  - component: {fileID: 1864023050669722121}
+  - component: {fileID: 480173370665591934}
+  - component: {fileID: 2202958600041211317}
+  - component: {fileID: 279283819852730161}
+  - component: {fileID: 7985969950402104504}
   m_Layer: 0
   m_Name: Underwear_LOD0
   m_TagString: Untagged
@@ -182,36 +103,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3061866748758159473
+--- !u!4 &1864023050669722121
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5741291629912215368}
+  m_GameObject: {fileID: 5263696527143162563}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071069, y: 0, z: 0, w: 0.7071067}
   m_LocalPosition: {x: -0, y: -0.000000029802322, z: 0}
   m_LocalScale: {x: 45.350475, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6075854560825143946}
+  m_Father: {fileID: 1518675008632112005}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4834105312419617550
+--- !u!33 &480173370665591934
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5741291629912215368}
-  m_Mesh: {fileID: 3283650557602541614, guid: 69581f2eabaa58d48b9986d2f004a61f, type: 3}
---- !u!23 &2656510182775841277
+  m_GameObject: {fileID: 5263696527143162563}
+  m_Mesh: {fileID: 3283650557602541614, guid: 862916b7c77240e4e883ba5ebf6f8f8a, type: 3}
+--- !u!23 &2202958600041211317
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5741291629912215368}
+  m_GameObject: {fileID: 5263696527143162563}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -225,7 +146,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e668931b6f30d384bbdb02836c42a2ef, type: 2}
+  - {fileID: 2100000, guid: 4510c649d51146b47bbb2dd4b22a2ba3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -247,13 +168,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5251761141512577815
+--- !u!135 &279283819852730161
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5741291629912215368}
+  m_GameObject: {fileID: 5263696527143162563}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -266,15 +187,15 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.013990531
-  m_Center: {x: 0.00096400874, y: 0.00035254378, z: -0.0029217738}
---- !u!114 &2515876816269897584
+  m_Radius: 0.017465945
+  m_Center: {x: 0.0009637719, y: 0.0003125857, z: -0.0029217757}
+--- !u!114 &7985969950402104504
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5741291629912215368}
+  m_GameObject: {fileID: 5263696527143162563}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 11a894e3ec5b40c4797aee97ae0dd07b, type: 3}
@@ -285,7 +206,7 @@ MonoBehaviour:
   activateUpgrade: {fileID: 0}
   hintString: 
   addAmount: 1
---- !u!1 &8490100792035960279
+--- !u!1 &6100206365174233328
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -293,9 +214,88 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5257096083644009443}
-  - component: {fileID: 373602781561274095}
-  - component: {fileID: 8484029715833779348}
+  - component: {fileID: 1518675008632112005}
+  - component: {fileID: 6103362908553116836}
+  - component: {fileID: 9030180808722647646}
+  m_Layer: 0
+  m_Name: Underwear
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1518675008632112005
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6100206365174233328}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -62.799778, y: 1.17, z: 29.897}
+  m_LocalScale: {x: 0.4078, y: 0.4078, z: 0.4078}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1864023050669722121}
+  - {fileID: 413452942552258883}
+  - {fileID: 1895546630315585464}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!205 &6103362908553116836
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6100206365174233328}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0.04370743, y: -0.2920689, z: -0.035483122}
+  m_Size: 2.800013
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.25
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 2202958600041211317}
+  - screenRelativeHeight: 0.125
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 7131482696939876455}
+  - screenRelativeHeight: 0.01
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 9173021120778253733}
+  m_Enabled: 1
+--- !u!114 &9030180808722647646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6100206365174233328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 0.5
+  turnSpeed: 1
+  turnAngle: 90
+--- !u!1 &6514254055739071222
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1895546630315585464}
+  - component: {fileID: 7177985154211072984}
+  - component: {fileID: 9173021120778253733}
   m_Layer: 0
   m_Name: Underwear_LOD2
   m_TagString: Untagged
@@ -303,36 +303,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5257096083644009443
+--- !u!4 &1895546630315585464
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8490100792035960279}
+  m_GameObject: {fileID: 6514254055739071222}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071069, y: 0, z: 0, w: 0.7071067}
   m_LocalPosition: {x: -0, y: -0.000000029802322, z: 0}
   m_LocalScale: {x: 45.350475, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6075854560825143946}
+  m_Father: {fileID: 1518675008632112005}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &373602781561274095
+--- !u!33 &7177985154211072984
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8490100792035960279}
-  m_Mesh: {fileID: 5160535360472027643, guid: 69581f2eabaa58d48b9986d2f004a61f, type: 3}
---- !u!23 &8484029715833779348
+  m_GameObject: {fileID: 6514254055739071222}
+  m_Mesh: {fileID: 5160535360472027643, guid: 862916b7c77240e4e883ba5ebf6f8f8a, type: 3}
+--- !u!23 &9173021120778253733
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8490100792035960279}
+  m_GameObject: {fileID: 6514254055739071222}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -346,7 +346,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e668931b6f30d384bbdb02836c42a2ef, type: 2}
+  - {fileID: 2100000, guid: 4510c649d51146b47bbb2dd4b22a2ba3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
