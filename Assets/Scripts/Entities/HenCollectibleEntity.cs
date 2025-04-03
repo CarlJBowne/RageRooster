@@ -6,6 +6,7 @@ public class HenCollectibleEntity : MonoBehaviour, IInteractable
 {
     public WorldChange worldChange;
     public int ammoCount = 1;
+    public GameObject interactablePopup;
 
     bool IInteractable.canInteract => true;
 
@@ -29,4 +30,8 @@ public class HenCollectibleEntity : MonoBehaviour, IInteractable
         gameObject.SetActive(false);
         return true;
     }
+
+    public void ShowHidePopup(bool value)
+    { if (interactablePopup) interactablePopup.SetActive(value); }
+
 }

@@ -34,4 +34,10 @@ public class NPC_Data : ScriptableObject
     }
 
     void WorldChangeFired() => dialogueID++;
+    
+    public void OnConversationFinished()
+    {
+        if (worldChanges.Count > dialogueID && worldChanges[dialogueID] != null)  
+            worldChanges[dialogueID].Enabled = true;
+    }
 }
