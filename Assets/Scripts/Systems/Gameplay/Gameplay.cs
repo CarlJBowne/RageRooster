@@ -49,6 +49,8 @@ public class Gameplay : Singleton<Gameplay>
     {
         if (Gameplay.Active) return;
         GlobalState.activeSaveFile = fileNo;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
     }
 
