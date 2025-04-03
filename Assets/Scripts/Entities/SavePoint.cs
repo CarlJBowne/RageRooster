@@ -8,6 +8,7 @@ public class SavePoint : MonoBehaviour, IInteractable
 {
     public Transform SpawnPoint;
     public UltEvents.UltEvent onSpawnEvent;
+    public GameObject interactablePopup;
 
     bool canInteract = true;
     bool IInteractable.canInteract => canInteract;
@@ -61,4 +62,6 @@ public class SavePoint : MonoBehaviour, IInteractable
         return true;
     }
 
+    public void ShowHidePopup(bool value)
+    {if(interactablePopup) interactablePopup.SetActive(value);}
 }

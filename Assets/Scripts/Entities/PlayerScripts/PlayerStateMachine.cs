@@ -30,6 +30,7 @@ public class PlayerStateMachine : StateMachine
         body = GetComponent<PlayerMovementBody>();
         controller = GetComponent<PlayerController>();
         whenInitializedEvent?.Invoke(this);
+        Gameplay.Get().playerStateMachine = this;
 
         // Initialize the Cinemachine FreeLook camera
         freeLookCamera = FindObjectOfType<CinemachineFreeLook>();
