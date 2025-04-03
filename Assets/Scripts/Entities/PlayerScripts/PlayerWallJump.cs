@@ -45,7 +45,7 @@ public class PlayerWallJump : PlayerMovementEffector
             startPoint = transform.position;
             fixedDirection = hit.normal.XZ();
 
-            playerMovementBody.currentDirection = fixedDirection;
+            playerMovementBody.InstantDirectionChange(fixedDirection);
 
             state.TransitionTo();
             return true;
