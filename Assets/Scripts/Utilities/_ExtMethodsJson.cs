@@ -43,7 +43,7 @@ public static class _ExtMethodsJson
     public static JToken Serialize(this JToken THIS, object OBJ)
     {
         THIS = typeof(ICustomSerialized).IsAssignableFrom(OBJ.GetType()) 
-            ? (OBJ as ICustomSerialized).Serialize() 
+            ? (OBJ as ICustomSerialized).Serialize()
             : JObject.FromObject(OBJ);
         return THIS;
     }

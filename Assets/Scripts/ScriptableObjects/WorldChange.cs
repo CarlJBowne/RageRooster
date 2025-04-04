@@ -38,7 +38,7 @@ public class WorldChange : ScriptableObject, ICustomSerialized
     private void OnEnable() => _enabled = defaultValue;
     private void OnDisable() => _enabled = defaultValue;
 
-    public JToken Serialize()
+    public JToken Serialize(string name = null)
     {
         return new JObject
             (new JProperty("Enabled", _enabled)
