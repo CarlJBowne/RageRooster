@@ -239,7 +239,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -455,7 +465,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -593,7 +613,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -912,7 +942,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
@@ -1088,7 +1128,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 1
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -1288,7 +1338,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -1548,7 +1608,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -1711,11 +1781,53 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
   lockReady: 0
+--- !u!1 &1426614998149336543
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7341979101928341701}
+  m_Layer: 6
+  m_Name: OtherObjects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7341979101928341701
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426614998149336543}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5093901796595999041}
+  m_Father: {fileID: 802911248559169720}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1436899872952049985
 GameObject:
   m_ObjectHideFlags: 0
@@ -2551,7 +2663,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
@@ -2604,7 +2726,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -3115,124 +3247,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4817089252302770646}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2920442566538590574
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 569189176742516144}
-  - component: {fileID: 8237164681896911759}
-  - component: {fileID: 8241362899399846282}
-  m_Layer: 6
-  m_Name: TempLight
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &569189176742516144
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2920442566538590574}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.25, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 802911248559169720}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!108 &8237164681896911759
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2920442566538590574}
-  m_Enabled: 1
-  serializedVersion: 10
-  m_Type: 2
-  m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
-  m_Range: 15
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
---- !u!114 &8241362899399846282
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2920442566538590574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Version: 3
-  m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
-  m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
-  m_LightCookieSize: {x: 1, y: 1}
-  m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 0
 --- !u!1 &2937903117368929439
 GameObject:
   m_ObjectHideFlags: 0
@@ -3280,7 +3294,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -3388,11 +3412,9 @@ Transform:
   - {fileID: 4873779160296736242}
   - {fileID: 2290438708623670232}
   - {fileID: 6163627308343083636}
-  - {fileID: 190071413214983404}
-  - {fileID: 569189176742516144}
   - {fileID: 2317801469333080837}
-  - {fileID: 1688309323495038770}
   - {fileID: 4280192529947532437}
+  - {fileID: 7341979101928341701}
   - {fileID: 545893734947515597}
   - {fileID: 305226081302288313}
   m_Father: {fileID: 0}
@@ -3432,7 +3454,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
@@ -4186,7 +4218,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -4512,7 +4554,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -4947,7 +4999,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -5248,7 +5310,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -5576,37 +5648,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
   m_LocalEulerAnglesHint: {x: 7.016709e-15, y: -111.6179, z: 180}
---- !u!1 &4535199796149963447
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 566572750705179134}
-  m_Layer: 6
-  m_Name: HellcopterVFX
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &566572750705179134
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4535199796149963447}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2559043128292996688}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4568227700120816147
 GameObject:
   m_ObjectHideFlags: 0
@@ -5660,7 +5701,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 1
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -5854,8 +5905,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 566572750705179134}
+  m_Children: []
   m_Father: {fileID: 1261920261987571038}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1615186036512262025
@@ -5872,7 +5922,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 1
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 6567049614807394039}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 14
+        _Int: 0
+        _String: 
+        _X: 1
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -6019,7 +6090,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 1
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -6318,7 +6399,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 6567049614807394039}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 14
+        _Int: 0
+        _String: 
+        _X: 1
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -6521,7 +6623,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
@@ -6643,7 +6755,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 1
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -7029,7 +7151,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1261920261987571038
 Transform:
   m_ObjectHideFlags: 0
@@ -7063,7 +7185,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
@@ -7139,89 +7271,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.96
   m_Center: {x: 0, y: 0.75, z: 0}
---- !u!1 &5467346788979988012
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 190071413214983404}
-  - component: {fileID: 5629114454046026012}
-  - component: {fileID: 1257190444947251994}
-  m_Layer: 6
-  m_Name: NonSolidColl
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &190071413214983404
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5467346788979988012}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 802911248559169720}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &5629114454046026012
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5467346788979988012}
-  m_Material: {fileID: 13400000, guid: fc36616500606bc4b9e11ea6794d44a4, type: 2}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1.68
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.84, z: 0}
---- !u!54 &1257190444947251994
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5467346788979988012}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 8
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
 --- !u!1 &5476920180933388967
 GameObject:
   m_ObjectHideFlags: 0
@@ -7275,7 +7324,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
@@ -7359,7 +7418,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -7926,7 +7995,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -8039,7 +8118,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -8461,7 +8550,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -8599,7 +8698,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -8672,6 +8781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f637f6957bf69f4c94d18114ed17245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  popupTransform: {fileID: 0}
 --- !u!135 &5551334412560319931
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -8866,7 +8976,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -9285,7 +9405,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -9443,7 +9573,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -10273,7 +10413,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -10387,7 +10537,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -10690,7 +10850,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 6567049614807394039}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 14
+        _Int: 0
+        _String: 
+        _X: 1
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -10709,7 +10890,7 @@ MonoBehaviour:
     - Key: AttackHold
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 0}
+        - _Target: {fileID: 1252659914078541581}
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
@@ -10995,7 +11176,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
@@ -11072,7 +11263,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -11273,7 +11474,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -11535,7 +11746,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -11702,7 +11923,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -11815,7 +12046,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -11953,7 +12194,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -12067,7 +12318,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -12243,7 +12504,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -12350,103 +12621,6 @@ Transform:
   - {fileID: 5356928931328244855}
   m_Father: {fileID: 8240657446396116129}
   m_LocalEulerAnglesHint: {x: -18.793995, y: -7.6751814, z: -43.327686}
---- !u!1 &8509128218806431394
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1688309323495038770}
-  - component: {fileID: 4381159357081905340}
-  - component: {fileID: 7499654728650091842}
-  - component: {fileID: 1128744497325904810}
-  m_Layer: 6
-  m_Name: DialogueTrigger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1688309323495038770
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8509128218806431394}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 802911248559169720}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4381159357081905340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8509128218806431394}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94693500ed41d164f8ee2e6ad50d9539, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetGroup: {fileID: 0}
-  dialogueCamera: {fileID: 7790184248895651532}
-  dialogueDof: {fileID: 0}
---- !u!65 &7499654728650091842
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8509128218806431394}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 3, y: 2, z: 3}
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!54 &1128744497325904810
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8509128218806431394}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &8519334009095618754
 GameObject:
   m_ObjectHideFlags: 0
@@ -12653,7 +12827,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -12789,7 +12973,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList:
@@ -12989,3 +13183,108 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2235979652216157829}
   m_LocalEulerAnglesHint: {x: 55.376, y: -81.085, z: -353.598}
+--- !u!1001 &4065715133517577847
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7341979101928341701}
+    m_Modifications:
+    - target: {fileID: 7081382935272620051, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_Name
+      value: FireTornado
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.32118
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.32118
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.32118
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.177
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a6205be8dd92bdc44a77da0e57cf7c6c, type: 3}
+--- !u!4 &5093901796595999041 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+    type: 3}
+  m_PrefabInstance: {fileID: 4065715133517577847}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6567049614807394039 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+    type: 3}
+  m_PrefabInstance: {fileID: 4065715133517577847}
+  m_PrefabAsset: {fileID: 0}

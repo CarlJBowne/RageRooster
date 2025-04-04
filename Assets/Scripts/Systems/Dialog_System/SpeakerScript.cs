@@ -21,8 +21,6 @@ public class SpeakerScript : MonoBehaviour, IInteractable
     public NPC_Data data;
     public DialogueData dialogue;
 
-    public GameObject interactablePopup;
-
     public bool villagerIsTalking;
 
     private TMP_Animated animatedText;
@@ -119,7 +117,6 @@ public class SpeakerScript : MonoBehaviour, IInteractable
             TurnToPlayer(Gameplay.I.player.transform.position);
         }
 
-        ShowHidePopup(false);
         dialogue = data.dialogueList[data.dialogueID];
         onSpeakerActivate?.Invoke();
 
@@ -128,8 +125,6 @@ public class SpeakerScript : MonoBehaviour, IInteractable
 
     public virtual void CheckForNextConversation(int index) => data.OnConversationFinished();
 
-    public void ShowHidePopup(bool value)
-    { if (interactablePopup) interactablePopup.SetActive(value); }
 
-
+    public Vector3 PopupPosition => transform.position + Vector3.up * 3;
 }
