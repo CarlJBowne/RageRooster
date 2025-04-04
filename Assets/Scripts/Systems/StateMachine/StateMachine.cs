@@ -130,6 +130,7 @@ namespace SLS.StateMachineV3
             parent = this;
             active = true;
 
+            if (stateHolder == null) stateHolder = transform.Find("States");
             if (stateHolder.childCount == 0) throw new System.Exception("Stateless State Machines are not supported. If you need to use StateBehaviors on something with only one state, create a dummy state.");
             else SetupChildren(stateHolder);
 
@@ -171,7 +172,6 @@ namespace SLS.StateMachineV3
             for (; i < nextState.lineage.Length - 1; i++)
                 nextState.lineage[i].EnterState(prevState, false);
             currentState = nextState.EnterState(prevState);
-            nextState.onActivatedEvent?.Invoke(prevState);
         }
 
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerMovementBody : PlayerStateBehavior
 {
@@ -117,6 +118,13 @@ public class PlayerMovementBody : PlayerStateBehavior
         }
     }
     public bool isOverVent => _currentVent != null;
+
+    public void InstantDirectionChange(Vector3 target)
+    {
+        if (target.sqrMagnitude == 0) return;
+        currentDirection = target;
+    }
+
 
     #endregion GetSet
 

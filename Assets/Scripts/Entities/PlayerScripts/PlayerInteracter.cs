@@ -8,6 +8,7 @@ using static Input;
 /// </summary>
 public class PlayerInteracter : MonoBehaviour
 {
+    public GameObject popupTransform;
 
     public List<IInteractable> interactablesInFront = new();
 
@@ -24,7 +25,7 @@ public class PlayerInteracter : MonoBehaviour
         if(other.TryGetComponent(out IInteractable foundInteractable))
         {
             interactablesInFront.Add(foundInteractable);
-            foundInteractable.ShowHidePopup(true);
+            UpdateInteractableList();
         }
 
     }
@@ -34,9 +35,22 @@ public class PlayerInteracter : MonoBehaviour
         if(other.TryGetComponent(out IInteractable foundInteractable) && interactablesInFront.Contains(foundInteractable))
         {
             interactablesInFront.Remove(foundInteractable);
-            foundInteractable.ShowHidePopup(false);
+            UpdateInteractableList();
         }
             
+    }
+
+    void UpdateInteractableList()
+    {
+        if (interactablesInFront.Count > 0)
+        {
+            popupTransform.SetActive(true);
+            popupTransform.transform.position = interactablesInFront[0].PopupPosition;
+        }
+        else
+        {
+            popupTransform.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -48,7 +62,7 @@ public class PlayerInteracter : MonoBehaviour
         if (interactablesInFront.Count > 0)
         {
             bool success = interactablesInFront[0].Interact();
-
+            if(success) popupTransform.SetActive(false);
             return success;
         }
         else return false;
