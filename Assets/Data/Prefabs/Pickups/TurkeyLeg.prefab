@@ -94,8 +94,6 @@ GameObject:
   - component: {fileID: 6259272099718422101}
   - component: {fileID: 2418259192868135440}
   - component: {fileID: 6371638505117462104}
-  - component: {fileID: 2109524578234855507}
-  - component: {fileID: 8650920383061631677}
   m_Layer: 0
   m_Name: TurkeyLeg_LOD0
   m_TagString: Untagged
@@ -168,44 +166,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &2109524578234855507
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4254312599102996011}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.029595282
-  m_Center: {x: -0.0000126264085, y: 0.00004648652, z: 0.02912664}
---- !u!114 &8650920383061631677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4254312599102996011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11a894e3ec5b40c4797aee97ae0dd07b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 1
-  upgradeName: 
-  activateUpgrade: {fileID: 0}
-  hintString: 
-  addAmount: 1
 --- !u!1 &5561639133613144884
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,6 +259,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5606007212497238941}
   - component: {fileID: 8366697233241967386}
+  - component: {fileID: 74853775458684264}
+  - component: {fileID: 5190898314146801495}
   m_Layer: 0
   m_Name: TurkeyLeg
   m_TagString: Untagged
@@ -351,3 +313,41 @@ LODGroup:
     renderers:
     - renderer: {fileID: 3411515354109274599}
   m_Enabled: 1
+--- !u!135 &74853775458684264
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7512042923408272611}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 5
+  m_Center: {x: -0.0000126264085, y: 4.5, z: 0.02912664}
+--- !u!114 &5190898314146801495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7512042923408272611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11a894e3ec5b40c4797aee97ae0dd07b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  upgradeName: 
+  activateUpgrade: {fileID: 0}
+  hintString: 
+  addAmount: 1

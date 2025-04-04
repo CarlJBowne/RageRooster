@@ -655,8 +655,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!114 &1347906261071004793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -955,6 +957,7 @@ GameObject:
   - component: {fileID: 8213563936651183793}
   - component: {fileID: 6245664928252330756}
   - component: {fileID: 7948728774536585233}
+  - component: {fileID: 80894613201629132}
   m_Layer: 7
   m_Name: FloatingEnemy1
   m_TagString: Untagged
@@ -972,8 +975,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.99427, z: 0, w: 0.106897525}
   m_LocalPosition: {x: -1.74, y: 8.57, z: 27.53}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7852243841811371456}
   - {fileID: 2417690062393835111}
@@ -1019,12 +1022,21 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
   states:
     _serializedList: []
   _variables:
     variables: []
+  signalReady: 1
+  signalQueueDecay:
+    length: 1
+    current: 0
+    running: 0
+  globalSignals:
+    _serializedList: []
 --- !u!136 &7145112600956375108
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1062,11 +1074,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   damageEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   depleteEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
   immuneTags: []
   health: 0
   stunTime: 0.2
@@ -1079,10 +1089,9 @@ MonoBehaviour:
   minRagdollTime: 2
   maxRagdollTime: 5
   minRagdollVelovity: 0.2
-  projectile: 0
-  hasRagdolled: 0
   respawn: 1
-  respawnTime: 5
+  respawnTime: 30
+  currentState: 0
 --- !u!114 &2862750580442683540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1098,10 +1107,24 @@ MonoBehaviour:
   twoHanded: 0
   weight: 1
   wiggleFreeTime: 0
-  maxHealthToGrab: 0
+  maxHealthToGrab: 5
+  additionalThrowDistance: 0
   GrabStateEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  defaultEvent:
+    _PersistentCalls: []
+  grabbedEvent:
+    _PersistentCalls: []
+  thrownEvent:
+    _PersistentCalls: []
+  bounceEvent:
+    _PersistentCalls: []
+  thrownAttack:
+    amount: 1
+    velocity: {x: 0, y: 0, z: 0}
+    tags:
+    - name: Thrown
+  currentState: 0
 --- !u!54 &8213563936651183793
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1179,6 +1202,22 @@ MonoBehaviour:
     - name: FromPlayer
   sourceEntity: {fileID: 0}
   enabled: 1
+--- !u!114 &80894613201629132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3500639052055708832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6622ea923bdd08a4da89ee61574fa200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bobSpeed: 1
+  bobHeight: 1
+  turnSpeed: 0
+  turnAngle: 90
 --- !u!1 &3561631405416528138
 GameObject:
   m_ObjectHideFlags: 0
@@ -1394,8 +1433,10 @@ MonoBehaviour:
   locked: 0
   separateFromChildren: 0
   onActivatedEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  signals:
+    _serializedList: []
+  lockReady: 0
 --- !u!114 &5462495818761838655
 MonoBehaviour:
   m_ObjectHideFlags: 0
