@@ -6,7 +6,7 @@ public interface ICustomSerialized
     /// Serializes the object into a JToken. (Can be overridden along with its Deserialize Counterpart.)
     /// </summary>
     /// <returns> The Json representation.</returns>
-    public JToken Serialize();
+    public JToken Serialize(string name = null);
     /// <summary>
     /// Deserializes a JToken and populates this object with its data. (Can be overridden along with its Serialize Counterpart.)
     /// </summary>

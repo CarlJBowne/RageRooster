@@ -27,7 +27,7 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
     public void ClearAllOverrides() 
     {foreach (ButtonEntry item in buttons) item.ClearOverrides();}
 
-    public JToken Serialize()=> new JObject(
+    public JToken Serialize(string name = null) => new JObject(
         new JProperty("Jump",       buttons[0].Serialize()),
         new        JProperty("Attack",     buttons[1].Serialize()),
         new        JProperty("Parry",      buttons[2].Serialize()),
@@ -131,7 +131,7 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
             UpdateImages();
         }
 
-        public JToken Serialize() => new JObject(
+        public JToken Serialize(string name = null) => new JObject(
             new JProperty("Gamepad", main.action.GetBindingOverridePath(group: "Gamepad")),
             new JProperty("Keyboard", main.action.GetBindingOverridePath(group: "Keyboard"))
             ); 

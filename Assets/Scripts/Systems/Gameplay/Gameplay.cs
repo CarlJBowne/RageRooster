@@ -16,6 +16,7 @@ public class Gameplay : Singleton<Gameplay>
 {
 
     public GameObject player;
+    public PlayerStateMachine playerStateMachine;
     public Transform cameraTransform;
     public CinemachineVirtualCamera virtualCam;
     public PauseMenu pauseMenu;
@@ -31,6 +32,7 @@ public class Gameplay : Singleton<Gameplay>
     public const string GAMEPLAY_SCENE_NAME = "GameplayScene";
 
     public static GameObject Player => I.player;
+    public static PlayerStateMachine PlayerStateMachine => I.playerStateMachine;
     public static Transform CameraTransform => I.cameraTransform;
     public static CinemachineVirtualCamera VirtualCam => I.virtualCam;
     public static PauseMenu PauseMenu => I.pauseMenu;

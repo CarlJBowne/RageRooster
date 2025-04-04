@@ -1,4 +1,6 @@
-﻿public interface IInteractable
+﻿using UnityEngine;
+
+public interface IInteractable
 {
     public bool Interact()
     {
@@ -7,4 +9,6 @@
     }
     protected bool canInteract { get; }
     protected bool Interaction();
+
+    public Vector3 PopupPosition { get; }
 }

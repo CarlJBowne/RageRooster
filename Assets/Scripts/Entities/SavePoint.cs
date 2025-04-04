@@ -11,7 +11,7 @@ public class SavePoint : MonoBehaviour, IInteractable
 
     bool canInteract = true;
     bool IInteractable.canInteract => canInteract;
-    
+
     public void Checkpoint()
     {
         Gameplay.spawnSceneName = gameObject.scene.name;
@@ -61,4 +61,5 @@ public class SavePoint : MonoBehaviour, IInteractable
         return true;
     }
 
+    public Vector3 PopupPosition => transform.position + Vector3.up * 2;
 }
