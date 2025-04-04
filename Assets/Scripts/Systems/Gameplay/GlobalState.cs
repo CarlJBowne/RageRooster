@@ -55,7 +55,7 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
         worldChanges.Deserialize(Data[nameof(worldChanges)]);
         upgrades.Deserialize(Data[nameof(upgrades)]);
     }
-    public JToken Serialize() => new JObject(
+    public JToken Serialize(string name = null) => new JObject(
         new JProperty("CurrentZone", Gameplay.spawnSceneName),
         new JProperty("SpawnPoint", Gameplay.spawnPointID),
         new JProperty("Time", saveFileTime + (Time.time - lastLoadTime)),
