@@ -19,8 +19,13 @@ public class PlayerGroundedMovement : PlayerMovementEffector
     [ShowField(nameof(__hasPrevPhase))] public float prevPhaseThreshold;
     public PlayerGroundedMovement nextPhase;
     [ShowField(nameof(__hasNextPhase))] public float nextPhaseThreshold;
-    [ShowField(nameof(__hasNextPhase))] public bool needChargeButton;
-    [ShowField(nameof(__hasNextPhase))] public bool needRagingUpgrade;
+    
+    [FoldoutGroup("Conditions", nameof(needs1Charge), nameof(needs2Charge), nameof(needsRagingUpgrade))]
+    public Void lifetimeEventsHolder;
+
+    [SerializeField, HideInInspector] public bool needs1Charge;
+    [SerializeField, HideInInspector] public bool needs2Charge;
+    [SerializeField, HideInInspector] public bool needsRagingUpgrade;
 
     #region Editor
     private bool __hasPrevPhase => prevPhase != null;
@@ -53,10 +58,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         Vector3 controlDirection = control.normalized;
         float controlMag = control.magnitude;
 
-        bool condition = nextPhase != null &&
-                         (!needChargeButton || Input.ChargeTap.IsPressed()) && 
-                         (!needRagingUpgrade || playerController.ragingChargeUpgrade)
-                         ;
+        GetConditionals(out bool thisCondition, out bool nextCondition);
 
         if (controlMag > 0)
         {
@@ -66,21 +68,40 @@ public class PlayerGroundedMovement : PlayerMovementEffector
 
             if (!outwardTurn) currentSpeed *= Dot;
 
-            if (currentSpeed < maxSpeed || (condition && currentSpeed < nextPhase.maxSpeed))
-            {
-                currentSpeed = !condition
-                    ? currentSpeed.MoveUp(controlMag * acceleration * deltaTime, maxSpeed)
-                    : currentSpeed.MoveUp(controlMag * nextPhase.acceleration * deltaTime, nextPhase.maxSpeed);
-            }
+            //This ordering is weird, but important.
+            if (nextCondition && currentSpeed < nextPhase.maxSpeed)
+                currentSpeed = currentSpeed.MoveUp(controlMag * nextPhase.acceleration * deltaTime, nextPhase.maxSpeed);
+
+            else if (!thisCondition)
+                currentSpeed = currentSpeed.MoveDown(decceleration * deltaTime, prevPhase.maxSpeed);
+
+            else if (currentSpeed < maxSpeed)
+                currentSpeed = currentSpeed.MoveUp(controlMag * acceleration * deltaTime, maxSpeed);
+
             else if (currentSpeed > maxSpeed)
-                currentSpeed = currentSpeed.MoveDown((1 - controlMag) * decceleration * deltaTime, maxSpeed);
+                currentSpeed = currentSpeed.MoveDown(decceleration * deltaTime, maxSpeed);
         }
         else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
 
-        if (currentSpeed >= nextPhaseThreshold && nextPhase != null && condition) nextPhase.state.TransitionTo();
+        if (currentSpeed >= nextPhaseThreshold && nextCondition) nextPhase.state.TransitionTo();
         else if (currentSpeed < prevPhaseThreshold && prevPhase != null) prevPhase.state.TransitionTo();
     }
     
+    private void GetConditionals(out bool thisCondition, out bool nextCondition)
+    {
+        thisCondition = 
+            (!needs1Charge || Input.Charge1.IsPressed() || Input.Charge2.IsPressed()) &&      
+            (!needs2Charge || (Input.Charge1.IsPressed() && Input.Charge2.IsPressed())) &&     
+            (!needsRagingUpgrade || playerController.ragingChargeUpgrade)           
+            ;
+
+        nextCondition = nextPhase != null &&
+            (!nextPhase.needs1Charge || Input.Charge1.IsPressed() || Input.Charge2.IsPressed()) &&
+            (!nextPhase.needs2Charge || (Input.Charge1.IsPressed() && Input.Charge2.IsPressed())) &&
+            (!nextPhase.needsRagingUpgrade || playerController.ragingChargeUpgrade)
+            ;
+    }
+
     public override void OnEnter(State prev, bool isFinal){ base.OnEnter(prev, isFinal); if (attackCollider != null) attackCollider.enabled = true;}
     public override void OnExit(State next){if(attackCollider != null) attackCollider.enabled = false;}
 }

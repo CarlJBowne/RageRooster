@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "GrabTap",
+                    "name": "Grab",
                     "type": "Button",
                     "id": "6aca6c86-42d1-46eb-ba71-bf1d7f27a72d",
                     "expectedControlType": "Button",
@@ -60,7 +60,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "ShootMode",
+                    "name": "Aim",
                     "type": "Button",
                     "id": "44cac5cc-1e7a-4e0a-9b11-f2a174e0f97b",
                     "expectedControlType": "Button",
@@ -69,9 +69,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ChargeTap",
+                    "name": "Charge1",
                     "type": "Button",
                     "id": "d89a9dba-9dc2-434e-b13b-db15063013e6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Charge2",
+                    "type": "Button",
+                    "id": "04ec752a-b882-4ca6-a8f5-e18d10486771",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -223,7 +232,7 @@
                     "interactions": "",
                     "processors": "Normalize(max=1)",
                     "groups": "Gamepad",
-                    "action": "GrabTap",
+                    "action": "Grab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -234,7 +243,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "GrabTap",
+                    "action": "Grab",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -245,7 +254,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "ShootMode",
+                    "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -256,7 +265,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "ShootMode",
+                    "action": "Aim",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -267,7 +276,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "ChargeTap",
+                    "action": "Charge1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -278,7 +287,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "ChargeTap",
+                    "action": "Charge1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -389,6 +398,28 @@
                     "processors": "",
                     "groups": "Keyboard",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1b412511-b556-4b34-9905-dea9687ccccd",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Charge2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ecdfa080-da4c-42f1-b1dc-dc4033cc2282",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Charge2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

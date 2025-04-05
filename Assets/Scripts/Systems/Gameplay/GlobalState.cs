@@ -83,7 +83,7 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
 
     public static void DeleteSaveFile(int id)
     {
-        if(File.Exists($"{SaveFilePath}/SaveFile{id}.json")) File.Delete($"{SaveFilePath}/{SaveFileName}.json");
+        if(File.Exists($"{SaveFilePath}/SaveFile{id}.json")) File.Delete($"{SaveFilePath}/SaveFile{id}.json");
     }
 
 }
