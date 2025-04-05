@@ -13,7 +13,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
     public static string SaveFilePath => Application.persistentDataPath;
     public static string SaveFileName => "Config";
 
-    [SerializeField] Image brightnessOverlay;
+    Image brightnessOverlay;
 
     public FloatSetting masterVolume;
     public FloatSetting musicVolume;
@@ -25,6 +25,8 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
     protected override void Awake()
     {
         base.Awake();
+
+        brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
 
         masterVolume.Init(value => { AudioManager.Get().masterVolume = value; });
         musicVolume.Init(value => { AudioManager.Get().musicVolume = value; });
