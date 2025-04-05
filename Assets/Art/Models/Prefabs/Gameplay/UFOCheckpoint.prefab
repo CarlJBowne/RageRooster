@@ -106,6 +106,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8551125152064817582}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 730ca0362a18ee44ba1c8c9adc8961d8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1656374637726071087}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 730ca0362a18ee44ba1c8c9adc8961d8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8754653672247788971}
   m_SourcePrefab: {fileID: 100100000, guid: 730ca0362a18ee44ba1c8c9adc8961d8, type: 3}
 --- !u!1 &1700209257342868396 stripped
 GameObject:
@@ -134,3 +142,48 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-1656374637726071087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700209257342868396}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 2950555048310845610, guid: 355f3506676c06e439e5fd057490efe1,
+    type: 3}
+--- !u!114 &-8754653672247788971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1700209257342868396}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1035595847
+      Data2: 1238545115
+      Data3: 1922496658
+      Data4: -1443086340
+    Path: event:/SFX/Msc./saveUFOIdle
+  Event: 
+  PlayEvent: 1
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
