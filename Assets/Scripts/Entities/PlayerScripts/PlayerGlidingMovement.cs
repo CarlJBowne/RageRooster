@@ -48,7 +48,7 @@ public class PlayerGlidingMovement : PlayerMovementEffector
             result = raiseRate/* * currentVent.transform.up.y*/;
         else result = 0;
 
-        if(!input.jump.IsPressed()) Fall(ref result);
+        if(!Input.Jump.IsPressed()) Fall(ref result);
 
     }
 

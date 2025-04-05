@@ -106,7 +106,7 @@ public class Gameplay : Singleton<Gameplay>
 
         ZoneManager.OnFirstLoad += OnFirstLoad;
 
-        Input.UI.PauseGame.performed += c =>
+        Input.Pause.performed += c =>
         {
             Menu.Manager.Escape();
         };
