@@ -26,14 +26,17 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
     {
         base.Awake();
 
-        brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
-
         masterVolume.Init(value => { AudioManager.Get().masterVolume = value; });
         musicVolume.Init(value => { AudioManager.Get().musicVolume = value; });
         SFXVolume.Init(value => { AudioManager.Get().SFXVolume = value; });
         ambienceVolume.Init(value => { AudioManager.Get().ambienceVolume = value; });
-        brightness.Init(value => { brightnessOverlay.color = new(0, 0, 0, value); });
 
+        if (Overlay.ActiveOverlays.ContainsKey(Overlay.OverlayLayer.OverMenus))
+        {
+            brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
+            brightness.Init(value => { brightnessOverlay.color = new(0, 0, 0, value); });
+        }
+        
         //remap.TargetInput();
         RevertChanges();
     }
