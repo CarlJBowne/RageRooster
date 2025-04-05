@@ -14,7 +14,6 @@ public class PlayerStateMachine : StateMachine
 
     #region Data
     [HideInInspector] public Animator animator;
-    [HideInInspector] public Input input;
     [HideInInspector] public PlayerMovementBody body;
     [HideInInspector] public PlayerController controller;
     public Transform cameraTransform;
@@ -26,10 +25,10 @@ public class PlayerStateMachine : StateMachine
     protected override void Initialize()
     {
         animator = GetComponent<Animator>();
-        input = Input.Get();
         body = GetComponent<PlayerMovementBody>();
         controller = GetComponent<PlayerController>();
         whenInitializedEvent?.Invoke(this);
+        Gameplay.Get().playerStateMachine = this;
 
         // Initialize the Cinemachine FreeLook camera
         freeLookCamera = FindObjectOfType<CinemachineFreeLook>();
@@ -40,7 +39,7 @@ public class PlayerStateMachine : StateMachine
         }
 
         #if UNITY_EDITOR
-        input.asset.Gameplay.DebugActivate.performed += (_) => { DEBUG_MODE_ACTIVE = !DEBUG_MODE_ACTIVE; };
+        Input.Get().Asset.FindAction("DebugActivate").performed += (_) => { DEBUG_MODE_ACTIVE = !DEBUG_MODE_ACTIVE; };
         #endif
     }
 

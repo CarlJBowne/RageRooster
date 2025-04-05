@@ -20,7 +20,7 @@ public class Upgrade : ScriptableObject, ICustomSerialized
     private void OnEnable() => value = defaultValue;
     private void OnDisable() => value = defaultValue;
 
-    public JToken Serialize()
+    public JToken Serialize(string name = null)
         => new JObject
             (new JProperty("Enabled", value)
         );

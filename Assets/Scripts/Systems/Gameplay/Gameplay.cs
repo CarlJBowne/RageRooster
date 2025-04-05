@@ -16,6 +16,7 @@ public class Gameplay : Singleton<Gameplay>
 {
 
     public GameObject player;
+    public PlayerStateMachine playerStateMachine;
     public Transform cameraTransform;
     public CinemachineVirtualCamera virtualCam;
     public PauseMenu pauseMenu;
@@ -31,6 +32,7 @@ public class Gameplay : Singleton<Gameplay>
     public const string GAMEPLAY_SCENE_NAME = "GameplayScene";
 
     public static GameObject Player => I.player;
+    public static PlayerStateMachine PlayerStateMachine => I.playerStateMachine;
     public static Transform CameraTransform => I.cameraTransform;
     public static CinemachineVirtualCamera VirtualCam => I.virtualCam;
     public static PauseMenu PauseMenu => I.pauseMenu;
@@ -48,10 +50,19 @@ public class Gameplay : Singleton<Gameplay>
     public static void BeginMainMenu(int fileNo)
     {
         if (Gameplay.Active) return;
-        GlobalState.activeSaveFile = fileNo;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
+
+        Overlay.OverMenus.StartCoroutine(Enum()); 
+        IEnumerator Enum()
+        {
+            Overlay.OverMenus.BasicFadeOut();
+            yield return WaitFor.SecondsRealtime(1f);
+
+            GlobalState.activeSaveFile = fileNo;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
+            Overlay.OverMenus.BasicFadeIn();
+        }
     }
 
     /// <summary>
@@ -104,7 +115,7 @@ public class Gameplay : Singleton<Gameplay>
 
         ZoneManager.OnFirstLoad += OnFirstLoad;
 
-        Input.UI.PauseGame.performed += c =>
+        Input.Pause.performed += c =>
         {
             Menu.Manager.Escape();
         };

@@ -39,7 +39,7 @@ public class ScriptableCollection : ScriptableObject, ICustomSerialized
 
     public List<T> Cast<T>() where T : ScriptableObject => List.Cast<T>().ToList();
 
-    public JToken Serialize()
+    public JToken Serialize(string name = null)
     {
         return new JObject(
                 new JProperty(nameof(selectedType), selectedType),

@@ -222,7 +222,7 @@ public class PlayerRanged : MonoBehaviour
 
     public void AimingFixedUpdate()
     {
-        if (machine.signalReady && !Input.ShootMode.IsPressed()) ExitAiming(idleState);
+        if (machine.signalReady && !Input.Aim.IsPressed()) ExitAiming(idleState);
 
         body.currentDirection = Vector3.RotateTowards(
             body.currentDirection, pointer.startH.forward, 

@@ -4,7 +4,6 @@ using SLS.StateMachineV3;
 public abstract class PlayerStateBehavior : StateBehavior
 {
     [HideInInspector] public new PlayerStateMachine Machine;
-    [HideInInspector] public Input input;
     [HideInInspector] public PlayerMovementBody playerMovementBody;
     [HideInInspector] public PlayerController playerController;
     
@@ -12,7 +11,6 @@ public abstract class PlayerStateBehavior : StateBehavior
     protected override void Initialize()
     {
         Machine = base.Machine as PlayerStateMachine;
-        input = Machine.input;
         playerMovementBody = Machine.body;
         playerController = Machine.controller;
     }

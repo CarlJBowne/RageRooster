@@ -1016,7 +1016,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
@@ -1662,7 +1672,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
@@ -4129,8 +4149,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6170474229887068360}
   - component: {fileID: 3581232340763009195}
-  - component: {fileID: 2577799525791025946}
   - component: {fileID: 97701640159672629}
+  - component: {fileID: 1945227566797940320}
   m_Layer: 7
   m_Name: Patrolling
   m_TagString: Untagged
@@ -4167,30 +4187,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
   lockReady: 0
---- !u!114 &2577799525791025946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3675853143938587536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfb541753f28ad94683e9afd766e8368, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 3.5
-  path:
-  - {x: -11.5, y: 4.44, z: 16}
-  - {x: 0.5, y: 4.44, z: 16}
-  - {x: 0.5, y: 4.44, z: 33}
-  - {x: -11.5, y: 4.44, z: 33}
-  distanceToProceed: 0.5
 --- !u!114 &97701640159672629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4207,6 +4218,22 @@ MonoBehaviour:
   onEnterName: Walking
   onEnterTime: 0.2
   animator: {fileID: 0}
+--- !u!114 &1945227566797940320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3675853143938587536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f48ebe23d2fdabd4e93d7ae992c7aa05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3.5
+  minWalkDistance: 5
+  maxWalkDistance: 15
+  distanceToProceed: 0.25
 --- !u!1 &3761557559425741465
 GameObject:
   m_ObjectHideFlags: 0
@@ -5417,7 +5444,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []

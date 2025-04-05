@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EditorAttributes;
 using UnityEngine.UI;
+using System;
 
 public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
 {
@@ -12,71 +13,32 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
     public static string SaveFilePath => Application.persistentDataPath;
     public static string SaveFileName => "Config";
 
-    // Sliders for adjusting volume levels
-    [SerializeField] Slider masterSlider;
-    [SerializeField] Slider musicSlider;
-    [SerializeField] Slider SFXSlider;
-    [SerializeField] Slider AmbSlider;
+    Image brightnessOverlay;
 
-    // Current volume levels
-    [SerializeField, DisableInEditMode, DisableInPlayMode] float currentMasterVolume;
-    [SerializeField, DisableInEditMode, DisableInPlayMode] float currentMusicVolume;
-    [SerializeField, DisableInEditMode, DisableInPlayMode] float currentSFXVolume;
-    [SerializeField, DisableInEditMode, DisableInPlayMode] float currentAmbienceVolume;
+    public FloatSetting masterVolume;
+    public FloatSetting musicVolume;
+    public FloatSetting SFXVolume;
+    public FloatSetting ambienceVolume;
+    public FloatSetting brightness;
 
     // Initializes the menu and reverts any changes
     protected override void Awake()
     {
         base.Awake();
 
-        masterSlider.minValue = 0f;
-        masterSlider.maxValue = 1f;
-        masterSlider.value = 0.5f;
+        masterVolume.Init(value => { AudioManager.Get().masterVolume = value; });
+        musicVolume.Init(value => { AudioManager.Get().musicVolume = value; });
+        SFXVolume.Init(value => { AudioManager.Get().SFXVolume = value; });
+        ambienceVolume.Init(value => { AudioManager.Get().ambienceVolume = value; });
 
-        musicSlider.minValue = 0f;
-        musicSlider.maxValue = 1f;
-        musicSlider.value = 0.5f;
-
-        SFXSlider.minValue = 0f;
-        SFXSlider.maxValue = 1f;
-        SFXSlider.value = 0.5f;
-
-        AmbSlider.minValue = 0f;
-        AmbSlider.maxValue = 1f;
-        AmbSlider.value = 0.5f;
-
-        remap.TargetInput();
+        if (Overlay.ActiveOverlays.ContainsKey(Overlay.OverlayLayer.OverMenus))
+        {
+            brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
+            brightness.Init(value => { brightnessOverlay.color = new(0, 0, 0, value); });
+        }
+        
+        //remap.TargetInput();
         RevertChanges();
-    }
-
-    // Sets the master volume to the specified input value
-    public void SetMaster(float input)
-    {
-        currentMasterVolume = input;
-        AudioManager.Get().masterVolume = input;
-    }
-
-    // Sets the music volume to the specified input value
-    public void SetMusic(float input)
-    {
-        currentMusicVolume = input;
-        AudioManager.Get().musicVolume = input;
-        //if (AudioManager.Get().musicEventInstance.isValid())
-        //    AudioManager.Get().musicEventInstance.setVolume(input);
-    }
-
-    // Sets the sound effects (SFX) volume to the specified input value
-    public void SetSFX(float input)
-    {
-        currentSFXVolume = input;
-        AudioManager.Get().SFXVolume = input;
-    }
-
-    // Sets the ambience volume to the specified input value
-    public void SetAmbience(float input)
-    {
-        currentAmbienceVolume = input;
-        AudioManager.Get().ambienceVolume = input;
     }
 
     // Confirms the changes made to the settings and saves them to a file
@@ -94,30 +56,58 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
         if (loadAttempt != null) Deserialize(loadAttempt);
         remap.UpdateAllIcons();
 
-        masterSlider.value = currentMasterVolume;
-        musicSlider.value = currentMusicVolume;
-        SFXSlider.value = currentSFXVolume;
-        AmbSlider.value = currentAmbienceVolume;
-
         TrueClose();
     }
 
     // Serializes the current settings into a JSON token
-    public JToken Serialize() => new JObject(
-        new JProperty("V_Master", currentMasterVolume),
-        new JProperty("V_Music", currentMusicVolume),
-        new JProperty("V_SFX", currentSFXVolume),
-        new JProperty("V_Amb", currentAmbienceVolume),
+    public JToken Serialize(string name = null) => new JObject(
+        masterVolume.Serialize("V_Master"), 
+        musicVolume.Serialize("V_Music"),
+        SFXVolume.Serialize("V_SFX"),
+        ambienceVolume.Serialize("V_Amb"),
+        brightness.Serialize("G_Brightness"),
         new JProperty("Controls", remap.Serialize())
         );
 
     // Deserializes the settings from a JSON token and applies them
     public void Deserialize(JToken Data)
     {
-        SetMaster(Data["V_Master"].As<float>());
-        SetMusic(Data["V_Music"].As<float>());
-        SetSFX(Data["V_SFX"].As<float>());
-        SetAmbience(Data["V_Amb"].As<float>());
+        masterVolume.Deserialize(Data["V_Master"]);
+        musicVolume.Deserialize(Data["V_Music"]);
+        SFXVolume.Deserialize(Data["V_SFX"]);
+        ambienceVolume.Deserialize(Data["V_Amb"]);
+        if (Data["G_Brightness"] != null) brightness.Deserialize(Data["G_Brightness"]);
+
         remap.Deserialize(Data["Controls"]);
+    }
+
+    [System.Serializable]
+    public class FloatSetting : ICustomSerialized
+    {
+        public Slider UISlider;
+        public float defaultValue;
+        public float currentValue { get; private set; }
+        public float minValue;
+        public float maxValue;
+        public Action<float> ChangeAction;
+
+        public void Init(Action<float> changeAction)
+        {
+            UISlider.maxValue = maxValue;
+            UISlider.minValue = minValue;
+            UISlider.onValueChanged.AddListener(Set);
+            ChangeAction = changeAction;
+            Set(defaultValue);
+        }
+
+        public void Set(float value)
+        {
+            currentValue = Mathf.Clamp(value, minValue, maxValue);
+            UISlider.value = currentValue;
+            ChangeAction?.Invoke(value);
+        }
+
+        public JToken Serialize(string name = null) => new JProperty(name, currentValue);
+        public void Deserialize(JToken Data) => Set(Data.As<float>());
     }
 }
