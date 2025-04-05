@@ -63,7 +63,7 @@ Transform:
   m_Children:
   - {fileID: 607292570192004129}
   m_Father: {fileID: 1858017805129491221}
-  m_LocalEulerAnglesHint: {x: -5.781255, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 34.665108, y: 0, z: 0}
 --- !u!1 &214909014890575270
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,7 +126,7 @@ Transform:
   m_Children:
   - {fileID: 4966123876549837000}
   m_Father: {fileID: 1858017805129491221}
-  m_LocalEulerAnglesHint: {x: -17.34376, y: 0.0000017888815, z: 71.345924}
+  m_LocalEulerAnglesHint: {x: 76.004684, y: -179.99998, z: -175.75172}
 --- !u!1 &400420858113421900
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,7 +158,7 @@ Transform:
   m_Children:
   - {fileID: 4050914387091275796}
   m_Father: {fileID: 167776559115597949}
-  m_LocalEulerAnglesHint: {x: 1.6726309, y: 4.6807585, z: -14.817927}
+  m_LocalEulerAnglesHint: {x: -13.539022, y: -66.35264, z: -6.3042784}
 --- !u!1 &459786801788715542
 GameObject:
   m_ObjectHideFlags: 0
@@ -190,7 +190,7 @@ Transform:
   m_Children:
   - {fileID: 8939347847130576805}
   m_Father: {fileID: 7800904279591170895}
-  m_LocalEulerAnglesHint: {x: 0.07091104, y: 0.8439548, z: -6.7746587}
+  m_LocalEulerAnglesHint: {x: -6.4195867, y: -71.03013, z: -2.1701717}
 --- !u!1 &469540947907413664
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,13 +265,7 @@ MonoBehaviour:
         - _Target: {fileID: 1252659914078541581}
           _MemberName: TransitionTo
           _PersistentArguments: []
-    - Key: GrabHold
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3864174957687219544}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: GrabTap
+    - Key: Grab
       Value:
         _PersistentCalls:
         - _Target: {fileID: 3864174957687219544}
@@ -516,13 +510,7 @@ MonoBehaviour:
         - _Target: {fileID: 3443062856187106688}
           _MemberName: TransitionTo
           _PersistentArguments: []
-    - Key: GrabHold
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2690473538302802805}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: GrabTap
+    - Key: Grab
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2690473538302802805}
@@ -893,7 +881,7 @@ Transform:
   m_Children:
   - {fileID: 6248451968428804049}
   m_Father: {fileID: 1336325588524243921}
-  m_LocalEulerAnglesHint: {x: 11.852031, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 17.215801, y: 0, z: 0}
 --- !u!1 &1022511735685379741
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,7 +912,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 3.3152418, y: 0, z: 0}
 --- !u!1 &1049869934697765793
 GameObject:
   m_ObjectHideFlags: 0
@@ -1175,19 +1163,13 @@ MonoBehaviour:
     _PersistentCalls: []
   signals:
     _serializedList:
-    - Key: ChargeHold
+    - Key: Charge
       Value:
         _PersistentCalls:
         - _Target: {fileID: 8937721864928111967}
           _MemberName: TransitionTo
           _PersistentArguments: []
-    - Key: ChargeTap
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8937721864928111967}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: GrabTap
+    - Key: Grab
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
@@ -1204,29 +1186,6 @@ MonoBehaviour:
             _Object: {fileID: 1181195091599698405}
           - _Type: 1
             _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-    - Key: GrabHold
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 1181195091599698405}
-          - _Type: 1
-            _Int: 1
             _String: 
             _X: 0
             _Y: 0
@@ -1359,7 +1318,7 @@ Transform:
   - {fileID: 8240657446396116129}
   - {fileID: 3858517113413183086}
   m_Father: {fileID: 1495339210815947155}
-  m_LocalEulerAnglesHint: {x: -8.195, y: 32.132, z: -24.692}
+  m_LocalEulerAnglesHint: {x: 7.581908, y: -17.97401, z: -65.033844}
 --- !u!1 &1242553937887867047
 GameObject:
   m_ObjectHideFlags: 0
@@ -1520,7 +1479,7 @@ Transform:
   m_Children:
   - {fileID: 3408567397223948204}
   m_Father: {fileID: 5735276715730193203}
-  m_LocalEulerAnglesHint: {x: -0.35313702, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 12.387572, y: 0, z: 0}
 --- !u!1 &1296871140194544751
 GameObject:
   m_ObjectHideFlags: 0
@@ -1798,7 +1757,7 @@ Transform:
   m_Children:
   - {fileID: 7797816273129980962}
   m_Father: {fileID: 9001384091169506472}
-  m_LocalEulerAnglesHint: {x: 0.8608607, y: 5.1527414, z: 5.977095}
+  m_LocalEulerAnglesHint: {x: 5.950311, y: -66.838646, z: 1.0303785}
 --- !u!1 &1384332073924865152
 GameObject:
   m_ObjectHideFlags: 0
@@ -1895,6 +1854,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5093901796595999041}
+  - {fileID: 7813964689064752061}
   m_Father: {fileID: 802911248559169720}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1436899872952049985
@@ -1928,7 +1888,7 @@ Transform:
   m_Children:
   - {fileID: 117627124187634055}
   m_Father: {fileID: 623109168336613573}
-  m_LocalEulerAnglesHint: {x: -0.46870014, y: -2.5174482, z: 3.924854}
+  m_LocalEulerAnglesHint: {x: 3.5872223, y: -74.449356, z: 1.6611001}
 --- !u!1 &1538063396066996421
 GameObject:
   m_ObjectHideFlags: 0
@@ -2084,7 +2044,7 @@ Transform:
   m_Children:
   - {fileID: 803023330293522026}
   m_Father: {fileID: 3167158787834191802}
-  m_LocalEulerAnglesHint: {x: -0.55908245, y: -19.9193, z: -3.2687404}
+  m_LocalEulerAnglesHint: {x: -3.2814808, y: -91.92154, z: -0.47858006}
 --- !u!1 &1838506262058880858
 GameObject:
   m_ObjectHideFlags: 0
@@ -2279,7 +2239,7 @@ Transform:
   - {fileID: 1858017805129491221}
   - {fileID: 2680535561233752795}
   m_Father: {fileID: 802911248559169720}
-  m_LocalEulerAnglesHint: {x: 1.0418746, y: -89.42543, z: -92.35713}
+  m_LocalEulerAnglesHint: {x: -0, y: -90, z: -153.38638}
 --- !u!114 &1743517778221320810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2469,7 +2429,7 @@ Transform:
   - {fileID: 4526751030249330902}
   - {fileID: 9182058685849620617}
   m_Father: {fileID: 5771110087808811478}
-  m_LocalEulerAnglesHint: {x: -5.539376e-32, y: 2.7904499e-31, z: -9.279344}
+  m_LocalEulerAnglesHint: {x: -1.0010616, y: 10.495484, z: 63.214325}
 --- !u!1 &1962748867875158061
 GameObject:
   m_ObjectHideFlags: 0
@@ -2674,7 +2634,7 @@ Transform:
   m_Children:
   - {fileID: 966123755836798842}
   m_Father: {fileID: 176165724537986964}
-  m_LocalEulerAnglesHint: {x: -0.55908096, y: -19.9193, z: -3.2687404}
+  m_LocalEulerAnglesHint: {x: -3.2814806, y: -91.92154, z: -0.4785818}
 --- !u!1 &2354280182447277193
 GameObject:
   m_ObjectHideFlags: 0
@@ -2815,7 +2775,7 @@ MonoBehaviour:
         - _Target: {fileID: 1371118413310184343}
           _MemberName: MidJumpJumpAction
           _PersistentArguments: []
-    - Key: GrabTap
+    - Key: Grab
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
@@ -2838,36 +2798,7 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-    - Key: GrabHold
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 1181195091599698405}
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-    - Key: ChargeTap
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8937721864928111967}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: ChargeHold
+    - Key: Charge
       Value:
         _PersistentCalls:
         - _Target: {fileID: 8937721864928111967}
@@ -3189,7 +3120,7 @@ Transform:
   m_Children:
   - {fileID: 2996069801756204323}
   m_Father: {fileID: 1991288485900147151}
-  m_LocalEulerAnglesHint: {x: 1.6726317, y: 4.6807594, z: -14.817927}
+  m_LocalEulerAnglesHint: {x: -13.539022, y: -66.35264, z: -6.3042784}
 --- !u!1 &2660924070909395955
 GameObject:
   m_ObjectHideFlags: 0
@@ -3221,7 +3152,7 @@ Transform:
   m_Children:
   - {fileID: 1336325588524243921}
   m_Father: {fileID: 5779348743443458172}
-  m_LocalEulerAnglesHint: {x: -11.861, y: 94.083, z: -179.7}
+  m_LocalEulerAnglesHint: {x: -41.58595, y: 78.58201, z: -152.46214}
 --- !u!1 &2773190596053569390
 GameObject:
   m_ObjectHideFlags: 0
@@ -3253,7 +3184,7 @@ Transform:
   m_Children:
   - {fileID: 1792655390282577440}
   m_Father: {fileID: 3493459175929092484}
-  m_LocalEulerAnglesHint: {x: 1.9352915, y: 2.353553, z: -0.07448695}
+  m_LocalEulerAnglesHint: {x: 0.52713084, y: -69.653755, z: -1.8636336}
 --- !u!1 &2863929371712086765
 GameObject:
   m_ObjectHideFlags: 0
@@ -3926,7 +3857,7 @@ Transform:
   m_Children:
   - {fileID: 8595673336906404351}
   m_Father: {fileID: 2235979652216157829}
-  m_LocalEulerAnglesHint: {x: 8.786878, y: -6.5978703, z: 43.78186}
+  m_LocalEulerAnglesHint: {x: 44.22932, y: -79.98488, z: 5.2865505}
 --- !u!1 &3015113785128034345
 GameObject:
   m_ObjectHideFlags: 0
@@ -4048,7 +3979,7 @@ Transform:
   m_Children:
   - {fileID: 649473815463013265}
   m_Father: {fileID: 6711681285055233071}
-  m_LocalEulerAnglesHint: {x: 0.8608591, y: 5.152743, z: 5.977095}
+  m_LocalEulerAnglesHint: {x: 5.95031, y: -66.838646, z: 1.03038}
 --- !u!1 &3142001384897984004
 GameObject:
   m_ObjectHideFlags: 0
@@ -4143,7 +4074,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3183256197336686995}
-  m_LocalEulerAnglesHint: {x: -0.35313702, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 12.387572, y: 0, z: 0}
 --- !u!1 &3192652428292773103
 GameObject:
   m_ObjectHideFlags: 0
@@ -4238,7 +4169,7 @@ Transform:
   m_Children:
   - {fileID: 3834352168240870593}
   m_Father: {fileID: 5303980009881695466}
-  m_LocalEulerAnglesHint: {x: 1.93529, y: 2.3535542, z: -0.07448691}
+  m_LocalEulerAnglesHint: {x: 0.5271301, y: -69.653755, z: -1.8636326}
 --- !u!1 &3244875344704272238
 GameObject:
   m_ObjectHideFlags: 0
@@ -4313,13 +4244,7 @@ MonoBehaviour:
         - _Target: {fileID: 3443062856187106688}
           _MemberName: TransitionTo
           _PersistentArguments: []
-    - Key: GrabHold
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2690473538302802805}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: GrabTap
+    - Key: Grab
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2690473538302802805}
@@ -4479,7 +4404,7 @@ Transform:
   m_Children:
   - {fileID: 1973264757699722387}
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0.00000004860525, y: -9.931691, z: -0.000000008961783}
+  m_LocalEulerAnglesHint: {x: 0, y: -9.931691, z: 0}
 --- !u!1 &3452394626786213421
 GameObject:
   m_ObjectHideFlags: 0
@@ -4512,7 +4437,7 @@ Transform:
   - {fileID: 4979379062830307293}
   - {fileID: 5788834958485409761}
   m_Father: {fileID: 2290438708623670232}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.00000053879586}
+  m_LocalEulerAnglesHint: {x: -0, y: 0, z: -8.848264}
 --- !u!1 &3474216825182463027
 GameObject:
   m_ObjectHideFlags: 0
@@ -4543,7 +4468,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7868241083879984591}
-  m_LocalEulerAnglesHint: {x: -5.781255, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 34.665108, y: 0, z: 0}
 --- !u!1 &3510662445348264541
 GameObject:
   m_ObjectHideFlags: 0
@@ -4637,13 +4562,7 @@ MonoBehaviour:
     _PersistentCalls: []
   signals:
     _serializedList:
-    - Key: ChargeTap
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8937721864928111967}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: ChargeHold
+    - Key: Charge
       Value:
         _PersistentCalls:
         - _Target: {fileID: 8937721864928111967}
@@ -4766,7 +4685,7 @@ Transform:
   m_Children:
   - {fileID: 4777414735926822176}
   m_Father: {fileID: 8595673336906404351}
-  m_LocalEulerAnglesHint: {x: -2.2266035, y: -2.6504076, z: 4.5886545}
+  m_LocalEulerAnglesHint: {x: 3.6707404, y: -74.44765, z: 3.541998}
 --- !u!1 &3730508859436989519
 GameObject:
   m_ObjectHideFlags: 0
@@ -4860,7 +4779,7 @@ Transform:
   m_Children:
   - {fileID: 3493459175929092484}
   m_Father: {fileID: 1843710722454031686}
-  m_LocalEulerAnglesHint: {x: 19.569395, y: 40.155674, z: 78.28977}
+  m_LocalEulerAnglesHint: {x: 78.80542, y: -55.98207, z: -9.920764}
 --- !u!1 &3871232000662767217
 GameObject:
   m_ObjectHideFlags: 0
@@ -4892,7 +4811,7 @@ Transform:
   m_Children:
   - {fileID: 6160283659054376205}
   m_Father: {fileID: 5771110087808811478}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -10.253635}
+  m_LocalEulerAnglesHint: {x: 2.5663366, y: 6.269458, z: 26.042274}
 --- !u!1 &3891853534095089435
 GameObject:
   m_ObjectHideFlags: 0
@@ -4924,7 +4843,7 @@ Transform:
   m_Children:
   - {fileID: 7800904279591170895}
   m_Father: {fileID: 2235979652216157829}
-  m_LocalEulerAnglesHint: {x: -44.40681, y: -22.24763, z: 35.137707}
+  m_LocalEulerAnglesHint: {x: -34.3993, y: -31.115078, z: 27.066032}
 --- !u!1 &3961416142194591544
 GameObject:
   m_ObjectHideFlags: 0
@@ -4987,7 +4906,7 @@ Transform:
   m_Children:
   - {fileID: 5499737714371279999}
   m_Father: {fileID: 7214892127163713643}
-  m_LocalEulerAnglesHint: {x: -0.88061804, y: -12.638891, z: 1.0327294}
+  m_LocalEulerAnglesHint: {x: 0.70991737, y: -84.62379, z: 1.1567279}
 --- !u!1 &4050727503730904888
 GameObject:
   m_ObjectHideFlags: 0
@@ -5019,7 +4938,7 @@ Transform:
   m_Children:
   - {fileID: 3873723486330190406}
   m_Father: {fileID: 4587243299707619477}
-  m_LocalEulerAnglesHint: {x: 4.903952, y: 11.416547, z: 10.925509}
+  m_LocalEulerAnglesHint: {x: -1.7617614, y: -0.44493505, z: -1.0990969}
 --- !u!1 &4124917820233702332
 GameObject:
   m_ObjectHideFlags: 0
@@ -5082,13 +5001,7 @@ MonoBehaviour:
     _PersistentCalls: []
   signals:
     _serializedList:
-    - Key: ChargeTap
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8937721864928111967}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: ChargeHold
+    - Key: Charge
       Value:
         _PersistentCalls:
         - _Target: {fileID: 8937721864928111967}
@@ -5213,7 +5126,7 @@ Transform:
   - {fileID: 362155934586423713}
   - {fileID: 1495339210815947155}
   m_Father: {fileID: 5788834958485409761}
-  m_LocalEulerAnglesHint: {x: -1.8343145e-30, y: 1.0602238e-30, z: -29.136448}
+  m_LocalEulerAnglesHint: {x: -4.0646987, y: -12.608905, z: -43.954094}
 --- !u!1 &4227211285194161474
 GameObject:
   m_ObjectHideFlags: 0
@@ -5386,7 +5299,18 @@ MonoBehaviour:
   onExitEvent:
     _PersistentCalls: []
   onActiveChangeEvent:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 8206459135731414027}
+      _MemberName: SetActive
+      _PersistentArguments:
+      - _Type: 14
+        _Int: 0
+        _String: 
+        _X: 1
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
   onUpdateEvent:
     _PersistentCalls: []
   onFixedUpdateEvent:
@@ -5405,7 +5329,7 @@ MonoBehaviour:
         - _Target: {fileID: 7788667647418580513}
           _MemberName: TransitionTo
           _PersistentArguments: []
-    - Key: GrabTap
+    - Key: Grab
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
@@ -5428,29 +5352,12 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-    - Key: GrabHold
+    - Key: WalkOff
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 5639727482222500743}
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
+        - _Target: {fileID: 8736705224105400998}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
     - Key: Bonk
       Value:
         _PersistentCalls:
@@ -5474,19 +5381,20 @@ MonoBehaviour:
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   trueActive: 0
-  acceleration: 0.35
+  acceleration: 0.07
   decceleration: 0.5
-  maxSpeed: 30
+  maxSpeed: 25
   stopping: 0.15
   maxTurnSpeed: 2.5
   outwardTurn: 1
   minSpeed: 0
   prevPhase: {fileID: 4244649889381608096}
-  prevPhaseThreshold: 15
+  prevPhaseThreshold: 23
   nextPhase: {fileID: 0}
   nextPhaseThreshold: 25
-  needChargeButton: 0
-  needRagingUpgrade: 0
+  needs1Charge: 1
+  needs2Charge: 1
+  needsRagingUpgrade: 1
 --- !u!135 &675394232343518501
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5619,7 +5527,7 @@ Transform:
   m_Children:
   - {fileID: 5899751091713101155}
   m_Father: {fileID: 1013759457902555881}
-  m_LocalEulerAnglesHint: {x: 10.35361, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 19.332527, y: 0, z: 0}
 --- !u!1 &4472181365031472309
 GameObject:
   m_ObjectHideFlags: 0
@@ -5784,19 +5692,13 @@ MonoBehaviour:
     _PersistentCalls: []
   signals:
     _serializedList:
-    - Key: ChargeHold
+    - Key: Charge
       Value:
         _PersistentCalls:
         - _Target: {fileID: 8937721864928111967}
           _MemberName: TransitionTo
           _PersistentArguments: []
-    - Key: ChargeTap
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8937721864928111967}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: GrabTap
+    - Key: Grab
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
@@ -5813,29 +5715,6 @@ MonoBehaviour:
             _Object: {fileID: 1181195091599698405}
           - _Type: 1
             _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-    - Key: GrabHold
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 1181195091599698405}
-          - _Type: 1
-            _Int: 1
             _String: 
             _X: 0
             _Y: 0
@@ -5978,7 +5857,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1262491231416579091}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -10.253634}
+  m_LocalEulerAnglesHint: {x: 2.3725066, y: 7.1629386, z: 25.839561}
 --- !u!1 &4673781514129227438
 GameObject:
   m_ObjectHideFlags: 0
@@ -6209,13 +6088,7 @@ MonoBehaviour:
     _PersistentCalls: []
   signals:
     _serializedList:
-    - Key: ChargeHold
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8937721864928111967}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: ChargeTap
+    - Key: Charge
       Value:
         _PersistentCalls:
         - _Target: {fileID: 8937721864928111967}
@@ -6643,7 +6516,7 @@ Transform:
   m_Children:
   - {fileID: 5001198678599861603}
   m_Father: {fileID: 7021510372728876682}
-  m_LocalEulerAnglesHint: {x: 0.07091098, y: 0.8439543, z: -6.7746587}
+  m_LocalEulerAnglesHint: {x: -6.4195867, y: -71.03013, z: -2.1701717}
 --- !u!1 &5165479597960252976
 GameObject:
   m_ObjectHideFlags: 0
@@ -6675,7 +6548,7 @@ Transform:
   m_Children:
   - {fileID: 5303980009881695466}
   m_Father: {fileID: 2235979652216157829}
-  m_LocalEulerAnglesHint: {x: 19.569399, y: 40.155674, z: 78.28977}
+  m_LocalEulerAnglesHint: {x: 78.80542, y: -55.982094, z: -9.920777}
 --- !u!1 &5240960325302126777
 GameObject:
   m_ObjectHideFlags: 0
@@ -6910,7 +6783,7 @@ MonoBehaviour:
         - _Target: {fileID: 1252659914078541581}
           _MemberName: TransitionTo
           _PersistentArguments: []
-    - Key: GrabTap
+    - Key: Grab
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
@@ -6927,29 +6800,6 @@ MonoBehaviour:
             _Object: {fileID: 1181195091599698405}
           - _Type: 1
             _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-    - Key: GrabHold
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 1181195091599698405}
-          - _Type: 1
-            _Int: 0
             _String: 
             _X: 0
             _Y: 0
@@ -7505,7 +7355,7 @@ Transform:
   m_Children:
   - {fileID: 3073134984744117967}
   m_Father: {fileID: 5752581404150150080}
-  m_LocalEulerAnglesHint: {x: -2.2828937, y: 0.18608733, z: -116.20804}
+  m_LocalEulerAnglesHint: {x: 0.894612, y: 2.258271, z: -96.85379}
 --- !u!1 &5527142845277668158
 GameObject:
   m_ObjectHideFlags: 0
@@ -7585,7 +7435,7 @@ MonoBehaviour:
         - _Target: {fileID: 7788667647418580513}
           _MemberName: TransitionTo
           _PersistentArguments: []
-    - Key: GrabTap
+    - Key: Grab
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
@@ -7602,29 +7452,6 @@ MonoBehaviour:
             _Object: {fileID: 4975428428768240672}
           - _Type: 1
             _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-    - Key: GrabHold
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 4975428428768240672}
-          - _Type: 1
-            _Int: 1
             _String: 
             _X: 0
             _Y: 0
@@ -7677,8 +7504,9 @@ MonoBehaviour:
   prevPhaseThreshold: 0.05
   nextPhase: {fileID: 4244649889381608096}
   nextPhaseThreshold: 15
-  needChargeButton: 1
-  needRagingUpgrade: 0
+  needs1Charge: 0
+  needs2Charge: 0
+  needsRagingUpgrade: 0
 --- !u!1 &5549163275917385519
 GameObject:
   m_ObjectHideFlags: 0
@@ -7741,7 +7569,7 @@ Transform:
   m_Children:
   - {fileID: 8223577994529571659}
   m_Father: {fileID: 6160359505296045728}
-  m_LocalEulerAnglesHint: {x: -0.8806165, y: -12.638891, z: 1.0327293}
+  m_LocalEulerAnglesHint: {x: 0.70991844, y: -84.62379, z: 1.1567264}
 --- !u!1 &5627539061402960759
 GameObject:
   m_ObjectHideFlags: 0
@@ -7915,7 +7743,7 @@ Transform:
   m_Children:
   - {fileID: 1289324306660635235}
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0.00000004860525, y: 9.931691, z: 0.000000008961783}
+  m_LocalEulerAnglesHint: {x: 0, y: 9.931691, z: 0}
 --- !u!1 &5810941962839966450
 GameObject:
   m_ObjectHideFlags: 0
@@ -7946,7 +7774,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 278327566310101171}
-  m_LocalEulerAnglesHint: {x: -2.5203097, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 1.6444086, y: 0, z: 0}
 --- !u!1 &5837539354396237054
 GameObject:
   m_ObjectHideFlags: 0
@@ -7979,7 +7807,7 @@ Transform:
   - {fileID: 278327566310101171}
   - {fileID: 3303590720151803541}
   m_Father: {fileID: 2290438708623670232}
-  m_LocalEulerAnglesHint: {x: 17.783613, y: 179.96533, z: -50.49321}
+  m_LocalEulerAnglesHint: {x: 3.8516703, y: 164.75005, z: -79.259605}
 --- !u!1 &5854764962895957783
 GameObject:
   m_ObjectHideFlags: 0
@@ -8010,7 +7838,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4791203585736954220}
-  m_LocalEulerAnglesHint: {x: 11.852031, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 17.215801, y: 0, z: 0}
 --- !u!1 &5872976668483300997
 GameObject:
   m_ObjectHideFlags: 0
@@ -8214,11 +8042,8 @@ GameObject:
   - component: {fileID: 949085974986424741}
   - component: {fileID: 3812935324549841644}
   - component: {fileID: 4244649889381608096}
-  - component: {fileID: 4303229188960523177}
-  - component: {fileID: 2532947215877258004}
-  - component: {fileID: 4783550702967590489}
   m_Layer: 6
-  m_Name: Charging
+  m_Name: Sprinting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8279,7 +8104,7 @@ MonoBehaviour:
         - _Target: {fileID: 7788667647418580513}
           _MemberName: TransitionTo
           _PersistentArguments: []
-    - Key: GrabTap
+    - Key: Grab
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
@@ -8296,29 +8121,6 @@ MonoBehaviour:
             _Object: {fileID: 5639727482222500743}
           - _Type: 1
             _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-    - Key: GrabHold
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 5639727482222500743}
-          - _Type: 1
-            _Int: 1
             _String: 
             _X: 0
             _Y: 0
@@ -8328,13 +8130,7 @@ MonoBehaviour:
     - Key: WalkOff
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 8736705224105400998}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: Bonk
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 881160624330373794}
+        - _Target: {fileID: 1074639858917870420}
           _MemberName: TransitionTo
           _PersistentArguments: []
     - Key: Parry
@@ -8362,7 +8158,7 @@ MonoBehaviour:
   trueActive: 0
   acceleration: 0.35
   decceleration: 0.5
-  maxSpeed: 20
+  maxSpeed: 17
   stopping: 0.15
   maxTurnSpeed: 2.5
   outwardTurn: 1
@@ -8370,78 +8166,10 @@ MonoBehaviour:
   prevPhase: {fileID: 528938496853295208}
   prevPhaseThreshold: 15
   nextPhase: {fileID: 704825921462216154}
-  nextPhaseThreshold: 25
-  needChargeButton: 1
-  needRagingUpgrade: 1
---- !u!135 &4303229188960523177
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5936538625018206224}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.84
-  m_Center: {x: 0, y: 0.81, z: 0}
---- !u!54 &2532947215877258004
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5936538625018206224}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 64
-  m_ImplicitCom: 0
-  m_ImplicitTensor: 0
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 126
-  m_CollisionDetection: 0
---- !u!114 &4783550702967590489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5936538625018206224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00e08d19e70a0a44ba49ccb39b83df8a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attack:
-    amount: 10
-    velocity: {x: 0, y: 0, z: 1.5}
-    tags:
-    - name: FromPlayer
-    - name: Charge
-    - name: Wham
-  sourceEntity: {fileID: 8455434200384702600}
-  enabled: 1
+  nextPhaseThreshold: 23
+  needs1Charge: 1
+  needs2Charge: 0
+  needsRagingUpgrade: 0
 --- !u!1 &6005523312454311402
 GameObject:
   m_ObjectHideFlags: 0
@@ -8473,7 +8201,7 @@ Transform:
   m_Children:
   - {fileID: 9001384091169506472}
   m_Father: {fileID: 1843710722454031686}
-  m_LocalEulerAnglesHint: {x: 12.564891, y: 3.4239278, z: 59.267487}
+  m_LocalEulerAnglesHint: {x: 59.89857, y: -72.28828, z: 5.992608}
 --- !u!1 &6037221318812275477
 GameObject:
   m_ObjectHideFlags: 0
@@ -8604,7 +8332,7 @@ Transform:
   - {fileID: 176165724537986964}
   - {fileID: 167776559115597949}
   m_Father: {fileID: 5735276715730193203}
-  m_LocalEulerAnglesHint: {x: -18.793993, y: -7.675183, z: -43.327686}
+  m_LocalEulerAnglesHint: {x: 28.121784, y: -14.842929, z: -54.457462}
 --- !u!1 &6055514174411675304
 GameObject:
   m_ObjectHideFlags: 0
@@ -8636,7 +8364,7 @@ Transform:
   m_Children:
   - {fileID: 6869476211955867676}
   m_Father: {fileID: 2680535561233752795}
-  m_LocalEulerAnglesHint: {x: -2.5203097, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 1.6444086, y: 0, z: 0}
 --- !u!1 &6163583669192012189
 GameObject:
   m_ObjectHideFlags: 0
@@ -8711,13 +8439,7 @@ MonoBehaviour:
         - _Target: {fileID: 1252659914078541581}
           _MemberName: TransitionTo
           _PersistentArguments: []
-    - Key: GrabHold
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3864174957687219544}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: GrabTap
+    - Key: Grab
       Value:
         _PersistentCalls:
         - _Target: {fileID: 3864174957687219544}
@@ -9084,7 +8806,7 @@ Transform:
   m_Children:
   - {fileID: 7021510372728876682}
   m_Father: {fileID: 1843710722454031686}
-  m_LocalEulerAnglesHint: {x: -44.406815, y: -22.247627, z: 35.137707}
+  m_LocalEulerAnglesHint: {x: -34.3993, y: -31.115076, z: 27.066029}
 --- !u!1 &6574491177993153932
 GameObject:
   m_ObjectHideFlags: 0
@@ -9156,7 +8878,7 @@ MonoBehaviour:
         - _Target: {fileID: 1252659914078541581}
           _MemberName: TransitionTo
           _PersistentArguments: []
-    - Key: GrabTap
+    - Key: Grab
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
@@ -9173,29 +8895,6 @@ MonoBehaviour:
             _Object: {fileID: 1181195091599698405}
           - _Type: 1
             _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-    - Key: GrabHold
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 1181195091599698405}
-          - _Type: 1
-            _Int: 0
             _String: 
             _X: 0
             _Y: 0
@@ -9608,7 +9307,7 @@ MonoBehaviour:
         - _Target: {fileID: 7788667647418580513}
           _MemberName: TransitionTo
           _PersistentArguments: []
-    - Key: GrabTap
+    - Key: Grab
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
@@ -9625,29 +9324,6 @@ MonoBehaviour:
             _Object: {fileID: 4975428428768240672}
           - _Type: 1
             _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-    - Key: GrabHold
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 4975428428768240672}
-          - _Type: 1
-            _Int: 1
             _String: 
             _X: 0
             _Y: 0
@@ -9694,8 +9370,9 @@ MonoBehaviour:
   prevPhaseThreshold: 0
   nextPhase: {fileID: 528938496853295208}
   nextPhaseThreshold: 0.05
-  needChargeButton: 0
-  needRagingUpgrade: 0
+  needs1Charge: 0
+  needs2Charge: 0
+  needsRagingUpgrade: 0
 --- !u!1 &6824799447565327635
 GameObject:
   m_ObjectHideFlags: 0
@@ -9935,7 +9612,7 @@ Transform:
   - {fileID: 1843710722454031686}
   - {fileID: 1474029645955272187}
   m_Father: {fileID: 1336325588524243921}
-  m_LocalEulerAnglesHint: {x: -2.088, y: -8.473, z: -92.21}
+  m_LocalEulerAnglesHint: {x: 51.6474, y: 0.000005503786, z: -100.27088}
 --- !u!1 &6885496698341775711
 GameObject:
   m_ObjectHideFlags: 0
@@ -10102,7 +9779,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 3.3152418, y: 0, z: 0}
 --- !u!1 &7011906604276923133
 GameObject:
   m_ObjectHideFlags: 0
@@ -10246,7 +9923,7 @@ Transform:
   - {fileID: 7868241083879984591}
   - {fileID: 4587243299707619477}
   m_Father: {fileID: 2290438708623670232}
-  m_LocalEulerAnglesHint: {x: -15.18985, y: 172.96529, z: -140.94118}
+  m_LocalEulerAnglesHint: {x: -8.017604, y: 90.88075, z: -162.82727}
 --- !u!1 &7073008420584510336
 GameObject:
   m_ObjectHideFlags: 0
@@ -10374,7 +10051,7 @@ Transform:
   m_Children:
   - {fileID: 9154178742155163141}
   m_Father: {fileID: 871982966420425774}
-  m_LocalEulerAnglesHint: {x: -2.226602, y: -2.650409, z: 4.5886545}
+  m_LocalEulerAnglesHint: {x: 3.670741, y: -74.44765, z: 3.5419967}
 --- !u!1 &7202455593599374418
 GameObject:
   m_ObjectHideFlags: 0
@@ -10408,7 +10085,7 @@ Transform:
   - {fileID: 2235979652216157829}
   - {fileID: 515695939648151693}
   m_Father: {fileID: 1013759457902555881}
-  m_LocalEulerAnglesHint: {x: -2.039, y: -8.377, z: -72.017}
+  m_LocalEulerAnglesHint: {x: 57.997585, y: 0.0000008055153, z: -9.565261}
 --- !u!1 &7224132573033648796
 GameObject:
   m_ObjectHideFlags: 0
@@ -10472,7 +10149,7 @@ Transform:
   - {fileID: 5735276715730193203}
   - {fileID: 4791203585736954220}
   m_Father: {fileID: 362155934586423713}
-  m_LocalEulerAnglesHint: {x: 2.508, y: 3.294, z: -49.337}
+  m_LocalEulerAnglesHint: {x: -5.4952426, y: -33.294003, z: -51.66714}
 --- !u!1 &7257209901777955179
 GameObject:
   m_ObjectHideFlags: 0
@@ -10660,7 +10337,7 @@ Transform:
   m_Children:
   - {fileID: 871982966420425774}
   m_Father: {fileID: 1843710722454031686}
-  m_LocalEulerAnglesHint: {x: 8.786878, y: -6.5978703, z: 43.78186}
+  m_LocalEulerAnglesHint: {x: 44.22932, y: -79.98488, z: 5.2865505}
 --- !u!1 &7471342363894119853
 GameObject:
   m_ObjectHideFlags: 0
@@ -10722,13 +10399,7 @@ MonoBehaviour:
     _PersistentCalls: []
   signals:
     _serializedList:
-    - Key: GrabTap
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: Shoot
-          _PersistentArguments: []
-    - Key: GrabHold
+    - Key: Grab
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
@@ -11203,7 +10874,7 @@ Transform:
   m_Children:
   - {fileID: 1176947240285938664}
   m_Father: {fileID: 8240657446396116129}
-  m_LocalEulerAnglesHint: {x: 0.13334464, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 12.387572, y: 0, z: 0}
 --- !u!1 &7687921319952885065
 GameObject:
   m_ObjectHideFlags: 0
@@ -11235,7 +10906,7 @@ Transform:
   m_Children:
   - {fileID: 5752581404150150080}
   m_Father: {fileID: 2680535561233752795}
-  m_LocalEulerAnglesHint: {x: -8.438546, y: 0.000000005649987, z: 0.002331565}
+  m_LocalEulerAnglesHint: {x: 4.9332266, y: 0.000000039417568, z: 0.0023316208}
 --- !u!1 &7756656762688251476
 GameObject:
   m_ObjectHideFlags: 0
@@ -11267,7 +10938,7 @@ Transform:
   m_Children:
   - {fileID: 8922394875303098419}
   m_Father: {fileID: 3343154836349968328}
-  m_LocalEulerAnglesHint: {x: -0.46870163, y: -2.5174468, z: 3.924854}
+  m_LocalEulerAnglesHint: {x: 3.587222, y: -74.449356, z: 1.6611015}
 --- !u!1 &7757866779982890630
 GameObject:
   m_ObjectHideFlags: 0
@@ -11329,7 +11000,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8479078116207083057}
-  m_LocalEulerAnglesHint: {x: 0.13334464, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 12.387572, y: 0, z: 0}
 --- !u!1 &7768039867893722896
 GameObject:
   m_ObjectHideFlags: 0
@@ -11570,7 +11241,7 @@ Transform:
   m_Children:
   - {fileID: 3887420343133292225}
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -4.855064}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -1.5398256}
 --- !u!1 &7954612019771168692
 GameObject:
   m_ObjectHideFlags: 0
@@ -11812,7 +11483,7 @@ Transform:
   m_Children:
   - {fileID: 1013759457902555881}
   m_Father: {fileID: 5779348743443458172}
-  m_LocalEulerAnglesHint: {x: 10.017, y: -91.701, z: 36.899}
+  m_LocalEulerAnglesHint: {x: -63.459217, y: -145.2222, z: 50.70597}
 --- !u!1 &8080908558534702520
 GameObject:
   m_ObjectHideFlags: 0
@@ -12020,7 +11691,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3858517113413183086}
-  m_LocalEulerAnglesHint: {x: 10.35361, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 19.332527, y: 0, z: 0}
 --- !u!1 &8217506179758699186
 GameObject:
   m_ObjectHideFlags: 0
@@ -12323,7 +11994,7 @@ Transform:
   - {fileID: 7250269832979079049}
   - {fileID: 1262491231416579091}
   m_Father: {fileID: 5779348743443458172}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -10.27221}
+  m_LocalEulerAnglesHint: {x: 0.713259, y: 5.363087, z: 25.99786}
 --- !u!1 &8291585736164761318
 GameObject:
   m_ObjectHideFlags: 0
@@ -12797,7 +12468,7 @@ Transform:
   - {fileID: 7131444296845478749}
   - {fileID: 5356928931328244855}
   m_Father: {fileID: 8240657446396116129}
-  m_LocalEulerAnglesHint: {x: -18.793995, y: -7.6751814, z: -43.327686}
+  m_LocalEulerAnglesHint: {x: 28.121784, y: -14.842929, z: -54.457462}
 --- !u!1 &8519334009095618754
 GameObject:
   m_ObjectHideFlags: 0
@@ -12923,7 +12594,7 @@ Transform:
   m_Children:
   - {fileID: 5331686706469530154}
   m_Father: {fileID: 3303590720151803541}
-  m_LocalEulerAnglesHint: {x: 4.6708198, y: -7.9479, z: -2.5888968}
+  m_LocalEulerAnglesHint: {x: -5.487683, y: 2.2154331, z: 14.738202}
 --- !u!1 &8776230784378080119
 GameObject:
   m_ObjectHideFlags: 0
@@ -12955,7 +12626,7 @@ Transform:
   m_Children:
   - {fileID: 6711681285055233071}
   m_Father: {fileID: 2235979652216157829}
-  m_LocalEulerAnglesHint: {x: 12.56489, y: 3.4239235, z: 59.267487}
+  m_LocalEulerAnglesHint: {x: 59.898563, y: -72.28828, z: 5.992611}
 --- !u!1 &8822378987506164119
 GameObject:
   m_ObjectHideFlags: 0
@@ -13210,7 +12881,7 @@ Transform:
   m_Children:
   - {fileID: 5779348743443458172}
   m_Father: {fileID: 6624796882083950603}
-  m_LocalEulerAnglesHint: {x: -9.277011e-31, y: 3.6997032e-31, z: 23.257717}
+  m_LocalEulerAnglesHint: {x: -9.277011e-31, y: 3.6997041e-31, z: 28.688696}
 --- !u!1 &9018897039512757404
 GameObject:
   m_ObjectHideFlags: 0
@@ -13242,7 +12913,7 @@ Transform:
   m_Children:
   - {fileID: 4020530439917054758}
   m_Father: {fileID: 4966123876549837000}
-  m_LocalEulerAnglesHint: {x: 0.751433, y: 2.1973596, z: -96.16554}
+  m_LocalEulerAnglesHint: {x: 0.7514301, y: 2.1973577, z: -96.16556}
 --- !u!1 &9139940253498331008
 GameObject:
   m_ObjectHideFlags: 0
@@ -13360,6 +13031,111 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2235979652216157829}
   m_LocalEulerAnglesHint: {x: 55.376, y: -81.085, z: -353.598}
+--- !u!1001 &1345935898135293067
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7341979101928341701}
+    m_Modifications:
+    - target: {fileID: 7081382935272620051, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_Name
+      value: RagingCharge
+      objectReference: {fileID: 0}
+    - target: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.166747
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.30122846
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.166747
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.508
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.70710677
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a6205be8dd92bdc44a77da0e57cf7c6c, type: 3}
+--- !u!4 &7813964689064752061 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1345935898135293067}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8206459135731414027 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1345935898135293067}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4065715133517577847
 PrefabInstance:
   m_ObjectHideFlags: 0

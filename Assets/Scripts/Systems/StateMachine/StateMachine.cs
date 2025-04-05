@@ -184,6 +184,7 @@ namespace SLS.StateMachineV3
 
         public bool SendSignal(string name, bool addToQueue = true, bool overrideReady = false)
         {
+            if (gameObject.activeSelf == false || Time.timeScale == 0 || PauseMenu.Active) return false;
             if ((signalReady || overrideReady) && EnactSignal(name)) return true;
             else if (addToQueue)
             {

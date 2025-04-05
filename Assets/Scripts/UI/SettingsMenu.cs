@@ -32,7 +32,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
         ambienceVolume.Init(value => { AudioManager.Get().ambienceVolume = value; });
         brightness.Init(value => { brightnessOverlay.color = new(0, 0, 0, value); });
 
-        remap.TargetInput();
+        //remap.TargetInput();
         RevertChanges();
     }
 
