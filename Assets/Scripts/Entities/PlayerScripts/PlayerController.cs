@@ -48,33 +48,37 @@ public class PlayerController : PlayerStateBehavior
 		if(!grabber) grabber = GetComponentFromMachine<PlayerRanged>();
         if(!interacter) interacter = GetComponentFromMachine<PlayerInteracter>();
 
-		input.jump.performed            += BeginActionEvent;
-        input.attackTap.performed       += BeginActionEvent;
-        input.attackHold.performed      += BeginActionEvent;
-        input.grabTap.performed         += BeginActionEvent;
-        input.parry.performed           += BeginActionEvent;
-        input.chargeTap.performed       += BeginActionEvent;
-        input.interact.performed        += BeginActionEvent;
+		Input.Jump.performed            += BeginActionEvent;
+        Input.AttackTap.performed       += BeginActionEvent;
+        Input.AttackHold.performed      += BeginActionEvent;
+        Input.Grab.performed         += BeginActionEvent;
+        Input.Parry.performed           += BeginActionEvent;
+        Input.Interact.performed        += BeginActionEvent;
 
-        input.jump.canceled             += JumpRelease;
-        input.shootMode.performed       += ShootModeActivate;
-        input.shootMode.canceled        += ShootModeDeactivate;
+        Input.Jump.canceled             += JumpRelease;
+        Input.Aim.performed       += ShootModeActivate;
+        Input.Aim.canceled        += ShootModeDeactivate;
+
+        Input.Charge1.performed       += ChargeButtons;
+        Input.Charge2.performed       += ChargeButtons;
     }
 
 
 	private void OnDestroy()
 	{
-        input.jump.performed            -= BeginActionEvent;
-        input.attackTap.performed       -= BeginActionEvent;
-        input.attackHold.performed      -= BeginActionEvent;
-        input.grabTap.performed         -= BeginActionEvent;
-        input.parry.performed           -= BeginActionEvent;
-        input.chargeTap.performed       -= BeginActionEvent;
-        input.interact.performed        -= BeginActionEvent;
+        Input.Jump.performed -= BeginActionEvent;
+        Input.AttackTap.performed -= BeginActionEvent;
+        Input.AttackHold.performed -= BeginActionEvent;
+        Input.Grab.performed -= BeginActionEvent;
+        Input.Parry.performed -= BeginActionEvent;
+        Input.Interact.performed -= BeginActionEvent;
 
-        input.jump.canceled             -= JumpRelease;
-        input.shootMode.performed       -= ShootModeActivate;
-        input.shootMode.canceled        -= ShootModeDeactivate;
+        Input.Jump.canceled -= JumpRelease;
+        Input.Aim.performed -= ShootModeActivate;
+        Input.Aim.canceled -= ShootModeDeactivate;
+
+        Input.Charge1.performed -= ChargeButtons;
+        Input.Charge2.performed -= ChargeButtons;
 
     }
 
@@ -82,7 +86,7 @@ public class PlayerController : PlayerStateBehavior
 	{
 
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
-		if(!overrideMovementControl) camAdjustedMovement = input.movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
+		if(!overrideMovementControl) camAdjustedMovement = Input.Movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
 		else camAdjustedMovement = overrideMovementVector.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
 
 		//if (Machine.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
@@ -96,7 +100,7 @@ public class PlayerController : PlayerStateBehavior
             Machine.freeLookCamera.LookAt = transform;
         }
 
-        if (input.shootMode.IsPressed() && Machine.signalReady && sGrounded 
+        if (Input.Aim.IsPressed() && Machine.signalReady && sGrounded 
             && !ranged.aimingState && (ranged.hasEggsToShoot || grabber.currentGrabbed != null)) 
             ranged.EnterAiming();
     }
@@ -111,11 +115,7 @@ public class PlayerController : PlayerStateBehavior
 
 
 
-    private void BeginActionEvent(InputAction.CallbackContext callbackContext)
-    {
-        if (gameObject.activeSelf == false || Time.timeScale == 0 || PauseMenu.Active) return;
-        Machine.SendSignal(callbackContext.action.name);
-    }
+    private void BeginActionEvent(InputAction.CallbackContext callbackContext) => Machine.SendSignal(callbackContext.action.name);
     public void BeginActionEvent(string name) => Machine.SendSignal(name);
 
     public void ReadyNextAction() => Machine.ReadySignal();
@@ -146,7 +146,7 @@ public class PlayerController : PlayerStateBehavior
     private void ShootModeActivate(CTX ctx) => Machine.SendSignal("ShootMode", true, true);
     private void ShootModeDeactivate(CTX ctx) => Machine.SendSignal("ShootModeExit", true, true);
 
-
+    private void ChargeButtons(CTX ctx) => Machine.SendSignal("Charge");
 
 
 }

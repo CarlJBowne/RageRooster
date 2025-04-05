@@ -43,7 +43,7 @@ public class PlayerGrabAction : PlayerStateBehavior
     {
         if (!success || selectedGrabbable == null) return;
         grabber.BeginGrab(selectedGrabbable);
-        if (air && grabber.dropLaunchUpgrade && !Input.GrabTap.IsPressed()) grabber.BeginThrow(true);
+        if (air && grabber.dropLaunchUpgrade && !Input.Grab.IsPressed()) grabber.BeginThrow(true);
         success = false;
         wasHeld = false;
         selectedGrabbable = null;

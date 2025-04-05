@@ -50,10 +50,19 @@ public class Gameplay : Singleton<Gameplay>
     public static void BeginMainMenu(int fileNo)
     {
         if (Gameplay.Active) return;
-        GlobalState.activeSaveFile = fileNo;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
+
+        Overlay.OverMenus.StartCoroutine(Enum()); 
+        IEnumerator Enum()
+        {
+            Overlay.OverMenus.BasicFadeOut();
+            yield return WaitFor.SecondsRealtime(1f);
+
+            GlobalState.activeSaveFile = fileNo;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
+            Overlay.OverMenus.BasicFadeIn();
+        }
     }
 
     /// <summary>
@@ -106,7 +115,7 @@ public class Gameplay : Singleton<Gameplay>
 
         ZoneManager.OnFirstLoad += OnFirstLoad;
 
-        Input.UI.PauseGame.performed += c =>
+        Input.Pause.performed += c =>
         {
             Menu.Manager.Escape();
         };

@@ -37,7 +37,7 @@ public class PlayerAirborn : PlayerStateBehavior
         if (phase == 2 && playerMovementBody.velocity.y < 0) phase = 3; 
 
         if (phase < 2) playerMovementBody.VelocitySet(y: jumpPower);
-        if (playerMovementBody.velocity.y <= 0 || (allowMidFall && phase > 0 && !input.jump.IsPressed()))
+        if (playerMovementBody.velocity.y <= 0 || (allowMidFall && phase > 0 && !Input.Jump.IsPressed()))
         {
             if (playerMovementBody.velocity.y > 0) playerMovementBody.VelocitySet(y: 0);
             phase = 3;
