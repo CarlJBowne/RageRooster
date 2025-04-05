@@ -654,7 +654,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
@@ -1021,7 +1031,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
@@ -1104,7 +1124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44ed58beabcca8749bd2e13371ec85c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  twoHanded: 0
+  twoHanded: 1
   weight: 1
   wiggleFreeTime: 0
   maxHealthToGrab: 5
@@ -1124,6 +1144,8 @@ MonoBehaviour:
     velocity: {x: 0, y: 0, z: 0}
     tags:
     - name: Thrown
+    - name: ThrownEnemy
+    - name: FromPlayer
   currentState: 0
 --- !u!54 &8213563936651183793
 Rigidbody:
@@ -1432,7 +1454,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []

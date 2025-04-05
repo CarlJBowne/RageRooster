@@ -47,7 +47,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
@@ -359,7 +369,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
@@ -387,14 +407,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18e851c5f4414a439ad7d539149b8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 5
   damageEvent:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
   immuneTags: []
   health: 0
-  stunTime: 0
+  stunTime: 0.2
   poofPrefab: {fileID: 0}
   disableComponents: []
   enemyLootSpawner: {fileID: 0}
@@ -403,7 +423,7 @@ MonoBehaviour:
   maxRagdollTime: 0
   minRagdollVelovity: 0
   respawn: 0
-  respawnTime: 0
+  respawnTime: 30
   currentState: 0
 --- !u!114 &1527664238214247779
 MonoBehaviour:
@@ -417,10 +437,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44ed58beabcca8749bd2e13371ec85c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  twoHanded: 0
-  weight: 0
+  twoHanded: 1
+  weight: 1
   wiggleFreeTime: 0
-  maxHealthToGrab: 0
+  maxHealthToGrab: 5
   additionalThrowDistance: 0
   GrabStateEvent:
     _PersistentCalls: []
@@ -437,6 +457,8 @@ MonoBehaviour:
     velocity: {x: 0, y: 0, z: 0}
     tags:
     - name: Thrown
+    - name: ThrownEnemy
+    - name: FromPlayer
   currentState: 0
 --- !u!114 &3042019609250107629
 MonoBehaviour:
@@ -526,7 +548,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   separateFromChildren: 0
-  onActivatedEvent:
+  onAwakeEvent:
+    _PersistentCalls: []
+  onEnterEvent:
+    _PersistentCalls: []
+  onExitEvent:
+    _PersistentCalls: []
+  onActiveChangeEvent:
+    _PersistentCalls: []
+  onUpdateEvent:
+    _PersistentCalls: []
+  onFixedUpdateEvent:
     _PersistentCalls: []
   signals:
     _serializedList: []
