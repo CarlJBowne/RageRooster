@@ -5,7 +5,6 @@ using UnityEngine;
 public abstract class PlayerMovementEffector : PlayerStateBehavior
 {
     [HideInEditMode, DisableInPlayMode] public bool trueActive;
-    private bool check;
 
     public override void OnFixedUpdate()
     {
