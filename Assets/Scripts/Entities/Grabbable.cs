@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Grabbable : MonoBehaviour, IAttackSource
+public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
 {
     #region Config
 
@@ -26,38 +26,38 @@ public class Grabbable : MonoBehaviour, IAttackSource
     #endregion
     #region Data
 
-    private Grabber grabber;
+    protected Grabber grabber;
     public bool grabbed => grabber != null;
 
-    public new Collider collider {  get; private set; }
-    public Rigidbody rb { get; private set; }
-    public EnemyHealth health { get; private set; }
+    private new Collider collider;
+    private Rigidbody rb;
+    public EnemyHealth health { get; protected set; }
     public CoroutinePlus wiggleCoroutine;
 
     [HideInEditMode, DisableInPlayMode] public EntityState currentState;
 
     #endregion
 
-    private void Awake()
+    protected virtual void Awake()
     {
         collider = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
         health = GetComponent<EnemyHealth>();
+        SetState(EntityState.Default);
     }
 
-    public static bool Grab(GameObject target, out Grabbable result) => target.TryGetComponent(out result) && result.enabled && result.UnderThreshold() ? true : false;
+    public bool GiveGrabbable(out Grabbable result)
+    {
+        result = this;
+        return true;
+    }
 
     public Grabbable Grab(Grabber grabber)
     {
         this.grabber = grabber;
         SetState(EntityState.Grabbed);
-
-        if (rb)
-        {
-            rb.isKinematic = true;
-            rb.velocity = Vector3.zero;
-        }
-        collider.enabled = false;
+        SetVelocity(Vector3.zero);
+        IgnoreCollisionWithThrower();
 
         if (wiggleFreeTime > 0) wiggleCoroutine = new(WiggleEnum(), this);
         IEnumerator WiggleEnum()
@@ -73,30 +73,18 @@ public class Grabbable : MonoBehaviour, IAttackSource
     public void Throw(Vector3 velocity)
     {
         if (!grabbed) return;
-        Physics.IgnoreCollision(collider, grabber.collider, true);
         SetState(EntityState.Thrown);
-
-        if (rb)
-        {
-            rb.isKinematic = false;
-            rb.velocity = velocity;
-        }
-        collider.enabled = true;
+        SetVelocity(velocity);
     }
     public void Release()
     {
-        if (!grabbed) return;
-        //Physics.IgnoreCollision(collider, grabber.collider, true);
+        if (!grabbed) return; 
+        IgnoreCollisionWithThrower(false);
+
         grabber = null;
         SetState(EntityState.Default);
-
-        if (rb)
-        {
-            rb.isKinematic = false;
-            rb.velocity = Vector3.zero;
-        }
-        collider.enabled = true;
-    }
+        SetVelocity(Vector3.zero);
+    } 
 
     public bool UnderThreshold() => !health || maxHealthToGrab < 0 || health.GetCurrentHealth() <= maxHealthToGrab;
 
@@ -109,15 +97,35 @@ public class Grabbable : MonoBehaviour, IAttackSource
         {
             SetState(EntityState.RagDoll);
             if (thrownAttack.amount > 0 && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(GetAttack());
-            Physics.IgnoreCollision(collider, grabber.collider, false);
+            IgnoreCollisionWithThrower(false);
             grabber = null;
         }
     }
 
-    public void SetState(EntityState newState)
+    public virtual void SetState(EntityState newState)
     {
         currentState = newState;
         GrabStateEvent?.Invoke(currentState);
+
+        switch (newState)
+        {
+            case EntityState.Default:
+                rb.isKinematic = false;
+                collider.enabled = true;
+                break;
+            case EntityState.Grabbed:
+                rb.isKinematic = true;
+                collider.enabled = false;
+                break;
+            case EntityState.Thrown:
+                rb.isKinematic = false;
+                collider.enabled = true;
+                break;
+            case EntityState.RagDoll:
+                break;
+            default:
+                break;
+        }
 
         (newState switch
         {
@@ -128,10 +136,29 @@ public class Grabbable : MonoBehaviour, IAttackSource
         })?.Invoke();
     }
 
+    public virtual void SetVelocity(Vector3 velocity) => rb.velocity = velocity;
+
+    public virtual void IgnoreCollisionWithThrower(bool ignore = true) => Physics.IgnoreCollision(collider, grabber.collider, ignore);
+
     public Attack GetAttack()
     {
         Attack result = thrownAttack;
-        if(rb) result.velocity = rb.velocity;
+        result.velocity = rb.velocity;
         return result;
     }
+}
+
+public interface IGrabbable
+{
+    public static bool Grab(GameObject target, out Grabbable result)
+    {
+        result = null;
+        return target.TryGetComponent(out IGrabbable interfaceResult) &&
+        interfaceResult.GiveGrabbable(out result) &&
+        result.enabled &&
+        result.UnderThreshold()
+        ? true : false;
+    }
+
+    public bool GiveGrabbable(out Grabbable result);
 }

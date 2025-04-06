@@ -16,12 +16,7 @@ public class EnemyHealth : Health
     public Behaviour[] disableComponents;
     public EnemyLootSpawner enemyLootSpawner;
 
-    [ToggleGroup("Ragdoll", nameof(minRagdollTime), nameof(maxRagdollTime), nameof(minRagdollVelovity))]
-    public bool ragDoll;
-
-    [HideInInspector] public float minRagdollTime;
-    [HideInInspector] public float maxRagdollTime;
-    [HideInInspector] public float minRagdollVelovity;
+    private RagdollHandler ragdoll;
 
     [ToggleGroup("SingleRespawn", nameof(respawnTime))]
     public bool respawn;
@@ -32,11 +27,8 @@ public class EnemyHealth : Health
     #region Data
 
     [HideInEditMode, DisableInPlayMode] public EntityState currentState;
-    private Grabbable grabbable;
-    private Rigidbody rb;
-    private CoroutinePlus stunEnum;
+    private CoroutinePlus stunCO;
     private float stunTimeLeft = 0;
-    private float ragDollTimer;
     private Vector3 startPosition;
 
 
@@ -46,18 +38,8 @@ public class EnemyHealth : Health
     { 
         base.Awake();
         startPosition = transform.position;
-        if (TryGetComponent(out grabbable)) grabbable.GrabStateEvent += SetEntityState;
-        enemyLootSpawner = FindObjectOfType<EnemyLootSpawner>();
-    }
-
-    private void Update()
-    {
-        if (currentState == EntityState.RagDoll)
-        {
-            ragDollTimer += Time.deltaTime;
-            if (ragDollTimer > minRagdollTime && (rb.velocity.magnitude < minRagdollVelovity || ragDollTimer > maxRagdollTime))
-                Destroy();
-        }
+        if (TryGetComponent(out ragdoll)) ragdoll.GrabStateEvent += SetEntityState;
+        enemyLootSpawner = GetComponent<EnemyLootSpawner>();
     }
 
     #region DamageOverrides
@@ -68,8 +50,38 @@ public class EnemyHealth : Health
     {
         damageEvent?.Invoke(attack.amount);
 
-        if (stunTimeLeft == 0) stunEnum = new(StunEnum(), this);
-        stunTimeLeft += stunTime * (attack.HasTag(Attack.Tag.Wham) ? 2 : 1);
+        if(currentState is EntityState.RagDoll) ragdoll.SetVelocity(attack.velocity);
+        else if (currentState is EntityState.Default && health != 0) Stun(attack);
+    }
+
+    protected override void OnDeplete(Attack attack)
+    {
+        depleteEvent?.Invoke();
+        if (attack == Attack.Tag.Wham)
+        {
+            CoroutinePlus.Stop(ref stunCO);
+            if (ragdoll)
+            {
+                SetEntityState(EntityState.RagDoll);
+                ragdoll.SetVelocity(attack.velocity);
+            }
+            else Destroy();
+        }
+        else if (currentState is EntityState.Default) Stun(attack);
+
+    }
+
+    void Stun(Attack attack)
+    {
+        if (stunTimeLeft == 0)
+        {
+            CoroutinePlus.Begin(ref stunCO, StunEnum(), this);
+            stunTimeLeft += stunTime * (attack == Attack.Tag.Wham ? 2 : 1);
+        }
+        else
+        {
+            stunTimeLeft += stunTime * (attack == Attack.Tag.Wham ? 2 : 1);
+        }
 
         IEnumerator StunEnum()
         {
@@ -85,27 +97,17 @@ public class EnemyHealth : Health
 
             if (health <= 0)
             {
-                if (ragDoll) SetEntityState(EntityState.RagDoll);
+                if (ragdoll)
+                {
+                    SetEntityState(EntityState.RagDoll);
+                    ragdoll.SetVelocity(-transform.forward);
+                }
                 else Destroy();
             }
             else SetCompsActive(true);
         }
     }
 
-    protected override void OnDeplete(Attack attack)
-    {
-        depleteEvent?.Invoke();
-        if (attack.HasTag(Attack.Tag.Wham))
-        {
-            StopCoroutine(stunEnum);
-            if (ragDoll)
-            {
-                SetEntityState(EntityState.RagDoll);
-                rb.velocity = attack.velocity;
-            }
-            else Destroy();
-        }
-    }
 
     #endregion DamageOverrides
 
@@ -127,15 +129,10 @@ public class EnemyHealth : Health
     {
         if (currentState == newState) return;
         currentState = newState;
-        if (grabbable) grabbable.currentState = newState;
+        if(ragdoll) ragdoll.SetState(newState);
         switch (newState)
         {
             case EntityState.Default:
-                ragDollTimer = 0;
-                rb = this.GetOrAddComponent<Rigidbody>();
-                rb.isKinematic = true;
-                rb.useGravity = false;
-                rb.gameObject.layer = Layers.Enemy;
                 SetCompsActive(true);
                 break;
             case EntityState.Grabbed:
@@ -145,12 +142,8 @@ public class EnemyHealth : Health
 
                 break;
             case EntityState.RagDoll:
-                ragDollTimer = 0;
-                rb = this.GetOrAddComponent<Rigidbody>();
-                rb.isKinematic = false;
-                rb.useGravity = true;
-                rb.gameObject.layer = Layers.NonSolid;
                 SetCompsActive(false);
+                if (!ragdoll) Destroy();
                 break;
         }
     }
@@ -169,8 +162,6 @@ public class EnemyHealth : Health
         if (TryGetComponent(out StateMachine machine)) machine.TransitionState(machine[0]);
         SetEntityState(EntityState.Default);
         transform.rotation = Quaternion.identity;
-
-        Debug.Log($"[EnemyHealth] Respawning with maxHealth: {maxHealth}");
         health = maxHealth;
     }
 

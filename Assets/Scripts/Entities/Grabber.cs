@@ -11,7 +11,7 @@ public class Grabber
 
     public virtual bool AttemptGrab(GameObject target, out Grabbable result, bool doGrab = true)
     {
-        if (Grabbable.Grab(target, out  result))
+        if (IGrabbable.Grab(target, out result))
         {
             if(doGrab) BeginGrab(result);
             return true;

@@ -122,7 +122,7 @@ public class PlayerRanged : MonoBehaviour
 
 
         protected override void OnGrab() => twoHanded = currentGrabbed.twoHanded;
-        protected override void OnRelease() => currentGrabbed.rb.velocity = ranged.launchVelocity;
+        protected override void OnRelease() => currentGrabbed.SetVelocity(ranged.launchVelocity);
 
         public override void BeginGrab(Grabbable grabbed)
         {
