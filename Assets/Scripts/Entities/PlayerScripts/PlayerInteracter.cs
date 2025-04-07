@@ -18,6 +18,7 @@ public class PlayerInteracter : MonoBehaviour
     private void Awake()
     {
         conversationManager = ConversationManager.instance;
+        Gameplay.PreReloadSave += ResetSystem;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -42,6 +43,7 @@ public class PlayerInteracter : MonoBehaviour
 
     void UpdateInteractableList()
     {
+        while (interactablesInFront.Count > 0 && interactablesInFront[0] == null) interactablesInFront.RemoveAt(0);
         if (interactablesInFront.Count > 0)
         {
             popupTransform.SetActive(true);
@@ -68,7 +70,15 @@ public class PlayerInteracter : MonoBehaviour
         else return false;
     }
 
+    private void OnDestroy()
+    {
+        Gameplay.PreReloadSave -= ResetSystem;
+    }
 
+    void ResetSystem()
+    {
+        interactablesInFront.Clear();
+    }
 
 
 

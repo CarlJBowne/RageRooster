@@ -82,6 +82,7 @@ public class PlayerStateMachine : StateMachine
     {
         children[0].TransitionTo();
         signalReady = true;
+        animator.Play("GroundBasic");
     }
 
     private State prevState;
@@ -89,6 +90,9 @@ public class PlayerStateMachine : StateMachine
     {
         prevState = currentState;
         pauseState.TransitionTo();
+        body.velocity = Vector3.zero;
+        body.CurrentSpeed = 0;
+        animator.CrossFade("GroundBasic", .2f);
     }
     public void UnPauseState()
     {

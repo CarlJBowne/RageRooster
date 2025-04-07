@@ -25,5 +25,11 @@ public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
 
     public void SetRagdoll(bool value) => collider.enabled = value;
 
-    private void OnTriggerEnter(Collider other) => ragDoll.Contact(other.gameObject);
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.isTrigger && !other.TryGetComponent(out IAttackSource _)) return;
+        ragDoll.Contact(other.gameObject);
+    }
+
+    public void IgnoreCollisionWithThrower(Collider thrower, bool ignore = true) => Physics.IgnoreCollision(collider, thrower, ignore);
 }

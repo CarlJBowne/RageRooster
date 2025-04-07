@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class PauseMenu : MenuSingleton<PauseMenu>
 {
     public static bool isPaused => Get().isActive;
+    public static bool canPause = true;
 
     protected override void OnOpen()
     {

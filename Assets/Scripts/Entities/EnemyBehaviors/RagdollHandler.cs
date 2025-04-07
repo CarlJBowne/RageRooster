@@ -109,9 +109,13 @@ public class RagdollHandler : Grabbable
     public override void IgnoreCollisionWithThrower(bool ignore = true)
     {
         if (advanced)
+        {
             for (int i = 0; i < ragDollColliders.Length; i++)
                 Physics.IgnoreCollision(ragDollColliders[i], grabber.collider, ignore);
+            if (proxy) proxy.IgnoreCollisionWithThrower(grabber.collider, ignore);
+        }
         else Physics.IgnoreCollision(nonRagdolledCollider, grabber.collider, ignore);
+        
     }
 
 }
