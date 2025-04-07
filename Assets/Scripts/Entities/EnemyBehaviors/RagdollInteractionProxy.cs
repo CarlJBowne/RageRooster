@@ -10,6 +10,11 @@ public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
     [SerializeField] new Collider collider;
     [SerializeField] Rigidbody rb;
 
+    private void Awake()
+    {
+        for (int i = 0; i < ragDoll.ragDollColliders.Length; i++)
+            Physics.IgnoreCollision(collider, ragDoll.ragDollColliders[i]);
+    }
 
     public bool Damage(Attack attack) => health.Damage(attack);
     public bool GiveGrabbable(out Grabbable result)
@@ -18,12 +23,7 @@ public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
         return result != null;
     }
 
-    public void SetRagdoll(bool value)
-    {
-        rb.useGravity = value;
-        rb.isKinematic = !value;
-        collider.enabled = value;
-    }
+    public void SetRagdoll(bool value) => collider.enabled = value;
 
     private void OnTriggerEnter(Collider other) => ragDoll.Contact(other.gameObject);
 }

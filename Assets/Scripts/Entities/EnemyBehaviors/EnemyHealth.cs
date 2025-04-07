@@ -88,10 +88,12 @@ public class EnemyHealth : Health
             SetCompsActive(false);
 
             yield return null;
+            float storedTimeLeft = 0;
             while (stunTimeLeft > 0)
             {
-                stunTimeLeft -= Time.deltaTime;
-                yield return null;
+                storedTimeLeft = stunTimeLeft;
+                yield return WaitFor.Seconds(storedTimeLeft);
+                stunTimeLeft -= storedTimeLeft;
             }
             stunTimeLeft = 0;
 
@@ -134,6 +136,7 @@ public class EnemyHealth : Health
         {
             case EntityState.Default:
                 SetCompsActive(true);
+                stunTimeLeft = 0;
                 break;
             case EntityState.Grabbed:
                 SetCompsActive(false);
