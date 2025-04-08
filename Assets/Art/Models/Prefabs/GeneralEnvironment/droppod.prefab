@@ -116,6 +116,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: -6187273861384650331}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e9b6030ded5061b4bab7a4496a16fab9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 488120721057108287}
   m_SourcePrefab: {fileID: 100100000, guid: e9b6030ded5061b4bab7a4496a16fab9, type: 3}
 --- !u!1 &8824679437077047087 stripped
 GameObject:
@@ -145,3 +149,34 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &488120721057108287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8824679437077047087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 557588265
+      Data2: 1272709422
+      Data3: -154286463
+      Data4: -442519665
+    Path: event:/SFX/Msc./AlienPod
+  Event: 
+  PlayEvent: 11
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20

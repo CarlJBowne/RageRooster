@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8885311231432202622}
   - component: {fileID: 2116850839394699682}
   - component: {fileID: 5753809536629982129}
+  - component: {fileID: -9039381597798833504}
   m_Layer: 3
   m_Name: SilverBullion
   m_TagString: Untagged
@@ -49,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   upgradeName: 
+  activateUpgrade: {fileID: 0}
   hintString: 
   addAmount: 1
 --- !u!135 &2116850839394699682
@@ -88,6 +90,37 @@ MonoBehaviour:
   bobHeight: 0.5
   turnSpeed: 1
   turnAngle: 90
+--- !u!114 &-9039381597798833504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8527713229153812084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: 513255496
+      Data2: 1098913138
+      Data3: 511799723
+      Data4: 1968408372
+    Path: event:/SFX/Msc./bullionPickup
+  Event: 
+  PlayEvent: 3
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &1721567891184395059
 PrefabInstance:
   m_ObjectHideFlags: 0
