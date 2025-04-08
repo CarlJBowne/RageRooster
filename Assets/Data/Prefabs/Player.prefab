@@ -742,7 +742,7 @@ MonoBehaviour:
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   air: 1
-  animationName: 
+  animationName: GrabAir
   wasHeld: 0
   success: 0
 --- !u!114 &7236256583575087778
@@ -3744,22 +3744,16 @@ MonoBehaviour:
   dropLaunchUpgrade: {fileID: 3210499484089810659, guid: 5096cd543e777e240af87643ae7b164b,
     type: 2}
   aimingState: {fileID: 0}
-  grabber:
-    currentGrabbed: {fileID: 0}
-    GrabStateEvent:
-      _PersistentCalls: []
-    collider: {fileID: 0}
-    launchVelocity: 21
-    checkSphereRadius: 1
-    checkSphereOffset: {x: 0, y: 0.5, z: 1}
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 905
-    oneHandedHand: {fileID: 7131444296845478749}
-    twoHandedHand: {fileID: 6163627308343083636}
-    ranged: {fileID: 0}
-    animator: {fileID: 0}
-    twoHanded: 0
+  launchVelocity: 12
+  checkSphereRadius: 0.66
+  checkSphereOffset: {x: 0, y: 1, z: 0.33}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 8833
+  oneHandedHand: {fileID: 0}
+  twoHandedHand: {fileID: 6163627308343083636}
+  GrabStateEvent:
+    _PersistentCalls: []
   pointer:
     startH: {fileID: 0}
     startV: {fileID: 0}
@@ -5440,30 +5434,7 @@ MonoBehaviour:
         - _Target: {fileID: 7788667647418580513}
           _MemberName: TransitionTo
           _PersistentArguments: []
-    - Key: GrabTap
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 5639727482222500743}
-          - _Type: 1
-            _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-    - Key: GrabHold
+    - Key: WalkOff
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
@@ -7477,7 +7448,6 @@ Transform:
   - {fileID: 2910622393535161883}
   - {fileID: 6014019409343752396}
   - {fileID: 6499787038979050382}
-  - {fileID: 6608803627792800818}
   - {fileID: 1173892547178082102}
   m_Father: {fileID: 542910149066364657}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8330,7 +8300,7 @@ MonoBehaviour:
             _Y: 0
             _Z: 0
             _W: 0
-            _Object: {fileID: 5639727482222500743}
+            _Object: {fileID: 4975428428768240672}
           - _Type: 1
             _Int: 0
             _String: 
@@ -8927,6 +8897,31 @@ MonoBehaviour:
         - _Target: {fileID: 6630164468072911266}
           _MemberName: TransitionTo
           _PersistentArguments: []
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: GroundStateChange
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!114 &7903285790010872625
 MonoBehaviour:
@@ -8972,7 +8967,7 @@ Transform:
   m_GameObject: {fileID: 6330798485065663893}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0.94}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9011,7 +9006,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0.94}
 --- !u!54 &3456762118593766446
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9680,29 +9675,12 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-    - Key: GrabHold
+    - Key: WalkOff
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 4975428428768240672}
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
+        - _Target: {fileID: 931477398715445950}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
     - Key: Parry
       Value:
         _PersistentCalls:
@@ -11755,7 +11733,7 @@ MonoBehaviour:
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   air: 0
-  animationName: 
+  animationName: Grab
   wasHeld: 0
   success: 0
 --- !u!114 &2441142607322890621
@@ -13410,6 +13388,12 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
+    - Key: WalkOff
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 931477398715445950}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
   lockReady: 1
 --- !u!1 &8959225014369038086
 GameObject:
