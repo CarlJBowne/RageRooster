@@ -1,3 +1,4 @@
+using SLS.StateMachineV3;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class PlayerWallJump : PlayerMovementEffector
 
     public Upgrade upgrade;
 
+    public string animationName = "WallJump";
+
     protected Vector3 startPoint;
     protected Vector3 fixedDirection;
 
@@ -25,7 +28,7 @@ public class PlayerWallJump : PlayerMovementEffector
         resultZ = fixedDirection.z * outwardVelocity;
 
         playerMovementBody.CurrentSpeed = outwardVelocity;
-        playerMovementBody.currentDirection = fixedDirection;
+        //playerMovementBody.currentDirection = fixedDirection;
 
         float distance = (transform.position - startPoint).XZ().magnitude;
         if (distance >= minDistance) sFall.TransitionTo();
@@ -40,6 +43,7 @@ public class PlayerWallJump : PlayerMovementEffector
             if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return false;
 
             if (!state.active) state.TransitionTo();
+            Machine.animator.Play(animationName, -1, 0f);
             playerMovementBody.VelocitySet(y: jumpPower);
 
             startPoint = transform.position;

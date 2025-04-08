@@ -62,6 +62,43 @@ public struct Attack
             if (tags[i].name == tag.name) return true;
         return false;
     }
+
+    /// <summary>
+    /// Works the same as HasTag
+    /// </summary>
+    public static bool operator ==(Attack A, string S)
+    {
+        for (int i = 0; i < A.tags.Length; i++)
+            if (A.tags[i].name == S) return true;
+        return false;
+    }
+    /// <summary>
+    /// Works the same as !HasTag
+    /// </summary>
+    public static bool operator !=(Attack A, string S)
+    {
+        for (int i = 0; i < A.tags.Length; i++)
+            if (A.tags[i].name == S) return false;
+        return true;
+    }
+    /// <summary>
+    /// Works the same as HasTag
+    /// </summary>
+    public static bool operator ==(Attack A, Tag T)
+    {
+        for (int i = 0; i < A.tags.Length; i++)
+            if (A.tags[i].name == T.name) return true;
+        return false;
+    }
+    /// <summary>
+    /// Works the same as !HasTag
+    /// </summary>
+    public static bool operator !=(Attack A, Tag T)
+    {
+        for (int i = 0; i < A.tags.Length; i++)
+            if (A.tags[i].name == T.name) return false;
+        return true;
+    }
 }
 public static class _AttackTagOverrides
 {
