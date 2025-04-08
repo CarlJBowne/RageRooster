@@ -1,5 +1,6 @@
 using EditorAttributes;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,6 +13,8 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     public float wiggleFreeTime;
     public int maxHealthToGrab;
     public float additionalThrowDistance;
+    public float additionalHoldHeight;
+
     [HideInEditMode, HideInPlayMode] public UltEvents.UltEvent<EntityState> GrabStateEvent;
 
     [FoldoutGroup("Entity State Change Events", nameof(defaultEvent),nameof(grabbedEvent),nameof(thrownEvent),nameof(bounceEvent))]
@@ -26,17 +29,31 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     #endregion
     #region Data
 
-    protected Grabber grabber;
-    public bool grabbed => grabber != null;
+    private IGrabber _Grabber;
+    public bool grabbed => Grabber != null;
 
     private new Collider collider;
     private Rigidbody rb;
     public EnemyHealth health { get; protected set; }
+    
+
+
     public CoroutinePlus wiggleCoroutine;
 
     [HideInEditMode, DisableInPlayMode] public EntityState currentState;
 
+
     #endregion
+    #region Interface Getters
+    public IGrabbable This => this;
+    public IGrabber Grabber { get => _Grabber; }
+    Transform IGrabbable.transform { get => transform; }
+    public float AdditionalThrowDistance => additionalThrowDistance;
+    public float AdditionalHoldHeight => additionalHoldHeight;
+    public bool IsGrabbable => gameObject.activeInHierarchy && UnderThreshold();
+
+    #endregion
+
 
     protected virtual void Awake()
     {
@@ -46,15 +63,9 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         SetState(EntityState.Default);
     }
 
-    public bool GiveGrabbable(out Grabbable result)
+    public bool Grab(IGrabber grabber)
     {
-        result = this;
-        return true;
-    }
-
-    public Grabbable Grab(Grabber grabber)
-    {
-        this.grabber = grabber;
+        _Grabber = grabber;
         SetState(EntityState.Grabbed);
         SetVelocity(Vector3.zero);
         IgnoreCollisionWithThrower();
@@ -69,7 +80,6 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         return this;
     }
 
-
     public void Throw(Vector3 velocity)
     {
         if (!grabbed) return;
@@ -81,7 +91,7 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         if (!grabbed) return; 
         IgnoreCollisionWithThrower(false);
 
-        grabber = null;
+        _Grabber = null;
         SetState(EntityState.Default);
         SetVelocity(Vector3.zero);
     } 
@@ -98,7 +108,7 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
             SetState(EntityState.RagDoll);
             if (thrownAttack.amount > 0 && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(GetAttack());
             IgnoreCollisionWithThrower(false);
-            grabber = null;
+            _Grabber = null;
         }
     }
 
@@ -138,7 +148,7 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
 
     public virtual void SetVelocity(Vector3 velocity) => rb.velocity = velocity;
 
-    public virtual void IgnoreCollisionWithThrower(bool ignore = true) => Physics.IgnoreCollision(collider, grabber.collider, ignore);
+    public virtual void IgnoreCollisionWithThrower(bool ignore = true) => Physics.IgnoreCollision(collider, Grabber.ownerCollider, ignore);
 
     public Attack GetAttack()
     {
@@ -146,19 +156,5 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         result.velocity = rb.velocity;
         return result;
     }
-}
 
-public interface IGrabbable
-{
-    public static bool Grab(GameObject target, out Grabbable result)
-    {
-        result = null;
-        return target.TryGetComponent(out IGrabbable interfaceResult) &&
-        interfaceResult.GiveGrabbable(out result) &&
-        result.enabled &&
-        result.UnderThreshold()
-        ? true : false;
-    }
-
-    public bool GiveGrabbable(out Grabbable result);
 }

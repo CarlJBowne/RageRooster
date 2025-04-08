@@ -111,10 +111,10 @@ public class RagdollHandler : Grabbable
         if (advanced)
         {
             for (int i = 0; i < ragDollColliders.Length; i++)
-                Physics.IgnoreCollision(ragDollColliders[i], grabber.collider, ignore);
-            if (proxy) proxy.IgnoreCollisionWithThrower(grabber.collider, ignore);
+                Physics.IgnoreCollision(ragDollColliders[i], Grabber.ownerCollider, ignore);
+            if (proxy) proxy.IgnoreCollisionWithThrower(Grabber.ownerCollider, ignore);
         }
-        else Physics.IgnoreCollision(nonRagdolledCollider, grabber.collider, ignore);
+        else Physics.IgnoreCollision(nonRagdolledCollider, Grabber.ownerCollider, ignore);
         
     }
 
