@@ -3812,22 +3812,16 @@ MonoBehaviour:
   dropLaunchUpgrade: {fileID: 3210499484089810659, guid: 5096cd543e777e240af87643ae7b164b,
     type: 2}
   aimingState: {fileID: 0}
-  grabber:
-    currentGrabbed: {fileID: 0}
-    GrabStateEvent:
-      _PersistentCalls: []
-    collider: {fileID: 0}
-    launchVelocity: 21
-    checkSphereRadius: 1
-    checkSphereOffset: {x: 0, y: 0.5, z: 1}
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 905
-    oneHandedHand: {fileID: 7131444296845478749}
-    twoHandedHand: {fileID: 6163627308343083636}
-    ranged: {fileID: 0}
-    animator: {fileID: 0}
-    twoHanded: 0
+  launchVelocity: 12
+  checkSphereRadius: 0.66
+  checkSphereOffset: {x: 0, y: 1, z: 0.33}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 8833
+  oneHandedHand: {fileID: 0}
+  twoHandedHand: {fileID: 6163627308343083636}
+  GrabStateEvent:
+    _PersistentCalls: []
   pointer:
     startH: {fileID: 0}
     startV: {fileID: 0}
@@ -8803,7 +8797,7 @@ Transform:
   m_GameObject: {fileID: 6330798485065663893}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0.94}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8842,7 +8836,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 1, z: 0.94}
 --- !u!54 &3456762118593766446
 Rigidbody:
   m_ObjectHideFlags: 0
