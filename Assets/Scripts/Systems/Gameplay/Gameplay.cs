@@ -42,6 +42,7 @@ public class Gameplay : Singleton<Gameplay>
 
     protected static System.Action PostMaLoad;
     public static StudioEventEmitter musicEmitter;
+    public static System.Action PreReloadSave;
 
     /// <summary>
     /// Begins the main menu by loading the gameplay scene and setting the active save file.
@@ -136,41 +137,52 @@ public class Gameplay : Singleton<Gameplay>
     /// <summary>
     /// Spawns the player by starting a coroutine.
     /// </summary>
-    public static void SpawnPlayer() => new CoroutinePlus(Get().SpawnPlayer_CR(), Get());
+    public static void SpawnPlayer()
+    {
+        new CoroutinePlus(SpawnPlayer_CR(), Get());
+
+        /// <summary>
+        /// Coroutine for spawning the player. Loads the spawn scene if not already loaded and moves the player to the spawn point.
+        /// </summary>
+        static IEnumerator SpawnPlayer_CR()
+        {
+            if (!ZoneManager.ZoneIsReady(spawnSceneName)) SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
+
+            yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
+
+            ZoneManager.DoTransition(spawnSceneName);
+            PlayerStateMachine.InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
+        }
+    }
 
     /// <summary>
     /// Resets the game to the saved state by starting a coroutine.
     /// </summary>
-    public void ResetToSaved() => new CoroutinePlus(Get().ResetToSaved_CR(), Get());
-
-    /// <summary>
-    /// Coroutine for spawning the player. Loads the spawn scene if not already loaded and moves the player to the spawn point.
-    /// </summary>
-    private IEnumerator SpawnPlayer_CR()
+    public void ResetToSaved()
     {
-        if (!ZoneManager.ZoneIsReady(spawnSceneName)) SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
+        PreReloadSave?.Invoke();
+        new CoroutinePlus(ResetToSaved_CR(), Get());
 
-        yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
+        /// <summary>
+        /// Coroutine for resetting the game to the saved state. Unloads all zones, loads the global state, and moves the player to the spawn point.
+        /// </summary>
+        static IEnumerator ResetToSaved_CR()
+        {
+            Player.SetActive(false);
+            yield return ZoneManager.Get().UnloadAll();
 
-        ZoneManager.DoTransition(spawnSceneName);
-        Player.GetComponent<PlayerStateMachine>().InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
+            GlobalState.Load();
+            SceneManager.LoadScene(spawnSceneName ?? ZoneManager.Get().defaultAreaScene, LoadSceneMode.Additive);
+
+            yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
+            ZoneManager.DoTransition(spawnSceneName);
+            PlayerStateMachine.InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
+        }
     }
 
-    /// <summary>
-    /// Coroutine for resetting the game to the saved state. Unloads all zones, loads the global state, and moves the player to the spawn point.
-    /// </summary>
-    private IEnumerator ResetToSaved_CR()
-    {
-        Player.SetActive(false);
-        yield return ZoneManager.Get().UnloadAll();
 
-        GlobalState.Load();
-        SceneManager.LoadScene(spawnSceneName ?? ZoneManager.Get().defaultAreaScene, LoadSceneMode.Additive);
 
-        yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
-        ZoneManager.DoTransition(spawnSceneName);
-        Player.GetComponent<PlayerStateMachine>().InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
-    }
+
 
 
     public static void DESTROY(bool areYouSure = false)

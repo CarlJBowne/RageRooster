@@ -94,7 +94,6 @@ GameObject:
   - component: {fileID: 4860710805250207159}
   - component: {fileID: 5456553183019500180}
   - component: {fileID: 6719417025391189733}
-  - component: {fileID: 506739545320758713}
   m_Layer: 0
   m_Name: Wishbone_LOD0
   m_TagString: Untagged
@@ -167,27 +166,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &506739545320758713
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3332787320483065841}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.015613208
-  m_Center: {x: 0.00014624641, y: 0.00032733183, z: -0.00035918}
 --- !u!1 &4051400240949058381
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,6 +260,8 @@ GameObject:
   - component: {fileID: 8418377231977693401}
   - component: {fileID: 1816329437317950885}
   - component: {fileID: 7183072186918522893}
+  - component: {fileID: 5640972049248816682}
+  - component: {fileID: 5548249721414196618}
   m_Layer: 0
   m_Name: Wishbone
   m_TagString: Untagged
@@ -350,3 +330,43 @@ MonoBehaviour:
   bobHeight: 0.5
   turnSpeed: 1
   turnAngle: 90
+--- !u!135 &5640972049248816682
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7368411521816657755}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.75
+  m_Center: {x: 0.00014624641, y: 0.00032733183, z: -0.00035918}
+--- !u!114 &5548249721414196618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7368411521816657755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11a894e3ec5b40c4797aee97ae0dd07b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 4
+  upgradeName: 
+  activateUpgrade: {fileID: 0}
+  hintString: '+ Wishbone
+
+    Max Health increased by 1!'
+  addAmount: 1

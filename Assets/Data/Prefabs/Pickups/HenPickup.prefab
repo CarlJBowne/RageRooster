@@ -10,6 +10,21 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 8.24
       objectReference: {fileID: 0}
@@ -58,10 +73,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 646e184b8e9d6984cba389444f61f5b0,
         type: 3}
       propertyPath: m_Name
-      value: RR_HenFinal
+      value: HenPickup
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -94,8 +114,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d159a10ef155f64bbbdc73cec17c57e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldChange: {fileID: 0}
+  worldChange: {fileID: 2357636761488734058, guid: 546d60c46cc1b4c4fb90fec693b180d8,
+    type: 2}
   ammoCount: 1
+  hintString: '[HenName] has joined your party! Egg Ammo +1'
 --- !u!135 &2234068968355659516
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -111,7 +133,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

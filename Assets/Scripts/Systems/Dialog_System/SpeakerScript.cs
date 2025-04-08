@@ -111,10 +111,11 @@ public class SpeakerScript : MonoBehaviour, IInteractable
             UI.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
             UI.SetCharNameAndColor();
             UI.inDialogue = true;
+            PauseMenu.canPause = false;
             UI.CameraChange(true);
             UI.ClearText();
             UI.FadeUI(true, .2f, .65f);
-            TurnToPlayer(Gameplay.I.player.transform.position);
+            TurnToPlayer(Gameplay.Player.transform.position);
         }
 
         dialogue = data.dialogueList[data.dialogueID];

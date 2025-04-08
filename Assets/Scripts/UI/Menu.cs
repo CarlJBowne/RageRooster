@@ -160,7 +160,7 @@ public class Menu : MonoBehaviour
         /// </summary>
         public static void Escape()
         {
-            if (PauseMenu.Loaded && !PauseMenu.Active)
+            if (PauseMenu.Loaded && !PauseMenu.Active && PauseMenu.canPause)
                 PauseMenu.Get().Open();
             else if (currentMenus.Count > 0)
                 currentMenus[^1].Close();

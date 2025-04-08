@@ -94,8 +94,6 @@ GameObject:
   - component: {fileID: 1864023050669722121}
   - component: {fileID: 480173370665591934}
   - component: {fileID: 2202958600041211317}
-  - component: {fileID: 279283819852730161}
-  - component: {fileID: 7985969950402104504}
   m_Layer: 0
   m_Name: Underwear_LOD0
   m_TagString: Untagged
@@ -168,44 +166,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &279283819852730161
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5263696527143162563}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.017465945
-  m_Center: {x: 0.0009637719, y: 0.0003125857, z: -0.0029217757}
---- !u!114 &7985969950402104504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5263696527143162563}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11a894e3ec5b40c4797aee97ae0dd07b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  upgradeName: 
-  activateUpgrade: {fileID: 0}
-  hintString: 
-  addAmount: 1
 --- !u!1 &6100206365174233328
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,6 +177,8 @@ GameObject:
   - component: {fileID: 1518675008632112005}
   - component: {fileID: 6103362908553116836}
   - component: {fileID: 9030180808722647646}
+  - component: {fileID: 3321078685220752066}
+  - component: {fileID: 8432497245877411762}
   m_Layer: 0
   m_Name: Underwear
   m_TagString: Untagged
@@ -285,6 +247,44 @@ MonoBehaviour:
   bobHeight: 0.5
   turnSpeed: 1
   turnAngle: 90
+--- !u!135 &3321078685220752066
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6100206365174233328}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.75
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8432497245877411762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6100206365174233328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11a894e3ec5b40c4797aee97ae0dd07b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  upgradeName: 
+  activateUpgrade: {fileID: 0}
+  hintString: 
+  addAmount: 1
 --- !u!1 &6514254055739071222
 GameObject:
   m_ObjectHideFlags: 0
