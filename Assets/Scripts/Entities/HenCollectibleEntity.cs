@@ -6,6 +6,7 @@ public class HenCollectibleEntity : MonoBehaviour, IInteractable
 {
     public WorldChange worldChange;
     public int ammoCount = 1;
+    public string hintString;
 
     bool IInteractable.canInteract => true;
 
@@ -28,6 +29,7 @@ public class HenCollectibleEntity : MonoBehaviour, IInteractable
         GlobalState.AddMaxAmmo(ammoCount);
         worldChange.Enable();
         gameObject.SetActive(false);
+        UIHUDSystem.Get().ShowHint(hintString);
         return true;
     }
 
