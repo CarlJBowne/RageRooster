@@ -7,6 +7,7 @@ using SLS.StateMachineV3;
 public class PlayerGrabAction : PlayerStateBehavior
 {
     public bool air;
+    public string animationName;
     
     [HideProperty] public bool wasHeld;
     [HideProperty] public bool success;
@@ -25,6 +26,7 @@ public class PlayerGrabAction : PlayerStateBehavior
     public void AttemptGrab(Grabbable attempt, bool held)
     {
         state.TransitionTo();
+        Machine.animator.CrossFade(animationName, .1f, -1, 0f);
         if (attempt != null)
         {
             selectedGrabbable = attempt;

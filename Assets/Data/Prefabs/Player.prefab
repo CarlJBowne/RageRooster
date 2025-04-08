@@ -708,6 +708,7 @@ MonoBehaviour:
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   air: 1
+  animationName: GrabAir
   wasHeld: 0
   success: 0
 --- !u!114 &7236256583575087778
@@ -5504,7 +5505,7 @@ MonoBehaviour:
             _Y: 0
             _Z: 0
             _W: 0
-            _Object: {fileID: 5639727482222500743}
+            _Object: {fileID: 0}
           - _Type: 1
             _Int: 0
             _String: 
@@ -7447,7 +7448,6 @@ Transform:
   - {fileID: 2910622393535161883}
   - {fileID: 6014019409343752396}
   - {fileID: 6499787038979050382}
-  - {fileID: 6608803627792800818}
   - {fileID: 1173892547178082102}
   m_Father: {fileID: 542910149066364657}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8274,7 +8274,7 @@ MonoBehaviour:
             _Y: 0
             _Z: 0
             _W: 0
-            _Object: {fileID: 5639727482222500743}
+            _Object: {fileID: 4975428428768240672}
           - _Type: 1
             _Int: 0
             _String: 
@@ -8756,6 +8756,31 @@ MonoBehaviour:
         - _Target: {fileID: 6630164468072911266}
           _MemberName: TransitionTo
           _PersistentArguments: []
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: ReturnToNeutral
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+        - _Target: {fileID: 3941225653291784218}
+          _MemberName: GroundStateChange
+          _PersistentArguments:
+          - _Type: 1
+            _Int: 1
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!114 &7903285790010872625
 MonoBehaviour:
@@ -11207,154 +11232,6 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 1
---- !u!1 &7879129699227318313
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6608803627792800818}
-  - component: {fileID: 6901183049837345610}
-  - component: {fileID: 5639727482222500743}
-  - component: {fileID: 7099900386698263642}
-  - component: {fileID: 6689919849647260179}
-  m_Layer: 6
-  m_Name: DashGrab
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6608803627792800818
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7879129699227318313}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 36.25, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4182476368529953341}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6901183049837345610
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7879129699227318313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: FinishGrab
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 5639727482222500743}
-          _MemberName: GrabPoint
-          _PersistentArguments: []
-    - Key: Finish
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-  lockReady: 1
---- !u!114 &5639727482222500743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7879129699227318313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9ea06674c3fe044c81dee4e88f1ae12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
-  air: 0
-  wasHeld: 0
-  success: 0
---- !u!114 &7099900386698263642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7879129699227318313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 3
-  onEnterName: Grab
-  onEnterTime: 0.01
-  animator: {fileID: 0}
---- !u!114 &6689919849647260179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7879129699227318313}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
-  trueActive: 0
-  influence: 0.5
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 0
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0
-  setVerticalVelocity: 0
-  defaultGravity: 0
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 1
 --- !u!1 &7946590860477714497
 GameObject:
   m_ObjectHideFlags: 0
@@ -11518,6 +11395,7 @@ MonoBehaviour:
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   air: 0
+  animationName: Grab
   wasHeld: 0
   success: 0
 --- !u!114 &2441142607322890621
