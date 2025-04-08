@@ -742,6 +742,7 @@ MonoBehaviour:
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   air: 1
+  animationName: 
   wasHeld: 0
   success: 0
 --- !u!114 &7236256583575087778
@@ -1511,6 +1512,7 @@ MonoBehaviour:
   maxAngleDifference: 0.1
   upgrade: {fileID: -5908332654645760598, guid: 5096cd543e777e240af87643ae7b164b,
     type: 2}
+  animationName: WallJump
 --- !u!1 &1256794683121586061
 GameObject:
   m_ObjectHideFlags: 0
@@ -5518,8 +5520,9 @@ MonoBehaviour:
   prevPhaseThreshold: 15
   nextPhase: {fileID: 0}
   nextPhaseThreshold: 25
-  needChargeButton: 0
-  needRagingUpgrade: 0
+  needs1Charge: 0
+  needs2Charge: 0
+  needsRagingUpgrade: 0
 --- !u!135 &675394232343518501
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7710,8 +7713,9 @@ MonoBehaviour:
   prevPhaseThreshold: 0.05
   nextPhase: {fileID: 4244649889381608096}
   nextPhaseThreshold: 15
-  needChargeButton: 1
-  needRagingUpgrade: 0
+  needs1Charge: 0
+  needs2Charge: 0
+  needsRagingUpgrade: 0
 --- !u!1 &5549163275917385519
 GameObject:
   m_ObjectHideFlags: 0
@@ -8404,8 +8408,9 @@ MonoBehaviour:
   prevPhaseThreshold: 15
   nextPhase: {fileID: 704825921462216154}
   nextPhaseThreshold: 25
-  needChargeButton: 1
-  needRagingUpgrade: 1
+  needs1Charge: 0
+  needs2Charge: 0
+  needsRagingUpgrade: 0
 --- !u!135 &4303229188960523177
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -9738,8 +9743,9 @@ MonoBehaviour:
   prevPhaseThreshold: 0
   nextPhase: {fileID: 528938496853295208}
   nextPhaseThreshold: 0.05
-  needChargeButton: 0
-  needRagingUpgrade: 0
+  needs1Charge: 0
+  needs2Charge: 0
+  needsRagingUpgrade: 0
 --- !u!1 &6824799447565327635
 GameObject:
   m_ObjectHideFlags: 0
@@ -11537,6 +11543,7 @@ MonoBehaviour:
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   air: 0
+  animationName: 
   wasHeld: 0
   success: 0
 --- !u!114 &7099900386698263642
@@ -11748,6 +11755,7 @@ MonoBehaviour:
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   air: 0
+  animationName: 
   wasHeld: 0
   success: 0
 --- !u!114 &2441142607322890621
