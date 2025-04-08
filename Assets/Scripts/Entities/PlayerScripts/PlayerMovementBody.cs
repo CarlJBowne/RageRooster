@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerMovementBody : PlayerStateBehavior
 {
@@ -68,7 +69,10 @@ public class PlayerMovementBody : PlayerStateBehavior
     public Quaternion rotationQ 
     { get => rb.rotation; set => rb.rotation = value; }
     public Vector3 rotation 
-    { get => transform.eulerAngles; set => transform.eulerAngles = value; }
+    { 
+        get => transform.eulerAngles; 
+        set => transform.eulerAngles = value; 
+    }
 
     public Vector3 center => position + collider.center;
 
@@ -79,7 +83,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         {
             if (_currentDirection == value) return;
             _currentDirection = value;
-            if(playerMovementBody) playerMovementBody.rotation = _currentDirection.DirToRot();
+            playerMovementBody.rotationQ = Quaternion.LookRotation(value, Vector3.up);
         }
     }
 
@@ -103,9 +107,14 @@ public class PlayerMovementBody : PlayerStateBehavior
     public void DirectionSet(float maxTurnSpeed, Vector3 target)
     {
         if (target == Vector3.zero) return; 
-        currentDirection = Vector3.RotateTowards(currentDirection, target, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
+        currentDirection = Vector3.RotateTowards(currentDirection, target.normalized, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
     }
-    public void DirectionSet(float maxTurnSpeed) => DirectionSet(maxTurnSpeed, playerController.camAdjustedMovement); 
+    public void DirectionSet(float maxTurnSpeed) => DirectionSet(maxTurnSpeed, playerController.camAdjustedMovement);
+    public void InstantDirectionChange(Vector3 target)
+    {
+        if (target.sqrMagnitude == 0) return;
+        currentDirection = target;
+    }
 
     public VolcanicVent currentVent
     {
@@ -117,6 +126,8 @@ public class PlayerMovementBody : PlayerStateBehavior
         }
     }
     public bool isOverVent => _currentVent != null;
+
+
 
     #endregion GetSet
 

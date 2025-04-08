@@ -156,6 +156,7 @@ public class ConversationManager : MonoBehaviour
         //Interface to stop player movement while in dialogue by disabling the component for movement
         Gameplay.Player.GetComponent<PlayerStateMachine>().UnPauseState();
         inDialogue = false;
+        PauseMenu.canPause = true;
         canExit = false;
     }
 

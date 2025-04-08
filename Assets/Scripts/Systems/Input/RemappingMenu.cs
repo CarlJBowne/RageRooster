@@ -27,24 +27,26 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
     public void ClearAllOverrides() 
     {foreach (ButtonEntry item in buttons) item.ClearOverrides();}
 
-    public JToken Serialize()=> new JObject(
+    public JToken Serialize(string name = null) => new JObject(
         new JProperty("Jump",       buttons[0].Serialize()),
         new        JProperty("Attack",     buttons[1].Serialize()),
-        new        JProperty("Parry",      buttons[2].Serialize()),
-        new        JProperty("Grab",       buttons[3].Serialize()),
-        new        JProperty("Shoot",      buttons[4].Serialize()),
-        new        JProperty("Interact",  buttons[5].Serialize()),
-        new        JProperty("Charge",     buttons[6].Serialize())
+        new        JProperty("Grab",       buttons[2].Serialize()),
+        new        JProperty("Parry",      buttons[3].Serialize()),
+        new        JProperty("Charge1",      buttons[4].Serialize()),
+        new        JProperty("Charge2",      buttons[5].Serialize()),
+        new        JProperty("Aim",     buttons[6].Serialize()),
+        new        JProperty("Interact",  buttons[7].Serialize())
             );
     public void Deserialize(JToken Data)
     {
         buttons[0].Deserialize(Data["Jump"]);
         buttons[1].Deserialize(Data["Attack"]);
-        buttons[2].Deserialize(Data["Parry"]);
-        buttons[3].Deserialize(Data["Grab"]);
-        buttons[4].Deserialize(Data["Shoot"]);
-        buttons[5].Deserialize(Data["Interact"] ?? Data["ShootMode"]);
-        buttons[6].Deserialize(Data["Charge"]);
+        buttons[2].Deserialize(Data["Grab"]);
+        buttons[3].Deserialize(Data["Parry"]);
+        buttons[4].Deserialize(Data["Charge1"]);
+        buttons[5].Deserialize(Data["Charge2"]);
+        buttons[6].Deserialize(Data["Aim"]);
+        buttons[7].Deserialize(Data["Interact"]);
     }
 
     /// <summary>
@@ -54,13 +56,13 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
     {
         for (int i = 0; i < buttons.Length; i++)
         {
-            buttons[i].main = Input.Get().asset.FindAction(buttons[i].main.action.name).Reference();
+            buttons[i].main = Input.Get().Asset.FindAction(buttons[i].main.action.name).Reference();
             for (int j = 0; j < buttons[i].relatives.Length; j++)
             {
-                buttons[i].relatives[j] = Input.Get().asset.FindAction(buttons[i].relatives[j].action.name).Reference();
+                buttons[i].relatives[j] = Input.Get().Asset.FindAction(buttons[i].relatives[j].action.name).Reference();
             }
         }
-    }
+    } 
 
     [System.Serializable]
     public struct ButtonEntry : ICustomSerialized
@@ -87,7 +89,7 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
 
         public void RebindControl(RemappingMenu menu)
         {
-            Input.Get().asset.Disable();
+            Input.Get().Asset.Disable();
             menu.rebindingOverlay.SetActive(true);
             menu.rebindingText.text = $"Now Rebinding Controls for [{displayName}]";
 
@@ -100,7 +102,7 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
             .OnApplyBinding((op, path) =>
             {
                 string chosenScheme = null;
-                foreach (InputControlScheme scheme in Input.Get().asset.controlSchemes)
+                foreach (InputControlScheme scheme in Input.Get().Asset.controlSchemes)
                     if (scheme.SupportsDevice(op.selectedControl.device))
                     {
                         chosenScheme = scheme.bindingGroup;
@@ -111,7 +113,7 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
             })
             .OnComplete(op =>
             {
-                Input.Get().asset.Enable();
+                Input.Get().Asset.Enable();
                 menu.rebindingOverlay.SetActive(false);
                 op.Dispose();
             })
@@ -131,12 +133,13 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
             UpdateImages();
         }
 
-        public JToken Serialize() => new JObject(
+        public JToken Serialize(string name = null) => new JObject(
             new JProperty("Gamepad", main.action.GetBindingOverridePath(group: "Gamepad")),
             new JProperty("Keyboard", main.action.GetBindingOverridePath(group: "Keyboard"))
             ); 
         public void Deserialize(JToken Data)
         {
+            if (Data == null) return;
             ClearOverrides();
             string G = Data["Gamepad"].As<string>();
             string K = Data["Keyboard"].As<string>();

@@ -13,6 +13,7 @@ using TMPro;
 using DG.Tweening;
 using Cinemachine;
 using System;
+using static Input;
 [RequireComponent(typeof(DialogueAudio))]
 [RequireComponent(typeof(Animator))]
 public class SpeakerScript : MonoBehaviour, IInteractable
@@ -96,18 +97,35 @@ public class SpeakerScript : MonoBehaviour, IInteractable
 
     bool IInteractable.Interaction()
     {
-        Debug.Log("Speaker is activated");
+        //Debug.Log("Speaker is activated");
+
+        ConversationManager UI = ConversationManager.instance;
+
+        if (!UI.inDialogue)
+        {
+            UI.currentSpeaker = this;
+
+            targetGroup.m_Targets[1].target = Gameplay.I.player.transform;
+            Gameplay.PlayerStateMachine.PauseState();
+            UI.dialogueCamera.GetComponent<CinemachineVirtualCamera>().Follow = targetGroup.transform;
+            UI.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
+            UI.SetCharNameAndColor();
+            UI.inDialogue = true;
+            PauseMenu.canPause = false;
+            UI.CameraChange(true);
+            UI.ClearText();
+            UI.FadeUI(true, .2f, .65f);
+            TurnToPlayer(Gameplay.Player.transform.position);
+        }
+
         dialogue = data.dialogueList[data.dialogueID];
         onSpeakerActivate?.Invoke();
+
         return true;
     }
 
-    public virtual void CheckForNextConversation(int index)
-    {
-        //Read the index that is passed in an compare it to the given cases
-        //
-    }
+    public virtual void CheckForNextConversation(int index) => data.OnConversationFinished();
 
 
-
+    public Vector3 PopupPosition => transform.position + Vector3.up * 3;
 }

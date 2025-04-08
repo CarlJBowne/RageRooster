@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [System.Serializable] 
-public partial class ZoneManager : Singleton<ZoneManager>
+public class ZoneManager : Singleton<ZoneManager>
 {
     [SerializeField] ZoneRoot currentZone;
     [SerializeField] AYellowpaper.SerializedCollections.SerializedDictionary<string, ZoneProxy> proxies = new();

@@ -6,6 +6,7 @@ using Cinemachine;
 using UnityEngine.Assertions.Must;
 using Unity.VisualScripting;
 
+[System.Obsolete]
 public class DialogueTrigger : MonoBehaviour
 {
     private ConversationManager ui;
@@ -63,10 +64,13 @@ public class DialogueTrigger : MonoBehaviour
         if (!ui.inDialogue && currentSpeaker != null)
         {
             
-            targetGroup.m_Targets[1].target = Gameplay.I.player.transform;
+            if(targetGroup != null)
+            {
+                targetGroup.m_Targets[1].target = Gameplay.I.player.transform;
+                ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().Follow = targetGroup.transform;
+                ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
+            }
             Gameplay.Player.GetComponent<PlayerStateMachine>().PauseState();
-            ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().Follow = targetGroup.transform;
-            ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
             ui.SetCharNameAndColor();
             ui.inDialogue = true;
             ui.CameraChange(true);

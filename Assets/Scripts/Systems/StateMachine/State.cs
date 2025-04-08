@@ -22,7 +22,17 @@ namespace SLS.StateMachineV3
         /// Acts as a separate state from children rather than automating to the first in the list. Only applicable if this State has child states. 
         /// </summary>
         [SerializeField, ShowField(nameof(__showSepFromChildren))] private bool separateFromChildren;
-        [SerializeField, HideField(nameof(__isMachine))] public UltEvent<State> onActivatedEvent;
+
+        [FoldoutGroup("Lifetime Events", nameof(onAwakeEvent), nameof(onEnterEvent), nameof(onExitEvent), nameof(onActiveChangeEvent), nameof(onUpdateEvent), nameof(onFixedUpdateEvent))]
+        public Void lifetimeEventsHolder;
+
+        [SerializeField, HideInInspector] public UltEvent<StateMachine> onAwakeEvent;
+        [SerializeField, HideInInspector] public UltEvent<State> onEnterEvent;
+        [SerializeField, HideInInspector] public UltEvent<State> onExitEvent;
+        [SerializeField, HideInInspector] public UltEvent<bool> onActiveChangeEvent;
+        [SerializeField, HideInInspector] public UltEvent<float> onUpdateEvent;
+        [SerializeField, HideInInspector] public UltEvent<float> onFixedUpdateEvent;
+
 
         #region Signals
         [SerializeField, HideField(nameof(__isMachine))] public SerializedDictionary<string, UltEvent> signals;
@@ -111,6 +121,8 @@ namespace SLS.StateMachineV3
 
             behaviors = GetComponents<StateBehavior>();
             for (int i = 0; i < behaviors.Length; i++) behaviors[i].InitializeP(this);
+
+            onAwakeEvent?.InvokeSafe(machine);
         }
 
         protected void SetupChildren(Transform parent)
@@ -134,11 +146,13 @@ namespace SLS.StateMachineV3
         public void DoUpdate()
         {
             for (int i = 0; i < behaviors.Length; i++) behaviors[i].OnUpdate();
+            onUpdateEvent?.Invoke(Time.deltaTime);
             if (childCount>0 && activeChild != null) activeChild.DoUpdate();
         }
         public void DoFixedUpdate()
         {
             for (int i = 0; i < behaviors.Length; i++) behaviors[i].OnFixedUpdate();
+            onFixedUpdateEvent?.Invoke(Time.fixedDeltaTime);
             if (childCount > 0 && activeChild != null) activeChild.DoFixedUpdate(); 
         }
         public State EnterState(State prev, bool specifically = true)
@@ -154,7 +168,9 @@ namespace SLS.StateMachineV3
                 activeChild = children[0];
                 return activeChild.EnterState(prev, specifically);
             }
-            else machine.signalReady = !lockReady; 
+            else machine.signalReady = !lockReady;
+            onEnterEvent?.DynamicInvoke(prev);
+            onActiveChangeEvent?.DynamicInvoke(true);
             return this;
         }
         public void ExitState(State next)
@@ -163,6 +179,8 @@ namespace SLS.StateMachineV3
             active = false;
             for (int i = 0; i < behaviors.Length; i++) behaviors[i].OnExit(next);
             base.gameObject.SetActive(false);
+            onExitEvent?.DynamicInvoke(next);
+            onActiveChangeEvent?.DynamicInvoke(false);
         }
 
         public void TransitionTo() => machine.TransitionState(this);

@@ -15,6 +15,7 @@ public class HenCollectibleEntity : MonoBehaviour, IInteractable
         {
 #if UNITY_EDITOR
             Debug.LogWarning($"This Hen Collectible ({gameObject.name}) is without a WorldChange. It will work for the time being, but it will disable itself in the final build and in testing will not permanently disappear once collected.");
+            return;
 #else
             gameObject.SetActive(false);
             return;
@@ -29,4 +30,7 @@ public class HenCollectibleEntity : MonoBehaviour, IInteractable
         gameObject.SetActive(false);
         return true;
     }
+
+    public Vector3 PopupPosition => transform.position + Vector3.up * 2;
+
 }

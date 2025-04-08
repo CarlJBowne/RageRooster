@@ -122,7 +122,7 @@ public class PlayerRanged : MonoBehaviour
 
 
         protected override void OnGrab() => twoHanded = currentGrabbed.twoHanded;
-        protected override void OnRelease() => currentGrabbed.rb.velocity = ranged.launchVelocity;
+        protected override void OnRelease() => currentGrabbed.SetVelocity(ranged.launchVelocity);
 
         public override void BeginGrab(Grabbable grabbed)
         {
@@ -222,7 +222,7 @@ public class PlayerRanged : MonoBehaviour
 
     public void AimingFixedUpdate()
     {
-        if (machine.signalReady && !Input.ShootMode.IsPressed()) ExitAiming(idleState);
+        if (machine.signalReady && !Input.Aim.IsPressed()) ExitAiming(idleState);
 
         body.currentDirection = Vector3.RotateTowards(
             body.currentDirection, pointer.startH.forward, 

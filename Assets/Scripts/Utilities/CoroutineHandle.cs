@@ -150,10 +150,6 @@ public class CoroutinePlus : IEnumerator
     }
 
 
-    //public static bool operator ==(CoroutinePlus a, object b) => a == b;
-    //public static bool operator !=(CoroutinePlus a, object b) => a != b;
-    //public static bool operator ==(CoroutinePlus a, IEnumerator b) => a.enumerator == b;
-    //public static bool operator !=(CoroutinePlus a, IEnumerator b) => a.enumerator != b;
     public static implicit operator bool(CoroutinePlus a) => a != null;
 
     public override string ToString() => base.ToString();
@@ -166,6 +162,15 @@ public class CoroutinePlus : IEnumerator
     /// <param name="compare">The IEnumerator to compare.</param>
     /// <returns>True if equal.</returns>
     public bool Uses(IEnumerator compare) => compare == wrappedEnumerator;
+
+    
+    public static void Begin(ref CoroutinePlus slot, IEnumerator Enum, MonoBehaviour owner)
+    {
+        slot?.StopAuto(true);
+        slot = null;
+        slot = new(Enum, owner);
+    }
+    public static void Stop(ref CoroutinePlus slot) => slot?.StopAuto();
 }
 
 //Bonus!
