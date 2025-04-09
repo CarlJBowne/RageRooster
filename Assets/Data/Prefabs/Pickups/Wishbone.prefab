@@ -380,6 +380,7 @@ GameObject:
   - component: {fileID: 7183072186918522893}
   - component: {fileID: 5640972049248816682}
   - component: {fileID: 5548249721414196618}
+  - component: {fileID: -43308026894804067}
   m_Layer: 0
   m_Name: Wishbone
   m_TagString: Untagged
@@ -490,6 +491,37 @@ MonoBehaviour:
 
     Max Health increased by 1!'
   addAmount: 1
+--- !u!114 &-43308026894804067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7368411521816657755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: 1580193718
+      Data2: 1165188655
+      Data3: -1208228194
+      Data4: -1380103946
+    Path: event:/SFX/Msc./wishBone
+  Event: 
+  PlayEvent: 3
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &1594901420465295792
 PrefabInstance:
   m_ObjectHideFlags: 0
