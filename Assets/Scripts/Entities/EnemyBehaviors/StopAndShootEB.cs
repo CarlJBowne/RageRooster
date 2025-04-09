@@ -6,20 +6,17 @@ using UnityEngine.AI;
 
 public class StopAndShootEB : StateBehavior
 {
-    public ObjectPool bulletPool;
-    public float rate;
-    public float chanceOfFiringWhenBlocked;
+    public ObjectPool bulletPool = new();
+    public Timer.Loop fireRate;
+    public float chanceOfFiringWhenBlocked; 
     private NavMeshAgent agent;
 
-    Timer_Old fireTimer;
     TrackerEB tracker;
 
     public override void OnAwake() 
     {
         agent = GetComponentFromMachine<NavMeshAgent>();
         bulletPool.Initialize();
-        //fireTimer = new(rate, Fire);
-        fireTimer = new(rate, Fire);
         tracker = state.parent.GetComponent<TrackerEB>();
     }
 
@@ -31,7 +28,7 @@ public class StopAndShootEB : StateBehavior
     public override void OnUpdate()
     {
         bulletPool.spawnPoint.rotation = Quaternion.LookRotation(tracker.Direction, Vector3.up);
-        fireTimer.Increment(Time.deltaTime, Fire);
+        fireRate.Tick(Fire);
         bulletPool.Update(); 
     }
 

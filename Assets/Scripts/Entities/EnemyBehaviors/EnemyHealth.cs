@@ -55,7 +55,7 @@ public class EnemyHealth : Health
         else if (currentState is EntityState.Default && health != 0)
         {
             Stun(attack);
-            tintAnimator.BeginAnimation();
+            if(tintAnimator) tintAnimator.BeginAnimation(); 
         }
     }
 
@@ -75,7 +75,7 @@ public class EnemyHealth : Health
         else if (currentState is EntityState.Default)
         {
             Stun(attack);
-            tintAnimator.BeginAnimation();
+            if (tintAnimator) tintAnimator.BeginAnimation();
         }
 
     }
