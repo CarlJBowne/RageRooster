@@ -7315,6 +7315,7 @@ MonoBehaviour:
   - {fileID: 1690541605571634884}
   - {fileID: 3473136968267292163}
   enemyLootSpawner: {fileID: 0}
+  tintAnimator: {fileID: 7237475419804263782}
   respawn: 0
   respawnTime: 1
   currentState: 0
@@ -7360,6 +7361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 6457618748278707287, guid: 4b4f854d76b60394d8c44d23c7f70fb5, type: 3}
+  health: {fileID: 0}
 --- !u!114 &353358766067455826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7377,6 +7379,7 @@ MonoBehaviour:
   wiggleFreeTime: 0
   maxHealthToGrab: -1
   additionalThrowDistance: 0
+  additionalHoldHeight: 0
   GrabStateEvent:
     _PersistentCalls: []
   defaultEvent:
@@ -8073,6 +8076,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7287510189344093647}
+  - component: {fileID: 7237475419804263782}
   m_Layer: 7
   m_Name: model:geo
   m_TagString: Untagged
@@ -8102,6 +8106,34 @@ Transform:
   - {fileID: 7327798065679928249}
   m_Father: {fileID: 3409463247654590224}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7237475419804263782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7028021544691006987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62578c64052260f4fae0e871c1ab376b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sets:
+  - materialSlot: {fileID: 2100000, guid: 3863571c5c343d345a9a38f692173239, type: 2}
+    instancedMaterial: {fileID: 0}
+    renderers:
+    - {fileID: 7861125553402108259}
+    - {fileID: 8127323150963576116}
+    - {fileID: 345130748317639628}
+    - {fileID: 8075977965061635864}
+    - {fileID: 963083993162887054}
+  - materialSlot: {fileID: 2100000, guid: 4f5558cb880c25546a7933bc1d463288, type: 2}
+    instancedMaterial: {fileID: 0}
+    renderers:
+    - {fileID: 4194350369582917043}
+    - {fileID: 8425809303422538956}
+  defaultFadeOutTime: 0.5
+  defaultFadeInTime: 0
 --- !u!1 &7028490871070062570
 GameObject:
   m_ObjectHideFlags: 0

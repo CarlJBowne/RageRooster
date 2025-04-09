@@ -926,6 +926,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8394546691880469175}
+  - component: {fileID: 3292420354071468214}
   m_Layer: 7
   m_Name: model:geo
   m_TagString: Untagged
@@ -955,6 +956,31 @@ Transform:
   - {fileID: 6568739688903100457}
   m_Father: {fileID: 1743930371219312829}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3292420354071468214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905976975941890618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62578c64052260f4fae0e871c1ab376b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sets:
+  - materialSlot: {fileID: 2100000, guid: 3863571c5c343d345a9a38f692173239, type: 2}
+    instancedMaterial: {fileID: 0}
+    renderers:
+    - {fileID: 1175529866787609900}
+    - {fileID: 4925999999004565022}
+    - {fileID: 2741697468071330918}
+    - {fileID: 8199609326572638153}
+    - {fileID: 4437686323060875640}
+    - {fileID: 3871778905808713235}
+    - {fileID: 8321065955194454580}
+  defaultFadeOutTime: 0.5
+  defaultFadeInTime: 0
 --- !u!1 &920990044851613958
 GameObject:
   m_ObjectHideFlags: 0
@@ -6180,6 +6206,7 @@ MonoBehaviour:
   - {fileID: 6738454064187818541}
   - {fileID: 3182761241942017665}
   enemyLootSpawner: {fileID: 0}
+  tintAnimator: {fileID: 3292420354071468214}
   respawn: 1
   respawnTime: 5
   currentState: 0
@@ -6233,6 +6260,7 @@ MonoBehaviour:
   wiggleFreeTime: 0
   maxHealthToGrab: 5
   additionalThrowDistance: 0
+  additionalHoldHeight: 0
   GrabStateEvent:
     _PersistentCalls: []
   defaultEvent:

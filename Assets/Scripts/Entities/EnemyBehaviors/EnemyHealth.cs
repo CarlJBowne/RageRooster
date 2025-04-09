@@ -16,6 +16,7 @@ public class EnemyHealth : Health
     public Behaviour[] disableComponents;
     public EnemyLootSpawner enemyLootSpawner;
 
+    public ColorTintAnimation tintAnimator;
     private RagdollHandler ragdoll;
 
     [ToggleGroup("SingleRespawn", nameof(respawnTime))]
@@ -51,7 +52,11 @@ public class EnemyHealth : Health
         damageEvent?.Invoke(attack.amount);
 
         if(currentState is EntityState.RagDoll) ragdoll.SetVelocity(attack.velocity);
-        else if (currentState is EntityState.Default && health != 0) Stun(attack);
+        else if (currentState is EntityState.Default && health != 0)
+        {
+            Stun(attack);
+            tintAnimator.BeginAnimation();
+        }
     }
 
     protected override void OnDeplete(Attack attack)
@@ -67,7 +72,11 @@ public class EnemyHealth : Health
             }
             else Destroy();
         }
-        else if (currentState is EntityState.Default) Stun(attack);
+        else if (currentState is EntityState.Default)
+        {
+            Stun(attack);
+            tintAnimator.BeginAnimation();
+        }
 
     }
 
