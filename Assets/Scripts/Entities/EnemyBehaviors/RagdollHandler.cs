@@ -19,7 +19,7 @@ public class RagdollHandler : Grabbable
     public Rigidbody[] ragDollRigidBodies;
 
     private new Collider collider => advanced ? ragDollColliders[0] : nonRagdolledCollider;
-    private Rigidbody rb => advanced ? ragDollRigidBodies[0] : nonRagdolledRigidBody;
+    public override Rigidbody rigidBody => advanced ? ragDollRigidBodies[0] : nonRagdolledRigidBody;
     [SerializeField] private RagdollInteractionProxy proxy;
 
     protected override void Awake()
@@ -34,7 +34,7 @@ public class RagdollHandler : Grabbable
         if (currentState == EntityState.RagDoll)
         {
             ragDollTimer += Time.deltaTime;
-            if (ragDollTimer > minRagdollTime && (rb.velocity.magnitude < minRagdollVelovity || ragDollTimer > maxRagdollTime))
+            if (ragDollTimer > minRagdollTime && (rigidBody.velocity.magnitude < minRagdollVelovity || ragDollTimer > maxRagdollTime))
                 health.Destroy();
         }
         if(currentState is EntityState.Thrown or EntityState.RagDoll && advanced)
@@ -60,7 +60,7 @@ public class RagdollHandler : Grabbable
             case EntityState.Grabbed:
                 SetRagdoll(true);
                 if (proxy) proxy.transform.parent.Reset(scale: false);
-                rb.isKinematic = true;
+                rigidBody.isKinematic = true;
                 break;
             case EntityState.Thrown:
                 SetRagdoll(true);

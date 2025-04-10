@@ -41,6 +41,8 @@ public interface IGrabbable
     public Vector3 HeldOffset { get; }
 
     public void SetVelocity(Vector3 velocity);
+
+    public Rigidbody rigidBody { get; }
 }
 public interface IGrabber
 {

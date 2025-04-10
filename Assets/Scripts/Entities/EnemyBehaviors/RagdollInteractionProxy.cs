@@ -46,5 +46,7 @@ public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
 
     public Vector3 HeldOffset => This.HeldOffset;
 
+    public Rigidbody rigidBody => This.rigidBody;
+
     #endregion
 }
