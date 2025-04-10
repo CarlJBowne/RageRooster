@@ -302,6 +302,9 @@ MonoBehaviour:
   needs1Charge: 0
   needs2Charge: 0
   needsRagingUpgrade: 0
+  onEntry: 3
+  onEnterName: Land
+  onEnterTime: 0.1
 --- !u!1 &400420858113421900
 GameObject:
   m_ObjectHideFlags: 0
@@ -474,24 +477,30 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
           _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 4
+            _Int: 2
+            _String: SLS.StateMachineV3.StateAnimator+EntryAnimAction, Assembly-CSharp,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             _X: 0
             _Y: 0
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 2
+            _Int: 0
+            _String: GroundBasic
             _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0.2
             _Y: 0
             _Z: 0
             _W: 0
@@ -807,30 +816,54 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 7502342910389391231}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 1181195091599698405}
+          _MemberName: Finish
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: SLS.StateMachineV3.State, Assembly-CSharp, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 7502342910389391231}
+          - _Type: 13
+            _Int: 0
+            _String: SLS.StateMachineV3.State, Assembly-CSharp, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 931477398715445950}
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
           _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 4
+            _Int: 2
+            _String: SLS.StateMachineV3.StateAnimator+EntryAnimAction, Assembly-CSharp,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             _X: 0
             _Y: 0
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 2
+            _Int: 0
+            _String: GroundBasic
             _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0.2
             _Y: 0
             _Z: 0
             _W: 0
@@ -1439,39 +1472,9 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 8579594802138283692}
-          _MemberName: SetTrigger
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: Land
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
+          _PersistentArguments: []
   lockReady: 1
 --- !u!114 &1027073189156208793
 MonoBehaviour:
@@ -1622,35 +1625,30 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
           _PersistentArguments:
-          - _Type: 1
-            _Int: 0
-            _String: 
+          - _Type: 4
+            _Int: 2
+            _String: SLS.StateMachineV3.StateAnimator+EntryAnimAction, Assembly-CSharp,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             _X: 0
             _Y: 0
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 8579594802138283692}
-          _MemberName: Play
-          _PersistentArguments:
           - _Type: 2
             _Int: 0
             _String: Land
             _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0.05
             _Y: 0
             _Z: 0
             _W: 0
@@ -1848,6 +1846,9 @@ MonoBehaviour:
   needs1Charge: 0
   needs2Charge: 0
   needsRagingUpgrade: 0
+  onEntry: 3
+  onEnterName: Land
+  onEnterTime: 0.1
 --- !u!1 &1296871140194544751
 GameObject:
   m_ObjectHideFlags: 0
@@ -2626,12 +2627,6 @@ MonoBehaviour:
     _PersistentCalls: []
   signals:
     _serializedList:
-    - Key: Charge
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8937721864928111967}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
     - Key: Grab
       Value:
         _PersistentCalls:
@@ -2650,39 +2645,9 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 8579594802138283692}
-          _MemberName: SetTrigger
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: Land
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
+        - _Target: {fileID: 1966879644613746894}
+          _MemberName: LandInto
+          _PersistentArguments: []
   lockReady: 0
 --- !u!114 &4681754079180063780
 MonoBehaviour:
@@ -3241,24 +3206,30 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
           _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 4
+            _Int: 2
+            _String: SLS.StateMachineV3.StateAnimator+EntryAnimAction, Assembly-CSharp,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             _X: 0
             _Y: 0
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 2
+            _Int: 0
+            _String: GroundBasic
             _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0.2
             _Y: 0
             _Z: 0
             _W: 0
@@ -3603,39 +3574,9 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 8579594802138283692}
-          _MemberName: SetTrigger
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: Land
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
+          _PersistentArguments: []
     - Key: Parry
       Value:
         _PersistentCalls:
@@ -5361,39 +5302,9 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 8579594802138283692}
-          _MemberName: SetTrigger
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: Land
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
+          _PersistentArguments: []
     - Key: ExitVent
       Value:
         _PersistentCalls:
@@ -5802,39 +5713,9 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 8579594802138283692}
-          _MemberName: SetTrigger
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: Land
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
+          _PersistentArguments: []
     - Key: EnterVent
       Value:
         _PersistentCalls:
@@ -6165,6 +6046,9 @@ MonoBehaviour:
   needs1Charge: 1
   needs2Charge: 1
   needsRagingUpgrade: 1
+  onEntry: 3
+  onEnterName: Land
+  onEnterTime: 0.1
 --- !u!135 &675394232343518501
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6505,39 +6389,9 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 8579594802138283692}
-          _MemberName: SetTrigger
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: Land
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
+          _PersistentArguments: []
   lockReady: 0
 --- !u!114 &3698709666984973678
 MonoBehaviour:
@@ -6883,6 +6737,9 @@ MonoBehaviour:
   needs1Charge: 1
   needs2Charge: 0
   needsRagingUpgrade: 0
+  onEntry: 3
+  onEnterName: Land
+  onEnterTime: 0.1
 --- !u!1 &4847283882173391290
 GameObject:
   m_ObjectHideFlags: 0
@@ -7761,7 +7618,7 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
+          _MemberName: TryGrabThrowAir
           _PersistentArguments:
           - _Type: 13
             _Int: 0
@@ -7772,34 +7629,18 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 1181195091599698405}
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
+          _PersistentArguments: []
+        - _Target: {fileID: 8579594802138283692}
+          _MemberName: SetTrigger
           _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 2
+            _Int: 0
+            _String: Land
             _X: 0
             _Y: 0
             _Z: 0
@@ -8475,6 +8316,9 @@ MonoBehaviour:
   needs1Charge: 0
   needs2Charge: 0
   needsRagingUpgrade: 0
+  onEntry: 3
+  onEnterName: Land
+  onEnterTime: 0.1
 --- !u!1 &5549163275917385519
 GameObject:
   m_ObjectHideFlags: 0
@@ -8663,12 +8507,6 @@ MonoBehaviour:
     _PersistentCalls: []
   signals:
     _serializedList:
-    - Key: Jump
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 1371118413310184343}
-          _MemberName: MidJumpJumpAction
-          _PersistentArguments: []
     - Key: Grab
       Value:
         _PersistentCalls:
@@ -8687,39 +8525,9 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 8579594802138283692}
-          _MemberName: SetTrigger
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: Land
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
+        - _Target: {fileID: 1966879644613746894}
+          _MemberName: LandInto
+          _PersistentArguments: []
   lockReady: 0
 --- !u!114 &814242899083696415
 MonoBehaviour:
@@ -8783,7 +8591,6 @@ GameObject:
   m_Component:
   - component: {fileID: 986074438047136786}
   - component: {fileID: 1236364480038443791}
-  - component: {fileID: 6425131623185138928}
   m_Layer: 0
   m_Name: GroundBasic
   m_TagString: Untagged
@@ -8839,23 +8646,6 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
---- !u!114 &6425131623185138928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5731104948480345390}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: GroundBasic
-  onEnterTime: 0.1
-  doWhenNotFinal: 1
-  animator: {fileID: 0}
 --- !u!1 &5774795664015064404
 GameObject:
   m_ObjectHideFlags: 0
@@ -9315,6 +9105,9 @@ MonoBehaviour:
   needs1Charge: 1
   needs2Charge: 0
   needsRagingUpgrade: 0
+  onEntry: 3
+  onEnterName: Land
+  onEnterTime: 0.1
 --- !u!1 &6005523312454311402
 GameObject:
   m_ObjectHideFlags: 0
@@ -9618,24 +9411,30 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
           _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 4
+            _Int: 2
+            _String: SLS.StateMachineV3.StateAnimator+EntryAnimAction, Assembly-CSharp,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             _X: 0
             _Y: 0
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 2
+            _Int: 0
+            _String: GroundBasic
             _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0.2
             _Y: 0
             _Z: 0
             _W: 0
@@ -9700,7 +9499,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5721769436998970410}
   - component: {fileID: 7028573298488619274}
-  - component: {fileID: 7301352930349827091}
   m_Layer: 0
   m_Name: GrabbedGrounded
   m_TagString: Untagged
@@ -9756,23 +9554,6 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
---- !u!114 &7301352930349827091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6236790458189297513}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: GroundBasic
-  onEnterTime: 0.1
-  doWhenNotFinal: 1
-  animator: {fileID: 0}
 --- !u!1 &6275732389334311385
 GameObject:
   m_ObjectHideFlags: 0
@@ -9843,24 +9624,30 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
           _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 4
+            _Int: 2
+            _String: SLS.StateMachineV3.StateAnimator+EntryAnimAction, Assembly-CSharp,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             _X: 0
             _Y: 0
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 2
+            _Int: 0
+            _String: GroundBasic
             _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0.1
             _Y: 0
             _Z: 0
             _W: 0
@@ -10148,7 +9935,7 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
+          _MemberName: TryGrabThrowAir
           _PersistentArguments:
           - _Type: 13
             _Int: 0
@@ -10159,35 +9946,33 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 1181195091599698405}
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
+        - _Target: {fileID: 4244649889381608096}
+          _MemberName: LandInto
           _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 4
+            _Int: 2
+            _String: SLS.StateMachineV3.StateAnimator+EntryAnimAction, Assembly-CSharp,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             _X: 0
             _Y: 0
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: GroundStateChange
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 2
+            _Int: 0
+            _String: GroundBasic
             _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0.1
             _Y: 0
             _Z: 0
             _W: 0
@@ -10636,6 +10421,9 @@ MonoBehaviour:
   needs1Charge: 0
   needs2Charge: 0
   needsRagingUpgrade: 0
+  onEntry: 3
+  onEnterName: Land
+  onEnterTime: 0.1
 --- !u!1 &6824799447565327635
 GameObject:
   m_ObjectHideFlags: 0
@@ -11679,9 +11467,34 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4000547645901868762}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
+          _PersistentArguments:
+          - _Type: 4
+            _Int: 0
+            _String: SLS.StateMachineV3.StateAnimator+EntryAnimAction, Assembly-CSharp,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 2
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockReady: 1
 --- !u!114 &5841719628916661894
 MonoBehaviour:
@@ -12736,9 +12549,27 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4242903510589070537}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
+        - _Target: {fileID: 4975428428768240672}
+          _MemberName: Finish
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: SLS.StateMachineV3.State, Assembly-CSharp, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 4242903510589070537}
+          - _Type: 13
+            _Int: 0
+            _String: SLS.StateMachineV3.State, Assembly-CSharp, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 4000547645901868762}
   lockReady: 1
 --- !u!114 &4975428428768240672
 MonoBehaviour:
@@ -13636,13 +13467,30 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
           _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 4
+            _Int: 2
+            _String: SLS.StateMachineV3.StateAnimator+EntryAnimAction, Assembly-CSharp,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 2
+            _Int: 0
+            _String: GroundBasic
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0.1
             _Y: 0
             _Z: 0
             _W: 0
@@ -13823,17 +13671,9 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
+        - _Target: {fileID: 8249939815927584102}
+          _MemberName: TransitionTo
+          _PersistentArguments: []
         - _Target: {fileID: 3941225653291784218}
           _MemberName: GroundStateChange
           _PersistentArguments:
@@ -14399,13 +14239,30 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
           _PersistentArguments:
-          - _Type: 1
-            _Int: 1
-            _String: 
+          - _Type: 4
+            _Int: 0
+            _String: SLS.StateMachineV3.StateAnimator+EntryAnimAction, Assembly-CSharp,
+              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
             _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 2
+            _Int: 0
+            _String: GroundBasic
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0.1
             _Y: 0
             _Z: 0
             _W: 0
