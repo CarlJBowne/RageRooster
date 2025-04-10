@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Animations;
 
 public interface IGrabbable
 {
@@ -37,7 +38,7 @@ public interface IGrabbable
     public bool IsGrabbable { get; }
 
     public float AdditionalThrowDistance { get; }
-    public float AdditionalHoldHeight { get; }
+    public Vector3 HeldOffset { get; }
 
     public void SetVelocity(Vector3 velocity);
 }

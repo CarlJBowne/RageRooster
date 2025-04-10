@@ -9,7 +9,6 @@ public class PlayerGrabAction : PlayerStateBehavior
     public bool air;
     public string animationName;
     
-    [HideProperty] public bool wasHeld;
     [HideProperty] public bool success;
 
     private IGrabbable selectedGrabbable;
@@ -23,14 +22,13 @@ public class PlayerGrabAction : PlayerStateBehavior
         movementNegator = GetComponent<PlayerMovementAnimator>();
     }
 
-    public void BeginGrabAttempt(IGrabbable attempt, bool held)
+    public void BeginGrabAttempt(IGrabbable attempt)
     {
         state.TransitionTo();
         Machine.animator.CrossFade(animationName, .1f, -1, 0f);
         if (attempt != null)
         {
             selectedGrabbable = attempt;
-            wasHeld = held;
             success = true;
             movementNegator.locked = false;
         }
@@ -50,9 +48,8 @@ public class PlayerGrabAction : PlayerStateBehavior
             selectedGrabbable = lastMinute;
         }
         grabber.GrabPoint(selectedGrabbable);
-        if (air && grabber.dropLaunchUpgrade && !Input.Grab.IsPressed()) grabber.BeginThrow(true);
+        if (air && grabber.dropLaunchUpgrade && !Input.Grab.IsPressed()) grabber.TryGrabThrowAir(this);
         success = false;
-        wasHeld = false;
         selectedGrabbable = null;
     }
 

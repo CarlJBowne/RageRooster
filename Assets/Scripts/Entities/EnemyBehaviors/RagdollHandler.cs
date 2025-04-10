@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class RagdollHandler : Grabbable
 {
@@ -24,7 +26,8 @@ public class RagdollHandler : Grabbable
     {
         health = GetComponent<EnemyHealth>();
         SetState(EntityState.Default);
-        proxy.SetRagdoll(false);
+        if(proxy) proxy.SetRagdoll(false);
+        parentConstraint = this.GetOrAddComponent<ParentConstraint>();
     }
     private void FixedUpdate()
     {
@@ -56,6 +59,7 @@ public class RagdollHandler : Grabbable
                 break;
             case EntityState.Grabbed:
                 SetRagdoll(true);
+                if (proxy) proxy.transform.parent.Reset(scale: false);
                 rb.isKinematic = true;
                 break;
             case EntityState.Thrown:

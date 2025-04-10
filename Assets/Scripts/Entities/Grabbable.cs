@@ -2,13 +2,14 @@ using EditorAttributes;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.Events;
 
 public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
 {
     #region Config
 
-    public bool twoHanded;
+    public Transform anchorPoint;
     public float weight;
     public float wiggleFreeTime;
     public int maxHealthToGrab;
@@ -35,8 +36,8 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     private new Collider collider;
     private Rigidbody rb;
     public EnemyHealth health { get; protected set; }
-    
 
+    protected ParentConstraint parentConstraint;
 
     public CoroutinePlus wiggleCoroutine;
 
@@ -51,6 +52,8 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     public float AdditionalThrowDistance => additionalThrowDistance;
     public float AdditionalHoldHeight => additionalHoldHeight;
     public bool IsGrabbable => gameObject.activeInHierarchy && UnderThreshold();
+
+    public Vector3 HeldOffset => anchorPoint != null ? -anchorPoint.localPosition : Vector3.zero;
 
     #endregion
 
@@ -153,7 +156,7 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     public Attack GetAttack()
     {
         Attack result = thrownAttack;
-        result.velocity = rb.velocity;
+        result.velocity = this.rb.velocity; 
         return result;
     }
 

@@ -158,7 +158,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
         if (velocity.y < 0.01f || grounded) 
         {
-            if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out groundHit))
+            if(GroundCheck(out groundHit))
             {
 #if UNITY_EDITOR
                 AddToQueuedHits(new(groundHit));
@@ -355,7 +355,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     public void ReturnToNeutral(bool doCrossFade = true)
     {
-        if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out RaycastHit groundHit))
+        if(GroundCheck())
         {
             idleState.TransitionTo();
             //animator.SetTrigger("ReturnToGroundNeutral");
@@ -382,6 +382,9 @@ public class PlayerMovementBody : PlayerStateBehavior
     public List<Vector3> jumpMarkers = new List<Vector3>();
 
 #endif
+
+    public bool GroundCheck(out RaycastHit groundHit) => rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out groundHit);
+    public bool GroundCheck() => rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out _);
 
 
     public struct HitNormalDisplay

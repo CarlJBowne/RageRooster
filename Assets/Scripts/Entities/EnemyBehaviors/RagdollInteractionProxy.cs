@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
 {
@@ -35,12 +36,15 @@ public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
     #region Interface Members
     public IGrabber Grabber => This.Grabber;
     public float AdditionalThrowDistance => This.AdditionalThrowDistance;
-    public float AdditionalHoldHeight => This.AdditionalHoldHeight;
+    //public float AdditionalHoldHeight => This.AdditionalHoldHeight;
     public void IgnoreCollisionWithThrower(Collider thrower, bool ignore = true) => Physics.IgnoreCollision(collider, thrower, ignore);
     public bool Grab(IGrabber grabber) => This.Grab(grabber);
     public void Throw(Vector3 velocity) => This.Throw(velocity);
     public void Release() => This.Release();
     public void SetVelocity(Vector3 velocity) => This.SetVelocity(velocity);
     public bool IsGrabbable => This.IsGrabbable;
+
+    public Vector3 HeldOffset => This.HeldOffset;
+
     #endregion
 }

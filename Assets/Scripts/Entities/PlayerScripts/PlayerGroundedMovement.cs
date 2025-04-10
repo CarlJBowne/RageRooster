@@ -102,6 +102,12 @@ public class PlayerGroundedMovement : PlayerMovementEffector
             ;
     }
 
-    public override void OnEnter(State prev, bool isFinal){ base.OnEnter(prev, isFinal); if (attackCollider != null) attackCollider.enabled = true;}
+    public override void OnEnter(State prev, bool isFinal)
+    {
+        base.OnEnter(prev, isFinal);
+        //if (Machine.finishedSetup && !playerMovementBody.GroundCheck()) Machine.SendSignal("WalkOff", false, true);
+        if (attackCollider != null) attackCollider.enabled = true;
+
+    }
     public override void OnExit(State next){if(attackCollider != null) attackCollider.enabled = false;}
 }
