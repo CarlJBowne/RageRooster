@@ -185,6 +185,7 @@ GameObject:
   - component: {fileID: 8950459172026540696}
   - component: {fileID: 4242903510589070537}
   - component: {fileID: 1966879644613746894}
+  - component: {fileID: 1725890042726567255}
   m_Layer: 6
   m_Name: GrabbedIdle
   m_TagString: Untagged
@@ -311,6 +312,37 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
+--- !u!114 &1725890042726567255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348881476169311659}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 584274670
+      Data2: 1219636909
+      Data3: 2053922187
+      Data4: -1601820662
+    Path: event:/SFX/Player SFX/Combat/PlayerGrab
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &400420858113421900
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,6 +853,7 @@ GameObject:
   - component: {fileID: 3864174957687219544}
   - component: {fileID: 1181195091599698405}
   - component: {fileID: 6132819690470820842}
+  - component: {fileID: 6145970641848902703}
   m_Layer: 6
   m_Name: AirGrab
   m_TagString: Untagged
@@ -987,6 +1020,37 @@ MonoBehaviour:
   worldspaceInfluence: 0
   worldspaceVelocity: {x: 0, y: 0, z: 0}
   locked: 1
+--- !u!114 &6145970641848902703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624970041063503452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 584274670
+      Data2: 1219636909
+      Data3: 2053922187
+      Data4: -1601820662
+    Path: event:/SFX/Player SFX/Combat/PlayerGrab
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &673776059400366822
 GameObject:
   m_ObjectHideFlags: 0
@@ -1275,6 +1339,7 @@ GameObject:
   - component: {fileID: 1178113904624510868}
   - component: {fileID: 1632128030463539112}
   - component: {fileID: 7868266934595780143}
+  - component: {fileID: 5516056722375983933}
   m_Layer: 6
   m_Name: Bounce
   m_TagString: Untagged
@@ -1419,6 +1484,37 @@ MonoBehaviour:
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
   enabled: 1
+--- !u!114 &5516056722375983933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049869934697765793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1840268060
+      Data2: 1091131744
+      Data3: 438254268
+      Data4: -1900862645
+    Path: event:/SFX/Player SFX/Movement/Bounce
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1165660441062684328
 GameObject:
   m_ObjectHideFlags: 0
@@ -1462,6 +1558,7 @@ GameObject:
   - component: {fileID: 7773577663483693878}
   - component: {fileID: 1027073189156208793}
   - component: {fileID: 6099757700044800534}
+  - component: {fileID: 8268386544175892194}
   m_Layer: 6
   m_Name: DropLaunch
   m_TagString: Untagged
@@ -1598,6 +1695,37 @@ MonoBehaviour:
   onEnterTime: 0.01
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &8268386544175892194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206808908755011029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1963148907
+      Data2: 1118223752
+      Data3: -1998053447
+      Data4: 615740914
+    Path: event:/SFX/Player SFX/Combat/PlayerThrow&DropLaunch
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1239383449791831169
 GameObject:
   m_ObjectHideFlags: 0
@@ -1799,6 +1927,7 @@ GameObject:
   - component: {fileID: 6519207066078055320}
   - component: {fileID: 6007688890914588632}
   - component: {fileID: 4999451030884928838}
+  - component: {fileID: 7068164296439244581}
   m_Layer: 6
   m_Name: GrabbedWalking
   m_TagString: Untagged
@@ -1925,6 +2054,37 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
+--- !u!114 &7068164296439244581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1288466975036708354}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 584274670
+      Data2: 1219636909
+      Data3: 2053922187
+      Data4: -1601820662
+    Path: event:/SFX/Player SFX/Combat/PlayerGrab
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1296871140194544751
 GameObject:
   m_ObjectHideFlags: 0
@@ -2500,6 +2660,7 @@ GameObject:
   - component: {fileID: 8797717583853980375}
   - component: {fileID: 5561208129768122763}
   - component: {fileID: 2064941021943173147}
+  - component: {fileID: 1090585169497289376}
   m_Layer: 6
   m_Name: CoyoteGrabbed
   m_TagString: Untagged
@@ -2609,6 +2770,37 @@ MonoBehaviour:
   jumpMinHeight: 0
   forceDownwards: 0
   allowMidFall: 0
+--- !u!114 &1090585169497289376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651726559207214612}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 584274670
+      Data2: 1219636909
+      Data3: 2053922187
+      Data4: -1601820662
+    Path: event:/SFX/Player SFX/Combat/PlayerGrab
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &1651872281400241692
 GameObject:
   m_ObjectHideFlags: 0
@@ -6140,6 +6332,7 @@ GameObject:
   - component: {fileID: 675394232343518501}
   - component: {fileID: 2302710619165436362}
   - component: {fileID: 7572254650929324686}
+  - component: {fileID: 5400869587257093459}
   m_Layer: 6
   m_Name: Raging Charge
   m_TagString: Untagged
@@ -6329,6 +6522,37 @@ MonoBehaviour:
     - name: RagingCharge
   sourceEntity: {fileID: 8455434200384702600}
   enabled: 1
+--- !u!114 &5400869587257093459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4366117737136798339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 39298385
+      Data2: 1329488882
+      Data3: 891661983
+      Data4: 225330328
+    Path: event:/SFX/Player SFX/Movement/RagingCharge
+  Event: 
+  PlayEvent: 11
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &4439709818119911506
 GameObject:
   m_ObjectHideFlags: 0
@@ -6663,7 +6887,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4568227700120816147}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
   m_Name: 
@@ -6862,6 +7086,7 @@ GameObject:
   - component: {fileID: 7163401617430893447}
   - component: {fileID: 136701519028985482}
   - component: {fileID: 442187770537930055}
+  - component: {fileID: 2024974176206533353}
   m_Layer: 6
   m_Name: GrabbedSprinting
   m_TagString: Untagged
@@ -6982,6 +7207,37 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
+--- !u!114 &2024974176206533353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4675571679839146216}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 584274670
+      Data2: 1219636909
+      Data3: 2053922187
+      Data4: -1601820662
+    Path: event:/SFX/Player SFX/Combat/PlayerGrab
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &4847283882173391290
 GameObject:
   m_ObjectHideFlags: 0
@@ -7029,6 +7285,7 @@ GameObject:
   - component: {fileID: 5855114282886156849}
   - component: {fileID: 4601588046968553847}
   - component: {fileID: 2199304448062642395}
+  - component: {fileID: 135266238427080234}
   m_Layer: 6
   m_Name: GroundSlam
   m_TagString: Untagged
@@ -7259,6 +7516,37 @@ MonoBehaviour:
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
   enabled: 1
+--- !u!114 &135266238427080234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861617110333237064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 602542763
+      Data2: 1198384999
+      Data3: -1418820417
+      Data4: -1797289622
+    Path: event:/SFX/Player SFX/Combat/PlayerButtSlam
+  Event: 
+  PlayEvent: 11
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &4901648064755187594
 GameObject:
   m_ObjectHideFlags: 0
@@ -8530,6 +8818,7 @@ GameObject:
   - component: {fileID: 4694219544836043386}
   - component: {fileID: 4587419321214753641}
   - component: {fileID: 3186032269730848422}
+  - component: {fileID: 3625336468165058719}
   m_Layer: 6
   m_Name: AimThrow
   m_TagString: Untagged
@@ -8623,6 +8912,37 @@ MonoBehaviour:
   onEnterTime: 0
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &3625336468165058719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5578879694051111694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1590542140
+      Data2: 1119825417
+      Data3: -1548009820
+      Data4: -1996899598
+    Path: event:/SFX/Player SFX/Combat/PlayerShoot
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &5616308193838800911
 GameObject:
   m_ObjectHideFlags: 0
@@ -9249,6 +9569,7 @@ GameObject:
   - component: {fileID: 949085974986424741}
   - component: {fileID: 3812935324549841644}
   - component: {fileID: 4244649889381608096}
+  - component: {fileID: 9205686155908151597}
   m_Layer: 6
   m_Name: Sprinting
   m_TagString: Untagged
@@ -9381,6 +9702,37 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
+--- !u!114 &9205686155908151597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5936538625018206224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1057419327
+      Data2: 1081324978
+      Data3: 2094759592
+      Data4: 1280654065
+    Path: event:/SFX/Player SFX/Combat/Charging
+  Event: 
+  PlayEvent: 11
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &6005523312454311402
 GameObject:
   m_ObjectHideFlags: 0
@@ -9870,6 +10222,7 @@ GameObject:
   - component: {fileID: 7671762846807235667}
   - component: {fileID: 8937721864928111967}
   - component: {fileID: 7903285790010872625}
+  - component: {fileID: 7884254078954553804}
   m_Layer: 6
   m_Name: Windup
   m_TagString: Untagged
@@ -9975,6 +10328,37 @@ MonoBehaviour:
   onEnterTime: 0.2
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &7884254078954553804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6275732389334311385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1681649120
+      Data2: 1168265751
+      Data3: 243103399
+      Data4: -1067112179
+    Path: event:/SFX/Player SFX/Movement/airDash
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &6330798485065663893
 GameObject:
   m_ObjectHideFlags: 0
@@ -10747,6 +11131,7 @@ GameObject:
   - component: {fileID: 7788667647418580513}
   - component: {fileID: 8805499447185113993}
   - component: {fileID: 6979073167908032003}
+  - component: {fileID: 4870910406520068594}
   m_Layer: 6
   m_Name: HeadSlam
   m_TagString: Untagged
@@ -10859,6 +11244,37 @@ MonoBehaviour:
   worldspaceInfluence: 0
   worldspaceVelocity: {x: 0, y: 0, z: 0}
   locked: 0
+--- !u!114 &4870910406520068594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6824799447565327635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -112281979
+      Data2: 1086600336
+      Data3: -1571523677
+      Data4: -163910334
+    Path: event:/SFX/Player SFX/Combat/Headbutt
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &6840937366610314507
 GameObject:
   m_ObjectHideFlags: 0
@@ -11725,6 +12141,7 @@ GameObject:
   - component: {fileID: 1173892547178082102}
   - component: {fileID: 4449042176442584155}
   - component: {fileID: 5841719628916661894}
+  - component: {fileID: 6076934459395950897}
   m_Layer: 6
   m_Name: Throw
   m_TagString: Untagged
@@ -11824,6 +12241,37 @@ MonoBehaviour:
   onEnterTime: 0
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &6076934459395950897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7296379250413928003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1963148907
+      Data2: 1118223752
+      Data3: -1998053447
+      Data4: 615740914
+    Path: event:/SFX/Player SFX/Combat/PlayerThrow&DropLaunch
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &7342288055811217514
 GameObject:
   m_ObjectHideFlags: 0
@@ -12012,6 +12460,7 @@ GameObject:
   - component: {fileID: 4425123305009892289}
   - component: {fileID: 4687384188506420108}
   - component: {fileID: 7421260604818229875}
+  - component: {fileID: 2408128560049991827}
   m_Layer: 6
   m_Name: Aiming
   m_TagString: Untagged
@@ -12186,6 +12635,37 @@ MonoBehaviour:
       m_LegacyHeadingDefinition: 0
       m_LegacyVelocityFilterStrength: 0
   dInput: {x: 0, y: 0}
+--- !u!114 &2408128560049991827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7471342363894119853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 17911903
+      Data2: 1187093407
+      Data3: -994992715
+      Data4: 414513426
+    Path: event:/SFX/Player SFX/Combat/PlayerAimMode
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &7541462348710925335
 GameObject:
   m_ObjectHideFlags: 0
@@ -12851,6 +13331,7 @@ GameObject:
   - component: {fileID: 2690473538302802805}
   - component: {fileID: 4975428428768240672}
   - component: {fileID: 3756786567065514340}
+  - component: {fileID: 4971870812929734537}
   m_Layer: 6
   m_Name: Grab
   m_TagString: Untagged
@@ -12980,6 +13461,37 @@ MonoBehaviour:
   worldspaceInfluence: 0
   worldspaceVelocity: {x: 0, y: 0, z: 0}
   locked: 1
+--- !u!114 &4971870812929734537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986475415449474893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 584274670
+      Data2: 1219636909
+      Data3: 2053922187
+      Data4: -1601820662
+    Path: event:/SFX/Player SFX/Combat/PlayerGrab
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &7996174763766430431
 GameObject:
   m_ObjectHideFlags: 0
@@ -13295,6 +13807,7 @@ GameObject:
   - component: {fileID: 3443062856187106688}
   - component: {fileID: 3847701285562395558}
   - component: {fileID: 3599153407553307017}
+  - component: {fileID: 1638063999629469728}
   m_Layer: 6
   m_Name: UpperCut
   m_TagString: Untagged
@@ -13418,6 +13931,37 @@ MonoBehaviour:
   worldspaceInfluence: 0
   worldspaceVelocity: {x: 0, y: 0, z: 0}
   locked: 0
+--- !u!114 &1638063999629469728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8233020272553458984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1988260522
+      Data2: 1320749388
+      Data3: 812660391
+      Data4: 129345817
+    Path: event:/SFX/Player SFX/Combat/Uppercut
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &8245773314306325851
 GameObject:
   m_ObjectHideFlags: 0
@@ -13430,6 +13974,7 @@ GameObject:
   - component: {fileID: 2827000484517282095}
   - component: {fileID: 5381320718860949658}
   - component: {fileID: 5618519440197409730}
+  - component: {fileID: 3888695071839598993}
   m_Layer: 6
   m_Name: DamageMinor
   m_TagString: Untagged
@@ -13535,6 +14080,37 @@ MonoBehaviour:
   onEnterTime: 0
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &3888695071839598993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8245773314306325851}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1177642333
+      Data2: 1223021355
+      Data3: 195088528
+      Data4: -181475175
+    Path: event:/SFX/Player SFX/General/playerDamaged
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &8276374663671568334
 GameObject:
   m_ObjectHideFlags: 0
@@ -13579,6 +14155,7 @@ GameObject:
   - component: {fileID: 192777301579938322}
   - component: {fileID: 5407659928388437348}
   - component: {fileID: 3202945699952535314}
+  - component: {fileID: 4711073050493459152}
   m_Layer: 6
   m_Name: AirThrow
   m_TagString: Untagged
@@ -13653,6 +14230,37 @@ MonoBehaviour:
   onEnterTime: 0
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &4711073050493459152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8291585736164761318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1963148907
+      Data2: 1118223752
+      Data3: -1998053447
+      Data4: 615740914
+    Path: event:/SFX/Player SFX/Combat/PlayerThrow&DropLaunch
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &8370047734673085785
 GameObject:
   m_ObjectHideFlags: 0
@@ -14468,6 +15076,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5004547793418751161}
   - component: {fileID: 7688214283976459852}
+  - component: {fileID: 3181148422224348210}
   m_Layer: 6
   m_Name: Impact
   m_TagString: Untagged
@@ -14556,6 +15165,37 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 1
+--- !u!114 &3181148422224348210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8952263921800461566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -210542458
+      Data2: 1194973838
+      Data3: -2037135231
+      Data4: 1414933640
+    Path: event:/SFX/Player SFX/Combat/PlayerButtSlamImpact
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &8959225014369038086
 GameObject:
   m_ObjectHideFlags: 0
