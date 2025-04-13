@@ -29,6 +29,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     PlayerMovementBody body;
     Animator animator;
     [HideProperty] public PlayerAiming aimingState;
+    [HideProperty] public State shootingState;
     public IGrabbable currentGrabbed { get; private set; }
 
     private UIHUDSystem UI;
@@ -44,6 +45,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         TryGetComponent(out collider);
         UIHUDSystem.TryGet(out UI);
         if (aimingState == null) aimingState = FindObjectOfType<PlayerAiming>(true);
+        if (shootingState == null) shootingState = aimingState.state[0];
 
         pointer.target.position = pointer.startV.position + pointer.startV.forward * pointer.distance;
 
@@ -130,8 +132,8 @@ public class PlayerRanged : MonoBehaviour, IGrabber
             while (V < 1)
             {
                 V += Time.deltaTime * rate;
-                animator.SetLayerWeight(1, V);
                 animator.SetLayerWeight(2, V);
+                animator.SetLayerWeight(3, V);
                 yield return null;
             }
         }
@@ -180,8 +182,8 @@ public class PlayerRanged : MonoBehaviour, IGrabber
             while (V > 0)
             {
                 V -= Time.deltaTime * rate;
-                animator.SetLayerWeight(1, V);
                 animator.SetLayerWeight(2, V);
+                animator.SetLayerWeight(3, V);
                 yield return null;
             }
         }
@@ -322,17 +324,18 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     {
         if (!aiming) return;
         if (currentGrabbed != null) AimThrow();
-        else if (eggAmount >= 1)
-        {
-            realMuzzle.position = pointer.shootMuzzlePos.position;
-            Quaternion Q = realMuzzle.rotation;
-            Q.SetLookRotation(pointer.hitMarker.position - realMuzzle.position);
-            realMuzzle.rotation = Q;
+        else if (eggAmount >= 1 && !shootingState) shootingState.TransitionTo();
+    }
 
-            eggPool.Pump();
-            ChangeAmmoAmount(-1);
-        }
+    public void ShootPoint()
+    {
+        realMuzzle.position = pointer.shootMuzzlePos.position;
+        Quaternion Q = realMuzzle.rotation;
+        Q.SetLookRotation(pointer.hitMarker.position - realMuzzle.position);
+        realMuzzle.rotation = Q;
 
+        eggPool.Pump();
+        ChangeAmmoAmount(-1);
     }
 
     public void AimThrow()
