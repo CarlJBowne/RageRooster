@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: a814bc5b111610445b580152e000b03d
+guid: 646e184b8e9d6984cba389444f61f5b0
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: henreadyMat
+    second: {fileID: 2100000, guid: 4f481c3a01d732642858b34250afb958, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert1
+    second: {fileID: 2100000, guid: 4f481c3a01d732642858b34250afb958, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -70,8 +80,8 @@ ModelImporter:
     useFileScale: 1
     strictVertexDataChecks: 0
   tangentSpace:
-    normalSmoothAngle: 60
-    normalImportMode: 0
+    normalSmoothAngle: 180
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0

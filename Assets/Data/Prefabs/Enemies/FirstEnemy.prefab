@@ -926,6 +926,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8394546691880469175}
+  - component: {fileID: 3292420354071468214}
   m_Layer: 7
   m_Name: model:geo
   m_TagString: Untagged
@@ -955,6 +956,32 @@ Transform:
   - {fileID: 6568739688903100457}
   m_Father: {fileID: 1743930371219312829}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3292420354071468214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905976975941890618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62578c64052260f4fae0e871c1ab376b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sets:
+  - materialSlot: {fileID: 2100000, guid: 3863571c5c343d345a9a38f692173239, type: 2}
+    instancedMaterial: {fileID: 0}
+    renderers:
+    - {fileID: 1175529866787609900}
+    - {fileID: 4925999999004565022}
+    - {fileID: 2741697468071330918}
+    - {fileID: 8199609326572638153}
+    - {fileID: 4437686323060875640}
+    - {fileID: 3871778905808713235}
+    - {fileID: 8321065955194454580}
+  defaultFadeOutTime: 0.5
+  defaultFadeInTime: 0
+  defaultColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &920990044851613958
 GameObject:
   m_ObjectHideFlags: 0
@@ -4230,6 +4257,37 @@ MonoBehaviour:
   - {fileID: 5468480901701306868}
   - {fileID: 7061117582248325477}
   - {fileID: 8822695117701259845}
+--- !u!1 &3392515565291295117
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8731360320969202055}
+  m_Layer: 7
+  m_Name: GrabPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8731360320969202055
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3392515565291295117}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.522, z: -0.208}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6859429191497836494}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3397401056532751975
 GameObject:
   m_ObjectHideFlags: 0
@@ -6046,6 +6104,7 @@ Transform:
   - {fileID: 7306773242739869351}
   - {fileID: 4074216866317406559}
   - {fileID: 5621844384992680875}
+  - {fileID: 8731360320969202055}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &3182761241942017665
@@ -6124,6 +6183,7 @@ MonoBehaviour:
     _serializedList: []
   _variables:
     variables: []
+  finishedSetup: 0
   signalReady: 1
   signalQueueDecay:
     length: 1
@@ -6180,6 +6240,7 @@ MonoBehaviour:
   - {fileID: 6738454064187818541}
   - {fileID: 3182761241942017665}
   enemyLootSpawner: {fileID: 0}
+  tintAnimator: {fileID: 3292420354071468214}
   respawn: 1
   respawnTime: 30
   currentState: 0
@@ -6228,11 +6289,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a842d6755cba8b49800d602c295ad3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  twoHanded: 1
+  anchorPoint: {fileID: 8731360320969202055}
   weight: 1
   wiggleFreeTime: 0
   maxHealthToGrab: 5
   additionalThrowDistance: 0
+  additionalHoldHeight: 0
   GrabStateEvent:
     _PersistentCalls: []
   defaultEvent:

@@ -15,6 +15,8 @@ namespace SLS.StateMachineV3
         [SerializeField, ShowField(nameof(__showOnEnterName))] public string onEnterName;
         [SerializeField, ShowField(nameof(__showOnEnterTime))] public float onEnterTime;
 
+        public bool doWhenNotFinal;
+
         #endregion
         #region Data
         [HideInInspector] public Animator animator;
@@ -28,7 +30,7 @@ namespace SLS.StateMachineV3
 
         public override void OnEnter(State prev, bool isFinal)
         {
-            if (!isFinal) return;
+            if (!isFinal && !doWhenNotFinal) return;
             if (onEntry == EntryAnimAction.Play) Play(onEnterName);
             if (onEntry == EntryAnimAction.CrossFade) CrossFade(onEnterName, onEnterTime);
             if (onEntry == EntryAnimAction.Trigger) Trigger(onEnterName);
