@@ -49,6 +49,7 @@ namespace SLS.StateMachineV3
 
         public System.Action waitforMachineInit;
 
+        public bool finishedSetup;
 
         #endregion
 
@@ -142,6 +143,7 @@ namespace SLS.StateMachineV3
             for (int i = 0; i < behaviors.Length; i++) behaviors[i].OnEnter(null, false);
             currentState = children[0].EnterState(null, true);
 
+            finishedSetup = true;
             waitforMachineInit?.Invoke();
         }
 
@@ -152,6 +154,7 @@ namespace SLS.StateMachineV3
         {
             // Pre Checks
             if (
+                !Application.isPlaying ||
                 nextState == null ||
                 nextState.locked ||
                 nextState == currentState ||

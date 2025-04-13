@@ -3,6 +3,8 @@ using SLS.StateMachineV3;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static SLS.StateMachineV3.StateAnimator;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class PlayerGroundedMovement : PlayerMovementEffector
 {
@@ -102,6 +104,44 @@ public class PlayerGroundedMovement : PlayerMovementEffector
             ;
     }
 
-    public override void OnEnter(State prev, bool isFinal){ base.OnEnter(prev, isFinal); if (attackCollider != null) attackCollider.enabled = true;}
+    public override void OnEnter(State prev, bool isFinal)
+    {
+        base.OnEnter(prev, isFinal);
+        //if (Machine.finishedSetup && !playerMovementBody.GroundCheck()) 
+        //    Machine.SendSignal("WalkOff", false, true);
+        if (attackCollider != null) attackCollider.enabled = true;
+
+    }
     public override void OnExit(State next){if(attackCollider != null) attackCollider.enabled = false;}
+
+    public void LandInto()
+    {
+        bool groundCollide = playerMovementBody.GroundCheck();
+        if (!groundCollide && Machine.SendSignal("WalkOff", false, true)) return;
+        playerMovementBody.GroundStateChange(true);
+        state.TransitionTo();
+        if (onEntry == EntryAnimAction.Play) Machine.animator.Play(onEnterName);
+        if (onEntry == EntryAnimAction.CrossFade) Machine.animator.CrossFade(onEnterName, onEnterTime);
+        if (onEntry == EntryAnimAction.Trigger) Machine.animator.SetTrigger(onEnterName);
+    }
+    public void LandInto(StateAnimator.EntryAnimAction onEntry, string onEnterName, float onEnterTime)
+    {
+        bool groundCollide = playerMovementBody.GroundCheck();
+        if (!groundCollide && Machine.SendSignal("WalkOff", false, true)) return;
+        playerMovementBody.GroundStateChange(true);
+        state.TransitionTo();
+        if (onEntry == EntryAnimAction.Play) Machine.animator.Play(onEnterName);
+        if (onEntry == EntryAnimAction.CrossFade) Machine.animator.CrossFade(onEnterName, onEnterTime);
+        if (onEntry == EntryAnimAction.Trigger) Machine.animator.SetTrigger(onEnterName);
+    }
+
+    public StateAnimator.EntryAnimAction onEntry;
+    [SerializeField, ShowField(nameof(__showOnEnterName))] public string onEnterName;
+    [SerializeField, ShowField(nameof(__showOnEnterTime))] public float onEnterTime;
+
+    #region Edtior
+    private bool __showOnEnterName => onEntry != EntryAnimAction.None;
+    private bool __showOnEnterTime => onEntry == EntryAnimAction.CrossFade;
+
+    #endregion 
 }

@@ -2,13 +2,14 @@ using EditorAttributes;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.Events;
 
 public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
 {
     #region Config
 
-    public bool twoHanded;
+    public Transform anchorPoint;
     public float weight;
     public float wiggleFreeTime;
     public int maxHealthToGrab;
@@ -35,8 +36,8 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     private new Collider collider;
     private Rigidbody rb;
     public EnemyHealth health { get; protected set; }
-    
 
+    protected ParentConstraint parentConstraint;
 
     public CoroutinePlus wiggleCoroutine;
 
@@ -51,6 +52,10 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     public float AdditionalThrowDistance => additionalThrowDistance;
     public float AdditionalHoldHeight => additionalHoldHeight;
     public bool IsGrabbable => gameObject.activeInHierarchy && UnderThreshold();
+
+    public virtual Rigidbody rigidBody => rb;
+
+    public Vector3 HeldOffset => anchorPoint != null ? -anchorPoint.localPosition : Vector3.zero;
 
     #endregion
 
@@ -106,7 +111,7 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         if(currentState == EntityState.Thrown)
         {
             SetState(EntityState.RagDoll);
-            if (thrownAttack.amount > 0 && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(GetAttack());
+            if (thrownAttack.amount > 0 && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(this.GetAttack());
             IgnoreCollisionWithThrower(false);
             _Grabber = null;
         }
@@ -120,15 +125,15 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         switch (newState)
         {
             case EntityState.Default:
-                rb.isKinematic = false;
+                rigidBody.isKinematic = false;
                 collider.enabled = true;
                 break;
             case EntityState.Grabbed:
-                rb.isKinematic = true;
+                rigidBody.isKinematic = true;
                 collider.enabled = false;
                 break;
             case EntityState.Thrown:
-                rb.isKinematic = false;
+                rigidBody.isKinematic = false;
                 collider.enabled = true;
                 break;
             case EntityState.RagDoll:
@@ -146,15 +151,14 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         })?.Invoke();
     }
 
-    public virtual void SetVelocity(Vector3 velocity) => rb.velocity = velocity;
+    public virtual void SetVelocity(Vector3 velocity) => rigidBody.velocity = velocity;
 
     public virtual void IgnoreCollisionWithThrower(bool ignore = true) => Physics.IgnoreCollision(collider, Grabber.ownerCollider, ignore);
 
     public Attack GetAttack()
     {
         Attack result = thrownAttack;
-        result.velocity = rb.velocity;
+        result.velocity = rigidBody.velocity; 
         return result;
     }
-
 }

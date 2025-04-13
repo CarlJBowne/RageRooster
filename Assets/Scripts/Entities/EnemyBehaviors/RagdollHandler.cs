@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class RagdollHandler : Grabbable
 {
@@ -17,21 +19,22 @@ public class RagdollHandler : Grabbable
     public Rigidbody[] ragDollRigidBodies;
 
     private new Collider collider => advanced ? ragDollColliders[0] : nonRagdolledCollider;
-    private Rigidbody rb => advanced ? ragDollRigidBodies[0] : nonRagdolledRigidBody;
+    public override Rigidbody rigidBody => advanced ? ragDollRigidBodies[0] : nonRagdolledRigidBody;
     [SerializeField] private RagdollInteractionProxy proxy;
 
     protected override void Awake()
     {
         health = GetComponent<EnemyHealth>();
         SetState(EntityState.Default);
-        proxy.SetRagdoll(false);
+        if(proxy) proxy.SetRagdoll(false);
+        parentConstraint = this.GetOrAddComponent<ParentConstraint>();
     }
     private void FixedUpdate()
     {
         if (currentState == EntityState.RagDoll)
         {
             ragDollTimer += Time.deltaTime;
-            if (ragDollTimer > minRagdollTime && (rb.velocity.magnitude < minRagdollVelovity || ragDollTimer > maxRagdollTime))
+            if (ragDollTimer > minRagdollTime && (rigidBody.velocity.magnitude < minRagdollVelovity || ragDollTimer > maxRagdollTime))
                 health.Destroy();
         }
         if(currentState is EntityState.Thrown or EntityState.RagDoll && advanced)
@@ -56,7 +59,9 @@ public class RagdollHandler : Grabbable
                 break;
             case EntityState.Grabbed:
                 SetRagdoll(true);
-                rb.isKinematic = true;
+                if (advanced) ragDollColliders[0].transform.Reset(scale: false);
+                if (proxy) proxy.transform.parent.Reset(scale: false);
+                rigidBody.isKinematic = true;
                 break;
             case EntityState.Thrown:
                 SetRagdoll(true);

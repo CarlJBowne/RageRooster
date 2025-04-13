@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using EditorAttributes;
 using UnityEngine.Windows;
+using Cinemachine;
+using Cinemachine.Utility;
+using static Cinemachine.CinemachineFreeLook;
 
 public class PlayerAiming : PlayerMovementEffector
 {
@@ -12,9 +15,11 @@ public class PlayerAiming : PlayerMovementEffector
     /// The Player Ranged Component managing everything.
     /// </summary>
     public PlayerRanged playerRanged;
+    public Cinemachine.CinemachineFreeLook shootFreeLookCamera;
 
     public Cinemachine.AxisState hAxis;
     public Cinemachine.AxisState vAxis;
+
     public Vector2 dInput; 
 
     public override void OnFixedUpdate()
@@ -26,9 +31,16 @@ public class PlayerAiming : PlayerMovementEffector
         hAxis.Update(Time.deltaTime);
         playerRanged.pointerH = hAxis.Value;
 
+        shootFreeLookCamera.m_XAxis.Value = hAxis.Value;
+
         vAxis.m_InputAxisValue = Input.Camera.y;
         vAxis.Update(Time.deltaTime);
         playerRanged.pointerV = vAxis.Value;
+
+        shootFreeLookCamera.m_YAxis.Value = vAxis.Value.Recast(vAxis.m_MinValue, vAxis.m_MaxValue, 0,1);
+
+
+
 
         base.OnFixedUpdate(); 
     }
@@ -42,11 +54,11 @@ public class PlayerAiming : PlayerMovementEffector
         Vector3 realDirection = transform.TransformDirection(controlDirection);
         resultX = realDirection.x * walkingSpeed;
         resultZ = realDirection.z * walkingSpeed;
+        playerMovementBody.CurrentSpeed = realDirection.magnitude;
     }
 
     public void ResetPointerStartRotation()
     {
-        //pointerVRot = 0;
         playerRanged.pointer.startV.localEulerAngles = new Vector3(0, 0, 0);
     }
 

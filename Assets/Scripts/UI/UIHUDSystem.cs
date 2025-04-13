@@ -19,16 +19,25 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
     public TextMeshProUGUI comboFlavorText;
     public ComboLevel[] comboLevels;
     public TextMeshProUGUI ammoText;
+    public Image hitMarker;
+    public Vector2 hitMarkerInputDistance;
+    public Vector2 hitMarkerOutputScale;
 
-    private int activeMaxHealth = 1;
-    private float hintTimer;
-    private int currentCombo;
+    Canvas canvas;
+    RectTransform canvasRect;
+    Camera mainCamera;
+    int activeMaxHealth = 1;
+    float hintTimer;
+    int currentCombo;
 
     // Called when the singleton instance is awakened
     protected override void OnAwake()
     {
         SetCurrencyText(GlobalState.currency.ToString());
         UpdateAmmo(GlobalState.maxAmmo);
+        mainCamera = Camera.main;
+        transform.parent.TryGetComponent(out canvas);
+        transform.parent.TryGetComponent(out canvasRect);
     }
 
     // Called every frame to update the HUD
@@ -111,5 +120,18 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
         ammoText.text = $"{current}/{GlobalState.maxAmmo}";
     }
 
+
+    public void SetHitMarkerVisibility(bool value) => hitMarker.enabled = value;
+
+    public void UpdateHitMarker(Vector3 position, float distance, bool hitDamagable)
+    {
+
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, mainCamera.WorldToScreenPoint(position), null, out Vector2 canvasPos);
+        hitMarker.rectTransform.anchoredPosition = canvasPos;
+        hitMarker.transform.localScale = Vector3.one * Mathf.Lerp(hitMarkerOutputScale.x, hitMarkerOutputScale.y,
+                                                Mathf.InverseLerp(hitMarkerInputDistance.x, hitMarkerInputDistance.y,
+                                                    distance));
+        hitMarker.color = new(1, 1, 1, hitDamagable ? 1 : .5f);
+    }
 
 }

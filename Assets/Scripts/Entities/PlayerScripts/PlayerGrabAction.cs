@@ -9,28 +9,26 @@ public class PlayerGrabAction : PlayerStateBehavior
     public bool air;
     public string animationName;
     
-    [HideProperty] public bool wasHeld;
     [HideProperty] public bool success;
 
     private IGrabbable selectedGrabbable;
-    private PlayerRanged grabber;
+    private PlayerRanged ranged;
     private PlayerMovementAnimator movementNegator;
 
     public override void OnAwake()
     {
-        grabber = GetComponentFromMachine<PlayerRanged>();
+        ranged = GetComponentFromMachine<PlayerRanged>();
         movementNegator = GetComponent<PlayerMovementAnimator>();
         movementNegator = GetComponent<PlayerMovementAnimator>();
     }
 
-    public void BeginGrabAttempt(IGrabbable attempt, bool held)
+    public void BeginGrabAttempt(IGrabbable attempt)
     {
         state.TransitionTo();
         Machine.animator.CrossFade(animationName, .1f, -1, 0f);
         if (attempt != null)
         {
             selectedGrabbable = attempt;
-            wasHeld = held;
             success = true;
             movementNegator.locked = false;
         }
@@ -45,16 +43,19 @@ public class PlayerGrabAction : PlayerStateBehavior
     {
         if (!success || selectedGrabbable == null)
         {
-            IGrabbable lastMinute = grabber.CheckForGrabbable();
+            IGrabbable lastMinute = ranged.CheckForGrabbable();
             if(lastMinute == null) return;
             selectedGrabbable = lastMinute;
         }
-        grabber.GrabPoint(selectedGrabbable);
-        if (air && grabber.dropLaunchUpgrade && !Input.Grab.IsPressed()) grabber.BeginThrow(true);
+        ranged.GrabPoint(selectedGrabbable);
+        if (air && ranged.dropLaunchUpgrade && !Input.Grab.IsPressed()) ranged.TryGrabThrowAir(this);
         success = false;
-        wasHeld = false;
         selectedGrabbable = null;
     }
 
-
+    public void Finish(State successState, State failState)
+    {
+        (ranged.currentGrabbed != null ? successState : failState).TransitionTo();
+        Machine.animator.CrossFade("GroundBasic", .1f);
+    }
 }
