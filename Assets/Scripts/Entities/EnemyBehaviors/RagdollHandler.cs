@@ -59,6 +59,7 @@ public class RagdollHandler : Grabbable
                 break;
             case EntityState.Grabbed:
                 SetRagdoll(true);
+                if (advanced) ragDollColliders[0].transform.Reset(scale: false);
                 if (proxy) proxy.transform.parent.Reset(scale: false);
                 rigidBody.isKinematic = true;
                 break;

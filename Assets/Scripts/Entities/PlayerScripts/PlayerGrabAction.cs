@@ -56,5 +56,6 @@ public class PlayerGrabAction : PlayerStateBehavior
     public void Finish(State successState, State failState)
     {
         (ranged.currentGrabbed != null ? successState : failState).TransitionTo();
+        Machine.animator.CrossFade("GroundBasic", .1f);
     }
 }
