@@ -96,6 +96,9 @@ public static class _EasierMathExtensions
 			: throw new System.Exception("You are trying to move a float downwards to something above it.");
     }
 
+    public static float Recast(this float input, float fromA, float fromB, float toA, float toB) => Mathf.Lerp(toA, toB, Mathf.InverseLerp(fromA, fromB, input));
+    public static float Recast(this float input, Vector2 from, Vector2 to) => Mathf.Lerp(to.x, to.y, Mathf.InverseLerp(from.x, from.y, input));
+
 }
 
 public static class _MonoBehaviorHelpers
