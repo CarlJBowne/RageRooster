@@ -975,6 +975,8 @@ GameObject:
   - component: {fileID: 2359316393746588706}
   - component: {fileID: 4472940642844880929}
   - component: {fileID: 2959347430477591483}
+  - component: {fileID: 7480226171863852237}
+  - component: {fileID: 2567185304694544212}
   m_Layer: 3
   m_Name: PT_EnterBoss
   m_TagString: Untagged
@@ -1065,6 +1067,68 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
+--- !u!114 &7480226171863852237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4540037950908484337}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: 1006540404
+      Data2: 1127768581
+      Data3: -1255742071
+      Data4: -769505739
+    Path: event:/Music/ireGorgeMusic
+  Event: 
+  PlayEvent: 0
+  StopEvent: 3
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &2567185304694544212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4540037950908484337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: 976656312
+      Data2: 1324722293
+      Data3: -2096513610
+      Data4: -1237814035
+    Path: event:/Music/Vs. Grubblord
+  Event: 
+  PlayEvent: 3
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &5273227862908985647
 GameObject:
   m_ObjectHideFlags: 0
