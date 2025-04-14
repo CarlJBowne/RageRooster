@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4053019702560312355}
   - component: {fileID: 5651323726893126017}
   - component: {fileID: 1581515890055401371}
-  - component: {fileID: 3519216306869137380}
   m_Layer: 0
   m_Name: TallFrame
   m_TagString: Untagged
@@ -84,27 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3519216306869137380
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2110137844984444004}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.002430532, y: 0.056317627, z: 0.07591519}
-  m_Center: {x: 0.000000059604645, y: 0.000035472207, z: 0.00014957596}
 --- !u!1 &5378840427299243818
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,12 +92,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2004333455262499311}
+  - component: {fileID: 2334500995736365037}
   m_Layer: 0
   m_Name: TallChickenWireFencePost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2004333455262499311
 Transform:
@@ -138,6 +117,27 @@ Transform:
   - {fileID: 3157487407874296482}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!65 &2334500995736365037
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5378840427299243818}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.2430532, y: 7.591519, z: 5.631764}
+  m_Center: {x: 0.05, y: 3.7957594, z: 0}
 --- !u!1 &5407866901368408870
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +149,6 @@ GameObject:
   - component: {fileID: 3157487407874296482}
   - component: {fileID: 3345266361406130648}
   - component: {fileID: 4065278433659015239}
-  - component: {fileID: 4716918388502082107}
   m_Layer: 0
   m_Name: TallPlane
   m_TagString: Untagged
@@ -222,24 +221,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4716918388502082107
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5407866901368408870}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.072446644, y: 0.05320482, z: 0.00011103477}
-  m_Center: {x: -0.0000000055864455, y: 1.4899494e-12, z: -0.0000500596}
