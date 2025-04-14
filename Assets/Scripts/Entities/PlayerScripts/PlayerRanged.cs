@@ -334,7 +334,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         Q.SetLookRotation(pointer.hitMarker.position - realMuzzle.position);
         realMuzzle.rotation = Q;
 
-        eggPool.Pump();
+        eggPool.Pump().GetComponent<ProjectileMovement>().Send();
         ChangeAmmoAmount(-1);
     }
 
