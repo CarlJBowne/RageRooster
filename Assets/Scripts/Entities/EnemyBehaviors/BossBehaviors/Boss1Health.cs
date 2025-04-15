@@ -49,7 +49,7 @@ public class Boss1Health : Health
                 stunCounter = 0;
                 machine.SendSignal("Charge");
             }
-            else animator.Play("Flinch"); 
+            else machine.SendSignal("Flinch"); 
         }
         return false;
     }
