@@ -12,4 +12,15 @@ public class EditorState : SingletonScriptable<EditorState>
         get => Get().loadFromSavePointID;
         set => Get().loadFromSavePointID = value;
     }
+
+    public enum OnBuildStateMachineHandling
+    {
+        DoNothing,
+        SetupIfNotSetup,
+        SetupIfNotSetupAndSave,
+        SetupRegardless,
+        SetupRegardlessAndSave
+    }
+    public OnBuildStateMachineHandling onBuildStateMachineHandling;
+
 }

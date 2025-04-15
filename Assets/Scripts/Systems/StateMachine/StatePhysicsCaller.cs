@@ -9,7 +9,7 @@ public class StatePhysicsCaller : StateBehavior
     private StateBehaviorPhysicsCollision[] collisions;
     private StateBehaviorPhysicsTrigger[] triggers;
 
-    protected override void Initialize()
+    protected override void OnSetup()
     {
         collisions = Machine.stateHolder.GetComponentsInChildren<StateBehaviorPhysicsCollision>();
         triggers = Machine.stateHolder.GetComponentsInChildren<StateBehaviorPhysicsTrigger>();

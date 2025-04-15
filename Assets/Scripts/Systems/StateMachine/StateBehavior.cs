@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 
 namespace SLS.StateMachineV3
 {
@@ -28,14 +29,18 @@ namespace SLS.StateMachineV3
         public State state { get; private set; }
 
 
-        public void InitializeP(State @state)
+        public void Setup(State @state, bool makeDirty = false)
         {
             Machine = @state.machine;
             this.state = @state;
 
-            this.Initialize();
+            this.OnSetup();
+
+#if UNITY_EDITOR
+            if (makeDirty) EditorUtility.SetDirty(this);
+#endif
         }
-        protected virtual void Initialize() { }
+        protected virtual void OnSetup() { }
 
 
         public virtual void OnAwake() { }

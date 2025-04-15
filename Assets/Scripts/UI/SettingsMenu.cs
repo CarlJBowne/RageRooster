@@ -66,7 +66,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
         SFXVolume.Serialize("V_SFX"),
         ambienceVolume.Serialize("V_Amb"),
         brightness.Serialize("G_Brightness"),
-        new JProperty("Controls", remap.Serialize())
+        remap.Serialize("Controls")
         );
 
     // Deserializes the settings from a JSON token and applies them
