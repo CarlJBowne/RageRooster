@@ -8,7 +8,7 @@ public abstract class PlayerStateBehavior : StateBehavior
     [HideInInspector] public PlayerController playerController;
     
 
-    protected override void Initialize()
+    protected override void OnSetup()
     {
         Machine = base.Machine as PlayerStateMachine;
         playerMovementBody = Machine.body;
