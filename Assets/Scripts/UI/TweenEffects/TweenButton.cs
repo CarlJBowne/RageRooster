@@ -44,6 +44,6 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnSelect(BaseEventData eventData)
     {
-                BounceButton();
+        BounceButton();
     }
 }
