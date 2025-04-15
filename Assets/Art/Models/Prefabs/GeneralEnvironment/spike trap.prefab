@@ -58,6 +58,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7139261109480557378, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: -3258771382408540265, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -68,16 +73,31 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: e07aeaf0807ee2d4a8f674855aae2b4f, type: 2}
+    - target: {fileID: 424797892135438382, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
         type: 3}
       propertyPath: m_Name
       value: spike trap
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4531912228224351498, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c8005eaae435bc548abd5ea2398b5cae, type: 2}
+    - target: {fileID: 7953606483559150473, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -133,12 +153,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack:
-    amount: 1
-    name: Pit
-    wham: 0
-    velocity: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
+  currentAttackID: 0
+  sourceEntity: {fileID: 0}
+  attacks: []
+  additionalTags: []
+  enabled: 1
 --- !u!64 &2439819325754492012
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -201,12 +220,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack:
-    amount: 1
-    name: Pit
-    wham: 0
-    velocity: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
+  currentAttackID: 0
+  sourceEntity: {fileID: 0}
+  attacks: []
+  additionalTags: []
+  enabled: 1
 --- !u!64 &3834863334972036768
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -269,12 +287,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e36c6be636eb7546807c492f3e0a4de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack:
-    amount: 1
-    name: Pit
-    wham: 0
-    velocity: {x: 0, y: 0, z: 0}
-  velocity: {x: 0, y: 0, z: 0}
+  currentAttackID: 0
+  sourceEntity: {fileID: 0}
+  attacks: []
+  additionalTags: []
+  enabled: 1
 --- !u!64 &3661712056040036734
 MeshCollider:
   m_ObjectHideFlags: 0
