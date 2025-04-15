@@ -29,12 +29,12 @@ public class Overlay : MonoBehaviour
 
     public void BasicFadeOut(float duration = 1f)
     {
-        animator.Play("BasicFadeOut");
+        animator.Play("BasicFadeOut", -1, 0f);
         animator.SetFloat("DurationSpeed", 1 / duration);
     }
     public void BasicFadeIn(float duration = 1f)
     {
-        animator.Play("BasicFadeIn");
+        animator.Play("BasicFadeIn", -1, 0f);
         animator.SetFloat("DurationSpeed", 1 / duration);
     }
 

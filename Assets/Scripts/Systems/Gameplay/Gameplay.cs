@@ -46,6 +46,7 @@ public class Gameplay : Singleton<Gameplay>
     protected static System.Action PostMaLoad;
     public static StudioEventEmitter musicEmitter;
     public static System.Action PreReloadSave;
+    public static bool fullyLoaded;
 
     /// <summary>
     /// Begins the main menu by loading the gameplay scene and setting the active save file.
@@ -64,8 +65,8 @@ public class Gameplay : Singleton<Gameplay>
             GlobalState.activeSaveFile = fileNo;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
             SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
-            Overlay.OverMenus.BasicFadeIn();
         }
     }
 
@@ -137,6 +138,8 @@ public class Gameplay : Singleton<Gameplay>
         SavePoint spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
         Player.GetComponent<PlayerStateMachine>().InstantMove(spawn);
         Player.gameObject.SetActive(true);
+        fullyLoaded = true;
+        Overlay.OverMenus.BasicFadeIn();
     }
 
     /// <summary>
