@@ -228,6 +228,11 @@ public class PlayerMovementBody : PlayerStateBehavior
                     GroundStateChange(true, hit.transform);
                     leftover.y = 0;
                 }
+                else if (vel.y < -10f && rb.DirectionCastAll(Vector3.down, vel.y.Abs(), checkBuffer, out RaycastHit[] downHits) && downHits.Length > 1)
+                {
+                    GroundStateChange(true, null);
+                    leftover.y = 0;
+                }
                 else
                 {
                     leftover = leftover.ProjectAndScale(hit.normal);
