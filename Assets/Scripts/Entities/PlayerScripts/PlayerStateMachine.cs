@@ -10,6 +10,8 @@ public class PlayerStateMachine : StateMachine
 {
     #region Config
 
+    [SerializeField] Upgrade[] upgrades;
+
     #endregion
 
     #region Data
@@ -42,7 +44,11 @@ public class PlayerStateMachine : StateMachine
         }
 
 #if UNITY_EDITOR
-        Input.Get().Asset.FindAction("DebugActivate").performed += (_) => { DEBUG_MODE_ACTIVE = !DEBUG_MODE_ACTIVE; };
+        Input.Get().Asset.FindAction("DebugActivate").performed += (_) => 
+        {
+            DEBUG_MODE_ACTIVE = !DEBUG_MODE_ACTIVE;
+            for (int i = 0; i < upgrades.Length; i++) upgrades[i].EnableUpgrade();
+        };
 #endif
 
         whenInitializedEvent?.Invoke(this);
