@@ -22,12 +22,15 @@ public class PlayerStateMachine : StateMachine
 
     #endregion
 
-    protected override void Initialize()
+    protected override void OnSetup()
     {
         animator = GetComponent<Animator>();
         body = GetComponent<PlayerMovementBody>();
         controller = GetComponent<PlayerController>();
-        whenInitializedEvent?.Invoke(this);
+    }
+
+    protected override void OnAwake()
+    {
         Gameplay.Get().playerStateMachine = this;
 
         // Initialize the Cinemachine FreeLook camera
@@ -38,9 +41,11 @@ public class PlayerStateMachine : StateMachine
             freeLookCamera.LookAt = transform;
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         Input.Get().Asset.FindAction("DebugActivate").performed += (_) => { DEBUG_MODE_ACTIVE = !DEBUG_MODE_ACTIVE; };
-        #endif
+#endif
+
+        whenInitializedEvent?.Invoke(this);
     }
 
     public static bool DEBUG_MODE_ACTIVE;
