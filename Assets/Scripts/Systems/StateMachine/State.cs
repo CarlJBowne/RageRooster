@@ -3,6 +3,7 @@ using EditorAttributes;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
 using UltEvents;
+using UnityEditor;
 
 namespace SLS.StateMachineV3
 {
@@ -37,7 +38,7 @@ namespace SLS.StateMachineV3
         #region Signals
         [SerializeField, HideField(nameof(__isMachine))] public SerializedDictionary<string, UltEvent> signals;
         [SerializeField, HideField(nameof(__isMachine))] public bool lockReady;
-        #endregion 
+        #endregion
 
         #region Buttons
 
@@ -62,24 +63,27 @@ namespace SLS.StateMachineV3
 
         #region Data
 
-        //Inherited Components from Machine.
-        public StateMachine machine { get; protected set; }
+
         //Data
+
         public bool active { get; protected set; }
-        public StateBehavior[] behaviors { get; protected set; }
 
-        //Layer Data
-        public int layer { get; protected set; }
-
-        //Relationships.
-        public State parent { get; protected set; }
-        public State[] children { get; protected set; }
-        public int childCount { get; protected set; }
-        public State activeChild { get; protected set; }
-        public State[] lineage { get; protected set; }
-
-
-
+        public StateMachine machine { get => _machine; protected set => _machine = value; }
+        private StateMachine _machine;
+        public int layer { get => _layer; protected set => _layer = value; }
+        private int _layer;
+        public State parent { get => _parent; protected set => _parent = value; }
+        private State _parent;
+        public State[] children { get => _children; protected set => _children = value; }
+        private State[] _children;
+        public int childCount { get => _childCount; protected set => _childCount = value; }
+        private int _childCount;
+        public State activeChild { get => _activeChild; protected set => _activeChild = value; }
+        private State _activeChild;
+        public State[] lineage { get => _lineage; protected set => _lineage = value; }
+        private State[] _lineage;
+        public StateBehavior[] behaviors { get => _behaviors; protected set => _behaviors = value; }
+        private StateBehavior[] _behaviors;
 
         //Getters
 
@@ -99,11 +103,10 @@ namespace SLS.StateMachineV3
 
         #endregion 
 
-        private void InitializeP(StateMachine machine, State parent, int layer)
+        public virtual void Setup(StateMachine machine, State parent, int layer, bool makeDirty = false)
         {
             this.machine = machine;
             this.layer = layer;
-
             this.parent = parent;
             gameObject.SetActive(false);
 
@@ -117,24 +120,32 @@ namespace SLS.StateMachineV3
                 }
             }//Lineage Setup
 
-            SetupChildren(transform);
+            {
+                childCount = transform.childCount;
+                children = new State[childCount];
+                for (int i = 0; i < childCount; i++)
+                {
+                    children[i] = transform.GetChild(i).GetComponent<State>();
+                    children[i].Setup(machine, this, layer + 1);
+                }
+            }//Children Setup
 
             behaviors = GetComponents<StateBehavior>();
-            for (int i = 0; i < behaviors.Length; i++) behaviors[i].InitializeP(this);
+            for (int i = 0; i < behaviors.Length; i++) behaviors[i].Setup(this);
 
-            onAwakeEvent?.InvokeSafe(machine);
+#if UNITY_EDITOR
+            if(makeDirty) EditorUtility.SetDirty(this);
+#endif
         }
 
-        protected void SetupChildren(Transform parent)
-        {
-            childCount = parent.childCount;
-            children = new State[childCount];
-            for (int i = 0; i < childCount; i++)
-            {
-                children[i] = parent.GetChild(i).GetComponent<State>();
-                children[i].InitializeP(machine, this, layer + 1);
-            }//Children Setup
-        }
+
+
+
+
+
+
+
+
 
 
         public void DoAwake()
@@ -185,6 +196,8 @@ namespace SLS.StateMachineV3
 
         public void TransitionTo() => machine.TransitionState(this);
 
+
+        
     }
 
     public static class _StateMachineExtMethods

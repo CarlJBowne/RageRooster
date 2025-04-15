@@ -6,6 +6,7 @@ using EditorAttributes;
 using AYellowpaper.SerializedCollections;
 using UltEvents;
 using static UnityEngine.InputSystem.OnScreen.OnScreenStick;
+using UnityEditor;
 
 namespace SLS.StateMachineV3
 {
@@ -20,9 +21,13 @@ namespace SLS.StateMachineV3
 
         #region Config
 
+        //[SerializeField] private SMVariables _variables = new();
         //Note, make nonreliant on YellowPaper later.
         public AYellowpaper.SerializedCollections.SerializedDictionary<string, State> states;
-        [SerializeField] private SMVariables _variables = new();
+        [HideInEditMode, DisableInPlayMode] public bool signalReady = true;
+        public Queue<string> signalQueue = new();
+        public Timer.OneTime signalQueueDecay = new(1f);
+        public SerializedDictionary<string, UltEvent> globalSignals;
 
         #region Buttons
 
@@ -43,13 +48,15 @@ namespace SLS.StateMachineV3
 
         #region Data
 
-        public Transform stateHolder { get; private set; }
+        public bool statesSetup { get => _statesSetup; private set => _statesSetup = value; }
+        private bool _statesSetup;
+        public Transform stateHolder { get => _stateHolder; private set => _stateHolder = value; }
+        private Transform _stateHolder;
         public State currentState { get; private set; }
-        public SMVariables Variables => _variables;
+        //public SMVariables Variables => _variables;
 
         public System.Action waitforMachineInit;
 
-        public bool finishedSetup;
 
         #endregion
 
@@ -65,35 +72,22 @@ namespace SLS.StateMachineV3
 
         #region Real Unity Messages
 
-        protected virtual void Awake() => this.InitializeP();
+        protected virtual void Awake()
+        {
+            if (!statesSetup) Setup(this, this, -1);
+            OnAwake();
+            DoAwake();
+
+            for (int i = 0; i < behaviors.Length; i++) behaviors[i].OnEnter(null, false);
+            currentState = children[0].EnterState(null, true);
+
+            waitforMachineInit?.Invoke();
+        }
 
         private void Reset()
         {
-            {
-                Transform oldRoot = transform.Find("Root");
-                if (oldRoot != null && oldRoot.TryGetComponent(out State badRootState))
-                {
-                    StateBehavior[] rootBehaviors = oldRoot.GetComponents<StateBehavior>();
-                    foreach (StateBehavior item in rootBehaviors)
-                    {
-                        System.Type type = item.GetType();
-                        Component copy = gameObject.AddComponent(type);
-
-#if UNITY_EDITOR
-                        UnityEditor.EditorUtility.CopySerialized(item, copy);
-#endif
-                    }
-                    for (int i = rootBehaviors.Length - 1; i >= 0; i--) DestroyImmediate(rootBehaviors[i]);
-                    DestroyImmediate(badRootState);
-                    oldRoot.name = "States";
-                    return;
-                }
-            }//Conversion Check
-
             Transform tryRoot = transform.Find("States");
-            GameObject root = tryRoot ? tryRoot.gameObject : new GameObject("States");
-            root.transform.parent = transform;
-            stateHolder = root.transform;
+            if (tryRoot != null) this.NewGameObject("States", parent: transform);
         }
 
         protected virtual void Update()
@@ -113,41 +107,74 @@ namespace SLS.StateMachineV3
 
 
 
+        #region Initialization
 
 
-
-        private void InitializeP()
+        public new void Setup(StateMachine machine, State parent, int layer, bool makeDirty = false)
         {
             if (stateHolder == null)
             {
                 Transform tryRoot = transform.Find("States");
                 stateHolder = tryRoot != null ? tryRoot : throw new System.Exception("State Root Missing");
             }
-            Variables.Initialize();
-            this.Initialize();
+            if (stateHolder.childCount == 0) 
+                throw new System.Exception("Stateless State Machines are not supported. If you need to use StateBehaviors on something with only one state, create a dummy state.");
+
+            //Variables.Initialize();
 
             this.machine = this;
             this.layer = -1;
-            parent = this;
+            this.parent = this;
             active = true;
 
-            if (stateHolder == null) stateHolder = transform.Find("States");
-            if (stateHolder.childCount == 0) throw new System.Exception("Stateless State Machines are not supported. If you need to use StateBehaviors on something with only one state, create a dummy state.");
-            else SetupChildren(stateHolder);
+            lineage = new State[1] { this };
+
+            this.OnSetup();
+
+            {
+                childCount = stateHolder.childCount;
+                children = new State[childCount];
+                for (int i = 0; i < childCount; i++)
+                {
+                    children[i] = stateHolder.GetChild(i).GetComponent<State>();
+                    children[i].Setup(machine, this, layer + 1);
+                }
+            }//Children Setup
 
             behaviors = GetComponents<StateBehavior>();
-            for (int i = 0; i < behaviors.Length; i++) behaviors[i].InitializeP(this);
+            for (int i = 0; i < behaviors.Length; i++) behaviors[i].Setup(this);
 
-            DoAwake();
+            statesSetup = true;
 
-            for (int i = 0; i < behaviors.Length; i++) behaviors[i].OnEnter(null, false);
-            currentState = children[0].EnterState(null, true);
-
-            finishedSetup = true;
-            waitforMachineInit?.Invoke();
+#if UNITY_EDITOR
+            if (makeDirty) EditorUtility.SetDirty(this);
+#endif
         }
 
-        protected virtual void Initialize() { }
+#if UNITY_EDITOR
+        [Button]
+        public void ManualSetup()
+        {
+            if (statesSetup)
+            {
+                bool answer = EditorUtility.DisplayDialog("Setup", "This State Machine has already been setup, do you still want to setup again?", "Yes", "No");
+                if (!answer) return;
+            }
+
+            Setup(this, this, -1);
+
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+
+            EditorUtility.DisplayDialog("Setup Complete", "This State Machine has been setup, be sure to save changes to the prefab.", "Nice.");
+        }
+#endif
+
+
+        protected virtual void OnSetup() { }
+        protected virtual void OnAwake() { }
+
+        #endregion
+
 
         public virtual void TransitionState(State nextState) => TransitionState(nextState, currentState);
         public virtual void TransitionState(State nextState, State prevState)
@@ -176,14 +203,7 @@ namespace SLS.StateMachineV3
                 nextState.lineage[i].EnterState(prevState, false);
             currentState = nextState.EnterState(prevState);
         }
-
-
-        //Signals
-
-        [HideInEditMode, DisableInPlayMode] public bool signalReady = true;
-        public Queue<string> signalQueue = new();
-        public Timer.OneTime signalQueueDecay = new(1f);
-        public SerializedDictionary<string, UltEvent> globalSignals;
+        
 
         public bool SendSignal(string name, bool addToQueue = true, bool overrideReady = false)
         {

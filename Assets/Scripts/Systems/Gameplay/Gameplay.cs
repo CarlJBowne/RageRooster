@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using FMODUnity;
 using EditorAttributes;
+using System.Collections.Generic;
+
 
 
 #if UNITY_EDITOR
@@ -180,6 +182,17 @@ public class Gameplay : Singleton<Gameplay>
         }
     }
 
+    private const float bobSpeed = 1f;
+    private const float rotateSpeed = 90f;
+    private void FixedUpdate()
+    {
+        float time = Time.time;
+        float bob = Mathf.Sin(time * bobSpeed);
+        float rotate = time * rotateSpeed;
+
+        for (int i = 0; i < bobAndTurnList.Count; i++) bobAndTurnList[i].DoUpdate(bob, rotate);
+    }
+    public static List<BobAndTurn> bobAndTurnList = new(); 
 
 
 
