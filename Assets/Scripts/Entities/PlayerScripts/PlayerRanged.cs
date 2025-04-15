@@ -111,7 +111,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     }
     public void TryGrabThrowAir(PlayerGrabAction state)
     {
-        if (machine.signalReady && currentGrabbed != null)
+        if (currentGrabbed != null)
         {
             body.transform.DOBlendableRotateBy(new(0, pointer.startH.eulerAngles.y - body.transform.eulerAngles.y, 0), 0.1f);
             (!dropLaunchUpgrade ? airThrowState : dropLaunchState).TransitionTo();
