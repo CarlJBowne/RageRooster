@@ -9,6 +9,12 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
 
     public ScriptableCollection worldChanges;
     public ScriptableCollection upgrades;
+    public WorldChange useIndoorSky;
+    public WorldChange useSunsetSky;
+    public Material daySkybox;
+    public Material sunsetSkybox;
+    public Material indoorSkybox;
+
 
     public static int currency = 0;
     public static int maxAmmo = 1;
@@ -27,6 +33,17 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
     public static System.Action maxAmmoUpdateCallback;
     public static System.Action currencyUpdateCallback;
 
+    protected override void OnAwake()
+    {
+        useIndoorSky.Action += SetSkybox;
+        useIndoorSky.deAction += SetSkybox;
+    }
+
+    private void OnDestroy()
+    {
+        useIndoorSky.Action -= SetSkybox;
+        useIndoorSky.deAction -= SetSkybox;
+    }
 
     public static void Save() => Get().Serialize().SaveToFile(SaveFilePath, SaveFileName);
 
@@ -37,6 +54,7 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
         PlayerHealth.Global.UpdateMax(maxHealth);
         PlayerRanged.Ammo.UpdateMax(maxAmmo);
         PlayerRanged.Ammo.Update(maxAmmo);
+        Get().SetSkybox();
     }
 
     public void Deserialize(JToken Data)
@@ -87,6 +105,16 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
     public static void DeleteSaveFile(int id)
     {
         if(File.Exists($"{SaveFilePath}/SaveFile{id}.json")) File.Delete($"{SaveFilePath}/SaveFile{id}.json");
+    }
+
+    public void SetSkybox()
+    {
+        RenderSettings.skybox = useIndoorSky 
+            ? indoorSkybox 
+            : useSunsetSky 
+                ? sunsetSkybox
+                : daySkybox;
+        DynamicGI.UpdateEnvironment();
     }
 
 }
