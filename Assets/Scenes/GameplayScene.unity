@@ -230,6 +230,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldChanges: {fileID: 11400000, guid: 546d60c46cc1b4c4fb90fec693b180d8, type: 2}
   upgrades: {fileID: 11400000, guid: 5096cd543e777e240af87643ae7b164b, type: 2}
+  useIndoorSky: {fileID: -5112246621056870967, guid: 546d60c46cc1b4c4fb90fec693b180d8,
+    type: 2}
+  useSunsetSky: {fileID: 3855829021819806818, guid: 546d60c46cc1b4c4fb90fec693b180d8,
+    type: 2}
+  daySkybox: {fileID: 2100000, guid: 208f82601887ded4199350b536968a32, type: 2}
+  sunsetSkybox: {fileID: 2100000, guid: 7ee93331119ad414ab69f155b856e850, type: 2}
+  indoorSkybox: {fileID: 2100000, guid: f40a4c7faa0c55e45a276fc2517ff289, type: 2}
   saveFileTime: 0
 --- !u!114 &158189935
 MonoBehaviour:
@@ -1792,6 +1799,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1847951395371567096, guid: 99d6c4660e13dd04a97aebd573357d85,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1847951395371567096, guid: 99d6c4660e13dd04a97aebd573357d85,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1847951395371567096, guid: 99d6c4660e13dd04a97aebd573357d85,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1847951395371567096, guid: 99d6c4660e13dd04a97aebd573357d85,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2146822689452752929, guid: 99d6c4660e13dd04a97aebd573357d85,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2028,6 +2055,26 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7452107541655859638, guid: 99d6c4660e13dd04a97aebd573357d85,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8233569371929561959, guid: 99d6c4660e13dd04a97aebd573357d85,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8233569371929561959, guid: 99d6c4660e13dd04a97aebd573357d85,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8233569371929561959, guid: 99d6c4660e13dd04a97aebd573357d85,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8233569371929561959, guid: 99d6c4660e13dd04a97aebd573357d85,
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -2329,8 +2376,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3462675534289593904}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.12326088, y: 0, z: 0, w: 0.9923743}
-  m_LocalPosition: {x: 0, y: -0.000000067055225, z: 0}
+  m_LocalRotation: {x: -0.12326087, y: 0.0000000073937656, z: 9.1836516e-10, w: 0.9923743}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4028,8 +4075,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5204105015409254277}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.16539502, y: 0, z: 0, w: 0.98622745}
-  m_LocalPosition: {x: 0, y: -0.000000067055225, z: 0}
+  m_LocalRotation: {x: -0.16539504, y: -0.0000000031364344, z: -5.2599575e-10, w: 0.98622745}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
