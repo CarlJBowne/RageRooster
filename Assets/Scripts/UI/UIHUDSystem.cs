@@ -34,11 +34,10 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
     protected override void OnAwake()
     {
         SetCurrencyText(GlobalState.currency.ToString());
+        UpdateAmmo(GlobalState.maxAmmo);
         mainCamera = Camera.main;
         transform.parent.TryGetComponent(out canvas);
         transform.parent.TryGetComponent(out canvasRect);
-        PlayerHealth.Global.UI = this;
-        PlayerRanged.Ammo.UI = this;
     }
 
     // Called every frame to update the HUD
@@ -58,20 +57,13 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
     // Updates the health bar based on current and maximum health values
     public void UpdateHealth(int currentValue, int maxValue)
     {
-        for (int i = 0; i < activeMaxHealth || i < maxValue; i++)
-        {
-            if(i < activeMaxHealth && i < maxValue) 
-                healthImages[i].sprite = currentValue > i ? healthFullTexture : healthEmptyTexture;
-            else if (i >= activeMaxHealth)
-            {
-                if (healthImages.Count <= i) 
-                    healthImages.Add(Instantiate(healthImages[0], healthImages[0].transform.parent));
-                healthImages[i].enabled = true;
-                healthImages[i].sprite = healthFullTexture;
-            }
-            else if (i >= maxValue) healthImages[i].enabled = false;
-        }
+        if (maxValue > activeMaxHealth)
+            for (int i = 0; i < maxValue - activeMaxHealth; i++)
+                healthImages.Add(Instantiate(healthImages[0], healthImages[0].transform.parent));
         activeMaxHealth = maxValue;
+        //Note, can't go down since it probably won't ever go down.
+        for (int i = 0; i < healthImages.Count; i++)
+            healthImages[i].sprite = currentValue > i ? healthFullTexture : healthEmptyTexture;
     }
 
     // Displays a hint on the screen

@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
-using System.Collections.Generic;
 
 public class WaveController : MonoBehaviour
 {
@@ -15,7 +14,6 @@ public class WaveController : MonoBehaviour
     [Header("Spawn Area")]
     [SerializeField] private Vector3 spawnAreaCenter;
     [SerializeField] private Vector3 spawnAreaSize;
-    [SerializeField] private LayerMask collisionLayer;
 
     [Header("UI")]
     public TextMeshProUGUI waveTimerText;
@@ -93,11 +91,7 @@ public class WaveController : MonoBehaviour
     void SpawnWave()
     {
         Debug.Log($"[WaveController] Spawning {enemiesPerWave} enemies within area.");
-
-        List<Vector3> spawnPoints = new();
-        int attempts = 0;
-
-        while(spawnPoints.Count < enemiesPerWave && attempts < 100)
+        for (int i = 0; i < enemiesPerWave; i++)
         {
             Vector3 randomPosition = spawnAreaCenter + new Vector3(
                 Random.Range(-spawnAreaSize.x / 2, spawnAreaSize.x / 2),
@@ -105,20 +99,11 @@ public class WaveController : MonoBehaviour
                 Random.Range(-spawnAreaSize.z / 2, spawnAreaSize.z / 2)
             );
 
-            if (!Physics.Raycast(transform.position, randomPosition - transform.position, (randomPosition - transform.position).magnitude, collisionLayer, QueryTriggerInteraction.Ignore))
-                spawnPoints.Add(randomPosition);
-
-            attempts++;
-        }
-
-
-        for (int i = 0; i < spawnPoints.Count; i++)
-        {
             PoolableObject pooledEnemy = enemyPool.Pump();
 
             if (pooledEnemy != null)
             {
-                pooledEnemy.SetPosition(spawnPoints[i]);
+                pooledEnemy.SetPosition(randomPosition);
                 pooledEnemy.SetRotation(Vector3.zero);
 
                 if (pooledEnemy.TryGetComponent(out EnemyHealth health))
@@ -131,9 +116,15 @@ public class WaveController : MonoBehaviour
                         Debug.Log($"[WaveController] Enemy defeated. {activeEnemies} remaining.");
                     };
                 }
-                else Debug.LogError("[WaveController] Spawned enemy lacks EnemyHealth component!");
+                else
+                {
+                    Debug.LogError("[WaveController] Spawned enemy lacks EnemyHealth component!");
+                }
             }
-            else Debug.LogError("[WaveController] Enemy pool exhausted or unable to spawn enemy!");
+            else
+            {
+                Debug.LogError("[WaveController] Enemy pool exhausted or unable to spawn enemy!");
+            }
         }
     }
 
