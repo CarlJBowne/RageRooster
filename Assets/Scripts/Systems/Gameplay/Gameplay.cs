@@ -113,25 +113,28 @@ public class Gameplay : Singleton<Gameplay>
     /// </summary>
     protected override void OnAwake()
     {
-        musicEmitter = GetComponent<StudioEventEmitter>();
-        GlobalState.Load();
-
-        PostMaLoad?.Invoke();
-
-        zoneManager.Awake();
-
-        spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
-
-        SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
-
-        ZoneManager.OnFirstLoad += OnFirstLoad;
-
-        Input.Pause.performed += c =>
+        StartCoroutine(Enum());
+        IEnumerator Enum()
         {
-            Menu.Manager.Escape();
-        };
+            musicEmitter = GetComponent<StudioEventEmitter>();
 
-        if(Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+            
+
+            yield return null;
+
+            GlobalState.Load();
+            PostMaLoad?.Invoke();
+
+            spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
+
+            if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+
+            SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
+
+            ZoneManager.OnFirstLoad += OnFirstLoad;
+
+            Input.Pause.performed += c => { Menu.Manager.Escape(); };
+        }
     }
 
     /// <summary>
@@ -140,8 +143,9 @@ public class Gameplay : Singleton<Gameplay>
     private void OnFirstLoad()
     {
         SavePoint spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
-        Player.GetComponent<PlayerStateMachine>().InstantMove(spawn);
-        Player.gameObject.SetActive(true);
+        PlayerStateMachine.InstantMove(spawn);
+        PlayerHealth.Global.UpdateMax(GlobalState.maxHealth);
+        Player.SetActive(true);
         fullyLoaded = true;
     }
 

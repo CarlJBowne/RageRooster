@@ -36,7 +36,7 @@ public class ChargeAttackEB : StateBehavior
             collider.radius - .1f,
             transform.forward,
             out RaycastHit hitInfo,
-            (rb.velocity.magnitude * .02f) + checkDistance,
+            (rb.velocity.magnitude * .02f) + checkDistance + collider.radius,
             layerMask,
             QueryTriggerInteraction.Ignore)
             && hitInfo.normal.y < .65f)
