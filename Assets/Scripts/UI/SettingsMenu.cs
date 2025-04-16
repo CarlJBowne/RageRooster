@@ -13,7 +13,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
     public static string SaveFilePath => Application.persistentDataPath;
     public static string SaveFileName => "Config";
 
-    [SerializeField] Image brightnessOverlay;
+    Image brightnessOverlay;
 
     public FloatSetting masterVolume;
     public FloatSetting musicVolume;
@@ -30,8 +30,13 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
         musicVolume.Init(value => { AudioManager.Get().musicVolume = value; });
         SFXVolume.Init(value => { AudioManager.Get().SFXVolume = value; });
         ambienceVolume.Init(value => { AudioManager.Get().ambienceVolume = value; });
-        brightness.Init(value => { brightnessOverlay.color = new(0, 0, 0, value); });
 
+        if (Overlay.ActiveOverlays.ContainsKey(Overlay.OverlayLayer.OverMenus))
+        {
+            brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
+            brightness.Init(value => { brightnessOverlay.color = new(0, 0, 0, value); });
+        }
+        
         //remap.TargetInput();
         RevertChanges();
     }
@@ -61,7 +66,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
         SFXVolume.Serialize("V_SFX"),
         ambienceVolume.Serialize("V_Amb"),
         brightness.Serialize("G_Brightness"),
-        new JProperty("Controls", remap.Serialize())
+        remap.Serialize("Controls")
         );
 
     // Deserializes the settings from a JSON token and applies them

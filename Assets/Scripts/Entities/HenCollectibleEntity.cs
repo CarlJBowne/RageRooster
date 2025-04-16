@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class HenCollectibleEntity : MonoBehaviour, IInteractable
 {
+    public string henName = "INSERT_HEN_NAME_HERE";
     public WorldChange worldChange;
     public int ammoCount = 1;
+    public string hintString;
 
     bool IInteractable.canInteract => true;
 
@@ -25,9 +27,11 @@ public class HenCollectibleEntity : MonoBehaviour, IInteractable
     }
     bool IInteractable.Interaction()
     {
-        GlobalState.AddMaxAmmo(ammoCount);
+        PlayerRanged.Ammo.UpdateMax(PlayerRanged.Ammo.maxAmmo + 1);
         worldChange.Enable();
         gameObject.SetActive(false);
+        PlayerInteracter.Get().LostInteractable(this);
+        UIHUDSystem.Get().ShowHint(hintString);
         return true;
     }
 

@@ -329,7 +329,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""id"": ""56eadb48-0930-4aba-9cc5-5f8198ea57f3"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""DeltaTimeScale"",
+                    ""processors"": ""DeltaTimeScale,ScaleVector2(x=0.01,y=0.01)"",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Camera"",
                     ""isComposite"": false,
@@ -437,7 +437,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ecdfa080-da4c-42f1-b1dc-dc4033cc2282"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/leftAlt"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",

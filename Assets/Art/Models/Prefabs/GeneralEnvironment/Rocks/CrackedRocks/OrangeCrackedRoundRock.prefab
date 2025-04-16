@@ -27,9 +27,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2840282061522272051}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071069, y: 0, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 0.038550388, y: 0.28190762, z: 0.034711305}
-  m_LocalScale: {x: 62.0946, y: 58.139534, z: 39.751007}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2580643152833520457}
@@ -116,6 +116,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2580643152833520457}
   - component: {fileID: 8398778343084869273}
+  - component: {fileID: 7202415390759311097}
+  - component: {fileID: 7102558121908211236}
+  - component: {fileID: -6446346678662981809}
   m_Layer: 0
   m_Name: OrangeCrackedRoundRock
   m_TagString: Untagged
@@ -133,7 +136,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -67.45, y: 0.029056981, z: 23.91}
-  m_LocalScale: {x: 6, y: 6, z: 6}
+  m_LocalScale: {x: 800, y: 800, z: 800}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 997704850440582634}
@@ -168,6 +171,80 @@ LODGroup:
     renderers:
     - renderer: {fileID: 6390613626196783149}
   m_Enabled: 1
+--- !u!114 &7202415390759311097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3603654736825442814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f8bcd724fb9f11498ec7125701c8f7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  damageEvent:
+    _PersistentCalls: []
+  depleteEvent:
+    _PersistentCalls: []
+  immuneTags: []
+  health: 0
+  requiredTag: RagingCharge
+  basicDelete: 1
+--- !u!64 &7102558121908211236
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3603654736825442814}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2783764798937337195, guid: 1cb25819e41754a48a2a60b33d877332, type: 3}
+--- !u!114 &-6446346678662981809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3603654736825442814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 259421969
+      Data2: 1128626160
+      Data3: 1451369107
+      Data4: 502946856
+    Path: event:/SFX/Msc./stoneDestructible
+  Event: 
+  PlayEvent: 2
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &5665834744491007551
 GameObject:
   m_ObjectHideFlags: 0
@@ -194,9 +271,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5665834744491007551}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071069, y: 0, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 0.038550388, y: 0.28190762, z: 0.034711305}
-  m_LocalScale: {x: 62.0946, y: 58.139534, z: 39.751007}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2580643152833520457}
@@ -277,9 +354,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6411251133467343961}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071069, y: 0, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 0.038550388, y: 0.28190762, z: 0.034711305}
-  m_LocalScale: {x: 62.0946, y: 58.139534, z: 39.751007}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2580643152833520457}

@@ -9,6 +9,6 @@ public class PlayerEnterTrigger2 : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject == Gameplay.Player) Event?.Invoke();
+        if(Gameplay.Active && other.gameObject == Gameplay.Player) Event?.Invoke();
     }
 }

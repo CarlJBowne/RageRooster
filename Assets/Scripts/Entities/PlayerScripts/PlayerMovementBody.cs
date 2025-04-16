@@ -69,7 +69,10 @@ public class PlayerMovementBody : PlayerStateBehavior
     public Quaternion rotationQ 
     { get => rb.rotation; set => rb.rotation = value; }
     public Vector3 rotation 
-    { get => transform.eulerAngles; set => transform.eulerAngles = value; }
+    { 
+        get => transform.eulerAngles; 
+        set => transform.eulerAngles = value; 
+    }
 
     public Vector3 center => position + collider.center;
 
@@ -80,7 +83,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         {
             if (_currentDirection == value) return;
             _currentDirection = value;
-            if(playerMovementBody) playerMovementBody.rotation = _currentDirection.DirToRot();
+            playerMovementBody.rotationQ = Quaternion.LookRotation(value, Vector3.up);
         }
     }
 
@@ -104,9 +107,14 @@ public class PlayerMovementBody : PlayerStateBehavior
     public void DirectionSet(float maxTurnSpeed, Vector3 target)
     {
         if (target == Vector3.zero) return; 
-        currentDirection = Vector3.RotateTowards(currentDirection, target, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
+        currentDirection = Vector3.RotateTowards(currentDirection, target.normalized, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
     }
-    public void DirectionSet(float maxTurnSpeed) => DirectionSet(maxTurnSpeed, playerController.camAdjustedMovement); 
+    public void DirectionSet(float maxTurnSpeed) => DirectionSet(maxTurnSpeed, playerController.camAdjustedMovement);
+    public void InstantDirectionChange(Vector3 target)
+    {
+        if (target.sqrMagnitude == 0) return;
+        currentDirection = target;
+    }
 
     public VolcanicVent currentVent
     {
@@ -119,11 +127,6 @@ public class PlayerMovementBody : PlayerStateBehavior
     }
     public bool isOverVent => _currentVent != null;
 
-    public void InstantDirectionChange(Vector3 target)
-    {
-        if (target.sqrMagnitude == 0) return;
-        currentDirection = target;
-    }
 
 
     #endregion GetSet
@@ -153,9 +156,9 @@ public class PlayerMovementBody : PlayerStateBehavior
 
         if (PlayerStateMachine.DEBUG_MODE_ACTIVE && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
-        if (velocity.y < 0.01f ||(grounded && velocity.y >= 0.1f)) 
+        if (velocity.y < 0.01f || grounded) 
         {
-            if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out groundHit))
+            if(GroundCheck(out groundHit))
             {
 #if UNITY_EDITOR
                 AddToQueuedHits(new(groundHit));
@@ -223,6 +226,11 @@ public class PlayerMovementBody : PlayerStateBehavior
                 if(vel.y < .1f && WithinSlopeAngle(hit.normal))
                 {
                     GroundStateChange(true, hit.transform);
+                    leftover.y = 0;
+                }
+                else if (vel.y < -1f && rb.DirectionCastAll(vel, vel.y.Abs(), checkBuffer, out RaycastHit[] downHits) && downHits.Length > 1)
+                {
+                    GroundStateChange(true, null);
                     leftover.y = 0;
                 }
                 else
@@ -352,7 +360,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     public void ReturnToNeutral(bool doCrossFade = true)
     {
-        if(rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out RaycastHit groundHit))
+        if(GroundCheck())
         {
             idleState.TransitionTo();
             //animator.SetTrigger("ReturnToGroundNeutral");
@@ -379,6 +387,9 @@ public class PlayerMovementBody : PlayerStateBehavior
     public List<Vector3> jumpMarkers = new List<Vector3>();
 
 #endif
+
+    public bool GroundCheck(out RaycastHit groundHit) => rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out groundHit);
+    public bool GroundCheck() => rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out _);
 
 
     public struct HitNormalDisplay

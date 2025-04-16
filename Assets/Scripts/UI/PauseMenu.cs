@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class PauseMenu : MenuSingleton<PauseMenu>
 {
     public static bool isPaused => Get().isActive;
+    public static bool canPause = true;
 
     protected override void OnOpen()
     {
@@ -41,6 +42,6 @@ public class PauseMenu : MenuSingleton<PauseMenu>
         SceneManager.LoadScene("MainMenu");
     }
 
-    public void Respawn() => Gameplay.SpawnPlayer();
-    public void ReloadSave() => Gameplay.Get().ResetToSaved();
+    public void Respawn() => Gameplay.RespawnFromMenu();
+    public void ReloadSave() => Gameplay.Get().ResetToLastSave();
 }

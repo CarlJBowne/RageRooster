@@ -50,6 +50,7 @@ public class Health : MonoBehaviour, IDamagable
     }
 
     protected virtual void OnDamage(Attack attack) => damageEvent?.Invoke(attack.amount);
+    protected virtual void OnHeal(int amount) { }
     protected virtual void OnDeplete(Attack attack) => depleteEvent?.Invoke();
 
     /// <summary>
@@ -71,22 +72,22 @@ public class Health : MonoBehaviour, IDamagable
         return true;
 	}
 
-    [System.Obsolete]
-    public bool Damage(Attack_Old attack)
-    {
-        if (!damagable || attack.amount < 1) return false;
-
-        if (health - attack.amount < 0) attack.amount = health;
-
-        health -= attack.amount;
-
-        OnDamage(attack);
-        if (health == 0) OnDeplete(attack);
-
-        return true;
-    }
-
-    [System.Obsolete] protected virtual void OnDamage(Attack_Old attack) => damageEvent?.Invoke(attack.amount);
-    [System.Obsolete] protected virtual void OnDeplete(Attack_Old attack) => depleteEvent?.Invoke();
+    //[System.Obsolete]
+    //public bool Damage(Attack_Old attack)
+    //{
+    //    if (!damagable || attack.amount < 1) return false;
+    //
+    //    if (health - attack.amount < 0) attack.amount = health;
+    //
+    //    health -= attack.amount;
+    //
+    //    OnDamage(attack);
+    //    if (health == 0) OnDeplete(attack);
+    //
+    //    return true;
+    //}
+    //
+    //[System.Obsolete] protected virtual void OnDamage(Attack_Old attack) => damageEvent?.Invoke(attack.amount);
+    //[System.Obsolete] protected virtual void OnDeplete(Attack_Old attack) => depleteEvent?.Invoke();
 
 }

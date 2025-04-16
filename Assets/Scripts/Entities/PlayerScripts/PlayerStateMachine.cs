@@ -10,24 +10,36 @@ public class PlayerStateMachine : StateMachine
 {
     #region Config
 
+    [SerializeField] Upgrade[] upgrades;
+
     #endregion
 
     #region Data
     [HideInInspector] public Animator animator;
     [HideInInspector] public PlayerMovementBody body;
     [HideInInspector] public PlayerController controller;
+    [HideInInspector] public PlayerHealth health;
     public Transform cameraTransform;
     public CinemachineFreeLook freeLookCamera;
     public State pauseState;
+    public State ragDollState;
+    public RagdollHandler ragDollHandler;
+    public float fallDownPitTime;
+    public float deathTime;
+    CoroutinePlus deathCoroutine;
 
     #endregion
 
-    protected override void Initialize()
+    protected override void OnSetup()
     {
         animator = GetComponent<Animator>();
         body = GetComponent<PlayerMovementBody>();
         controller = GetComponent<PlayerController>();
-        whenInitializedEvent?.Invoke(this);
+        health = GetComponent<PlayerHealth>();
+    }
+
+    protected override void OnAwake()
+    {
         Gameplay.Get().playerStateMachine = this;
 
         // Initialize the Cinemachine FreeLook camera
@@ -38,9 +50,15 @@ public class PlayerStateMachine : StateMachine
             freeLookCamera.LookAt = transform;
         }
 
-        #if UNITY_EDITOR
-        Input.Get().Asset.FindAction("DebugActivate").performed += (_) => { DEBUG_MODE_ACTIVE = !DEBUG_MODE_ACTIVE; };
-        #endif
+#if UNITY_EDITOR
+        Input.Get().Asset.FindAction("DebugActivate").performed += (_) => 
+        {
+            DEBUG_MODE_ACTIVE = !DEBUG_MODE_ACTIVE;
+            for (int i = 0; i < upgrades.Length; i++) upgrades[i].EnableUpgrade();
+        };
+#endif
+
+        whenInitializedEvent?.Invoke(this);
     }
 
     public static bool DEBUG_MODE_ACTIVE;
@@ -82,6 +100,7 @@ public class PlayerStateMachine : StateMachine
     {
         children[0].TransitionTo();
         signalReady = true;
+        animator.Play("GroundBasic");
     }
 
     private State prevState;
@@ -89,11 +108,48 @@ public class PlayerStateMachine : StateMachine
     {
         prevState = currentState;
         pauseState.TransitionTo();
+        body.velocity = Vector3.zero;
+        body.CurrentSpeed = 0;
+        animator.CrossFade("GroundBasic", .2f);
     }
     public void UnPauseState()
     {
         prevState.TransitionTo();
     }
+
+    public void Death(bool justPit = false)
+    {
+        CoroutinePlus.Begin(ref deathCoroutine, Enum(justPit), this);
+        IEnumerator Enum(bool justPit)
+        {
+            ragDollState.TransitionTo();
+            ragDollHandler.SetState(EntityState.RagDoll);
+            ragDollHandler.SetVelocity(body.velocity);
+            body.velocity = Vector3.zero;
+            animator.enabled = false;
+
+            yield return WaitFor.SecondsRealtime(justPit ? fallDownPitTime : deathTime);
+
+            float fadeTime = justPit ? .5f : 1f;
+            Overlay.OverGameplay.BasicFadeOut(fadeTime);
+            yield return WaitFor.SecondsRealtime(fadeTime);
+            
+            yield return Gameplay.RespawnPlayer();
+            ragDollHandler.SetState(EntityState.Default);
+            animator.enabled = true;
+            if (!justPit)
+            {
+                PlayerHealth.Global.Update(PlayerHealth.Global.maxHealth);
+            }
+
+            Overlay.OverGameplay.BasicFadeIn(fadeTime);
+        }
+    }
+
+    public void DeathIfAtZero() { if (health.GetCurrentHealth() == 0) Death(); }
+
+
+
 
 #if UNITY_EDITOR
     protected override void Update()

@@ -36,7 +36,7 @@ public class PoolableObject : MonoBehaviour
     /// </summary>
     public void Disable(bool deactivateGameObject = true)
     {
-        if (!gameObject.scene.isLoaded) return;
+        if (!gameObject.scene.isLoaded || pool == null) return;
         bool wasActive = Active;
         Active = false;
         if (onDeactivate.GetInvocationList().Length > 0 && wasActive) onDeactivate(this);

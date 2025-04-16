@@ -549,8 +549,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2196142330002247260}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 166.9, y: 0, z: -12.6}
+  m_LocalRotation: {x: -0, y: -0.6912569, z: -0, w: 0.72260916}
+  m_LocalPosition: {x: 343.91, y: -19.17, z: -63.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -975,6 +975,9 @@ GameObject:
   - component: {fileID: 2359316393746588706}
   - component: {fileID: 4472940642844880929}
   - component: {fileID: 2959347430477591483}
+  - component: {fileID: 7480226171863852237}
+  - component: {fileID: 2567185304694544212}
+  - component: {fileID: 332073589659622126}
   m_Layer: 3
   m_Name: PT_EnterBoss
   m_TagString: Untagged
@@ -1065,6 +1068,99 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
+--- !u!114 &7480226171863852237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4540037950908484337}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: 1006540404
+      Data2: 1127768581
+      Data3: -1255742071
+      Data4: -769505739
+    Path: event:/Music/ireGorgeMusic
+  Event: 
+  PlayEvent: 0
+  StopEvent: 3
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &2567185304694544212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4540037950908484337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: 976656312
+      Data2: 1324722293
+      Data3: -2096513610
+      Data4: -1237814035
+    Path: event:/Music/Vs. Grubblord
+  Event: 
+  PlayEvent: 3
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &332073589659622126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4540037950908484337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: -1807061889
+      Data2: 1099072043
+      Data3: 459962282
+      Data4: -1703548757
+    Path: event:/SFX/Boss SFX/GrubLord/GrubblordIntroLaugh
+  Event: 
+  PlayEvent: 3
+  StopEvent: 0
+  AllowFadeout: 0
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &5273227862908985647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1558,8 +1654,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6810154848085935661}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 91.47, y: 0, z: -9}
+  m_LocalRotation: {x: -0, y: -0.6201441, z: -0, w: 0.7844879}
+  m_LocalPosition: {x: 159.2, y: -2.34, z: -23.29}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2146,7 +2242,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6859160403900326409, guid: a8017b446c517a548afe1c06a922d484,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4017627935548909528}
   m_SourcePrefab: {fileID: 100100000, guid: a8017b446c517a548afe1c06a922d484, type: 3}
 --- !u!114 &33157972249900072 stripped
 MonoBehaviour:
@@ -2172,6 +2272,37 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1896234128061659670}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4017627935548909528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4999106565348857887}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 976656312
+      Data2: 1324722293
+      Data3: -2096513610
+      Data4: -1237814035
+    Path: event:/Music/Vs. Grubblord
+  Event: 
+  PlayEvent: 11
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!136 &5212784016330976280 stripped
 CapsuleCollider:
   m_CorrespondingSourceObject: {fileID: 5910765145464477198, guid: a8017b446c517a548afe1c06a922d484,

@@ -11,12 +11,20 @@ public class SpawnAndDelete : MonoBehaviour
 {
     // Object that will be spawned.
     public GameObject prefab;
+    public EnemyHealth health;
+
+    private void Awake()
+    {
+        if (health == null) TryGetComponent(out health);
+    }
 
     // First, instantiate the object to be spawned the the position of the original object.
     // Then, disable the original object.
     public void PerformSpawnAndDelete()
     {
         Instantiate(prefab, this.transform.position, Quaternion.identity);
-        this.transform.gameObject.SetActive(false);
+        if (health) health.Destroy();
+        else Destroy(gameObject);
+        //this.transform.gameObject.SetActive(false);
     }
 }

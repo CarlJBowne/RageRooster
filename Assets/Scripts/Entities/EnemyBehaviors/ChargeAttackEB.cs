@@ -11,6 +11,7 @@ public class ChargeAttackEB : StateBehavior
     //Vector3 direction;
     //Transform playerTransform;
 
+    public new SphereCollider collider;
     public State vulnerableState;
     public LayerMask layerMask;
     public float checkDistance;
@@ -29,7 +30,16 @@ public class ChargeAttackEB : StateBehavior
         //{
         //    TransitionTo(vulnerableState);
         //}
-        if (Physics.Raycast(transform.position + rb.centerOfMass, transform.forward, out RaycastHit hitInfo, (rb.velocity.magnitude * .02f)+ checkDistance, layerMask, QueryTriggerInteraction.Ignore)) 
+
+        if (Physics.SphereCast(
+            transform.position + collider.center + Vector3.up * collider.radius/2,
+            collider.radius/2,
+            transform.forward,
+            out RaycastHit hitInfo,
+            (rb.velocity.magnitude * .02f) + checkDistance + collider.radius,
+            layerMask,
+            QueryTriggerInteraction.Ignore)
+            && hitInfo.normal.y < .65f)
             vulnerableState.TransitionTo();
     }
 }

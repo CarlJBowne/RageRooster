@@ -16,6 +16,8 @@ public class Upgrade : ScriptableObject, ICustomSerialized
     public bool defaultValue;
 
 
+    public void EnableUpgrade() => value = true;
+
 
     private void OnEnable() => value = defaultValue;
     private void OnDisable() => value = defaultValue;

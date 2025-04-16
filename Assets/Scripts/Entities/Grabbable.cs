@@ -1,17 +1,21 @@
 using EditorAttributes;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.Events;
 
-public class Grabbable : MonoBehaviour, IAttackSource
+public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
 {
     #region Config
 
-    public bool twoHanded;
+    public Transform anchorPoint;
     public float weight;
     public float wiggleFreeTime;
     public int maxHealthToGrab;
     public float additionalThrowDistance;
+    public float additionalHoldHeight;
+
     [HideInEditMode, HideInPlayMode] public UltEvents.UltEvent<EntityState> GrabStateEvent;
 
     [FoldoutGroup("Entity State Change Events", nameof(defaultEvent),nameof(grabbedEvent),nameof(thrownEvent),nameof(bounceEvent))]
@@ -26,38 +30,50 @@ public class Grabbable : MonoBehaviour, IAttackSource
     #endregion
     #region Data
 
-    private Grabber grabber;
-    public bool grabbed => grabber != null;
+    private IGrabber _Grabber;
+    public bool grabbed => Grabber != null;
 
-    public new Collider collider {  get; private set; }
-    public Rigidbody rb { get; private set; }
-    public EnemyHealth health { get; private set; }
+    private new Collider collider;
+    private Rigidbody rb;
+    public EnemyHealth health { get; protected set; }
+
+    protected ParentConstraint parentConstraint;
+
     public CoroutinePlus wiggleCoroutine;
 
     [HideInEditMode, DisableInPlayMode] public EntityState currentState;
 
+
+    #endregion
+    #region Interface Getters
+    public IGrabbable This => this;
+    public IGrabber Grabber { get => _Grabber; }
+    Transform IGrabbable.transform { get => transform; }
+    public float AdditionalThrowDistance => additionalThrowDistance;
+    public float AdditionalHoldHeight => additionalHoldHeight;
+    public bool IsGrabbable => gameObject.activeInHierarchy && UnderThreshold();
+
+    public virtual Rigidbody rigidBody => rb;
+
+    public Vector3 HeldOffset => anchorPoint != null ? -anchorPoint.localPosition : Vector3.zero;
+
     #endregion
 
-    private void Awake()
+
+    protected virtual void Awake()
     {
         collider = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
         health = GetComponent<EnemyHealth>();
+        SetState(EntityState.Default);
     }
 
-    public static bool Grab(GameObject target, out Grabbable result) => target.TryGetComponent(out result) && result.enabled && result.UnderThreshold() ? true : false;
-
-    public Grabbable Grab(Grabber grabber)
+    public bool Grab(IGrabber grabber)
     {
-        this.grabber = grabber;
+        _Grabber = grabber;
         SetState(EntityState.Grabbed);
-
-        if (rb)
-        {
-            rb.isKinematic = true;
-            rb.velocity = Vector3.zero;
-        }
-        collider.enabled = false;
+        SetVelocity(Vector3.zero);
+        IgnoreCollisionWithThrower();
 
         if (wiggleFreeTime > 0) wiggleCoroutine = new(WiggleEnum(), this);
         IEnumerator WiggleEnum()
@@ -69,34 +85,21 @@ public class Grabbable : MonoBehaviour, IAttackSource
         return this;
     }
 
-
     public void Throw(Vector3 velocity)
     {
         if (!grabbed) return;
-        Physics.IgnoreCollision(collider, grabber.collider, true);
         SetState(EntityState.Thrown);
-
-        if (rb)
-        {
-            rb.isKinematic = false;
-            rb.velocity = velocity;
-        }
-        collider.enabled = true;
+        SetVelocity(velocity);
     }
     public void Release()
     {
-        if (!grabbed) return;
-        //Physics.IgnoreCollision(collider, grabber.collider, true);
-        grabber = null;
-        SetState(EntityState.Default);
+        if (!grabbed) return; 
+        IgnoreCollisionWithThrower(false);
 
-        if (rb)
-        {
-            rb.isKinematic = false;
-            rb.velocity = Vector3.zero;
-        }
-        collider.enabled = true;
-    }
+        _Grabber = null;
+        SetState(EntityState.Default);
+        SetVelocity(Vector3.zero);
+    } 
 
     public bool UnderThreshold() => !health || maxHealthToGrab < 0 || health.GetCurrentHealth() <= maxHealthToGrab;
 
@@ -108,16 +111,36 @@ public class Grabbable : MonoBehaviour, IAttackSource
         if(currentState == EntityState.Thrown)
         {
             SetState(EntityState.RagDoll);
-            if (thrownAttack.amount > 0 && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(GetAttack());
-            Physics.IgnoreCollision(collider, grabber.collider, false);
-            grabber = null;
+            if (thrownAttack.amount > 0 && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(this.GetAttack());
+            IgnoreCollisionWithThrower(false);
+            _Grabber = null;
         }
     }
 
-    public void SetState(EntityState newState)
+    public virtual void SetState(EntityState newState)
     {
         currentState = newState;
         GrabStateEvent?.Invoke(currentState);
+
+        switch (newState)
+        {
+            case EntityState.Default:
+                rigidBody.isKinematic = false;
+                collider.enabled = true;
+                break;
+            case EntityState.Grabbed:
+                rigidBody.isKinematic = true;
+                collider.enabled = false;
+                break;
+            case EntityState.Thrown:
+                rigidBody.isKinematic = false;
+                collider.enabled = true;
+                break;
+            case EntityState.RagDoll:
+                break;
+            default:
+                break;
+        }
 
         (newState switch
         {
@@ -128,10 +151,14 @@ public class Grabbable : MonoBehaviour, IAttackSource
         })?.Invoke();
     }
 
+    public virtual void SetVelocity(Vector3 velocity) => rigidBody.velocity = velocity;
+
+    public virtual void IgnoreCollisionWithThrower(bool ignore = true) => Physics.IgnoreCollision(collider, Grabber.ownerCollider, ignore);
+
     public Attack GetAttack()
     {
         Attack result = thrownAttack;
-        if(rb) result.velocity = rb.velocity;
+        result.velocity = rigidBody.velocity; 
         return result;
     }
 }

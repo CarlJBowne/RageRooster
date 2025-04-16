@@ -10,6 +10,7 @@ public class ItemPickup : MonoBehaviour
         Health,
         Hint,
         Upgrade,
+        Wishbone,
         Hen
     }
 
@@ -35,6 +36,7 @@ public class ItemPickup : MonoBehaviour
         else if (type == ItemType.Health)
         {
             health.Heal(1);
+            
         }
         else if (type == ItemType.Hint)
         {
@@ -47,9 +49,14 @@ public class ItemPickup : MonoBehaviour
             //else FindObjectOfType<PlayerStateMachine>().SetUpgrade(upgradeName, true);
             UIHUDSystem.Get().ShowHint(hintString);
         }
+        else if (type == ItemType.Wishbone)
+        {
+            PlayerHealth.Global.UpdateMax(PlayerHealth.Global.maxHealth + addAmount);
+            UIHUDSystem.Get().ShowHint(hintString);
+        }
         else if(type == ItemType.Hen)
         {
-
+            UIHUDSystem.Get().ShowHint(hintString);
         }
 
         if (type != ItemType.Hint) Destroy(gameObject);

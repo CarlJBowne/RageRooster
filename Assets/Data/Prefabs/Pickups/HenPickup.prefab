@@ -1,5 +1,90 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5692893279080043782
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2605491211509823059}
+  - component: {fileID: 6278694795519069893}
+  - component: {fileID: 6882048559090185940}
+  m_Layer: 0
+  m_Name: HenPickupCloseByRadius
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2605491211509823059
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5692893279080043782}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3396719106354098682}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &6278694795519069893
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5692893279080043782}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 3.29
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6882048559090185940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5692893279080043782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: -1915460070
+      Data2: 1194140562
+      Data3: -1190560840
+      Data4: -2034530768
+    Path: event:/SFX/Msc./HenNearby
+  Event: 
+  PlayEvent: 3
+  StopEvent: 4
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 1
+  OverrideMinDistance: 18.2
+  OverrideMaxDistance: 32.79
 --- !u!1001 &2929920838364419601
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8,6 +93,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -58,14 +158,23 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 646e184b8e9d6984cba389444f61f5b0,
         type: 3}
       propertyPath: m_Name
-      value: RR_HenFinal
+      value: HenPickup
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2605491211509823059}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 646e184b8e9d6984cba389444f61f5b0,
         type: 3}
@@ -75,6 +184,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2234068968355659516}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 646e184b8e9d6984cba389444f61f5b0,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2312453300873340846}
   m_SourcePrefab: {fileID: 100100000, guid: 646e184b8e9d6984cba389444f61f5b0, type: 3}
 --- !u!1 &2623420086269307712 stripped
 GameObject:
@@ -94,8 +207,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d159a10ef155f64bbbdc73cec17c57e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldChange: {fileID: 0}
+  henName: INSERT_HEN_NAME_HERE
+  worldChange: {fileID: 2357636761488734058, guid: 546d60c46cc1b4c4fb90fec693b180d8,
+    type: 2}
   ammoCount: 1
+  hintString: '[HenName] has joined your party! Egg Ammo +1'
 --- !u!135 &2234068968355659516
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -117,3 +233,40 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.35
   m_Center: {x: 0, y: 0.4, z: 0}
+--- !u!114 &2312453300873340846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2623420086269307712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: -1119566130
+      Data2: 1329739634
+      Data3: -1615728492
+      Data4: 1095780337
+    Path: event:/SFX/Msc./HenFanFare
+  Event: 
+  PlayEvent: 3
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!4 &3396719106354098682 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
+    type: 3}
+  m_PrefabInstance: {fileID: 2929920838364419601}
+  m_PrefabAsset: {fileID: 0}
