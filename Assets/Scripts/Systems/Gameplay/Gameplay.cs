@@ -118,9 +118,9 @@ public class Gameplay : Singleton<Gameplay>
         {
             musicEmitter = GetComponent<StudioEventEmitter>();
 
-            
 
-            yield return null;
+
+            yield return WaitFor.Until(() => PlayerHealth.Global.playerObject && PlayerRanged.Ammo.playerObject);
 
             GlobalState.Load();
             PostMaLoad?.Invoke();
