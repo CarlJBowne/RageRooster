@@ -36,7 +36,11 @@ public class ChargeAttackEB : StateBehavior
             collider.radius/2,
             transform.forward,
             out RaycastHit hitInfo,
+<<<<<<< HEAD
             (rb.velocity.magnitude * .02f) + checkDistance + collider.radius ,
+=======
+            (rb.velocity.magnitude * .02f) + checkDistance + collider.radius,
+>>>>>>> parent of 8c6cdc5a (Revert "Merge branch 'main' into Audio")
             layerMask,
             QueryTriggerInteraction.Ignore)
             && hitInfo.normal.y < .65f)

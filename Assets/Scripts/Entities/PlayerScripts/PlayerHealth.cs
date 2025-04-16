@@ -16,7 +16,6 @@ public class PlayerHealth : Health
     private PlayerMovementBody body;
     private PlayerStateMachine machine;
 
-
     protected override void Awake()
     {
         base.Awake();
@@ -24,7 +23,7 @@ public class PlayerHealth : Health
         UIHUDSystem.TryGet(out UI);
         TryGetComponent(out body);
         TryGetComponent(out machine);
-        UpdateHealth();
+        Global.playerObject = this;
     }
 
     protected override void OnDamage(Attack attack)
@@ -47,6 +46,8 @@ public class PlayerHealth : Health
         UpdateHealth();
     }
 
+    protected override void OnHeal(int amount) => UpdateHealth();
+
     protected override void OnDeplete(Attack attack) => UI.StartCoroutine(DeathEnum());
 
     private IEnumerator InvinceEnum(float time)
@@ -58,13 +59,7 @@ public class PlayerHealth : Health
 
     }
 
-    public void UpdateHealth() => UI.UpdateHealth(health, maxHealth);
-
-    public void AddMaxHealth(int value = 1)
-    {
-        maxHealth += value;
-        UpdateHealth();
-    }
+    public void UpdateHealth() => Global.Update(health);
 
     private IEnumerator DeathEnum()
     {
@@ -95,4 +90,32 @@ public class PlayerHealth : Health
         }
     }
 
+    public static class Global
+    {
+        public static int currentHealth;
+        public static int maxHealth;
+
+        public static PlayerHealth playerObject;
+        public static UIHUDSystem UI;
+
+        public static void Update(int current)
+        {
+            currentHealth = current;
+            playerObject.health = current;
+
+            UI.UpdateHealth(current, maxHealth);
+        }
+        public static void UpdateMax(int max)
+        {
+            currentHealth = max;
+            maxHealth = max;
+
+            playerObject.health = max;
+            playerObject.maxHealth = max;
+            UI.UpdateHealth(max, max);
+
+            GlobalState.maxHealth = max;
+        }
+
+    }
 }
