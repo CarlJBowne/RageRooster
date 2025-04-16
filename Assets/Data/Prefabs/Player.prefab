@@ -14229,6 +14229,7 @@ GameObject:
   - component: {fileID: 2827000484517282095}
   - component: {fileID: 5618519440197409730}
   - component: {fileID: 1794738385307866841}
+  - component: {fileID: 6748568676543395012}
   m_Layer: 6
   m_Name: DamageMinor
   m_TagString: Untagged
@@ -14341,6 +14342,37 @@ MonoBehaviour:
   worldspaceInfluence: 0
   worldspaceVelocity: {x: 0, y: 0, z: 0}
   locked: 0
+--- !u!114 &6748568676543395012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8245773314306325851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1177642333
+      Data2: 1223021355
+      Data3: 195088528
+      Data4: -181475175
+    Path: event:/SFX/Player SFX/General/playerDamaged
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &8276374663671568334
 GameObject:
   m_ObjectHideFlags: 0
@@ -14534,6 +14566,7 @@ GameObject:
   - component: {fileID: 8249939815927584102}
   - component: {fileID: 8756034729405423735}
   - component: {fileID: 2644403828659727866}
+  - component: {fileID: 4292147563361030305}
   m_Layer: 6
   m_Name: DamageWhamLanded
   m_TagString: Untagged
@@ -14663,6 +14696,37 @@ MonoBehaviour:
   worldspaceInfluence: 1
   worldspaceVelocity: {x: 0, y: 0, z: 0}
   locked: 0
+--- !u!114 &4292147563361030305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8391892417953183193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1177642333
+      Data2: 1223021355
+      Data3: 195088528
+      Data4: -181475175
+    Path: event:/SFX/Player SFX/General/playerDamaged
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &8450292216223193930
 GameObject:
   m_ObjectHideFlags: 0
@@ -14738,6 +14802,7 @@ GameObject:
   - component: {fileID: 4439568894455865569}
   - component: {fileID: 4829984101446713626}
   - component: {fileID: 706258749169830515}
+  - component: {fileID: 7734167829673190997}
   m_Layer: 6
   m_Name: AirBonk
   m_TagString: Untagged
@@ -14853,6 +14918,37 @@ MonoBehaviour:
   worldspaceInfluence: 0
   worldspaceVelocity: {x: 0, y: 0, z: 0}
   locked: 0
+--- !u!114 &7734167829673190997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8459244022104302900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -265496798
+      Data2: 1098911609
+      Data3: 514920626
+      Data4: 512150926
+    Path: event:/SFX/Player SFX/General/playerBonk
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &8482731040741248156
 GameObject:
   m_ObjectHideFlags: 0
@@ -15165,6 +15261,7 @@ GameObject:
   - component: {fileID: 881160624330373794}
   - component: {fileID: 8368090947817114285}
   - component: {fileID: 1493939074062051383}
+  - component: {fileID: 5563327580469889438}
   m_Layer: 6
   m_Name: Bonk
   m_TagString: Untagged
@@ -15294,6 +15391,37 @@ MonoBehaviour:
   worldspaceInfluence: 0
   worldspaceVelocity: {x: 0, y: 0, z: 0}
   locked: 0
+--- !u!114 &5563327580469889438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8822378987506164119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -265496798
+      Data2: 1098911609
+      Data3: 514920626
+      Data4: 512150926
+    Path: event:/SFX/Player SFX/General/playerBonk
+  Event: 
+  PlayEvent: 11
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &8885662702780661556
 GameObject:
   m_ObjectHideFlags: 0
