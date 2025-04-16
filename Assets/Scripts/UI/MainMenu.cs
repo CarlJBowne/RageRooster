@@ -55,14 +55,6 @@ public class MainMenu : MenuSingleton<MainMenu>
 
     private void HandleHomeInput()
     {
-        if (Input.Movement.y > 0)
-        {
-            NavigateUp();
-        }
-        else if (Input.Movement.y < 0)
-        {
-            NavigateDown();
-        }
 
         if (Input.Interact.triggered)
         {
