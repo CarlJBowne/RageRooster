@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HenCollectibleEntity : MonoBehaviour, IInteractable
 {
+    public string henName = "INSERT_HEN_NAME_HERE";
     public WorldChange worldChange;
     public int ammoCount = 1;
     public string hintString;

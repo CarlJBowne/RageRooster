@@ -4,7 +4,7 @@ using EditorAttributes;
 
 public class Boss1Health : Health
 {
-
+    public float damageCooldown = 0.15f;
     public int phase2Trigger;
     public UltEvents.UltEvent phase2Event;
     public UltEvents.UltEvent phase3Event;
@@ -23,6 +23,7 @@ public class Boss1Health : Health
     private MovementAnimator moveAnim;
     private StateMachine machine;
     private Vector3 respawnPoint;
+    private float lastDamageTime;
 
     protected override void Awake()
     {
@@ -36,6 +37,7 @@ public class Boss1Health : Health
 
     protected override bool OverrideDamageable(Attack attack)
     {
+        if (lastDamageTime + damageCooldown > Time.time) return false;
         if (attack.HasTag("OnWeakSpot") && attack.HasTag("GroundSlam"))
         {
             animator.Play("Damage");
@@ -50,6 +52,7 @@ public class Boss1Health : Health
                 machine.SendSignal("Charge");
             }
             else machine.SendSignal("Flinch"); 
+            lastDamageTime = Time.time;
         }
         return false;
     }
