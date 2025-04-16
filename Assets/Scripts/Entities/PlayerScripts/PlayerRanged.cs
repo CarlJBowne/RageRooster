@@ -35,6 +35,8 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     private UIHUDSystem UI;
     private new Collider collider;
     private CoroutinePlus layerFadeCoroutine;
+    private bool justShot;
+    private CoroutinePlus justShotCO;
     #endregion 
 
     private void Awake()
@@ -50,10 +52,11 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         pointer.target.position = pointer.startV.position + pointer.startV.forward * pointer.distance;
 
         eggPool.Initialize();
-        eggCapacity = GlobalState.maxAmmo;
-        eggAmount = eggCapacity;
-        UI.UpdateAmmo(eggAmount);
-        GlobalState.maxAmmoUpdateCallback += UpdateMaxAmmo;
+        //eggCapacity = GlobalState.maxAmmo;
+        //eggAmount = eggCapacity;
+        //UI.UpdateAmmo(eggAmount);
+        //GlobalState.maxAmmoUpdateCallback += UpdateMaxAmmo;
+        Ammo.playerObject = this;
     }
 
     private void FixedUpdate()
@@ -74,7 +77,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     }
     private void OnDestroy()
     {
-        GlobalState.maxAmmoUpdateCallback -= UpdateMaxAmmo;
+        //GlobalState.maxAmmoUpdateCallback -= UpdateMaxAmmo;
     }
 
     #region Grabbing Throwing
@@ -329,6 +332,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void ShootPoint()
     {
+        if (justShot) return;
         realMuzzle.position = pointer.shootMuzzlePos.position;
         Quaternion Q = realMuzzle.rotation;
         Q.SetLookRotation(pointer.hitMarker.position - realMuzzle.position);
@@ -336,6 +340,13 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
         eggPool.Pump().GetComponent<ProjectileMovement>().Send();
         ChangeAmmoAmount(-1);
+        justShot = true;
+        CoroutinePlus.Begin(ref justShotCO, Enum(), this);
+        IEnumerator Enum()
+        {
+            yield return null;
+            justShot = false;
+        }
     }
 
     public void AimThrow()
@@ -345,13 +356,37 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     void ChangeAmmoAmount(int offset)
     {
-        eggAmount += offset;
-        UI.UpdateAmmo(eggAmount);
+        Ammo.Update(eggAmount + offset);
+        //eggAmount += offset;
+        //UI.UpdateAmmo(eggAmount);
     }
-    void UpdateMaxAmmo()
+    //void UpdateMaxAmmo()
+    //{
+    //    eggCapacity = GlobalState.maxAmmo;
+    //    UI.UpdateAmmo(eggAmount);
+    //}
+
+    public static class Ammo
     {
-        eggCapacity = GlobalState.maxAmmo;
-        UI.UpdateAmmo(eggAmount);
+        public static int currentAmmo;
+        public static int maxAmmo;
+
+        public static PlayerRanged playerObject;
+        public static UIHUDSystem UI;
+
+        public static void Update(int newAmount)
+        {
+            currentAmmo = newAmount;
+            playerObject.eggAmount = newAmount;
+            UI.UpdateAmmo(currentAmmo);
+        }
+        public static void UpdateMax(int newMax)
+        {
+            maxAmmo = newMax;
+            playerObject.eggCapacity = newMax;
+            GlobalState.maxAmmo = newMax;
+            UI.UpdateAmmo(currentAmmo);
+        }
     }
 
 }

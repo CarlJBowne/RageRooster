@@ -33,8 +33,10 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
     public static void Load()
     {
         JToken loadAttempt = new JObject().LoadJsonFromFile(SaveFilePath, SaveFileName);
-        if (loadAttempt == null) return;
-        Get().Deserialize(loadAttempt);
+        if (loadAttempt != null) Get().Deserialize(loadAttempt);
+        PlayerHealth.Global.UpdateMax(maxHealth);
+        PlayerRanged.Ammo.UpdateMax(maxAmmo);
+        PlayerRanged.Ammo.Update(maxAmmo);
     }
 
     public void Deserialize(JToken Data)
@@ -75,6 +77,7 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
         currencyUpdateCallback?.Invoke();
     }
 
+    [System.Obsolete]
     public static void AddMaxAmmo(int offset)
     {
         maxAmmo += offset;
