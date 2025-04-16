@@ -118,6 +118,7 @@ GameObject:
   - component: {fileID: 8398778343084869273}
   - component: {fileID: 7202415390759311097}
   - component: {fileID: 7102558121908211236}
+  - component: {fileID: -6446346678662981809}
   m_Layer: 0
   m_Name: OrangeCrackedRoundRock
   m_TagString: Untagged
@@ -213,6 +214,37 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2783764798937337195, guid: 1cb25819e41754a48a2a60b33d877332, type: 3}
+--- !u!114 &-6446346678662981809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3603654736825442814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 259421969
+      Data2: 1128626160
+      Data3: 1451369107
+      Data4: 502946856
+    Path: event:/SFX/Msc./stoneDestructible
+  Event: 
+  PlayEvent: 2
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &5665834744491007551
 GameObject:
   m_ObjectHideFlags: 0

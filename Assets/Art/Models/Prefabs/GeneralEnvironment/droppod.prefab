@@ -160,6 +160,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 488120721057108287}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e9b6030ded5061b4bab7a4496a16fab9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5571909255795648919}
   m_SourcePrefab: {fileID: 100100000, guid: e9b6030ded5061b4bab7a4496a16fab9, type: 3}
 --- !u!1 &8824679437077047087 stripped
 GameObject:
@@ -215,6 +219,37 @@ MonoBehaviour:
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &5571909255795648919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8824679437077047087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1049998453
+      Data2: 1086245276
+      Data3: 915542184
+      Data4: -2032885526
+    Path: event:/SFX/Msc./metalDestructible
+  Event: 
+  PlayEvent: 2
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
