@@ -66,10 +66,9 @@ public class Gameplay : Singleton<Gameplay>
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
-            var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE_NAME);
+            SceneManager.LoadSceneAsync(GAMEPLAY_SCENE_NAME);
 
-            yield return WaitFor.Until(() => Load.isDone && fullyLoaded);
-            yield return WaitFor.SecondsRealtime(0.2f);
+            yield return WaitFor.Until(() => fullyLoaded);
             Overlay.OverMenus.BasicFadeIn();
         }
     }
@@ -113,28 +112,25 @@ public class Gameplay : Singleton<Gameplay>
     /// </summary>
     protected override void OnAwake()
     {
-        StartCoroutine(Enum());
-        IEnumerator Enum()
+        musicEmitter = GetComponent<StudioEventEmitter>();
+        GlobalState.Load();
+
+        PostMaLoad?.Invoke();
+
+        zoneManager.Awake();
+
+        spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
+
+        SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
+
+        ZoneManager.OnFirstLoad += OnFirstLoad;
+
+        Input.Pause.performed += c =>
         {
-            musicEmitter = GetComponent<StudioEventEmitter>();
+            Menu.Manager.Escape();
+        };
 
-            
-
-            yield return null;
-
-            GlobalState.Load();
-            PostMaLoad?.Invoke();
-
-            spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
-
-            if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
-
-            SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
-
-            ZoneManager.OnFirstLoad += OnFirstLoad;
-
-            Input.Pause.performed += c => { Menu.Manager.Escape(); };
-        }
+        if(Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
     }
 
     /// <summary>
@@ -143,9 +139,8 @@ public class Gameplay : Singleton<Gameplay>
     private void OnFirstLoad()
     {
         SavePoint spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
-        PlayerStateMachine.InstantMove(spawn);
-        PlayerHealth.Global.UpdateMax(GlobalState.maxHealth);
-        Player.SetActive(true);
+        Player.GetComponent<PlayerStateMachine>().InstantMove(spawn);
+        Player.gameObject.SetActive(true);
         fullyLoaded = true;
     }
 
