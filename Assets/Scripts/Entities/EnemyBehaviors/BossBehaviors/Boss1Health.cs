@@ -118,7 +118,6 @@ public class Boss1Health : Health
         health = maxHealth;
         phase2TriggerTriggered = false;
         machine[0][0].TransitionTo();
-        animator.Play("Walking", -1, 0f);
         ResetBossEvent?.Invoke();
     }
 

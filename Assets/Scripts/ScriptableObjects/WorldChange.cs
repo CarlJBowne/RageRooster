@@ -20,7 +20,6 @@ public class WorldChange : ScriptableObject, ICustomSerialized
         {
             _enabled = value;
             if (_enabled) Action?.Invoke();
-            else deAction?.Invoke();
         } 
     }
 
@@ -28,8 +27,6 @@ public class WorldChange : ScriptableObject, ICustomSerialized
 
     [JsonIgnore]
     public System.Action Action;
-    [JsonIgnore]
-    public System.Action deAction;
 
     [JsonIgnore]
     public bool defaultValue;
