@@ -32,11 +32,11 @@ public class ChargeAttackEB : StateBehavior
         //}
 
         if (Physics.SphereCast(
-            transform.position + collider.center,
-            collider.radius - .1f,
+            transform.position + collider.center + Vector3.up * collider.radius/2,
+            collider.radius/2,
             transform.forward,
             out RaycastHit hitInfo,
-            (rb.velocity.magnitude * .02f) + checkDistance,
+            (rb.velocity.magnitude * .02f) + checkDistance + collider.radius ,
             layerMask,
             QueryTriggerInteraction.Ignore)
             && hitInfo.normal.y < .65f)
