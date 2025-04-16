@@ -66,7 +66,11 @@ public class Gameplay : Singleton<Gameplay>
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
-            SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
+            var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE_NAME);
+
+            yield return WaitFor.Until(() => Load.isDone && fullyLoaded);
+            yield return WaitFor.SecondsRealtime(0.2f);
+            Overlay.OverMenus.BasicFadeIn();
         }
     }
 
@@ -139,7 +143,6 @@ public class Gameplay : Singleton<Gameplay>
         Player.GetComponent<PlayerStateMachine>().InstantMove(spawn);
         Player.gameObject.SetActive(true);
         fullyLoaded = true;
-        Overlay.OverMenus.BasicFadeIn();
     }
 
     /// <summary>
