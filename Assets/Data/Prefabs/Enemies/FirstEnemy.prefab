@@ -6185,9 +6185,6 @@ MonoBehaviour:
   lockReady: 0
   states:
     _serializedList: []
-  _variables:
-    variables: []
-  finishedSetup: 0
   signalReady: 1
   signalQueueDecay:
     length: 1
@@ -6230,14 +6227,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18e851c5f4414a439ad7d539149b8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
+  maxHealth: 25
   damageEvent:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
   immuneTags: []
   health: 0
-  stunTime: 1
+  stunTime: 0.5
   poofPrefab: {fileID: 0}
   disableComponents:
   - {fileID: 607112006137138021}
@@ -6296,7 +6293,7 @@ MonoBehaviour:
   anchorPoint: {fileID: 8731360320969202055}
   weight: 1
   wiggleFreeTime: 0
-  maxHealthToGrab: 5
+  maxHealthToGrab: 16
   additionalThrowDistance: 0
   additionalHoldHeight: 0
   GrabStateEvent:

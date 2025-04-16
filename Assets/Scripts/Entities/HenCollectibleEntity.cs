@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HenCollectibleEntity : MonoBehaviour, IInteractable
 {
+    public string henName = "INSERT_HEN_NAME_HERE";
     public WorldChange worldChange;
     public int ammoCount = 1;
     public string hintString;
@@ -29,6 +30,7 @@ public class HenCollectibleEntity : MonoBehaviour, IInteractable
         GlobalState.AddMaxAmmo(ammoCount);
         worldChange.Enable();
         gameObject.SetActive(false);
+        PlayerInteracter.Get().LostInteractable(this);
         UIHUDSystem.Get().ShowHint(hintString);
         return true;
     }

@@ -3,6 +3,10 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Data.SqlTypes;
+
+using Unity.VisualScripting;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -92,9 +96,15 @@ public class _ScriptableCollectionEditor : Editor
             for (int i = 0; i < This.List.Count; i++)
             {
                 GUILayout.BeginHorizontal();
+                string displayName = This.List[i].name;
 
-                string editedName = EditorGUILayout.DelayedTextField(This.List[i].name.Substring(2), GUILayout.ExpandWidth(true));
-                if (editedName != This.List[i].name.Substring(2))
+                int firstNonDigit = 0;
+                for (; firstNonDigit < displayName.Length; firstNonDigit++)
+                    if (!char.IsDigit(displayName[firstNonDigit])) break;
+                displayName = displayName.Substring(firstNonDigit + 1);
+
+                string editedName = EditorGUILayout.DelayedTextField(displayName, GUILayout.ExpandWidth(true));
+                if (editedName != displayName)
                 {
                     This.List[i].name = $"{i}_{editedName}";
                     EditorUtility.SetDirty(This.List[i]);

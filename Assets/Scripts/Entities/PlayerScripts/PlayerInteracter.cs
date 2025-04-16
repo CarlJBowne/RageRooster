@@ -6,7 +6,7 @@ using static Input;
 /// <summary>
 /// Now Combined with the Dialogue Trigger
 /// </summary>
-public class PlayerInteracter : MonoBehaviour
+public class PlayerInteracter : Singleton<PlayerInteracter>
 {
     public GameObject popupTransform;
 
@@ -22,24 +22,24 @@ public class PlayerInteracter : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
-    {
-        if(other.TryGetComponent(out IInteractable foundInteractable))
-        {
-            interactablesInFront.Add(foundInteractable);
-            UpdateInteractableList();
-        }
-
-    }
+    {if(other.TryGetComponent(out IInteractable foundInteractable)) FoundInteractable(foundInteractable);}
 
     private void OnTriggerExit(Collider other)
+    {if (other.TryGetComponent(out IInteractable foundInteractable)) LostInteractable(foundInteractable);}
+
+
+    public void FoundInteractable(IInteractable interactable)
     {
-        if(other.TryGetComponent(out IInteractable foundInteractable) && interactablesInFront.Contains(foundInteractable))
-        {
-            interactablesInFront.Remove(foundInteractable);
-            UpdateInteractableList();
-        }
-            
+        interactablesInFront.Add(interactable);
+        UpdateInteractableList();
     }
+    public void LostInteractable(IInteractable interactable)
+    {
+        if (!interactablesInFront.Contains(interactable)) return;
+        interactablesInFront.Remove(interactable);
+        UpdateInteractableList();
+    }
+
 
     void UpdateInteractableList()
     {

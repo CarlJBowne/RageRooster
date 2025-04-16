@@ -26,6 +26,7 @@ public class Gameplay : Singleton<Gameplay>
     public ZoneManager zoneManager;
     public GlobalState globalState;
     public SettingsMenu settingsMenu;
+    public DontDestroyMeOnLoad overlayPrefab;
 
     public static string spawnSceneName = null;
     public static int spawnPointID = -1;
@@ -45,6 +46,7 @@ public class Gameplay : Singleton<Gameplay>
     protected static System.Action PostMaLoad;
     public static StudioEventEmitter musicEmitter;
     public static System.Action PreReloadSave;
+    public static bool fullyLoaded;
 
     /// <summary>
     /// Begins the main menu by loading the gameplay scene and setting the active save file.
@@ -63,7 +65,11 @@ public class Gameplay : Singleton<Gameplay>
             GlobalState.activeSaveFile = fileNo;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
+
+            var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE_NAME);
+
+            yield return WaitFor.Until(() => Load.isDone && fullyLoaded);
+            yield return WaitFor.SecondsRealtime(0.2f);
             Overlay.OverMenus.BasicFadeIn();
         }
     }
@@ -114,7 +120,9 @@ public class Gameplay : Singleton<Gameplay>
 
         zoneManager.Awake();
 
-        SceneManager.LoadScene(spawnSceneName ?? ZoneManager.Get().defaultAreaScene, LoadSceneMode.Additive);
+        spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
+
+        SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
 
         ZoneManager.OnFirstLoad += OnFirstLoad;
 
@@ -123,7 +131,7 @@ public class Gameplay : Singleton<Gameplay>
             Menu.Manager.Escape();
         };
 
-        
+        if(Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
     }
 
     /// <summary>
@@ -134,6 +142,7 @@ public class Gameplay : Singleton<Gameplay>
         SavePoint spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
         Player.GetComponent<PlayerStateMachine>().InstantMove(spawn);
         Player.gameObject.SetActive(true);
+        fullyLoaded = true;
     }
 
     /// <summary>
@@ -148,12 +157,18 @@ public class Gameplay : Singleton<Gameplay>
         /// </summary>
         static IEnumerator SpawnPlayer_CR()
         {
+            Overlay.OverMenus.BasicFadeOut(1f);
+            yield return WaitFor.SecondsRealtime(1f);
+
             if (!ZoneManager.ZoneIsReady(spawnSceneName)) SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
 
             yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
 
             ZoneManager.DoTransition(spawnSceneName);
             PlayerStateMachine.InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
+
+            PauseMenu.TrueClose();
+            Overlay.OverMenus.BasicFadeIn(1f);
         }
     }
 
@@ -170,6 +185,9 @@ public class Gameplay : Singleton<Gameplay>
         /// </summary>
         static IEnumerator ResetToSaved_CR()
         {
+            Overlay.OverMenus.BasicFadeOut(1.2f);
+            yield return WaitFor.SecondsRealtime(1.2f);
+
             Player.SetActive(false);
             yield return ZoneManager.Get().UnloadAll();
 
@@ -179,6 +197,9 @@ public class Gameplay : Singleton<Gameplay>
             yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
             ZoneManager.DoTransition(spawnSceneName);
             PlayerStateMachine.InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
+
+            PauseMenu.TrueClose();
+            Overlay.OverMenus.BasicFadeIn(1.2f);
         }
     }
 

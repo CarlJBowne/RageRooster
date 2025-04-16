@@ -10,7 +10,7 @@ public class MovementAnimator : MonoBehaviour
     public Vector3 relativeVelocity;
     public float angularVelocity;
     public float turnToVelocity;
-    public bool snapToGround;
+    public float snapToGroundDistance = 4f;
     public LayerMask groundLayerMask;
 
     private Rigidbody rb;
@@ -58,7 +58,7 @@ public class MovementAnimator : MonoBehaviour
         }
         if (influence > 0)
         {
-            if (snapToGround && Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, 300f, groundLayerMask))
+            if (snapToGroundDistance > 0 && Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, snapToGroundDistance, groundLayerMask))
             {
                 rb.MovePosition(hitInfo.point + Vector3.up * 0.001f);
                 rb.velocity = rb.velocity.XZ();
