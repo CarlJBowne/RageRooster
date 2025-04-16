@@ -2,51 +2,50 @@ using DG.Tweening;
 using EditorAttributes;
 using SLS.StateMachineV3;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.SocialPlatforms;
 
-public class PlayerRanged : MonoBehaviour, IGrabber
+public class PlayerRanged : MonoBehaviour
 {
     #region Config
+    public State groundState;
+    public State airBorneState;
     public PlayerAirborneMovement jumpState;
+    public State throwState;
     public State airThrowState;
     public State dropLaunchState;
+    //public Transform muzzle;
     public Upgrade dropLaunchUpgrade;
-    public Transform heldItemAnchor;
 
     #endregion
     #region Data
-    private bool aiming;
+    private bool active;
+    Vector3 launchVelocity;
     PlayerStateMachine machine;
     PlayerMovementBody body;
     Animator animator;
     [HideProperty] public PlayerAiming aimingState;
-    [HideProperty] public State shootingState;
-    public IGrabbable currentGrabbed { get; private set; }
+    public Grabbable currentGrabbed => grabber.currentGrabbed;
 
     private UIHUDSystem UI;
-    private new Collider collider;
-    private CoroutinePlus layerFadeCoroutine;
-    #endregion 
+    #endregion
 
     private void Awake()
     {
-        TryGetComponent(out machine);
-        TryGetComponent(out body);
-        TryGetComponent(out animator);
-        TryGetComponent(out collider);
+        machine = GetComponent<PlayerStateMachine>();
+        body = GetComponent<PlayerMovementBody>();
+        animator = GetComponent<Animator>();
         UIHUDSystem.TryGet(out UI);
         if (aimingState == null) aimingState = FindObjectOfType<PlayerAiming>(true);
-        if (shootingState == null) shootingState = aimingState.state[0];
 
+        grabber.ranged = this;
+        grabber.animator = animator;
+        TryGetComponent(out grabber.collider); 
+        
         pointer.target.position = pointer.startV.position + pointer.startV.forward * pointer.distance;
 
         eggPool.Initialize();
@@ -62,152 +61,123 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
         pointer.startH.position = body.position + Vector3.up;
 
-        animator.Update(0f);
-
         if (aimingState.state) AimingFixedUpdate();
         else NonAimingFixedUpdate();
-
     }
     private void LateUpdate()
     {
-        currentGrabbed?.transform.SetPositionAndRotation(heldItemAnchor);
+        if (aimingState.state) AimingPostUpdate();
+        grabber.LateUpdate();
     }
+
     private void OnDestroy()
     {
         GlobalState.maxAmmoUpdateCallback -= UpdateMaxAmmo;
     }
 
+    public void GrabWhenAiming(PlayerGrabAction grabState, bool held)
+    {
+        if (grabber.currentGrabbed)
+        {
+            Shoot();
+            return;
+        }
+        Grabbable grabCheck = grabber.CheckForGrabbable();
+        if (grabCheck != null)
+        {
+            animator.Play("Grab");
+            animator.Play("GrabAim.Grab");
+            grabState.AttemptGrab(grabCheck, held);
+        }
+        else Shoot();
+    }
+
     #region Grabbing Throwing
 
-    public float launchVelocity;
-    public float checkSphereRadius;
-    public Vector3 checkSphereOffset;
-    public LayerMask layerMask;
-    public Transform twoHandedHand;
-    public UltEvents.UltEvent<bool> GrabStateEvent;
-    public Collider ownerCollider => collider;
-
-
-    public void TryGrabThrow(PlayerGrabAction state, State throwState)
+    public PlayerGrabber grabber = new();
+    [System.Serializable]
+    public class PlayerGrabber : Grabber
     {
-        if (machine.signalReady && currentGrabbed != null)
-        {
-            throwState.TransitionTo();
-            new CoroutinePlus(QuickTurn(), this);
-            IEnumerator QuickTurn()
-            {
-                float time = 0f;
-                float rate = Vector3.Angle(pointer.startH.eulerAngles, body.currentDirection) / .1f;
+        //Config
+        public float launchVelocity;
+        public float checkSphereRadius;
+        public Vector3 checkSphereOffset;
+        public LayerMask layerMask;
+        public Transform oneHandedHand;
+        public Transform twoHandedHand;
 
-                while(time < 0.1f)
-                {
-                    time += Time.deltaTime;
-                    body.rotationQ = Quaternion.RotateTowards(body.rotationQ, pointer.startH.rotation, rate * Time.deltaTime);
-                    yield return null;
-                }
+        //Data
+        [HideInInspector] public PlayerRanged ranged;
+        [HideInInspector] public Animator animator;
+        [HideInInspector] public bool twoHanded;
+
+        public void LateUpdate()
+        {
+            if (currentGrabbed != null)
+            {
+                //animator.Update(0);
+                currentGrabbed.transform.SetPositionAndRotation(twoHanded ? twoHandedHand : oneHandedHand);
             }
         }
-        else state.BeginGrabAttempt(CheckForGrabbable());
+
+
+        protected override void OnGrab() => twoHanded = currentGrabbed.twoHanded;
+        protected override void OnRelease() => currentGrabbed.rb.velocity = ranged.launchVelocity;
+
+        public override void BeginGrab(Grabbable grabbed)
+        {
+            base.BeginGrab(grabbed);
+            animator.CrossFade(grabbed.twoHanded ? "GrabAim.Hold2" : "GrabAim.Hold1", 0.2f);
+        }
+
+        public override void Release(Vector3 velocity)
+        {
+            base.Release(velocity);
+            animator.CrossFade("GrabAim.Null", 0.2f);
+        }
+
+        public Grabbable CheckForGrabbable()
+        {
+            Collider[] results = Physics.OverlapSphere(ranged.transform.position + GetRealOffset(ranged.transform), checkSphereRadius, layerMask);
+            foreach (Collider r in results)
+                if (AttemptGrab(r.gameObject, out Grabbable result, false))
+                    return result;
+            return null;
+        }
+
+        private Vector3 GetRealOffset(Transform transform) => 
+            transform.forward * checkSphereOffset.z + transform.up * checkSphereOffset.y + transform.right * checkSphereOffset.x;
+
     }
-    public void TryGrabThrowAir(PlayerGrabAction state)
+    public void BeginGrab(Grabbable grabbed) => grabber.BeginGrab(grabbed);
+
+    public void TryGrabThrow(PlayerGrabAction state, bool held)
     {
-        if (currentGrabbed != null)
+        if (machine.signalReady && grabber.currentGrabbed != null)
         {
             body.transform.DOBlendableRotateBy(new(0, pointer.startH.eulerAngles.y - body.transform.eulerAngles.y, 0), 0.1f);
-            (!dropLaunchUpgrade ? airThrowState : dropLaunchState).TransitionTo();
+            BeginThrow(!body.grounded);
         }
-        else state.BeginGrabAttempt(CheckForGrabbable());
+        else state.AttemptGrab(grabber.CheckForGrabbable(), held);
     }
 
-    public void GrabPoint(IGrabbable grabbed)
-    {
-        if (!grabbed.Grab(this)) return; 
-        currentGrabbed = grabbed;
-        //OnGrab
+    public void BeginThrow(bool air) => (!air ? throwState : !dropLaunchUpgrade ? airThrowState : dropLaunchState).TransitionTo();
 
-        CoroutinePlus.Begin(ref layerFadeCoroutine, TurnOnLayers(1f), this);
-        IEnumerator TurnOnLayers(float rate)
-        {
-            float V = 0;
-            while (V < 1)
-            {
-                V += Time.deltaTime * rate;
-                animator.SetLayerWeight(2, V);
-                animator.SetLayerWeight(3, V);
-                yield return null;
-            }
-        }
-
-        //var S = new ConstraintSource { sourceTransform = heldItemAnchor };
-        //grabbed.ParentConstraint.AddSource(S);
-        //grabbed.ParentConstraint.constraintActive = true;
-        heldItemAnchor.localPosition = grabbed.HeldOffset;
-        grabbed.transform.position = heldItemAnchor.position;
-        grabbed.transform.rotation = heldItemAnchor.rotation; 
-
-
-        GrabStateEvent?.Invoke(true);
-
-        //Change Later when officially removing 1-handed grabbing
-        //animator.CrossFade(true ? "GrabAim.Hold2" : "GrabAim.Hold1", 0.2f);
-    }
-
-    public void GrabPointSignal() => machine.SendSignal("FinishGrab", overrideReady: true);
+    public void GrabPoint() => machine.SendSignal("FinishGrab", overrideReady: true);
 
     public void ThrowPoint()
     {
+
+        currentGrabbed.transform.position = muzzle.position;
+        launchVelocity = muzzle.forward * grabber.launchVelocity;
+
         if (!body.grounded && dropLaunchUpgrade)
         {
+            //body.VelocitySet(y: grabber.launchJumpMult * grabber.launchVelocity);
             jumpState.BeginJump();
         }
-        Vector3 direction =
-            aimingState
-            ? pointer.startV.forward
-            : !body.grounded && dropLaunchUpgrade
-                ? Vector3.down
-                : body.transform.forward;
-        Release(direction * launchVelocity, true);
+        grabber.Release(launchVelocity);
     }
-
-    public void Release(Vector3 velocity, bool thrown = false)
-    {
-        if (thrown) currentGrabbed.Throw(velocity);
-        else currentGrabbed.Release();
-        //OnRelease
-
-        CoroutinePlus.Begin(ref layerFadeCoroutine, TurnOffLayers(1f), this);
-        IEnumerator TurnOffLayers(float rate)
-        {
-            float V = 1;
-            while (V > 0)
-            {
-                V -= Time.deltaTime * rate;
-                animator.SetLayerWeight(2, V);
-                animator.SetLayerWeight(3, V);
-                yield return null;
-            }
-        }
-        //currentGrabbed.ParentConstraint.constraintActive = false;
-        //currentGrabbed.ParentConstraint.RemoveSource(0);
-
-
-        currentGrabbed = null;
-        GrabStateEvent?.Invoke(false);
-        //animator.CrossFade("GrabAim.Null", 0.2f);
-    }
-
-    public IGrabbable CheckForGrabbable()
-    {
-        IGrabbable.Test(Physics.OverlapSphere(transform.position + GetRealOffset(transform), checkSphereRadius, layerMask), out IGrabbable result);
-        return result;
-    }
-    private Vector3 GetRealOffset(Transform transform) =>
-    transform.forward * checkSphereOffset.z + transform.up * checkSphereOffset.y + transform.right * checkSphereOffset.x;
-
-
-
-
-
 
 
     #endregion Grabbing Throwing    
@@ -221,18 +191,16 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         public float distance;
         public Transform shootMuzzlePos;
         public LayerMask layerMask;
-        public Transform hitMarker;
     }
 
-    public Transform realMuzzle;
+    public Transform muzzle;
     public Transform spine1;
-    public Cinemachine.CinemachineVirtualCameraBase shootingVCam;
+    public Cinemachine.CinemachineVirtualCamera shootingVCam;
     public State idleState;
     public ObjectPool eggPool;
     public float playerRotationSpeed = 10;
     public Timer.Loop eggReplenishRate = new(1f);
     public Rig aimingRig;
-    public State aimThrowState;
 
     [HideProperty] public int eggAmount = 10;
     [HideProperty] public int eggCapacity = 10;
@@ -251,26 +219,37 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public bool hasEggsToShoot => eggAmount > 0;
 
+
     public void AimingFixedUpdate()
     {
+        if (machine.signalReady && !Input.Aim.IsPressed()) ExitAiming(idleState);
 
         body.currentDirection = Vector3.RotateTowards(
             body.currentDirection, pointer.startH.forward, 
             playerRotationSpeed * Mathf.PI * Time.fixedTime, 0);
 
-        currentTargetDistance = pointer.distance;
-
-        if (Physics.Raycast(pointer.startV.position + pointer.startV.forward, pointer.startV.forward, out RaycastHit hit, pointer.distance, pointer.layerMask))
+        if (Physics.Raycast(pointer.startV.position, pointer.startV.forward, out RaycastHit hit, pointer.distance, pointer.layerMask))
         {
-            UI.UpdateHitMarker(hit.point, hit.distance, hit.collider.TryGetComponent(out IDamagable _));
-            pointer.hitMarker.transform.position = hit.point;
+            pointer.target.position = hit.point;
             currentTargetDistance = hit.distance;
         }
         else
         {
-            UI.UpdateHitMarker(pointer.target.position, pointer.distance, false);
-            pointer.hitMarker.transform.position = pointer.target.position;
+            pointer.target.position = pointer.startV.position + pointer.startV.forward * pointer.distance;
+            currentTargetDistance = pointer.distance;
         }
+    }
+
+    public void AimingPostUpdate()
+    {
+        animator.Update(0);
+
+        spine1.localEulerAngles -= Vector3.forward * pointerV;
+
+        muzzle.position = pointer.shootMuzzlePos.position;
+        Quaternion Q = muzzle.rotation;
+        Q.SetLookRotation(pointer.target.position - muzzle.position);
+        muzzle.rotation = Q;
     }
 
     public void NonAimingFixedUpdate()
@@ -282,13 +261,13 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         pointerV = Mathf.MoveTowardsAngle(pointerV, 0, 1);
         if(!body.grounded && dropLaunchUpgrade)
         {
-            realMuzzle.position = pointer.startH.position - (pointer.startH.up * (1 + (currentGrabbed == null ? 0 : currentGrabbed.AdditionalThrowDistance)));
-            realMuzzle.eulerAngles = Vector3.right * 90;
+            muzzle.position = pointer.startH.position - (pointer.startH.up * (1 + (currentGrabbed == null ? 0 : currentGrabbed.additionalThrowDistance)));
+            muzzle.eulerAngles = Vector3.right * 90;
         }
         else
         {
-            realMuzzle.position = pointer.startH.position + (pointer.startH.forward * (1 + (currentGrabbed == null ? 0 : currentGrabbed.AdditionalThrowDistance)));
-            realMuzzle.rotation = pointer.startH.rotation;
+            muzzle.position = pointer.startH.position + (pointer.startH.forward * (1 + (currentGrabbed == null ? 0 : currentGrabbed.additionalThrowDistance)));
+            muzzle.rotation = pointer.startH.rotation;
         }
     }
 
@@ -296,52 +275,44 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void EnterAiming()
     {
-        if (eggCapacity == 0 && currentGrabbed != null) return;
-
-        animator.CrossFade("Aim", 0.3f);
+        animator.CrossFade("GrabAim.GunAim", 0.1f);
         aimingState.state.TransitionTo();
-        aimingRig.enabled = true;
-        aimingRig.weight = 1; 
-        UI.SetHitMarkerVisibility(true);
+        aimingRig.weight = 1;
         shootingVCam.Priority = 11;
         shootingVCam.gameObject.SetActive(true);
-        aiming = true;
+        active = true;
     }
-    public void ExitAiming(State normalState, State grabbingState)
+    public void ExitAiming(State nextState)
     {
         machine.freeLookCamera.m_XAxis.Value = pointerH;
-        animator.CrossFade("GroundBasic", 0.1f);
-        (currentGrabbed == null ? normalState : grabbingState).TransitionTo();
-        aimingRig.enabled = false;
+        animator.CrossFade("GrabAim.Null", 0.1f);
+        nextState.TransitionTo();
         aimingRig.weight = 0;
-        UI.SetHitMarkerVisibility(false);
         shootingVCam.Priority = 9;
         shootingVCam.gameObject.SetActive(false);
-        aiming = false;
+        active = false;
+        //aimingState.ResetPointerStartRotation();
+        //pointerTarget.position = pointerStartV.position + pointerStartV.forward * pointerDistance;
     }
 
     public void Shoot()
     {
-        if (!aiming) return;
-        if (currentGrabbed != null) AimThrow();
-        else if (eggAmount >= 1 && !shootingState) shootingState.TransitionTo();
+        AimingPostUpdate();
+
+        if (!active) return;
+        if (grabber.currentGrabbed != null)
+        {
+            AimThrow();
+        }
+        else if (eggAmount >= 1)
+        {
+            eggPool.Pump();
+            ChangeAmmoAmount(-1);
+        }
+
     }
 
-    public void ShootPoint()
-    {
-        realMuzzle.position = pointer.shootMuzzlePos.position;
-        Quaternion Q = realMuzzle.rotation;
-        Q.SetLookRotation(pointer.hitMarker.position - realMuzzle.position);
-        realMuzzle.rotation = Q;
-
-        eggPool.Pump().GetComponent<ProjectileMovement>().Send();
-        ChangeAmmoAmount(-1);
-    }
-
-    public void AimThrow()
-    {
-        aimThrowState.TransitionTo();
-    }
+    public void AimThrow() => animator.Play("GrabAim.Throw");
 
     void ChangeAmmoAmount(int offset)
     {

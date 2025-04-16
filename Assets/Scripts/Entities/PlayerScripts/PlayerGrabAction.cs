@@ -7,28 +7,28 @@ using SLS.StateMachineV3;
 public class PlayerGrabAction : PlayerStateBehavior
 {
     public bool air;
-    public string animationName;
     
+    [HideProperty] public bool wasHeld;
     [HideProperty] public bool success;
 
-    private IGrabbable selectedGrabbable;
-    private PlayerRanged ranged;
+    private Grabbable selectedGrabbable;
+    private PlayerRanged grabber;
     private PlayerMovementAnimator movementNegator;
 
     public override void OnAwake()
     {
-        ranged = GetComponentFromMachine<PlayerRanged>();
+        grabber = GetComponentFromMachine<PlayerRanged>();
         movementNegator = GetComponent<PlayerMovementAnimator>();
         movementNegator = GetComponent<PlayerMovementAnimator>();
     }
 
-    public void BeginGrabAttempt(IGrabbable attempt)
+    public void AttemptGrab(Grabbable attempt, bool held)
     {
         state.TransitionTo();
-        Machine.animator.CrossFade(animationName, .1f, -1, 0f);
         if (attempt != null)
         {
             selectedGrabbable = attempt;
+            wasHeld = held;
             success = true;
             movementNegator.locked = false;
         }
@@ -41,21 +41,13 @@ public class PlayerGrabAction : PlayerStateBehavior
 
     public void GrabPoint()
     {
-        if (!success || selectedGrabbable == null)
-        {
-            IGrabbable lastMinute = ranged.CheckForGrabbable();
-            if(lastMinute == null) return;
-            selectedGrabbable = lastMinute;
-        }
-        ranged.GrabPoint(selectedGrabbable);
-        if (air && ranged.dropLaunchUpgrade && !Input.Grab.IsPressed()) ranged.TryGrabThrowAir(this);
+        if (!success || selectedGrabbable == null) return;
+        grabber.BeginGrab(selectedGrabbable);
+        if (air && grabber.dropLaunchUpgrade && !Input.Grab.IsPressed()) grabber.BeginThrow(true);
         success = false;
+        wasHeld = false;
         selectedGrabbable = null;
     }
 
-    public void Finish(State successState, State failState)
-    {
-        (ranged.currentGrabbed != null ? successState : failState).TransitionTo();
-        Machine.animator.CrossFade("GroundBasic", .1f);
-    }
+
 }

@@ -100,9 +100,9 @@ public class PlayerController : PlayerStateBehavior
             Machine.freeLookCamera.LookAt = transform;
         }
 
-        //if (Input.Aim.IsPressed() && Machine.signalReady && sGrounded 
-        //    && !ranged.aimingState && (ranged.hasEggsToShoot || grabber.currentGrabbed != null)) 
-        //    ranged.EnterAiming();
+        if (Input.Aim.IsPressed() && Machine.signalReady && sGrounded 
+            && !ranged.aimingState && (ranged.hasEggsToShoot || grabber.currentGrabbed != null)) 
+            ranged.EnterAiming();
     }
 
     public bool CheckJumpBuffer()

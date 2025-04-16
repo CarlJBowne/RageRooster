@@ -10,8 +10,6 @@ public class PlayerStateMachine : StateMachine
 {
     #region Config
 
-    [SerializeField] Upgrade[] upgrades;
-
     #endregion
 
     #region Data
@@ -24,15 +22,12 @@ public class PlayerStateMachine : StateMachine
 
     #endregion
 
-    protected override void OnSetup()
+    protected override void Initialize()
     {
         animator = GetComponent<Animator>();
         body = GetComponent<PlayerMovementBody>();
         controller = GetComponent<PlayerController>();
-    }
-
-    protected override void OnAwake()
-    {
+        whenInitializedEvent?.Invoke(this);
         Gameplay.Get().playerStateMachine = this;
 
         // Initialize the Cinemachine FreeLook camera
@@ -43,15 +38,9 @@ public class PlayerStateMachine : StateMachine
             freeLookCamera.LookAt = transform;
         }
 
-#if UNITY_EDITOR
-        Input.Get().Asset.FindAction("DebugActivate").performed += (_) => 
-        {
-            DEBUG_MODE_ACTIVE = !DEBUG_MODE_ACTIVE;
-            for (int i = 0; i < upgrades.Length; i++) upgrades[i].EnableUpgrade();
-        };
-#endif
-
-        whenInitializedEvent?.Invoke(this);
+        #if UNITY_EDITOR
+        Input.Get().Asset.FindAction("DebugActivate").performed += (_) => { DEBUG_MODE_ACTIVE = !DEBUG_MODE_ACTIVE; };
+        #endif
     }
 
     public static bool DEBUG_MODE_ACTIVE;
@@ -93,7 +82,6 @@ public class PlayerStateMachine : StateMachine
     {
         children[0].TransitionTo();
         signalReady = true;
-        animator.Play("GroundBasic");
     }
 
     private State prevState;
@@ -101,9 +89,6 @@ public class PlayerStateMachine : StateMachine
     {
         prevState = currentState;
         pauseState.TransitionTo();
-        body.velocity = Vector3.zero;
-        body.CurrentSpeed = 0;
-        animator.CrossFade("GroundBasic", .2f);
     }
     public void UnPauseState()
     {
