@@ -27,6 +27,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     private bool aiming;
     PlayerStateMachine machine;
     PlayerMovementBody body;
+    new AudioCaller audio;
     Animator animator;
     [HideProperty] public PlayerAiming aimingState;
     [HideProperty] public State shootingState;
@@ -45,6 +46,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         TryGetComponent(out body);
         TryGetComponent(out animator);
         TryGetComponent(out collider);
+        TryGetComponent(out audio);
         UIHUDSystem.TryGet(out UI);
         if (aimingState == null) aimingState = FindObjectOfType<PlayerAiming>(true);
         if (shootingState == null) shootingState = aimingState.state[0];
@@ -338,6 +340,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         Q.SetLookRotation(pointer.hitMarker.position - realMuzzle.position);
         realMuzzle.rotation = Q;
 
+        audio.PlayOneShot("EggShoot");
         eggPool.Pump().GetComponent<ProjectileMovement>().Send();
         ChangeAmmoAmount(-1);
         justShot = true;
