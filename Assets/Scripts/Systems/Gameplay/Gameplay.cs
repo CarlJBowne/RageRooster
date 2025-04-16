@@ -152,7 +152,7 @@ public class Gameplay : Singleton<Gameplay>
     /// <summary>
     /// Spawns the player by starting a coroutine.
     /// </summary>
-    public static void SpawnPlayer()
+    public static void RespawnFromMenu()
     {
         new CoroutinePlus(SpawnPlayer_CR(), Get());
 
@@ -176,10 +176,20 @@ public class Gameplay : Singleton<Gameplay>
         }
     }
 
+    public static IEnumerator RespawnPlayer()
+    {
+        if (!ZoneManager.ZoneIsReady(spawnSceneName)) SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
+
+        yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
+
+        ZoneManager.DoTransition(spawnSceneName);
+        PlayerStateMachine.InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
+    }
+
     /// <summary>
     /// Resets the game to the saved state by starting a coroutine.
     /// </summary>
-    public void ResetToSaved()
+    public void ResetToLastSave()
     {
         PreReloadSave?.Invoke();
         new CoroutinePlus(ResetToSaved_CR(), Get());

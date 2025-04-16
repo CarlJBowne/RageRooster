@@ -150,7 +150,7 @@ public class CoroutinePlus : IEnumerator
     }
 
 
-    public static implicit operator bool(CoroutinePlus a) => a != null;
+    public static implicit operator bool(CoroutinePlus a) => a != null && a.running;
 
     public override string ToString() => base.ToString();
     public override bool Equals(object obj) => base.Equals(obj);
