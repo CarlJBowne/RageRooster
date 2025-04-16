@@ -19,6 +19,7 @@ public class MainMenu : MenuSingleton<MainMenu>
     public GameObject creditsPanel;
     public Button creditsPanelFirstButton;
     public RectTransform creditsContent;
+    public DontDestroyMeOnLoad overlayPrefab;
 
     private int currentButtonIndex = 0;
 
@@ -30,6 +31,8 @@ public class MainMenu : MenuSingleton<MainMenu>
         menuButtons = new List<Button>(GetComponentsInChildren<Button>());
         if (menuButtons.Count > 0)
             EventSystem.current.SetSelectedGameObject(menuButtons[currentButtonIndex].gameObject);
+
+        if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
     }
 
     private void Update()
