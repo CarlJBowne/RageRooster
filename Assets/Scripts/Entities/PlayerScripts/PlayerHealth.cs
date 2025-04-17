@@ -36,14 +36,13 @@ public class PlayerHealth : Health
             CoroutinePlus.Begin(ref invincibility, InvinceEnum(invincibilityTime), this);
             damagable = false;
             if (attack.HasTag(Attack.Tag.Pit)) machine.Death(true);
-            if (!attack.HasTag(Attack.Tag.Wham))
-                damageState.TransitionTo();
-            else
+            else if (attack.HasTag(Attack.Tag.Wham)) 
             {
                 damageStateWham.TransitionTo();
                 body.GroundStateChange(false);
                 body.VelocitySet(y: 14);
             }
+            else damageState.TransitionTo();
         }
         Global.Update(health);
     }

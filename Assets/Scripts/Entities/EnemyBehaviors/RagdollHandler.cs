@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
+using static UnityEngine.Rendering.DebugUI;
 
 public class RagdollHandler : Grabbable
 {
@@ -13,6 +14,7 @@ public class RagdollHandler : Grabbable
 
     public Collider nonRagdolledCollider;
     public Rigidbody nonRagdolledRigidBody;
+    public int defaultLayer = Layers.Enemy;
 
     public bool advanced;
     public Collider[] ragDollColliders;
@@ -21,13 +23,18 @@ public class RagdollHandler : Grabbable
     private new Collider collider => advanced ? ragDollColliders[0] : nonRagdolledCollider;
     public override Rigidbody rigidBody => advanced ? ragDollRigidBodies[0] : nonRagdolledRigidBody;
     [SerializeField] private RagdollInteractionProxy proxy;
+    public bool isPlayer;
+    private Vector3[] savedLocalPos; 
 
     protected override void Awake()
     {
         health = GetComponent<EnemyHealth>();
         SetState(EntityState.Default);
         if(proxy) proxy.SetRagdoll(false);
-        parentConstraint = this.GetOrAddComponent<ParentConstraint>();
+        if (isPlayer)
+            savedLocalPos = new Vector3[ragDollColliders.Length];
+            for (int i = 0; i < savedLocalPos.Length; i++)
+                savedLocalPos[i] = ragDollColliders[i].transform.localPosition;
     }
     private void FixedUpdate()
     {
@@ -69,6 +76,9 @@ public class RagdollHandler : Grabbable
             case EntityState.RagDoll:
                 SetRagdoll(true);
                 ragDollTimer = 0;
+                if (isPlayer)
+                    for (int i = 0; i < savedLocalPos.Length; i++)
+                        ragDollColliders[i].transform.localPosition = savedLocalPos[i];
                 break;
             default:
                 break;
@@ -98,14 +108,14 @@ public class RagdollHandler : Grabbable
         if(nonRagdolledCollider)
         {
             nonRagdolledCollider.enabled = !value;
-            nonRagdolledCollider.gameObject.layer = value ? Layers.NonSolid : Layers.Enemy;
+            nonRagdolledCollider.gameObject.layer = value ? Layers.NonSolid : defaultLayer;  
         }
-        if(nonRagdolledRigidBody) nonRagdolledRigidBody.isKinematic = !value;
+        if(nonRagdolledRigidBody) nonRagdolledRigidBody.isKinematic = value;
 
-        if(proxy) proxy.SetRagdoll(value);  
+        if(proxy) proxy.SetRagdoll(value);
     } 
     public override void SetVelocity(Vector3 globalVelocity)
-    {
+    { 
         if (advanced)
             for (int i = 0; i < ragDollRigidBodies.Length; i++)
                 ragDollRigidBodies[i].velocity = globalVelocity;
