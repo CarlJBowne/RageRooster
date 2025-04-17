@@ -2635,74 +2635,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 105066845}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &105598222
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 410644655}
-    m_Modifications:
-    - target: {fileID: 1166411700145567496, guid: 054945294af71b949a2d83da86fc9072,
-        type: 3}
-      propertyPath: m_Name
-      value: RancorPeakReverb
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -415
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 225.37305
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -347
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 054945294af71b949a2d83da86fc9072, type: 3}
 --- !u!4 &114307437 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
@@ -13282,7 +13214,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1028438218}
   - {fileID: 255370068}
   - {fileID: 1483395268}
   - {fileID: 357054203}
@@ -13683,10 +13614,10 @@ MonoBehaviour:
   defaultPlayerSpawn: {fileID: 499767721}
   music:
     Guid:
-      Data1: -1435088208
-      Data2: 1125709253
-      Data3: 958210705
-      Data4: 1733849595
+      Data1: 228142302
+      Data2: 1125285815
+      Data3: 1984796562
+      Data4: 1457256903
     Path: event:/Music/rancorPeakMusic
   name: 
   originOffset: {x: 0, y: 0, z: 0}
@@ -30657,12 +30588,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1bd9c598fff0594d81b68be3f39358f, type: 3}
---- !u!4 &1028438218 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
-    type: 3}
-  m_PrefabInstance: {fileID: 105598222}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1031920427 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
@@ -42718,91 +42643,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd80025e603210044a186fa29170f29d, type: 3}
---- !u!1 &1445143932
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1445143935}
-  - component: {fileID: 1445143934}
-  - component: {fileID: 1445143933}
-  m_Layer: 0
-  m_Name: RancorPeakAmbience
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!135 &1445143933
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1445143932}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 434.71
-  m_Center: {x: -21.16, y: 0, z: 0}
---- !u!114 &1445143934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1445143932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: Player
-  EventReference:
-    Guid:
-      Data1: -537918072
-      Data2: 1182885657
-      Data3: 54586271
-      Data4: 1811019713
-    Path: event:/Ambience/mountainAmbience
-  Event: 
-  PlayEvent: 3
-  StopEvent: 4
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 1
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 1
-  OverrideMinDistance: 164.4
-  OverrideMaxDistance: 370.5
---- !u!4 &1445143935
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1445143932}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -448, y: 256.07346, z: -319}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1445671255
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -61252,4 +61092,3 @@ SceneRoots:
   - {fileID: 202627042}
   - {fileID: 183457813}
   - {fileID: 539916125}
-  - {fileID: 1445143935}
