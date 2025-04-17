@@ -5181,6 +5181,14 @@ MonoBehaviour:
           Data3: 1410180282
           Data4: -177447814
         Path: event:/SFX/Player SFX/playerIdle
+    - Key: EggShoot
+      Value:
+        Guid:
+          Data1: 1590542140
+          Data2: 1119825417
+          Data3: -1548009820
+          Data4: -1996899598
+        Path: event:/SFX/Player SFX/Combat/PlayerShoot
     - Key: Jump
       Value:
         Guid:
@@ -6317,7 +6325,6 @@ GameObject:
   - component: {fileID: 786052921283328880}
   - component: {fileID: 1982546626867489972}
   - component: {fileID: 8882457220521229412}
-  - component: {fileID: 1886422487938248564}
   m_Layer: 6
   m_Name: AimShoot
   m_TagString: Untagged
@@ -6392,37 +6399,6 @@ MonoBehaviour:
   onEnterTime: 0
   doWhenNotFinal: 0
   animator: {fileID: 0}
---- !u!114 &1886422487938248564
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3712787637314966735}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 1590542140
-      Data2: 1119825417
-      Data3: -1548009820
-      Data4: -1996899598
-    Path: event:/SFX/Player SFX/Combat/PlayerShoot
-  Event: 
-  PlayEvent: 11
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!1 &3730508859436989519
 GameObject:
   m_ObjectHideFlags: 0
