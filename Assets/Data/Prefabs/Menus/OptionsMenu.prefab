@@ -1503,9 +1503,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 320099009057922904}
+      - m_Target: {fileID: 6837463468292051762}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: Open
+        m_MethodName: Close
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9517,6 +9517,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2461039762474231998, guid: 78abc8868c0eeee49af5d61fd1e57497,
         type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 6837463468292051762}
+    - target: {fileID: 2461039762474231998, guid: 78abc8868c0eeee49af5d61fd1e57497,
+        type: 3}
       propertyPath: allButtons.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -9524,12 +9529,17 @@ PrefabInstance:
         type: 3}
       propertyPath: allButtons.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7860727634131838885}
     - target: {fileID: 2461039762474231998, guid: 78abc8868c0eeee49af5d61fd1e57497,
         type: 3}
       propertyPath: allButtons.Array.data[1]
       value: 
       objectReference: {fileID: 7050946131914141545}
+    - target: {fileID: 2461039762474231998, guid: 78abc8868c0eeee49af5d61fd1e57497,
+        type: 3}
+      propertyPath: allButtons.Array.data[2]
+      value: 
+      objectReference: {fileID: 7921479165534796533}
     - target: {fileID: 3426661354235551734, guid: 78abc8868c0eeee49af5d61fd1e57497,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -9701,15 +9711,30 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 320099009057922904}
+    - target: {fileID: 5422488875643637827, guid: 78abc8868c0eeee49af5d61fd1e57497,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
       objectReference: {fileID: 6837463468292051762}
     - target: {fileID: 5422488875643637827, guid: 78abc8868c0eeee49af5d61fd1e57497,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Close
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422488875643637827, guid: 78abc8868c0eeee49af5d61fd1e57497,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: ConfirmChanges
       objectReference: {fileID: 0}
     - target: {fileID: 5422488875643637827, guid: 78abc8868c0eeee49af5d61fd1e57497,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Menu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422488875643637827, guid: 78abc8868c0eeee49af5d61fd1e57497,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: SettingsMenu, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5456350167347399955, guid: 78abc8868c0eeee49af5d61fd1e57497,
@@ -10004,3 +10029,27 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 2762508420882462694}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7860727634131838885 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5422488875643637827, guid: 78abc8868c0eeee49af5d61fd1e57497,
+    type: 3}
+  m_PrefabInstance: {fileID: 2762508420882462694}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7921479165534796533 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5456350167347399955, guid: 78abc8868c0eeee49af5d61fd1e57497,
+    type: 3}
+  m_PrefabInstance: {fileID: 2762508420882462694}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
