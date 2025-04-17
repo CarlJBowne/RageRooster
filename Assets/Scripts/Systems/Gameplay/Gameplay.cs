@@ -66,9 +66,10 @@ public class Gameplay : Singleton<Gameplay>
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
-            SceneManager.LoadSceneAsync(GAMEPLAY_SCENE_NAME);
+            var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE_NAME);
 
-            yield return WaitFor.Until(() => fullyLoaded);
+            yield return WaitFor.Until(() => Load.isDone && fullyLoaded);
+            yield return WaitFor.SecondsRealtime(0.2f);
             Overlay.OverMenus.BasicFadeIn();
         }
     }
@@ -112,25 +113,28 @@ public class Gameplay : Singleton<Gameplay>
     /// </summary>
     protected override void OnAwake()
     {
-        musicEmitter = GetComponent<StudioEventEmitter>();
-        GlobalState.Load();
-
-        PostMaLoad?.Invoke();
-
-        zoneManager.Awake();
-
-        spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
-
-        SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
-
-        ZoneManager.OnFirstLoad += OnFirstLoad;
-
-        Input.Pause.performed += c =>
+        StartCoroutine(Enum());
+        IEnumerator Enum()
         {
-            Menu.Manager.Escape();
-        };
+            musicEmitter = GetComponent<StudioEventEmitter>();
 
-        if(Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+
+
+            yield return WaitFor.Until(() => PlayerHealth.Global.playerObject && PlayerRanged.Ammo.playerObject);
+
+            GlobalState.Load();
+            PostMaLoad?.Invoke();
+
+            spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
+
+            if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+
+            SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
+
+            ZoneManager.OnFirstLoad += OnFirstLoad;
+
+            Input.Pause.performed += c => { Menu.Manager.Escape(); };
+        }
     }
 
     /// <summary>
@@ -139,15 +143,16 @@ public class Gameplay : Singleton<Gameplay>
     private void OnFirstLoad()
     {
         SavePoint spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
-        Player.GetComponent<PlayerStateMachine>().InstantMove(spawn);
-        Player.gameObject.SetActive(true);
+        PlayerStateMachine.InstantMove(spawn);
+        PlayerHealth.Global.UpdateMax(GlobalState.maxHealth);
+        Player.SetActive(true);
         fullyLoaded = true;
     }
 
     /// <summary>
     /// Spawns the player by starting a coroutine.
     /// </summary>
-    public static void SpawnPlayer()
+    public static void RespawnFromMenu()
     {
         new CoroutinePlus(SpawnPlayer_CR(), Get());
 
@@ -171,10 +176,20 @@ public class Gameplay : Singleton<Gameplay>
         }
     }
 
+    public static IEnumerator RespawnPlayer()
+    {
+        if (!ZoneManager.ZoneIsReady(spawnSceneName)) SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
+
+        yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
+
+        ZoneManager.DoTransition(spawnSceneName);
+        PlayerStateMachine.InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
+    }
+
     /// <summary>
     /// Resets the game to the saved state by starting a coroutine.
     /// </summary>
-    public void ResetToSaved()
+    public void ResetToLastSave()
     {
         PreReloadSave?.Invoke();
         new CoroutinePlus(ResetToSaved_CR(), Get());

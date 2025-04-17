@@ -42,6 +42,6 @@ public class PauseMenu : MenuSingleton<PauseMenu>
         SceneManager.LoadScene("MainMenu");
     }
 
-    public void Respawn() => Gameplay.SpawnPlayer();
-    public void ReloadSave() => Gameplay.Get().ResetToSaved();
+    public void Respawn() => Gameplay.RespawnFromMenu();
+    public void ReloadSave() => Gameplay.Get().ResetToLastSave();
 }
