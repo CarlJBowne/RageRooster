@@ -1209,6 +1209,7 @@ GameObject:
   - component: {fileID: 7395447686736054723}
   - component: {fileID: 6878630923043910821}
   - component: {fileID: 3208637134217996091}
+  - component: {fileID: 7108881789999389197}
   m_Layer: 7
   m_Name: FinalBossHead_Prefab
   m_TagString: Untagged
@@ -1320,6 +1321,84 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
+--- !u!114 &7108881789999389197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4453772482238464929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80df50592031db443ae07d2151aae123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  events:
+    _serializedList:
+    - Key: LaserPrepare
+      Value:
+        Guid:
+          Data1: 1192368597
+          Data2: 1191678689
+          Data3: 1155234998
+          Data4: 1531752283
+        Path: event:/SFX/Boss SFX/Poultrous Omegga/LaserPrepare
+    - Key: LavaPrepare
+      Value:
+        Guid:
+          Data1: 1232438745
+          Data2: 1186769474
+          Data3: -1428337751
+          Data4: 956518901
+        Path: event:/SFX/Boss SFX/Poultrous Omegga/LavaBarfPrepare
+    - Key: LavaBreath
+      Value:
+        Guid:
+          Data1: -338138456
+          Data2: 1237955784
+          Data3: -1568602978
+          Data4: 1327164298
+        Path: event:/SFX/Boss SFX/Poultrous Omegga/LavaBarf
+    - Key: Stunned
+      Value:
+        Guid:
+          Data1: -78962299
+          Data2: 1216650969
+          Data3: -686941262
+          Data4: -1431436456
+        Path: event:/SFX/Boss SFX/Poultrous Omegga/Stunned
+    - Key: SlamAttack
+      Value:
+        Guid:
+          Data1: -1049815864
+          Data2: 1131261154
+          Data3: 1000901524
+          Data4: 731467503
+        Path: event:/SFX/Boss SFX/Poultrous Omegga/SlamAttackYell
+    - Key: Slash
+      Value:
+        Guid:
+          Data1: -1863924666
+          Data2: 1276260988
+          Data3: -1395012730
+          Data4: -1754670938
+        Path: event:/SFX/Boss SFX/Poultrous Omegga/Slash
+    - Key: SlamAttackImpact
+      Value:
+        Guid:
+          Data1: -1918662337
+          Data2: 1139882281
+          Data3: 824430738
+          Data4: 1817419676
+        Path: event:/SFX/Boss SFX/Poultrous Omegga/SlamAttackImpact
+    - Key: LaserBeam
+      Value:
+        Guid:
+          Data1: -905379849
+          Data2: 1116442288
+          Data3: -1166639999
+          Data4: -308194242
+        Path: event:/SFX/Boss SFX/Poultrous Omegga/LaserBeam
 --- !u!1 &4819116119666189911
 GameObject:
   m_ObjectHideFlags: 0
