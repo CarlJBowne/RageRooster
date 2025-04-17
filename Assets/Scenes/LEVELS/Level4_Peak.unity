@@ -3276,6 +3276,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3810066800691453347, guid: 14fbf6cc2877134449c9b2345651b774,
         type: 3}
+      propertyPath: dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: b7a5f8b9bdaf4bf4a98bcf9d01c652e6,
+        type: 2}
+    - target: {fileID: 3810066800691453347, guid: 14fbf6cc2877134449c9b2345651b774,
+        type: 3}
       propertyPath: targetGroup
       value: 
       objectReference: {fileID: 853028293}
@@ -3347,7 +3353,7 @@ PrefabInstance:
     - target: {fileID: 6454999864905180250, guid: 14fbf6cc2877134449c9b2345651b774,
         type: 3}
       propertyPath: m_Name
-      value: NPC_Pig
+      value: NPC_RagingCharge
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5492,76 +5498,87 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 410644655}
     m_Modifications:
-    - target: {fileID: 2623420086269307712, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 3123911999225082404, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
-      propertyPath: m_Name
-      value: HenPickup (1)
+      propertyPath: hintString
+      value: Cinnamon has joined your party! Egg Ammo +1
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 3123911999225082404, guid: 6d793d63870366244baa560d00b4acc6,
+        type: 3}
+      propertyPath: worldChange
+      value: 
+      objectReference: {fileID: -7132955059875418711, guid: 546d60c46cc1b4c4fb90fec693b180d8,
+        type: 2}
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5000001
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.5000001
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: -388.8
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 116.90518
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 116.56
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.90697956
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: 0.42117468
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 49.818
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7724693135805494818, guid: 6d793d63870366244baa560d00b4acc6,
+        type: 3}
+      propertyPath: m_Name
+      value: Hen_NewHampshireRed (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0906af8c5e2483f4f83266c9d009333a, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 6d793d63870366244baa560d00b4acc6, type: 3}
 --- !u!1001 &219272940
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13930,76 +13947,87 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 410644655}
     m_Modifications:
-    - target: {fileID: 2623420086269307712, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 3123911999225082404, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
-      propertyPath: m_Name
-      value: HenPickup
+      propertyPath: hintString
+      value: Kiwi has joined your party! Egg Ammo +1
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 3123911999225082404, guid: 6d793d63870366244baa560d00b4acc6,
+        type: 3}
+      propertyPath: worldChange
+      value: 
+      objectReference: {fileID: 7311638589916620851, guid: 546d60c46cc1b4c4fb90fec693b180d8,
+        type: 2}
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5000002
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.5000002
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: -550.7129
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 124.39774
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -668.77026
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: -0.6690944
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: 0.7431775
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 263.99402
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7724693135805494818, guid: 6d793d63870366244baa560d00b4acc6,
+        type: 3}
+      propertyPath: m_Name
+      value: Hen_NewHampshireRed (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0906af8c5e2483f4f83266c9d009333a, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 6d793d63870366244baa560d00b4acc6, type: 3}
 --- !u!1001 &426328769
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14165,79 +14193,90 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 410644655}
     m_Modifications:
-    - target: {fileID: 2623420086269307712, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 3123911999225082404, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
-      propertyPath: m_Name
-      value: HenPickup (1)
+      propertyPath: hintString
+      value: Biscuit has joined your party! Egg Ammo +1
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 3123911999225082404, guid: 6d793d63870366244baa560d00b4acc6,
+        type: 3}
+      propertyPath: worldChange
+      value: 
+      objectReference: {fileID: 1241883423194478986, guid: 546d60c46cc1b4c4fb90fec693b180d8,
+        type: 2}
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5000002
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.5000002
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: -707.47
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 151.57227
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -320.72
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: -0.054975472
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: 0.9984877
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 186.303
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7724693135805494818, guid: 6d793d63870366244baa560d00b4acc6,
+        type: 3}
+      propertyPath: m_Name
+      value: Hen_NewHampshireRed (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0906af8c5e2483f4f83266c9d009333a, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 6d793d63870366244baa560d00b4acc6, type: 3}
 --- !u!4 &435737829 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+  m_CorrespondingSourceObject: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
     type: 3}
   m_PrefabInstance: {fileID: 218417039}
   m_PrefabAsset: {fileID: 0}
@@ -20179,79 +20218,90 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 410644655}
     m_Modifications:
-    - target: {fileID: 2623420086269307712, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 3123911999225082404, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
-      propertyPath: m_Name
-      value: HenPickup
+      propertyPath: hintString
+      value: Henny has joined your party! Egg Ammo +1
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 3123911999225082404, guid: 6d793d63870366244baa560d00b4acc6,
+        type: 3}
+      propertyPath: worldChange
+      value: 
+      objectReference: {fileID: -2424300200982903375, guid: 546d60c46cc1b4c4fb90fec693b180d8,
+        type: 2}
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5000001
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.5000001
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: -463.08948
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 484.47
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -188.19951
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.99998724
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: 0.0050684256
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0.581
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7724693135805494818, guid: 6d793d63870366244baa560d00b4acc6,
+        type: 3}
+      propertyPath: m_Name
+      value: Hen_NewHampshireRed (4)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0906af8c5e2483f4f83266c9d009333a, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 6d793d63870366244baa560d00b4acc6, type: 3}
 --- !u!4 &612155110 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+  m_CorrespondingSourceObject: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
     type: 3}
   m_PrefabInstance: {fileID: 612155109}
   m_PrefabAsset: {fileID: 0}
@@ -22474,76 +22524,87 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 410644655}
     m_Modifications:
-    - target: {fileID: 2623420086269307712, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 3123911999225082404, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
-      propertyPath: m_Name
-      value: HenPickup
+      propertyPath: hintString
+      value: Paprika has joined your party! Egg Ammo +1
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 3123911999225082404, guid: 6d793d63870366244baa560d00b4acc6,
+        type: 3}
+      propertyPath: worldChange
+      value: 
+      objectReference: {fileID: 4089506776646093330, guid: 546d60c46cc1b4c4fb90fec693b180d8,
+        type: 2}
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalScale.x
       value: 1.4999999
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.4999999
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.x
       value: -147.9
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 400.3729
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -133.6
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.245818
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: 0.969316
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 151.54
       objectReference: {fileID: 0}
-    - target: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+    - target: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7724693135805494818, guid: 6d793d63870366244baa560d00b4acc6,
+        type: 3}
+      propertyPath: m_Name
+      value: Hen_NewHampshireRed
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0906af8c5e2483f4f83266c9d009333a, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 6d793d63870366244baa560d00b4acc6, type: 3}
 --- !u!1001 &699813828
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25675,7 +25736,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &817410083 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+  m_CorrespondingSourceObject: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
     type: 3}
   m_PrefabInstance: {fileID: 435725432}
   m_PrefabAsset: {fileID: 0}
@@ -48667,7 +48728,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1678720686 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+  m_CorrespondingSourceObject: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
     type: 3}
   m_PrefabInstance: {fileID: 424922809}
   m_PrefabAsset: {fileID: 0}
@@ -54167,7 +54228,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1911929011 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 3396719106354098682, guid: 0906af8c5e2483f4f83266c9d009333a,
+  m_CorrespondingSourceObject: {fileID: 6951393806665510040, guid: 6d793d63870366244baa560d00b4acc6,
     type: 3}
   m_PrefabInstance: {fileID: 699798931}
   m_PrefabAsset: {fileID: 0}
