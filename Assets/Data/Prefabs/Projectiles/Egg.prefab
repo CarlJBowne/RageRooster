@@ -96,7 +96,6 @@ GameObject:
   - component: {fileID: 1186516917300380396}
   - component: {fileID: 1790823524165381726}
   - component: {fileID: 2666985087223813777}
-  - component: {fileID: -6290888293106785612}
   - component: {fileID: -3425962936872991530}
   - component: {fileID: 5421094966891037335}
   m_Layer: 9
@@ -217,38 +216,12 @@ MonoBehaviour:
   disableOnlyWithHealth: 0
   disableOnlyIfSuccessfulHit: 0
   contactableTimer: 0.333333
+  successfulHitEvent:
+    _PersistentCalls:
+    - _Target: {fileID: -3425962936872991530}
+      _MemberName: Play
+      _PersistentArguments: []
   sourcePosition: {fileID: 0}
---- !u!114 &-6290888293106785612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3851737444018513926}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: Ground
-  EventReference:
-    Guid:
-      Data1: 1590542140
-      Data2: 1119825417
-      Data3: -1548009820
-      Data4: -1996899598
-    Path: event:/SFX/Player SFX/Combat/PlayerShoot
-  Event: 
-  PlayEvent: 11
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 1
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
 --- !u!114 &-3425962936872991530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,7 +243,7 @@ MonoBehaviour:
       Data4: -1394672050
     Path: event:/SFX/Player SFX/Combat/eggShotImpact
   Event: 
-  PlayEvent: 12
+  PlayEvent: 0
   StopEvent: 0
   AllowFadeout: 1
   TriggerOnce: 0

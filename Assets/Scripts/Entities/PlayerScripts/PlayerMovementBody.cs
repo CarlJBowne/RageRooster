@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using DG.Tweening;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerMovementBody : PlayerStateBehavior
 {
@@ -63,9 +64,18 @@ public class PlayerMovementBody : PlayerStateBehavior
     #endregion
 
     #region GetSet
-    public Vector3 position { 
-        get => rb.position;
-        set => rb.MovePosition(value); }
+    public Vector3 position
+    {
+        get => rb.isKinematic ? transform.position : rb.position;
+        set
+        {
+            if (rb.isKinematic) 
+                return;
+            transform.position = value;
+            rb.position = value;
+            rb.MovePosition(value);
+        }  
+    }
     public Quaternion rotationQ 
     { get => rb.rotation; set => rb.rotation = value; }
     public Vector3 rotation 
@@ -102,6 +112,12 @@ public class PlayerMovementBody : PlayerStateBehavior
             y ?? position.y,
             z ?? position.z
             );
+    }
+    public void ForceSetPosition(Vector3 newPosition)
+    {
+        transform.position = newPosition;
+        rb.position = newPosition;
+        rb.MovePosition(newPosition);
     }
 
     public void DirectionSet(float maxTurnSpeed, Vector3 target)
@@ -145,6 +161,12 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     public override void OnFixedUpdate()
     {
+        if (rb.isKinematic)
+        {
+            rb.velocity = Vector3.zero;
+            return;
+        } 
+
         Vector3 prevPosition = rb.position;
         {
             Machine.animator.SetFloat("CurrentSpeed", currentSpeed);
