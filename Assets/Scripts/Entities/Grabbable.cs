@@ -37,8 +37,6 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     private Rigidbody rb;
     public EnemyHealth health { get; protected set; }
 
-    protected ParentConstraint parentConstraint;
-
     public CoroutinePlus wiggleCoroutine;
 
     [HideInEditMode, DisableInPlayMode] public EntityState currentState;

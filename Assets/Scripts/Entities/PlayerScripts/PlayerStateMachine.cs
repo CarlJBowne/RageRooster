@@ -72,11 +72,11 @@ public class PlayerStateMachine : StateMachine
     public void InstantMove(Vector3 newPosition, float? yRot = null)
     {
         Vector3 camDelta = newPosition - transform.position;
-        body.jiggles.PrepareTeleport();
-        body.position = newPosition;
-        body.jiggles.FinishTeleport();
+        //body.jiggles.PrepareTeleport();
+        body.ForceSetPosition(newPosition);
+        //body.jiggles.FinishTeleport(); 
         if (yRot != null) body.rotation = new(0, yRot.Value, 0);
-        ResetState();
+        ResetState(); 
         freeLookCamera.PreviousStateIsValid = false;
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);
         body.velocity = Vector3.zero;
@@ -84,10 +84,10 @@ public class PlayerStateMachine : StateMachine
     public void InstantMove(SavePoint savePoint)
     {
         Vector3 camDelta = savePoint.SpawnPoint.position - transform.position;
-        body.jiggles.PrepareTeleport();
-        body.position = savePoint.SpawnPoint.position;
+        //body.jiggles.PrepareTeleport();
+        body.ForceSetPosition(savePoint.SpawnPoint.position);
         body.rotation = new(0, savePoint.SpawnPoint.eulerAngles.y, 0);
-        body.jiggles.FinishTeleport();
+        //body.jiggles.FinishTeleport();
         ResetState();
         freeLookCamera.PreviousStateIsValid = false;
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);
@@ -122,10 +122,11 @@ public class PlayerStateMachine : StateMachine
         CoroutinePlus.Begin(ref deathCoroutine, Enum(justPit), this);
         IEnumerator Enum(bool justPit)
         {
+            Vector3 targetVelocity = body.velocity;
             ragDollState.TransitionTo();
-            ragDollHandler.SetState(EntityState.RagDoll);
-            ragDollHandler.SetVelocity(body.velocity);
             body.velocity = Vector3.zero;
+            ragDollHandler.SetState(EntityState.RagDoll);
+            ragDollHandler.SetVelocity(targetVelocity*0.75f);
             animator.enabled = false;
 
             yield return WaitFor.SecondsRealtime(justPit ? fallDownPitTime : deathTime);
@@ -140,7 +141,7 @@ public class PlayerStateMachine : StateMachine
             if (!justPit)
             {
                 PlayerHealth.Global.Update(PlayerHealth.Global.maxHealth);
-            }
+            } 
 
             Overlay.OverGameplay.BasicFadeIn(fadeTime);
         }
