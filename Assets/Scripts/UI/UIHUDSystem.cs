@@ -65,7 +65,7 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
             else if (i >= activeMaxHealth)
             {
                 if (healthImages.Count <= i) 
-                    healthImages.Add(Instantiate(healthImages[0], healthImages[0].transform.parent));
+                    healthImages.Add(Instantiate(healthImages[0].transform.parent, healthImages[0].transform.parent.parent).GetChild(0).GetComponent<Image>());
                 healthImages[i].enabled = true;
                 healthImages[i].sprite = healthFullTexture;
             }
