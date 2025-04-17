@@ -8,7 +8,7 @@ public class AttackProjectile : AttackSourceSingle
     public bool disableOnlyWithHealth;
     public bool disableOnlyIfSuccessfulHit;
     public float contactableTimer = 0.333333f;
-
+    public UltEvents.UltEvent successfulHitEvent;
 
     public Transform sourcePosition;
     private Rigidbody rb;
@@ -51,7 +51,11 @@ public class AttackProjectile : AttackSourceSingle
         }
     }
 
-    public void Disable() => PoolableObject.DisableOrDestroy(gameObject);
+    public void Disable()
+    {
+        successfulHitEvent?.Invoke();
+        PoolableObject.DisableOrDestroy(gameObject);
+    }
 
     public void Reflect(bool backAt = false)
     {

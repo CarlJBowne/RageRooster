@@ -67,7 +67,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
         pointer.startH.position = body.position + Vector3.up;
 
-        animator.Update(0f);
+        if(animator.enabled) animator.Update(0f);
 
         if (aimingState.state) AimingFixedUpdate();
         else NonAimingFixedUpdate();
