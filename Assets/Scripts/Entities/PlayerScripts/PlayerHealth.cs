@@ -9,13 +9,13 @@ public class PlayerHealth : Health
     public float invincibilityTime;
     public State damageState;
     public State damageStateWham;
+    public ColorTintAnimation tintAnimator;
 
-    private Coroutine invincibility;
+    private CoroutinePlus invincibility;
     private new Collider collider;
     private UIHUDSystem UI;
     private PlayerMovementBody body;
     private PlayerStateMachine machine;
-
 
     protected override void Awake()
     {
@@ -24,17 +24,18 @@ public class PlayerHealth : Health
         UIHUDSystem.TryGet(out UI);
         TryGetComponent(out body);
         TryGetComponent(out machine);
-        UpdateHealth();
+        Global.playerObject = this;
     }
 
     protected override void OnDamage(Attack attack)
     {
         damageEvent?.Invoke(attack.amount);
-        if(health != 0)
+        if (tintAnimator) tintAnimator.BeginAnimation();
+        if (health != 0)
         {
-            invincibility = StartCoroutine(InvinceEnum(invincibilityTime));
+            CoroutinePlus.Begin(ref invincibility, InvinceEnum(invincibilityTime), this);
             damagable = false;
-            if (attack.HasTag(Attack.Tag.Pit)) Gameplay.SpawnPlayer();
+            if (attack.HasTag(Attack.Tag.Pit)) machine.Death(true);
             if (!attack.HasTag(Attack.Tag.Wham))
                 damageState.TransitionTo();
             else
@@ -44,10 +45,21 @@ public class PlayerHealth : Health
                 body.VelocitySet(y: 14);
             }
         }
-        UpdateHealth();
+        Global.Update(health);
     }
 
-    protected override void OnDeplete(Attack attack) => UI.StartCoroutine(DeathEnum());
+    protected override void OnHeal(int amount) => Global.Update(health);
+
+    protected override void OnDeplete(Attack attack)
+    {
+        if(attack == Attack.Tag.Wham)
+        {
+            damageStateWham.TransitionTo();
+            body.GroundStateChange(false);
+            body.VelocitySet(y: 14);
+        }
+        else machine.Death();
+    }
 
     private IEnumerator InvinceEnum(float time)
     {
@@ -56,26 +68,6 @@ public class PlayerHealth : Health
         collider.enabled = false;
         collider.enabled = true;
 
-    }
-
-    public void UpdateHealth() => UI.UpdateHealth(health, maxHealth);
-
-    public void AddMaxHealth(int value = 1)
-    {
-        maxHealth += value;
-        UpdateHealth();
-    }
-
-    private IEnumerator DeathEnum()
-    {
-        gameObject.SetActive(false);
-
-        yield return new WaitForSeconds(2);
-
-        Gameplay.SpawnPlayer();
-        gameObject.SetActive(true);
-        health = maxHealth;
-        UpdateHealth();
     }
 
     protected override void OverrideDamageValue(ref Attack attack)
@@ -95,4 +87,32 @@ public class PlayerHealth : Health
         }
     }
 
+    public static class Global
+    {
+        public static int currentHealth;
+        public static int maxHealth;
+
+        public static PlayerHealth playerObject;
+        public static UIHUDSystem UI;
+
+        public static void Update(int current)
+        {
+            currentHealth = current;
+            playerObject.health = current;
+
+            UI.UpdateHealth(current, maxHealth);
+        }
+        public static void UpdateMax(int max)
+        {
+            currentHealth = max;
+            maxHealth = max;
+
+            playerObject.health = max;
+            playerObject.maxHealth = max;
+            UI.UpdateHealth(max, max);
+
+            GlobalState.maxHealth = max;
+        }
+
+    }
 }

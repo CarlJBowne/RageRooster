@@ -50,6 +50,7 @@ public class Health : MonoBehaviour, IDamagable
     }
 
     protected virtual void OnDamage(Attack attack) => damageEvent?.Invoke(attack.amount);
+    protected virtual void OnHeal(int amount) { }
     protected virtual void OnDeplete(Attack attack) => depleteEvent?.Invoke();
 
     /// <summary>

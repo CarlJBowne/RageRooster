@@ -18,9 +18,15 @@ public class PlayerStateMachine : StateMachine
     [HideInInspector] public Animator animator;
     [HideInInspector] public PlayerMovementBody body;
     [HideInInspector] public PlayerController controller;
+    [HideInInspector] public PlayerHealth health;
     public Transform cameraTransform;
     public CinemachineFreeLook freeLookCamera;
     public State pauseState;
+    public State ragDollState;
+    public RagdollHandler ragDollHandler;
+    public float fallDownPitTime;
+    public float deathTime;
+    CoroutinePlus deathCoroutine;
 
     #endregion
 
@@ -29,6 +35,7 @@ public class PlayerStateMachine : StateMachine
         animator = GetComponent<Animator>();
         body = GetComponent<PlayerMovementBody>();
         controller = GetComponent<PlayerController>();
+        health = GetComponent<PlayerHealth>();
     }
 
     protected override void OnAwake()
@@ -109,6 +116,40 @@ public class PlayerStateMachine : StateMachine
     {
         prevState.TransitionTo();
     }
+
+    public void Death(bool justPit = false)
+    {
+        CoroutinePlus.Begin(ref deathCoroutine, Enum(justPit), this);
+        IEnumerator Enum(bool justPit)
+        {
+            ragDollState.TransitionTo();
+            ragDollHandler.SetState(EntityState.RagDoll);
+            ragDollHandler.SetVelocity(body.velocity);
+            body.velocity = Vector3.zero;
+            animator.enabled = false;
+
+            yield return WaitFor.SecondsRealtime(justPit ? fallDownPitTime : deathTime);
+
+            float fadeTime = justPit ? .5f : 1f;
+            Overlay.OverGameplay.BasicFadeOut(fadeTime);
+            yield return WaitFor.SecondsRealtime(fadeTime);
+            
+            yield return Gameplay.RespawnPlayer();
+            ragDollHandler.SetState(EntityState.Default);
+            animator.enabled = true;
+            if (!justPit)
+            {
+                PlayerHealth.Global.Update(PlayerHealth.Global.maxHealth);
+            }
+
+            Overlay.OverGameplay.BasicFadeIn(fadeTime);
+        }
+    }
+
+    public void DeathIfAtZero() { if (health.GetCurrentHealth() == 0) Death(); }
+
+
+
 
 #if UNITY_EDITOR
     protected override void Update()
