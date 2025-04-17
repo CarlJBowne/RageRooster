@@ -32,9 +32,11 @@ public class RagdollHandler : Grabbable
         SetState(EntityState.Default);
         if(proxy) proxy.SetRagdoll(false);
         if (isPlayer)
+        {
             savedLocalPos = new Vector3[ragDollColliders.Length];
             for (int i = 0; i < savedLocalPos.Length; i++)
                 savedLocalPos[i] = ragDollColliders[i].transform.localPosition;
+        }
     }
     private void FixedUpdate()
     {
