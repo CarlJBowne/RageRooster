@@ -31,7 +31,7 @@ public class RagdollHandler : Grabbable
     }
     private void FixedUpdate()
     {
-        if (currentState == EntityState.RagDoll)
+        if (currentState == EntityState.RagDoll && maxRagdollTime > 0)
         {
             ragDollTimer += Time.deltaTime;
             if (ragDollTimer > minRagdollTime && (rigidBody.velocity.magnitude < minRagdollVelovity || ragDollTimer > maxRagdollTime))
@@ -102,7 +102,7 @@ public class RagdollHandler : Grabbable
         }
         if(nonRagdolledRigidBody) nonRagdolledRigidBody.isKinematic = !value;
 
-        proxy.SetRagdoll(value); 
+        if(proxy) proxy.SetRagdoll(value);  
     } 
     public override void SetVelocity(Vector3 globalVelocity)
     {

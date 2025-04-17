@@ -9,8 +9,9 @@ public class PlayerHealth : Health
     public float invincibilityTime;
     public State damageState;
     public State damageStateWham;
+    public ColorTintAnimation tintAnimator;
 
-    private Coroutine invincibility;
+    private CoroutinePlus invincibility;
     private new Collider collider;
     private UIHUDSystem UI;
     private PlayerMovementBody body;
@@ -29,11 +30,12 @@ public class PlayerHealth : Health
     protected override void OnDamage(Attack attack)
     {
         damageEvent?.Invoke(attack.amount);
-        if(health != 0)
+        if (tintAnimator) tintAnimator.BeginAnimation();
+        if (health != 0)
         {
-            invincibility = StartCoroutine(InvinceEnum(invincibilityTime));
+            CoroutinePlus.Begin(ref invincibility, InvinceEnum(invincibilityTime), this);
             damagable = false;
-            if (attack.HasTag(Attack.Tag.Pit)) Gameplay.SpawnPlayer();
+            if (attack.HasTag(Attack.Tag.Pit)) machine.Death(true);
             if (!attack.HasTag(Attack.Tag.Wham))
                 damageState.TransitionTo();
             else
@@ -43,12 +45,21 @@ public class PlayerHealth : Health
                 body.VelocitySet(y: 14);
             }
         }
-        UpdateHealth();
+        Global.Update(health);
     }
 
-    protected override void OnHeal(int amount) => UpdateHealth();
+    protected override void OnHeal(int amount) => Global.Update(health);
 
-    protected override void OnDeplete(Attack attack) => UI.StartCoroutine(DeathEnum());
+    protected override void OnDeplete(Attack attack)
+    {
+        if(attack == Attack.Tag.Wham)
+        {
+            damageStateWham.TransitionTo();
+            body.GroundStateChange(false);
+            body.VelocitySet(y: 14);
+        }
+        else machine.Death();
+    }
 
     private IEnumerator InvinceEnum(float time)
     {
@@ -57,20 +68,6 @@ public class PlayerHealth : Health
         collider.enabled = false;
         collider.enabled = true;
 
-    }
-
-    public void UpdateHealth() => Global.Update(health);
-
-    private IEnumerator DeathEnum()
-    {
-        gameObject.SetActive(false);
-
-        yield return new WaitForSeconds(2);
-
-        Gameplay.SpawnPlayer();
-        gameObject.SetActive(true);
-        health = maxHealth;
-        UpdateHealth();
     }
 
     protected override void OverrideDamageValue(ref Attack attack)
