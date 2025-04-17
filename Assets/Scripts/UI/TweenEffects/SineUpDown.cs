@@ -6,7 +6,7 @@ using DG.Tweening;
 public class SineUpDown : MonoBehaviour
 {
 
-
+    [SerializeField] float heightDifference;
     void Awake()
     {
         DOTween.Init();
@@ -14,9 +14,10 @@ public class SineUpDown : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Sequence s = DOTween.Sequence();
-        s.Append(transform.DOLocalMoveY(-.5f, 1).SetEase(Ease.OutSine));
-        s.SetLoops(-1, LoopType.Yoyo);
+
+            transform.DOLocalMoveY(transform.localPosition.y-heightDifference, 2f)
+                .SetEase(Ease.InOutSine)
+                .SetLoops(-1, LoopType.Yoyo);
 
     }
 
