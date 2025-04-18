@@ -72,7 +72,7 @@ public class ItemPickup : MonoBehaviour
 
         if (type != ItemType.Hint) Destroy(gameObject);
 
-        if (oneTime)
+        if (oneTime != null && oneTime)
         {
             oneTime.Enable();
         }
