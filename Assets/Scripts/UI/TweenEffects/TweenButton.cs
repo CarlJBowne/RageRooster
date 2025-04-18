@@ -6,15 +6,18 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 
 public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler , ISelectHandler
 {
     
-    
+    [SerializeField] bool doRotate = true;
+    Selectable selectable;
     void Awake()
     {
         DOTween.Init();
+        selectable = GetComponent<Selectable>();
     }
     
     public void OnPointerEnter(PointerEventData eventData)
@@ -34,11 +37,18 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     void BounceButton()
     {        
+        if(selectable.interactable)
+        {
         Sequence sequence = DOTween.Sequence();
         transform.localRotation = Quaternion.Euler(Vector3.zero);
         transform.localScale = Vector3.one;
-        sequence.Append(transform.DORotate(new Vector3(1,1,-25), .4f).From().SetEase(Ease.OutBack));
+        if(doRotate)
+        {
+            sequence.Append(transform.DORotate(new Vector3(1,1,-25), .4f).From().SetEase(Ease.OutBack));
+        }
+
         sequence.Join(transform.DOScale(.6f, 1f).From().SetEase(Ease.OutBounce));
+        }
 
     }
 
