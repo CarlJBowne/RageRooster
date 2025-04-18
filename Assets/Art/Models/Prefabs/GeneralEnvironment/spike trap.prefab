@@ -114,6 +114,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3661712056040036734}
+    - targetCorrespondingSourceObject: {fileID: 7953606483559150473, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7626235069312644739}
     - targetCorrespondingSourceObject: {fileID: 424797892135438382, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
         type: 3}
       insertIndex: -1
@@ -126,6 +130,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3834863334972036768}
+    - targetCorrespondingSourceObject: {fileID: 424797892135438382, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7789362988734345275}
     - targetCorrespondingSourceObject: {fileID: -7139261109480557378, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
         type: 3}
       insertIndex: -1
@@ -134,6 +142,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2439819325754492012}
+    - targetCorrespondingSourceObject: {fileID: -7139261109480557378, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8603326518605025398}
   m_SourcePrefab: {fileID: 100100000, guid: 2a8b188c0fb4a8f48a01609e7f57086b, type: 3}
 --- !u!1 &3213132338741632908 stripped
 GameObject:
@@ -180,6 +192,25 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -9113646534211321542, guid: 2a8b188c0fb4a8f48a01609e7f57086b, type: 3}
+--- !u!114 &8603326518605025398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3213132338741632908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e08d19e70a0a44ba49ccb39b83df8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack:
+    amount: 1
+    velocity: {x: 0, y: 0, z: 0}
+    tags:
+    - name: Pit
+  sourceEntity: {fileID: 0}
+  enabled: 1
 --- !u!1 &3863602911140700956 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 424797892135438382, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
@@ -247,6 +278,25 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 9159918685923073707, guid: 2a8b188c0fb4a8f48a01609e7f57086b, type: 3}
+--- !u!114 &7789362988734345275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3863602911140700956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e08d19e70a0a44ba49ccb39b83df8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack:
+    amount: 1
+    velocity: {x: 0, y: 0, z: 0}
+    tags:
+    - name: Pit
+  sourceEntity: {fileID: 0}
+  enabled: 1
 --- !u!1 &6781167573391956155 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7953606483559150473, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
@@ -314,3 +364,22 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -1388485733357891733, guid: 2a8b188c0fb4a8f48a01609e7f57086b, type: 3}
+--- !u!114 &7626235069312644739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6781167573391956155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e08d19e70a0a44ba49ccb39b83df8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack:
+    amount: 1
+    velocity: {x: 0, y: 0, z: 0}
+    tags:
+    - name: Pit
+  sourceEntity: {fileID: 0}
+  enabled: 1
