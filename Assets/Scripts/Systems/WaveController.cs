@@ -127,7 +127,7 @@ public class WaveController : MonoBehaviour
                     health.depleteEvent += () =>
                     {
                         activeEnemies--;
-                        //pooledEnemy.Disable();
+                        pooledEnemy.Disable();
                         Debug.Log($"[WaveController] Enemy defeated. {activeEnemies} remaining.");
                     };
                 }
