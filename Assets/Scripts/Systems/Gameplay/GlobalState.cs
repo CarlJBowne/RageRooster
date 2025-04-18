@@ -54,6 +54,7 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
         PlayerHealth.Global.UpdateMax(maxHealth);
         PlayerRanged.Ammo.UpdateMax(maxAmmo);
         PlayerRanged.Ammo.Update(maxAmmo);
+        UIHUDSystem.SetCurrencyText(currency.ToString());
         Get().SetSkybox();
     }
 
