@@ -116,6 +116,7 @@ public class SpeakerScript : MonoBehaviour, IInteractable
             UI.ClearText();
             UI.FadeUI(true, .2f, .65f);
             TurnToPlayer(Gameplay.Player.transform.position);
+            animator.SetTrigger("talking");
         }
 
         dialogue = data.dialogueList[data.dialogueID];
