@@ -9,8 +9,6 @@ using System.Collections;
 public class IntroManager : MonoBehaviour
 {
     [Header("UI Elements")]
-    [SerializeField] private Image unityLogo;
-    [SerializeField] private Image gameLogo;
     [SerializeField] private RawImage introVideoImage;
     [SerializeField] private Image titleScreenImage;
     [SerializeField] private RectTransform titleText;
@@ -25,7 +23,6 @@ public class IntroManager : MonoBehaviour
     [Header("Timings")]
     [SerializeField] private float fadeDuration = 2f;
     [SerializeField] private float waitBetweenFades = 1f;
-    [SerializeField] private float waitAfterGameLogo = 1.5f;
     [SerializeField] private float titleSlideDuration = 1.2f;
     [SerializeField] private float titleSlideOffset = 300f;
     [SerializeField] private float pressKeyFadeDelay = 1f;
@@ -50,8 +47,6 @@ public class IntroManager : MonoBehaviour
         inputActions = new PlayerActions();
         inputActions.Enable();
 
-        SetAlpha(unityLogo, 0f);
-        SetAlpha(gameLogo, 0f);
         SetAlpha(introVideoImage, 0f);
         SetAlpha(titleScreenImage, 0f);
         SetAlpha(pressAnyKeyTMP, 0f);
@@ -96,30 +91,7 @@ public class IntroManager : MonoBehaviour
 
     private IEnumerator PlayIntroSequence()
     {
-        yield return StartCoroutine(FadeImage(unityLogo, 0f, 1f));
-        if (skipRequested) { SkipToVideo(); yield break; }
-
-        yield return new WaitForSeconds(waitBetweenFades);
-
-        float elapsed = 0f;
-        while (elapsed < fadeDuration)
-        {
-            if (CheckForSkip()) { SkipToVideo(); yield break; }
-
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / fadeDuration);
-            SetAlpha(unityLogo, 1f - t);
-            SetAlpha(gameLogo, t);
-            yield return null;
-        }
-
-        SetAlpha(unityLogo, 0f);
-        SetAlpha(gameLogo, 1f);
-
-        yield return new WaitForSeconds(waitAfterGameLogo);
-
-        yield return StartCoroutine(FadeImage(gameLogo, 1f, 0f));
-
+        // Skipping logos, go straight to video
         PlayVideo();
         yield return StartCoroutine(FadeImage(introVideoImage, 0f, 1f));
     }
@@ -129,11 +101,6 @@ public class IntroManager : MonoBehaviour
         if (videoPlayer != null)
         {
             videoPlayer.Play();
-            // Debug.Log("Playing intro video...");
-        }
-        else
-        {
-            // Debug.LogWarning("VideoPlayer not assigned!");
         }
     }
 
@@ -264,8 +231,6 @@ public class IntroManager : MonoBehaviour
 
     private void SkipToVideo()
     {
-        SetAlpha(unityLogo, 0f);
-        SetAlpha(gameLogo, 0f);
         SetAlpha(introVideoImage, 1f);
         SetAlpha(titleScreenImage, 1f);
         SetAlpha(pressAnyKeyTMP, 1f);
@@ -281,7 +246,6 @@ public class IntroManager : MonoBehaviour
 
         StartCoroutine(SlideInTitleText());
         waitingForTitleInput = true;
-
     }
 
     private void LoadMainMenu()
