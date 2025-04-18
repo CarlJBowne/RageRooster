@@ -404,11 +404,23 @@ namespace FMODUnity
 
         public void CrossFadeMusic(EventReference nextMusic)
         {
-            StopInstance();
-            EventReference = nextMusic;
-            Lookup();
-            instance = default;
-            PlayInstance();
+            StartCoroutine(FadeEnum());
+            IEnumerator FadeEnum()
+            {
+                fadingInstace = instance;
+                instance = default;
+                fadingInstace.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                fadingInstace.release();
+
+                yield return new WaitForSecondsRealtime(.25f);
+
+                EventReference = nextMusic;
+                Lookup();
+                PlayInstance();
+            }
+
+
         }
+        EventInstance fadingInstace;
     }
 }

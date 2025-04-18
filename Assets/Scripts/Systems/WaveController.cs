@@ -50,11 +50,11 @@ public class WaveController : MonoBehaviour
     {
         if (isActive || (!SaveOverride && worldChange != null && worldChange.Enabled))
         {
-            Debug.Log("[WaveController] StartWave called, but controller is already active or world change is enabled.");
+            //Debug.Log("[WaveController] StartWave called, but controller is already active or world change is enabled.");
             return;
         }
 
-        Debug.Log("[WaveController] Starting wave sequence.");
+        //Debug.Log("[WaveController] Starting wave sequence.");
         isActive = true;
         foreach (var wall in wallsToDisable) wall.SetActive(true);
         StartCoroutine(HandleWaves());
@@ -64,7 +64,7 @@ public class WaveController : MonoBehaviour
     {
         while (currentWave < waves)
         {
-            Debug.Log($"[WaveController] Starting wave {currentWave + 1}");
+            //Debug.Log($"[WaveController] Starting wave {currentWave + 1}");
             SpawnWave();
             currentWave++;
 
@@ -73,7 +73,7 @@ public class WaveController : MonoBehaviour
                 yield return null;
             }
 
-            Debug.Log($"[WaveController] Wave {currentWave} cleared.");
+            //Debug.Log($"[WaveController] Wave {currentWave} cleared.");
 
             float timer = timeBetweenWaves;
             if (waveTimerText != null) waveTimerText.gameObject.SetActive(true);
@@ -92,7 +92,7 @@ public class WaveController : MonoBehaviour
 
     void SpawnWave()
     {
-        Debug.Log($"[WaveController] Spawning {enemiesPerWave} enemies within area.");
+        //Debug.Log($"[WaveController] Spawning {enemiesPerWave} enemies within area.");
 
         List<Vector3> spawnPoints = new();
         int attempts = 0;
@@ -131,15 +131,15 @@ public class WaveController : MonoBehaviour
                         Debug.Log($"[WaveController] Enemy defeated. {activeEnemies} remaining.");
                     };
                 }
-                else Debug.LogError("[WaveController] Spawned enemy lacks EnemyHealth component!");
+                //else Debug.LogError("[WaveController] Spawned enemy lacks EnemyHealth component!");
             }
-            else Debug.LogError("[WaveController] Enemy pool exhausted or unable to spawn enemy!");
+            //else Debug.LogError("[WaveController] Enemy pool exhausted or unable to spawn enemy!");
         }
     }
 
     void EndWave()
     {
-        Debug.Log("[WaveController] All waves completed. Ending wave sequence.");
+        //Debug.Log("[WaveController] All waves completed. Ending wave sequence.");
 
         foreach (var wall in wallsToDisable)
         {
@@ -148,7 +148,7 @@ public class WaveController : MonoBehaviour
 
         if (worldChange != null)
         {
-            Debug.Log("[WaveController] Triggering world change.");
+            //Debug.Log("[WaveController] Triggering world change.");
             worldChange.Enable();
         }
 
