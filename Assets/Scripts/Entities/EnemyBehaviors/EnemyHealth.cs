@@ -19,9 +19,8 @@ public class EnemyHealth : Health
     public ColorTintAnimation tintAnimator;
     private RagdollHandler ragdoll;
 
-    [ToggleGroup("SingleRespawn", nameof(respawnTime))]
     public bool respawn;
-    [HideInInspector] public float respawnTime;
+    public float respawnTime;
     
 
     #endregion Config
