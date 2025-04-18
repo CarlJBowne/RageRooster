@@ -178,7 +178,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     public void Release(Vector3 velocity, bool thrown = false)
     {
         if (thrown) currentGrabbed.Throw(velocity);
-        else currentGrabbed.Release();
+        else if(currentGrabbed != null) currentGrabbed.Release();
         //OnRelease
 
         CoroutinePlus.Begin(ref layerFadeCoroutine, TurnOffLayers(1f), this);
