@@ -6720,6 +6720,91 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1398845251}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &231046460
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 231046463}
+  - component: {fileID: 231046462}
+  - component: {fileID: 231046461}
+  m_Layer: 0
+  m_Name: RancorPeakAmbience
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &231046461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231046460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: -537918072
+      Data2: 1182885657
+      Data3: 54586271
+      Data4: 1811019713
+    Path: event:/Ambience/mountainAmbience
+  Event: 
+  PlayEvent: 3
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 1
+  OverrideMinDistance: 416.3
+  OverrideMaxDistance: 538.7
+--- !u!135 &231046462
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231046460}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 441.8
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &231046463
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231046460}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -438.5755, y: 197.55048, z: -326}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &232413271 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
@@ -24956,6 +25041,84 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 775008341}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &778700777
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1166411700145567496, guid: 054945294af71b949a2d83da86fc9072,
+        type: 3}
+      propertyPath: m_Name
+      value: RancorPeakReverb
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -478
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 186.7139
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -288
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336097047878080033, guid: 054945294af71b949a2d83da86fc9072,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2645345732213073156, guid: 054945294af71b949a2d83da86fc9072,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 771.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2645345732213073156, guid: 054945294af71b949a2d83da86fc9072,
+        type: 3}
+      propertyPath: m_Size.z
+      value: 797.1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 054945294af71b949a2d83da86fc9072, type: 3}
 --- !u!4 &780782396 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3035660852340354017, guid: 5dd7923414e63774a8b6ffc3f3f76be7,
