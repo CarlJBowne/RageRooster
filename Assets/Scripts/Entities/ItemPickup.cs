@@ -26,6 +26,13 @@ public class ItemPickup : MonoBehaviour
     private void Awake()
     {
         if(oneTime != null && oneTime.Enabled) gameObject.SetActive(false);
+        if(type == ItemType.Wishbone && oneTime == null)
+        {
+#if UNITY_EDITOR
+            Debug.LogError($"This wishbone {gameObject.name} does not have a world change.");
+#endif
+            gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -65,7 +72,7 @@ public class ItemPickup : MonoBehaviour
 
         if (type != ItemType.Hint) Destroy(gameObject);
 
-        if (oneTime)
+        if (oneTime != null && oneTime)
         {
             oneTime.Enable();
         }
