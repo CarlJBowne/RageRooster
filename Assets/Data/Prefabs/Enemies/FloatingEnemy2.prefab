@@ -782,8 +782,6 @@ MonoBehaviour:
   lockReady: 0
   states:
     _serializedList: []
-  _variables:
-    variables: []
   signalReady: 1
   signalQueueDecay:
     length: 1
@@ -839,10 +837,7 @@ MonoBehaviour:
   - {fileID: 1878912946628853510}
   - {fileID: 5419231795522299808}
   enemyLootSpawner: {fileID: 0}
-  ragDoll: 1
-  minRagdollTime: 2
-  maxRagdollTime: 5
-  minRagdollVelovity: 0.2
+  tintAnimator: {fileID: 0}
   respawn: 1
   respawnTime: 30
   currentState: 0
@@ -858,11 +853,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44ed58beabcca8749bd2e13371ec85c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  twoHanded: 1
+  anchorPoint: {fileID: 0}
   weight: 1
   wiggleFreeTime: 0
   maxHealthToGrab: 5
   additionalThrowDistance: 0
+  additionalHoldHeight: 0
   GrabStateEvent:
     _PersistentCalls: []
   defaultEvent:
@@ -1259,6 +1255,7 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Walk
   onEnterTime: 0
+  doWhenNotFinal: 0
   animator: {fileID: 0}
 --- !u!114 &5989265127938018364
 MonoBehaviour:
@@ -1463,6 +1460,7 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Walk
   onEnterTime: 0
+  doWhenNotFinal: 0
   animator: {fileID: 0}
 --- !u!1 &3722073247330969220
 GameObject:
@@ -1557,6 +1555,7 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Stand
   onEnterTime: 0
+  doWhenNotFinal: 0
   animator: {fileID: 0}
 --- !u!114 &6614652859543076544
 MonoBehaviour:
