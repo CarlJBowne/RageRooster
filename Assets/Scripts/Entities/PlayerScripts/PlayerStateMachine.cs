@@ -19,6 +19,8 @@ public class PlayerStateMachine : StateMachine
     [HideInInspector] public PlayerMovementBody body;
     [HideInInspector] public PlayerController controller;
     [HideInInspector] public PlayerHealth health;
+    [HideInInspector] public PlayerRanged ranged;
+    [HideInInspector] public new AudioCaller audio;
     public Transform cameraTransform;
     public CinemachineFreeLook freeLookCamera;
     public State pauseState;
@@ -36,6 +38,8 @@ public class PlayerStateMachine : StateMachine
         body = GetComponent<PlayerMovementBody>();
         controller = GetComponent<PlayerController>();
         health = GetComponent<PlayerHealth>();
+        audio = GetComponent<AudioCaller>();
+        ranged = GetComponent<PlayerRanged>();
     }
 
     protected override void OnAwake()
@@ -89,6 +93,7 @@ public class PlayerStateMachine : StateMachine
         body.rotation = new(0, savePoint.SpawnPoint.eulerAngles.y, 0);
         //body.jiggles.FinishTeleport();
         ResetState();
+        ranged.Release(Vector3.zero, false);
         freeLookCamera.PreviousStateIsValid = false;
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);
         body.velocity = Vector3.zero;
@@ -123,6 +128,7 @@ public class PlayerStateMachine : StateMachine
         IEnumerator Enum(bool justPit)
         {
             Vector3 targetVelocity = body.velocity;
+            audio.PlayOneShot("Death");
             ragDollState.TransitionTo();
             body.velocity = Vector3.zero;
             ragDollHandler.SetState(EntityState.RagDoll);

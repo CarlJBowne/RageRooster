@@ -59,6 +59,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         //UI.UpdateAmmo(eggAmount);
         //GlobalState.maxAmmoUpdateCallback += UpdateMaxAmmo;
         Ammo.playerObject = this;
+        PauseMenu.onPause += ExitAimingInstant;
     }
 
     private void FixedUpdate()
@@ -323,6 +324,19 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         shootingVCam.Priority = 9;
         shootingVCam.gameObject.SetActive(false);
         aiming = false;
+    }
+
+    public void ExitAimingInstant()
+    {
+        machine.freeLookCamera.m_XAxis.Value = pointerH;
+        aimingRig.enabled = false;
+        aimingRig.weight = 0;
+        UI.SetHitMarkerVisibility(false);
+        shootingVCam.Priority = 9;
+        shootingVCam.gameObject.SetActive(false);
+        aiming = false;
+        animator.Play("GroundBasic");
+        machine[0].TransitionTo();
     }
 
     public void Shoot()

@@ -5,6 +5,7 @@ using EditorAttributes;
 public class Boss1Health : Health
 {
     public float damageCooldown = 0.15f;
+    public ColorTintAnimation damageTint;
     public int phase2Trigger;
     public UltEvents.UltEvent phase2Event;
     public UltEvents.UltEvent phase3Event;
@@ -40,10 +41,11 @@ public class Boss1Health : Health
         if (lastDamageTime + damageCooldown > Time.time) return false;
         if (attack.HasTag("OnWeakSpot") && attack.HasTag("GroundSlam"))
         {
+            damageTint.BeginAnimation();
             animator.Play("Damage");
             return true;
         }
-        if (bossPhase != 2 && attack.HasTag("InEyes") && attack.HasTag("Egg"))
+        if (bossPhase != 2 && attack.HasTag("InEyes") && attack.HasTag("Egg") && machine.currentState.gameObject.name != "Charging")
         {
             stunCounter++; 
             if (stunCounter > 2)
@@ -119,6 +121,8 @@ public class Boss1Health : Health
         phase2TriggerTriggered = false;
         machine[0][0].TransitionTo();
         animator.Play("Walking", -1, 0f);
+        bossPhase = 1;
+        damagable = true;
         ResetBossEvent?.Invoke();
     }
 

@@ -24,10 +24,13 @@ public class RagdollHandler : Grabbable
     public override Rigidbody rigidBody => advanced ? ragDollRigidBodies[0] : nonRagdolledRigidBody;
     [SerializeField] private RagdollInteractionProxy proxy;
     public bool isPlayer;
-    private Vector3[] savedLocalPos; 
+    private Vector3[] savedLocalPos;
+
+    public override bool IsGrabbable => base.IsGrabbable && !isPlayer;
 
     protected override void Awake()
     {
+        
         health = GetComponent<EnemyHealth>();
         SetState(EntityState.Default);
         if(proxy) proxy.SetRagdoll(false);

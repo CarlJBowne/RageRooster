@@ -11,6 +11,7 @@ public class AudioCaller : MonoBehaviour
     public EventReference this[string id] => events[id];
 
     public void PlayOneShot(string id) => FMODUnity.RuntimeManager.PlayOneShot(events[id], transform.position);
+    public void PlayOneShotAttached(string id) => FMODUnity.RuntimeManager.PlayOneShotAttached(events[id], gameObject);
 
 }
 

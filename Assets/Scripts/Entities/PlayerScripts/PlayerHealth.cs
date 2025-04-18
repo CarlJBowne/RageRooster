@@ -69,6 +69,8 @@ public class PlayerHealth : Health
 
     }
 
+    protected override bool OverrideDamageable(Attack attack) => !ConversationManager.instance.inDialogue;
+
     protected override void OverrideDamageValue(ref Attack attack)
     {
         if (attack.amount < 1) return;
