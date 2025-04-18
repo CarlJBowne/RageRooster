@@ -49,7 +49,7 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     Transform IGrabbable.transform { get => transform; }
     public float AdditionalThrowDistance => additionalThrowDistance;
     public float AdditionalHoldHeight => additionalHoldHeight;
-    public bool IsGrabbable => gameObject.activeInHierarchy && UnderThreshold();
+    public virtual bool IsGrabbable => gameObject.activeInHierarchy && UnderThreshold();
 
     public virtual Rigidbody rigidBody => rb;
 

@@ -20,9 +20,13 @@ public class ItemPickup : MonoBehaviour
     [TextArea]
     public string hintString;
     public int addAmount = 1;
+    public WorldChange oneTime;
 
 
-
+    private void Awake()
+    {
+        if(oneTime != null && oneTime.Enabled) gameObject.SetActive(false);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -61,6 +65,10 @@ public class ItemPickup : MonoBehaviour
 
         if (type != ItemType.Hint) Destroy(gameObject);
 
+        if (oneTime)
+        {
+            oneTime.Enable();
+        }
     }
 
 
