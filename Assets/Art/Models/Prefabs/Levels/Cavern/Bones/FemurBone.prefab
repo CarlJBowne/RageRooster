@@ -260,8 +260,6 @@ GameObject:
   - component: {fileID: 3431759367071130787}
   - component: {fileID: 330495260381699331}
   - component: {fileID: 8430740341576333477}
-  - component: {fileID: -5946926623544183895}
-  - component: {fileID: 2075976130257802536}
   m_Layer: 0
   m_Name: FemurBone
   m_TagString: Untagged
@@ -336,64 +334,3 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -4335064443372201742, guid: 064bd49ede2fddd4eb835810b12ac9fc, type: 3}
---- !u!54 &-5946926623544183895
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2665437185015683946}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &2075976130257802536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2665437185015683946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44ed58beabcca8749bd2e13371ec85c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anchorPoint: {fileID: 0}
-  weight: 0
-  wiggleFreeTime: 0
-  maxHealthToGrab: 0
-  additionalThrowDistance: 0
-  additionalHoldHeight: 0
-  GrabStateEvent:
-    _PersistentCalls: []
-  defaultEvent:
-    _PersistentCalls: []
-  grabbedEvent:
-    _PersistentCalls: []
-  thrownEvent:
-    _PersistentCalls: []
-  bounceEvent:
-    _PersistentCalls: []
-  thrownAttack:
-    amount: 1
-    velocity: {x: 0, y: 0, z: 0}
-    tags:
-    - name: Thrown
-  currentState: 0

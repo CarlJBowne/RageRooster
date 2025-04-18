@@ -12,11 +12,18 @@ public class Boss2CentralController : Health
     public UltEvents.UltEvent ResetBossEvent;
     public UltEvents.UltEvent FinishBossEvent;
 
-    private void Start()
+    IEnumerator Start()
     {
         Pecky.GoToIdle();
         Slasher.GoToIdle();
         Stumpy.GoToIdle();
+
+        yield return null;
+        //yield return null;
+        //yield return null;
+        //yield return null;
+        //yield return null;
+        //gameObject.SetActive(false);
     }
 
     private void FixedUpdate()
