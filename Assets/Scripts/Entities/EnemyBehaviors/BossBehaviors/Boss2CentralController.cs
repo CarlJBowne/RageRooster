@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class Boss2CentralController : Health
 {
@@ -12,24 +14,12 @@ public class Boss2CentralController : Health
     public UltEvents.UltEvent ResetBossEvent;
     public UltEvents.UltEvent FinishBossEvent;
 
-    IEnumerator Start()
+    void Start()
     {
-        Pecky.GoToIdle();
-        Slasher.GoToIdle();
-        Stumpy.GoToIdle();
-
-        yield return null;
-        //yield return null;
-        //yield return null;
-        //yield return null;
-        //yield return null;
-        //gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
-    private void FixedUpdate()
-    {
 
-    }
 
     public void ResetBoss() => ResetBossEvent?.Invoke();
 

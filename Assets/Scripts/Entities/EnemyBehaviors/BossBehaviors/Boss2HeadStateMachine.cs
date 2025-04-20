@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EditorAttributes;
 using SLS.StateMachineV3;
+using UnityEngine.Animations.Rigging;
 
 public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
 {
@@ -20,9 +21,15 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
 
     [HideInEditMode, HideInPlayMode] public Boss2CentralController controller;
     [HideInEditMode, HideInPlayMode] public Animator animator;
+    [HideInEditMode, HideInPlayMode] public RigBuilder rigBuilder;
     [HideInEditMode, HideInPlayMode] public int damageTaken;
     [HideInEditMode, HideInPlayMode] public int individualDamageCounter;
     [HideInEditMode, HideInPlayMode] public Timer.Loop attackTimer;
+
+
+
+    //public Boss2RigRebuilder rigRebuilder;
+    //public GameObject meshCollection;
 
     public const string idleState = "Idle";
     public const string attack1State = "Attack1";
@@ -36,9 +43,25 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        rigBuilder = GetComponent<RigBuilder>();
         controller = GetComponentInParent<Boss2CentralController>();
         attackTimer.rate = Random.Range(attackTimeLower, attackTimeHigher);
     }
+
+    private void OnEnable()
+    {
+        StartCoroutine(Enum());
+        IEnumerator Enum()
+        {
+            yield return null;
+            animator.Rebind();
+            rigBuilder.Build();
+            animator.Update(0f);
+            GoToIdle();
+        }
+    }
+
+
     protected void FixedUpdate()
     {
         if (hitStunCoroutine) return;
@@ -50,7 +73,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
                     attackTimer.Tick(() =>
                     {
                         attackTimer.rate = Random.Range(attackTimeLower, attackTimeHigher);
-                        DoAttack(damageTaken < damageUntilNewAttack || Random.Range(0, 3) == 0 ? 1 : 2);
+                        DoAttack((damageTaken < damageUntilNewAttack || Random.Range(0, 3) != 0) ? 1 : 2);
                     });
             }
             else if(damageTaken >= damageUntilNewAttack)
@@ -64,7 +87,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
     }
 
 
-    public bool Damage(Attack attack)
+    public bool Damage(Attack attack) 
     {
 
         if (headID == FinalBossHead.Pecky)
@@ -76,11 +99,13 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
                 damageTaken++;
                 return true;
             }
+            else if (currentState == idleState && attack == "Egg") attackTimer.rate -= 1f;
         }
         else if (headID == FinalBossHead.Slasher)
         {
-            if (currentState == knockedState || attack.HasTag("ThrownRock") || !attack.HasTag("FromPlayer")) return false; 
-            if (individualDamageCounter < 5)
+            if (currentState == knockedState || attack.HasTag("ThrownRock") || !attack.HasTag("FromPlayer")) return false;
+            if (currentState == idleState && attack == "Egg") attackTimer.rate -= 1f;
+            else if (individualDamageCounter < 5)
             {
                 individualDamageCounter++;
                 HitStun();
@@ -216,6 +241,14 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
         }
     }
     private CoroutinePlus hitStunCoroutine;
+
+    public void EnableHead()
+    {
+        enabled = true;
+        animator.enabled = true;
+        //meshCollection.SetActive(true);
+        GoToIdle();
+    }
 }
 
 public enum FinalBossHead {Pecky, Slasher, Stumpy}

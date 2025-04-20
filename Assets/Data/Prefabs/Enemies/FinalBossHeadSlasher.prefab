@@ -49,10 +49,10 @@ MonoBehaviour:
     constrainedObject: {fileID: 3652525294345206397}
     sourceObject: {fileID: 0}
     relativeSpace: {fileID: 4087820684635285445}
-  xMin: 47.48
-  xMax: 23.96
-  zMin: -28.63
-  zMax: -51.16
+  xMin: 18.6
+  xMax: -15.3
+  zMin: -3.4
+  zMax: -25
   xPercentage: 0
   zPercentage: 0
   yPos: 1.4
@@ -176,6 +176,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShockwaveSlam
       objectReference: {fileID: 0}
+    - target: {fileID: 6878630923043910821, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: m_UpdateMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7099956406392742638, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
       propertyPath: additionalTags.Array.data[2].name
@@ -213,11 +218,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
-      propertyPath: projectilePool.spawnPoint
-      value: 
-      objectReference: {fileID: 6653602061332004259}
-    - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
-        type: 3}
       propertyPath: projectilePool.prefabObject
       value: 
       objectReference: {fileID: 5822478214020923678, guid: 939b237b4b774974cb47426b47cbd53c,
@@ -239,7 +239,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7211518402728110065, guid: 7644558c67485ae49ad2ecb504b79b2a, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1121759351169611735, guid: 7644558c67485ae49ad2ecb504b79b2a, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7636212919369332536, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
@@ -262,12 +263,6 @@ Transform:
 --- !u!4 &4087820684635285445 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7636212919369332536, guid: 7644558c67485ae49ad2ecb504b79b2a,
-    type: 3}
-  m_PrefabInstance: {fileID: 5855695946392785149}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &6653602061332004259 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 942883596667972958, guid: 7644558c67485ae49ad2ecb504b79b2a,
     type: 3}
   m_PrefabInstance: {fileID: 5855695946392785149}
   m_PrefabAsset: {fileID: 0}

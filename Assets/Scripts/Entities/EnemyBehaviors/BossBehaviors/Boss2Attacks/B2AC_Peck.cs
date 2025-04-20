@@ -22,10 +22,19 @@ public class B2AC_Peck : RigConstraint<THIS.Job, THIS.Data, THIS.Binder>
         public void ProcessRootMotion(UnityEngine.Animations.AnimationStream stream) { }
         public void ProcessAnimation(UnityEngine.Animations.AnimationStream stream)
         {
-            if (!stream.isValid) return; // Ensure valid data before proceeding
+            float weight = jobWeight.Get(stream);
+            if (!stream.isValid || weight <= 0.0001f) return; // Ensure valid data before proceeding
 
             float followPlayerRate = this.followPlayerRate.Get(stream);
             float yPosition = this.yPosition.Get(stream);
+
+            if(followPlayerRate < .001f)
+            {
+                Vector3 target = constrained.GetPosition(stream);
+                target.y = yPosition;
+                constrained.SetPosition(stream, Vector3.Lerp(constrained.GetPosition(stream), target, weight));
+                return;
+            }
 
             Vector3 newPosition = constrained.GetPosition(stream);
             Vector3 sourcePosition = source.GetPosition(stream);
@@ -42,7 +51,7 @@ public class B2AC_Peck : RigConstraint<THIS.Job, THIS.Data, THIS.Binder>
 
             newPosition.y = yPosition;
 
-            constrained.SetPosition(stream, Vector3.Lerp(constrained.GetPosition(stream), newPosition, jobWeight.Get(stream)));
+            constrained.SetPosition(stream, Vector3.Lerp(constrained.GetPosition(stream), newPosition, weight));
         }
     }
 
