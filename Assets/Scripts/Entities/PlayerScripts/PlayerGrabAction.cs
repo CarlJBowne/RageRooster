@@ -48,7 +48,7 @@ public class PlayerGrabAction : PlayerStateBehavior
             selectedGrabbable = lastMinute;
         }
         ranged.GrabPoint(selectedGrabbable);
-        if (air && ranged.dropLaunchUpgrade && !Input.Grab.IsPressed()) ranged.TryGrabThrowAir(this);
+        if (air && ranged.dropLaunchUpgrade && Input.Grab.IsPressed()) ranged.TryGrabThrowAir(this);
         success = false;
         selectedGrabbable = null;
     }

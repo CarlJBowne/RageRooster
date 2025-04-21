@@ -36,6 +36,11 @@ public class Boss1Health : Health
         if (finishedBossWorldChange.Enabled) FinishBossEvent?.Invoke();
     }
 
+    private void OnEnable()
+    {
+        Gameplay.onPlayerRespawn += ResetBoss;
+    }
+
     protected override bool OverrideDamageable(Attack attack)
     {
         if (lastDamageTime + damageCooldown > Time.time) return false;
@@ -124,6 +129,7 @@ public class Boss1Health : Health
         bossPhase = 1;
         damagable = true;
         ResetBossEvent?.Invoke();
+        Gameplay.onPlayerRespawn -= ResetBoss;
     }
 
     public void FinishBoss()

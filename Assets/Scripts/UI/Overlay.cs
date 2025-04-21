@@ -38,4 +38,17 @@ public class Overlay : MonoBehaviour
         animator.SetFloat("DurationSpeed", 1 / duration);
     }
 
+    public IEnumerator BasicFadeOutWait(float duration = 1f)
+    {
+        animator.Play("BasicFadeOut", -1, 0f);
+        animator.SetFloat("DurationSpeed", 1 / duration);
+        yield return new WaitForSecondsRealtime(duration);
+    }
+    public IEnumerator BasicFadeInWait(float duration = 1f)
+    {
+        animator.Play("BasicFadeIn", -1, 0f);
+        animator.SetFloat("DurationSpeed", 1 / duration);
+        yield return new WaitForSecondsRealtime(duration);
+    }
+
 }

@@ -47,6 +47,7 @@ public class SavePoint : MonoBehaviour, IInteractable
         IEnumerator Save_CR()
         {
             Save();
+            PlayerHealth.Global.HealToFull();
 
             Light light = gameObject.GetOrAddComponent<Light>();
             light.type = LightType.Point;

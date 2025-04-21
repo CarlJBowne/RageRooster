@@ -225,5 +225,6 @@ public static class WaitFor
         }
     }
 
-
+    public static CoroutinePlus Begin(this IEnumerator Enum, MonoBehaviour owner) => new CoroutinePlus(Enum, owner);
+    public static CoroutinePlus Begin(this IEnumerator Enum, bool automatic, MonoBehaviour owner = null) => new CoroutinePlus(Enum, automatic, owner);
 }

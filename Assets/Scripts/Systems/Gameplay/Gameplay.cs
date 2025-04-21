@@ -47,6 +47,7 @@ public class Gameplay : Singleton<Gameplay>
     public static StudioEventEmitter musicEmitter;
     public static System.Action PreReloadSave;
     public static bool fullyLoaded;
+    public static System.Action onPlayerRespawn;
 
     /// <summary>
     /// Begins the main menu by loading the gameplay scene and setting the active save file.
@@ -59,8 +60,8 @@ public class Gameplay : Singleton<Gameplay>
         Overlay.OverMenus.StartCoroutine(Enum()); 
         IEnumerator Enum()
         {
-            Overlay.OverMenus.BasicFadeOut();
-            yield return WaitFor.SecondsRealtime(1f);
+            
+            yield return Overlay.OverMenus.BasicFadeOutWait();
 
             GlobalState.activeSaveFile = fileNo;
             Cursor.lockState = CursorLockMode.Locked;
@@ -150,73 +151,28 @@ public class Gameplay : Singleton<Gameplay>
         fullyLoaded = true;
     }
 
-    /// <summary>
-    /// Spawns the player by starting a coroutine.
-    /// </summary>
-    public static void RespawnFromMenu()
+    public static IEnumerator SpawnPlayer()
     {
-        new CoroutinePlus(SpawnPlayer_CR(), Get());
-
-        /// <summary>
-        /// Coroutine for spawning the player. Loads the spawn scene if not already loaded and moves the player to the spawn point.
-        /// </summary>
-        static IEnumerator SpawnPlayer_CR()
-        {
-            Overlay.OverMenus.BasicFadeOut(1f);
-            yield return WaitFor.SecondsRealtime(1f);
-
-            if (!ZoneManager.ZoneIsReady(spawnSceneName)) SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
-
-            yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
-
-            ZoneManager.DoTransition(spawnSceneName);
-            PlayerStateMachine.InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
-
-            PauseMenu.TrueClose();
-            Overlay.OverMenus.BasicFadeIn(1f);
-        }
-    }
-
-    public static IEnumerator RespawnPlayer()
-    {
+        spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
         if (!ZoneManager.ZoneIsReady(spawnSceneName)) SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
 
         yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
 
         ZoneManager.DoTransition(spawnSceneName);
         PlayerStateMachine.InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
+        onPlayerRespawn?.Invoke();
     }
 
-    /// <summary>
-    /// Resets the game to the saved state by starting a coroutine.
-    /// </summary>
-    public void ResetToLastSave()
+    public static IEnumerator DoReloadSave()
     {
-        PreReloadSave?.Invoke();
-        new CoroutinePlus(ResetToSaved_CR(), Get());
-
-        /// <summary>
-        /// Coroutine for resetting the game to the saved state. Unloads all zones, loads the global state, and moves the player to the spawn point.
-        /// </summary>
-        static IEnumerator ResetToSaved_CR()
-        {
-            Overlay.OverMenus.BasicFadeOut(1.2f);
-            yield return WaitFor.SecondsRealtime(1.2f);
-
-            Player.SetActive(false);
-            yield return ZoneManager.Get().UnloadAll();
-
-            GlobalState.Load();
-            SceneManager.LoadScene(spawnSceneName ?? ZoneManager.Get().defaultAreaScene, LoadSceneMode.Additive);
-
-            yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
-            ZoneManager.DoTransition(spawnSceneName);
-            PlayerStateMachine.InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
-
-            PauseMenu.TrueClose();
-            Overlay.OverMenus.BasicFadeIn(1.2f);
-        }
+        Player.SetActive(false);
+        yield return ZoneManager.Get().UnloadAll();
+        GlobalState.Load();
     }
+
+
+
+
 
     private const float bobSpeed = 1f;
     private const float rotateSpeed = 90f;
