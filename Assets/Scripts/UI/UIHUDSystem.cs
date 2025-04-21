@@ -5,8 +5,6 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using DG.Tweening;
-using static System.Net.Mime.MediaTypeNames;
-using Unity.VisualScripting;
 
 public class UIHUDSystem : Singleton<UIHUDSystem>
 {
