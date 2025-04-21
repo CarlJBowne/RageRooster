@@ -25,6 +25,8 @@ public class MainMenu : MenuSingleton<MainMenu>
 
     private void Start()
     {
+        Menu.Manager.Initialize();
+
         creditsPanel.SetActive(false);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

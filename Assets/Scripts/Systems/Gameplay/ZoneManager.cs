@@ -126,9 +126,9 @@ public class ZoneManager : Singleton<ZoneManager>
     public static bool ZoneIsReady(string name) => Get().proxies.ContainsKey(name) && Get().proxies[name].loaded;
 
     // Unloads all zones asynchronously.
-    public IEnumerator UnloadAll()
+    public static IEnumerator UnloadAll()
     {
-        ZoneProxy[] zones = proxies.Values.ToArray();
+        ZoneProxy[] zones = Get().proxies.Values.ToArray();
 
         int unloadsLeft = 0;
         for (int i = 0; i < zones.Length; i++)
@@ -141,8 +141,8 @@ public class ZoneManager : Singleton<ZoneManager>
             }
 
         yield return new WaitUntil(() => unloadsLeft == 0);
-        proxies.Clear();
-    }
+        Get().proxies.Clear();
+    } 
 
     // Checks if a scene is currently loaded.
     public static bool IsSceneLoaded(string name) => SceneManager.GetSceneByName(name).isLoaded;

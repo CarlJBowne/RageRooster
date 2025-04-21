@@ -59,8 +59,11 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         //UI.UpdateAmmo(eggAmount);
         //GlobalState.maxAmmoUpdateCallback += UpdateMaxAmmo;
         Ammo.playerObject = this;
-        PauseMenu.onPause += ExitAimingInstant;
     }
+
+    private void OnEnable() => PauseMenu.onPause += ExitAimingInstant;
+    private void OnDisable() => PauseMenu.onPause -= ExitAimingInstant;
+
 
     private void FixedUpdate()
     {
@@ -181,7 +184,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         else if(currentGrabbed != null) currentGrabbed.Release();
         //OnRelease
 
-        CoroutinePlus.Begin(ref layerFadeCoroutine, TurnOffLayers(1f), this);
+        CoroutinePlus.Begin(ref layerFadeCoroutine, TurnOffLayers(1f), gameObject.activeInHierarchy ? this : Gameplay.Get());
         IEnumerator TurnOffLayers(float rate)
         {
             float V = 1;

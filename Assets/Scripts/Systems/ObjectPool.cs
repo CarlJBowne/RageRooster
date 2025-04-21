@@ -1,4 +1,5 @@
 ﻿using EditorAttributes;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,6 +29,10 @@ public class ObjectPool
     private int currentSelection = 0;
     private bool initialized;
     private float autoSpawnTimer;
+
+    public Action<PoolableObject> onCreateInstance;
+    public Action<PoolableObject> onPump;
+    public Action onFailedPump;
 
     public int ActiveObjects() => currentActiveObjects;
 
@@ -60,15 +65,20 @@ public class ObjectPool
     public PoolableObject Pump()
     {
         if (!initialized) Initialize();
-        if (!FindNextInstance()) return null;
+        if (!FindNextInstance())
+        {
+            onFailedPump?.Invoke();
+            return null;
+        }
         PoolableObject instance = ActivateInstance(poolList[currentSelection]);
         IncrementSelection();
+        onPump?.Invoke(instance);
         return instance;
     }
 
     private void NewInstance()
     {
-        GameObject pooledObject = Object.Instantiate(prefabObject);
+        var pooledObject = GameObject.Instantiate(prefabObject);
         PoolableObject poolable = pooledObject.GetOrAddComponent<PoolableObject>();
         poolable.transform.parent = parent;
         poolable.pool = this;
@@ -77,6 +87,7 @@ public class ObjectPool
         currentPooledObjects++;
         //currentActiveObjects++;
         pooledObject.SetActive(false);
+        onCreateInstance?.Invoke(poolable);
     }
 
     private bool FindNextInstance()
@@ -106,6 +117,7 @@ public class ObjectPool
         instance.gameObject.SetActive(true);
         instance.Active = true;
         currentActiveObjects++;
+        instance.onActivate?.Invoke();
         instance.timeExisting = 0;
 
         if(spawnPoint != null)
@@ -134,7 +146,7 @@ public class ObjectPool
         {
             poolList[i].Disable(false);
             poolList[i].onDeactivate -= OnDeActivate;
-            Object.Destroy(poolList[i].gameObject);
+            GameObject.Destroy(poolList[i].gameObject);
         }
         poolList.Clear();
     }

@@ -1,8 +1,8 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
-using System.Collections.Generic;
 
 public class WaveController : MonoBehaviour
 {
@@ -31,49 +31,38 @@ public class WaveController : MonoBehaviour
     private int currentWave = 0;
     private int activeEnemies = 0;
     private bool isActive = false;
+    private CoroutinePlus coroutine;
 
     private void Start()
     {
+        enemyPool.onCreateInstance += (PoolableObject newEnemy) => 
+            { newEnemy.GetComponent<EnemyHealth>().depleteEvent += () => 
+                { activeEnemies--; }; };
+
         enemyPool.Initialize();
 
-        if (!SaveOverride && worldChange != null && worldChange.Enabled)
-        {
-            Destroy(gameObject);
-        }
-        else if (trigger != null)
-        {
-            UltEvents.UltEvent.AddDynamicCall(ref trigger.Event, StartWave);
-        }
+        if (!SaveOverride && worldChange != null && worldChange.Enabled) Destroy(gameObject);
+        else if (trigger != null) UltEvents.UltEvent.AddDynamicCall(ref trigger.Event, StartArena);
     }
 
-    public void StartWave()
+    public void StartArena()
     {
-        if (isActive || (!SaveOverride && worldChange != null && worldChange.Enabled))
-        {
-            //Debug.Log("[WaveController] StartWave called, but controller is already active or world change is enabled.");
-            return;
-        }
+        if (isActive || (!SaveOverride && worldChange != null && worldChange.Enabled)) return;
 
-        //Debug.Log("[WaveController] Starting wave sequence.");
         isActive = true;
-        foreach (var wall in wallsToDisable) wall.SetActive(true);
-        StartCoroutine(HandleWaves());
+        SetWalls(true);
+        Gameplay.onPlayerRespawn += ResetArena;
+        HandleWaves().Begin(this);
     }
 
     IEnumerator HandleWaves()
     {
         while (currentWave < waves)
         {
-            //Debug.Log($"[WaveController] Starting wave {currentWave + 1}");
             SpawnWave();
             currentWave++;
 
-            while (activeEnemies > 0)
-            {
-                yield return null;
-            }
-
-            //Debug.Log($"[WaveController] Wave {currentWave} cleared.");
+            while (activeEnemies > 0) yield return null;
 
             float timer = timeBetweenWaves;
             if (waveTimerText != null) waveTimerText.gameObject.SetActive(true);
@@ -87,13 +76,14 @@ public class WaveController : MonoBehaviour
             if (waveTimerText != null) waveTimerText.gameObject.SetActive(false);
         }
 
-        EndWave();
+        //End Reached!
+        SetWalls(false);
+        if (worldChange != null) worldChange.Enable();
+        Destroy(this);
     }
 
     void SpawnWave()
     {
-        //Debug.Log($"[WaveController] Spawning {enemiesPerWave} enemies within area.");
-
         List<Vector3> spawnPoints = new();
         int attempts = 0;
 
@@ -115,50 +105,29 @@ public class WaveController : MonoBehaviour
         for (int i = 0; i < spawnPoints.Count; i++)
         {
             PoolableObject pooledEnemy = enemyPool.Pump();
+            activeEnemies++;
 
-            if (pooledEnemy != null)
-            {
-                pooledEnemy.SetPosition(spawnPoints[i]);
-                pooledEnemy.SetRotation(Vector3.zero);
-
-                if (pooledEnemy.TryGetComponent(out EnemyHealth health))
-                {
-                    activeEnemies++;
-                    health.depleteEvent += () =>
-                    {
-                        activeEnemies--;
-                        pooledEnemy.Disable();
-                        Debug.Log($"[WaveController] Enemy defeated. {activeEnemies} remaining.");
-                    };
-                }
-                //else Debug.LogError("[WaveController] Spawned enemy lacks EnemyHealth component!");
-            }
-            //else Debug.LogError("[WaveController] Enemy pool exhausted or unable to spawn enemy!");
+            pooledEnemy.SetPosition(spawnPoints[i]);
+            pooledEnemy.SetRotation((Gameplay.Player.transform.position - spawnPoints[i]).DirToRot());
         }
     }
 
-    void EndWave()
+    private void Update() => enemyPool.Update();
+
+    public void SetWalls(bool value)
+    {for (int i = 0; i < wallsToDisable.Length; i++) wallsToDisable[i].SetActive(value);}
+
+    public void ResetArena()
     {
-        //Debug.Log("[WaveController] All waves completed. Ending wave sequence.");
-
-        foreach (var wall in wallsToDisable)
-        {
-            Destroy(wall);
-        }
-
-        if (worldChange != null)
-        {
-            //Debug.Log("[WaveController] Triggering world change.");
-            worldChange.Enable();
-        }
-
-        Destroy(this);
+        SetWalls(false);
+        currentWave = 0;
+        activeEnemies = 0;
+        isActive = false;
+        CoroutinePlus.Stop(ref coroutine);
+        Gameplay.onPlayerRespawn -= ResetArena;
     }
 
-    private void Update()
-    {
-        enemyPool.Update();
-    }
+    private void OnDestroy() => Gameplay.onPlayerRespawn -= ResetArena;
 
     private void OnDrawGizmosSelected()
     {

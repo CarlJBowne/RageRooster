@@ -14,14 +14,15 @@ public class Boss2CentralController : Health
     public UltEvents.UltEvent ResetBossEvent;
     public UltEvents.UltEvent FinishBossEvent;
 
-    void Start()
+    void Start() => gameObject.SetActive(false);
+
+    private void OnEnable() => Gameplay.onPlayerRespawn += ResetBoss;
+
+    public void ResetBoss()
     {
-        gameObject.SetActive(false);
+        ResetBossEvent?.Invoke();
+        Gameplay.onPlayerRespawn -= ResetBoss;
     }
-
-
-
-    public void ResetBoss() => ResetBossEvent?.Invoke();
 
     public void FinishBoss() => FinishBossEvent?.Invoke();
 

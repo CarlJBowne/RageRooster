@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using DG.Tweening;
+using static System.Net.Mime.MediaTypeNames;
+using Unity.VisualScripting;
 
 public class UIHUDSystem : Singleton<UIHUDSystem>
 {
@@ -29,6 +32,8 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
     int activeMaxHealth = 1;
     float hintTimer;
     int currentCombo;
+
+    Sequence healthBar;
 
     // Called when the singleton instance is awakened
     protected override void OnAwake()
@@ -68,19 +73,84 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
                     healthImages.Add(Instantiate(healthImages[0].transform.parent, healthImages[0].transform.parent.parent).GetChild(0).GetComponent<Image>());
                 healthImages[i].enabled = true;
                 healthImages[i].sprite = healthFullTexture;
+
             }
             else if (i >= maxValue) healthImages[i].enabled = false;
         }
         activeMaxHealth = maxValue;
+        if(healthBar != null)
+        {
+            healthBar.Kill();
+        }
+        healthBar = DOTween.Sequence();
+        float timeDelay = 0;
+        for(int j = 0; j < healthImages.Count; j++)
+        {
+
+
+            HealthBarTween healthBarTween = healthImages[j].GetComponent<HealthBarTween>();
+
+            DOTween.Kill(healthImages[j].transform);
+            healthImages[j].transform.localPosition = healthBarTween.origin;
+            Tween tween =
+            healthImages[j].transform.DOLocalMoveY(healthBarTween.origin.y-50, 2f)
+                .SetEase(Ease.InOutSine)
+                .SetLoops(2, LoopType.Yoyo);
+
+            healthBar.Insert(timeDelay, tween);
+            timeDelay += 0.25f;
+
+
+        }
+        healthBar.SetLoops(-1, LoopType.Restart);
+
+
     }
 
     // Displays a hint on the screen
     public void ShowHint(string hintString)
     {
-        hintText.text = hintString;
+        hintText.text = HintTextParser(hintString);
         hintHolder.SetActive(true);
         hintTimer = hintTime;
     }
+
+    public string HintTextParser(string input)
+    {
+        string result = string.Empty;
+        //Split the whole text into parts based on the <> tags
+        //Even numbers in the array are text, odd numbers are tags
+        string[] subTexts = input.Split('<', '>');
+
+        // textmeshpro still needs to parse its built-in tags, so we only include noncustom tags
+        string displayText = "";
+        for (int i = 0; i < subTexts.Length; i++)
+        {
+            if (i % 2 == 0)
+                displayText += subTexts[i];
+            else //Is Tag
+            {
+                string tag = subTexts[i].Replace(" ", "");
+                if (tag.StartsWith("control="))
+                {
+                    string secondHalf = tag.Substring(8);
+                    displayText += secondHalf switch
+                    {
+                        _ => "Null"
+                    };
+                }
+                else displayText += $"<{tag}>";
+            }
+        }
+
+        return result;
+    }
+
+    bool isCustomTag(string tag)
+    {
+        return tag.StartsWith("speed=") || tag.StartsWith("pause=") || tag.StartsWith("emotion=") || tag.StartsWith("action=");
+    }
+
 
     // Sets the currency text on the HUD
     public static void SetCurrencyText(string currencyText) => Get().currencyText.text = currencyText;

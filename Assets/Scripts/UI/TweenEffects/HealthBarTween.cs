@@ -6,24 +6,37 @@ using DG.Tweening;
 public class HealthBarTween : MonoBehaviour
 {
 
-        [SerializeField] float sequenceDelay;
-        static float totalDelay = 0;
+        float sequenceDelay = 0.25f;
+        public static float totalDelay = 0;
+
+        public static Tween originalTween;
+        public Tween healthBob;
+        public float startingY = -80;
+        public Vector3 origin;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-            Tween tween =
-            transform.DOLocalMoveY(transform.localPosition.y-50, 2f)
-                .SetEase(Ease.InOutSine)
-                .SetLoops(-1, LoopType.Yoyo);
+        DOTween.Init();
+        UpdateTween();
 
-            tween.fullPosition = totalDelay;
+        origin = transform.localPosition;
 
-            totalDelay += sequenceDelay;
     }
 
-    void UpdateSequence()
+    public void UpdateTween()
     {
+            totalDelay += sequenceDelay;
 
+
+
+            
+
+    }
+    public void RestartBob()
+    {
+        totalDelay = 0;
+        originalTween = null;
+        UpdateTween();
     }
 
 }

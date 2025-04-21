@@ -39,6 +39,11 @@ public class EnemyHealth : Health
         base.Awake();
         startPosition = transform.position;
         if (TryGetComponent(out ragdoll)) ragdoll.GrabStateEvent += SetEntityState;
+        if (TryGetComponent(out PoolableObject pool))
+        {
+            pool.onActivate += Respawn;
+            respawn = false;
+        }
         enemyLootSpawner = GetComponent<EnemyLootSpawner>();
     }
 

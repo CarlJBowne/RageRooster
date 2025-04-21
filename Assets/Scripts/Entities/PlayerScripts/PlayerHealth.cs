@@ -115,5 +115,7 @@ public class PlayerHealth : Health
             GlobalState.maxHealth = max;
         }
 
+        public static void HealToFull() => Update(maxHealth);
+
     }
 }

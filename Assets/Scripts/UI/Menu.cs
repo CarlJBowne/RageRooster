@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 /// <summary>
@@ -109,10 +111,16 @@ public class Menu : MonoBehaviour
     /// </summary>
     public static class Manager
     {
+        public static void Initialize()
+        {
+            Input.I.Asset.FindAction("Navigate").performed += FocusController;
+        }
+
         public static Menu currentMenu => currentMenus[^1];
         public static List<Menu> currentMenus = new();
         public static Dictionary<string, Menu> menuDictionary = new();
         public static bool disableEscape;
+        //public static EventSystem uiEventSystem;
 
         /// <summary>
         /// Opens the specified menu
@@ -165,5 +173,11 @@ public class Menu : MonoBehaviour
             else if (currentMenus.Count > 0)
                 currentMenus[^1].Close();
         }
+
+        public static void FocusController(InputAction.CallbackContext ctx)
+        {
+            if (currentMenus.Count > 0 && EventSystem.current.currentSelectedGameObject == null)
+                currentMenus[^1].defaultSelection.Select();
+        } 
     }
 }
