@@ -328,6 +328,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void ExitAimingInstant()
     {
+        if (!Gameplay.Player.gameObject.scene.isLoaded) return;
         machine.freeLookCamera.m_XAxis.Value = pointerH;
         aimingRig.enabled = false;
         aimingRig.weight = 0;

@@ -39,7 +39,7 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
         useIndoorSky.deAction += SetSkybox;
     }
 
-    private void OnDestroy()
+    protected override void OnDestroyed()
     {
         useIndoorSky.Action -= SetSkybox;
         useIndoorSky.deAction -= SetSkybox;
@@ -49,8 +49,7 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
 
     public static void Load()
     {
-        Gameplay.spawnSceneName = null;
-        Gameplay.spawnPointID = -1;
+        ResetData();
         JToken loadAttempt = new JObject().LoadJsonFromFile(SaveFilePath, SaveFileName);
         if (loadAttempt != null) Get().Deserialize(loadAttempt);
         PlayerHealth.Global.UpdateMax(maxHealth);
@@ -89,6 +88,18 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
         new JProperty(nameof(upgrades), upgrades.Serialize())
         );
 
+
+    public static void ResetData()
+    {
+        Gameplay.spawnSceneName = null;
+        Gameplay.spawnPointID = -1;
+        maxHealth = 3;
+        maxAmmo = 1;
+        currency = 0;
+
+        foreach (Upgrade item in Upgrades.List) item.value = item.defaultValue;
+        foreach (WorldChange item in WorldChanges.List) item.Enabled = item.defaultValue;
+    }
 
     public static void AddCurrency(int currency)
     {
