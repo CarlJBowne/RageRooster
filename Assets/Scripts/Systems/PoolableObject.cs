@@ -8,8 +8,10 @@ public class PoolableObject : MonoBehaviour
     [HideInInspector] public bool Active;
     [HideInInspector] public float timeExisting;
 
+
+    public Action onActivate;
     /// <summary>
-    /// If nothing calls this action when this object instance is done the object will never be available for reuse. (???)
+    /// If nothing calls this action when this object instance is done the object will never be available for reuse. (Extremely unintuitive, fix in V3.)
     /// </summary>
     public Action<PoolableObject> onDeactivate;
 

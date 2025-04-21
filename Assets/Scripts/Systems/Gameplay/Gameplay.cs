@@ -166,8 +166,9 @@ public class Gameplay : Singleton<Gameplay>
     public static IEnumerator DoReloadSave()
     {
         Player.SetActive(false);
-        yield return ZoneManager.Get().UnloadAll();
+        yield return ZoneManager.UnloadAll();
         GlobalState.Load();
+        yield return null;
     }
 
 

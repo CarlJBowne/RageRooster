@@ -225,6 +225,17 @@ public static class WaitFor
         }
     }
 
+    /// <summary>
+    /// Begins a Coroutine using this Enumerator and returns it as a Coroutine Plus.
+    /// </summary>
+    /// <param name="owner">The MonoBehavior that owns and runs the coroutine. Necessary for it to be automatic. Input Null to require activation via MoveNext().</param>
+
     public static CoroutinePlus Begin(this IEnumerator Enum, MonoBehaviour owner) => new CoroutinePlus(Enum, owner);
+    /// <summary>
+    /// Begins a Coroutine using this Enumerator and returns it as a Coroutine Plus.
+    /// </summary>
+    /// <param name="automatic">Whether or not this coroutine runs automatically. Setting to true does not do anything unless owner is made non-null.</param>
+    /// <param name="owner">The MonoBehavior that owns and runs the coroutine. Necessary for automatic running. Input Null to require activation via MoveNext().</param>
+
     public static CoroutinePlus Begin(this IEnumerator Enum, bool automatic, MonoBehaviour owner = null) => new CoroutinePlus(Enum, automatic, owner);
 }

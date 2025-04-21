@@ -126,7 +126,7 @@ public class PlayerStateMachine : StateMachine
 
     public void Death(bool justPit = false)
     {
-        CoroutinePlus.Begin(ref deathCoroutine, Enum(justPit), this);
+        CoroutinePlus.Begin(ref deathCoroutine, Enum(justPit), Gameplay.Get());
         IEnumerator Enum(bool justPit)
         {
             Vector3 targetVelocity = body.velocity;
@@ -143,12 +143,13 @@ public class PlayerStateMachine : StateMachine
             
             yield return Overlay.OverGameplay.BasicFadeOutWait(fadeTime);
 
-            if (!justPit) yield return Gameplay.DoReloadSave();
-            yield return Gameplay.SpawnPlayer();
             if (!justPit)
             {
                 PlayerHealth.Global.Update(PlayerHealth.Global.maxHealth);
-            } 
+                yield return Gameplay.DoReloadSave();
+            }
+            yield return Gameplay.SpawnPlayer();
+
 
 
             Overlay.OverGameplay.BasicFadeIn(fadeTime);
