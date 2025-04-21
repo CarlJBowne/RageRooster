@@ -59,8 +59,11 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         //UI.UpdateAmmo(eggAmount);
         //GlobalState.maxAmmoUpdateCallback += UpdateMaxAmmo;
         Ammo.playerObject = this;
-        PauseMenu.onPause += ExitAimingInstant;
     }
+
+    private void OnEnable() => PauseMenu.onPause += ExitAimingInstant;
+    private void OnDisable() => PauseMenu.onPause -= ExitAimingInstant;
+
 
     private void FixedUpdate()
     {
@@ -328,7 +331,6 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void ExitAimingInstant()
     {
-        if (!Gameplay.Player.gameObject.scene.isLoaded) return;
         machine.freeLookCamera.m_XAxis.Value = pointerH;
         aimingRig.enabled = false;
         aimingRig.weight = 0;
