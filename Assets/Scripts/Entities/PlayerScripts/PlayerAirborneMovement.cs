@@ -115,9 +115,9 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         if (playerMovementBody.jumpPhase == 1 && transform.position.y >= targetHeight) playerMovementBody.jumpPhase = 2;
 
         if (playerMovementBody.jumpPhase < 2) Y = jumpPower;
-        if ((playerMovementBody.velocity.y <= fallStateThreshold) || 
-            (allowMidFall && !Input.Jump.IsPressed()))
-            Fall(ref Y);
+        if (playerMovementBody.jumpPhase > 0 && 
+           (playerMovementBody.velocity.y <= fallStateThreshold || (allowMidFall && !Input.Jump.IsPressed())))
+           Fall(ref Y);
 
     }
 
