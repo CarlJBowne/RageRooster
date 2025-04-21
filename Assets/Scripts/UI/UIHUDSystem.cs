@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using DG.Tweening;
 
 public class UIHUDSystem : Singleton<UIHUDSystem>
 {
@@ -29,6 +30,8 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
     int activeMaxHealth = 1;
     float hintTimer;
     int currentCombo;
+
+    Sequence healthBar;
 
     // Called when the singleton instance is awakened
     protected override void OnAwake()
@@ -68,10 +71,38 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
                     healthImages.Add(Instantiate(healthImages[0].transform.parent, healthImages[0].transform.parent.parent).GetChild(0).GetComponent<Image>());
                 healthImages[i].enabled = true;
                 healthImages[i].sprite = healthFullTexture;
+
             }
             else if (i >= maxValue) healthImages[i].enabled = false;
         }
         activeMaxHealth = maxValue;
+        if(healthBar != null)
+        {
+            healthBar.Kill();
+        }
+        healthBar = DOTween.Sequence();
+        float timeDelay = 0;
+        for(int j = 0; j < healthImages.Count; j++)
+        {
+
+
+            HealthBarTween healthBarTween = healthImages[j].GetComponent<HealthBarTween>();
+
+            DOTween.Kill(healthImages[j].transform);
+            healthImages[j].transform.localPosition = healthBarTween.origin;
+            Tween tween =
+            healthImages[j].transform.DOLocalMoveY(healthBarTween.origin.y-50, 2f)
+                .SetEase(Ease.InOutSine)
+                .SetLoops(2, LoopType.Yoyo);
+
+            healthBar.Insert(timeDelay, tween);
+            timeDelay += 0.25f;
+
+
+        }
+        healthBar.SetLoops(-1, LoopType.Restart);
+
+
     }
 
     // Displays a hint on the screen
