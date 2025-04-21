@@ -40,6 +40,10 @@ public class Boss1Health : Health
     {
         Gameplay.onPlayerRespawn += ResetBoss;
     }
+    private void OnDestroy()
+    {
+        Gameplay.onPlayerRespawn -= ResetBoss; 
+    }
 
     protected override bool OverrideDamageable(Attack attack)
     {
