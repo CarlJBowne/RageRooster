@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class EnemyLootSpawner : MonoBehaviour
 {
@@ -46,12 +47,16 @@ public class EnemyLootSpawner : MonoBehaviour
         spawnDirection.z = spawnDirection.y;
         spawnDirection.y = 1;
         Vector3 spawnPoint = this.transform.position + spawnDirection;
-        GameObject loot = Instantiate(lootOnDamagePrefabs[randomIndex], spawnPoint, Quaternion.identity);
-        Rigidbody rb = loot.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.AddForce(spawnDirection * spawnForce, ForceMode.Impulse);
-        }
+        GameObject loot = Instantiate(lootOnDamagePrefabs[randomIndex], this.transform.position, Quaternion.identity);
+
+
+        Tween tween = 
+        loot?.transform.DOJump(spawnPoint, 3, 1, 2f);
+
+        //Things to add for the future maybe:
+        //Add a quick ground raycast and have them moveTo the ground, to simulate falling?
+        //This is not mandatory and is purely a visual cleanup
+        
     }
 
     // Function for spawning loot on deplete. Set to listen to OnDeplete on the EnemyHealth component.
@@ -66,12 +71,12 @@ public class EnemyLootSpawner : MonoBehaviour
             spawnDirection.z = spawnDirection.y;
             spawnDirection.y = 1;
             Vector3 spawnPoint = this.transform.position + spawnDirection;
-            GameObject loot = Instantiate(lootOnDepletePrefabs[randomIndex], spawnPoint, Quaternion.identity);
-            Rigidbody rb = loot.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.AddForce(spawnDirection * spawnForce, ForceMode.Impulse);
-            }
+            GameObject loot = Instantiate(lootOnDepletePrefabs[randomIndex], this.transform.position, Quaternion.identity);
+
+            Tween tween = 
+            loot?.transform.DOJump(spawnPoint, 3, 1, 2f);
+
+
         }
     }
 }
