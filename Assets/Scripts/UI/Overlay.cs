@@ -51,4 +51,13 @@ public class Overlay : MonoBehaviour
         yield return new WaitForSecondsRealtime(duration);
     }
 
+    public IEnumerator GameOverAnim(float duration = 1f)
+    {
+        animator.Play("GameOverAnim", -1, 0f);
+        animator.SetFloat("DurationSpeed", 1 / duration);
+        yield return new WaitForSecondsRealtime(duration);
+    }
+
+    public void Reset() => animator.Play("Null");
+
 }

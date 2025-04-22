@@ -137,22 +137,25 @@ public class PlayerStateMachine : StateMachine
             ragDollHandler.SetVelocity(targetVelocity*0.75f);
             animator.enabled = false;
 
-            yield return WaitFor.SecondsRealtime(justPit ? fallDownPitTime : deathTime);
+            yield return WaitFor.SecondsRealtime(justPit ? fallDownPitTime : fallDownPitTime + 1);
 
-            float fadeTime = justPit ? .5f : 1f;
-            
-            yield return Overlay.OverGameplay.BasicFadeOutWait(fadeTime);
-
-            if (!justPit)
+            if (justPit)
             {
+                yield return Overlay.OverGameplay.BasicFadeOutWait(.5f);
+                yield return Gameplay.SpawnPlayer();
+                Overlay.OverGameplay.BasicFadeIn(.5f);
+            }
+            else
+            {
+                yield return Overlay.OverGameplay.GameOverAnim();
+                yield return WaitFor.SecondsRealtime(deathTime);
+                yield return Overlay.OverMenus.BasicFadeOutWait(1f);
                 PlayerHealth.Global.Update(PlayerHealth.Global.maxHealth);
                 yield return Gameplay.DoReloadSave();
+                Overlay.OverGameplay.Reset();
+                yield return Gameplay.SpawnPlayer();
+                Overlay.OverMenus.BasicFadeIn(1f);
             }
-            yield return Gameplay.SpawnPlayer();
-
-
-
-            Overlay.OverGameplay.BasicFadeIn(fadeTime);
         }
     }
 
