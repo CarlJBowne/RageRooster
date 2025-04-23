@@ -40,7 +40,8 @@ namespace SLS.StateMachineV3
         public void CrossFade(string name, float time = 0f) => animator.CrossFade(name, time, 0);
         public void Trigger(string name) => animator.SetTrigger(name);
 
-
+        public void PlayAtCurrentPoint(string name) => animator.Play(name, -1, animator.GetCurrentAnimatorStateInfo(-1).normalizedTime);
+        public void CrossFadeAtCurrentPoint(string name, float time = 0f) => animator.CrossFade(name, time, 0, animator.GetCurrentAnimatorStateInfo(-1).normalizedTime);
 
 
         #region Edtior

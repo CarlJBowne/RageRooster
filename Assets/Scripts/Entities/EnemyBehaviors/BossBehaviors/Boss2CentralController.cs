@@ -1,8 +1,10 @@
+using EditorAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.SceneManagement;
 
 public class Boss2CentralController : Health
 {
@@ -24,6 +26,7 @@ public class Boss2CentralController : Health
         Gameplay.onPlayerRespawn -= ResetBoss;
     }
 
+    [Button]
     public void FinishBoss() => FinishBossEvent?.Invoke();
 
     protected override bool OverrideDamageable(Attack attack)
@@ -49,6 +52,37 @@ public class Boss2CentralController : Health
         Pecky.GoToIdle();
         Slasher.GoToIdle();
         Stumpy.GoToIdle();
+    }
+
+
+    public void Death()
+    {
+        Pecky.SetState("Dead");
+        Slasher.SetState("Dead");
+        Stumpy.SetState("Dead");
+
+        Pecky.animator.CrossFade("Dead", .2f);
+        Slasher.animator.CrossFade("Dead", .2f);
+        Stumpy.animator.CrossFade("Dead", .2f);
+
+
+        Enum().Begin(Overlay.OverMenus);
+        IEnumerator Enum()
+        {
+            yield return new WaitForSecondsRealtime(4f);
+
+            yield return Overlay.OverMenus.BasicFadeOutWait(2f);
+
+            yield return ZoneManager.UnloadAll();
+            yield return new WaitForSecondsRealtime(.1f);
+            Gameplay.DESTROY(areYouSure: true);
+
+            AsyncOperation S = SceneManager.LoadSceneAsync("EndingScene", LoadSceneMode.Single);
+            yield return new WaitUntil(() => S.isDone);
+
+            yield return Overlay.OverMenus.BasicFadeInWait(1.5f);
+        }
+
     }
 
 }

@@ -8,7 +8,11 @@ public class ZoneTransition : MonoBehaviour
 {
     public GameObject visualProxy;
     public string Scene;
+
+    [SerializeField] bool altRangeDetection;
+
     [SerializeField] float radius = 25f;
+    [SerializeField] ZoneLoadZone loadZone;
 
     //[HideInInspector] public new Collider collider;
     private Transform playerTransform;
@@ -41,9 +45,11 @@ public class ZoneTransition : MonoBehaviour
         if (visualProxy != null) visualProxy.SetActive(!value);
     }
 
-    public bool WithinRange() => playerTransform != null 
-        && Vector3.Dot(transform.forward, transform.position - playerTransform.position) > 0 
-        && (transform.position - playerTransform.position).sqrMagnitude < radiusSQR;
+    public bool WithinRange() => altRangeDetection 
+        ? loadZone.isWithin
+        : playerTransform != null
+            && Vector3.Dot(transform.forward, transform.position - playerTransform.position) > 0
+            && (transform.position - playerTransform.position).sqrMagnitude < radiusSQR;
 
     private void OnTriggerEnter(Collider other) { if (other.gameObject == Gameplay.Player) ZoneManager.DoTransition(Scene); }
 
