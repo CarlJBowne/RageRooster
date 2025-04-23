@@ -72,8 +72,11 @@ public class ItemPickup : MonoBehaviour
         }
 
         if (type != ItemType.Hint) 
+        {
             DOTween.Kill(this.gameObject.transform);
             Destroy(gameObject);
+        }
+
 
         if (oneTime != null && oneTime)
         {
