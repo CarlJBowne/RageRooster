@@ -3310,7 +3310,7 @@ GameObject:
   - component: {fileID: 293696221970066188}
   - component: {fileID: 8213563936651183793}
   - component: {fileID: 6245664928252330756}
-  - component: {fileID: 7948728774536585233}
+  - component: {fileID: 6973894380732621090}
   m_Layer: 7
   m_Name: FloatingEnemy1
   m_TagString: Untagged
@@ -3433,12 +3433,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   damageEvent:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 6973894380732621090}
+      _MemberName: SpawnLootOnDamage
+      _PersistentArguments: []
   depleteEvent:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 6973894380732621090}
+      _MemberName: SpawnLootOnDeplete
+      _PersistentArguments: []
   immuneTags: []
   health: 0
-  stunTime: 0.2
+  stunTime: 0.25
   poofPrefab: {fileID: 0}
   disableComponents:
   - {fileID: 3927902439295100161}
@@ -3477,10 +3483,12 @@ MonoBehaviour:
   bounceEvent:
     _PersistentCalls: []
   thrownAttack:
-    amount: 1
+    amount: 30
     velocity: {x: 0, y: 0, z: 0}
     tags:
     - name: Thrown
+    - name: ThrownEnemy
+    - name: FromPlayer
   currentState: 0
   minRagdollTime: 5
   maxRagdollTime: 20
@@ -3571,7 +3579,7 @@ MonoBehaviour:
     dot: 80
     lineOfSight: 0
     autoRotateDelta: 0.2
---- !u!114 &7948728774536585233
+--- !u!114 &6973894380732621090
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3580,18 +3588,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 3500639052055708832}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00e08d19e70a0a44ba49ccb39b83df8a, type: 3}
+  m_Script: {fileID: 11500000, guid: 70aec8aa005379a49a23cdc4cd53a93a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attack:
-    amount: 15
-    velocity: {x: 0, y: 0, z: 0}
-    tags:
-    - name: Thrown
-    - name: ThrownEnemy
-    - name: FromPlayer
-  sourceEntity: {fileID: 0}
-  enabled: 1
+  lootOnDamagePrefabs:
+  - {fileID: 8461721917842349770, guid: 4fe3ffb7f5de89d43a9d5a3f245122a1, type: 3}
+  lootOnDepletePrefabs:
+  - {fileID: 925324475207166938, guid: 8e07c4e22d1e1e544836d1ad9b0252b3, type: 3}
+  spawnForce: 5
+  itemChance: 0.4
 --- !u!1 &3607626698313877417
 GameObject:
   m_ObjectHideFlags: 0

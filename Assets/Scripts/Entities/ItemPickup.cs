@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public class ItemPickup : MonoBehaviour
@@ -70,7 +71,9 @@ public class ItemPickup : MonoBehaviour
             UIHUDSystem.Get().ShowHint(hintString);
         }
 
-        if (type != ItemType.Hint) Destroy(gameObject);
+        if (type != ItemType.Hint) 
+            DOTween.Kill(this.gameObject.transform);
+            Destroy(gameObject);
 
         if (oneTime != null && oneTime)
         {

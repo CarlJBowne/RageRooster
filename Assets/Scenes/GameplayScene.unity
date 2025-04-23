@@ -379,6 +379,10 @@ MonoBehaviour:
     _serializedList: []
   defaultAreaScene: Level0_Farmhouse
   minLoadTime: 15
+  updateTimer:
+    rate: 0.5
+    current: 0
+    disabled: 0
   offsetSetTimer:
     rate: 15
     current: 0
@@ -428,7 +432,7 @@ MonoBehaviour:
     Path: 
   Event: 
   PlayEvent: 0
-  StopEvent: 0
+  StopEvent: 2
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -5216,7 +5220,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e44be769263eea4db804654462c0b47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sequenceDelay: 0.3
+  startingY: -80
+  origin: {x: 0, y: 0, z: 0}
 --- !u!1 &7308142054925956555
 GameObject:
   m_ObjectHideFlags: 3

@@ -130,7 +130,7 @@ public class EnemyHealth : Health
     public void Destroy()
     {
         if (poofPrefab) Instantiate(poofPrefab);
-        if (enemyLootSpawner != null) enemyLootSpawner.SpawnLoot(transform.position);
+        //if (enemyLootSpawner != null) enemyLootSpawner.SpawnLootOnDestroy(transform.position);
         if (respawn)
         {
             gameObject.SetActive(false);

@@ -10,6 +10,7 @@ public class ZoneManager : Singleton<ZoneManager>
     [SerializeField] AYellowpaper.SerializedCollections.SerializedDictionary<string, ZoneProxy> proxies = new();
     public string defaultAreaScene;
     public float minLoadTime;
+    public Timer.Loop updateTimer = new(.5f);
     public Timer.Loop offsetSetTimer = new(15f);
     public float distanceToOriginShift;
 
@@ -32,7 +33,8 @@ public class ZoneManager : Singleton<ZoneManager>
     // Updates all zone proxies and ticks the offset timer.
     public void Update()
     {
-        foreach (ZoneProxy area in proxies.Values) area.Update();
+        updateTimer.Tick(() => { foreach (ZoneProxy area in proxies.Values) area.Update(); });
+        
         offsetSetTimer.Tick(UpdateOffset);
     }
 
