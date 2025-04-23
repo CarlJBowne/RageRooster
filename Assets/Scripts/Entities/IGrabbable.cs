@@ -36,6 +36,7 @@ public interface IGrabbable
     public Transform transform { get; }
 
     public bool IsGrabbable { get; }
+    public bool Selected { get; set; }
 
     public float AdditionalThrowDistance { get; }
     public Vector3 HeldOffset { get; }

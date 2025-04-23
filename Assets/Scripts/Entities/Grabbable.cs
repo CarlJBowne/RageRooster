@@ -15,6 +15,7 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     public int maxHealthToGrab;
     public float additionalThrowDistance;
     public float additionalHoldHeight;
+    public GameObject selectIcon;
 
     [HideInEditMode, HideInPlayMode] public UltEvents.UltEvent<EntityState> GrabStateEvent;
 
@@ -49,11 +50,17 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     Transform IGrabbable.transform { get => transform; }
     public float AdditionalThrowDistance => additionalThrowDistance;
     public float AdditionalHoldHeight => additionalHoldHeight;
-    public virtual bool IsGrabbable => gameObject.activeInHierarchy && UnderThreshold();
+    public virtual bool IsGrabbable => gameObject.activeInHierarchy && UnderThreshold() && currentState != EntityState.Grabbed && currentState != EntityState.Thrown;
 
     public virtual Rigidbody rigidBody => rb;
 
     public Vector3 HeldOffset => anchorPoint != null ? -anchorPoint.localPosition : Vector3.zero;
+
+    public bool Selected
+    {
+        get => (UnityEngine.Object)PlayerInteracter.SelectedGrabbable == this;
+        set { if (selectIcon != null) selectIcon.SetActive(value); }
+    }
 
     #endregion
 
@@ -159,4 +166,7 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         result.velocity = rigidBody.velocity; 
         return result;
     }
+
+    private void OnDisable() => PlayerInteracter.LostGrabbable(this);
+
 }
