@@ -8,52 +8,117 @@ using static Input;
 /// </summary>
 public class PlayerInteracter : Singleton<PlayerInteracter>
 {
+    public static GameObject ThisGameObject;
+
     public GameObject popupTransform;
+    public static GameObject PopupTransform;
 
-    public List<IInteractable> interactablesInFront = new();
-
-    private ConversationManager conversationManager;
-
-
-    private void Awake()
+    public static List<IInteractable> interactablesInFront = new();
+    public static List<IGrabbable> grabbablesInFront = new();
+    public static IGrabbable SelectedGrabbable
     {
-        conversationManager = ConversationManager.instance;
+        get => _selectedGrabbable;
+        set
+        {
+            if(_selectedGrabbable != null) _selectedGrabbable.Selected = false;
+            _selectedGrabbable = value;
+            if (_selectedGrabbable != null) _selectedGrabbable.Selected = true;
+        }
+    }
+    private static IGrabbable _selectedGrabbable;
+
+
+    protected override void OnAwake()
+    {
         Gameplay.PreReloadSave += ResetSystem;
+        PopupTransform = popupTransform;
+        ThisGameObject = gameObject;
+    }
+
+    private void FixedUpdate()
+    {
+
     }
 
     private void OnTriggerEnter(Collider other)
-    {if(other.TryGetComponent(out IInteractable foundInteractable)) FoundInteractable(foundInteractable);}
+    {
+        if (other.TryGetComponent(out IInteractable foundInteractable)) FoundInteractable(foundInteractable);
+        if (other.TryGetComponent(out IGrabbable foundGrabbable)) FoundGrabbable(foundGrabbable);
+    }
 
     private void OnTriggerExit(Collider other)
-    {if (other.TryGetComponent(out IInteractable foundInteractable)) LostInteractable(foundInteractable);}
+    {
+        if (other.TryGetComponent(out IInteractable foundInteractable)) LostInteractable(foundInteractable);
+        if (other.TryGetComponent(out IGrabbable foundGrabbable)) LostGrabbable(foundGrabbable);
+    }
 
 
-    public void FoundInteractable(IInteractable interactable)
+    public static void FoundInteractable(IInteractable interactable)
     {
         interactablesInFront.Add(interactable);
         UpdateInteractableList();
     }
-    public void LostInteractable(IInteractable interactable)
+    public static void LostInteractable(IInteractable interactable)
     {
         if (!interactablesInFront.Contains(interactable)) return;
         interactablesInFront.Remove(interactable);
         UpdateInteractableList();
     }
-
-
-    void UpdateInteractableList()
+    public static void UpdateInteractableList()
     {
         while (interactablesInFront.Count > 0 && interactablesInFront[0] == null) interactablesInFront.RemoveAt(0);
         if (interactablesInFront.Count > 0)
         {
-            popupTransform.SetActive(true);
-            popupTransform.transform.position = interactablesInFront[0].PopupPosition;
+            PopupTransform.SetActive(true);
+            PopupTransform.transform.position = interactablesInFront[0].PopupPosition;
         }
-        else
-        {
-            popupTransform.SetActive(false);
-        }
+        else PopupTransform.SetActive(false);
     }
+
+
+    public static void FoundGrabbable(IGrabbable grabbable)
+    {
+        grabbablesInFront.Add(grabbable.This);
+        UpdateGrabbables();
+    }
+    public static void LostGrabbable(IGrabbable grabbable)
+    {
+        if (!grabbablesInFront.Contains(grabbable.This)) return;
+        grabbablesInFront.Remove(grabbable.This);
+        UpdateGrabbables();
+    }
+    public static void UpdateGrabbables()
+    {
+        while (grabbablesInFront.Count > 0 && grabbablesInFront[0] == null) grabbablesInFront.RemoveAt(0);
+        for (int i = 0; i < grabbablesInFront.Count; i++)
+            if (grabbablesInFront[i].IsGrabbable)
+            {
+                SelectedGrabbable = grabbablesInFront[i];
+                return;
+            }
+        SelectedGrabbable = null;
+    }
+
+    public bool HasUsableGrabbable(out IGrabbable grabbable)
+    {
+        for (int i = 0; i < grabbablesInFront.Count; i++)
+            if (grabbablesInFront[i] != null && grabbablesInFront[i].transform.gameObject.activeSelf && grabbablesInFront[i].IsGrabbable)
+            {
+                grabbable = grabbablesInFront[i];
+                return true;
+            }
+        grabbable = null;
+        return false;
+    }
+    public IGrabbable HasUsableGrabbable()
+    {
+        for (int i = 0; i < grabbablesInFront.Count; i++)
+            if (grabbablesInFront[i] != null && grabbablesInFront[i].transform.gameObject.activeSelf && grabbablesInFront[i].IsGrabbable)
+                return grabbablesInFront[i];
+        return null;
+    }
+
+
 
     /// <summary>
     /// Attempts to interact with something in front of the player.
@@ -78,6 +143,10 @@ public class PlayerInteracter : Singleton<PlayerInteracter>
     void ResetSystem()
     {
         interactablesInFront.Clear();
+        grabbablesInFront.Clear();
+
+        UpdateInteractableList();
+        UpdateGrabbables();
     }
 
 

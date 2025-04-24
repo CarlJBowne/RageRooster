@@ -121,23 +121,16 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
         string[] subTexts = input.Split('<', '>');
 
         // textmeshpro still needs to parse its built-in tags, so we only include noncustom tags
-        string displayText = "";
         for (int i = 0; i < subTexts.Length; i++)
         {
             if (i % 2 == 0)
-                displayText += subTexts[i];
+                result += subTexts[i];
             else //Is Tag
             {
                 string tag = subTexts[i].Replace(" ", "");
                 if (tag.StartsWith("control="))
-                {
-                    string secondHalf = tag.Substring(8);
-                    displayText += secondHalf switch
-                    {
-                        _ => "Null"
-                    };
-                }
-                else displayText += $"<{tag}>";
+                    result += RemappingMenu.GetControlString(tag.Substring(8));
+                else result += $"<{tag}>";
             }
         }
 

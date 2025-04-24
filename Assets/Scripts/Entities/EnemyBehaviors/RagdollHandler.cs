@@ -68,12 +68,14 @@ public class RagdollHandler : Grabbable
                 SetRagdoll(false);
                 ragDollTimer = 0;
                 nonRagdolledCollider.gameObject.layer = Layers.Enemy;
+                PlayerInteracter.UpdateGrabbables();
                 break;
             case EntityState.Grabbed:
                 SetRagdoll(true);
                 if (advanced) ragDollColliders[0].transform.Reset(scale: false);
                 if (proxy) proxy.transform.parent.Reset(scale: false);
                 rigidBody.isKinematic = true;
+                PlayerInteracter.LostGrabbable(this);
                 break;
             case EntityState.Thrown:
                 SetRagdoll(true);
@@ -84,6 +86,7 @@ public class RagdollHandler : Grabbable
                 if (isPlayer)
                     for (int i = 0; i < savedLocalPos.Length; i++)
                         ragDollColliders[i].transform.localPosition = savedLocalPos[i];
+                PlayerInteracter.UpdateGrabbables();
                 break;
             default:
                 break;

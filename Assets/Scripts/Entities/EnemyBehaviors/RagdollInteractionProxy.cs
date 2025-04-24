@@ -44,9 +44,13 @@ public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
     public void SetVelocity(Vector3 velocity) => This.SetVelocity(velocity);
     public bool IsGrabbable => This.IsGrabbable;
 
+
+
     public Vector3 HeldOffset => This.HeldOffset;
 
     public Rigidbody rigidBody => This.rigidBody;
+
+    public bool Selected { get => This.Selected; set => This.Selected = value; }
 
     #endregion
 }

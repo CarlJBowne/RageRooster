@@ -16,6 +16,7 @@ public class PlayerHealth : Health
     private UIHUDSystem UI;
     private PlayerMovementBody body;
     private PlayerStateMachine machine;
+    private PlayerRanged ranged;
 
     protected override void Awake()
     {
@@ -24,6 +25,7 @@ public class PlayerHealth : Health
         UIHUDSystem.TryGet(out UI);
         TryGetComponent(out body);
         TryGetComponent(out machine);
+        TryGetComponent(out ranged);
         Global.playerObject = this;
     }
 
@@ -33,6 +35,7 @@ public class PlayerHealth : Health
         if (tintAnimator) tintAnimator.BeginAnimation();
         if (health != 0)
         {
+            if(ranged.aimingState) ranged.ExitAimingAux();
             CoroutinePlus.Begin(ref invincibility, InvinceEnum(invincibilityTime), this);
             damagable = false;
             if (attack.HasTag(Attack.Tag.Pit)) machine.Death(true);

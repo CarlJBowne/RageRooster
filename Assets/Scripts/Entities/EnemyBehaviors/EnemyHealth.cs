@@ -21,7 +21,8 @@ public class EnemyHealth : Health
 
     public bool respawn;
     public float respawnTime;
-    
+    public UltEvents.UltEvent onDamageEvent;
+
 
     #endregion Config
     #region Data
@@ -55,7 +56,8 @@ public class EnemyHealth : Health
     {
         damageEvent?.Invoke(attack.amount);
 
-        if(currentState is EntityState.RagDoll) ragdoll.SetVelocity(attack.velocity);
+        if (ragdoll && PlayerInteracter.grabbablesInFront.Contains(ragdoll)) PlayerInteracter.UpdateGrabbables();
+        if (currentState is EntityState.RagDoll) ragdoll.SetVelocity(attack.velocity);
         else if (currentState is EntityState.Default && health != 0)
         {
             Stun(attack);

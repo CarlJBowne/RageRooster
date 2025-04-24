@@ -21,6 +21,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     public State dropLaunchState;
     public Upgrade dropLaunchUpgrade;
     public Transform heldItemAnchor;
+    public PlayerInteracter interacter; 
 
     #endregion
     #region Data
@@ -116,7 +117,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
                 }
             }
         }
-        else state.BeginGrabAttempt(CheckForGrabbable());
+        else state.BeginGrabAttempt(interacter.HasUsableGrabbable());
     }
     public void TryGrabThrowAir(PlayerGrabAction state)
     {
@@ -125,7 +126,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
             body.transform.DOBlendableRotateBy(new(0, pointer.startH.eulerAngles.y - body.transform.eulerAngles.y, 0), 0.1f);
             (!dropLaunchUpgrade ? airThrowState : dropLaunchState).TransitionTo();
         }
-        else state.BeginGrabAttempt(CheckForGrabbable());
+        else state.BeginGrabAttempt(interacter.HasUsableGrabbable());
     }
 
     public void GrabPoint(IGrabbable grabbed)
@@ -327,6 +328,18 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         shootingVCam.Priority = 9;
         shootingVCam.gameObject.SetActive(false);
         aiming = false;
+    }
+
+    public void ExitAimingAux()
+    {
+        machine.freeLookCamera.m_XAxis.Value = pointerH;
+        aimingRig.enabled = false;
+        aimingRig.weight = 0;
+        UI.SetHitMarkerVisibility(false);
+        shootingVCam.Priority = 9;
+        shootingVCam.gameObject.SetActive(false);
+        aiming = false;
+        machine[0].TransitionTo();
     }
 
     public void ExitAimingInstant()

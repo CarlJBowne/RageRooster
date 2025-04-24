@@ -6251,6 +6251,8 @@ MonoBehaviour:
   tintAnimator: {fileID: 3292420354071468214}
   respawn: 1
   respawnTime: 30
+  onDamageEvent:
+    _PersistentCalls: []
   currentState: 0
 --- !u!114 &3133899637185726238
 MonoBehaviour:
@@ -6303,6 +6305,7 @@ MonoBehaviour:
   maxHealthToGrab: 16
   additionalThrowDistance: 0
   additionalHoldHeight: 0
+  selectIcon: {fileID: 7101999157648690213}
   GrabStateEvent:
     _PersistentCalls: []
   defaultEvent:
@@ -8473,6 +8476,7 @@ Transform:
   - {fileID: 3965983597836637103}
   - {fileID: 9052946431898989755}
   - {fileID: 3517595087963560097}
+  - {fileID: 4849020590673270714}
   m_Father: {fileID: 614004544640253583}
   m_LocalEulerAnglesHint: {x: 4.914593, y: -53.842003, z: -80.08786}
 --- !u!65 &2978896160289998762
@@ -11319,3 +11323,83 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8364591295502101937}
   m_LocalEulerAnglesHint: {x: 6.189996e-15, y: -139.2523, z: -180}
+--- !u!1001 &6885850365851982649
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2661598807480881559}
+    m_Modifications:
+    - target: {fileID: 2072881672364969091, guid: d7ae0227bca3990498448cccbcd653b3,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.08253887
+      objectReference: {fileID: 0}
+    - target: {fileID: 2072881672364969091, guid: d7ae0227bca3990498448cccbcd653b3,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.053142324
+      objectReference: {fileID: 0}
+    - target: {fileID: 2072881672364969091, guid: d7ae0227bca3990498448cccbcd653b3,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2072881672364969091, guid: d7ae0227bca3990498448cccbcd653b3,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.4778622
+      objectReference: {fileID: 0}
+    - target: {fileID: 2072881672364969091, guid: d7ae0227bca3990498448cccbcd653b3,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.52119833
+      objectReference: {fileID: 0}
+    - target: {fileID: 2072881672364969091, guid: d7ae0227bca3990498448cccbcd653b3,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.4778622
+      objectReference: {fileID: 0}
+    - target: {fileID: 2072881672364969091, guid: d7ae0227bca3990498448cccbcd653b3,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.52119833
+      objectReference: {fileID: 0}
+    - target: {fileID: 2072881672364969091, guid: d7ae0227bca3990498448cccbcd653b3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2072881672364969091, guid: d7ae0227bca3990498448cccbcd653b3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2072881672364969091, guid: d7ae0227bca3990498448cccbcd653b3,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4395560480213554972, guid: d7ae0227bca3990498448cccbcd653b3,
+        type: 3}
+      propertyPath: m_Name
+      value: GrabIcon
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d7ae0227bca3990498448cccbcd653b3, type: 3}
+--- !u!4 &4849020590673270714 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2072881672364969091, guid: d7ae0227bca3990498448cccbcd653b3,
+    type: 3}
+  m_PrefabInstance: {fileID: 6885850365851982649}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7101999157648690213 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4395560480213554972, guid: d7ae0227bca3990498448cccbcd653b3,
+    type: 3}
+  m_PrefabInstance: {fileID: 6885850365851982649}
+  m_PrefabAsset: {fileID: 0}
