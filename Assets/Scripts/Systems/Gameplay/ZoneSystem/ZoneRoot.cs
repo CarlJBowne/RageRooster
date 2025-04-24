@@ -23,7 +23,7 @@ public class ZoneRoot : MonoBehaviour
     [SerializeField] private SavePoint[] _spawns; 
     [HideInInspector] public new string name;
     public Vector3 originOffset;
-    private Light[] directionalLights;
+    [SerializeField] private Light[] directionalLights;
 
     public static implicit operator string(ZoneRoot A) => A.name ?? A.gameObject.scene.name;
 
@@ -46,8 +46,8 @@ public class ZoneRoot : MonoBehaviour
         if(transitions == null || transitions.Length == 0) transitions = gameObject.GetComponentsInChildren<ZoneTransition>();
         if(spawns == null || spawns.Length == 0) _spawns = gameObject.GetComponentsInChildren<SavePoint>();
         
-        //directionalLights = gameObject.GetComponentsInChildren<Light>().Where(l => l.type == LightType.Directional).ToArray();
-        //foreach (var item in directionalLights) item.enabled = false;
+        if(directionalLights == null || directionalLights.Length == 0) directionalLights = gameObject.GetComponentsInChildren<Light>().Where(l => l.type == LightType.Directional).ToArray();
+        foreach (var item in directionalLights) item.enabled = false;
 
         LoadEvents();
 

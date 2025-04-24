@@ -56,7 +56,7 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
 
     public Vector3 HeldOffset => anchorPoint != null ? -anchorPoint.localPosition : Vector3.zero;
 
-    public bool Selected
+    public virtual bool Selected
     {
         get => (UnityEngine.Object)PlayerInteracter.SelectedGrabbable == this;
         set { if (selectIcon != null) selectIcon.SetActive(value); }

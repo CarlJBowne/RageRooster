@@ -28,6 +28,18 @@ public class RagdollHandler : Grabbable
 
     public override bool IsGrabbable => base.IsGrabbable && !isPlayer;
 
+    public override bool Selected
+    {
+        get => (UnityEngine.Object)PlayerInteracter.SelectedGrabbable == this;
+        set
+        {
+            if (materialTinter != null) materialTinter.SetFresnel(value);
+            else if (selectIcon != null) selectIcon.SetActive(value);
+        }
+    }
+    public ColorTintAnimation materialTinter;
+
+
     protected override void Awake()
     {
         

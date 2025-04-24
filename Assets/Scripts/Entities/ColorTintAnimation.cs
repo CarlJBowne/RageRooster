@@ -28,6 +28,7 @@ public class ColorTintAnimation : MonoBehaviour
 
     const string Tint_Color_Name = "_TintColor";
     const string Tint_Factor_Name = "_TintFactor";
+    const string Fresnel_Name = "_FRESNELACTIVE";
 
     private void Awake()
     {
@@ -78,6 +79,15 @@ public class ColorTintAnimation : MonoBehaviour
     {
         CoroutinePlus.Stop(ref currentCoroutine);
         TintFactor = 0f;
+    }
+
+
+    public void SetFresnel(bool value)
+    {
+        for (int i = 0; i < sets.Length; i++)
+            sets[i].instancedMaterial.SetInt(Fresnel_Name, value ? 1 : 0);
+
+        //_FRESNELACTIVE
     }
 
     [System.Serializable]
