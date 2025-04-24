@@ -1,8 +1,10 @@
 using AYellowpaper.SerializedCollections;
+using EditorAttributes;
 using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,7 +20,7 @@ public class ZoneRoot : MonoBehaviour
                 _spawns = gameObject.GetComponentsInChildren<SavePoint>();
             return _spawns; 
         }}
-    private SavePoint[] _spawns; 
+    [SerializeField] private SavePoint[] _spawns; 
     [HideInInspector] public new string name;
     public Vector3 originOffset;
     private Light[] directionalLights;
@@ -44,8 +46,8 @@ public class ZoneRoot : MonoBehaviour
         if(transitions == null || transitions.Length == 0) transitions = gameObject.GetComponentsInChildren<ZoneTransition>();
         if(spawns == null || spawns.Length == 0) _spawns = gameObject.GetComponentsInChildren<SavePoint>();
         
-        directionalLights = gameObject.GetComponentsInChildren<Light>().Where(l => l.type == LightType.Directional).ToArray();
-        foreach (var item in directionalLights) item.enabled = false;
+        //directionalLights = gameObject.GetComponentsInChildren<Light>().Where(l => l.type == LightType.Directional).ToArray();
+        //foreach (var item in directionalLights) item.enabled = false;
 
         LoadEvents();
 
@@ -80,6 +82,20 @@ public class ZoneRoot : MonoBehaviour
     {
         foreach (KeyValuePair<WorldChange, UltEvents.UltEvent> item in worldChangeEvents)
             item.Key.Action -= item.Value.InvokeSafe;
+    }
+
+    [Button]
+    public void SetupComponents()
+    {
+        if (transitions == null || transitions.Length == 0) transitions = gameObject.GetComponentsInChildren<ZoneTransition>();
+        if (spawns == null || spawns.Length == 0) _spawns = gameObject.GetComponentsInChildren<SavePoint>();
+        directionalLights = gameObject.GetComponentsInChildren<Light>().Where(l => l.type == LightType.Directional).ToArray();
+        foreach (var item in directionalLights) DestroyImmediate(item.gameObject);
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(this);
+        EditorUtility.SetDirty(gameObject);
+#endif
+
     }
 
 }
