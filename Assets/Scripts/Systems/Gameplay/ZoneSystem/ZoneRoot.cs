@@ -90,7 +90,7 @@ public class ZoneRoot : MonoBehaviour
         if (transitions == null || transitions.Length == 0) transitions = gameObject.GetComponentsInChildren<ZoneTransition>();
         if (spawns == null || spawns.Length == 0) _spawns = gameObject.GetComponentsInChildren<SavePoint>();
         directionalLights = gameObject.GetComponentsInChildren<Light>().Where(l => l.type == LightType.Directional).ToArray();
-        foreach (var item in directionalLights) DestroyImmediate(item.gameObject);
+        //foreach (var item in directionalLights) DestroyImmediate(item.gameObject);
 #if UNITY_EDITOR
         EditorUtility.SetDirty(this);
         EditorUtility.SetDirty(gameObject);
