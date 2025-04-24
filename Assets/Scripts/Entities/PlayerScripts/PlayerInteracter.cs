@@ -8,6 +8,8 @@ using static Input;
 /// </summary>
 public class PlayerInteracter : Singleton<PlayerInteracter>
 {
+    public static GameObject ThisGameObject;
+
     public GameObject popupTransform;
     public static GameObject PopupTransform;
 
@@ -30,6 +32,7 @@ public class PlayerInteracter : Singleton<PlayerInteracter>
     {
         Gameplay.PreReloadSave += ResetSystem;
         PopupTransform = popupTransform;
+        ThisGameObject = gameObject;
     }
 
     private void FixedUpdate()

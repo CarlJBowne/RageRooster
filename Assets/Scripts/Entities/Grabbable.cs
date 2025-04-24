@@ -113,7 +113,7 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
 
     public virtual void Contact(GameObject target)
     {
-        if(currentState == EntityState.Thrown)
+        if(currentState == EntityState.Thrown && target != PlayerInteracter.ThisGameObject)
         {
             SetState(EntityState.RagDoll);
             if (thrownAttack.amount > 0 && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(this.GetAttack());
@@ -132,16 +132,22 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
             case EntityState.Default:
                 rigidBody.isKinematic = false;
                 collider.enabled = true;
+                PlayerInteracter.UpdateGrabbables();
                 break;
             case EntityState.Grabbed:
                 rigidBody.isKinematic = true;
                 collider.enabled = false;
+                PlayerInteracter.LostGrabbable(this);
+                IgnoreCollisionWithThrower(true);
                 break;
             case EntityState.Thrown:
                 rigidBody.isKinematic = false;
                 collider.enabled = true;
+                IgnoreCollisionWithThrower(true);
                 break;
             case EntityState.RagDoll:
+                IgnoreCollisionWithThrower(false);
+                PlayerInteracter.UpdateGrabbables();
                 break;
             default:
                 break;
