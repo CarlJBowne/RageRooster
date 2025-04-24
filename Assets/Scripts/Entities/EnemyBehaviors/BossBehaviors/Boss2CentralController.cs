@@ -57,19 +57,22 @@ public class Boss2CentralController : Health
 
     public void Death()
     {
-        Pecky.SetState("Dead");
-        Slasher.SetState("Dead");
-        Stumpy.SetState("Dead");
-
-        Pecky.animator.CrossFade("Dead", .2f);
-        Slasher.animator.CrossFade("Dead", .2f);
-        Stumpy.animator.CrossFade("Dead", .2f);
-
-
         Enum().Begin(Overlay.OverMenus);
         IEnumerator Enum()
         {
-            yield return new WaitForSecondsRealtime(4f);
+            Pecky.SetState("Dead");
+            Slasher.SetState("Dead");
+            Stumpy.SetState("Dead");
+
+            yield return null;
+            yield return null;
+            Stumpy.animator.CrossFade("Dead_Middle", .2f);
+            yield return new WaitForSecondsRealtime(.05f);
+            Pecky.animator.CrossFade("Dead_Sides", .2f);
+            yield return new WaitForSecondsRealtime(.05f);
+            Slasher.animator.CrossFade("Dead_Sides", .2f);
+
+            yield return new WaitForSecondsRealtime(3f);
 
             yield return Overlay.OverMenus.BasicFadeOutWait(2f);
 

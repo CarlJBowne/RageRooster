@@ -64,6 +64,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
 
     protected void FixedUpdate()
     {
+        projectilePool.Update();
         if (hitStunCoroutine) return;
         if (currentState == "Idle")
         {
@@ -76,7 +77,9 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
                         DoAttack((damageTaken < damageUntilNewAttack || Random.Range(0, 3) != 0) ? 1 : 2);
                     });
             }
-            else if(damageTaken >= damageUntilNewAttack)
+            else if(damageTaken >= damageUntilNewAttack && 
+                (controller.Pecky.currentState == idleState || controller.Pecky.currentState == knockedState) && 
+                (controller.Slasher.currentState == idleState || controller.Slasher.currentState == knockedState))
                 attackTimer.Tick(() =>
                 {
                     attackTimer.rate = Random.Range(attackTimeLower, attackTimeHigher);
@@ -114,6 +117,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
             else
             {
                 animator.enabled = true;
+                damageTaken++;
                 SetKnockedState(true);
                 individualDamageCounter = 0;
                 return true;
@@ -124,7 +128,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
             if (currentState == "Charging" && attack.HasTag(Attack.Tag.Egg))
             {
                 individualDamageCounter++;
-                if (individualDamageCounter >= 10)
+                if (individualDamageCounter >= 5)
                 {
                     animator.SetTrigger("Stun");
                     currentState = "Stunned";

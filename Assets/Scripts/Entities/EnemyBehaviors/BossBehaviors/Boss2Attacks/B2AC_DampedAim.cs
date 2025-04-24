@@ -34,7 +34,7 @@ public class B2AC_DampedAim : RigConstraint<THIS.Job, THIS.Data, THIS.Binder>
                 {
                     Vector3 direction = source.GetPosition(stream) - constrained.GetPosition(stream);
                     var targetQ = Quaternion.LookRotation(direction, Vector3.up);
-                    constrained.SetRotation(stream, Quaternion.RotateTowards(constrained.GetRotation(stream), targetQ, maxDelta * weight * weight));
+                    constrained.SetRotation(stream, Quaternion.RotateTowards(constrained.GetRotation(stream), targetQ, maxDelta * weight));
                 }
                     
             }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 482869550596612919}
   - component: {fileID: 6625130342175768343}
   - component: {fileID: 4744598030381175186}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,6 +83,59 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3685423578243380252
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 923569185342975780}
+  - component: {fileID: 8712396897769375364}
+  m_Layer: 7
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &923569185342975780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3685423578243380252}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6872497757141364272}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8712396897769375364
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3685423578243380252}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 19.547325, y: 75.30768, z: 12.195688}
+  m_Center: {x: -0.00000019388233, y: -7.0256653, z: -5.597845}
 --- !u!1 &6660420107230513438
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +147,7 @@ GameObject:
   - component: {fileID: 7307922815115484655}
   - component: {fileID: 8659964474707192108}
   - component: {fileID: 1737310975830199529}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LavaBreath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -324,6 +377,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2367533285376920099, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2627097991856849596, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
       propertyPath: m_LocalScale.y
@@ -338,6 +396,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FinalBossHeadStumpy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5219811534702546423, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6387367677343055288, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
@@ -382,7 +445,7 @@ PrefabInstance:
     - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
       propertyPath: attackTimeLower
-      value: 7
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7395447686736054723, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
@@ -443,6 +506,10 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 1121759351169611735, guid: 7644558c67485ae49ad2ecb504b79b2a, type: 3}
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 2136989299893519016, guid: 7644558c67485ae49ad2ecb504b79b2a,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 923569185342975780}
     - targetCorrespondingSourceObject: {fileID: 2136989299893519016, guid: 7644558c67485ae49ad2ecb504b79b2a,
         type: 3}
       insertIndex: -1
