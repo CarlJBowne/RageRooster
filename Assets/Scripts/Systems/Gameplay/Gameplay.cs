@@ -67,6 +67,7 @@ public class Gameplay : Singleton<Gameplay>
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
+            Menu.Manager.CloseAllMenus();
             var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE_NAME);
 
             yield return WaitFor.Until(() => Load.isDone && fullyLoaded);

@@ -179,5 +179,10 @@ public class Menu : MonoBehaviour
             if (currentMenus.Count > 0 && EventSystem.current.currentSelectedGameObject == null)
                 currentMenus[^1].defaultSelection.Select();
         } 
+
+        public static void CloseAllMenus()
+        {
+            for (int i = currentMenus.Count - 1; i >= 0; i--) Close(currentMenus[i]);
+        }
     }
 }
