@@ -111,17 +111,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 172.74506
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 63.121082
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 130.03728
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 646e184b8e9d6984cba389444f61f5b0,
         type: 3}
@@ -217,6 +217,11 @@ MonoBehaviour:
     type: 2}
   ammoCount: 1
   hintString: Mama has joined your party! Egg Ammo +1
+  interactEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 2312453300873340846}
+      _MemberName: Play
+      _PersistentArguments: []
 --- !u!135 &2234068968355659516
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -259,7 +264,7 @@ MonoBehaviour:
       Data4: 1095780337
     Path: event:/SFX/Msc./HenFanFare
   Event: 
-  PlayEvent: 3
+  PlayEvent: 0
   StopEvent: 0
   AllowFadeout: 1
   TriggerOnce: 0

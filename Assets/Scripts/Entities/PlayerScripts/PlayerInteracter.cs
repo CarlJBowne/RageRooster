@@ -35,11 +35,6 @@ public class PlayerInteracter : Singleton<PlayerInteracter>
         ThisGameObject = gameObject;
     }
 
-    private void FixedUpdate()
-    {
-
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out IInteractable foundInteractable)) FoundInteractable(foundInteractable);

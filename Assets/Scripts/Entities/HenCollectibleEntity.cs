@@ -8,6 +8,7 @@ public class HenCollectibleEntity : MonoBehaviour, IInteractable
     public WorldChange worldChange;
     public int ammoCount = 1;
     public string hintString;
+    public UltEvents.UltEvent interactEvent;
 
     bool IInteractable.canInteract => true;
 
@@ -32,6 +33,7 @@ public class HenCollectibleEntity : MonoBehaviour, IInteractable
         gameObject.SetActive(false);
         PlayerInteracter.LostInteractable(this);
         UIHUDSystem.Get().ShowHint(hintString);
+        interactEvent?.Invoke();
         return true;
     }
 
