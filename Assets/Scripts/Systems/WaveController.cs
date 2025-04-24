@@ -64,19 +64,23 @@ public class WaveController : MonoBehaviour
 
             while (activeEnemies > 0) yield return null;
 
+            Debug.Log("ALL ENEMIES DEFEATED");
             float timer = timeBetweenWaves;
             if (waveTimerText != null) waveTimerText.gameObject.SetActive(true);
-            while (timer > 0)
-            {
-                if (waveTimerText != null)
-                    waveTimerText.text = $"Next wave in {Mathf.Ceil(timer)}s";
-                timer -= Time.deltaTime;
-                yield return null;
-            }
-            if (waveTimerText != null) waveTimerText.gameObject.SetActive(false);
+
+            Debug.Log("TIMER STARTED");
+
+            yield return new WaitForSeconds(timeBetweenWaves);
+            Debug.Log("TIMER EXPIRED");
+
+                //if (waveTimerText != null)
+                    //waveTimerText.text = $"Next wave in {Mathf.Ceil(timer)}s";
+
+           // if (waveTimerText != null) waveTimerText.gameObject.SetActive(false);
         }
 
         //End Reached!
+        Debug.Log("WAVE HAS ENDED");
         SetWalls(false);
         if (worldChange != null) worldChange.Enable();
         Destroy(this);
@@ -84,6 +88,7 @@ public class WaveController : MonoBehaviour
 
     void SpawnWave()
     {
+        Debug.Log("Spawning next wave");
         List<Vector3> spawnPoints = new();
         int attempts = 0;
 
