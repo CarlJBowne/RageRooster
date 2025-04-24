@@ -5,6 +5,7 @@ using UnityEngine;
 using EditorAttributes;
 using UnityEngine.UI;
 using System;
+using static UnityEngine.Rendering.DebugUI;
 
 public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
 {
@@ -21,8 +22,12 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
     public FloatSetting ambienceVolume;
     public FloatSetting brightness;
 
+    //public static bool skipIntro;
+
     // Initializes the menu and reverts any changes
-    protected override void Awake()
+    protected override void Awake() => Init();
+
+    public void Init()
     {
         base.Awake();
 
@@ -36,7 +41,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
             brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
             brightness.Init(value => { brightnessOverlay.color = new(0, 0, 0, value); });
         }
-        
+
         //remap.TargetInput();
         RevertChanges();
     }
@@ -66,7 +71,8 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
         SFXVolume.Serialize("V_SFX"),
         ambienceVolume.Serialize("V_Amb"),
         brightness.Serialize("G_Brightness"),
-        remap.Serialize("Controls")
+        remap.Serialize("Controls")//,
+        //new JProperty("SkipIntro", skipIntro)
         );
 
     // Deserializes the settings from a JSON token and applies them
@@ -77,8 +83,20 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
         SFXVolume.Deserialize(Data["V_SFX"]);
         ambienceVolume.Deserialize(Data["V_Amb"]);
         if (Data["G_Brightness"] != null) brightness.Deserialize(Data["G_Brightness"]);
+        //if (Data["SkipIntro"] != null) skipIntro = Data["SkipIntro"].As<bool>();
 
         remap.Deserialize(Data["Controls"]);
+    }
+
+
+
+    public static void GetTempAudioSetting()
+    {
+        JToken loadAttempt = new JObject().LoadJsonFromFile(SaveFilePath, SaveFileName);
+        AudioManager.Get().masterVolume = loadAttempt["V_Master"].As<float>();
+        AudioManager.Get().musicVolume = loadAttempt["V_Music"].As<float>();
+        AudioManager.Get().SFXVolume = loadAttempt["V_SFX"].As<float>();
+        AudioManager.Get().ambienceVolume = loadAttempt["V_Amb"].As<float>();
     }
 
     [System.Serializable]
