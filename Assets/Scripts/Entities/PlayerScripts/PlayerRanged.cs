@@ -330,6 +330,18 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         aiming = false;
     }
 
+    public void ExitAimingAux()
+    {
+        machine.freeLookCamera.m_XAxis.Value = pointerH;
+        aimingRig.enabled = false;
+        aimingRig.weight = 0;
+        UI.SetHitMarkerVisibility(false);
+        shootingVCam.Priority = 9;
+        shootingVCam.gameObject.SetActive(false);
+        aiming = false;
+        machine[0].TransitionTo();
+    }
+
     public void ExitAimingInstant()
     {
         machine.freeLookCamera.m_XAxis.Value = pointerH;

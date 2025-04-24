@@ -12,6 +12,9 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
     public int damageUntilNewAttack;
     public int attackTimeLower;
     public int attackTimeHigher;
+    public ColorTintAnimation damageTint;
+    public Color minorDamageTint;
+    public Color majorDamageTint;
 
     [DisableInEditMode, DisableInPlayMode] public string currentState = "NULL";
 
@@ -100,6 +103,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
             {
                 SetKnockedState(true);
                 damageTaken++;
+                DoDamageTint(true);
                 return true;
             }
             else if (currentState == idleState && attack == "Egg") attackTimer.rate -= 1f;
@@ -111,6 +115,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
             else if (individualDamageCounter < 5)
             {
                 individualDamageCounter++;
+                DoDamageTint(false);
                 HitStun();
                 return true;
             }
@@ -118,6 +123,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
             {
                 animator.enabled = true;
                 damageTaken++;
+                DoDamageTint(true);
                 SetKnockedState(true);
                 individualDamageCounter = 0;
                 return true;
@@ -128,6 +134,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
             if (currentState == "Charging" && attack.HasTag(Attack.Tag.Egg))
             {
                 individualDamageCounter++;
+                DoDamageTint(false);
                 if (individualDamageCounter >= 5)
                 {
                     animator.SetTrigger("Stun");
@@ -142,12 +149,14 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
                 {
                     HitStun();
                     individualDamageCounter++;
+                    DoDamageTint(false);
                     return true;
                 }
                 else if (attack.HasTag(Attack.Tag.Wham))
                 {
                     animator.enabled = true;
                     damageTaken++;
+                    DoDamageTint(true);
                     controller.Damage(new Attack(1, "FromPlayer", "OnWeakSpot"));
                     individualDamageCounter = 0;
                     controller.VulnerableReturn();
@@ -252,6 +261,14 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
         animator.enabled = true;
         //meshCollection.SetActive(true);
         GoToIdle();
+    }
+
+
+    public void DoDamageTint(bool major = true)
+    {
+        if (damageTint == null) return;
+        damageTint.SetTintColor(major ? majorDamageTint : minorDamageTint);
+        damageTint.BeginAnimation();
     }
 }
 
