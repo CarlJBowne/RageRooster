@@ -19,6 +19,7 @@ public class EndingScene : MonoBehaviour
     public struct EndingValue
     {
         public int henRequirement;
+        [TextArea(0, 5)]
         public string endingText;
     }
 

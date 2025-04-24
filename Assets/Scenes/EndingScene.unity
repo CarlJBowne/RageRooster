@@ -202,29 +202,29 @@ MonoBehaviour:
   - henRequirement: 0
     endingText: "While one might assume his boundless rage was spurred on by the
       attempted abduction of his allegedly precious brood, he seemed to largely just
-      enjoy the thrill of it all. The bashing, the smashing\u2026. The grabbing,
-      the stabbing\u2026. What a sick bastard, really."
+      enjoy the thrill of it all.\n\nThe bashing... the smashing\u2026 the grabbing...\n\nWhat
+      a sick bastard, really."
   - henRequirement: 7
     endingText: "Aimless in his wrath, he sets off on a perilous quest to rescue
       the scattered members of his somewhat precious brood, ultimately becoming lost
-      in the proverbial (and literal) blood-red sauce of fowl carnage\u2026. Either
+      in the proverbial (and literal) blood-red sauce of fowl carnage\u2026\n\nEither
       that, or maybe he was only looking for his favorite ladies."
   - henRequirement: 14
     endingText: "As the old saying goes, \u201CHell hath no fury like a pissed off
       rooster,\u201D especially upon anyone who would dare set their crosshairs anywhere
-      near Angus\u2019 dearly precious brood. If there are any remaining survivors,
+      near Angus\u2019 dearly precious brood.\n\nIf there are any remaining survivors,
       this message will forever be heavy-handedly tattooed into their deeply concussed
-      brains\u2026. This is logically not the case, however, as there were absolutely
+      brains\u2026.\n\nThis is logically not the case, however, as there were absolutely
       no survivors."
   - henRequirement: 21
     endingText: "While most might assume chickens are nothing more than mere derivatives
       of simple junglefowl\u2013genetically manipulated by human tampering over countless
       generations of artificial selection\u2013this assumption could not possibly
-      be any further from the truth. In all actuality, hundreds of millions of years\u2019
-      worth of evolution resulted in the perfect specimen for housing all rage in
-      the universe. In the case of Angus, for any being throughout space and time
-      foolish enough to threaten his belovedly precious brood, this rage is approximately
-      doubled to two universes."
+      be any further from the truth.\n\nIn all actuality, hundreds of millions of
+      years\u2019 worth of evolution resulted in the perfect specimen for housing
+      all rage in the universe.\n\nIn the case of Angus, for any being throughout
+      space and time foolish enough to threaten his belovedly precious brood, this
+      rage is approximately doubled to two universes."
   continueToTitle: {fileID: 1677218314906344208, guid: 1a8a75698b4c4104ab50e02fbc6a0598,
     type: 3}
   animator: {fileID: 47276157}
@@ -257,10 +257,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1280, y: 720}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -306,9 +306,8 @@ RectTransform:
   - {fileID: 851303800}
   - {fileID: 1304813339}
   - {fileID: 1013881558}
-  - {fileID: 1142855014}
-  - {fileID: 1361433676}
   - {fileID: 1648784158}
+  - {fileID: 423352587}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -316,6 +315,70 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &423352586
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 423352587}
+  - component: {fileID: 423352588}
+  m_Layer: 5
+  m_Name: TextGroup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &423352587
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423352586}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1142855014}
+  - {fileID: 1361433676}
+  m_Father: {fileID: 47276162}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 0, y: -100}
+  m_SizeDelta: {x: 0, y: 100}
+  m_Pivot: {x: 0.5, y: 0}
+--- !u!114 &423352588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423352586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 7
+  m_Spacing: 1000
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &851303799
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,10 +486,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 47276162}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 312.90027}
-  m_SizeDelta: {x: 814.8999, y: 119.9245}
+  m_AnchorMin: {x: 0, y: 0.73083335}
+  m_AnchorMax: {x: 1, y: 0.73083335}
+  m_AnchoredPosition: {x: 0, y: 2}
+  m_SizeDelta: {x: 0, y: 574}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1013881559
 MonoBehaviour:
@@ -475,10 +538,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 158.4
-  m_fontSizeBase: 36
+  m_fontSize: 180
+  m_fontSizeBase: 180
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 159.3
   m_fontStyle: 0
@@ -511,7 +574,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 218.12257, z: 0, w: 224.35791}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -550,17 +613,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1142855013}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 47276162}
+  m_Father: {fileID: 423352587}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -422}
-  m_SizeDelta: {x: 1049.5056, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1142855015
 MonoBehaviour:
@@ -584,10 +647,10 @@ MonoBehaviour:
       m_Calls: []
   m_text: "In the end, the Orbitall lunch crew\u2019s mission to investigate and
     retrieve their long-forsaken project, Poultros Omegga, was met with catastrophic
-    failure of fatally humiliating proportions. Despite their best efforts, it was
-    not the human people of Earth who came to its planetary defense, but instead
+    failure of fatally humiliating proportions. \n\nDespite their best efforts, it
+    was not the human people of Earth who came to its planetary defense. Instead
     the people of chickens\u2026. Chicken people, that is... and it was indeed the
-    strongest of these chickenfolk to rise up against the threat of global harvestation:
+    strongest of these chickenfolk to rise up against the threat of global harvestation:\n\n
     Angus Buckeye."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 70c312a56bf550447a9446be96a2ec0d, type: 2}
@@ -627,13 +690,13 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 50
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 4
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -643,15 +706,15 @@ MonoBehaviour:
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
+  m_horizontalMapping: 2
+  m_verticalMapping: 3
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
   m_IsTextObjectScaleStatic: 0
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 150.36902, y: 0, z: 133.72464, w: -49.429382}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -780,8 +843,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "While one might assume his boundless rage was spurred on by the attempted
     abduction of his allegedly precious brood, he seemed to largely just enjoy the
-    thrill of it all. The bashing, the smashing\u2026. The grabbing, the stabbing\u2026.
-    What a sick bastard, really."
+    thrill of it all. \n\nThe bashing... the smashing\u2026 the grabbing....\n\nWhat
+    a sick bastard, really."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 70c312a56bf550447a9446be96a2ec0d, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 544b622f5a6a0614db9c1e7b6e80911a, type: 2}
@@ -826,7 +889,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 4
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -836,15 +899,15 @@ MonoBehaviour:
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
+  m_horizontalMapping: 2
+  m_verticalMapping: 3
   m_uvLineOffset: 0
   m_geometrySortingOrder: 0
   m_IsTextObjectScaleStatic: 0
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 134.3905, y: 0, z: 87.20273, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -865,17 +928,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1361433673}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 47276162}
+  m_Children:
+  - {fileID: 1968561079}
+  m_Father: {fileID: 423352587}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -619}
-  m_SizeDelta: {x: 1049.5056, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1648784157
 GameObject:
@@ -1011,6 +1075,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1648784157}
   m_CullTransparentMesh: 1
+--- !u!1 &1968561078
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1968561079}
+  m_Layer: 5
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1968561079
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968561078}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1361433676}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2028509137
 GameObject:
   m_ObjectHideFlags: 0
