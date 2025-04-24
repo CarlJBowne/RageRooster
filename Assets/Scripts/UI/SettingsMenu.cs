@@ -14,7 +14,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
     public static string SaveFilePath => Application.persistentDataPath;
     public static string SaveFileName => "Config";
 
-    Image brightnessOverlay;
+    public static Image brightnessOverlay;
 
     public FloatSetting masterVolume;
     public FloatSetting musicVolume;
@@ -38,7 +38,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
 
         if (Overlay.ActiveOverlays.ContainsKey(Overlay.OverlayLayer.OverMenus))
         {
-            brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
+            if(brightnessOverlay == null) brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
             brightness.Init(value => { brightnessOverlay.color = new(0, 0, 0, value); });
         }
 
@@ -90,14 +90,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
 
 
 
-    public static void GetTempAudioSetting()
-    {
-        JToken loadAttempt = new JObject().LoadJsonFromFile(SaveFilePath, SaveFileName);
-        AudioManager.Get().masterVolume = loadAttempt["V_Master"].As<float>();
-        AudioManager.Get().musicVolume = loadAttempt["V_Music"].As<float>();
-        AudioManager.Get().SFXVolume = loadAttempt["V_SFX"].As<float>();
-        AudioManager.Get().ambienceVolume = loadAttempt["V_Amb"].As<float>();
-    }
+    public static JToken GetTempSettings() => new JObject().LoadJsonFromFile(SaveFilePath, SaveFileName);
 
     [System.Serializable]
     public class FloatSetting : ICustomSerialized

@@ -39,6 +39,7 @@ public class IntroManager : MonoBehaviour
     public InputActionReference continueButton;
     public InputActionReference skipButton;
     public TMPro.TextMeshProUGUI skipButtonNote;
+    public DontDestroyMeOnLoad overlayPrefab;
 
 
     //private PlayerActions inputActions;
@@ -53,7 +54,23 @@ public class IntroManager : MonoBehaviour
         //inputActions = new PlayerActions();
         //inputActions.Enable();
         skipButton.action.performed += SkipButtonPressed;
-        SettingsMenu.GetTempAudioSetting();
+
+        if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+        if (SettingsMenu.brightnessOverlay == null) 
+            SettingsMenu.brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
+
+        var loadAttempt = SettingsMenu.GetTempSettings();
+        if (loadAttempt != null && loadAttempt.HasValues)
+        {
+            
+            AudioManager.Get().masterVolume = loadAttempt["V_Master"].As<float>();
+            AudioManager.Get().musicVolume = loadAttempt["V_Music"].As<float>();
+            AudioManager.Get().SFXVolume = loadAttempt["V_SFX"].As<float>();
+            AudioManager.Get().ambienceVolume = loadAttempt["V_Amb"].As<float>();
+            float brightness = loadAttempt["G_Brightness"].As<float>();
+
+            SettingsMenu.brightnessOverlay.color = new(0, 0, 0, brightness);
+        }
 
         SetAlpha(introVideoImage, 0f);
         SetAlpha(titleScreenImage, 0f);

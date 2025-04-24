@@ -23,18 +23,24 @@ public class MainMenu : MenuSingleton<MainMenu>
 
     private int currentButtonIndex = 0;
 
-    private void Start()
+    protected override void Awake()
     {
         Menu.Manager.Initialize();
+        base.Awake();
+        if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+        if (SettingsMenu.brightnessOverlay == null)
+            SettingsMenu.brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
+    }
 
+    private void Start()
+    {
+        
         creditsPanel.SetActive(false);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         menuButtons = new List<Button>(GetComponentsInChildren<Button>());
         if (menuButtons.Count > 0)
             EventSystem.current.SetSelectedGameObject(menuButtons[currentButtonIndex].gameObject);
-
-        if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
     }
 
     private void Update()
