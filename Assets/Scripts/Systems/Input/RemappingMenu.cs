@@ -163,6 +163,22 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
 
     }
 
+    public static string GetControlString(string input)
+    {
+        RemappingMenu R = SettingsMenu.Get().remap;
+
+        int i = 0;
+        for (; i < R.buttons.Length; i++) 
+            if (R.buttons[i].displayName == input)
+                break;
+        if (i == R.buttons.Length) return null;
+        string stringG = R.buttons[i].main.action.GetBindingDisplayString(options: InputBinding.DisplayStringOptions.DontIncludeInteractions, group: "Gamepad");
+        string stringK = R.buttons[i].main.action.GetBindingDisplayString(options: InputBinding.DisplayStringOptions.DontIncludeInteractions, group: "Keyboard");
+
+        return $"{stringG} / {stringK}";
+    }
+
+
 }
 
 public static class __RemappingExtensions
