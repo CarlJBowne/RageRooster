@@ -36,7 +36,12 @@ public class IntroManager : MonoBehaviour
     [SerializeField] private float glowMin = 0f;
     [SerializeField] private float glowMax = 1.5f;
 
-    private PlayerActions inputActions;
+    public InputActionReference continueButton;
+    public InputActionReference skipButton;
+    public TMPro.TextMeshProUGUI skipButtonNote;
+
+
+    //private PlayerActions inputActions;
     private bool skipRequested = false;
     private bool waitingForTitleInput = false;
     private Coroutine pulseCoroutine;
@@ -44,8 +49,11 @@ public class IntroManager : MonoBehaviour
 
     private void Awake()
     {
-        inputActions = new PlayerActions();
-        inputActions.Enable();
+        continueButton.asset.Enable();
+        //inputActions = new PlayerActions();
+        //inputActions.Enable();
+        skipButton.action.performed += SkipButtonPressed;
+        SettingsMenu.GetTempAudioSetting();
 
         SetAlpha(introVideoImage, 0f);
         SetAlpha(titleScreenImage, 0f);
@@ -72,22 +80,22 @@ public class IntroManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        inputActions.Disable();
+        //inputActions.Disable();
         videoPlayer.loopPointReached -= OnVideoFinished;
     }
 
-    private void Update()
-    {
-        if (waitingForTitleInput && inputActions.UI.AnyKey.WasPressedThisFrame())
-        {
-            waitingForTitleInput = false;
+    /* private void Update()
+     {
+         if (waitingForTitleInput && inputActions.UI.AnyKey.WasPressedThisFrame())
+         {
+             waitingForTitleInput = false;
 
-            if (pulseCoroutine != null)
-                StopCoroutine(pulseCoroutine);
+             if (pulseCoroutine != null)
+                 StopCoroutine(pulseCoroutine);
 
-            LoadMainMenu();
-        }
-    }
+             LoadMainMenu();
+         }
+     }*/
 
     private IEnumerator PlayIntroSequence()
     {
@@ -159,7 +167,10 @@ public class IntroManager : MonoBehaviour
         yield return StartCoroutine(FadeImage(pressAnyKeyTMP, 0f, 1f));
 
         pulseCoroutine = StartCoroutine(PulseTextAlpha(pressAnyKeyTMP));
-        waitingForTitleInput = true;
+
+        continueButton.action.performed += LoadMainMenu;
+
+        //waitingForTitleInput = true;
     }
 
     private IEnumerator FadeCanvasGroup(CanvasGroup cg, float from, float to, float duration)
@@ -209,7 +220,7 @@ public class IntroManager : MonoBehaviour
 
         while (elapsed < fadeDuration)
         {
-            if (CheckForSkip()) yield break;
+            //if (CheckForSkip()) yield break;
 
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / fadeDuration);
@@ -220,14 +231,14 @@ public class IntroManager : MonoBehaviour
         SetAlpha(graphic, to);
     }
 
-    private bool CheckForSkip()
-    {
-        if (!skipRequested && inputActions.UI.AnyKey.WasPressedThisFrame())
-        {
-            skipRequested = true;
-        }
-        return skipRequested;
-    }
+    //private bool CheckForSkip()
+    //{
+    //    if (!skipRequested && inputActions.UI.AnyKey.WasPressedThisFrame())
+    //    {
+    //        skipRequested = true;
+    //    }
+    //    return skipRequested;
+    //}
 
     private void SkipToVideo()
     {
@@ -248,8 +259,28 @@ public class IntroManager : MonoBehaviour
         waitingForTitleInput = true;
     }
 
-    private void LoadMainMenu()
+    private bool pressedOnce;
+    private void SkipButtonPressed(InputAction.CallbackContext ctx = default)
     {
+        if (!pressedOnce)
+        {
+            skipButtonNote.gameObject.SetActive(true);
+            pressedOnce = true;
+        }
+        else
+        {
+            LoadMainMenu();
+        }
+    }
+
+    private void LoadMainMenu(InputAction.CallbackContext ctx = default)
+    {
+        if (pulseCoroutine != null) StopCoroutine(pulseCoroutine);
+        //SettingsMenu.skipIntro = true;
+
+        continueButton.action.performed -= LoadMainMenu;
+        skipButton.action.performed -= SkipButtonPressed;
+
         SceneManager.LoadScene("MainMenu");
     }
 
