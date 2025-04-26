@@ -196,7 +196,7 @@ public class Gameplay : Singleton<Gameplay>
         static List<CullableEntity> cullableEnemies = new();
         static List<BoundingSphere> enemyBoundingSpheres = new();
 
-        public const float tickTime = 1f;
+        public const float tickTime = 0.1f;
         static CoroutinePlus activeRoutine;
         static WaitForSeconds activeTickDelay = new WaitForSeconds(tickTime);
 
@@ -242,9 +242,21 @@ public class Gameplay : Singleton<Gameplay>
         {
             cullingGroup.SetDistanceReferencePoint(camera.position);
             for (int i = 0; i < cullableEnemies.Count; i++)
+            {
                 enemyBoundingSpheres[i] = new BoundingSphere(cullableEnemies[i].transform.position, cullableEnemies[i].radius);
+
+                
+            }
+
             cullingGroup.SetBoundingSpheres(enemyBoundingSpheres.ToArray());
             cullingGroup.SetBoundingSphereCount(cullableEnemies.Count);
+
+            for(int i = 0; i < enemyBoundingSpheres.Count; i++)
+            {
+
+                cullableEnemies[i].OnCullEntity(cullingGroup.IsVisible(i));
+                
+            }
         }
 
         public static void CullingGroupStateUpdate(CullingGroupEvent @event)
@@ -255,6 +267,8 @@ public class Gameplay : Singleton<Gameplay>
             if (currentlyWithin != (@event.previousDistance == 0) || cullableEnemies[@event.index].init)
                 cullableEnemies[@event.index].WithinRangeChange(currentlyWithin);
         }
+
+
     }
 
 

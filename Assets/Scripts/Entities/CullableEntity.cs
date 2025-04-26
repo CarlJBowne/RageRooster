@@ -8,6 +8,7 @@ public class CullableEntity : MonoBehaviour
     //Config
     public float radius = 1.5f;
     public Behaviour[] components;
+    public GameObject entityModel;
 
     //Data
     public bool active = false;
@@ -33,4 +34,11 @@ public class CullableEntity : MonoBehaviour
             components[i].enabled = value;
         active = value;
     }
+
+    public void OnCullEntity(bool culled)
+    {
+        entityModel.SetActive(culled);
+    }
+
+
 }
