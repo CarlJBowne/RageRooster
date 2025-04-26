@@ -120,9 +120,8 @@ public class Gameplay : Singleton<Gameplay>
         {
             musicEmitter = GetComponent<StudioEventEmitter>();
 
-
-
             yield return WaitFor.Until(() => PlayerHealth.Global.playerObject && PlayerRanged.Ammo.playerObject);
+            EnemyCullingGroup.Initialize(this);
 
             GlobalState.Load();
             PostMaLoad?.Invoke();
@@ -172,7 +171,7 @@ public class Gameplay : Singleton<Gameplay>
         yield return null;
     }
 
-
+    protected override void OnDestroyed() => EnemyCullingGroup.DeInitialize();
 
 
 
@@ -186,7 +185,78 @@ public class Gameplay : Singleton<Gameplay>
 
         for (int i = 0; i < bobAndTurnList.Count; i++) bobAndTurnList[i].DoUpdate(bob, rotate);
     }
-    public static List<BobAndTurn> bobAndTurnList = new(); 
+    public static List<BobAndTurn> bobAndTurnList = new();
+
+
+    public static class EnemyCullingGroup
+    {
+        static Transform camera;
+        public const float enemyCullDistance = 80f;
+        static CullingGroup cullingGroup = new();
+        static List<CullableEntity> cullableEnemies = new();
+        static List<BoundingSphere> enemyBoundingSpheres = new();
+
+        public const float tickTime = 1f;
+        static CoroutinePlus activeRoutine;
+        static WaitForSeconds activeTickDelay = new WaitForSeconds(tickTime);
+
+        public static void Initialize(MonoBehaviour owner)
+        {
+            cullingGroup.targetCamera = Camera.main;
+            camera = Camera.main.transform;
+            cullingGroup.onStateChanged += CullingGroupStateUpdate;
+            cullingGroup.SetBoundingDistances(new float[] { enemyCullDistance });
+            activeRoutine = TickEnum().Begin(owner);
+        }
+        public static void DeInitialize()
+        {
+            cullingGroup.Dispose();
+            cullableEnemies.Clear();
+            enemyBoundingSpheres.Clear();
+            activeRoutine?.StopAuto();
+        }
+
+        public static IEnumerator TickEnum()
+        {
+            while (true)
+            {
+                UpdateCulledEnemies();
+                yield return activeTickDelay;
+            }
+        }
+
+        public static void AddEnemyToCullingGroup(CullableEntity input)
+        {
+            cullableEnemies.Add(input);
+            enemyBoundingSpheres.Add(new(input.transform.position, input.radius));
+        }
+        public static void RemoveEnemyFromCullingGroup(CullableEntity input)
+        {
+            if (cullableEnemies.Count < 1) return;
+            int ID = cullableEnemies.IndexOf(input);
+            cullableEnemies.Remove(input);
+            enemyBoundingSpheres.RemoveAt(ID);
+        }
+
+        public static void UpdateCulledEnemies()
+        {
+            cullingGroup.SetDistanceReferencePoint(camera.position);
+            for (int i = 0; i < cullableEnemies.Count; i++)
+                enemyBoundingSpheres[i] = new BoundingSphere(cullableEnemies[i].transform.position, cullableEnemies[i].radius);
+            cullingGroup.SetBoundingSpheres(enemyBoundingSpheres.ToArray());
+            cullingGroup.SetBoundingSphereCount(cullableEnemies.Count);
+        }
+
+        public static void CullingGroupStateUpdate(CullingGroupEvent @event)
+        {
+            if (@event.index < 0 || @event.index >= cullableEnemies.Count) return;
+
+            bool currentlyWithin = @event.currentDistance == 0;
+            if (currentlyWithin != (@event.previousDistance == 0) || cullableEnemies[@event.index].init)
+                cullableEnemies[@event.index].WithinRangeChange(currentlyWithin);
+        }
+    }
+
 
 
 
