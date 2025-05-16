@@ -44,15 +44,15 @@ public class ScriptableCollection : ScriptableObject, ICustomSerialized
     public List<T> Cast<T>() where T : ScriptableObject => List.Cast<T>().ToList();
 
     public JToken Serialize(string name = null)
-    {
-        return new JObject(
+        => new JObject(
                 new JProperty(nameof(selectedType), selectedType),
                 new JProperty(nameof(List), new JArray(
                     from I in List
                     select new JObject().Serialize(I)
                     ))
                 );
-    }
+    public static implicit operator JToken(ScriptableCollection THIS) => THIS.Serialize();
+
     public void Deserialize(JToken Data)
     {
         string readSOType = Data[nameof(selectedType)].Value<string>();

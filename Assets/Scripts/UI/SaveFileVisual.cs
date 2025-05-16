@@ -7,8 +7,14 @@ public class SaveFileVisual : MonoBehaviour
 {
     public int ID = 1;
     public TMPro.TextMeshProUGUI timeText;
+    private JsonFile File;
 
-    private void Awake() => UpdateFile();
+    private void Awake()
+    {
+        File = new(GlobalState.SaveFilePath, $"SaveFile{ID}");
+        UpdateFile();
+    }
+
 
     public void PlayFile() => Gameplay.BeginMainMenu(ID);
 
@@ -20,10 +26,10 @@ public class SaveFileVisual : MonoBehaviour
 
     private void UpdateFile()
     {
-        JToken J = new JObject().LoadJsonFromFile(GlobalState.SaveFilePath, $"SaveFile{ID}");
-        if(J != null)
+        
+        if(File.LoadFromFile() == JsonFile.LoadResult.Success)
         {
-            var TS = System.TimeSpan.FromSeconds(J["Time"].As<double>());
+            var TS = System.TimeSpan.FromSeconds(File.Data["Time"].ToObject<double>());
             timeText.text = $"{TS.Hours}:{TS.Minutes}:{TS.Seconds}";
         }
         else { timeText.text = "Empty"; }

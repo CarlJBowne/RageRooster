@@ -42,11 +42,10 @@ public class WorldChange : ScriptableObject, ICustomSerialized
     private void OnDisable() => _enabled = defaultValue;
 
     public JToken Serialize(string name = null)
-    {
-        return new JObject
+        => new JObject
             (new JProperty("Enabled", _enabled)
             );
-    }
+    public static implicit operator JToken(WorldChange THIS) => THIS.Serialize();
 
     public void Deserialize(JToken Data)
     {

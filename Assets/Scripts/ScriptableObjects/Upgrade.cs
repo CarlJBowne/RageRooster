@@ -26,7 +26,7 @@ public class Upgrade : ScriptableObject, ICustomSerialized
         => new JObject
             (new JProperty("Enabled", value)
         );
-    
+    public static implicit operator JToken(Upgrade THIS) => THIS.Serialize();
 
     public void Deserialize(JToken Data)
     {

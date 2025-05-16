@@ -20,6 +20,7 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
     public static int maxAmmo = 1;
     public static int maxHealth = 3;
     public static int activeSaveFile = 0;
+    private static JsonFile File;
 
     public double saveFileTime;
     public static ScriptableCollection WorldChanges => Get().worldChanges;
@@ -45,13 +46,21 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
         useIndoorSky.deAction -= SetSkybox;
     }
 
-    public static void Save() => Get().Serialize().SaveToFile(SaveFilePath, SaveFileName);
+    public static void InitializeSaveFile(int ID)
+    {
+        activeSaveFile = ID;
+        File = new JsonFile(SaveFilePath, SaveFileName);
+    }
+
+    public static void Save() => File.SaveToFile(Get());
 
     public static void Load()
     {
         ResetData();
-        JToken loadAttempt = new JObject().LoadJsonFromFile(SaveFilePath, SaveFileName);
-        if (loadAttempt != null) Get().Deserialize(loadAttempt);
+
+        if (File == null) InitializeSaveFile(0);
+        if (File.LoadFromFile() == JsonFile.LoadResult.Success) Get().Deserialize(File.Data);
+
         PlayerHealth.Global.UpdateMax(maxHealth);
         PlayerRanged.Ammo.UpdateMax(maxAmmo);
         PlayerRanged.Ammo.Update(maxAmmo);
@@ -87,7 +96,7 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
         new JProperty(nameof(worldChanges), worldChanges.Serialize()),
         new JProperty(nameof(upgrades), upgrades.Serialize())
         );
-
+    public static implicit operator JToken(GlobalState THIS) => THIS.Serialize();
 
     public static void ResetData()
     {
@@ -118,7 +127,7 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
 
     public static void DeleteSaveFile(int id)
     {
-        if(File.Exists($"{SaveFilePath}/SaveFile{id}.json")) File.Delete($"{SaveFilePath}/SaveFile{id}.json");
+        if(System.IO.File.Exists($"{SaveFilePath}/SaveFile{id}.json")) System.IO.File.Delete($"{SaveFilePath}/SaveFile{id}.json");
     }
 
     public void SetSkybox()

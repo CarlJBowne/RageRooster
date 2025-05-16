@@ -63,7 +63,7 @@ public class Gameplay : Singleton<Gameplay>
             
             yield return Overlay.OverMenus.BasicFadeOutWait();
 
-            GlobalState.activeSaveFile = fileNo;
+            GlobalState.InitializeSaveFile(fileNo);
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 

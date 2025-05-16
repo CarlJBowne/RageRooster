@@ -13,6 +13,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
 
     public static string SaveFilePath => Application.persistentDataPath;
     public static string SaveFileName => "Config";
+    public static JsonFile File;
 
     public static Image brightnessOverlay;
 
@@ -42,14 +43,14 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
             brightness.Init(value => { brightnessOverlay.color = new(0, 0, 0, value); });
         }
 
-        //remap.TargetInput();
+        File = new(SaveFilePath, SaveFileName);
         RevertChanges();
     }
 
     // Confirms the changes made to the settings and saves them to a file
     public void ConfirmChanges()
     {
-        Serialize().SaveToFile(SaveFilePath, SaveFileName);
+        File.SaveToFile(Get());
         TrueClose();
     }
 
@@ -57,8 +58,10 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
     public void RevertChanges()
     {
         remap.ClearAllOverrides();
-        var loadAttempt = new JObject().LoadJsonFromFile(SaveFilePath, SaveFileName);
-        if (loadAttempt != null) Deserialize(loadAttempt);
+
+        if (File.LoadFromFile() == JsonFile.LoadResult.Success) 
+            Deserialize(File);
+
         remap.UpdateAllIcons();
 
         TrueClose();
@@ -74,6 +77,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
         remap.Serialize("Controls")//,
         //new JProperty("SkipIntro", skipIntro)
         );
+    public static implicit operator JToken(SettingsMenu THIS) => THIS.Serialize();
 
     // Deserializes the settings from a JSON token and applies them
     public void Deserialize(JToken Data)
@@ -90,7 +94,18 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
 
 
 
-    public static JToken GetTempSettings() => new JObject().LoadJsonFromFile(SaveFilePath, SaveFileName);
+    public static JToken GetTempSettings()
+    {
+        return File.LoadFromFile() == JsonFile.LoadResult.Success
+            ? File.Data
+            : new JObject(
+            new JProperty("V_Master", 1f),
+            new JProperty("V_Music", 1f),
+            new JProperty("V_SFX", 1f),
+            new JProperty("V_Amb", 1f),
+            new JProperty("G_Brightness", 0.0f)
+            );
+    }
 
     [System.Serializable]
     public class FloatSetting : ICustomSerialized
@@ -119,6 +134,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
         }
 
         public JToken Serialize(string name = null) => new JProperty(name, currentValue);
+        public static implicit operator JToken(FloatSetting THIS) => THIS.Serialize();
         public void Deserialize(JToken Data) => Set(Data.As<float>());
     }
 }
