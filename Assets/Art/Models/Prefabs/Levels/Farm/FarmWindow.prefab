@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6662701680157508217}
   - component: {fileID: 8554532635930778037}
   - component: {fileID: 2405840269427302565}
-  - component: {fileID: 7562848134937964791}
   m_Layer: 0
   m_Name: GlassPlane
   m_TagString: Untagged
@@ -84,28 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &7562848134937964791
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 336377967203875803}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4579454407841743219, guid: a35ef0c0d9b903943a6aa2c05b7987ba, type: 3}
 --- !u!1 &365580598687628115
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,7 +94,7 @@ GameObject:
   - component: {fileID: 2578340383556605892}
   - component: {fileID: 2018410444211548970}
   - component: {fileID: 132489804455892111}
-  - component: {fileID: 8705723398322847453}
+  - component: {fileID: 4469338541625393417}
   m_Layer: 0
   m_Name: Frame_LOD0
   m_TagString: Untagged
@@ -190,8 +167,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &8705723398322847453
-MeshCollider:
+--- !u!65 &4469338541625393417
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -208,10 +185,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -1909059502560213760, guid: 964618ad63cda9a43a9b40e70028a2a1, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.01702927, y: 0.00034758667, z: 0.02}
+  m_Center: {x: -9.313226e-10, y: 0, z: 0.0000005462207}
 --- !u!1 &4729388205510361848
 GameObject:
   m_ObjectHideFlags: 0
