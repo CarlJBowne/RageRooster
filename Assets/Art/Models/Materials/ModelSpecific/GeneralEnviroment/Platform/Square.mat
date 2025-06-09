@@ -36,6 +36,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: fec538658f7b437469063312c3818d24, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _BaseNormal:
+        m_Texture: {fileID: 2800000, guid: da9df518c0157d14fb4f0412017bfe45, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -84,12 +88,20 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RedHeight:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Red_Diffuse:
         m_Texture: {fileID: 2800000, guid: 7f2e07f209732bb41bccf45cca4ed689, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Roughness_Map:
         m_Texture: {fileID: 2800000, guid: 101a38cb926607542945119be3ae86b0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_58fffc66b30748758db1353f5e2bd80e_Texture_1_Texture2D:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
@@ -113,7 +125,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _normal1:
-        m_Texture: {fileID: 2800000, guid: effd51c897529c94c85bc0027127ba93, type: 3}
+        m_Texture: {fileID: 2800000, guid: da9df518c0157d14fb4f0412017bfe45, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _vertexpaintsub_962f081fe1304bff9a92f3668e682f3a_Ambient2_3915752113_Texture2D:
@@ -124,7 +136,15 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _vertexpaintsub_962f081fe1304bff9a92f3668e682f3a_BaseNormal_1062390664_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _vertexpaintsub_962f081fe1304bff9a92f3668e682f3a_Normal1_2668633162_Texture2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _vertexpaintsub_962f081fe1304bff9a92f3668e682f3a_RedHeight_3111382765_Texture2D:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -150,8 +170,11 @@ Material:
     - _AdditionalLightThreshold: 0.49
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _BaseTile: 0
     - _Blend: 0
+    - _BlendAmount: 0
     - _BlendModePreserveSpecular: 1
+    - _Blending: 1
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
@@ -177,6 +200,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _RedTile: 0
     - _Redtiling: 0
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
@@ -202,7 +226,8 @@ Material:
     - _Vector3: {r: 0, g: 0, b: 0, a: 0}
     - _center: {r: 0, g: 0, b: 0, a: 0}
     - _grass_light: {r: 1, g: 1, b: 1, a: 1}
-    - _vertex_paint_color: {r: 1, g: 1, b: 1, a: 0}
+    - _newgrasslight: {r: 0, g: 0, b: 0, a: 0}
+    - _vertex_paint_color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &6486801533091214240
 MonoBehaviour:
