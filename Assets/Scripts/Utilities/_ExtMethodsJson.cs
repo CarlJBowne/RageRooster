@@ -6,20 +6,19 @@ using JToken = Newtonsoft.Json.Linq.JToken;
 
 public static class _ExtMethodsJson
 {
+    /*
     /// <summary>
     /// Loads a JToken from a file with the specified path and filename.
-    /// <br />*Must be used with one a newly constructed JToken via new().
     /// </summary>
     /// <param name="path">The path of the file.</param>
     /// <param name="filename">The filename.</param>
     /// <returns>The loaded JToken.</returns>
-    public static JToken LoadJsonFromFile(this JToken THIS, string path, string filename)
+    public static JToken LoadJsonFromFile(string path, string filename)
     {
         if (!Directory.Exists(path)) return null;
-        if (!File.Exists($"{path}/{filename}.json")) return null;
+        if (!File.Exists(new FilePath(path, filename, "json"))) return null;
         using StreamReader load = File.OpenText($"{path}/{filename}.json");
-        THIS = JObject.Parse(load.ReadToEnd());
-        return THIS;
+        return JObject.Parse(load.ReadToEnd());
     }
     /// <summary>
     /// Saves this JToken to a file with the specified path and filename.
@@ -29,20 +28,21 @@ public static class _ExtMethodsJson
     public static void SaveToFile(this JToken THIS, string path, string filename)
     {
         if (!Directory.Exists(path)) Directory.CreateDirectory(path);
-        using StreamWriter file = File.CreateText($"{path}/{filename}.json");
+        using StreamWriter file = File.CreateText(new FilePath(path, filename, "json"));
         file.WriteLine(THIS.ToString());
     }
+    */
 
     /// <summary>
     /// Serializes the input object into a JToken. 
-    /// <br />*Compatible with ICustomSerialized
+    /// <br />For when you're unsure if the target object is an ICustomSerialized or not.
     /// <br />*Must be used with one a newly constructed JToken via new().
     /// </summary>
     /// <param name="OBJ">The Source Object to be Serialized.</param>
     /// <returns></returns>
     public static JToken Serialize(this JToken THIS, object OBJ)
     {
-        THIS = typeof(ICustomSerialized).IsAssignableFrom(OBJ.GetType()) 
+        THIS = typeof(ICustomSerialized).IsAssignableFrom(OBJ.GetType())
             ? (OBJ as ICustomSerialized).Serialize()
             : JObject.FromObject(OBJ);
         return THIS;
@@ -50,6 +50,7 @@ public static class _ExtMethodsJson
 
     /// <summary>
     /// Deserializes this Token into the desired Type.
+    /// <br />For when you're unsure if the target object is an ICustomSerialized or not.
     /// </summary>
     /// <typeparam name="T">The Type to Deserialize into.</typeparam>
     /// <returns>The Deserialized Value.</returns>
@@ -61,10 +62,11 @@ public static class _ExtMethodsJson
             Result.Deserialize(THIS);
             return (T)Result;
         }
-        else return THIS.Value<T>();
+        else return THIS.ToObject<T>();
     }
     /// <summary>
     /// Attempts to Deserialize this Token into the desired Type.
+    /// <br />For when you're unsure if the target object is an ICustomSerialized or not.
     /// </summary>
     /// <typeparam name="T">The Type to Deserialize into.</typeparam>
     /// <param name="result"></param>
@@ -83,6 +85,7 @@ public static class _ExtMethodsJson
 
     /// <summary>
     /// Populates an existing object using this Token.
+    /// <br />For when you're unsure if the target object is an ICustomSerialized or not.
     /// </summary>
     /// <param name="target">The Target object.</param>
     public static void DeserializeInto(this JToken THIS, object target)
@@ -95,13 +98,201 @@ public static class _ExtMethodsJson
     }
 
     /// <summary>
-    /// Converts and Returns the Value as the desired Type.
+    /// Converts and Returns the Value as the desired Type. ToObject is more efficient, really just kept for those who are lazy.
     /// </summary>
     /// <typeparam name="T">The Type to Convert to.</typeparam>
     /// <returns>A Converted Value.</returns>
-    public static T As<T>(this JToken THIS) => THIS.Value<T>();
+    public static T As<T>(this JToken THIS) => THIS.ToObject<T>();
 
 }
+
+
+
+/// <summary>
+/// A Json File representation. Stores a JToken. Includes simple functionality for Saving and Loading from file.
+/// </summary>
+public class JsonFile
+{
+    /// <summary>
+    /// The directory path of the JSON file.
+    /// </summary>
+    public readonly string path;
+
+    /// <summary>
+    /// The name of the JSON file (without extension).
+    /// </summary>
+    public readonly string filename;
+
+    /// <summary>
+    /// The JToken representation of the JSON file's content.
+    /// <br />Set
+    /// </summary>
+    public JToken Data;
+
+    /// <summary>
+    /// Gets the full path of the JSON file, including the filename and extension.
+    /// </summary>
+    public string FullPath => Path.Combine(path, $"{filename}.json");
+
+    /// <summary>
+    /// Implicitly accesses a JsonFile's JToken Data.
+    /// </summary>
+    /// <param name="THIS">The JsonFile instance.</param>
+    public static implicit operator JToken(JsonFile THIS) => THIS.Data;
+
+    /// <summary>
+    /// Checks the state of the JSON file based on its content and path validity.
+    /// </summary>
+    public FileState State => Data == null
+                                ? FileState.Null
+                                : string.IsNullOrEmpty(path) || string.IsNullOrEmpty(filename)
+                                    ? FileState.NoPath
+                                    : FileState.Valid;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="JsonFile"/> class with the specified path and filename.
+    /// </summary>
+    /// <param name="path">The directory path of the JSON file.</param>
+    /// <param name="filename">The name of the JSON file (without extension).</param>
+    public JsonFile(string path, string filename)
+    {
+        this.path = path;
+        this.filename = filename;
+        Data = null;
+    }
+
+
+    /// <summary>
+    /// Loads Json Data from the File specified by this JsonFile's path and filename.
+    /// </summary>
+    /// <returns>A <see cref="LoadResult"/> indicating the result of the load operation.</returns>
+    public LoadResult LoadFromFile()
+    {
+        if (State == FileState.NoPath || !Directory.Exists(path)) return LoadResult.DirectoryNotFound;
+        if (!File.Exists(FullPath)) return LoadResult.FileNotFound;
+
+        using StreamReader load = File.OpenText(FullPath);
+        string fileContent = load.ReadToEnd();
+
+        if (string.IsNullOrWhiteSpace(fileContent)) return LoadResult.FileEmpty;
+
+        try { Data = JObject.Parse(fileContent); }
+        catch (JsonReaderException) { return LoadResult.FileCorrupted; }
+
+        return LoadResult.Success;
+    }
+
+    /// <summary>
+    /// Saves the current <see cref="Data"/> content to the file specified by this JsonFile's path and filename.
+    /// </summary>
+    /// <returns>A <see cref="FileState"/> indicating the result of the operation.</returns>
+    public FileState SaveToFile()
+    {
+        FileState state = State;
+        if (State != FileState.Valid) return state;
+        if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+        using StreamWriter file = File.CreateText(FullPath);
+        file.WriteLine(Data);
+        return state;
+    }
+
+    /// <summary>  
+    /// Saves the specified <see cref="NewData"/> content to the file specified by this JsonFile's path and filename.  
+    /// </summary>  
+    /// <param name="NewData">Quick override to input new/changed data before save.</param>  
+    /// <returns>A <see cref="FileState"/> indicating the result of the operation.</returns>  
+    public FileState SaveToFile(JToken NewData)
+    {
+        Data = NewData;
+        FileState state = State;
+        if (State != FileState.Valid) return state;
+        if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+        using StreamWriter file = File.CreateText(FullPath);
+        file.WriteLine(Data);
+        return state;
+    }
+
+
+    /// <summary>
+    /// Deletes the file specified by this JsonFile's path and filename.
+    /// </summary>
+    public void DeleteFile()
+    {
+        if (State == FileState.NoPath || !Directory.Exists(path)) return;
+        if (!File.Exists(FullPath)) return;
+        File.Delete(FullPath);
+    }
+
+
+    /// <summary>
+    /// Represents the state of the JsonFile.
+    /// </summary>
+    public enum FileState
+    {
+        /// <summary>
+        /// The file is valid and ready for operations.
+        /// </summary>
+        Valid,
+
+        /// <summary>
+        /// The file content is null.
+        /// </summary>
+        Null,
+
+        /// <summary>
+        /// The file path or filename is invalid.
+        /// </summary>
+        NoPath
+    }
+
+    /// <summary>
+    /// Represents the result of a load operation from a file.
+    /// </summary>
+    public enum LoadResult
+    {
+        /// <summary>
+        /// The file was successfully loaded.
+        /// </summary>
+        Success,
+
+        /// <summary>
+        /// The file was not found at the specified path.
+        /// </summary>
+        FileNotFound,
+
+        /// <summary>
+        /// The directory containing the file was not found.
+        /// </summary>
+        DirectoryNotFound,
+
+        /// <summary>
+        /// The file is empty.
+        /// </summary>
+        FileEmpty,
+
+        /// <summary>
+        /// The file content is corrupted and could not be parsed.
+        /// </summary>
+        FileCorrupted
+    }
+}
+
+//Generic FilePath class, intersting, but probably not useful.
+public struct FilePath
+{
+    public string path;
+    public string filename;
+    public string extension;
+    public FilePath(string path, string filename, string extension)
+    {
+        this.path = path;
+        this.filename = filename;
+        this.extension = extension;
+    }
+    public readonly string Fullpath => Path.Combine(path, $"{filename}.{extension}");
+    public static implicit operator string(FilePath obj) => Path.Combine(obj.path, $"{obj.filename}.{obj.extension}");
+}
+
 
 //FAILED PRIOR IMPLEMENTATION, PAY NO MIND.
 /*

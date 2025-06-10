@@ -75,6 +75,7 @@ namespace SLS.StateMachineV3
         protected virtual void Awake()
         {
             if (!statesSetup) Setup(this, this, -1);
+            if (!Gameplay.Active) return;
             OnAwake();
             DoAwake();
 

@@ -45,7 +45,7 @@ public class TrackerEB : StateBehavior
 
     }
 
-    private Timer_Old autoCheckTimer;
+    private Timer.Loop autoCheckTimer = new(.2f);
     private float distance;
     private float dot;
     private bool lineOfSight;
@@ -54,14 +54,13 @@ public class TrackerEB : StateBehavior
     {
         if(target == null)
         {
-            PlayerStateMachine attempt = FindObjectOfType<PlayerStateMachine>();
+            PlayerStateMachine attempt = Gameplay.PlayerStateMachine;
             if (attempt != null) target = attempt.transform; 
             else PlayerStateMachine.whenInitializedEvent += player => 
             { 
                 target = player.transform; 
             };
         }
-        if (autoCheckRate > 0) autoCheckTimer = new(autoCheckRate, CheckData);
     }
 
     public override void OnEnter(State prev, bool isFinal)
@@ -83,8 +82,7 @@ public class TrackerEB : StateBehavior
                 phases[currentPhase].autoRotateDelta * Mathf.PI * Time.fixedDeltaTime, 0)
                 .DirToRot();
 
-        if (autoCheckRate > 0) autoCheckTimer += Time.deltaTime;
-        else if(autoCheckRate == 0) CheckData();
+        autoCheckTimer.Tick(CheckData);
     }
 
     private void CheckData()

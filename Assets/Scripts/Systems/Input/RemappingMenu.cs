@@ -36,7 +36,8 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
         buttons[5].Serialize(),
         buttons[6].Serialize(),
         buttons[7].Serialize()
-            )); 
+            ));
+    public static implicit operator JToken(RemappingMenu THIS) => THIS.Serialize();
     public void Deserialize(JToken Data)
     {
         buttons[0].Deserialize(Data[buttons[0].displayName]);
@@ -137,7 +138,8 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
                 new JProperty("Gamepad", main.action.GetBindingOverridePath(group: "Gamepad")),
                 new JProperty("Keyboard", main.action.GetBindingOverridePath(group: "Keyboard"))
                 ));
-        
+        public static implicit operator JToken(ButtonEntry THIS) => THIS.Serialize(THIS.displayName);
+
         public void Deserialize(JToken Data)
         {
             if (Data == null) return;
