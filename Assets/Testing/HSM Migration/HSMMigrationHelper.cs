@@ -49,3 +49,14 @@ public class HSMMigrationHelper : MonoBehaviour
 
 
 }
+
+public static class EEEEEEEEEEEEEEEEEEEEEEE
+{
+    public static HSMMigrationHelper AddNewVersion(this OLD.State state)
+    {
+        var result = state.gameObject.GetOrAddComponent<HSMMigrationHelper>();
+        result.oldState = state;
+        if(result.oldState is OLD.StateMachine oldSM) result.oldStateMachine = oldSM;
+        return result;
+    }
+}
