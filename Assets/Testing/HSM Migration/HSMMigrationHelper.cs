@@ -8,55 +8,34 @@ using NEW = SLS.StateMachineH;
 
 public class HSMMigrationHelper : MonoBehaviour
 {
-    public OLD.StateMachine oldStateMachine;
-    public NEW.StateMachine newStateMachine;
     public OLD.State oldState;
     public NEW.State newState;
 
+    public List<HSMMigrationHelper> children = new();
 
 
 
-
-
-    public void AddNewVersion()
+    public void AddNewVersion(bool isStateMachine = false)
     {
-        if (oldStateMachine != null)
+        if (isStateMachine)
         {
-            gameObject.AddComponent<NEW.StateMachine>();
-
-
+            OLD.StateMachine oldStateMachine = GetComponent<OLD.StateMachine>();
+            
+            if(oldStateMachine.GetType() != typeof(OLD.StateMachine)) 
+                gameObject.AddComponent<NEW.StateMachine>();
         }
-        else if ( oldState != null )
-        {
-            gameObject.AddComponent<NEW.State>();
-
-
-        }
+        else gameObject.AddComponent<NEW.State>();
+        foreach (var child in children) child.AddNewVersion();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 
-public static class EEEEEEEEEEEEEEEEEEEEEEE
+public static class HSMMigrationExtends
 {
-    public static HSMMigrationHelper AddNewVersion(this OLD.State state)
+    public static HSMMigrationHelper AddMigrationHelper(this OLD.State state)
     {
         var result = state.gameObject.GetOrAddComponent<HSMMigrationHelper>();
         result.oldState = state;
-        if(result.oldState is OLD.StateMachine oldSM) result.oldStateMachine = oldSM;
         return result;
     }
 }

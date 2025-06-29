@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 
+using OLD = SLS.StateMachineV3;
+using NEW = SLS.StateMachineH;
+
 public class HSMMigratorWindow : EditorWindow
 {
     [MenuItem("Window/HSMMigrator")]
@@ -30,8 +33,9 @@ public class HSMMigratorWindow : EditorWindow
     public void Step0()
     {
         CreateSO();
-        List<GameObject> machines = ObtainMachines();
-        AddMachineHelpers(machines);
+        ObtainMachines();
+        foreach (GameObject machine in savedData.machines)
+            savedData.helpers.Add(machine.GetComponent<OLD.StateMachine>().AddMigrationHelper());
     }
 
     private void CreateSO()
@@ -45,7 +49,7 @@ public class HSMMigratorWindow : EditorWindow
     private HSMMigrationMidData savedData;
 
 
-    public List<GameObject> ObtainMachines()
+    public void ObtainMachines()
     {
         var result = new List<GameObject>();
         string[] prefabGuids = AssetDatabase.FindAssets("t:Prefab");
@@ -53,38 +57,28 @@ public class HSMMigratorWindow : EditorWindow
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
             GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
-            if (prefab == null) continue;
-            var component = prefab.GetComponent<SLS.StateMachineH.StateMachine>();
-            if (component == null) continue;
+            if (prefab == null || !prefab.TryGetComponent(out OLD.StateMachine _)) continue;
             result.Add(prefab);
         }
+        savedData.machines = result;
+    }
+
+    public HSMMigrationHelper AddHelper(OLD.State state)
+    {
+        HSMMigrationHelper result = state.AddMigrationHelper();
+        
+        if (result == null) return null;
+        foreach (OLD.State child in state.children)
+            result.children.Add(AddHelper(child));
+
         return result;
     }
 
-    public void AddMachineHelpers(List<GameObject> prefabs)
+    public void Step1()
     {
-        foreach (var prefab in prefabs)
-        {
-            HSMMigrationHelper helper = prefab.GetOrAddComponent<HSMMigrationHelper>();
-            helper.oldStateMachine = prefab.GetComponent<SLS.StateMachineV3.StateMachine>();
-            helper.AddNewVersion();
-            savedData.machines.Add(helper);
-        }
-        EditorUtility.SetDirty(savedData);
-        AssetDatabase.SaveAssets();
+        foreach (var machine in savedData.machines) 
+            machine.GetComponent<HSMMigrationHelper>().AddNewVersion();
     }
-
-    public void AddStateHelper(SLS.StateMachineV3.State state)
-    {
-        HSMMigrationHelper helper = state.GetOrAddComponent<HSMMigrationHelper>();
-        helper.
-
-        EditorUtility.SetDirty(savedData);
-        AssetDatabase.SaveAssets();
-    }
-
-
-
 
 
 
