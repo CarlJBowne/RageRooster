@@ -5035,6 +5035,7 @@ GameObject:
   - component: {fileID: 511640380752111840}
   - component: {fileID: 5897247811507973455}
   - component: {fileID: 8575800209263281266}
+  - component: {fileID: 875981737271165302}
   m_Layer: 7
   m_Name: Chasing
   m_TagString: Untagged
@@ -5086,6 +5087,15 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 3112081837280369340}
+  _layer: 0
+  _parent: {fileID: 3112081837280369340}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5897247811507973455}
+  _behaviors:
+  - {fileID: 8575800209263281266}
 --- !u!114 &8575800209263281266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5102,6 +5112,21 @@ MonoBehaviour:
   destUpdateRate: 1
   reachDistance: 8
   reachState: {fileID: 6903679289669451711}
+--- !u!114 &875981737271165302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4847898974807918160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 5897247811507973455}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &4873776530481503273
 GameObject:
   m_ObjectHideFlags: 0
@@ -5152,6 +5177,7 @@ GameObject:
   - component: {fileID: 6531542561807786389}
   - component: {fileID: 4704537948975615930}
   - component: {fileID: 1490756800394186340}
+  - component: {fileID: 7083763643804806444}
   m_Layer: 7
   m_Name: GroundedShooterEnemy
   m_TagString: Untagged
@@ -5300,6 +5326,19 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 3112081837280369340}
+  _layer: -1
+  _parent: {fileID: 3112081837280369340}
+  _children:
+  - {fileID: 2118617713287848550}
+  - {fileID: 5897247811507973455}
+  - {fileID: 6903679289669451711}
+  - {fileID: 2666295707186286537}
+  _childCount: 4
+  _lineage:
+  - {fileID: 3112081837280369340}
+  _behaviors:
+  - {fileID: 6531542561807786389}
   states:
     _serializedList: []
   signalReady: 1
@@ -5468,6 +5507,25 @@ MonoBehaviour:
   proxy: {fileID: 707459482337852643}
   isPlayer: 0
   materialTinter: {fileID: 0}
+--- !u!114 &7083763643804806444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4906831177318307996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 3112081837280369340}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 3422498429376640172}
+  - {fileID: 875981737271165302}
+  - {fileID: 7002957880487030603}
+  - {fileID: 536666671410176599}
 --- !u!1 &4909045370384413027
 GameObject:
   m_ObjectHideFlags: 0
@@ -6070,6 +6128,7 @@ GameObject:
   - component: {fileID: 6478405182882825948}
   - component: {fileID: 2666295707186286537}
   - component: {fileID: 5342411608096227763}
+  - component: {fileID: 536666671410176599}
   m_Layer: 7
   m_Name: Fleeing
   m_TagString: Untagged
@@ -6121,6 +6180,15 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 3112081837280369340}
+  _layer: 0
+  _parent: {fileID: 3112081837280369340}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 2666295707186286537}
+  _behaviors:
+  - {fileID: 5342411608096227763}
 --- !u!114 &5342411608096227763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6137,6 +6205,21 @@ MonoBehaviour:
   destUpdateRate: 1
   reachDistance: 8
   reachState: {fileID: 6903679289669451711}
+--- !u!114 &536666671410176599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5534826233225650947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 2666295707186286537}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &5568350025139347589
 GameObject:
   m_ObjectHideFlags: 0
@@ -6932,6 +7015,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8934559081719770282}
   - component: {fileID: 2118617713287848550}
+  - component: {fileID: 3422498429376640172}
   m_Layer: 7
   m_Name: Idle
   m_TagString: Untagged
@@ -6983,6 +7067,29 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 3112081837280369340}
+  _layer: 0
+  _parent: {fileID: 3112081837280369340}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 2118617713287848550}
+  _behaviors: []
+--- !u!114 &3422498429376640172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6728482935611032970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 2118617713287848550}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &6782111296734084902
 GameObject:
   m_ObjectHideFlags: 0
@@ -8843,6 +8950,7 @@ GameObject:
   - component: {fileID: 2740473439834842869}
   - component: {fileID: 6903679289669451711}
   - component: {fileID: 8208263171051688731}
+  - component: {fileID: 7002957880487030603}
   m_Layer: 7
   m_Name: Attacking
   m_TagString: Untagged
@@ -8894,6 +9002,15 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 3112081837280369340}
+  _layer: 0
+  _parent: {fileID: 3112081837280369340}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6903679289669451711}
+  _behaviors:
+  - {fileID: 8208263171051688731}
 --- !u!114 &8208263171051688731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8921,6 +9038,21 @@ MonoBehaviour:
     current: 0
     disabled: 0
   chanceOfFiringWhenBlocked: 0
+--- !u!114 &7002957880487030603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8735294194429488692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 6903679289669451711}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &8800204904896313651
 GameObject:
   m_ObjectHideFlags: 0

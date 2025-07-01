@@ -284,6 +284,7 @@ GameObject:
   - component: {fileID: 8950459172026540696}
   - component: {fileID: 4242903510589070537}
   - component: {fileID: 1966879644613746894}
+  - component: {fileID: 2291949725970078712}
   m_Layer: 6
   m_Name: GrabbedIdle
   m_TagString: Untagged
@@ -377,6 +378,17 @@ MonoBehaviour:
           _MemberName: EnterAiming
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 7028573298488619274}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6999450145878481568}
+  - {fileID: 7028573298488619274}
+  - {fileID: 4242903510589070537}
+  _behaviors:
+  - {fileID: 1966879644613746894}
 --- !u!114 &1966879644613746894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -410,6 +422,21 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
+--- !u!114 &2291949725970078712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348881476169311659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 4242903510589070537}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &400420858113421900
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,6 +514,7 @@ GameObject:
   - component: {fileID: 8888853140960008680}
   - component: {fileID: 2536310429355348171}
   - component: {fileID: 4928657066015808323}
+  - component: {fileID: 128317883400522590}
   m_Layer: 6
   m_Name: LightPunch2
   m_TagString: Untagged
@@ -612,6 +640,18 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 3807177755154544969}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 3807177755154544969}
+  - {fileID: 713214573572190202}
+  _behaviors:
+  - {fileID: 8888853140960008680}
+  - {fileID: 2536310429355348171}
 --- !u!114 &8888853140960008680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -692,6 +732,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &128317883400522590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469540947907413664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 713214573572190202}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &531144083629005765
 GameObject:
   m_ObjectHideFlags: 0
@@ -736,6 +791,7 @@ GameObject:
   - component: {fileID: 7736482665558727247}
   - component: {fileID: 3985390449464073207}
   - component: {fileID: 8552609587650290044}
+  - component: {fileID: 5300797812499216135}
   m_Layer: 6
   m_Name: LightPunch2
   m_TagString: Untagged
@@ -855,6 +911,18 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 3466680260292128034}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 3466680260292128034}
+  - {fileID: 6397329766730335508}
+  _behaviors:
+  - {fileID: 7736482665558727247}
+  - {fileID: 3985390449464073207}
 --- !u!114 &7736482665558727247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -933,6 +1001,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &5300797812499216135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622944000673277637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 6397329766730335508}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &624970041063503452
 GameObject:
   m_ObjectHideFlags: 0
@@ -946,6 +1029,7 @@ GameObject:
   - component: {fileID: 1181195091599698405}
   - component: {fileID: 6132819690470820842}
   - component: {fileID: 5381935237969057074}
+  - component: {fileID: 9055682933281272780}
   m_Layer: 6
   m_Name: AirGrab
   m_TagString: Untagged
@@ -1064,6 +1148,17 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 6999450145878481568}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6999450145878481568}
+  - {fileID: 3864174957687219544}
+  _behaviors:
+  - {fileID: 1181195091599698405}
+  - {fileID: 6132819690470820842}
 --- !u!114 &1181195091599698405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1143,6 +1238,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &9055682933281272780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624970041063503452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 3864174957687219544}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &673776059400366822
 GameObject:
   m_ObjectHideFlags: 0
@@ -1432,6 +1542,7 @@ GameObject:
   - component: {fileID: 1632128030463539112}
   - component: {fileID: 7868266934595780143}
   - component: {fileID: 8114919871140000751}
+  - component: {fileID: 6397592726432830334}
   m_Layer: 6
   m_Name: Bounce
   m_TagString: Untagged
@@ -1483,6 +1594,18 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 1625394358674883294}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 1625394358674883294}
+  - {fileID: 780397825468177816}
+  _behaviors:
+  - {fileID: 5823505111254569389}
+  - {fileID: 1178113904624510868}
 --- !u!114 &5823505111254569389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1607,6 +1730,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &6397592726432830334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049869934697765793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 780397825468177816}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &1165660441062684328
 GameObject:
   m_ObjectHideFlags: 0
@@ -1651,6 +1789,7 @@ GameObject:
   - component: {fileID: 1027073189156208793}
   - component: {fileID: 6099757700044800534}
   - component: {fileID: 3148531946352221550}
+  - component: {fileID: 8406549637716831564}
   m_Layer: 6
   m_Name: DropLaunch
   m_TagString: Untagged
@@ -1735,6 +1874,18 @@ MonoBehaviour:
           _MemberName: LandInto
           _PersistentArguments: []
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 1625394358674883294}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 1625394358674883294}
+  - {fileID: 7773577663483693878}
+  _behaviors:
+  - {fileID: 1027073189156208793}
+  - {fileID: 6099757700044800534}
 --- !u!114 &1027073189156208793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1818,6 +1969,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &8406549637716831564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206808908755011029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 7773577663483693878}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &1239383449791831169
 GameObject:
   m_ObjectHideFlags: 0
@@ -1961,6 +2127,7 @@ GameObject:
   - component: {fileID: 1663018687967235127}
   - component: {fileID: 7332593933944986562}
   - component: {fileID: 750694679335013753}
+  - component: {fileID: 1161912717762690347}
   m_Layer: 6
   m_Name: WallJump
   m_TagString: Untagged
@@ -2049,6 +2216,16 @@ MonoBehaviour:
           _MemberName: MidWallJumpJumpAction
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 5123969060782274918}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 7332593933944986562}
+  _behaviors:
+  - {fileID: 750694679335013753}
 --- !u!114 &750694679335013753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2075,6 +2252,21 @@ MonoBehaviour:
   upgrade: {fileID: -5908332654645760598, guid: 5096cd543e777e240af87643ae7b164b,
     type: 2}
   animationName: WallJump
+--- !u!114 &1161912717762690347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242553937887867047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 7332593933944986562}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &1256794683121586061
 GameObject:
   m_ObjectHideFlags: 0
@@ -2118,6 +2310,7 @@ GameObject:
   - component: {fileID: 6519207066078055320}
   - component: {fileID: 6007688890914588632}
   - component: {fileID: 4999451030884928838}
+  - component: {fileID: 1431878470932286188}
   m_Layer: 6
   m_Name: GrabbedWalking
   m_TagString: Untagged
@@ -2211,6 +2404,17 @@ MonoBehaviour:
           _MemberName: EnterAiming
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 7028573298488619274}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6999450145878481568}
+  - {fileID: 7028573298488619274}
+  - {fileID: 6007688890914588632}
+  _behaviors:
+  - {fileID: 4999451030884928838}
 --- !u!114 &4999451030884928838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2244,6 +2448,21 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
+--- !u!114 &1431878470932286188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1288466975036708354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 6007688890914588632}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &1296871140194544751
 GameObject:
   m_ObjectHideFlags: 0
@@ -2394,6 +2613,7 @@ GameObject:
   - component: {fileID: 3962853144640418389}
   - component: {fileID: 8574800949726413756}
   - component: {fileID: 1488171615571765429}
+  - component: {fileID: 717014615150245811}
   m_Layer: 6
   m_Name: DamageWhamAir
   m_TagString: Untagged
@@ -2485,6 +2705,17 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 5123969060782274918}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 3962853144640418389}
+  _behaviors:
+  - {fileID: 8574800949726413756}
+  - {fileID: 1488171615571765429}
 --- !u!114 &8574800949726413756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2532,6 +2763,21 @@ MonoBehaviour:
   worldspaceInfluence: 0
   worldspaceVelocity: {x: 0, y: 0, z: 0}
   locked: 0
+--- !u!114 &717014615150245811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328720359275537980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 3962853144640418389}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &1349700240687973182
 GameObject:
   m_ObjectHideFlags: 0
@@ -2574,6 +2820,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3675384103904257216}
   - component: {fileID: 3807177755154544969}
+  - component: {fileID: 4217065398525119533}
   m_Layer: 6
   m_Name: AirAttacks
   m_TagString: Untagged
@@ -2629,6 +2876,38 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 5123969060782274918}
+  _children:
+  - {fileID: 7640692379637215161}
+  - {fileID: 713214573572190202}
+  - {fileID: 2200305695607041276}
+  - {fileID: 1252659914078541581}
+  _childCount: 4
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 3807177755154544969}
+  _behaviors: []
+--- !u!114 &4217065398525119533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1384332073924865152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 3807177755154544969}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 6517377591425260717}
+  - {fileID: 128317883400522590}
+  - {fileID: 3121854395599365371}
+  - {fileID: 7839485239977096566}
 --- !u!1 &1426614998149336543
 GameObject:
   m_ObjectHideFlags: 0
@@ -2830,6 +3109,7 @@ GameObject:
   - component: {fileID: 8797717583853980375}
   - component: {fileID: 5561208129768122763}
   - component: {fileID: 2064941021943173147}
+  - component: {fileID: 8005356583379681216}
   m_Layer: 6
   m_Name: CoyoteGrabbed
   m_TagString: Untagged
@@ -2904,6 +3184,17 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 7028573298488619274}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6999450145878481568}
+  - {fileID: 7028573298488619274}
+  - {fileID: 5561208129768122763}
+  _behaviors:
+  - {fileID: 2064941021943173147}
 --- !u!114 &2064941021943173147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2939,6 +3230,21 @@ MonoBehaviour:
   jumpMinHeight: 0
   forceDownwards: 0
   allowMidFall: 0
+--- !u!114 &8005356583379681216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651726559207214612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 5561208129768122763}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &1651872281400241692
 GameObject:
   m_ObjectHideFlags: 0
@@ -3014,6 +3320,7 @@ GameObject:
   - component: {fileID: 757298395727703996}
   - component: {fileID: 4681754079180063780}
   - component: {fileID: 3958613882708145268}
+  - component: {fileID: 3442131564490374801}
   m_Layer: 6
   m_Name: GrabbedJump
   m_TagString: Untagged
@@ -3087,6 +3394,18 @@ MonoBehaviour:
           _MemberName: LandInto
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 6999450145878481568}
+  _children:
+  - {fileID: 7502342910389391231}
+  _childCount: 1
+  _lineage:
+  - {fileID: 6999450145878481568}
+  - {fileID: 757298395727703996}
+  _behaviors:
+  - {fileID: 4681754079180063780}
+  - {fileID: 3958613882708145268}
 --- !u!114 &4681754079180063780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3139,6 +3458,22 @@ MonoBehaviour:
   onEnterTime: 0.01
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &3442131564490374801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805927438911527028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 757298395727703996}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 1856272575619900117}
 --- !u!1 &1838506262058880858
 GameObject:
   m_ObjectHideFlags: 0
@@ -3693,6 +4028,7 @@ GameObject:
   - component: {fileID: 2200305695607041276}
   - component: {fileID: 7793382661220355057}
   - component: {fileID: 1627855894347979437}
+  - component: {fileID: 3121854395599365371}
   m_Layer: 6
   m_Name: AirKick
   m_TagString: Untagged
@@ -3826,6 +4162,18 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 3807177755154544969}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 3807177755154544969}
+  - {fileID: 2200305695607041276}
+  _behaviors:
+  - {fileID: 7793382661220355057}
+  - {fileID: 1627855894347979437}
 --- !u!114 &7793382661220355057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3875,6 +4223,21 @@ MonoBehaviour:
   locked: 1
   check: 0
   checkOnEnter: 1
+--- !u!114 &3121854395599365371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124590860796095726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 2200305695607041276}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &2212145017621531694
 GameObject:
   m_ObjectHideFlags: 0
@@ -3887,6 +4250,7 @@ GameObject:
   - component: {fileID: 1420847395079027017}
   - component: {fileID: 3599756768954574801}
   - component: {fileID: 3384534770515375707}
+  - component: {fileID: 5343493686166535458}
   m_Layer: 0
   m_Name: Ragdoll
   m_TagString: Untagged
@@ -3938,6 +4302,15 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 0
+  _parent: {fileID: 8455434200384702600}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 1420847395079027017}
+  _behaviors:
+  - {fileID: 3599756768954574801}
 --- !u!114 &3599756768954574801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3999,6 +4372,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &5343493686166535458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2212145017621531694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 1420847395079027017}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &2323500058085692592
 GameObject:
   m_ObjectHideFlags: 0
@@ -4127,6 +4515,7 @@ GameObject:
   m_Component:
   - component: {fileID: 542910149066364657}
   - component: {fileID: 3803531707346265779}
+  - component: {fileID: 3198114647576421888}
   m_Layer: 6
   m_Name: Grounded(Walking)
   m_TagString: Untagged
@@ -4185,6 +4574,43 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 0
+  _parent: {fileID: 8455434200384702600}
+  _children:
+  - {fileID: 1236364480038443791}
+  - {fileID: 3466680260292128034}
+  - {fileID: 2827000484517282095}
+  - {fileID: 8249939815927584102}
+  - {fileID: 1074639858917870420}
+  - {fileID: 8736705224105400998}
+  - {fileID: 881160624330373794}
+  _childCount: 7
+  _lineage:
+  - {fileID: 3803531707346265779}
+  _behaviors: []
+--- !u!114 &3198114647576421888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2354280182447277193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 3803531707346265779}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 2628678789880912901}
+  - {fileID: 459306855338038925}
+  - {fileID: 1052526961434912058}
+  - {fileID: 7464031603671185038}
+  - {fileID: 6759615825248892145}
+  - {fileID: 4163199077255110256}
+  - {fileID: 8877894853438802942}
 --- !u!1 &2425651879818459153
 GameObject:
   m_ObjectHideFlags: 0
@@ -4197,6 +4623,7 @@ GameObject:
   - component: {fileID: 931477398715445950}
   - component: {fileID: 2513530225769621494}
   - component: {fileID: 1811448163934562790}
+  - component: {fileID: 729876526884705740}
   m_Layer: 6
   m_Name: Falling
   m_TagString: Untagged
@@ -4299,6 +4726,18 @@ MonoBehaviour:
           _MemberName: ParryActionAirborne
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 1625394358674883294}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 1625394358674883294}
+  - {fileID: 931477398715445950}
+  _behaviors:
+  - {fileID: 2513530225769621494}
+  - {fileID: 1811448163934562790}
 --- !u!114 &2513530225769621494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4351,6 +4790,21 @@ MonoBehaviour:
   onEnterTime: 0.2
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &729876526884705740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2425651879818459153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 931477398715445950}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &2515008206219138531
 GameObject:
   m_ObjectHideFlags: 0
@@ -4673,6 +5127,7 @@ GameObject:
   - component: {fileID: 5532989216206750302}
   - component: {fileID: 1074639858917870420}
   - component: {fileID: 651157846730441489}
+  - component: {fileID: 6759615825248892145}
   m_Layer: 6
   m_Name: CoyoteWalk
   m_TagString: Untagged
@@ -4747,6 +5202,16 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 3803531707346265779}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 1074639858917870420}
+  _behaviors:
+  - {fileID: 651157846730441489}
 --- !u!114 &651157846730441489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4782,6 +5247,21 @@ MonoBehaviour:
   jumpMinHeight: 0
   forceDownwards: 0
   allowMidFall: 0
+--- !u!114 &6759615825248892145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2937903117368929439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 1074639858917870420}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &2950555048310845610
 GameObject:
   m_ObjectHideFlags: 0
@@ -4804,7 +5284,7 @@ GameObject:
   - component: {fileID: 1988227033855750315}
   - component: {fileID: 8954558647869373425}
   - component: {fileID: 5436814540052560995}
-  - component: {fileID: 3060787163249880433}
+  - component: {fileID: 3453935845384663678}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -4886,6 +5366,22 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: -1
+  _parent: {fileID: 8455434200384702600}
+  _children:
+  - {fileID: 3803531707346265779}
+  - {fileID: 5123969060782274918}
+  - {fileID: 6141681725959390025}
+  - {fileID: 6999450145878481568}
+  - {fileID: 2078276186862268811}
+  - {fileID: 1420847395079027017}
+  _childCount: 6
+  _lineage:
+  - {fileID: 8455434200384702600}
+  _behaviors:
+  - {fileID: 1371118413310184343}
+  - {fileID: 3941225653291784218}
   states:
     _serializedList:
     - Key: Grounded
@@ -5388,7 +5884,8 @@ MonoBehaviour:
   - {fileID: 7415926761768878448}
   proxy: {fileID: 0}
   isPlayer: 1
---- !u!114 &3060787163249880433
+  materialTinter: {fileID: 0}
+--- !u!114 &3453935845384663678
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5397,9 +5894,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 2950555048310845610}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83f30ffdda1c69a43bbf4b7a09dab0b1, type: 3}
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  oldState: {fileID: 8455434200384702600}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 3198114647576421888}
+  - {fileID: 579651906211507449}
+  - {fileID: 4138642653766475252}
+  - {fileID: 4649428907048511158}
+  - {fileID: 717931405289629245}
+  - {fileID: 5343493686166535458}
 --- !u!1 &2975349023816060615
 GameObject:
   m_ObjectHideFlags: 0
@@ -5758,6 +6264,7 @@ GameObject:
   - component: {fileID: 7248501645845252710}
   - component: {fileID: 1073467550040047801}
   - component: {fileID: 8404342100878825337}
+  - component: {fileID: 8736482581387595366}
   m_Layer: 6
   m_Name: LightPunch1
   m_TagString: Untagged
@@ -5877,6 +6384,18 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 3466680260292128034}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 3466680260292128034}
+  - {fileID: 6227438277254479290}
+  _behaviors:
+  - {fileID: 5054057747023772269}
+  - {fileID: 7248501645845252710}
 --- !u!114 &5054057747023772269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5977,6 +6496,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &8736482581387595366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3244875344704272238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 6227438277254479290}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &3263576733088404462
 GameObject:
   m_ObjectHideFlags: 0
@@ -6226,6 +6760,7 @@ GameObject:
   - component: {fileID: 7624032393984206640}
   - component: {fileID: 2095790091468025607}
   - component: {fileID: 500976742858355256}
+  - component: {fileID: 1298801770799531885}
   m_Layer: 6
   m_Name: VentGliding
   m_TagString: Untagged
@@ -6295,6 +6830,18 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 1625394358674883294}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 1625394358674883294}
+  - {fileID: 7624032393984206640}
+  _behaviors:
+  - {fileID: 2095790091468025607}
+  - {fileID: 500976742858355256}
 --- !u!114 &2095790091468025607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6339,6 +6886,21 @@ MonoBehaviour:
   onEnterTime: 0.1
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &1298801770799531885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645675676112704684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 7624032393984206640}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &3709786810941767551
 GameObject:
   m_ObjectHideFlags: 0
@@ -6382,6 +6944,7 @@ GameObject:
   - component: {fileID: 786052921283328880}
   - component: {fileID: 1982546626867489972}
   - component: {fileID: 8882457220521229412}
+  - component: {fileID: 2598225350305671629}
   m_Layer: 6
   m_Name: AimShoot
   m_TagString: Untagged
@@ -6439,6 +7002,17 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 4687384188506420108}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6999450145878481568}
+  - {fileID: 4687384188506420108}
+  - {fileID: 1982546626867489972}
+  _behaviors:
+  - {fileID: 8882457220521229412}
 --- !u!114 &8882457220521229412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6456,6 +7030,21 @@ MonoBehaviour:
   onEnterTime: 0
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &2598225350305671629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3712787637314966735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 1982546626867489972}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &3730508859436989519
 GameObject:
   m_ObjectHideFlags: 0
@@ -6723,6 +7312,7 @@ GameObject:
   - component: {fileID: 1150588390469737330}
   - component: {fileID: 7896708475051073880}
   - component: {fileID: 564320835148495432}
+  - component: {fileID: 1927705803757949485}
   m_Layer: 6
   m_Name: Gliding
   m_TagString: Untagged
@@ -6803,6 +7393,18 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 1625394358674883294}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 1625394358674883294}
+  - {fileID: 6027212184641879295}
+  _behaviors:
+  - {fileID: 1150588390469737330}
+  - {fileID: 7896708475051073880}
 --- !u!114 &1150588390469737330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6878,6 +7480,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &1927705803757949485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4124917820233702332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 6027212184641879295}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &4185847910366357583
 GameObject:
   m_ObjectHideFlags: 0
@@ -7042,6 +7659,7 @@ GameObject:
   - component: {fileID: 2302710619165436362}
   - component: {fileID: 7572254650929324686}
   - component: {fileID: 4225907961593503217}
+  - component: {fileID: 8203695779861332270}
   m_Layer: 6
   m_Name: Raging Charge
   m_TagString: Untagged
@@ -7128,6 +7746,17 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 1236364480038443791}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 1236364480038443791}
+  - {fileID: 4663360149998660078}
+  _behaviors:
+  - {fileID: 704825921462216154}
 --- !u!114 &704825921462216154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7262,6 +7891,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &8203695779861332270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4366117737136798339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 4663360149998660078}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &4439709818119911506
 GameObject:
   m_ObjectHideFlags: 0
@@ -7437,6 +8081,7 @@ GameObject:
   - component: {fileID: 3698709666984973678}
   - component: {fileID: 3818254776817288668}
   - component: {fileID: 6052092395789326638}
+  - component: {fileID: 3784310089159691884}
   m_Layer: 6
   m_Name: Jumping
   m_TagString: Untagged
@@ -7538,6 +8183,22 @@ MonoBehaviour:
           _MemberName: LandInto
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 5123969060782274918}
+  _children:
+  - {fileID: 931477398715445950}
+  - {fileID: 6027212184641879295}
+  - {fileID: 7624032393984206640}
+  - {fileID: 780397825468177816}
+  - {fileID: 7773577663483693878}
+  _childCount: 5
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 1625394358674883294}
+  _behaviors:
+  - {fileID: 3698709666984973678}
+  - {fileID: 3818254776817288668}
 --- !u!114 &3698709666984973678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7621,6 +8282,26 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &3784310089159691884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4568227700120816147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 1625394358674883294}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 729876526884705740}
+  - {fileID: 1927705803757949485}
+  - {fileID: 1298801770799531885}
+  - {fileID: 6397592726432830334}
+  - {fileID: 8406549637716831564}
 --- !u!1 &4594552405087050133
 GameObject:
   m_ObjectHideFlags: 0
@@ -7665,6 +8346,7 @@ GameObject:
   - component: {fileID: 4534952952498977717}
   - component: {fileID: 3201008532590326604}
   - component: {fileID: 6107030437731684822}
+  - component: {fileID: 4374208454442409334}
   m_Layer: 6
   m_Name: ParrySpinA
   m_TagString: Untagged
@@ -7739,6 +8421,17 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 6141681725959390025}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6141681725959390025}
+  - {fileID: 1615186036512262025}
+  _behaviors:
+  - {fileID: 4534952952498977717}
+  - {fileID: 3201008532590326604}
 --- !u!114 &4534952952498977717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7817,6 +8510,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &4374208454442409334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4673781514129227438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 1615186036512262025}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &4675571679839146216
 GameObject:
   m_ObjectHideFlags: 0
@@ -7828,6 +8536,7 @@ GameObject:
   - component: {fileID: 7163401617430893447}
   - component: {fileID: 136701519028985482}
   - component: {fileID: 442187770537930055}
+  - component: {fileID: 8032039982669697026}
   m_Layer: 6
   m_Name: GrabbedSprinting
   m_TagString: Untagged
@@ -7915,6 +8624,17 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 7028573298488619274}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6999450145878481568}
+  - {fileID: 7028573298488619274}
+  - {fileID: 136701519028985482}
+  _behaviors:
+  - {fileID: 442187770537930055}
 --- !u!114 &442187770537930055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7948,6 +8668,21 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
+--- !u!114 &8032039982669697026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4675571679839146216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 136701519028985482}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &4847283882173391290
 GameObject:
   m_ObjectHideFlags: 0
@@ -7996,6 +8731,7 @@ GameObject:
   - component: {fileID: 4601588046968553847}
   - component: {fileID: 2199304448062642395}
   - component: {fileID: 2785260334461924655}
+  - component: {fileID: 7839485239977096566}
   m_Layer: 6
   m_Name: GroundSlam
   m_TagString: Untagged
@@ -8093,6 +8829,20 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 3807177755154544969}
+  _children:
+  - {fileID: 7688214283976459852}
+  _childCount: 1
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 3807177755154544969}
+  - {fileID: 1252659914078541581}
+  _behaviors:
+  - {fileID: 8573759899251756715}
+  - {fileID: 6329160560242998881}
+  - {fileID: 646156717812279867}
 --- !u!114 &8573759899251756715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8257,6 +9007,22 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &7839485239977096566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861617110333237064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 1252659914078541581}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 7300566890892305477}
 --- !u!1 &4901648064755187594
 GameObject:
   m_ObjectHideFlags: 0
@@ -8333,6 +9099,7 @@ GameObject:
   - component: {fileID: 4470159406448367370}
   - component: {fileID: 5219758685107371746}
   - component: {fileID: 2152569479813037482}
+  - component: {fileID: 1418862345922380975}
   m_Layer: 6
   m_Name: Hellcopter
   m_TagString: Untagged
@@ -8431,6 +9198,17 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 6141681725959390025}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6141681725959390025}
+  - {fileID: 1527121421165085625}
+  _behaviors:
+  - {fileID: 4470159406448367370}
+  - {fileID: 5219758685107371746}
 --- !u!114 &4470159406448367370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8509,6 +9287,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &1418862345922380975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5075024688237253571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 1527121421165085625}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &5162917169200034039
 GameObject:
   m_ObjectHideFlags: 0
@@ -8614,6 +9407,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7427727485705586250}
   - component: {fileID: 5123969060782274918}
+  - component: {fileID: 579651906211507449}
   m_Layer: 6
   m_Name: Airborne
   m_TagString: Untagged
@@ -8670,6 +9464,39 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 0
+  _parent: {fileID: 8455434200384702600}
+  _children:
+  - {fileID: 1625394358674883294}
+  - {fileID: 7332593933944986562}
+  - {fileID: 6630164468072911266}
+  - {fileID: 3807177755154544969}
+  - {fileID: 3962853144640418389}
+  _childCount: 5
+  _lineage:
+  - {fileID: 5123969060782274918}
+  _behaviors: []
+--- !u!114 &579651906211507449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5300167671746722696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 5123969060782274918}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 3784310089159691884}
+  - {fileID: 1161912717762690347}
+  - {fileID: 6218349518031893240}
+  - {fileID: 4217065398525119533}
+  - {fileID: 717014615150245811}
 --- !u!1 &5335061682190203391
 GameObject:
   m_ObjectHideFlags: 0
@@ -8748,6 +9575,7 @@ GameObject:
   - component: {fileID: 2763978919148611411}
   - component: {fileID: 5123427297755334006}
   - component: {fileID: 7477544725745237100}
+  - component: {fileID: 6218349518031893240}
   m_Layer: 6
   m_Name: AirCharge
   m_TagString: Untagged
@@ -8846,6 +9674,20 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 5123969060782274918}
+  _children:
+  - {fileID: 8937721864928111967}
+  - {fileID: 9187357623978728356}
+  - {fileID: 4439568894455865569}
+  _childCount: 3
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 6630164468072911266}
+  _behaviors:
+  - {fileID: 6062820148927623488}
+  - {fileID: 5123427297755334006}
 --- !u!114 &6062820148927623488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8967,6 +9809,24 @@ MonoBehaviour:
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
   enabled: 1
+--- !u!114 &6218349518031893240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339412235462586582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 6630164468072911266}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 5798639762179161765}
+  - {fileID: 1423465627237211648}
+  - {fileID: 2476180734114409082}
 --- !u!1 &5347781844388266985
 GameObject:
   m_ObjectHideFlags: 0
@@ -9162,6 +10022,7 @@ GameObject:
   - component: {fileID: 6283726564688637529}
   - component: {fileID: 1285737906182916520}
   - component: {fileID: 3587290060280392779}
+  - component: {fileID: 4138642653766475252}
   m_Layer: 6
   m_Name: Parrying
   m_TagString: Untagged
@@ -9217,6 +10078,18 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 0
+  _parent: {fileID: 8455434200384702600}
+  _children:
+  - {fileID: 906556439848370587}
+  - {fileID: 1615186036512262025}
+  - {fileID: 1527121421165085625}
+  - {fileID: 8300575896908681866}
+  _childCount: 4
+  _lineage:
+  - {fileID: 6141681725959390025}
+  _behaviors: []
 --- !u!114 &6283726564688637529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9288,6 +10161,25 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.96
   m_Center: {x: 0, y: 0.75, z: 0}
+--- !u!114 &4138642653766475252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5361885281466735368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 6141681725959390025}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 9052336829119171274}
+  - {fileID: 4374208454442409334}
+  - {fileID: 1418862345922380975}
+  - {fileID: 6895086884353824016}
 --- !u!1 &5476920180933388967
 GameObject:
   m_ObjectHideFlags: 0
@@ -9298,6 +10190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4182476368529953341}
   - component: {fileID: 3466680260292128034}
+  - component: {fileID: 459306855338038925}
   m_Layer: 6
   m_Name: GroundAttacks
   m_TagString: Untagged
@@ -9353,6 +10246,38 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 3803531707346265779}
+  _children:
+  - {fileID: 6227438277254479290}
+  - {fileID: 6397329766730335508}
+  - {fileID: 3443062856187106688}
+  - {fileID: 7788667647418580513}
+  _childCount: 4
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 3466680260292128034}
+  _behaviors: []
+--- !u!114 &459306855338038925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5476920180933388967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 3466680260292128034}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 8736482581387595366}
+  - {fileID: 5300797812499216135}
+  - {fileID: 1755514712148584391}
+  - {fileID: 1725590818435357826}
 --- !u!1 &5484426038482650996
 GameObject:
   m_ObjectHideFlags: 0
@@ -9396,6 +10321,7 @@ GameObject:
   - component: {fileID: 2006163882404814382}
   - component: {fileID: 7887553615491649882}
   - component: {fileID: 528938496853295208}
+  - component: {fileID: 3845182738805551950}
   m_Layer: 6
   m_Name: Walking
   m_TagString: Untagged
@@ -9513,6 +10439,17 @@ MonoBehaviour:
           _MemberName: EnterAiming
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 1236364480038443791}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 1236364480038443791}
+  - {fileID: 7887553615491649882}
+  _behaviors:
+  - {fileID: 528938496853295208}
 --- !u!114 &528938496853295208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9546,6 +10483,21 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
+--- !u!114 &3845182738805551950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5527142845277668158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 7887553615491649882}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &5549163275917385519
 GameObject:
   m_ObjectHideFlags: 0
@@ -9589,6 +10541,7 @@ GameObject:
   - component: {fileID: 4587419321214753641}
   - component: {fileID: 3186032269730848422}
   - component: {fileID: 2127524278575831494}
+  - component: {fileID: 8858626487002844874}
   m_Layer: 6
   m_Name: AimThrow
   m_TagString: Untagged
@@ -9665,6 +10618,17 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 4687384188506420108}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6999450145878481568}
+  - {fileID: 4687384188506420108}
+  - {fileID: 4587419321214753641}
+  _behaviors:
+  - {fileID: 3186032269730848422}
 --- !u!114 &3186032269730848422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9713,6 +10677,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &8858626487002844874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5578879694051111694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 4587419321214753641}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &5616308193838800911
 GameObject:
   m_ObjectHideFlags: 0
@@ -9820,6 +10799,7 @@ GameObject:
   - component: {fileID: 7502342910389391231}
   - component: {fileID: 814242899083696415}
   - component: {fileID: 5599462570939130548}
+  - component: {fileID: 1856272575619900117}
   m_Layer: 6
   m_Name: GrabbedFall
   m_TagString: Untagged
@@ -9892,6 +10872,18 @@ MonoBehaviour:
           _MemberName: LandInto
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 757298395727703996}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6999450145878481568}
+  - {fileID: 757298395727703996}
+  - {fileID: 7502342910389391231}
+  _behaviors:
+  - {fileID: 814242899083696415}
+  - {fileID: 5599462570939130548}
 --- !u!114 &814242899083696415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9944,6 +10936,21 @@ MonoBehaviour:
   onEnterTime: 0.2
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &1856272575619900117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5671411897365510212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 7502342910389391231}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &5731104948480345390
 GameObject:
   m_ObjectHideFlags: 0
@@ -9954,6 +10961,7 @@ GameObject:
   m_Component:
   - component: {fileID: 986074438047136786}
   - component: {fileID: 1236364480038443791}
+  - component: {fileID: 2628678789880912901}
   m_Layer: 0
   m_Name: GroundBasic
   m_TagString: Untagged
@@ -10009,6 +11017,38 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 3803531707346265779}
+  _children:
+  - {fileID: 4000547645901868762}
+  - {fileID: 7887553615491649882}
+  - {fileID: 3812935324549841644}
+  - {fileID: 4663360149998660078}
+  _childCount: 4
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 1236364480038443791}
+  _behaviors: []
+--- !u!114 &2628678789880912901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5731104948480345390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 1236364480038443791}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 4058983911842037104}
+  - {fileID: 3845182738805551950}
+  - {fileID: 1259438637607351974}
+  - {fileID: 8203695779861332270}
 --- !u!1 &5774795664015064404
 GameObject:
   m_ObjectHideFlags: 0
@@ -10377,6 +11417,7 @@ GameObject:
   - component: {fileID: 2939210796809206182}
   - component: {fileID: 8736705224105400998}
   - component: {fileID: 5137664638109459586}
+  - component: {fileID: 4163199077255110256}
   m_Layer: 6
   m_Name: CoyoteCharge
   m_TagString: Untagged
@@ -10451,6 +11492,16 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 3803531707346265779}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 8736705224105400998}
+  _behaviors:
+  - {fileID: 5137664638109459586}
 --- !u!114 &5137664638109459586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10486,6 +11537,21 @@ MonoBehaviour:
   jumpMinHeight: 0
   forceDownwards: 0
   allowMidFall: 0
+--- !u!114 &4163199077255110256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5918171649529982201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 8736705224105400998}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &5936538625018206224
 GameObject:
   m_ObjectHideFlags: 0
@@ -10497,6 +11563,7 @@ GameObject:
   - component: {fileID: 949085974986424741}
   - component: {fileID: 3812935324549841644}
   - component: {fileID: 4244649889381608096}
+  - component: {fileID: 1259438637607351974}
   m_Layer: 6
   m_Name: Sprinting
   m_TagString: Untagged
@@ -10596,6 +11663,17 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 1236364480038443791}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 1236364480038443791}
+  - {fileID: 3812935324549841644}
+  _behaviors:
+  - {fileID: 4244649889381608096}
 --- !u!114 &4244649889381608096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10629,6 +11707,21 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
+--- !u!114 &1259438637607351974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5936538625018206224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 3812935324549841644}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &6005523312454311402
 GameObject:
   m_ObjectHideFlags: 0
@@ -10743,6 +11836,7 @@ GameObject:
   - component: {fileID: 317580744614931402}
   - component: {fileID: 8181979530632342815}
   - component: {fileID: 9181539546719163320}
+  - component: {fileID: 6517377591425260717}
   m_Layer: 6
   m_Name: LightPunch1
   m_TagString: Untagged
@@ -10868,6 +11962,18 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 3807177755154544969}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 3807177755154544969}
+  - {fileID: 7640692379637215161}
+  _behaviors:
+  - {fileID: 317580744614931402}
+  - {fileID: 8181979530632342815}
 --- !u!114 &317580744614931402
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10948,6 +12054,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &6517377591425260717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6163583669192012189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 7640692379637215161}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &6236790458189297513
 GameObject:
   m_ObjectHideFlags: 0
@@ -10958,6 +12079,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5721769436998970410}
   - component: {fileID: 7028573298488619274}
+  - component: {fileID: 5820089184438662811}
   m_Layer: 0
   m_Name: GrabbedGrounded
   m_TagString: Untagged
@@ -11013,6 +12135,38 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 6999450145878481568}
+  _children:
+  - {fileID: 4242903510589070537}
+  - {fileID: 6007688890914588632}
+  - {fileID: 136701519028985482}
+  - {fileID: 5561208129768122763}
+  _childCount: 4
+  _lineage:
+  - {fileID: 6999450145878481568}
+  - {fileID: 7028573298488619274}
+  _behaviors: []
+--- !u!114 &5820089184438662811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6236790458189297513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 7028573298488619274}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 2291949725970078712}
+  - {fileID: 1431878470932286188}
+  - {fileID: 8032039982669697026}
+  - {fileID: 8005356583379681216}
 --- !u!1 &6275732389334311385
 GameObject:
   m_ObjectHideFlags: 0
@@ -11025,6 +12179,7 @@ GameObject:
   - component: {fileID: 8937721864928111967}
   - component: {fileID: 7903285790010872625}
   - component: {fileID: 3591214809302518234}
+  - component: {fileID: 5798639762179161765}
   m_Layer: 6
   m_Name: Windup
   m_TagString: Untagged
@@ -11113,6 +12268,17 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 6630164468072911266}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 6630164468072911266}
+  - {fileID: 8937721864928111967}
+  _behaviors:
+  - {fileID: 7903285790010872625}
 --- !u!114 &7903285790010872625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11161,6 +12327,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &5798639762179161765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6275732389334311385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 8937721864928111967}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &6330798485065663893
 GameObject:
   m_ObjectHideFlags: 0
@@ -11366,6 +12547,7 @@ GameObject:
   - component: {fileID: 2299099583400383993}
   - component: {fileID: 4312939935764186458}
   - component: {fileID: 1326970059289146713}
+  - component: {fileID: 1423465627237211648}
   m_Layer: 6
   m_Name: AirChargeFall
   m_TagString: Untagged
@@ -11475,6 +12657,18 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 6630164468072911266}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 6630164468072911266}
+  - {fileID: 9187357623978728356}
+  _behaviors:
+  - {fileID: 8653995511402254534}
+  - {fileID: 4312939935764186458}
 --- !u!114 &8653995511402254534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11596,6 +12790,21 @@ MonoBehaviour:
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
   enabled: 1
+--- !u!114 &1423465627237211648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574491177993153932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 9187357623978728356}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &6814723599858117605
 GameObject:
   m_ObjectHideFlags: 0
@@ -11771,6 +12980,7 @@ GameObject:
   - component: {fileID: 4189863658179928102}
   - component: {fileID: 4000547645901868762}
   - component: {fileID: 5394545579396957404}
+  - component: {fileID: 4058983911842037104}
   m_Layer: 6
   m_Name: Idle
   m_TagString: Untagged
@@ -11888,6 +13098,17 @@ MonoBehaviour:
           _MemberName: EnterAiming
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 1236364480038443791}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 1236364480038443791}
+  - {fileID: 4000547645901868762}
+  _behaviors:
+  - {fileID: 5394545579396957404}
 --- !u!114 &5394545579396957404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11921,6 +13142,21 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
+--- !u!114 &4058983911842037104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6820223952866294626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 4000547645901868762}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &6824799447565327635
 GameObject:
   m_ObjectHideFlags: 0
@@ -11934,6 +13170,7 @@ GameObject:
   - component: {fileID: 8805499447185113993}
   - component: {fileID: 6979073167908032003}
   - component: {fileID: 1543269672653310877}
+  - component: {fileID: 1725590818435357826}
   m_Layer: 6
   m_Name: HeadSlam
   m_TagString: Untagged
@@ -11999,6 +13236,18 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 3466680260292128034}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 3466680260292128034}
+  - {fileID: 7788667647418580513}
+  _behaviors:
+  - {fileID: 8805499447185113993}
+  - {fileID: 6979073167908032003}
 --- !u!114 &8805499447185113993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12077,6 +13326,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &1725590818435357826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6824799447565327635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 7788667647418580513}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &6840937366610314507
 GameObject:
   m_ObjectHideFlags: 0
@@ -13266,6 +14530,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2048931125629623396}
   - component: {fileID: 6999450145878481568}
+  - component: {fileID: 4649428907048511158}
   m_Layer: 0
   m_Name: Ranged
   m_TagString: Untagged
@@ -13324,6 +14589,43 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 0
+  _parent: {fileID: 8455434200384702600}
+  _children:
+  - {fileID: 7028573298488619274}
+  - {fileID: 757298395727703996}
+  - {fileID: 2690473538302802805}
+  - {fileID: 3864174957687219544}
+  - {fileID: 4449042176442584155}
+  - {fileID: 5407659928388437348}
+  - {fileID: 4687384188506420108}
+  _childCount: 7
+  _lineage:
+  - {fileID: 6999450145878481568}
+  _behaviors: []
+--- !u!114 &4649428907048511158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7271537524865153676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 6999450145878481568}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 5820089184438662811}
+  - {fileID: 3442131564490374801}
+  - {fileID: 2022265274263264680}
+  - {fileID: 9055682933281272780}
+  - {fileID: 898734445584482957}
+  - {fileID: 7797369412407975474}
+  - {fileID: 5958401317493338716}
 --- !u!1 &7286086598209282453
 GameObject:
   m_ObjectHideFlags: 0
@@ -13368,6 +14670,7 @@ GameObject:
   - component: {fileID: 4449042176442584155}
   - component: {fileID: 5841719628916661894}
   - component: {fileID: 4141974295781259149}
+  - component: {fileID: 898734445584482957}
   m_Layer: 6
   m_Name: Throw
   m_TagString: Untagged
@@ -13450,6 +14753,16 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 6999450145878481568}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6999450145878481568}
+  - {fileID: 4449042176442584155}
+  _behaviors:
+  - {fileID: 5841719628916661894}
 --- !u!114 &5841719628916661894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13498,6 +14811,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &898734445584482957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7296379250413928003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 4449042176442584155}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &7342288055811217514
 GameObject:
   m_ObjectHideFlags: 0
@@ -13687,6 +15015,7 @@ GameObject:
   - component: {fileID: 4687384188506420108}
   - component: {fileID: 7421260604818229875}
   - component: {fileID: 1230435319524463856}
+  - component: {fileID: 5958401317493338716}
   m_Layer: 6
   m_Name: Aiming
   m_TagString: Untagged
@@ -13806,6 +15135,18 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 5561208129768122763}
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 6999450145878481568}
+  _children:
+  - {fileID: 1982546626867489972}
+  - {fileID: 4587419321214753641}
+  _childCount: 2
+  _lineage:
+  - {fileID: 6999450145878481568}
+  - {fileID: 4687384188506420108}
+  _behaviors:
+  - {fileID: 7421260604818229875}
 --- !u!114 &7421260604818229875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13893,6 +15234,23 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &5958401317493338716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7471342363894119853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 4687384188506420108}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 2598225350305671629}
+  - {fileID: 8858626487002844874}
 --- !u!1 &7541462348710925335
 GameObject:
   m_ObjectHideFlags: 0
@@ -14077,6 +15435,7 @@ GameObject:
   - component: {fileID: 3877140044969608344}
   - component: {fileID: 5448032004612991685}
   - component: {fileID: 6036952242168296381}
+  - component: {fileID: 6895086884353824016}
   m_Layer: 6
   m_Name: HellcopterFall
   m_TagString: Untagged
@@ -14187,6 +15546,17 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 6141681725959390025}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6141681725959390025}
+  - {fileID: 8300575896908681866}
+  _behaviors:
+  - {fileID: 3877140044969608344}
+  - {fileID: 5448032004612991685}
 --- !u!114 &3877140044969608344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14265,6 +15635,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &6895086884353824016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7640004567042433024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 8300575896908681866}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &7650120129292485692
 GameObject:
   m_ObjectHideFlags: 0
@@ -14564,6 +15949,7 @@ GameObject:
   - component: {fileID: 3146629290765188103}
   - component: {fileID: 2078276186862268811}
   - component: {fileID: 3006665651935392090}
+  - component: {fileID: 717931405289629245}
   m_Layer: 6
   m_Name: Paused
   m_TagString: Untagged
@@ -14615,6 +16001,14 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 0
+  _parent: {fileID: 8455434200384702600}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 2078276186862268811}
+  _behaviors: []
 --- !u!114 &3006665651935392090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14646,6 +16040,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &717931405289629245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7768039867893722896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 2078276186862268811}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &7946590860477714497
 GameObject:
   m_ObjectHideFlags: 0
@@ -14722,6 +16131,7 @@ GameObject:
   - component: {fileID: 4975428428768240672}
   - component: {fileID: 3756786567065514340}
   - component: {fileID: 9096782004905187224}
+  - component: {fileID: 2022265274263264680}
   m_Layer: 6
   m_Name: Grab
   m_TagString: Untagged
@@ -14803,6 +16213,17 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 4000547645901868762}
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 6999450145878481568}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6999450145878481568}
+  - {fileID: 2690473538302802805}
+  _behaviors:
+  - {fileID: 4975428428768240672}
+  - {fileID: 3756786567065514340}
 --- !u!114 &4975428428768240672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14882,6 +16303,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &2022265274263264680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986475415449474893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 2690473538302802805}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &7996174763766430431
 GameObject:
   m_ObjectHideFlags: 0
@@ -15020,6 +16456,7 @@ GameObject:
   - component: {fileID: 2805571998771508225}
   - component: {fileID: 6484935563616080972}
   - component: {fileID: 951253258747946920}
+  - component: {fileID: 9052336829119171274}
   m_Layer: 6
   m_Name: ParrySpinG
   m_TagString: Untagged
@@ -15077,6 +16514,17 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 6141681725959390025}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6141681725959390025}
+  - {fileID: 906556439848370587}
+  _behaviors:
+  - {fileID: 2805571998771508225}
+  - {fileID: 6484935563616080972}
 --- !u!114 &2805571998771508225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15155,6 +16603,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &9052336829119171274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8181037630459571021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 906556439848370587}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &8199037953781554914
 GameObject:
   m_ObjectHideFlags: 0
@@ -15230,6 +16693,7 @@ GameObject:
   - component: {fileID: 3847701285562395558}
   - component: {fileID: 3599153407553307017}
   - component: {fileID: 5512668703277878947}
+  - component: {fileID: 1755514712148584391}
   m_Layer: 6
   m_Name: UpperCut
   m_TagString: Untagged
@@ -15324,6 +16788,18 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 3466680260292128034}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 3466680260292128034}
+  - {fileID: 3443062856187106688}
+  _behaviors:
+  - {fileID: 3847701285562395558}
+  - {fileID: 3599153407553307017}
 --- !u!114 &3847701285562395558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15402,6 +16878,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &1755514712148584391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8233020272553458984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 3443062856187106688}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &8245773314306325851
 GameObject:
   m_ObjectHideFlags: 0
@@ -15415,6 +16906,7 @@ GameObject:
   - component: {fileID: 5618519440197409730}
   - component: {fileID: 1794738385307866841}
   - component: {fileID: 6748568676543395012}
+  - component: {fileID: 1052526961434912058}
   m_Layer: 6
   m_Name: DamageMinor
   m_TagString: Untagged
@@ -15491,6 +16983,17 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 3803531707346265779}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 2827000484517282095}
+  _behaviors:
+  - {fileID: 5618519440197409730}
+  - {fileID: 1794738385307866841}
 --- !u!114 &5618519440197409730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15569,6 +17072,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &1052526961434912058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8245773314306325851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 2827000484517282095}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &8276374663671568334
 GameObject:
   m_ObjectHideFlags: 0
@@ -15614,6 +17132,7 @@ GameObject:
   - component: {fileID: 5407659928388437348}
   - component: {fileID: 3202945699952535314}
   - component: {fileID: 7558545410218042910}
+  - component: {fileID: 7797369412407975474}
   m_Layer: 6
   m_Name: AirThrow
   m_TagString: Untagged
@@ -15671,6 +17190,16 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 6999450145878481568}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6999450145878481568}
+  - {fileID: 5407659928388437348}
+  _behaviors:
+  - {fileID: 3202945699952535314}
 --- !u!114 &3202945699952535314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15719,6 +17248,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &7797369412407975474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8291585736164761318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 5407659928388437348}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &8370047734673085785
 GameObject:
   m_ObjectHideFlags: 0
@@ -15763,6 +17307,7 @@ GameObject:
   - component: {fileID: 8756034729405423735}
   - component: {fileID: 2644403828659727866}
   - component: {fileID: 4292147563361030305}
+  - component: {fileID: 7464031603671185038}
   m_Layer: 6
   m_Name: DamageWhamLanded
   m_TagString: Untagged
@@ -15856,6 +17401,17 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 3803531707346265779}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 8249939815927584102}
+  _behaviors:
+  - {fileID: 8756034729405423735}
+  - {fileID: 2644403828659727866}
 --- !u!114 &8756034729405423735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15934,6 +17490,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &7464031603671185038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8391892417953183193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 8249939815927584102}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &8450292216223193930
 GameObject:
   m_ObjectHideFlags: 0
@@ -16010,6 +17581,7 @@ GameObject:
   - component: {fileID: 4829984101446713626}
   - component: {fileID: 706258749169830515}
   - component: {fileID: 7734167829673190997}
+  - component: {fileID: 2476180734114409082}
   m_Layer: 6
   m_Name: AirBonk
   m_TagString: Untagged
@@ -16089,6 +17661,18 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 2
+  _parent: {fileID: 6630164468072911266}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 6630164468072911266}
+  - {fileID: 4439568894455865569}
+  _behaviors:
+  - {fileID: 4829984101446713626}
+  - {fileID: 706258749169830515}
 --- !u!114 &4829984101446713626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16167,6 +17751,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &2476180734114409082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8459244022104302900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 4439568894455865569}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &8482731040741248156
 GameObject:
   m_ObjectHideFlags: 0
@@ -16480,6 +18079,7 @@ GameObject:
   - component: {fileID: 8368090947817114285}
   - component: {fileID: 1493939074062051383}
   - component: {fileID: 5563327580469889438}
+  - component: {fileID: 8877894853438802942}
   m_Layer: 6
   m_Name: Bonk
   m_TagString: Untagged
@@ -16573,6 +18173,17 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockReady: 0
+  _machine: {fileID: 8455434200384702600}
+  _layer: 1
+  _parent: {fileID: 3803531707346265779}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 3803531707346265779}
+  - {fileID: 881160624330373794}
+  _behaviors:
+  - {fileID: 8368090947817114285}
+  - {fileID: 1493939074062051383}
 --- !u!114 &8368090947817114285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16651,6 +18262,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &8877894853438802942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8822378987506164119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 881160624330373794}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &8885662702780661556
 GameObject:
   m_ObjectHideFlags: 0
@@ -16694,6 +18320,7 @@ GameObject:
   - component: {fileID: 5004547793418751161}
   - component: {fileID: 7688214283976459852}
   - component: {fileID: 4844890574885748667}
+  - component: {fileID: 7300566890892305477}
   m_Layer: 6
   m_Name: Impact
   m_TagString: Untagged
@@ -16782,6 +18409,17 @@ MonoBehaviour:
           _MemberName: TransitionTo
           _PersistentArguments: []
   lockReady: 1
+  _machine: {fileID: 8455434200384702600}
+  _layer: 3
+  _parent: {fileID: 1252659914078541581}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 5123969060782274918}
+  - {fileID: 3807177755154544969}
+  - {fileID: 1252659914078541581}
+  - {fileID: 7688214283976459852}
+  _behaviors: []
 --- !u!114 &4844890574885748667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16813,6 +18451,21 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &7300566890892305477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8952263921800461566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 7688214283976459852}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &8959225014369038086
 GameObject:
   m_ObjectHideFlags: 0

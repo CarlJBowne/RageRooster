@@ -7,8 +7,18 @@ using NEW = SLS.StateMachineH;
 
 public class HSMMigrationMidData : ScriptableObject
 {
+    public List<HSMMachine> workingMachines;
 
-    public List<GameObject> machines = new();
-    public List<HSMMigrationHelper> helpers = new();
+
+}
+
+[System.Serializable]
+public class HSMMachine : Prefab
+{
+    public HSMMachine(string path, bool openForEditing = false) : base(path, openForEditing){}
+
+    public HSMMigrationHelper topHelper;
+
+    public int phase = 0;
 
 }

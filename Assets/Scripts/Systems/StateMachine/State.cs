@@ -22,7 +22,7 @@ namespace SLS.StateMachineV3
         /// <summary>
         /// Acts as a separate state from children rather than automating to the first in the list. Only applicable if this State has child states. 
         /// </summary>
-        [SerializeField, ShowField(nameof(__showSepFromChildren))] private bool separateFromChildren;
+        [SerializeField, ShowField(nameof(__showSepFromChildren))] public bool separateFromChildren;
 
         [FoldoutGroup("Lifetime Events", nameof(onAwakeEvent), nameof(onEnterEvent), nameof(onExitEvent), nameof(onActiveChangeEvent), nameof(onUpdateEvent), nameof(onFixedUpdateEvent))]
         public Void lifetimeEventsHolder;
@@ -69,23 +69,38 @@ namespace SLS.StateMachineV3
         public bool active { get; protected set; }
 
         public StateMachine machine { get => _machine; protected set => _machine = value; }
-        private StateMachine _machine;
+        [SerializeField] private StateMachine _machine;
         public int layer { get => _layer; protected set => _layer = value; }
-        private int _layer;
+        [SerializeField] private int _layer;
         public State parent { get => _parent; protected set => _parent = value; }
-        private State _parent;
+        [SerializeField] private State _parent;
         public State[] children { get => _children; protected set => _children = value; }
-        private State[] _children;
+        [SerializeField] private State[] _children;
         public int childCount { get => _childCount; protected set => _childCount = value; }
-        private int _childCount;
+        [SerializeField] private int _childCount;
         public State activeChild { get => _activeChild; protected set => _activeChild = value; }
         private State _activeChild;
         public State[] lineage { get => _lineage; protected set => _lineage = value; }
-        private State[] _lineage;
+        [SerializeField] private State[] _lineage;
         public StateBehavior[] behaviors { get => _behaviors; protected set => _behaviors = value; }
-        private StateBehavior[] _behaviors;
+        [SerializeField] private StateBehavior[] _behaviors;
 
         //Getters
+
+        public void AddChildAtIndex0(State newState)
+        {
+            if (children == null || children.Length == 0)
+            {
+                children = new State[] { newState };
+            }
+            else
+            {
+                var newChildren = new State[children.Length + 1];
+                newChildren[0] = newState;
+                for (int i = 0; i < children.Length; i++) newChildren[i + 1] = children[i];
+                _children = newChildren;
+            }
+        }
 
         public State this[int i] => children[i];
         public StateBehavior this[System.Type T] => GetComponent(T) as StateBehavior;

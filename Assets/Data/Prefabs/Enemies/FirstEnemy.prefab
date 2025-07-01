@@ -1206,6 +1206,7 @@ GameObject:
   - component: {fileID: 6309155619283984338}
   - component: {fileID: 6736125751645189697}
   - component: {fileID: 4160795181177420388}
+  - component: {fileID: 3215376832118388645}
   m_Layer: 7
   m_Name: Chasing
   m_TagString: Untagged
@@ -1257,6 +1258,16 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 607112006137138021}
+  _layer: 0
+  _parent: {fileID: 607112006137138021}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 6309155619283984338}
+  _behaviors:
+  - {fileID: 6736125751645189697}
+  - {fileID: 4160795181177420388}
 --- !u!114 &6736125751645189697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1290,6 +1301,21 @@ MonoBehaviour:
   onEnterTime: 0.2
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &3215376832118388645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003426846957023087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 6309155619283984338}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &1029378778838917342
 GameObject:
   m_ObjectHideFlags: 0
@@ -1863,6 +1889,7 @@ GameObject:
   - component: {fileID: 843191684609943793}
   - component: {fileID: 738354572120715908}
   - component: {fileID: 5281166463461159709}
+  - component: {fileID: 5437389088061969718}
   m_Layer: 7
   m_Name: Attacking
   m_TagString: Untagged
@@ -1915,6 +1942,17 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 607112006137138021}
+  _layer: 0
+  _parent: {fileID: 607112006137138021}
+  _children:
+  - {fileID: 2458796388149802249}
+  _childCount: 1
+  _lineage:
+  - {fileID: 843191684609943793}
+  _behaviors:
+  - {fileID: 738354572120715908}
+  - {fileID: 5281166463461159709}
 --- !u!114 &738354572120715908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1950,6 +1988,22 @@ MonoBehaviour:
     velocity: {x: 0, y: 0, z: 0}
     tags:
     - name: FromEnemy
+--- !u!114 &5437389088061969718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411577453859662941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 843191684609943793}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 9064645092660745324}
 --- !u!1 &1488944864748835333
 GameObject:
   m_ObjectHideFlags: 0
@@ -4775,6 +4829,7 @@ GameObject:
   - component: {fileID: 3581232340763009195}
   - component: {fileID: 97701640159672629}
   - component: {fileID: 1945227566797940320}
+  - component: {fileID: 7676673805327720808}
   m_Layer: 7
   m_Name: Patrolling
   m_TagString: Untagged
@@ -4826,6 +4881,16 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 607112006137138021}
+  _layer: 0
+  _parent: {fileID: 607112006137138021}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 3581232340763009195}
+  _behaviors:
+  - {fileID: 97701640159672629}
+  - {fileID: 1945227566797940320}
 --- !u!114 &97701640159672629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4859,6 +4924,21 @@ MonoBehaviour:
   minWalkDistance: 5
   maxWalkDistance: 15
   distanceToProceed: 0.25
+--- !u!114 &7676673805327720808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3675853143938587536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 3581232340763009195}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &3761557559425741465
 GameObject:
   m_ObjectHideFlags: 0
@@ -6084,6 +6164,7 @@ GameObject:
   - component: {fileID: 3133899637185726238}
   - component: {fileID: 6846661119807183612}
   - component: {fileID: 3674508901043307227}
+  - component: {fileID: 5611760682028005333}
   m_Layer: 7
   m_Name: FirstEnemy
   m_TagString: Untagged
@@ -6184,6 +6265,19 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 607112006137138021}
+  _layer: -1
+  _parent: {fileID: 607112006137138021}
+  _children:
+  - {fileID: 3581232340763009195}
+  - {fileID: 6309155619283984338}
+  - {fileID: 843191684609943793}
+  - {fileID: 1894316070930568804}
+  _childCount: 4
+  _lineage:
+  - {fileID: 607112006137138021}
+  _behaviors:
+  - {fileID: 3133899637185726238}
   states:
     _serializedList: []
   signalReady: 1
@@ -6376,6 +6470,25 @@ MonoBehaviour:
   - {fileID: 925324475207166938, guid: 8e07c4e22d1e1e544836d1ad9b0252b3, type: 3}
   spawnForce: 5
   itemChance: 0.4
+--- !u!114 &5611760682028005333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811522196661094151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 607112006137138021}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 7676673805327720808}
+  - {fileID: 3215376832118388645}
+  - {fileID: 5437389088061969718}
+  - {fileID: 862857589851501892}
 --- !u!1 &4858683810890698992
 GameObject:
   m_ObjectHideFlags: 0
@@ -6542,6 +6655,7 @@ GameObject:
   - component: {fileID: 502783886551972791}
   - component: {fileID: 2458796388149802249}
   - component: {fileID: 9041441467002982087}
+  - component: {fileID: 9064645092660745324}
   m_Layer: 7
   m_Name: Punching
   m_TagString: Untagged
@@ -6593,6 +6707,16 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 607112006137138021}
+  _layer: 1
+  _parent: {fileID: 843191684609943793}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 843191684609943793}
+  - {fileID: 2458796388149802249}
+  _behaviors:
+  - {fileID: 9041441467002982087}
 --- !u!114 &9041441467002982087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6610,6 +6734,21 @@ MonoBehaviour:
   onEnterTime: 0.2
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &9064645092660745324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4981378115798206189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 2458796388149802249}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &5041623023944883017
 GameObject:
   m_ObjectHideFlags: 0
@@ -9006,6 +9145,7 @@ GameObject:
   - component: {fileID: 7338846542263605359}
   - component: {fileID: 1894316070930568804}
   - component: {fileID: 3984188542969606776}
+  - component: {fileID: 862857589851501892}
   m_Layer: 7
   m_Name: GrabStruggle
   m_TagString: Untagged
@@ -9057,6 +9197,15 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
+  _machine: {fileID: 607112006137138021}
+  _layer: 0
+  _parent: {fileID: 607112006137138021}
+  _children: []
+  _childCount: 0
+  _lineage:
+  - {fileID: 1894316070930568804}
+  _behaviors:
+  - {fileID: 3984188542969606776}
 --- !u!114 &3984188542969606776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9074,6 +9223,21 @@ MonoBehaviour:
   onEnterTime: 0.2
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &862857589851501892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7164298252039943558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 1894316070930568804}
+  newState: {fileID: 0}
+  children: []
 --- !u!1 &7186541399616388205
 GameObject:
   m_ObjectHideFlags: 0
