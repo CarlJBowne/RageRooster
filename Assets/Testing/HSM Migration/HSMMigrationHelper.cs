@@ -86,6 +86,7 @@ public class HSMMigrationHelper : MonoBehaviour
             NEW.SignalManager signalManager = gameObject.AddComponent<NEW.SignalManager>();
             if (SM.globalSignals != null && SM.globalSignals.Count > 0) 
                 signalManager.globalSignals = ConvertFromYellowPaper(SM.globalSignals);
+            EditorUtility.SetDirty(SM);
         }
         else
         {
@@ -93,8 +94,10 @@ public class HSMMigrationHelper : MonoBehaviour
             {
                 NEW.SignalNode signalNode = gameObject.AddComponent<NEW.SignalNode>();
                 signalNode.signals = ConvertFromYellowPaper(oldState.signals);
+                EditorUtility.SetDirty(signalNode);
             }
         }
+        EditorUtility.SetDirty(gameObject);
 
         foreach (var child in children)
         {
@@ -116,7 +119,8 @@ public class HSMMigrationHelper : MonoBehaviour
     //Does Step 5 (Removes all instances of OLD.States and OLD.StateMachines.)
     public void DoStep5(bool isStateMachine = false)
     {
-        if (oldState != null) Destroy(oldState);
+        if (oldState != null) DestroyImmediate(oldState);
+        EditorUtility.SetDirty(gameObject);
         foreach (var child in children) child.DoStep5();
     }
 
@@ -129,7 +133,8 @@ public class HSMMigrationHelper : MonoBehaviour
         GameObject GO = gameObject;
 
         // Remove HSMMigrationHelper from this GameObject
-        Destroy(this);
+        DestroyImmediate(this);
+        EditorUtility.SetDirty(gameObject);
 
         if (isStateMachine)
         {
