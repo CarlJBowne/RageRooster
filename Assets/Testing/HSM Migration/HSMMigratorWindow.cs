@@ -57,6 +57,7 @@ public class HSMMigratorWindow : EditorWindow
             if (GUILayout.Button("Run Step4")) Step4();
             if (GUILayout.Button("Run Step5")) Step5();
             if (GUILayout.Button("Run Step6")) Step6();
+            if (GUILayout.Button("RemoveDupes")) RemoveDupes();
         }
     }
 
@@ -94,7 +95,11 @@ public class HSMMigratorWindow : EditorWindow
         result.oldState = state;
         if(state.children != null)
             foreach (OLD.State child in state.children)
-                result.children.Add(AddHelper(child));
+            {
+                var cHelper = AddHelper(child);
+                if(!result.children.Contains(cHelper)) result.children.Add(cHelper);
+            }
+                
 
         EditorUtility.SetDirty(state.gameObject);
         EditorUtility.SetDirty(state);
@@ -169,7 +174,15 @@ public class HSMMigratorWindow : EditorWindow
         }
     }
 
-
+    public void RemoveDupes()
+    {
+        foreach (var item in data.workingMachines)
+        {
+            item.Open();
+            item.editableObject.GetComponent<HSMMigrationHelper>().RemoveDupes();
+            item.Close();
+        }
+    }
 
 
 }

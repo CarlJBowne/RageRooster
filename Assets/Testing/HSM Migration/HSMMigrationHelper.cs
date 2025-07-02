@@ -5,6 +5,7 @@ using UnityEngine;
 using OLD = SLS.StateMachineV3;
 using NEW = SLS.StateMachineH;
 using UnityEditor;
+using System.Linq;
 
 
 public class HSMMigrationHelper : MonoBehaviour
@@ -26,9 +27,9 @@ public class HSMMigrationHelper : MonoBehaviour
                 newState = gameObject.GetOrAddComponent<NEW.StateMachine>();
         }
         else newState = gameObject.GetOrAddComponent<NEW.State>();
-        //EditorUtility.SetDirty(gameObject);
+        EditorUtility.SetDirty(this);
         foreach (var child in children) child.DoStep1();
-        if (isStateMachine) (newState as NEW.StateMachine).Build();
+        if (isStateMachine && newState != null) (newState as NEW.StateMachine).Build();
     }
 
     //Does Step 2, (Adding default states for States with "separate from children" turned on, and then transfers all non-State related components over.)
@@ -54,16 +55,14 @@ public class HSMMigrationHelper : MonoBehaviour
 
             foreach (var component in baseComponents)
             {
-                if (component is not OLD.State)
+                if (component is OLD.State or Transform) continue;
+                var type = component.GetType();
+                var newComponent = newChild.AddComponent(type);
+                foreach (var field in type.GetFields())
                 {
-                    var type = component.GetType();
-                    var newComponent = newChild.AddComponent(type);
-                    foreach (var field in type.GetFields())
-                    {
-                        field.SetValue(newComponent, field.GetValue(component));
-                    }
-                    Destroy(component);
+                    field.SetValue(newComponent, field.GetValue(component));
                 }
+                DestroyImmediate(component);
             }
             // Copy specific values from parent to child
             newChildState.signals = oldState.signals;
@@ -72,6 +71,7 @@ public class HSMMigrationHelper : MonoBehaviour
             // Reset parent state values to default
             oldState.signals = new();
             oldState.lockReady = false;
+            EditorUtility.SetDirty(newChild);
         }
 
         foreach (var child in children) child.DoStep2();
@@ -136,6 +136,15 @@ public class HSMMigrationHelper : MonoBehaviour
             NEW.StateMachine newStateMachine = GetComponent<NEW.StateMachine>();
             newStateMachine.Build();
         }
+    }
+
+
+    public void RemoveDupes()
+    {
+        children = children.ToHashSet().ToList();
+        EditorUtility.SetDirty(this);
+
+        foreach (var child in children) child.RemoveDupes();
     }
 
 }
