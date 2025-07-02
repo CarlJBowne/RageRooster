@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 
 public class MeleeStateEB : StateBehavior
 {
@@ -16,7 +16,7 @@ public class MeleeStateEB : StateBehavior
     private float attackTimer;
     #endregion 
 
-    public override void OnFixedUpdate()
+    protected override void OnFixedUpdate()
     {
         attackTimer += Time.fixedDeltaTime;
         if(attackTimer > attackRate)

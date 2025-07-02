@@ -1,9 +1,9 @@
 using EditorAttributes;
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static SLS.StateMachineV3.StateAnimator;
+using static SLS.StateMachineH.StateAnimator;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class PlayerGroundedMovement : PlayerMovementEffector
@@ -36,7 +36,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
 
     private Collider attackCollider;
 
-    public override void OnAwake() => attackCollider = GetComponent<Collider>();
+    protected override void OnAwake() => attackCollider = GetComponent<Collider>();
 
     public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
@@ -85,8 +85,8 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         }
         else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
 
-        if (currentSpeed >= nextPhaseThreshold && nextCondition) nextPhase.state.TransitionTo();
-        else if (currentSpeed < prevPhaseThreshold && prevPhase != null) prevPhase.state.TransitionTo();
+        if (currentSpeed >= nextPhaseThreshold && nextCondition) nextPhase.State.Enter();
+        else if (currentSpeed < prevPhaseThreshold && prevPhase != null) prevPhase.State.Enter();
     }
     
     private void GetConditionals(out bool thisCondition, out bool nextCondition)
@@ -104,7 +104,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
             ;
     }
 
-    public override void OnEnter(State prev, bool isFinal)
+    protected override void OnEnter(State prev, bool isFinal)
     {
         base.OnEnter(prev, isFinal);
         //if (Machine.finishedSetup && !playerMovementBody.GroundCheck()) 
@@ -112,14 +112,14 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         if (attackCollider != null) attackCollider.enabled = true;
 
     }
-    public override void OnExit(State next){if(attackCollider != null) attackCollider.enabled = false;}
+    protected override void OnExit(State next){if(attackCollider != null) attackCollider.enabled = false;}
 
     public void LandInto()
     {
         bool groundCollide = playerMovementBody.GroundCheck();
-        if (!groundCollide && Machine.SendSignal("WalkOff", false, true)) return;
+        if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
         playerMovementBody.GroundStateChange(true);
-        state.TransitionTo();
+        State.Enter();
         if (onEntry == EntryAnimAction.Play) Machine.animator.Play(onEnterName);
         if (onEntry == EntryAnimAction.CrossFade) Machine.animator.CrossFade(onEnterName, onEnterTime);
         if (onEntry == EntryAnimAction.Trigger) Machine.animator.SetTrigger(onEnterName);
@@ -127,9 +127,9 @@ public class PlayerGroundedMovement : PlayerMovementEffector
     public void LandInto(StateAnimator.EntryAnimAction onEntry, string onEnterName, float onEnterTime)
     {
         bool groundCollide = playerMovementBody.GroundCheck();
-        if (!groundCollide && Machine.SendSignal("WalkOff", false, true)) return;
+        if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
         playerMovementBody.GroundStateChange(true);
-        state.TransitionTo();
+        State.Enter();
         if (onEntry == EntryAnimAction.Play) Machine.animator.Play(onEnterName);
         if (onEntry == EntryAnimAction.CrossFade) Machine.animator.CrossFade(onEnterName, onEnterTime);
         if (onEntry == EntryAnimAction.Trigger) Machine.animator.SetTrigger(onEnterName);

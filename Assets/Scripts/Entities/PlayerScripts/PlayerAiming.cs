@@ -1,4 +1,4 @@
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +22,7 @@ public class PlayerAiming : PlayerMovementEffector
 
     public Vector2 dInput; 
 
-    public override void OnFixedUpdate()
+    protected override void OnFixedUpdate()
     {
 
         dInput = Input.Camera;

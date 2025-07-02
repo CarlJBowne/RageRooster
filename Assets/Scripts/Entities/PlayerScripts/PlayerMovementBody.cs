@@ -1,6 +1,6 @@
 using EditorAttributes;
 using JigglePhysics;
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -138,7 +138,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         set
         {
             _currentVent = value;
-            Machine.SendSignal(value != null ? "EnterVent" : "ExitVent", addToQueue: false, overrideReady: true);
+            Machine.SendSignal(new(value != null ? "EnterVent" : "ExitVent", 0,  true));
         }
     }
     public bool isOverVent => _currentVent != null;
@@ -149,7 +149,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
 
 
-    public override void OnAwake()
+    protected override void OnAwake()
     {
         TryGetComponent(out rb);
         TryGetComponent(out collider);
@@ -159,7 +159,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         _instance = this;
     }
 
-    public override void OnFixedUpdate()
+    protected override void OnFixedUpdate()
     {
         if (rb.isKinematic)
         {
@@ -197,7 +197,7 @@ public class PlayerMovementBody : PlayerStateBehavior
             else if (grounded)
             {
                 GroundStateChange(false);
-                Machine.SendSignal("WalkOff", overrideReady: true);
+                Machine.SendSignal(new("WalkOff", ignoreLock: true));
             }
         }
 
@@ -272,7 +272,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                         stopped = true;
                 }
 
-            if (stopped && Machine.SendSignal("Bonk", overrideReady: true, addToQueue: false)) return;
+            if (stopped && Machine.SendSignal(new("Bonk", 0, true))) return;
 
             Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1); 
             Move(newDir, nextNormal, step + 1);
@@ -291,7 +291,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                 else
                 {
                     GroundStateChange(false);
-                    Machine.SendSignal("WalkOff", overrideReady: true);
+                    Machine.SendSignal(new("WalkOff", ignoreLock: true));
                 }
             }
         }
@@ -325,7 +325,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         {
             jumpPhase = -1;
 
-            Machine.SendSignal("Land", overrideReady: true);
+            Machine.SendSignal(new("Land", ignoreLock: true));
 
             if (playerController.CheckJumpBuffer()) Machine.SendSignal("Jump");
         }
@@ -345,7 +345,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         Vector3 contactPoint = collision.GetContact(0).normal;
         if (!grounded && velocity.y > .1f && Vector3.Dot(contactPoint, Vector3.up) < -0.75f)
         {
-            sFall.TransitionTo();
+            sFall.Enter();
             VelocitySet(y: 0);
         }
         else if (!grounded && WithinSlopeAngle(contactPoint))
@@ -384,12 +384,12 @@ public class PlayerMovementBody : PlayerStateBehavior
     {
         if(GroundCheck())
         {
-            idleState.TransitionTo();
+            idleState.Enter();
             //animator.SetTrigger("ReturnToGroundNeutral");
             if (doCrossFade) animator.CrossFade("GroundBasic", .1f);
         }
         else 
-            airNeutralState.TransitionTo();
+            airNeutralState.Enter();
     }
 
 #if UNITY_EDITOR
