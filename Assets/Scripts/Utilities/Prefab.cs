@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
+using UnityEditor.SceneManagement;
 
 /// <summary>
 /// A representation of a Prefab.
@@ -10,9 +11,16 @@ using System;
 [System.Serializable]
 public class Prefab
 {
+    [field: SerializeField]
     public string path { get; private set; }
     public bool opened { get; private set; } = false;
-    public GameObject readOnlyObject => AssetDatabase.LoadAssetAtPath<GameObject>(path);
+    public GameObject readOnlyObject { get
+        {
+            if (_readOnlyObjectCache == null) _readOnlyObjectCache = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            return _readOnlyObjectCache;
+        }  
+    }
+    private GameObject _readOnlyObjectCache = null;
     public GameObject editableObject { get; private set; } = null;
 
     public Prefab(string path, bool openForEditing = false)
@@ -41,7 +49,11 @@ public class Prefab
     public void Close(bool withoutSaving = false)
     {
         if (!opened) return;
-        if(!withoutSaving) PrefabUtility.SaveAsPrefabAsset(editableObject, path);
+        if (!withoutSaving)
+        {
+            EditorSceneManager.MarkSceneDirty(editableObject.scene); // Mark the scene as dirty  
+            PrefabUtility.SaveAsPrefabAsset(editableObject, path);
+        }
         PrefabUtility.UnloadPrefabContents(editableObject);
         opened = false;
     }

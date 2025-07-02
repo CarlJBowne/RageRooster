@@ -2439,6 +2439,7 @@ GameObject:
   - component: {fileID: 2523373393776142833}
   - component: {fileID: 4971400543128926430}
   - component: {fileID: 708076650846175498}
+  - component: {fileID: 6963467323664176327}
   m_Layer: 7
   m_Name: Attacking
   m_TagString: Untagged
@@ -2569,8 +2570,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oldState: {fileID: 6468403254272803315}
-  newState: {fileID: 0}
+  newState: {fileID: 6963467323664176327}
   children: []
+--- !u!114 &6963467323664176327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2641995060867614448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!1 &2673744444177228503
 GameObject:
   m_ObjectHideFlags: 0
@@ -3657,6 +3676,12 @@ MonoBehaviour:
   children:
   - {fileID: 3291120953203770606}
   - {fileID: 708076650846175498}
+  - {fileID: 3291120953203770606}
+  - {fileID: 708076650846175498}
+  - {fileID: 3291120953203770606}
+  - {fileID: 708076650846175498}
+  - {fileID: 3291120953203770606}
+  - {fileID: 708076650846175498}
 --- !u!1 &3607626698313877417
 GameObject:
   m_ObjectHideFlags: 0
@@ -4167,6 +4192,7 @@ GameObject:
   - component: {fileID: 5462495818761838655}
   - component: {fileID: 6210339910212272752}
   - component: {fileID: 3291120953203770606}
+  - component: {fileID: 8342653995367149759}
   m_Layer: 7
   m_Name: Floating
   m_TagString: Untagged
@@ -4272,8 +4298,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oldState: {fileID: 5732303842472750605}
-  newState: {fileID: 0}
+  newState: {fileID: 8342653995367149759}
   children: []
+--- !u!114 &8342653995367149759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4242566068978263145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!1 &4248851303409065686
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,7 +17,7 @@ public class HSMMachine : Prefab
 {
     public HSMMachine(string path, bool openForEditing = false) : base(path, openForEditing){}
 
-    public HSMMigrationHelper topHelper;
+    public HSMMigrationHelper topHelper => readOnlyObject.GetComponent<HSMMigrationHelper>();
 
     public int phase = 0;
 

@@ -76,9 +76,10 @@ public class HSMMigratorWindow : EditorWindow
 
             Machine.ManualSetup();
 
-            prefab.topHelper = AddHelper(prefab.editableObject.GetComponent<OLD.StateMachine>());
+            AddHelper(prefab.editableObject.GetComponent<OLD.StateMachine>());
 
             prefab.Close();
+            EditorUtility.SetDirty(data);
         }
 
 
@@ -108,9 +109,9 @@ public class HSMMigratorWindow : EditorWindow
         {
             item.Open();
 
-            item.editableObject.GetComponent<HSMMigrationHelper>().DoStep1();
+            item.editableObject.GetComponent<HSMMigrationHelper>().DoStep1(true);
 
-            item.phase++;
+            item.phase = 1;
 
             item.Close();
         }
@@ -121,9 +122,9 @@ public class HSMMigratorWindow : EditorWindow
         {
             item.Open();
 
-            item.editableObject.GetComponent<HSMMigrationHelper>().DoStep2();
+            item.editableObject.GetComponent<HSMMigrationHelper>().DoStep2(true);
 
-            item.phase++;
+            item.phase = 2;
 
             item.Close();
         }
@@ -134,9 +135,9 @@ public class HSMMigratorWindow : EditorWindow
         {
             item.Open();
 
-            item.editableObject.GetComponent<HSMMigrationHelper>().DoStep4();
+            item.editableObject.GetComponent<HSMMigrationHelper>().DoStep4(true);
 
-            item.phase++;
+            item.phase = 4;
 
             item.Close();
         }
@@ -147,9 +148,9 @@ public class HSMMigratorWindow : EditorWindow
         {
             item.Open();
 
-            item.editableObject.GetComponent<HSMMigrationHelper>().DoStep5();
+            item.editableObject.GetComponent<HSMMigrationHelper>().DoStep5(true);
 
-            item.phase++;
+            item.phase = 5;
 
             item.Close();
         }
@@ -160,9 +161,9 @@ public class HSMMigratorWindow : EditorWindow
         {
             item.Open();
 
-            item.editableObject.GetComponent<HSMMigrationHelper>().DoStep6();
+            item.editableObject.GetComponent<HSMMigrationHelper>().DoStep6(true);
 
-            item.phase++;
+            item.phase = 6;
 
             item.Close();
         }

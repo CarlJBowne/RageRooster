@@ -1014,6 +1014,15 @@ MonoBehaviour:
   - {fileID: 4201190610007492075}
   - {fileID: 7643343486996622479}
   - {fileID: 7576350524292256059}
+  - {fileID: 4201190610007492075}
+  - {fileID: 7643343486996622479}
+  - {fileID: 7576350524292256059}
+  - {fileID: 4201190610007492075}
+  - {fileID: 7643343486996622479}
+  - {fileID: 7576350524292256059}
+  - {fileID: 4201190610007492075}
+  - {fileID: 7643343486996622479}
+  - {fileID: 7576350524292256059}
 --- !u!1 &2559604377289995549
 GameObject:
   m_ObjectHideFlags: 0
@@ -1210,6 +1219,7 @@ GameObject:
   - component: {fileID: 7769585399643124630}
   - component: {fileID: 5989265127938018364}
   - component: {fileID: 7643343486996622479}
+  - component: {fileID: 8126672324637004462}
   m_Layer: 7
   m_Name: Chasing
   m_TagString: Untagged
@@ -1331,8 +1341,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oldState: {fileID: 7217759710699066872}
-  newState: {fileID: 0}
+  newState: {fileID: 8126672324637004462}
   children: []
+--- !u!114 &8126672324637004462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3054420718426184537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!1 &3365369044970041367
 GameObject:
   m_ObjectHideFlags: 0
@@ -1442,6 +1470,7 @@ GameObject:
   - component: {fileID: 8677131897453068850}
   - component: {fileID: 3568916294667421612}
   - component: {fileID: 4201190610007492075}
+  - component: {fileID: 3655468857735288585}
   m_Layer: 7
   m_Name: Patrolling
   m_TagString: Untagged
@@ -1547,8 +1576,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oldState: {fileID: 6949683441545476226}
-  newState: {fileID: 0}
+  newState: {fileID: 3655468857735288585}
   children: []
+--- !u!114 &3655468857735288585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3650106411344813003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!1 &3722073247330969220
 GameObject:
   m_ObjectHideFlags: 0
@@ -1563,6 +1610,7 @@ GameObject:
   - component: {fileID: 8517626057059829252}
   - component: {fileID: 6614652859543076544}
   - component: {fileID: 7576350524292256059}
+  - component: {fileID: 9191331116892721876}
   m_Layer: 7
   m_Name: Attacking
   m_TagString: Untagged
@@ -1693,8 +1741,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oldState: {fileID: 573214872866643999}
-  newState: {fileID: 0}
+  newState: {fileID: 9191331116892721876}
   children: []
+--- !u!114 &9191331116892721876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3722073247330969220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!1 &3952767387017707927
 GameObject:
   m_ObjectHideFlags: 0

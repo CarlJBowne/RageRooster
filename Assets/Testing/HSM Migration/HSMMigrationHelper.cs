@@ -4,6 +4,7 @@ using UnityEngine;
 
 using OLD = SLS.StateMachineV3;
 using NEW = SLS.StateMachineH;
+using UnityEditor;
 
 
 public class HSMMigrationHelper : MonoBehaviour
@@ -22,10 +23,12 @@ public class HSMMigrationHelper : MonoBehaviour
             OLD.StateMachine oldStateMachine = GetComponent<OLD.StateMachine>();
 
             if (oldStateMachine.GetType() != typeof(OLD.StateMachine))
-                newState = gameObject.AddComponent<NEW.StateMachine>();
+                newState = gameObject.GetOrAddComponent<NEW.StateMachine>();
         }
-        else newState = gameObject.AddComponent<NEW.State>();
+        else newState = gameObject.GetOrAddComponent<NEW.State>();
+        //EditorUtility.SetDirty(gameObject);
         foreach (var child in children) child.DoStep1();
+        if (isStateMachine) (newState as NEW.StateMachine).Build();
     }
 
     //Does Step 2, (Adding default states for States with "separate from children" turned on, and then transfers all non-State related components over.)

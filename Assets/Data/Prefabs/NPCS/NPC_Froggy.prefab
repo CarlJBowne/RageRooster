@@ -639,6 +639,7 @@ GameObject:
   - component: {fileID: 8215790393092172055}
   - component: {fileID: 1753627936466461426}
   - component: {fileID: 548331688421527683}
+  - component: {fileID: 1039329718445696152}
   m_Layer: 0
   m_Name: Talking
   m_TagString: Untagged
@@ -732,8 +733,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oldState: {fileID: 8215790393092172055}
-  newState: {fileID: 0}
+  newState: {fileID: 1039329718445696152}
   children: []
+--- !u!114 &1039329718445696152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205560365441503824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!1 &1285967677239413581
 GameObject:
   m_ObjectHideFlags: 0
@@ -3007,6 +3026,12 @@ MonoBehaviour:
   children:
   - {fileID: 1406906463267403306}
   - {fileID: 548331688421527683}
+  - {fileID: 1406906463267403306}
+  - {fileID: 548331688421527683}
+  - {fileID: 1406906463267403306}
+  - {fileID: 548331688421527683}
+  - {fileID: 1406906463267403306}
+  - {fileID: 548331688421527683}
 --- !u!1 &6600183530542937682
 GameObject:
   m_ObjectHideFlags: 0
@@ -3898,6 +3923,7 @@ GameObject:
   - component: {fileID: 9001615864674166167}
   - component: {fileID: 320307805295896141}
   - component: {fileID: 1406906463267403306}
+  - component: {fileID: 2741041052176548542}
   m_Layer: 0
   m_Name: Idle
   m_TagString: Untagged
@@ -3991,8 +4017,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oldState: {fileID: 9001615864674166167}
-  newState: {fileID: 0}
+  newState: {fileID: 2741041052176548542}
   children: []
+--- !u!114 &2741041052176548542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8861284293700644219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!1 &8900264931066353175
 GameObject:
   m_ObjectHideFlags: 0
