@@ -1267,7 +1267,7 @@ MonoBehaviour:
   _lineage:
   - {fileID: 6309155619283984338}
   _behaviors:
-  - {fileID: 6736125751645189697}
+  - {fileID: 0}
   - {fileID: 4160795181177420388}
 --- !u!114 &6736125751645189697
 MonoBehaviour:
@@ -1281,10 +1281,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58788b367b83ded4483fa9ba74cdfe1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   speed: 7
   destUpdateRate: 0.02
   reachDistance: 1.8
-  reachState: {fileID: 843191684609943793}
+  reachState: {fileID: 0}
 --- !u!114 &4160795181177420388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1906,6 +1908,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8061235268401769153}
   - component: {fileID: 843191684609943793}
+  - component: {fileID: 5264008906068754792}
   m_Layer: 7
   m_Name: Attacking
   m_TagString: Untagged
@@ -1971,6 +1974,23 @@ MonoBehaviour:
   _behaviors:
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &5264008906068754792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411577453859662941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 843191684609943793}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 4349047945370867296}
+  - {fileID: 9064645092660745324}
 --- !u!1 &1488944864748835333
 GameObject:
   m_ObjectHideFlags: 0
@@ -4858,7 +4878,7 @@ MonoBehaviour:
   - {fileID: 3581232340763009195}
   _behaviors:
   - {fileID: 97701640159672629}
-  - {fileID: 1945227566797940320}
+  - {fileID: 0}
 --- !u!114 &97701640159672629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4888,6 +4908,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f48ebe23d2fdabd4e93d7ae992c7aa05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   speed: 3.5
   minWalkDistance: 5
   maxWalkDistance: 15
@@ -6151,6 +6173,7 @@ GameObject:
   - component: {fileID: 6846661119807183612}
   - component: {fileID: 3674508901043307227}
   - component: {fileID: 5611760682028005333}
+  - component: {fileID: 8979948129904075218}
   m_Layer: 7
   m_Name: FirstEnemy
   m_TagString: Untagged
@@ -6263,7 +6286,7 @@ MonoBehaviour:
   _lineage:
   - {fileID: 607112006137138021}
   _behaviors:
-  - {fileID: 3133899637185726238}
+  - {fileID: 0}
   states:
     _serializedList: []
   signalReady: 1
@@ -6346,6 +6369,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0452307ce3dc7f044a8c8da0714c5455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   target: {fileID: 0}
   autoCheckRate: 0.2
   updateDistance: 1
@@ -6475,6 +6500,25 @@ MonoBehaviour:
   - {fileID: 3215376832118388645}
   - {fileID: 0}
   - {fileID: 862857589851501892}
+  - {fileID: 5264008906068754792}
+--- !u!114 &8979948129904075218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811522196661094151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!1 &4858683810890698992
 GameObject:
   m_ObjectHideFlags: 0
@@ -8897,6 +8941,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bfa862fd0bc4d9489c3b24936f003fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   attackRate: 0
   attack:
     amount: 1
@@ -8915,7 +8961,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oldState: {fileID: 843191684609943793}
+  oldState: {fileID: 736868072204779230}
   newState: {fileID: 0}
   children:
   - {fileID: 9064645092660745324}

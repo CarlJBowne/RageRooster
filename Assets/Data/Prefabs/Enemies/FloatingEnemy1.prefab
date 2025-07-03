@@ -2499,9 +2499,9 @@ MonoBehaviour:
   _lineage:
   - {fileID: 6468403254272803315}
   _behaviors:
-  - {fileID: 1347906261071004793}
+  - {fileID: 0}
   - {fileID: 2523373393776142833}
-  - {fileID: 4971400543128926430}
+  - {fileID: 0}
 --- !u!114 &1347906261071004793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2514,6 +2514,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c2f6e810c1907f4bb0fa8028a97c151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   sineSize: 0.25
   sineSpeed: 0.5
 --- !u!114 &2523373393776142833
@@ -2545,6 +2547,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bae7993c44668447afe9e92a7cf4735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   bulletPool:
     prefabObject: {fileID: 1536271116400417345, guid: ecd0681902479df4182d2aa655d7ff14,
       type: 3}
@@ -3358,6 +3362,7 @@ GameObject:
   - component: {fileID: 6245664928252330756}
   - component: {fileID: 6973894380732621090}
   - component: {fileID: 1191045692344601244}
+  - component: {fileID: 1393018976177822070}
   m_Layer: 7
   m_Name: FloatingEnemy1
   m_TagString: Untagged
@@ -3444,7 +3449,7 @@ MonoBehaviour:
   _lineage:
   - {fileID: 5542194556104785265}
   _behaviors:
-  - {fileID: 6245664928252330756}
+  - {fileID: 0}
   states:
     _serializedList: []
   signalReady: 1
@@ -3624,6 +3629,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0452307ce3dc7f044a8c8da0714c5455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   target: {fileID: 0}
   autoCheckRate: 0.2
   updateDistance: 1
@@ -3676,6 +3683,24 @@ MonoBehaviour:
   children:
   - {fileID: 3291120953203770606}
   - {fileID: 708076650846175498}
+--- !u!114 &1393018976177822070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3500639052055708832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!1 &3607626698313877417
 GameObject:
   m_ObjectHideFlags: 0
@@ -4246,7 +4271,7 @@ MonoBehaviour:
   _lineage:
   - {fileID: 5732303842472750605}
   _behaviors:
-  - {fileID: 5462495818761838655}
+  - {fileID: 0}
   - {fileID: 6210339910212272752}
 --- !u!114 &5462495818761838655
 MonoBehaviour:
@@ -4260,6 +4285,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c2f6e810c1907f4bb0fa8028a97c151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   sineSize: 0.25
   sineSpeed: 0.5
 --- !u!114 &6210339910212272752

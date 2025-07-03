@@ -152,4 +152,20 @@ public class HSMMigrationHelper : MonoBehaviour
         foreach (var child in children) child.RemoveDupes();
     }
 
+    public void FixMissings()
+    {
+        for (int i = 0; i < children.Count; i++)
+        {
+            if (children[i] == null)
+            {
+                children[i] = HSMMigratorWindow.AddHelper(transform.GetChild(i).GetComponent<OLD.State>());
+                EditorUtility.SetDirty(children[i]);
+            }
+        }
+        foreach (var item in children)
+        {
+            item.FixMissings();
+        }
+    }
+
 }

@@ -703,6 +703,7 @@ GameObject:
   - component: {fileID: 1161913864714086396}
   - component: {fileID: -1435134813268415645}
   - component: {fileID: 956796507108798300}
+  - component: {fileID: 2779588210179698275}
   m_Layer: 7
   m_Name: FloatingEnemy2
   m_TagString: Untagged
@@ -792,7 +793,7 @@ MonoBehaviour:
   _lineage:
   - {fileID: 5419231795522299808}
   _behaviors:
-  - {fileID: 3332179714480363266}
+  - {fileID: 0}
   states:
     _serializedList: []
   signalReady: 1
@@ -932,6 +933,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0452307ce3dc7f044a8c8da0714c5455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   target: {fileID: 0}
   autoCheckRate: 0.2
   updateDistance: 1
@@ -1014,6 +1017,24 @@ MonoBehaviour:
   - {fileID: 4201190610007492075}
   - {fileID: 7643343486996622479}
   - {fileID: 7576350524292256059}
+--- !u!114 &2779588210179698275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2551659374973096520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!1 &2559604377289995549
 GameObject:
   m_ObjectHideFlags: 0
@@ -1270,9 +1291,9 @@ MonoBehaviour:
   _lineage:
   - {fileID: 7217759710699066872}
   _behaviors:
-  - {fileID: 1272519012975716007}
+  - {fileID: 0}
   - {fileID: 7769585399643124630}
-  - {fileID: 5989265127938018364}
+  - {fileID: 0}
 --- !u!114 &1272519012975716007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1285,6 +1306,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c2f6e810c1907f4bb0fa8028a97c151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   sineSize: 0.25
   sineSpeed: 0.5
 --- !u!114 &7769585399643124630
@@ -1316,9 +1339,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4bcf71e547a65748bfc547e178fd195, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   speed: 1
   reachDistance: 5
-  reachState: {fileID: 573214872866643999}
+  reachState: {fileID: 0}
 --- !u!114 &7643343486996622479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1521,7 +1546,7 @@ MonoBehaviour:
   _lineage:
   - {fileID: 6949683441545476226}
   _behaviors:
-  - {fileID: 8677131897453068850}
+  - {fileID: 0}
   - {fileID: 3568916294667421612}
 --- !u!114 &8677131897453068850
 MonoBehaviour:
@@ -1535,6 +1560,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c2f6e810c1907f4bb0fa8028a97c151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   sineSize: 0.25
   sineSpeed: 0.5
 --- !u!114 &3568916294667421612
@@ -1661,9 +1688,9 @@ MonoBehaviour:
   _lineage:
   - {fileID: 573214872866643999}
   _behaviors:
-  - {fileID: 8979188299765350674}
+  - {fileID: 0}
   - {fileID: 8517626057059829252}
-  - {fileID: 6614652859543076544}
+  - {fileID: 0}
 --- !u!114 &8979188299765350674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1676,6 +1703,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c2f6e810c1907f4bb0fa8028a97c151, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   sineSize: 0.25
   sineSpeed: 0.5
 --- !u!114 &8517626057059829252
@@ -1707,6 +1736,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bae7993c44668447afe9e92a7cf4735, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   bulletPool:
     prefabObject: {fileID: 1536271116400417345, guid: ecd0681902479df4182d2aa655d7ff14,
       type: 3}

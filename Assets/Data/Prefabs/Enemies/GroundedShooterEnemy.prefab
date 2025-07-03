@@ -5096,7 +5096,7 @@ MonoBehaviour:
   _lineage:
   - {fileID: 5897247811507973455}
   _behaviors:
-  - {fileID: 8575800209263281266}
+  - {fileID: 0}
 --- !u!114 &8575800209263281266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5109,10 +5109,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58788b367b83ded4483fa9ba74cdfe1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   speed: 7
   destUpdateRate: 1
   reachDistance: 8
-  reachState: {fileID: 6903679289669451711}
+  reachState: {fileID: 0}
 --- !u!114 &875981737271165302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5197,6 +5199,7 @@ GameObject:
   - component: {fileID: 4704537948975615930}
   - component: {fileID: 1490756800394186340}
   - component: {fileID: 7083763643804806444}
+  - component: {fileID: 8501629877285700990}
   m_Layer: 7
   m_Name: GroundedShooterEnemy
   m_TagString: Untagged
@@ -5357,7 +5360,7 @@ MonoBehaviour:
   _lineage:
   - {fileID: 3112081837280369340}
   _behaviors:
-  - {fileID: 6531542561807786389}
+  - {fileID: 0}
   states:
     _serializedList: []
   signalReady: 1
@@ -5411,6 +5414,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0452307ce3dc7f044a8c8da0714c5455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   target: {fileID: 0}
   autoCheckRate: 0
   updateDistance: 1
@@ -5545,6 +5550,24 @@ MonoBehaviour:
   - {fileID: 875981737271165302}
   - {fileID: 7002957880487030603}
   - {fileID: 536666671410176599}
+--- !u!114 &8501629877285700990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4906831177318307996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!1 &4909045370384413027
 GameObject:
   m_ObjectHideFlags: 0
@@ -6208,7 +6231,7 @@ MonoBehaviour:
   _lineage:
   - {fileID: 2666295707186286537}
   _behaviors:
-  - {fileID: 5342411608096227763}
+  - {fileID: 0}
 --- !u!114 &5342411608096227763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6221,10 +6244,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c59604e37e84745ae3035d1864ae56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   speed: 2
   destUpdateRate: 1
   reachDistance: 8
-  reachState: {fileID: 6903679289669451711}
+  reachState: {fileID: 0}
 --- !u!114 &536666671410176599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9068,7 +9093,7 @@ MonoBehaviour:
   _lineage:
   - {fileID: 6903679289669451711}
   _behaviors:
-  - {fileID: 8208263171051688731}
+  - {fileID: 0}
 --- !u!114 &8208263171051688731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9081,6 +9106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9e0a33ee010fdc4e8679c47388520ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   bulletPool:
     prefabObject: {fileID: 1536271116400417345, guid: ecd0681902479df4182d2aa655d7ff14,
       type: 3}

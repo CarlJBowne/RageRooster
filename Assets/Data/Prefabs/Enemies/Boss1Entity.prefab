@@ -795,7 +795,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oldState: {fileID: 6642991369353550652}
+  oldState: {fileID: 6836101561713723669}
   newState: {fileID: 0}
   children: []
 --- !u!114 &4102600669643465430
@@ -1072,9 +1072,11 @@ MonoBehaviour:
   newState: {fileID: 6320497395196060278}
   children:
   - {fileID: 8616480895560705717}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 2981475118059538459}
+  - {fileID: 4207316765433540615}
   - {fileID: 5628063717526220725}
+  - {fileID: 2981475118059538459}
+  - {fileID: 4207316765433540615}
 --- !u!114 &6320497395196060278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1103,6 +1105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2977969189814582499}
   - component: {fileID: 8707086896814208181}
+  - component: {fileID: 4207316765433540615}
   m_Layer: 7
   m_Name: Charge
   m_TagString: Untagged
@@ -1167,6 +1170,22 @@ MonoBehaviour:
   _behaviors:
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &4207316765433540615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705347489998120734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 8707086896814208181}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 5752158548401904832}
 --- !u!1 &740348178341892556
 GameObject:
   m_ObjectHideFlags: 0
@@ -2417,7 +2436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oldState: {fileID: 7479023952342656700}
+  oldState: {fileID: 7105811264144897499}
   newState: {fileID: 0}
   children: []
 --- !u!114 &6872019635029375267
@@ -3257,7 +3276,7 @@ MonoBehaviour:
   - {fileID: 161146035714112281}
   _behaviors:
   - {fileID: 572962550077989463}
-  - {fileID: 7043564596891620169}
+  - {fileID: 0}
 --- !u!114 &572962550077989463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3287,6 +3306,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64ffcc9cddb40840b0a7704c7b363c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   distances:
   - higherDistance: 1.51
     timerTime: 2
@@ -4702,7 +4723,7 @@ MonoBehaviour:
   - {fileID: 3573454440156196816}
   _behaviors:
   - {fileID: 5597870731239093975}
-  - {fileID: 427377163140771581}
+  - {fileID: 0}
 --- !u!114 &5597870731239093975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4732,6 +4753,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64ffcc9cddb40840b0a7704c7b363c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   distances:
   - higherDistance: 1.51
     timerTime: 2
@@ -4999,8 +5022,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181f43cdbbef7da44b651f96b072f765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   collider: {fileID: 7340296624955732131}
-  vulnerableState: {fileID: 3546595742029006264}
+  vulnerableState: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 1025
@@ -5048,7 +5073,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oldState: {fileID: 8916514798593899701}
+  oldState: {fileID: 218998161437844201}
   newState: {fileID: 0}
   children: []
 --- !u!114 &1244436549358231671
@@ -5412,11 +5437,13 @@ MonoBehaviour:
   newState: {fileID: 7135772641708200557}
   children:
   - {fileID: 1073466414018505418}
-  - {fileID: 0}
+  - {fileID: 2766086139292537463}
   - {fileID: 6115305734744943233}
   - {fileID: 6397379481863229791}
-  - {fileID: 0}
+  - {fileID: 1714044036068883726}
   - {fileID: 505057635424105704}
+  - {fileID: 2766086139292537463}
+  - {fileID: 1714044036068883726}
 --- !u!114 &7135772641708200557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5665,6 +5692,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4371701423160842944}
   - component: {fileID: 8916514798593899701}
+  - component: {fileID: 1714044036068883726}
   m_Layer: 7
   m_Name: Charge
   m_TagString: Untagged
@@ -5729,6 +5757,22 @@ MonoBehaviour:
   _behaviors:
   - {fileID: 0}
   - {fileID: 0}
+--- !u!114 &1714044036068883726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4435532884018944069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 8916514798593899701}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 5974817341393851531}
 --- !u!1 &4466370110768821873
 GameObject:
   m_ObjectHideFlags: 0
@@ -6174,6 +6218,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2946308092194881263}
   - component: {fileID: 7479023952342656700}
+  - component: {fileID: 2981475118059538459}
   m_Layer: 7
   m_Name: SwatAttack
   m_TagString: Untagged
@@ -6237,6 +6282,22 @@ MonoBehaviour:
   - {fileID: 7479023952342656700}
   _behaviors:
   - {fileID: 0}
+--- !u!114 &2981475118059538459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4698546564307776529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 7479023952342656700}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 5520304107567077043}
 --- !u!1 &4722808800100522825
 GameObject:
   m_ObjectHideFlags: 0
@@ -7564,6 +7625,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2044919127443180719}
   - component: {fileID: 6642991369353550652}
+  - component: {fileID: 2766086139292537463}
   m_Layer: 7
   m_Name: SwatAttack
   m_TagString: Untagged
@@ -7627,6 +7689,22 @@ MonoBehaviour:
   - {fileID: 6642991369353550652}
   _behaviors:
   - {fileID: 0}
+--- !u!114 &2766086139292537463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5429043931898922074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 6642991369353550652}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 528129404545159995}
 --- !u!1 &5447969755127879585
 GameObject:
   m_ObjectHideFlags: 0
@@ -10813,7 +10891,7 @@ MonoBehaviour:
   - {fileID: 4760835121399366669}
   _behaviors:
   - {fileID: 7488454010871324752}
-  - {fileID: 3032780605950577628}
+  - {fileID: 0}
 --- !u!114 &7488454010871324752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10843,6 +10921,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64ffcc9cddb40840b0a7704c7b363c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   distances:
   - higherDistance: 200000
     timerTime: 1
@@ -11682,8 +11762,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181f43cdbbef7da44b651f96b072f765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   collider: {fileID: 7340296624955732131}
-  vulnerableState: {fileID: 3128797529520384670}
+  vulnerableState: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 1025
@@ -11731,7 +11813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oldState: {fileID: 8707086896814208181}
+  oldState: {fileID: 8772947437756354603}
   newState: {fileID: 0}
   children: []
 --- !u!114 &7673098344372923795

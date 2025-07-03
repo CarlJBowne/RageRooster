@@ -1793,7 +1793,7 @@ MonoBehaviour:
   _lineage:
   - {fileID: 989306548375495230}
   _behaviors:
-  - {fileID: 5184049509559812302}
+  - {fileID: 0}
   - {fileID: 1015162045483236592}
 --- !u!114 &5184049509559812302
 MonoBehaviour:
@@ -1807,6 +1807,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e171649d6a246244b6f37b90c1c4f9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   timer:
     length: 5
     current: 0
@@ -7223,6 +7225,7 @@ GameObject:
   - component: {fileID: 3335057551916077419}
   - component: {fileID: 353358766067455826}
   - component: {fileID: 2190666278765665728}
+  - component: {fileID: 255775698350097657}
   m_Layer: 7
   m_Name: BomberEnemy 1
   m_TagString: Untagged
@@ -7332,7 +7335,7 @@ MonoBehaviour:
   _lineage:
   - {fileID: 1690541605571634884}
   _behaviors:
-  - {fileID: 3042019609250107629}
+  - {fileID: 0}
   states:
     _serializedList: []
   signalReady: 1
@@ -7407,6 +7410,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0452307ce3dc7f044a8c8da0714c5455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
   target: {fileID: 0}
   autoCheckRate: 0
   updateDistance: 1
@@ -7527,6 +7532,24 @@ MonoBehaviour:
   children:
   - {fileID: 6072793582560155864}
   - {fileID: 4096674822859359290}
+--- !u!114 &255775698350097657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6425342840109763559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!1 &6444659633783133527
 GameObject:
   m_ObjectHideFlags: 0
