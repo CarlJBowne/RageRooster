@@ -18,6 +18,227 @@ public class HSMMigratorWindow : EditorWindow
     }
     private void OnGUI()
     {
+        if (GUILayout.Button("LoadPrefabs")) LoadPrefabs(true);
+
+        if (loadedPrefabs != null && loadedPrefabs.Count > 0)
+        {
+            foreach (var item in loadedPrefabs)
+            {
+                GUIStyle linkStyle = new GUIStyle(GUI.skin.label)
+                {
+                    normal = { textColor = Color.blue },
+                    hover = { textColor = Color.cyan },
+                    fontStyle = FontStyle.Bold
+                };
+
+                if (GUILayout.Button(item.readOnlyObject.name, linkStyle, GUILayout.Width(200)))
+                {
+                    EditorGUIUtility.PingObject(item.readOnlyObject);
+                }
+            }
+        }
+
+        Button("AddMissingStates", AddMissingStates, "Does on all Prefabs.");
+        Button("DealWithSeparates", DealWithSeparates, "Does on all Prefabs.");
+        Button("BuildALL", BuildAll, "Does on all Prefabs.");
+        Button("ReplaceSignals", ReplaceSignals, "Does on all Prefabs.");
+        Button("AddMissingStatesOnSelection", AddMissingStatesOnSelection, "Does on Selected Objects.");
+
+    }
+
+    List<Prefab> loadedPrefabs;
+
+    public void Button(string name, BasicDelegate action, string note)
+    {
+        EditorGUILayout.BeginHorizontal();
+
+        if (GUILayout.Button(name)) action();
+        GUILayout.Label(note);
+
+        EditorGUILayout.EndHorizontal();
+    }
+
+    void LoadPrefabs(bool doAnyway = false)
+    {
+        if ((loadedPrefabs != null && loadedPrefabs.Count > 0) && !doAnyway) return;
+
+        string[] prefabGuids = AssetDatabase.FindAssets("t:Prefab");
+        loadedPrefabs = new();
+
+        foreach (string guid in prefabGuids)
+        {
+            Prefab prefab = new(AssetDatabase.GUIDToAssetPath(guid));
+
+            if (prefab.readOnlyObject == null || 
+                (!prefab.readOnlyObject.TryGetComponent(out OLD.StateMachine Machine) &&
+                !prefab.readOnlyObject.TryGetComponent(out PlayerStateMachine PMachine))
+                ) continue;
+
+            loadedPrefabs.Add(prefab);
+        }
+    }
+
+    public void AddMissingStates()
+    {
+        LoadPrefabs();
+
+        foreach (var p in loadedPrefabs)
+        {
+            p.Open();
+
+            var Root = p.editableObject.transform.Find("States");
+
+            AddMissingState(Root, true);
+            void AddMissingState(Transform This, bool root = false)
+            {
+                if (!This.TryGetComponent(out NEW.State _) && !root)
+                {
+                    var NEW = This.AddComponent<NEW.State>();
+                    EditorUtility.SetDirty(This.gameObject);
+                    EditorUtility.SetDirty(NEW);
+                }
+
+                for (int i = 0; i < This.childCount; i++)
+                    AddMissingState(This.GetChild(0));
+            }
+            p.Close();
+        }
+    }
+
+
+    public void DealWithSeparates()
+    {
+        LoadPrefabs();
+
+        foreach (var p in loadedPrefabs)
+        {
+            p.Open();
+
+            var Root = p.editableObject.transform.Find("States");
+
+            DealWithSeparate(Root, true);
+
+            p.Close();
+        }
+    }
+
+    void DealWithSeparate(Transform This, bool root = false)
+    {
+        bool found = This.TryGetComponent(out OLD.State state);
+
+        if (!root && found && state.separateFromChildren && This.childCount > 0)
+        {
+            var defChild = new GameObject("Default");
+            defChild.transform.SetParent(This, false);
+            defChild.transform.SetSiblingIndex(0);
+            var defStateOld = defChild.AddComponent<OLD.State>();
+            var defStateNew = defChild.AddComponent<NEW.State>();
+
+            defStateOld.signals = state.signals;
+            state.signals = new();
+
+            EditorUtility.SetDirty(This);
+            EditorUtility.SetDirty(defChild);
+            EditorUtility.SetDirty(defStateOld);
+            EditorUtility.SetDirty(defStateNew);
+            EditorUtility.SetDirty(state);
+
+        }
+
+        for (int i = 0; i < This.childCount; i++)
+            DealWithSeparate(This.GetChild(i));
+    }
+
+    void BuildAll()
+    {
+        LoadPrefabs();
+
+        foreach (var p in loadedPrefabs)
+        {
+            p.Open();
+
+            if(p.editableObject.TryGetComponent(out NEW.StateMachine SM))
+            {
+                SM.Build();
+                EditorUtility.SetDirty(SM);
+            }
+
+            p.Close();
+        }
+    }
+
+    public void ReplaceSignals()
+    {
+        LoadPrefabs();
+        foreach (var p in loadedPrefabs)
+        {
+            p.Open();
+
+            var SigMan = p.editableObject.AddComponent<NEW.SignalManager>();
+            SigMan.globalSignals = ConvertFromYellowPaper(p.editableObject.GetComponent<OLD.StateMachine>().globalSignals);
+            EditorUtility.SetDirty(p.editableObject);
+            EditorUtility.SetDirty(SigMan);
+
+            var Root = p.editableObject.transform.Find("States");
+
+            ReplaceSignal(Root, true);
+            void ReplaceSignal(Transform This, bool root = false)
+            {
+                if (!root && This.TryGetComponent(out OLD.State oldState) && oldState.signals.Count != 0)
+                {
+                    var SN = This.GetComponent<NEW.SignalNode>();
+                    SN.signals = ConvertFromYellowPaper(oldState.signals);
+
+                    EditorUtility.SetDirty(This);
+                    EditorUtility.SetDirty(SN);
+                }
+
+                for (int i = 0; i < This.childCount; i++)
+                    ReplaceSignal(This.GetChild(i));
+            }
+
+            p.Close();
+        }
+    }
+
+    private NEW.SignalSet ConvertFromYellowPaper(AYellowpaper.SerializedCollections.SerializedDictionary<string, UltEvents.UltEvent> input)
+    {
+        var output = new NEW.SignalSet();
+        foreach (var pair in input)
+        {
+            output.Add(pair.Key, pair.Value);
+        }
+        return output;
+
+    }
+
+    public void AddMissingStatesOnSelection()
+    {
+        //Loop through objects selected in hierarchy
+        foreach (GameObject obj in Selection.gameObjects)
+        {
+            obj.TryGetComponent(out NEW.State exists);
+            if (!exists)
+            {
+                EditorUtility.SetDirty(obj.AddComponent<NEW.State>());
+                EditorUtility.SetDirty(obj);
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    #region Version 1
+    private void Version1()
+    {
         if (data == null)
         {
             string assetPath = "Assets/Testing/HSM Migration/MidData.asset";
@@ -194,5 +415,5 @@ public class HSMMigratorWindow : EditorWindow
         }
     }
 
-
+    #endregion
 }

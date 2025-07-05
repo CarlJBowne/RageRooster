@@ -2438,8 +2438,7 @@ GameObject:
   - component: {fileID: 1347906261071004793}
   - component: {fileID: 2523373393776142833}
   - component: {fileID: 4971400543128926430}
-  - component: {fileID: 708076650846175498}
-  - component: {fileID: 6963467323664176327}
+  - component: {fileID: 2868714309706522240}
   m_Layer: 7
   m_Name: Attacking
   m_TagString: Untagged
@@ -2491,17 +2490,13 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
-  _machine: {fileID: 5542194556104785265}
+  _machine: {fileID: 0}
   _layer: 0
-  _parent: {fileID: 5542194556104785265}
+  _parent: {fileID: 0}
   _children: []
   _childCount: 0
-  _lineage:
-  - {fileID: 6468403254272803315}
-  _behaviors:
-  - {fileID: 0}
-  - {fileID: 2523373393776142833}
-  - {fileID: 0}
+  _lineage: []
+  _behaviors: []
 --- !u!114 &1347906261071004793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2561,22 +2556,7 @@ MonoBehaviour:
     autoSpawnRate: 0
   rate: 1
   chanceOfFiringWhenBlocked: 0
---- !u!114 &708076650846175498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2641995060867614448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  oldState: {fileID: 6468403254272803315}
-  newState: {fileID: 6963467323664176327}
-  children: []
---- !u!114 &6963467323664176327
+--- !u!114 &2868714309706522240
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3361,7 +3341,6 @@ GameObject:
   - component: {fileID: 8213563936651183793}
   - component: {fileID: 6245664928252330756}
   - component: {fileID: 6973894380732621090}
-  - component: {fileID: 1191045692344601244}
   - component: {fileID: 1393018976177822070}
   m_Layer: 7
   m_Name: FloatingEnemy1
@@ -3439,17 +3418,13 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
-  _machine: {fileID: 5542194556104785265}
-  _layer: -1
-  _parent: {fileID: 5542194556104785265}
-  _children:
-  - {fileID: 5732303842472750605}
-  - {fileID: 6468403254272803315}
-  _childCount: 2
-  _lineage:
-  - {fileID: 5542194556104785265}
-  _behaviors:
-  - {fileID: 0}
+  _machine: {fileID: 0}
+  _layer: 0
+  _parent: {fileID: 0}
+  _children: []
+  _childCount: 0
+  _lineage: []
+  _behaviors: []
   states:
     _serializedList: []
   signalReady: 1
@@ -3666,23 +3641,6 @@ MonoBehaviour:
   - {fileID: 925324475207166938, guid: 8e07c4e22d1e1e544836d1ad9b0252b3, type: 3}
   spawnForce: 5
   itemChance: 0.4
---- !u!114 &1191045692344601244
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3500639052055708832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  oldState: {fileID: 5542194556104785265}
-  newState: {fileID: 0}
-  children:
-  - {fileID: 3291120953203770606}
-  - {fileID: 708076650846175498}
 --- !u!114 &1393018976177822070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4210,8 +4168,7 @@ GameObject:
   - component: {fileID: 5732303842472750605}
   - component: {fileID: 5462495818761838655}
   - component: {fileID: 6210339910212272752}
-  - component: {fileID: 3291120953203770606}
-  - component: {fileID: 8342653995367149759}
+  - component: {fileID: 2014795069692124083}
   m_Layer: 7
   m_Name: Floating
   m_TagString: Untagged
@@ -4263,16 +4220,13 @@ MonoBehaviour:
   signals:
     _serializedList: []
   lockReady: 0
-  _machine: {fileID: 5542194556104785265}
+  _machine: {fileID: 0}
   _layer: 0
-  _parent: {fileID: 5542194556104785265}
+  _parent: {fileID: 0}
   _children: []
   _childCount: 0
-  _lineage:
-  - {fileID: 5732303842472750605}
-  _behaviors:
-  - {fileID: 0}
-  - {fileID: 6210339910212272752}
+  _lineage: []
+  _behaviors: []
 --- !u!114 &5462495818761838655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4306,22 +4260,7 @@ MonoBehaviour:
   onEnterTime: 0.2
   doWhenNotFinal: 0
   animator: {fileID: 0}
---- !u!114 &3291120953203770606
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4242566068978263145}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  oldState: {fileID: 5732303842472750605}
-  newState: {fileID: 8342653995367149759}
-  children: []
---- !u!114 &8342653995367149759
+--- !u!114 &2014795069692124083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
