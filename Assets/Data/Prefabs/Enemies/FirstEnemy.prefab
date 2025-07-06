@@ -1203,10 +1203,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8875710642327366796}
-  - component: {fileID: 6309155619283984338}
   - component: {fileID: 6736125751645189697}
-  - component: {fileID: 4160795181177420388}
   - component: {fileID: 2355631802714680642}
+  - component: {fileID: 4408508189337711118}
   m_Layer: 7
   m_Name: Chasing
   m_TagString: Untagged
@@ -1229,42 +1228,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5621844384992680875}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6309155619283984338
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1003426846957023087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
 --- !u!114 &6736125751645189697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1283,23 +1246,6 @@ MonoBehaviour:
   destUpdateRate: 0.02
   reachDistance: 1.8
   reachState: {fileID: 0}
---- !u!114 &4160795181177420388
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1003426846957023087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: Running
-  onEnterTime: 0.2
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &2355631802714680642
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1318,6 +1264,25 @@ MonoBehaviour:
   <Layer>k__BackingField: 0
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &4408508189337711118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1003426846957023087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 2355631802714680642}
+  onEntry: 2
+  onEnterName: Running
+  onEnterTime: 0.2
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &1029378778838917342
 GameObject:
   m_ObjectHideFlags: 0
@@ -1888,10 +1853,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8061235268401769153}
-  - component: {fileID: 843191684609943793}
-  - component: {fileID: 738354572120715908}
   - component: {fileID: 5281166463461159709}
   - component: {fileID: 366826576174210688}
+  - component: {fileID: 3037715769133141849}
   m_Layer: 7
   m_Name: Attacking
   m_TagString: Untagged
@@ -1916,59 +1880,6 @@ Transform:
   - {fileID: 502783886551972791}
   m_Father: {fileID: 5621844384992680875}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &843191684609943793
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1411577453859662941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 1
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &738354572120715908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1411577453859662941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: Attacking
-  onEnterTime: 0.2
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &5281166463461159709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2007,6 +1918,25 @@ MonoBehaviour:
   <Layer>k__BackingField: 0
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &3037715769133141849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1411577453859662941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 366826576174210688}
+  onEntry: 2
+  onEnterName: Attacking
+  onEnterTime: 0.2
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &1488944864748835333
 GameObject:
   m_ObjectHideFlags: 0
@@ -3288,7 +3218,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7054503712286287937}
-  - component: {fileID: 2782852349500189702}
   - component: {fileID: 7957378587954502022}
   m_Layer: 0
   m_Name: Default
@@ -3312,42 +3241,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8061235268401769153}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2782852349500189702
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2630076591524722356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
 --- !u!114 &7957378587954502022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4916,10 +4809,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6170474229887068360}
-  - component: {fileID: 3581232340763009195}
-  - component: {fileID: 97701640159672629}
   - component: {fileID: 1945227566797940320}
   - component: {fileID: 4422231592727586883}
+  - component: {fileID: 5351644097470226904}
   m_Layer: 7
   m_Name: Patrolling
   m_TagString: Untagged
@@ -4942,59 +4834,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5621844384992680875}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3581232340763009195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3675853143938587536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &97701640159672629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3675853143938587536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: Walking
-  onEnterTime: 0.2
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &1945227566797940320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5031,6 +4870,25 @@ MonoBehaviour:
   <Layer>k__BackingField: 0
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &5351644097470226904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3675853143938587536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 4422231592727586883}
+  onEntry: 2
+  onEnterName: Walking
+  onEnterTime: 0.2
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &3761557559425741465
 GameObject:
   m_ObjectHideFlags: 0
@@ -6760,8 +6618,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 502783886551972791}
-  - component: {fileID: 2458796388149802249}
-  - component: {fileID: 9041441467002982087}
+  - component: {fileID: 1115904683488751878}
+  - component: {fileID: 6762883508994013213}
   m_Layer: 7
   m_Name: Punching
   m_TagString: Untagged
@@ -6784,7 +6642,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8061235268401769153}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2458796388149802249
+--- !u!114 &1115904683488751878
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6793,34 +6651,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4981378115798206189}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &9041441467002982087
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &6762883508994013213
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6829,9 +6669,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4981378115798206189}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 1115904683488751878}
   onEntry: 2
   onEnterName: Punching
   onEnterTime: 0.2
@@ -9231,8 +9073,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7338846542263605359}
-  - component: {fileID: 1894316070930568804}
-  - component: {fileID: 3984188542969606776}
+  - component: {fileID: 3932963470629479461}
+  - component: {fileID: 6634672400705102698}
   m_Layer: 7
   m_Name: GrabStruggle
   m_TagString: Untagged
@@ -9255,7 +9097,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5621844384992680875}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1894316070930568804
+--- !u!114 &3932963470629479461
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9264,34 +9106,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 7164298252039943558}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &3984188542969606776
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &6634672400705102698
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9300,9 +9124,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7164298252039943558}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 3932963470629479461}
   onEntry: 2
   onEnterName: GrabStruggle
   onEnterTime: 0.2

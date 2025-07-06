@@ -859,7 +859,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9086802304838005708}
-  - component: {fileID: 953434745740265925}
   - component: {fileID: 5957105380707223399}
   m_Layer: 7
   m_Name: Phase1
@@ -887,42 +886,6 @@ Transform:
   - {fileID: 8344197361559154074}
   m_Father: {fileID: 7621598487352454049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &953434745740265925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 656430347143545991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
 --- !u!114 &5957105380707223399
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -936,11 +899,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField: []
-  <Machine>k__BackingField: {fileID: 0}
-  <Parent>k__BackingField: {fileID: 0}
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
+  <Parent>k__BackingField: {fileID: 6678375109288360819}
   <Layer>k__BackingField: 0
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
+  <Children>k__BackingField:
+  - {fileID: 6323903129287787918}
+  - {fileID: 1736821564069130529}
+  - {fileID: 8404305901408802241}
+  - {fileID: 3255536684406947134}
+  <ChildCount>k__BackingField: 4
 --- !u!1 &705347489998120734
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,12 +917,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2977969189814582499}
-  - component: {fileID: 8707086896814208181}
-  - component: {fileID: 6511756477185167322}
   - component: {fileID: 71745842849904986}
   - component: {fileID: 7426349109730446060}
   - component: {fileID: 8404305901408802241}
   - component: {fileID: 3138395505778615164}
+  - component: {fileID: 3945193752519610660}
   m_Layer: 7
   m_Name: Charge
   m_TagString: Untagged
@@ -978,81 +944,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9086802304838005708}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8707086896814208181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 705347489998120734}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 1
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Charge
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 7810229896687099392}
-          _MemberName: CrossFade
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: ChargeStartup
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-          - _Type: 5
-            _Int: 0
-            _String: 
-            _X: 0.05
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &6511756477185167322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 705347489998120734}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: ChargeStartup
-  onEnterTime: 0.05
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &71745842849904986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1065,8 +956,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181f43cdbbef7da44b651f96b072f765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
-  <State>k__BackingField: {fileID: 0}
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
+  <State>k__BackingField: {fileID: 8404305901408802241}
   collider: {fileID: 7340296624955732131}
   vulnerableState: {fileID: 0}
   layerMask:
@@ -1116,10 +1007,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField: []
-  <Machine>k__BackingField: {fileID: 0}
-  <Parent>k__BackingField: {fileID: 0}
-  <Layer>k__BackingField: 0
+  <Behaviors>k__BackingField:
+  - {fileID: 71745842849904986}
+  - {fileID: 3138395505778615164}
+  - {fileID: 3945193752519610660}
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
+  <Parent>k__BackingField: {fileID: 5957105380707223399}
+  <Layer>k__BackingField: 1
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
 --- !u!114 &3138395505778615164
@@ -1134,7 +1028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
   <State>k__BackingField: {fileID: 8404305901408802241}
   signals:
     serializedList:
@@ -1161,6 +1055,25 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockOnEnter: 0
+--- !u!114 &3945193752519610660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705347489998120734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
+  <State>k__BackingField: {fileID: 8404305901408802241}
+  onEntry: 2
+  onEnterName: ChargeStartup
+  onEnterTime: 0.05
+  doWhenNotFinal: 0
+  animator: {fileID: 7810229896687099392}
 --- !u!1 &740348178341892556
 GameObject:
   m_ObjectHideFlags: 0
@@ -1268,8 +1181,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3404926481743665677}
-  - component: {fileID: 3171191755811396228}
-  - component: {fileID: 1006520017088488862}
+  - component: {fileID: 4630232312555037399}
+  - component: {fileID: 5391962558980164344}
   m_Layer: 0
   m_Name: Jumping
   m_TagString: Untagged
@@ -1292,7 +1205,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7621598487352454049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3171191755811396228
+--- !u!114 &4630232312555037399
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1301,34 +1214,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 765075479904172420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &1006520017088488862
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &5391962558980164344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1337,9 +1232,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 765075479904172420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 4630232312555037399}
   onEntry: 2
   onEnterName: PhaseJump
   onEnterTime: 0.1
@@ -1610,10 +1507,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8894511086499521612}
-  - component: {fileID: 3717492717591553122}
-  - component: {fileID: 5780807699411459987}
   - component: {fileID: 2687498022588092817}
   - component: {fileID: 9125958073901558358}
+  - component: {fileID: 931380261548912141}
   m_Layer: 7
   m_Name: Throw3Rocks
   m_TagString: Untagged
@@ -1636,65 +1532,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5844054968010383813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3717492717591553122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1053733621983007493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Finish
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3573454440156196816}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &5780807699411459987
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1053733621983007493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: Throw3
-  onEnterTime: 0.05
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &2687498022588092817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1732,10 +1569,29 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3573454440156196816}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 4588407653334206998}
+          _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!114 &931380261548912141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053733621983007493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 2687498022588092817}
+  onEntry: 2
+  onEnterName: Throw3
+  onEnterTime: 0.05
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &1163374391107296281
 GameObject:
   m_ObjectHideFlags: 0
@@ -2992,11 +2848,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2066408413589306097}
-  - component: {fileID: 161146035714112281}
-  - component: {fileID: 572962550077989463}
   - component: {fileID: 7043564596891620169}
   - component: {fileID: 6323903129287787918}
   - component: {fileID: 6403646095175352505}
+  - component: {fileID: 4228229300427453905}
   m_Layer: 7
   m_Name: ChasePlayer
   m_TagString: Untagged
@@ -3019,93 +2874,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9086802304838005708}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &161146035714112281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2349701315992471721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Flinch
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 7810229896687099392}
-          _MemberName: CrossFade
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: Flinch
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-          - _Type: 5
-            _Int: 0
-            _String: 
-            _X: 0.02
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-    - Key: Slam
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 7479023952342656700}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: Charge
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8707086896814208181}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &572962550077989463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2349701315992471721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: Walking
-  onEnterTime: 0.05
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &7043564596891620169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3118,8 +2886,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64ffcc9cddb40840b0a7704c7b363c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
-  <State>k__BackingField: {fileID: 0}
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
+  <State>k__BackingField: {fileID: 6323903129287787918}
   distances:
   - higherDistance: 1.51
     timerTime: 2
@@ -3155,10 +2923,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField: []
-  <Machine>k__BackingField: {fileID: 0}
-  <Parent>k__BackingField: {fileID: 0}
-  <Layer>k__BackingField: 0
+  <Behaviors>k__BackingField:
+  - {fileID: 7043564596891620169}
+  - {fileID: 6403646095175352505}
+  - {fileID: 4228229300427453905}
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
+  <Parent>k__BackingField: {fileID: 5957105380707223399}
+  <Layer>k__BackingField: 1
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
 --- !u!114 &6403646095175352505
@@ -3173,7 +2944,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
   <State>k__BackingField: {fileID: 6323903129287787918}
   signals:
     serializedList:
@@ -3202,16 +2973,35 @@ MonoBehaviour:
     - Key: Slam
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 7479023952342656700}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 1736821564069130529}
+          _MemberName: Enter
           _PersistentArguments: []
     - Key: Charge
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 8707086896814208181}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 8404305901408802241}
+          _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!114 &4228229300427453905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2349701315992471721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
+  <State>k__BackingField: {fileID: 6323903129287787918}
+  onEntry: 2
+  onEnterName: Walking
+  onEnterTime: 0.05
+  doWhenNotFinal: 0
+  animator: {fileID: 7810229896687099392}
 --- !u!1 &2463586961977162685
 GameObject:
   m_ObjectHideFlags: 0
@@ -4459,11 +4249,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4171904790039317075}
-  - component: {fileID: 3573454440156196816}
-  - component: {fileID: 5597870731239093975}
   - component: {fileID: 427377163140771581}
   - component: {fileID: 4588407653334206998}
   - component: {fileID: 4222547966198032015}
+  - component: {fileID: 3089910707379221749}
   m_Layer: 7
   m_Name: ChasePlayer
   m_TagString: Untagged
@@ -4486,105 +4275,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5844054968010383813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3573454440156196816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3711165476588370282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Flinch
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 7810229896687099392}
-          _MemberName: CrossFade
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: Flinch
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-          - _Type: 5
-            _Int: 0
-            _String: 
-            _X: 0.02
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-    - Key: Slam
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 6642991369353550652}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: Throw1
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8368739555346919557}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: Throw3
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3717492717591553122}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: Charge
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8916514798593899701}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &5597870731239093975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3711165476588370282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: Walking
-  onEnterTime: 0.05
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &427377163140771581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4685,28 +4375,47 @@ MonoBehaviour:
     - Key: Slam
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 6642991369353550652}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 1102631161335146900}
+          _MemberName: Enter
           _PersistentArguments: []
     - Key: Throw1
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 8368739555346919557}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 515487003291245835}
+          _MemberName: Enter
           _PersistentArguments: []
     - Key: Throw3
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3717492717591553122}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 2687498022588092817}
+          _MemberName: Enter
           _PersistentArguments: []
     - Key: Charge
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 8916514798593899701}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 8587073939654457165}
+          _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!114 &3089910707379221749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3711165476588370282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 4588407653334206998}
+  onEntry: 2
+  onEnterName: Walking
+  onEnterTime: 0.05
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &3776284308157290650
 GameObject:
   m_ObjectHideFlags: 0
@@ -5043,7 +4752,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5844054968010383813}
-  - component: {fileID: 983292371214125114}
   m_Layer: 7
   m_Name: Phase3
   m_TagString: Untagged
@@ -5072,42 +4780,6 @@ Transform:
   - {fileID: 7141326887600916597}
   m_Father: {fileID: 7621598487352454049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &983292371214125114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4129386763805535142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
 --- !u!1 &4203976564027045898
 GameObject:
   m_ObjectHideFlags: 0
@@ -5337,12 +5009,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4371701423160842944}
-  - component: {fileID: 8916514798593899701}
-  - component: {fileID: 6720987100034364506}
   - component: {fileID: 2384545872010017458}
   - component: {fileID: 5583639559695612587}
   - component: {fileID: 8587073939654457165}
   - component: {fileID: 3817637385477134062}
+  - component: {fileID: 5748793979142900207}
   m_Layer: 7
   m_Name: Charge
   m_TagString: Untagged
@@ -5365,81 +5036,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5844054968010383813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8916514798593899701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4435532884018944069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 1
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Charge
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 7810229896687099392}
-          _MemberName: CrossFade
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: ChargeStartup
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-          - _Type: 5
-            _Int: 0
-            _String: 
-            _X: 0.05
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &6720987100034364506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4435532884018944069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: ChargeStartup
-  onEnterTime: 0.05
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &2384545872010017458
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5548,6 +5144,25 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockOnEnter: 0
+--- !u!114 &5748793979142900207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4435532884018944069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 8587073939654457165}
+  onEntry: 2
+  onEnterName: ChargeStartup
+  onEnterTime: 0.05
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &4466370110768821873
 GameObject:
   m_ObjectHideFlags: 0
@@ -5640,10 +5255,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8344197361559154074}
-  - component: {fileID: 3128797529520384670}
-  - component: {fileID: 7767763112658540258}
   - component: {fileID: 3255536684406947134}
   - component: {fileID: 7965828956391982997}
+  - component: {fileID: 5459728507013715656}
   m_Layer: 7
   m_Name: Vulnerable
   m_TagString: Untagged
@@ -5666,79 +5280,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9086802304838005708}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3128797529520384670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4507057467506878581}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Hit
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 7810229896687099392}
-          _MemberName: Play
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: Damage
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-    - Key: ReturnFromStun
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 161146035714112281}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &7767763112658540258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4507057467506878581}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 1
-  onEnterName: SlamDizzy
-  onEnterTime: 0
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &3255536684406947134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5751,10 +5292,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField: []
-  <Machine>k__BackingField: {fileID: 0}
-  <Parent>k__BackingField: {fileID: 0}
-  <Layer>k__BackingField: 0
+  <Behaviors>k__BackingField:
+  - {fileID: 7965828956391982997}
+  - {fileID: 5459728507013715656}
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
+  <Parent>k__BackingField: {fileID: 5957105380707223399}
+  <Layer>k__BackingField: 1
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
 --- !u!114 &7965828956391982997
@@ -5769,7 +5312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
   <State>k__BackingField: {fileID: 3255536684406947134}
   signals:
     serializedList:
@@ -5790,10 +5333,29 @@ MonoBehaviour:
     - Key: ReturnFromStun
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 161146035714112281}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 6323903129287787918}
+          _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!114 &5459728507013715656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4507057467506878581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
+  <State>k__BackingField: {fileID: 3255536684406947134}
+  onEntry: 1
+  onEnterName: SlamDizzy
+  onEnterTime: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 7810229896687099392}
 --- !u!1 &4510430184287096144
 GameObject:
   m_ObjectHideFlags: 0
@@ -5834,7 +5396,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6805546873660904409}
-  - component: {fileID: 4840119504684331582}
   m_Layer: 7
   m_Name: Phase2
   m_TagString: Untagged
@@ -5860,42 +5421,6 @@ Transform:
   - {fileID: 4978804873895793031}
   m_Father: {fileID: 7621598487352454049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4840119504684331582
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4517095214152222872}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
 --- !u!1 &4583833933586733740
 GameObject:
   m_ObjectHideFlags: 0
@@ -5969,10 +5494,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2946308092194881263}
-  - component: {fileID: 7479023952342656700}
-  - component: {fileID: 7807774449391776637}
   - component: {fileID: 1736821564069130529}
   - component: {fileID: 500367140456286828}
+  - component: {fileID: 4551208248408771658}
   m_Layer: 7
   m_Name: SwatAttack
   m_TagString: Untagged
@@ -5995,65 +5519,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 9086802304838005708}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7479023952342656700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4698546564307776529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 1
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Finish
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 161146035714112281}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &7807774449391776637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4698546564307776529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: BossSlapAttackWindup
-  onEnterTime: 0.1
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &1736821564069130529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6066,10 +5531,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField: []
-  <Machine>k__BackingField: {fileID: 0}
-  <Parent>k__BackingField: {fileID: 0}
-  <Layer>k__BackingField: 0
+  <Behaviors>k__BackingField:
+  - {fileID: 500367140456286828}
+  - {fileID: 4551208248408771658}
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
+  <Parent>k__BackingField: {fileID: 5957105380707223399}
+  <Layer>k__BackingField: 1
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
 --- !u!114 &500367140456286828
@@ -6084,17 +5551,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
   <State>k__BackingField: {fileID: 1736821564069130529}
   signals:
     serializedList:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 161146035714112281}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 6323903129287787918}
+          _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!114 &4551208248408771658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4698546564307776529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 6678375109288360819}
+  <State>k__BackingField: {fileID: 1736821564069130529}
+  onEntry: 2
+  onEnterName: BossSlapAttackWindup
+  onEnterTime: 0.1
+  doWhenNotFinal: 0
+  animator: {fileID: 7810229896687099392}
 --- !u!1 &4722808800100522825
 GameObject:
   m_ObjectHideFlags: 0
@@ -6642,10 +6128,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 914777500303450075}
-  - component: {fileID: 8368739555346919557}
-  - component: {fileID: 1176491135061824422}
   - component: {fileID: 515487003291245835}
   - component: {fileID: 5263506069771335758}
+  - component: {fileID: 6911645137588698038}
   m_Layer: 7
   m_Name: Throw1Rocks
   m_TagString: Untagged
@@ -6668,65 +6153,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5844054968010383813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8368739555346919557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4945035723250328965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Finish
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3573454440156196816}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &1176491135061824422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4945035723250328965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: Throw1
-  onEnterTime: 0.05
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &515487003291245835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6764,10 +6190,29 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3573454440156196816}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 4588407653334206998}
+          _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!114 &6911645137588698038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4945035723250328965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 515487003291245835}
+  onEntry: 2
+  onEnterName: Throw1
+  onEnterTime: 0.05
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &4953431089372900270
 GameObject:
   m_ObjectHideFlags: 0
@@ -7426,10 +6871,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2044919127443180719}
-  - component: {fileID: 6642991369353550652}
-  - component: {fileID: 3137832566649525915}
   - component: {fileID: 1102631161335146900}
   - component: {fileID: 8597223395822032152}
+  - component: {fileID: 4329362817773190189}
   m_Layer: 7
   m_Name: SwatAttack
   m_TagString: Untagged
@@ -7452,65 +6896,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5844054968010383813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6642991369353550652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5429043931898922074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 1
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Finish
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3573454440156196816}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &3137832566649525915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5429043931898922074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: BossSlapAttackWindup
-  onEnterTime: 0.1
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &1102631161335146900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7548,10 +6933,29 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3573454440156196816}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 4588407653334206998}
+          _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!114 &4329362817773190189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5429043931898922074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 1102631161335146900}
+  onEntry: 2
+  onEnterName: BossSlapAttackWindup
+  onEnterTime: 0.1
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &5447969755127879585
 GameObject:
   m_ObjectHideFlags: 0
@@ -8362,10 +7766,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7141326887600916597}
-  - component: {fileID: 3546595742029006264}
-  - component: {fileID: 2476655579889791895}
   - component: {fileID: 7187107233656143304}
   - component: {fileID: 6622814930298744930}
+  - component: {fileID: 1070633595652681413}
   m_Layer: 7
   m_Name: Vulnerable
   m_TagString: Untagged
@@ -8388,79 +7791,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5844054968010383813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3546595742029006264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6036332361176860846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Hit
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 7810229896687099392}
-          _MemberName: Play
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: Damage
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-    - Key: ReturnFromStun
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3573454440156196816}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &2476655579889791895
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6036332361176860846}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 1
-  onEnterName: SlamDizzy
-  onEnterTime: 0
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &7187107233656143304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8512,10 +7842,29 @@ MonoBehaviour:
     - Key: ReturnFromStun
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3573454440156196816}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 4588407653334206998}
+          _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!114 &1070633595652681413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6036332361176860846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 7187107233656143304}
+  onEntry: 1
+  onEnterName: SlamDizzy
+  onEnterTime: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &6043786559328355744
 GameObject:
   m_ObjectHideFlags: 0
@@ -8745,10 +8094,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4978804873895793031}
-  - component: {fileID: 5355607866151976127}
-  - component: {fileID: 1352703260072354423}
   - component: {fileID: 5228823548642039763}
   - component: {fileID: 5684289860616001176}
+  - component: {fileID: 8229237630605589}
   m_Layer: 7
   m_Name: Throw3Rock
   m_TagString: Untagged
@@ -8771,65 +8119,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6805546873660904409}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5355607866151976127
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6367831455131830710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Finish
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 4760835121399366669}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &1352703260072354423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6367831455131830710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: Throw3
-  onEnterTime: 0.05
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &5228823548642039763
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8867,10 +8156,29 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4760835121399366669}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 9165145314466523846}
+          _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!114 &8229237630605589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6367831455131830710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 5228823548642039763}
+  onEntry: 2
+  onEnterName: Throw3
+  onEnterTime: 0.05
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &6540705810049888692
 GameObject:
   m_ObjectHideFlags: 0
@@ -9185,7 +8493,7 @@ MonoBehaviour:
   phase2Trigger: 30
   phase2Event:
     _PersistentCalls:
-    - _Target: {fileID: 4760835121399366669}
+    - _Target: {fileID: 0}
       _MemberName: TransitionTo
       _PersistentArguments: []
     - _Target: {fileID: 0}
@@ -9201,7 +8509,7 @@ MonoBehaviour:
         _Object: {fileID: 0}
   phase3Event:
     _PersistentCalls:
-    - _Target: {fileID: 3573454440156196816}
+    - _Target: {fileID: 0}
       _MemberName: TransitionTo
       _PersistentArguments: []
     - _Target: {fileID: 6859160403900326409}
@@ -9215,7 +8523,7 @@ MonoBehaviour:
         _Z: 0
         _W: 0
         _Object: {fileID: 0}
-  jumpState: {fileID: 3171191755811396228}
+  jumpState: {fileID: 0}
   phase2StartPos: {fileID: 0}
   phase3StartPos: {fileID: 0}
   ResetBossEvent:
@@ -9690,8 +8998,10 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 0}
   <Layer>k__BackingField: 0
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
+  <Children>k__BackingField:
+  - {fileID: 5957105380707223399}
+  - {fileID: 0}
+  <ChildCount>k__BackingField: 4
   <StatesSetup>k__BackingField: 0
   <StateHolder>k__BackingField: {fileID: 7621598487352454049}
 --- !u!114 &8340440280918939206
@@ -10330,10 +9640,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9149342833619030586}
-  - component: {fileID: 2751140090907164859}
-  - component: {fileID: 817791736415041344}
   - component: {fileID: 7135956069952392871}
   - component: {fileID: 1104617082968503787}
+  - component: {fileID: 4401364917886049646}
   m_Layer: 7
   m_Name: Throw1Rock
   m_TagString: Untagged
@@ -10356,65 +9665,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6805546873660904409}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2751140090907164859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7680705792029796809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Finish
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 4760835121399366669}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &817791736415041344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7680705792029796809}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: Throw1
-  onEnterTime: 0.05
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &7135956069952392871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10452,10 +9702,29 @@ MonoBehaviour:
     - Key: Finish
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4760835121399366669}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 9165145314466523846}
+          _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!114 &4401364917886049646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7680705792029796809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 7135956069952392871}
+  onEntry: 2
+  onEnterName: Throw1
+  onEnterTime: 0.05
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &7694223426762950549
 GameObject:
   m_ObjectHideFlags: 0
@@ -10706,11 +9975,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5870903609643551849}
-  - component: {fileID: 4760835121399366669}
-  - component: {fileID: 7488454010871324752}
   - component: {fileID: 3032780605950577628}
   - component: {fileID: 9165145314466523846}
   - component: {fileID: 7297539169556987246}
+  - component: {fileID: 4715579322309291987}
   m_Layer: 7
   m_Name: Idle
   m_TagString: Untagged
@@ -10733,71 +10001,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6805546873660904409}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4760835121399366669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7808575695947640496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList:
-    - Key: Throw1
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 2751140090907164859}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-    - Key: Throw3
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 5355607866151976127}
-          _MemberName: TransitionTo
-          _PersistentArguments: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
---- !u!114 &7488454010871324752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7808575695947640496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 1
-  onEnterName: Phase2Idle
-  onEnterTime: 0
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &3032780605950577628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10862,16 +10065,35 @@ MonoBehaviour:
     - Key: Throw1
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2751140090907164859}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 7135956069952392871}
+          _MemberName: Enter
           _PersistentArguments: []
     - Key: Throw3
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 5355607866151976127}
-          _MemberName: TransitionTo
+        - _Target: {fileID: 5228823548642039763}
+          _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!114 &4715579322309291987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7808575695947640496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 9165145314466523846}
+  onEntry: 1
+  onEnterName: Phase2Idle
+  onEnterTime: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &7811181562897544013
 GameObject:
   m_ObjectHideFlags: 0

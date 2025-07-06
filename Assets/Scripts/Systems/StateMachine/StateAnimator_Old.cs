@@ -4,7 +4,7 @@ using EditorAttributes;
 namespace SLS.StateMachineV3
 {
     [RequireComponent(typeof(State_OLD))]
-    public class StateAnimator : StateBehavior
+    public class StateAnimator_Old : StateBehavior
     {
 
         #region Config

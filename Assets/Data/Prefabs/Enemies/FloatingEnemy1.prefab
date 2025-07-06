@@ -2434,11 +2434,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2820940130030491980}
-  - component: {fileID: 6468403254272803315}
   - component: {fileID: 1347906261071004793}
-  - component: {fileID: 2523373393776142833}
   - component: {fileID: 4971400543128926430}
   - component: {fileID: 2868714309706522240}
+  - component: {fileID: 4064278577796202195}
   m_Layer: 7
   m_Name: Attacking
   m_TagString: Untagged
@@ -2461,42 +2460,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4185788662303831795}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6468403254272803315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2641995060867614448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
 --- !u!114 &1347906261071004793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2513,23 +2476,6 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 0}
   sineSize: 0.25
   sineSpeed: 0.5
---- !u!114 &2523373393776142833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2641995060867614448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: Attacking
-  onEnterTime: 0.2
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &4971400543128926430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2574,6 +2520,25 @@ MonoBehaviour:
   <Layer>k__BackingField: 0
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &4064278577796202195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2641995060867614448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 2868714309706522240}
+  onEntry: 2
+  onEnterName: Attacking
+  onEnterTime: 0.2
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &2673744444177228503
 GameObject:
   m_ObjectHideFlags: 0
@@ -4185,10 +4150,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2631683644928377087}
-  - component: {fileID: 5732303842472750605}
   - component: {fileID: 5462495818761838655}
-  - component: {fileID: 6210339910212272752}
   - component: {fileID: 2014795069692124083}
+  - component: {fileID: 8492769196140495081}
   m_Layer: 7
   m_Name: Floating
   m_TagString: Untagged
@@ -4211,42 +4175,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4185788662303831795}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5732303842472750605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4242566068978263145}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
 --- !u!114 &5462495818761838655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4263,23 +4191,6 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 0}
   sineSize: 0.25
   sineSpeed: 0.5
---- !u!114 &6210339910212272752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4242566068978263145}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEntry: 2
-  onEnterName: Walking
-  onEnterTime: 0.2
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &2014795069692124083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4298,6 +4209,25 @@ MonoBehaviour:
   <Layer>k__BackingField: 0
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &8492769196140495081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4242566068978263145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 2014795069692124083}
+  onEntry: 2
+  onEnterName: Walking
+  onEnterTime: 0.2
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &4248851303409065686
 GameObject:
   m_ObjectHideFlags: 0

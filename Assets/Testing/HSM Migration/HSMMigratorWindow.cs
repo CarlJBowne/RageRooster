@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using OLD = SLS.StateMachineV3;
 using NEW = SLS.StateMachineH;
 using Unity.VisualScripting;
+using SLS.StateMachineH;
+using System.Reflection;
+using UltEvents;
 
 public class HSMMigratorWindow : EditorWindow
 {
@@ -43,6 +46,9 @@ public class HSMMigratorWindow : EditorWindow
         Button("BuildALL", BuildAll, "Does on all Prefabs.");
         Button("ReplaceSignals", ReplaceSignals, "Does on all Prefabs.");
         Button("AddMissingStatesOnSelection", AddMissingStatesOnSelection, "Does on Selected Objects.");
+        Button("ReplaceAnimators", ReplaceAnimators, "Does on all Prefabs.");
+        Button("RemoveOldStates", RemoveOldStates, "Does on all Prefabs.");
+        Button("FixBrokenStateSignals", FixBrokenStateSignals, "Does on all Prefabs.");
 
     }
 
@@ -228,9 +234,150 @@ public class HSMMigratorWindow : EditorWindow
         }
     }
 
+    public void RemoveOldStates()
+    {
+        LoadPrefabs();
+        foreach (var p in loadedPrefabs)
+        {
+            p.Open();
 
 
+            var Root = p.editableObject.transform.Find("States");
 
+            RemoveOldState(Root, true);
+            void RemoveOldState(Transform This, bool root = false)
+            {
+                if(This.TryGetComponent(out OLD.State_OLD oldState))
+                {
+                    DestroyImmediate(oldState);
+                    EditorUtility.SetDirty(This.gameObject);
+                }
+
+                for (int i = 0; i < This.childCount; i++)
+                    RemoveOldState(This.GetChild(i));
+            }
+
+
+            p.Close();
+        }
+    }
+    public void ReplaceAnimators()
+    {
+        bool deleteAfter = EditorUtility.DisplayDialog("Replace Animators", "Do you want to delete the old animators after replacing them?", "Yes", "No");
+
+        LoadPrefabs();
+        foreach (var p in loadedPrefabs)
+        {
+            p.Open();
+
+
+            var Root = p.editableObject.transform.Find("States");
+
+            ReplaceAnimator(Root, true);
+            void ReplaceAnimator(Transform This, bool root = false)
+            {
+                if(This.TryGetComponent(out OLD.StateAnimator_Old O))
+                {
+                    var N = This.GetOrAddComponent<NEW.StateAnimator>();
+
+                    N.onEntry = (NEW.StateAnimator.EntryAnimAction)O.onEntry;
+                    N.onEnterName = O.onEnterName;
+                    N.onEnterTime = O.onEnterTime;
+                    N.doWhenNotFinal = O.doWhenNotFinal;
+
+                    if(deleteAfter) DestroyImmediate(O);
+                    EditorUtility.SetDirty(This.gameObject);
+                    EditorUtility.SetDirty(N);
+                }
+
+                for (int i = 0; i < This.childCount; i++)
+                    ReplaceAnimator(This.GetChild(i));
+            }
+
+
+            p.Close();
+        }
+    }
+
+    public void FixBrokenStateSignals()
+    {
+        LoadPrefabs();
+        foreach (var p in loadedPrefabs)
+        {
+            p.Open();
+
+            Fix(p.editableObject.GetComponent<NEW.SignalManager>().globalSignals);
+
+            var Root = p.editableObject.transform.Find("States");
+
+            Do(Root, true);
+            void Do(Transform This, bool root = false)
+            {
+                if (This.TryGetComponent(out SignalNode O)) Fix(O.signals);
+
+                for (int i = 0; i < This.childCount; i++)
+                    Do(This.GetChild(i));
+            }
+
+            void Fix(SignalSet set)
+            {
+                if (set == null || set.Count == 0) return;
+
+                foreach (var signal in set)
+                {
+                    var ultEvent = signal.Value;
+                    if (ultEvent == null) continue;
+
+                    // Iterate through the persistent calls in the UltEvent.  
+                    for (int i = 0; i < ultEvent.PersistentCallsList.Count; i++)
+                    {
+                        PersistentCall call = ultEvent.PersistentCallsList[i];
+                        PersistentCall callCopy = new();
+                        callCopy.CopyFrom(call);
+
+                        if (call.Target is SLS.StateMachineV3.State_OLD OS)
+                        {
+                            var NS = OS.GetComponent<NEW.State>();
+
+                            var targetMethod = call.Method;
+                            //Debug.Log($"Name is {targetMethod.Name}");
+                            if (targetMethod.Name == "TransitionTo")
+                            {
+                                // Use reflection to find the method named "Enter" and set it dynamically.  
+                                var enterMethod = typeof(NEW.State).GetMethod("Enter", BindingFlags.Instance | BindingFlags.Public);
+                                if (enterMethod == null) continue;
+                                targetMethod = enterMethod;
+                                call.SetMethod(targetMethod, NS);
+                            }
+                            else
+                            {
+                                call.SetTarget(NS);
+                            }
+                            
+                            EditorUtility.SetDirty(call.Target);
+                        }
+                        else if (call.Target is OLD.StateAnimator_Old OA)
+                        {
+                            var NA = OA.GetComponent<NEW.StateAnimator>();
+                            //call.SetMethod(call.Method, NA);
+                            call.SetTarget(NA);
+                            EditorUtility.SetDirty(call.Target);
+                        }
+                        else if (call.Target is OLD.StateMachine_OLD OSM)
+                        {
+                            var NSM = OSM.GetComponent<NEW.StateMachine>();
+                            //call.SetMethod(call.Method, NSM);
+                            //call.SetArguments(callCopy.PersistentArguments);
+                            call.SetTarget(NSM);
+                            EditorUtility.SetDirty(call.Target);
+                        }
+                    }
+                } 
+            }
+
+            p.Close();
+        }
+    }
 
 
 
