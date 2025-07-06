@@ -16,14 +16,14 @@ namespace SLS.StateMachineV3
     /// Although most of the time it's probably not necessary.
     /// </summary>
     [DefaultExecutionOrder(-50)]
-    public class StateMachine : State
+    public class StateMachine_OLD : State_OLD
     {
 
         #region Config
 
         //[SerializeField] private SMVariables _variables = new();
         //Note, make nonreliant on YellowPaper later.
-        public AYellowpaper.SerializedCollections.SerializedDictionary<string, State> states;
+        public AYellowpaper.SerializedCollections.SerializedDictionary<string, State_OLD> states;
         [HideInEditMode, DisableInPlayMode] public bool signalReady = true;
         public Queue<string> signalQueue = new();
         public Timer.OneTime signalQueueDecay = new(1f);
@@ -36,7 +36,7 @@ namespace SLS.StateMachineV3
         {
             var NSGO = new GameObject("NewState");
             NSGO.transform.parent = stateHolder.transform;
-            NSGO.AddComponent<State>();
+            NSGO.AddComponent<State_OLD>();
         }
         [Button(nameof(__enableSiblingCreation), ConditionResult.ShowHide)]
         protected override void AddSibling() { }
@@ -52,7 +52,7 @@ namespace SLS.StateMachineV3
         private bool _statesSetup;
         public Transform stateHolder { get => _stateHolder; private set => _stateHolder = value; }
         private Transform _stateHolder;
-        public State currentState { get; private set; }
+        public State_OLD currentState { get; private set; }
         //public SMVariables Variables => _variables;
 
         public System.Action waitforMachineInit;
@@ -111,7 +111,7 @@ namespace SLS.StateMachineV3
         #region Initialization
 
 
-        public new void Setup(StateMachine machine, State parent, int layer, bool makeDirty = false)
+        public new void Setup(StateMachine_OLD machine, State_OLD parent, int layer, bool makeDirty = false)
         {
             if (stateHolder == null)
             {
@@ -128,16 +128,16 @@ namespace SLS.StateMachineV3
             this.parent = this;
             active = true;
 
-            lineage = new State[1] { this };
+            lineage = new State_OLD[1] { this };
 
             this.OnSetup();
 
             {
                 childCount = stateHolder.childCount;
-                children = new State[childCount];
+                children = new State_OLD[childCount];
                 for (int i = 0; i < childCount; i++)
                 {
-                    children[i] = stateHolder.GetChild(i).GetComponent<State>();
+                    children[i] = stateHolder.GetChild(i).GetComponent<State_OLD>();
                     children[i].Setup(machine, this, layer + 1);
                 }
             }//Children Setup
@@ -177,8 +177,8 @@ namespace SLS.StateMachineV3
         #endregion
 
 
-        public virtual void TransitionState(State nextState) => TransitionState(nextState, currentState);
-        public virtual void TransitionState(State nextState, State prevState)
+        public virtual void TransitionState(State_OLD nextState) => TransitionState(nextState, currentState);
+        public virtual void TransitionState(State_OLD nextState, State_OLD prevState)
         {
             // Pre Checks
             if (

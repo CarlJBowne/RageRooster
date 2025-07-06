@@ -640,6 +640,7 @@ GameObject:
   - component: {fileID: 1753627936466461426}
   - component: {fileID: 548331688421527683}
   - component: {fileID: 1039329718445696152}
+  - component: {fileID: 616018993740020326}
   m_Layer: 0
   m_Name: Talking
   m_TagString: Untagged
@@ -753,6 +754,26 @@ MonoBehaviour:
   <Layer>k__BackingField: 0
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &616018993740020326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205560365441503824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 1039329718445696152}
+  signals:
+    serializedList:
+    - Key: OnSpeakerEvent
+      Value:
+        _PersistentCalls: []
+  lockOnEnter: 0
 --- !u!1 &1285967677239413581
 GameObject:
   m_ObjectHideFlags: 0
@@ -2834,6 +2855,8 @@ GameObject:
   - component: {fileID: 3444734424889381964}
   - component: {fileID: 6939248087690716833}
   - component: {fileID: 3192361171914779862}
+  - component: {fileID: 8705032835185711965}
+  - component: {fileID: 7345773605673554308}
   m_Layer: 8
   m_Name: NPC_Froggy
   m_TagString: NPC
@@ -3026,6 +3049,43 @@ MonoBehaviour:
   children:
   - {fileID: 1406906463267403306}
   - {fileID: 548331688421527683}
+--- !u!114 &8705032835185711965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6454999864905180250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a2a6c6c5b407d45a1aa9d16408554a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+  <StatesSetup>k__BackingField: 0
+  <StateHolder>k__BackingField: {fileID: 7965652468623851697}
+--- !u!114 &7345773605673554308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6454999864905180250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e318945a4f6224dad4dd3c599394f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8705032835185711965}
+  <State>k__BackingField: {fileID: 8705032835185711965}
+  globalSignals:
+    serializedList: []
+  queueSignals: 1
 --- !u!1 &6600183530542937682
 GameObject:
   m_ObjectHideFlags: 0
@@ -3918,6 +3978,7 @@ GameObject:
   - component: {fileID: 320307805295896141}
   - component: {fileID: 1406906463267403306}
   - component: {fileID: 2741041052176548542}
+  - component: {fileID: 3868711808145688828}
   m_Layer: 0
   m_Name: Idle
   m_TagString: Untagged
@@ -4031,6 +4092,26 @@ MonoBehaviour:
   <Layer>k__BackingField: 0
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &3868711808145688828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8861284293700644219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 2741041052176548542}
+  signals:
+    serializedList:
+    - Key: 
+      Value:
+        _PersistentCalls: []
+  lockOnEnter: 0
 --- !u!1 &8900264931066353175
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody), typeof(StateMachine))]
+[RequireComponent(typeof(Rigidbody), typeof(StateMachine_OLD))]
 public class StatePhysicsCaller : StateBehavior
 {
     private StateBehaviorPhysicsCollision[] collisions;

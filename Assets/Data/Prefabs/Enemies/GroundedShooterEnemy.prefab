@@ -5180,7 +5180,8 @@ GameObject:
   - component: {fileID: 6531542561807786389}
   - component: {fileID: 4704537948975615930}
   - component: {fileID: 1490756800394186340}
-  - component: {fileID: 8501629877285700990}
+  - component: {fileID: 4094144836121689503}
+  - component: {fileID: 4147315175768597754}
   m_Layer: 7
   m_Name: GroundedShooterEnemy
   m_TagString: Untagged
@@ -5506,7 +5507,7 @@ MonoBehaviour:
   proxy: {fileID: 707459482337852643}
   isPlayer: 0
   materialTinter: {fileID: 0}
---- !u!114 &8501629877285700990
+--- !u!114 &4094144836121689503
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5515,7 +5516,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4906831177318307996}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Script: {fileID: 11500000, guid: 41a2a6c6c5b407d45a1aa9d16408554a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField: []
@@ -5524,6 +5525,25 @@ MonoBehaviour:
   <Layer>k__BackingField: 0
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+  <StatesSetup>k__BackingField: 0
+  <StateHolder>k__BackingField: {fileID: 2917385289062370396}
+--- !u!114 &4147315175768597754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4906831177318307996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e318945a4f6224dad4dd3c599394f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
+  globalSignals:
+    serializedList: []
+  queueSignals: 1
 --- !u!1 &4909045370384413027
 GameObject:
   m_ObjectHideFlags: 0

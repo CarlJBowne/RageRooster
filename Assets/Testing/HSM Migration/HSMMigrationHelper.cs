@@ -10,7 +10,7 @@ using System.Linq;
 
 public class HSMMigrationHelper : MonoBehaviour
 {
-    public OLD.State oldState;
+    public OLD.State_OLD oldState;
     public NEW.State newState;
 
     public List<HSMMigrationHelper> children = new();
@@ -21,9 +21,9 @@ public class HSMMigrationHelper : MonoBehaviour
     {
         if (isStateMachine)
         {
-            OLD.StateMachine oldStateMachine = GetComponent<OLD.StateMachine>();
+            OLD.StateMachine_OLD oldStateMachine = GetComponent<OLD.StateMachine_OLD>();
 
-            if (oldStateMachine.GetType() != typeof(OLD.StateMachine))
+            if (oldStateMachine.GetType() != typeof(OLD.StateMachine_OLD))
                 newState = gameObject.GetOrAddComponent<NEW.StateMachine>();
         }
         else newState = gameObject.GetOrAddComponent<NEW.State>();
@@ -45,7 +45,7 @@ public class HSMMigrationHelper : MonoBehaviour
             newChild.transform.SetSiblingIndex(0);
 
             // Add an OLD.State component to the new GameObject  
-            var newChildState = newChild.AddComponent<OLD.State>();
+            var newChildState = newChild.AddComponent<OLD.State_OLD>();
 
             oldState.AddChildAtIndex0(newChildState);
 
@@ -55,7 +55,7 @@ public class HSMMigrationHelper : MonoBehaviour
 
             foreach (var component in baseComponents)
             {
-                if (component is OLD.State or Transform) continue;
+                if (component is OLD.State_OLD or Transform) continue;
                 var type = component.GetType();
                 var newComponent = newChild.AddComponent(type);
                 foreach (var field in type.GetFields())
@@ -82,7 +82,7 @@ public class HSMMigrationHelper : MonoBehaviour
     {
         if (isStateMachine)
         {
-            OLD.StateMachine SM = GetComponent<OLD.StateMachine>();
+            OLD.StateMachine_OLD SM = GetComponent<OLD.StateMachine_OLD>();
             NEW.SignalManager signalManager = gameObject.AddComponent<NEW.SignalManager>();
             if (SM.globalSignals != null && SM.globalSignals.Count > 0) 
                 signalManager.globalSignals = ConvertFromYellowPaper(SM.globalSignals);
@@ -158,7 +158,7 @@ public class HSMMigrationHelper : MonoBehaviour
         {
             if (children[i] == null)
             {
-                children[i] = HSMMigratorWindow.AddHelper(transform.GetChild(i).GetComponent<OLD.State>());
+                children[i] = HSMMigratorWindow.AddHelper(transform.GetChild(i).GetComponent<OLD.State_OLD>());
                 EditorUtility.SetDirty(children[i]);
             }
         }

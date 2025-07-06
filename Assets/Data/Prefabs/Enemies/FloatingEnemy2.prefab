@@ -702,7 +702,8 @@ GameObject:
   - component: {fileID: 3332179714480363266}
   - component: {fileID: 1161913864714086396}
   - component: {fileID: -1435134813268415645}
-  - component: {fileID: 2779588210179698275}
+  - component: {fileID: 3235563500782219552}
+  - component: {fileID: 2767979387655188810}
   m_Layer: 7
   m_Name: FloatingEnemy2
   m_TagString: Untagged
@@ -993,7 +994,7 @@ MonoBehaviour:
     autoSpawnRate: 0
   Active: 0
   timeExisting: 0
---- !u!114 &2779588210179698275
+--- !u!114 &3235563500782219552
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1002,7 +1003,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2551659374973096520}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Script: {fileID: 11500000, guid: 41a2a6c6c5b407d45a1aa9d16408554a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField: []
@@ -1011,6 +1012,25 @@ MonoBehaviour:
   <Layer>k__BackingField: 0
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+  <StatesSetup>k__BackingField: 0
+  <StateHolder>k__BackingField: {fileID: 4730313670804026173}
+--- !u!114 &2767979387655188810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2551659374973096520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e318945a4f6224dad4dd3c599394f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
+  globalSignals:
+    serializedList: []
+  queueSignals: 1
 --- !u!1 &2559604377289995549
 GameObject:
   m_ObjectHideFlags: 0

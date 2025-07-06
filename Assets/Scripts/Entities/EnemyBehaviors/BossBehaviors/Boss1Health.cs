@@ -9,7 +9,7 @@ public class Boss1Health : Health
     public int phase2Trigger;
     public UltEvents.UltEvent phase2Event;
     public UltEvents.UltEvent phase3Event;
-    public State jumpState;
+    public State_OLD jumpState;
     public Transform phase2StartPos;
     public Transform phase3StartPos;
 
@@ -22,7 +22,7 @@ public class Boss1Health : Health
     private int stunCounter = 0;
     private Animator animator;
     private MovementAnimator moveAnim;
-    private StateMachine machine;
+    private StateMachine_OLD machine;
     private Vector3 respawnPoint;
     private float lastDamageTime;
 

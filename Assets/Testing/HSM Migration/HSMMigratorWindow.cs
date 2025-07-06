@@ -70,7 +70,7 @@ public class HSMMigratorWindow : EditorWindow
             Prefab prefab = new(AssetDatabase.GUIDToAssetPath(guid));
 
             if (prefab.readOnlyObject == null || 
-                (!prefab.readOnlyObject.TryGetComponent(out OLD.StateMachine Machine) &&
+                (!prefab.readOnlyObject.TryGetComponent(out OLD.StateMachine_OLD Machine) &&
                 !prefab.readOnlyObject.TryGetComponent(out PlayerStateMachine PMachine))
                 ) continue;
 
@@ -124,14 +124,14 @@ public class HSMMigratorWindow : EditorWindow
 
     void DealWithSeparate(Transform This, bool root = false)
     {
-        bool found = This.TryGetComponent(out OLD.State state);
+        bool found = This.TryGetComponent(out OLD.State_OLD state);
 
         if (!root && found && state.separateFromChildren && This.childCount > 0)
         {
             var defChild = new GameObject("Default");
             defChild.transform.SetParent(This, false);
             defChild.transform.SetSiblingIndex(0);
-            var defStateOld = defChild.AddComponent<OLD.State>();
+            var defStateOld = defChild.AddComponent<OLD.State_OLD>();
             var defStateNew = defChild.AddComponent<NEW.State>();
 
             defStateOld.signals = state.signals;
@@ -174,8 +174,9 @@ public class HSMMigratorWindow : EditorWindow
         {
             p.Open();
 
-            var SigMan = p.editableObject.AddComponent<NEW.SignalManager>();
-            SigMan.globalSignals = ConvertFromYellowPaper(p.editableObject.GetComponent<OLD.StateMachine>().globalSignals);
+            var SigMan = p.editableObject.GetOrAddComponent<NEW.SignalManager>();
+            if(p.editableObject.TryGetComponent(out OLD.StateMachine_OLD SM) && SM.globalSignals != null && SM.globalSignals.Count >0)
+                SigMan.globalSignals = ConvertFromYellowPaper(SM.globalSignals);
             EditorUtility.SetDirty(p.editableObject);
             EditorUtility.SetDirty(SigMan);
 
@@ -184,9 +185,9 @@ public class HSMMigratorWindow : EditorWindow
             ReplaceSignal(Root, true);
             void ReplaceSignal(Transform This, bool root = false)
             {
-                if (!root && This.TryGetComponent(out OLD.State oldState) && oldState.signals.Count != 0)
+                if (!root && This.TryGetComponent(out OLD.State_OLD oldState) && oldState.signals.Count != 0)
                 {
-                    var SN = This.GetComponent<NEW.SignalNode>();
+                    var SN = This.GetOrAddComponent<NEW.SignalNode>();
                     SN.signals = ConvertFromYellowPaper(oldState.signals);
 
                     EditorUtility.SetDirty(This);
@@ -203,6 +204,7 @@ public class HSMMigratorWindow : EditorWindow
 
     private NEW.SignalSet ConvertFromYellowPaper(AYellowpaper.SerializedCollections.SerializedDictionary<string, UltEvents.UltEvent> input)
     {
+        if(input == null || input.Count == 0) return new NEW.SignalSet();
         var output = new NEW.SignalSet();
         foreach (var pair in input)
         {
@@ -291,7 +293,7 @@ public class HSMMigratorWindow : EditorWindow
         {
             HSMMachine prefab = new(AssetDatabase.GUIDToAssetPath(guid));
 
-            if (prefab.readOnlyObject == null || !prefab.readOnlyObject.TryGetComponent(out OLD.StateMachine Machine)) continue;
+            if (prefab.readOnlyObject == null || !prefab.readOnlyObject.TryGetComponent(out OLD.StateMachine_OLD Machine)) continue;
 
             data.workingMachines.Add(prefab);
 
@@ -299,7 +301,7 @@ public class HSMMigratorWindow : EditorWindow
 
             Machine.ManualSetup();
 
-            AddHelper(prefab.editableObject.GetComponent<OLD.StateMachine>());
+            AddHelper(prefab.editableObject.GetComponent<OLD.StateMachine_OLD>());
 
             prefab.Close();
             EditorUtility.SetDirty(data);
@@ -309,14 +311,14 @@ public class HSMMigratorWindow : EditorWindow
     }
 
 
-    public static HSMMigrationHelper AddHelper(OLD.State state)
+    public static HSMMigrationHelper AddHelper(OLD.State_OLD state)
     {
         HSMMigrationHelper result = state.gameObject.GetOrAddComponent<HSMMigrationHelper>();
         if (result == null) return null;
 
         result.oldState = state;
         if(state.children != null)
-            foreach (OLD.State child in state.children)
+            foreach (OLD.State_OLD child in state.children)
             {
                 var cHelper = AddHelper(child);
                 if(!result.children.Contains(cHelper)) result.children.Add(cHelper);

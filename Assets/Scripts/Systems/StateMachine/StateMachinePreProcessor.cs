@@ -26,7 +26,7 @@ public class BuildProcessor : IPreprocessBuildWithReport
             // Open prefab contents as a temporary scene-like instance
             GameObject prefabInstance = PrefabUtility.LoadPrefabContents(path);
 
-            if(prefabInstance.TryGetComponent(out StateMachine SM))
+            if(prefabInstance.TryGetComponent(out StateMachine_OLD SM))
             {
                 if (setting == EditorState.OnBuildStateMachineHandling.SetupIfNotSetup && !SM.statesSetup)
                 {

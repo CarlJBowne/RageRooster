@@ -14,7 +14,7 @@ namespace SLS.StateMachineV3
     /// <summary>
     /// The class for an individual State in the State Machine. I wouldn't recommend inheriting from this.
     /// </summary>
-    public class State : MonoBehaviour
+    public class State_OLD : MonoBehaviour
     {
         #region Config
 
@@ -27,9 +27,9 @@ namespace SLS.StateMachineV3
         [FoldoutGroup("Lifetime Events", nameof(onAwakeEvent), nameof(onEnterEvent), nameof(onExitEvent), nameof(onActiveChangeEvent), nameof(onUpdateEvent), nameof(onFixedUpdateEvent))]
         public Void lifetimeEventsHolder;
 
-        [SerializeField, HideInInspector] public UltEvent<StateMachine> onAwakeEvent;
-        [SerializeField, HideInInspector] public UltEvent<State> onEnterEvent;
-        [SerializeField, HideInInspector] public UltEvent<State> onExitEvent;
+        [SerializeField, HideInInspector] public UltEvent<StateMachine_OLD> onAwakeEvent;
+        [SerializeField, HideInInspector] public UltEvent<State_OLD> onEnterEvent;
+        [SerializeField, HideInInspector] public UltEvent<State_OLD> onExitEvent;
         [SerializeField, HideInInspector] public UltEvent<bool> onActiveChangeEvent;
         [SerializeField, HideInInspector] public UltEvent<float> onUpdateEvent;
         [SerializeField, HideInInspector] public UltEvent<float> onFixedUpdateEvent;
@@ -47,14 +47,14 @@ namespace SLS.StateMachineV3
         {
             var NSGO = new GameObject("NewState");
             NSGO.transform.parent = base.transform;
-            NSGO.AddComponent<State>();
+            NSGO.AddComponent<State_OLD>();
         }
         [Button(nameof(__enableSiblingCreation), ConditionResult.EnableDisable)]
         protected virtual void AddSibling()
         {
             var NSGO = new GameObject("NewState");
             NSGO.transform.parent = base.transform.parent;
-            NSGO.AddComponent<State>();
+            NSGO.AddComponent<State_OLD>();
         }
 
         #endregion Buttons
@@ -68,44 +68,44 @@ namespace SLS.StateMachineV3
 
         public bool active { get; protected set; }
 
-        public StateMachine machine { get => _machine; protected set => _machine = value; }
-        [SerializeField] private StateMachine _machine;
+        public StateMachine_OLD machine { get => _machine; protected set => _machine = value; }
+        [SerializeField] private StateMachine_OLD _machine;
         public int layer { get => _layer; protected set => _layer = value; }
         [SerializeField] private int _layer;
-        public State parent { get => _parent; protected set => _parent = value; }
-        [SerializeField] private State _parent;
-        public State[] children { get => _children; protected set => _children = value; }
-        [SerializeField] private State[] _children;
+        public State_OLD parent { get => _parent; protected set => _parent = value; }
+        [SerializeField] private State_OLD _parent;
+        public State_OLD[] children { get => _children; protected set => _children = value; }
+        [SerializeField] private State_OLD[] _children;
         public int childCount { get => _childCount; protected set => _childCount = value; }
         [SerializeField] private int _childCount;
-        public State activeChild { get => _activeChild; protected set => _activeChild = value; }
-        private State _activeChild;
-        public State[] lineage { get => _lineage; protected set => _lineage = value; }
-        [SerializeField] private State[] _lineage;
+        public State_OLD activeChild { get => _activeChild; protected set => _activeChild = value; }
+        private State_OLD _activeChild;
+        public State_OLD[] lineage { get => _lineage; protected set => _lineage = value; }
+        [SerializeField] private State_OLD[] _lineage;
         public StateBehavior[] behaviors { get => _behaviors; protected set => _behaviors = value; }
         [SerializeField] private StateBehavior[] _behaviors;
 
         //Getters
 
-        public void AddChildAtIndex0(State newState)
+        public void AddChildAtIndex0(State_OLD newState)
         {
             if (children == null || children.Length == 0)
             {
-                children = new State[] { newState };
+                children = new State_OLD[] { newState };
             }
             else
             {
-                var newChildren = new State[children.Length + 1];
+                var newChildren = new State_OLD[children.Length + 1];
                 newChildren[0] = newState;
                 for (int i = 0; i < children.Length; i++) newChildren[i + 1] = children[i];
                 _children = newChildren;
             }
         }
 
-        public State this[int i] => children[i];
+        public State_OLD this[int i] => children[i];
         public StateBehavior this[System.Type T] => GetComponent(T) as StateBehavior;
         public T Behavior<T>() where T : StateBehavior => behaviors.First(x => x is T) as T;
-        public static implicit operator bool(State s) => s.active;
+        public static implicit operator bool(State_OLD s) => s.active;
 
         #endregion
 
@@ -118,7 +118,7 @@ namespace SLS.StateMachineV3
 
         #endregion 
 
-        public virtual void Setup(StateMachine machine, State parent, int layer, bool makeDirty = false)
+        public virtual void Setup(StateMachine_OLD machine, State_OLD parent, int layer, bool makeDirty = false)
         {
             this.machine = machine;
             this.layer = layer;
@@ -126,8 +126,8 @@ namespace SLS.StateMachineV3
             gameObject.SetActive(false);
 
             {
-                lineage = new State[layer + 1];
-                State iState = this;
+                lineage = new State_OLD[layer + 1];
+                State_OLD iState = this;
                 for (int i = layer; i >= 0; i--)
                 {
                     lineage[i] = iState;
@@ -137,10 +137,10 @@ namespace SLS.StateMachineV3
 
             {
                 childCount = transform.childCount;
-                children = new State[childCount];
+                children = new State_OLD[childCount];
                 for (int i = 0; i < childCount; i++)
                 {
-                    children[i] = transform.GetChild(i).GetComponent<State>();
+                    children[i] = transform.GetChild(i).GetComponent<State_OLD>();
                     children[i].Setup(machine, this, layer + 1);
                 }
             }//Children Setup
@@ -181,7 +181,7 @@ namespace SLS.StateMachineV3
             onFixedUpdateEvent?.Invoke(Time.fixedDeltaTime);
             if (childCount > 0 && activeChild != null) activeChild.DoFixedUpdate(); 
         }
-        public State EnterState(State prev, bool specifically = true)
+        public State_OLD EnterState(State_OLD prev, bool specifically = true)
         {
             if(parent!=null) parent.activeChild = this;
             active = true;
@@ -199,7 +199,7 @@ namespace SLS.StateMachineV3
             onActiveChangeEvent?.DynamicInvoke(true);
             return this;
         }
-        public void ExitState(State next)
+        public void ExitState(State_OLD next)
         {
             parent.activeChild = null;
             active = false;
@@ -217,8 +217,8 @@ namespace SLS.StateMachineV3
 
     public static class _StateMachineExtMethods
     {
-        public static bool IsTopLayer(this State state) => state.layer == 0;
-        public static bool ActiveMain(this State state) => state.machine.currentState == state;
-        public static bool IsMachine(this State state) => state is StateMachine;
+        public static bool IsTopLayer(this State_OLD state) => state.layer == 0;
+        public static bool ActiveMain(this State_OLD state) => state.machine.currentState == state;
+        public static bool IsMachine(this State_OLD state) => state is StateMachine_OLD;
     }
 }

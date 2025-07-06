@@ -1,7 +1,7 @@
 ﻿using SLS.StateMachineV3;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody), typeof(StateMachine))]
+[RequireComponent(typeof(Rigidbody), typeof(StateMachine_OLD))]
 public class StatePhysicsCaller2D : StateBehavior
 {
     private StateBehaviorPhysicsCollision2D[] collisions2D;

@@ -3,7 +3,7 @@ using EditorAttributes;
 
 namespace SLS.StateMachineV3
 {
-    [RequireComponent(typeof(State))]
+    [RequireComponent(typeof(State_OLD))]
     public class StateAnimator : StateBehavior
     {
 
@@ -28,7 +28,7 @@ namespace SLS.StateMachineV3
             if (TryGetComponentFromMachine(out animator) == false) Destroy(this);
         }
 
-        public override void OnEnter(State prev, bool isFinal)
+        public override void OnEnter(State_OLD prev, bool isFinal)
         {
             if (!isFinal && !doWhenNotFinal) return;
             if (onEntry == EntryAnimAction.Play) Play(onEnterName);

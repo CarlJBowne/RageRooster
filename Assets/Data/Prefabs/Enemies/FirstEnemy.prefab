@@ -6256,7 +6256,8 @@ GameObject:
   - component: {fileID: 3133899637185726238}
   - component: {fileID: 6846661119807183612}
   - component: {fileID: 3674508901043307227}
-  - component: {fileID: 8979948129904075218}
+  - component: {fileID: 1751870638151356086}
+  - component: {fileID: 7873505903795856647}
   m_Layer: 7
   m_Name: FirstEnemy
   m_TagString: Untagged
@@ -6558,7 +6559,7 @@ MonoBehaviour:
   - {fileID: 925324475207166938, guid: 8e07c4e22d1e1e544836d1ad9b0252b3, type: 3}
   spawnForce: 5
   itemChance: 0.4
---- !u!114 &8979948129904075218
+--- !u!114 &1751870638151356086
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6567,7 +6568,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4811522196661094151}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Script: {fileID: 11500000, guid: 41a2a6c6c5b407d45a1aa9d16408554a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField: []
@@ -6576,6 +6577,25 @@ MonoBehaviour:
   <Layer>k__BackingField: 0
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+  <StatesSetup>k__BackingField: 0
+  <StateHolder>k__BackingField: {fileID: 5621844384992680875}
+--- !u!114 &7873505903795856647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811522196661094151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e318945a4f6224dad4dd3c599394f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 0}
+  globalSignals:
+    serializedList: []
+  queueSignals: 1
 --- !u!1 &4858683810890698992
 GameObject:
   m_ObjectHideFlags: 0
