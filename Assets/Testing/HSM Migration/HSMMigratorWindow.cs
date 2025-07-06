@@ -49,6 +49,7 @@ public class HSMMigratorWindow : EditorWindow
         Button("ReplaceAnimators", ReplaceAnimators, "Does on all Prefabs.");
         Button("RemoveOldStates", RemoveOldStates, "Does on all Prefabs.");
         Button("FixBrokenStateSignals", FixBrokenStateSignals, "Does on all Prefabs.");
+        Button("MoveTop", MoveTop, "Does on all Prefabs.");
 
     }
 
@@ -94,8 +95,8 @@ public class HSMMigratorWindow : EditorWindow
 
             var Root = p.editableObject.transform.Find("States");
 
-            AddMissingState(Root, true);
-            void AddMissingState(Transform This, bool root = false)
+            Do(Root, true);
+            void Do(Transform This, bool root = false)
             {
                 if (!This.TryGetComponent(out NEW.State _) && !root)
                 {
@@ -105,7 +106,7 @@ public class HSMMigratorWindow : EditorWindow
                 }
 
                 for (int i = 0; i < This.childCount; i++)
-                    AddMissingState(This.GetChild(0));
+                    Do(This.GetChild(0));
             }
             p.Close();
         }
@@ -379,7 +380,38 @@ public class HSMMigratorWindow : EditorWindow
         }
     }
 
+    public void MoveTop()
+    {
+        LoadPrefabs();
+        foreach (var p in loadedPrefabs)
+        {
+            p.Open();
 
+            MoveUp(p.editableObject.GetComponent<NEW.StateMachine>());
+
+            var Root = p.editableObject.transform.Find("States");
+
+            Do(Root, true);
+            void Do(Transform This, bool root = false)
+            {
+                //Get New state and move it to the top of the inspector list
+                if(!root) MoveUp(This.GetComponent<NEW.State>());
+
+                for (int i = 0; i < This.childCount; i++)
+                    Do(This.GetChild(i));
+            }
+
+            void MoveUp(NEW.State S)
+            {
+                int stillMove = 100;
+                while (stillMove != 0) 
+                    stillMove = UnityEditorInternal.ComponentUtility.MoveComponentUp(S) ? stillMove - 1 : 0;
+                EditorUtility.SetDirty(S); 
+            }
+
+            p.Close();
+        }
+    }
 
 
 

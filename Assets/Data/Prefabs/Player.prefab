@@ -396,8 +396,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8950459172026540696}
-  - component: {fileID: 1966879644613746894}
   - component: {fileID: 5498562475319856201}
+  - component: {fileID: 1966879644613746894}
   - component: {fileID: 4244376152006908830}
   m_Layer: 6
   m_Name: GrabbedIdle
@@ -421,6 +421,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5721769436998970410}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5498562475319856201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348881476169311659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 1966879644613746894}
+  - {fileID: 4244376152006908830}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 4641746869726642701}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &1966879644613746894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,26 +476,6 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
---- !u!114 &5498562475319856201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 348881476169311659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 1966879644613746894}
-  - {fileID: 4244376152006908830}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 4641746869726642701}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &4244376152006908830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -608,9 +608,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4593628155627854849}
+  - component: {fileID: 8822842600920580472}
   - component: {fileID: 2536310429355348171}
   - component: {fileID: 4928657066015808323}
-  - component: {fileID: 8822842600920580472}
   - component: {fileID: 6164013334802910877}
   - component: {fileID: 1608307018703560638}
   m_Layer: 6
@@ -635,6 +635,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3675384103904257216}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8822842600920580472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469540947907413664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 2536310429355348171}
+  - {fileID: 6164013334802910877}
+  - {fileID: 1608307018703560638}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 5987303711069652701}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &2536310429355348171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -700,26 +721,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &8822842600920580472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 469540947907413664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 2536310429355348171}
-  - {fileID: 6164013334802910877}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 5987303711069652701}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &6164013334802910877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -818,7 +819,7 @@ MonoBehaviour:
   onEnterName: LightPunchAir2
   onEnterTime: 0.1
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &531144083629005765
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,9 +860,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8762820116621655547}
+  - component: {fileID: 5549325383090932593}
   - component: {fileID: 3985390449464073207}
   - component: {fileID: 8552609587650290044}
-  - component: {fileID: 5549325383090932593}
   - component: {fileID: 7416429843383829149}
   - component: {fileID: 79467573303735202}
   m_Layer: 6
@@ -886,6 +887,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4182476368529953341}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5549325383090932593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622944000673277637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 3985390449464073207}
+  - {fileID: 7416429843383829149}
+  - {fileID: 79467573303735202}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 5833654247008700248}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &3985390449464073207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -949,26 +971,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &5549325383090932593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622944000673277637}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 3985390449464073207}
-  - {fileID: 7416429843383829149}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 5833654247008700248}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &7416429843383829149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1061,7 +1063,7 @@ MonoBehaviour:
   onEnterName: LightPunch2
   onEnterTime: 0.1
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &624970041063503452
 GameObject:
   m_ObjectHideFlags: 0
@@ -1071,10 +1073,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9047614155566188650}
+  - component: {fileID: 6542662269160061587}
   - component: {fileID: 1181195091599698405}
   - component: {fileID: 6132819690470820842}
   - component: {fileID: 5381935237969057074}
-  - component: {fileID: 6542662269160061587}
   - component: {fileID: 2650107836693273814}
   m_Layer: 6
   m_Name: AirGrab
@@ -1098,6 +1100,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2048931125629623396}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6542662269160061587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624970041063503452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 1181195091599698405}
+  - {fileID: 6132819690470820842}
+  - {fileID: 2650107836693273814}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 45456295673223789}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &1181195091599698405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1181,27 +1204,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &6542662269160061587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 624970041063503452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 1181195091599698405}
-  - {fileID: 6132819690470820842}
-  - {fileID: 2650107836693273814}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 45456295673223789}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &2650107836693273814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1569,11 +1571,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8409826796498701612}
+  - component: {fileID: 3117915588769811748}
   - component: {fileID: 5823505111254569389}
   - component: {fileID: 1632128030463539112}
   - component: {fileID: 7868266934595780143}
   - component: {fileID: 8114919871140000751}
-  - component: {fileID: 3117915588769811748}
   - component: {fileID: 8308005270771097460}
   m_Layer: 6
   m_Name: Bounce
@@ -1597,6 +1599,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6790216793252147034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3117915588769811748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049869934697765793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 5823505111254569389}
+  - {fileID: 8308005270771097460}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 8823138238697965985}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &5823505111254569389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1706,25 +1728,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &3117915588769811748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1049869934697765793}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 5823505111254569389}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 8823138238697965985}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &8308005270771097460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1743,7 +1746,7 @@ MonoBehaviour:
   onEnterName: Jump
   onEnterTime: 0.1
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &1165660441062684328
 GameObject:
   m_ObjectHideFlags: 0
@@ -1784,9 +1787,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6649114412980860138}
+  - component: {fileID: 4770298227795515962}
   - component: {fileID: 1027073189156208793}
   - component: {fileID: 3148531946352221550}
-  - component: {fileID: 4770298227795515962}
   - component: {fileID: 6173842201903441971}
   - component: {fileID: 5582145816796372926}
   m_Layer: 6
@@ -1811,6 +1814,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6790216793252147034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4770298227795515962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206808908755011029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 1027073189156208793}
+  - {fileID: 6173842201903441971}
+  - {fileID: 5582145816796372926}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 8823138238697965985}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &1027073189156208793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1879,26 +1903,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &4770298227795515962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1206808908755011029}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 1027073189156208793}
-  - {fileID: 6173842201903441971}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 8823138238697965985}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &6173842201903441971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1967,7 +1971,7 @@ MonoBehaviour:
   onEnterName: DropLaunch
   onEnterTime: 0.01
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &1239383449791831169
 GameObject:
   m_ObjectHideFlags: 0
@@ -2109,8 +2113,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1663018687967235127}
-  - component: {fileID: 750694679335013753}
   - component: {fileID: 788590073896816042}
+  - component: {fileID: 750694679335013753}
   - component: {fileID: 4655094921710202761}
   m_Layer: 6
   m_Name: WallJump
@@ -2134,6 +2138,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7427727485705586250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &788590073896816042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1242553937887867047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 750694679335013753}
+  - {fileID: 4655094921710202761}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 4554088299833102073}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &750694679335013753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2162,26 +2186,6 @@ MonoBehaviour:
   upgrade: {fileID: -5908332654645760598, guid: 5096cd543e777e240af87643ae7b164b,
     type: 2}
   animationName: WallJump
---- !u!114 &788590073896816042
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1242553937887867047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 750694679335013753}
-  - {fileID: 4655094921710202761}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 4554088299833102073}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &4655094921710202761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2277,8 +2281,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6519207066078055320}
-  - component: {fileID: 4999451030884928838}
   - component: {fileID: 4799613922471232797}
+  - component: {fileID: 4999451030884928838}
   - component: {fileID: 5173706459457393071}
   m_Layer: 6
   m_Name: GrabbedWalking
@@ -2302,6 +2306,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5721769436998970410}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4799613922471232797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1288466975036708354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 4999451030884928838}
+  - {fileID: 5173706459457393071}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 4641746869726642701}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &4999451030884928838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2337,26 +2361,6 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
---- !u!114 &4799613922471232797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1288466975036708354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 4999451030884928838}
-  - {fileID: 5173706459457393071}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 4641746869726642701}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &5173706459457393071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2563,8 +2567,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1206198214367745091}
-  - component: {fileID: 1488171615571765429}
   - component: {fileID: 6590708857773316528}
+  - component: {fileID: 1488171615571765429}
   - component: {fileID: 1487847476849349252}
   - component: {fileID: 4269038792820991052}
   m_Layer: 6
@@ -2589,6 +2593,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7427727485705586250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6590708857773316528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1328720359275537980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 1488171615571765429}
+  - {fileID: 1487847476849349252}
+  - {fileID: 4269038792820991052}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 4554088299833102073}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &1488171615571765429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2621,26 +2646,6 @@ MonoBehaviour:
   worldspaceInfluence: 0
   worldspaceVelocity: {x: 0, y: 0, z: 0}
   locked: 0
---- !u!114 &6590708857773316528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1328720359275537980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 1488171615571765429}
-  - {fileID: 1487847476849349252}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 4554088299833102073}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &1487847476849349252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2705,7 +2710,7 @@ MonoBehaviour:
   onEnterName: DamageFall
   onEnterTime: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &1349700240687973182
 GameObject:
   m_ObjectHideFlags: 0
@@ -2995,8 +3000,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8797717583853980375}
-  - component: {fileID: 2064941021943173147}
   - component: {fileID: 6596185978329452183}
+  - component: {fileID: 2064941021943173147}
   - component: {fileID: 6863511468890911359}
   m_Layer: 6
   m_Name: CoyoteGrabbed
@@ -3020,6 +3025,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5721769436998970410}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6596185978329452183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651726559207214612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 2064941021943173147}
+  - {fileID: 6863511468890911359}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 4641746869726642701}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &2064941021943173147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3057,26 +3082,6 @@ MonoBehaviour:
   jumpMinHeight: 0
   forceDownwards: 0
   allowMidFall: 0
---- !u!114 &6596185978329452183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1651726559207214612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 2064941021943173147}
-  - {fileID: 6863511468890911359}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 4641746869726642701}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &6863511468890911359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3189,8 +3194,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2567390634421806730}
-  - component: {fileID: 4681754079180063780}
   - component: {fileID: 1749641026926622317}
+  - component: {fileID: 4681754079180063780}
   - component: {fileID: 4110270261111297796}
   m_Layer: 6
   m_Name: GrabbedJump
@@ -3216,6 +3221,28 @@ Transform:
   - {fileID: 3841650405079008890}
   m_Father: {fileID: 2048931125629623396}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1749641026926622317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1805927438911527028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 4681754079180063780}
+  - {fileID: 4110270261111297796}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 45456295673223789}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField:
+  - {fileID: 4226283670687877243}
+  - {fileID: 7195138240643335963}
+  <ChildCount>k__BackingField: 2
 --- !u!114 &4681754079180063780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3253,27 +3280,6 @@ MonoBehaviour:
   jumpMinHeight: 2.6
   forceDownwards: 0
   allowMidFall: 1
---- !u!114 &1749641026926622317
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1805927438911527028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 4681754079180063780}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 45456295673223789}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField:
-  - {fileID: 4226283670687877243}
-  - {fileID: 7195138240643335963}
-  <ChildCount>k__BackingField: 2
 --- !u!114 &4110270261111297796
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3292,7 +3298,7 @@ MonoBehaviour:
   onEnterName: Jump
   onEnterTime: 0.01
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &1838506262058880858
 GameObject:
   m_ObjectHideFlags: 0
@@ -3844,8 +3850,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6974781987043796759}
-  - component: {fileID: 1627855894347979437}
   - component: {fileID: 172757351869591046}
+  - component: {fileID: 1627855894347979437}
   - component: {fileID: 1122838218020578483}
   - component: {fileID: 3432230067973307783}
   m_Layer: 6
@@ -3870,6 +3876,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3675384103904257216}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &172757351869591046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124590860796095726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 1627855894347979437}
+  - {fileID: 1122838218020578483}
+  - {fileID: 3432230067973307783}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 5987303711069652701}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &1627855894347979437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3904,26 +3931,6 @@ MonoBehaviour:
   locked: 1
   check: 0
   checkOnEnter: 1
---- !u!114 &172757351869591046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2124590860796095726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 1627855894347979437}
-  - {fileID: 1122838218020578483}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 5987303711069652701}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &1122838218020578483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4041,7 +4048,7 @@ MonoBehaviour:
   onEnterName: AirKick
   onEnterTime: 0.1
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &2212145017621531694
 GameObject:
   m_ObjectHideFlags: 0
@@ -4051,9 +4058,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8220131811468243921}
+  - component: {fileID: 2580061565448867863}
   - component: {fileID: 3599756768954574801}
   - component: {fileID: 3384534770515375707}
-  - component: {fileID: 2580061565448867863}
   m_Layer: 0
   m_Name: Ragdoll
   m_TagString: Untagged
@@ -4076,6 +4083,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6385669238997089540}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2580061565448867863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2212145017621531694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 3599756768954574801}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 8455434200384702600}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &3599756768954574801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4139,25 +4165,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &2580061565448867863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2212145017621531694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 3599756768954574801}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 8455434200384702600}
-  <Layer>k__BackingField: 0
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!1 &2323500058085692592
 GameObject:
   m_ObjectHideFlags: 0
@@ -4349,8 +4356,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7977943911182383535}
-  - component: {fileID: 2513530225769621494}
   - component: {fileID: 3747663377877617945}
+  - component: {fileID: 2513530225769621494}
   - component: {fileID: 2714252772125468041}
   - component: {fileID: 3136932766002583917}
   m_Layer: 6
@@ -4375,6 +4382,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6790216793252147034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3747663377877617945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2425651879818459153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 2513530225769621494}
+  - {fileID: 2714252772125468041}
+  - {fileID: 3136932766002583917}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 8823138238697965985}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &2513530225769621494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4412,26 +4440,6 @@ MonoBehaviour:
   jumpMinHeight: 0
   forceDownwards: 1
   allowMidFall: 0
---- !u!114 &3747663377877617945
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2425651879818459153}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 2513530225769621494}
-  - {fileID: 2714252772125468041}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 8823138238697965985}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &2714252772125468041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4518,7 +4526,7 @@ MonoBehaviour:
   onEnterName: Fall
   onEnterTime: 0.2
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &2515008206219138531
 GameObject:
   m_ObjectHideFlags: 0
@@ -4974,8 +4982,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5532989216206750302}
-  - component: {fileID: 651157846730441489}
   - component: {fileID: 2600951743086798134}
+  - component: {fileID: 651157846730441489}
   - component: {fileID: 3925105769051910635}
   m_Layer: 6
   m_Name: CoyoteWalk
@@ -4999,6 +5007,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 542910149066364657}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2600951743086798134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2937903117368929439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 651157846730441489}
+  - {fileID: 3925105769051910635}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 3758855929158950712}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &651157846730441489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5036,26 +5064,6 @@ MonoBehaviour:
   jumpMinHeight: 0
   forceDownwards: 0
   allowMidFall: 0
---- !u!114 &2600951743086798134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2937903117368929439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 651157846730441489}
-  - {fileID: 3925105769051910635}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 3758855929158950712}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &3925105769051910635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5105,8 +5113,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 802911248559169720}
-  - component: {fileID: 8579594802138283692}
   - component: {fileID: 8455434200384702600}
+  - component: {fileID: 8579594802138283692}
   - component: {fileID: 1838944232945776554}
   - component: {fileID: 598530174602593461}
   - component: {fileID: 4810220497755855147}
@@ -5150,27 +5158,6 @@ Transform:
   - {fileID: 4445717046832692495}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &8579594802138283692
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2950555048310845610}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b4e351fed38302946a71ad3c4daea446, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 1
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &8455434200384702600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5236,6 +5223,27 @@ MonoBehaviour:
     - Key: AirChargeFall
       Value: {fileID: 1975376254761656333}
   queuedSignals: []
+--- !u!95 &8579594802138283692
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b4e351fed38302946a71ad3c4daea446, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 1
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!54 &1838944232945776554
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6053,10 +6061,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4725053154384593640}
+  - component: {fileID: 5281776910968683532}
   - component: {fileID: 7248501645845252710}
   - component: {fileID: 1073467550040047801}
   - component: {fileID: 8404342100878825337}
-  - component: {fileID: 5281776910968683532}
   - component: {fileID: 2750038254075230046}
   - component: {fileID: 2575273106558408250}
   m_Layer: 6
@@ -6081,6 +6089,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4182476368529953341}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5281776910968683532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3244875344704272238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 7248501645845252710}
+  - {fileID: 2750038254075230046}
+  - {fileID: 2575273106558408250}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 5833654247008700248}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &7248501645845252710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6166,26 +6195,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &5281776910968683532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3244875344704272238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 7248501645845252710}
-  - {fileID: 2750038254075230046}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 5833654247008700248}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &2750038254075230046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6278,7 +6287,7 @@ MonoBehaviour:
   onEnterName: LightPunch1
   onEnterTime: 0.05
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &3263576733088404462
 GameObject:
   m_ObjectHideFlags: 0
@@ -6525,8 +6534,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5577900753218004323}
-  - component: {fileID: 2095790091468025607}
   - component: {fileID: 8815441119551140160}
+  - component: {fileID: 2095790091468025607}
   - component: {fileID: 4546970226547505939}
   - component: {fileID: 6944606189691095705}
   m_Layer: 6
@@ -6551,6 +6560,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6790216793252147034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8815441119551140160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645675676112704684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 2095790091468025607}
+  - {fileID: 4546970226547505939}
+  - {fileID: 6944606189691095705}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 8823138238697965985}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &2095790091468025607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6580,26 +6610,6 @@ MonoBehaviour:
   fallState: {fileID: 2513530225769621494}
   isVentGlide: 1
   raiseRate: 4
---- !u!114 &8815441119551140160
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3645675676112704684}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 2095790091468025607}
-  - {fileID: 4546970226547505939}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 8823138238697965985}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &4546970226547505939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6653,7 +6663,7 @@ MonoBehaviour:
   onEnterName: Falling
   onEnterTime: 0.1
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &3709786810941767551
 GameObject:
   m_ObjectHideFlags: 0
@@ -6734,6 +6744,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 4034578412657846143}
+  - {fileID: 1248177351479601663}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 5660112243806928363}
   <Layer>k__BackingField: 2
@@ -6780,7 +6791,7 @@ MonoBehaviour:
   onEnterName: AimShoot
   onEnterTime: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &3730508859436989519
 GameObject:
   m_ObjectHideFlags: 0
@@ -7044,9 +7055,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1846500094994641161}
+  - component: {fileID: 5659189762918028092}
   - component: {fileID: 1150588390469737330}
   - component: {fileID: 564320835148495432}
-  - component: {fileID: 5659189762918028092}
   - component: {fileID: 2444952072764193927}
   - component: {fileID: 6140362856135786890}
   m_Layer: 6
@@ -7071,6 +7082,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6790216793252147034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5659189762918028092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4124917820233702332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 1150588390469737330}
+  - {fileID: 2444952072764193927}
+  - {fileID: 6140362856135786890}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 8823138238697965985}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &1150588390469737330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7131,26 +7163,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &5659189762918028092
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4124917820233702332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 1150588390469737330}
-  - {fileID: 2444952072764193927}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 8823138238697965985}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &2444952072764193927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7204,7 +7216,7 @@ MonoBehaviour:
   onEnterName: Gliding
   onEnterTime: 0.1
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &4185847910366357583
 GameObject:
   m_ObjectHideFlags: 0
@@ -7477,13 +7489,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8913829323247949238}
+  - component: {fileID: 4560762236120336607}
   - component: {fileID: 704825921462216154}
   - component: {fileID: 675394232343518501}
   - component: {fileID: 2302710619165436362}
   - component: {fileID: 7572254650929324686}
   - component: {fileID: 4225907961593503217}
-  - component: {fileID: 4560762236120336607}
   - component: {fileID: 893358787608204450}
+  - component: {fileID: 5148034997239824357}
   m_Layer: 6
   m_Name: Raging Charge
   m_TagString: Untagged
@@ -7506,6 +7519,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 986074438047136786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4560762236120336607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4366117737136798339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 704825921462216154}
+  - {fileID: 893358787608204450}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 757564897446861421}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &704825921462216154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7642,26 +7675,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &4560762236120336607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4366117737136798339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 704825921462216154}
-  - {fileID: 893358787608204450}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 757564897446861421}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &893358787608204450
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7703,6 +7716,32 @@ MonoBehaviour:
           _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!114 &5148034997239824357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4366117737136798339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed047d72c584ca444a0e69c00e878b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 4560762236120336607}
+  onSetup:
+    _PersistentCalls: []
+  onAwake:
+    _PersistentCalls: []
+  onEnter:
+    _PersistentCalls: []
+  onExit:
+    _PersistentCalls: []
+  onStateChange:
+    _PersistentCalls: []
+  activateObjects:
+  - {fileID: 8206459135731414027}
 --- !u!1 &4439709818119911506
 GameObject:
   m_ObjectHideFlags: 0
@@ -7874,9 +7913,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6790216793252147034}
+  - component: {fileID: 8823138238697965985}
   - component: {fileID: 3698709666984973678}
   - component: {fileID: 6052092395789326638}
-  - component: {fileID: 8823138238697965985}
   - component: {fileID: 975934203543916206}
   m_Layer: 6
   m_Name: Jumping
@@ -7906,6 +7945,32 @@ Transform:
   - {fileID: 6649114412980860138}
   m_Father: {fileID: 7427727485705586250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8823138238697965985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4568227700120816147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 3698709666984973678}
+  - {fileID: 975934203543916206}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 4554088299833102073}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField:
+  - {fileID: 3376758605324004614}
+  - {fileID: 3747663377877617945}
+  - {fileID: 5659189762918028092}
+  - {fileID: 8815441119551140160}
+  - {fileID: 3117915588769811748}
+  - {fileID: 4770298227795515962}
+  <ChildCount>k__BackingField: 6
 --- !u!114 &3698709666984973678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7974,31 +8039,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &8823138238697965985
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4568227700120816147}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 3698709666984973678}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 4554088299833102073}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField:
-  - {fileID: 3376758605324004614}
-  - {fileID: 3747663377877617945}
-  - {fileID: 5659189762918028092}
-  - {fileID: 8815441119551140160}
-  - {fileID: 3117915588769811748}
-  - {fileID: 4770298227795515962}
-  <ChildCount>k__BackingField: 6
 --- !u!114 &975934203543916206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8017,7 +8057,7 @@ MonoBehaviour:
   onEnterName: Jump
   onEnterTime: 0.01
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &4594552405087050133
 GameObject:
   m_ObjectHideFlags: 0
@@ -8058,9 +8098,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2559043128292996688}
+  - component: {fileID: 1419214192395305568}
   - component: {fileID: 3201008532590326604}
   - component: {fileID: 6107030437731684822}
-  - component: {fileID: 1419214192395305568}
   - component: {fileID: 5783652258050704555}
   - component: {fileID: 4261638721166669242}
   m_Layer: 6
@@ -8085,6 +8125,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1261920261987571038}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1419214192395305568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4673781514129227438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 3201008532590326604}
+  - {fileID: 5783652258050704555}
+  - {fileID: 4261638721166669242}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 7315598544489480670}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &3201008532590326604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8148,26 +8209,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &1419214192395305568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4673781514129227438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 3201008532590326604}
-  - {fileID: 5783652258050704555}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 7315598544489480670}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &5783652258050704555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8215,7 +8256,7 @@ MonoBehaviour:
   onEnterName: Parry
   onEnterTime: 0.02
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &4675571679839146216
 GameObject:
   m_ObjectHideFlags: 0
@@ -8225,8 +8266,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7163401617430893447}
-  - component: {fileID: 442187770537930055}
   - component: {fileID: 6142235946352202614}
+  - component: {fileID: 442187770537930055}
   - component: {fileID: 762074560747674145}
   m_Layer: 6
   m_Name: GrabbedSprinting
@@ -8250,6 +8291,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5721769436998970410}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6142235946352202614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4675571679839146216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 442187770537930055}
+  - {fileID: 762074560747674145}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 4641746869726642701}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &442187770537930055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8285,26 +8346,6 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
---- !u!114 &6142235946352202614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4675571679839146216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 442187770537930055}
-  - {fileID: 762074560747674145}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 4641746869726642701}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &762074560747674145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8398,13 +8439,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4840406343167883971}
+  - component: {fileID: 3520534525560279172}
   - component: {fileID: 6329160560242998881}
   - component: {fileID: 646156717812279867}
   - component: {fileID: 5855114282886156849}
   - component: {fileID: 4601588046968553847}
   - component: {fileID: 2199304448062642395}
   - component: {fileID: 2785260334461924655}
-  - component: {fileID: 3520534525560279172}
   - component: {fileID: 9001094515354043849}
   m_Layer: 6
   m_Name: GroundSlam
@@ -8430,6 +8471,29 @@ Transform:
   - {fileID: 5004547793418751161}
   m_Father: {fileID: 3675384103904257216}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3520534525560279172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861617110333237064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 6329160560242998881}
+  - {fileID: 646156717812279867}
+  - {fileID: 9001094515354043849}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 5987303711069652701}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField:
+  - {fileID: 8183052182198313434}
+  - {fileID: 4570457457227430354}
+  <ChildCount>k__BackingField: 2
 --- !u!114 &6329160560242998881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8581,28 +8645,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &3520534525560279172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4861617110333237064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 6329160560242998881}
-  - {fileID: 646156717812279867}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 5987303711069652701}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField:
-  - {fileID: 8183052182198313434}
-  - {fileID: 4570457457227430354}
-  <ChildCount>k__BackingField: 2
 --- !u!114 &9001094515354043849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8621,7 +8663,7 @@ MonoBehaviour:
   onEnterName: GroundSlam_Start
   onEnterTime: 0.1
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &4901648064755187594
 GameObject:
   m_ObjectHideFlags: 0
@@ -8694,11 +8736,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4394942687003372090}
+  - component: {fileID: 1157138829965547146}
   - component: {fileID: 4470159406448367370}
   - component: {fileID: 2152569479813037482}
-  - component: {fileID: 1157138829965547146}
   - component: {fileID: 2078370564367679410}
   - component: {fileID: 4760351905167416853}
+  - component: {fileID: 4642126570249924434}
   m_Layer: 6
   m_Name: Hellcopter
   m_TagString: Untagged
@@ -8721,6 +8764,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1261920261987571038}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1157138829965547146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5075024688237253571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 4470159406448367370}
+  - {fileID: 2078370564367679410}
+  - {fileID: 4760351905167416853}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 7315598544489480670}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &4470159406448367370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8784,26 +8848,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &1157138829965547146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5075024688237253571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 4470159406448367370}
-  - {fileID: 2078370564367679410}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 7315598544489480670}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &2078370564367679410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8875,7 +8919,33 @@ MonoBehaviour:
   onEnterName: Hellcopter
   onEnterTime: 0.1
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
+--- !u!114 &4642126570249924434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5075024688237253571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed047d72c584ca444a0e69c00e878b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 1157138829965547146}
+  onSetup:
+    _PersistentCalls: []
+  onAwake:
+    _PersistentCalls: []
+  onEnter:
+    _PersistentCalls: []
+  onExit:
+    _PersistentCalls: []
+  onStateChange:
+    _PersistentCalls: []
+  activateObjects:
+  - {fileID: 6567049614807394039}
 --- !u!1 &5162917169200034039
 GameObject:
   m_ObjectHideFlags: 0
@@ -9103,11 +9173,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7028723737484744588}
+  - component: {fileID: 3948346785622173736}
   - component: {fileID: 6062820148927623488}
   - component: {fileID: 1409538746235017687}
   - component: {fileID: 2763978919148611411}
   - component: {fileID: 7477544725745237100}
-  - component: {fileID: 3948346785622173736}
   - component: {fileID: 5928332968813840303}
   m_Layer: 6
   m_Name: AirCharge
@@ -9135,6 +9205,30 @@ Transform:
   - {fileID: 176377644018463753}
   m_Father: {fileID: 7427727485705586250}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3948346785622173736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5339412235462586582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 6062820148927623488}
+  - {fileID: 5928332968813840303}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 4554088299833102073}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField:
+  - {fileID: 3460612446326371314}
+  - {fileID: 7039777641560852190}
+  - {fileID: 1975376254761656333}
+  - {fileID: 3765359621817980221}
+  <ChildCount>k__BackingField: 4
 --- !u!114 &6062820148927623488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9241,29 +9335,6 @@ MonoBehaviour:
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
   enabled: 1
---- !u!114 &3948346785622173736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5339412235462586582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 6062820148927623488}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 4554088299833102073}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField:
-  - {fileID: 3460612446326371314}
-  - {fileID: 7039777641560852190}
-  - {fileID: 1975376254761656333}
-  - {fileID: 3765359621817980221}
-  <ChildCount>k__BackingField: 4
 --- !u!114 &5928332968813840303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9282,7 +9353,7 @@ MonoBehaviour:
   onEnterName: Somersault
   onEnterTime: 0.01
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &5347781844388266985
 GameObject:
   m_ObjectHideFlags: 0
@@ -9474,10 +9545,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1261920261987571038}
+  - component: {fileID: 7315598544489480670}
   - component: {fileID: 6283726564688637529}
   - component: {fileID: 1285737906182916520}
   - component: {fileID: 3587290060280392779}
-  - component: {fileID: 7315598544489480670}
   m_Layer: 6
   m_Name: Parrying
   m_TagString: Untagged
@@ -9504,6 +9575,28 @@ Transform:
   - {fileID: 5014433089004609597}
   m_Father: {fileID: 6385669238997089540}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7315598544489480670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5361885281466735368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 8455434200384702600}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField:
+  - {fileID: 4517767350401232540}
+  - {fileID: 1419214192395305568}
+  - {fileID: 1157138829965547146}
+  - {fileID: 7749773456367244962}
+  <ChildCount>k__BackingField: 4
 --- !u!114 &6283726564688637529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9575,28 +9668,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.96
   m_Center: {x: 0, y: 0.75, z: 0}
---- !u!114 &7315598544489480670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5361885281466735368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField: []
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 8455434200384702600}
-  <Layer>k__BackingField: 0
-  <Children>k__BackingField:
-  - {fileID: 4517767350401232540}
-  - {fileID: 1419214192395305568}
-  - {fileID: 1157138829965547146}
-  - {fileID: 7749773456367244962}
-  <ChildCount>k__BackingField: 4
 --- !u!1 &5476920180933388967
 GameObject:
   m_ObjectHideFlags: 0
@@ -9696,8 +9767,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2006163882404814382}
-  - component: {fileID: 528938496853295208}
   - component: {fileID: 4612571557662915037}
+  - component: {fileID: 528938496853295208}
   - component: {fileID: 6791581313119908250}
   m_Layer: 6
   m_Name: Walking
@@ -9721,6 +9792,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 986074438047136786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4612571557662915037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5527142845277668158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 528938496853295208}
+  - {fileID: 6791581313119908250}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 757564897446861421}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &528938496853295208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9756,26 +9847,6 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
---- !u!114 &4612571557662915037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5527142845277668158}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 528938496853295208}
-  - {fileID: 6791581313119908250}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 757564897446861421}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &6791581313119908250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9899,8 +9970,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4694219544836043386}
-  - component: {fileID: 2127524278575831494}
   - component: {fileID: 2396489837623806523}
+  - component: {fileID: 2127524278575831494}
   - component: {fileID: 3809344189191021789}
   - component: {fileID: 2948649182578767989}
   m_Layer: 6
@@ -9925,6 +9996,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4425123305009892289}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2396489837623806523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5578879694051111694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 3809344189191021789}
+  - {fileID: 2948649182578767989}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 5660112243806928363}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &2127524278575831494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9956,25 +10047,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &2396489837623806523
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5578879694051111694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 3809344189191021789}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 5660112243806928363}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &3809344189191021789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10035,7 +10107,7 @@ MonoBehaviour:
   onEnterName: Throw
   onEnterTime: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &5616308193838800911
 GameObject:
   m_ObjectHideFlags: 0
@@ -10140,8 +10212,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3841650405079008890}
-  - component: {fileID: 814242899083696415}
   - component: {fileID: 7195138240643335963}
+  - component: {fileID: 814242899083696415}
   - component: {fileID: 7248614259385223845}
   - component: {fileID: 3924585945265410524}
   m_Layer: 6
@@ -10166,6 +10238,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2567390634421806730}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7195138240643335963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5671411897365510212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 814242899083696415}
+  - {fileID: 7248614259385223845}
+  - {fileID: 3924585945265410524}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 1749641026926622317}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &814242899083696415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10203,26 +10296,6 @@ MonoBehaviour:
   jumpMinHeight: 0
   forceDownwards: 1
   allowMidFall: 0
---- !u!114 &7195138240643335963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5671411897365510212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 814242899083696415}
-  - {fileID: 7248614259385223845}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 1749641026926622317}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &7248614259385223845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10279,7 +10352,7 @@ MonoBehaviour:
   onEnterName: Fall
   onEnterTime: 0.2
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &5731104948480345390
 GameObject:
   m_ObjectHideFlags: 0
@@ -10704,8 +10777,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2939210796809206182}
-  - component: {fileID: 5137664638109459586}
   - component: {fileID: 3156751438344776795}
+  - component: {fileID: 5137664638109459586}
   - component: {fileID: 1778052757026292899}
   m_Layer: 6
   m_Name: CoyoteCharge
@@ -10729,6 +10802,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 542910149066364657}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3156751438344776795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5918171649529982201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 5137664638109459586}
+  - {fileID: 1778052757026292899}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 3758855929158950712}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &5137664638109459586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10766,26 +10859,6 @@ MonoBehaviour:
   jumpMinHeight: 0
   forceDownwards: 0
   allowMidFall: 0
---- !u!114 &3156751438344776795
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5918171649529982201}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 5137664638109459586}
-  - {fileID: 1778052757026292899}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 3758855929158950712}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &1778052757026292899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10835,8 +10908,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 949085974986424741}
-  - component: {fileID: 4244649889381608096}
   - component: {fileID: 4079522556486317034}
+  - component: {fileID: 4244649889381608096}
   - component: {fileID: 5421397808851091890}
   m_Layer: 6
   m_Name: Sprinting
@@ -10860,6 +10933,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 986074438047136786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4079522556486317034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5936538625018206224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 4244649889381608096}
+  - {fileID: 5421397808851091890}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 757564897446861421}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &4244649889381608096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10895,26 +10988,6 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
---- !u!114 &4079522556486317034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5936538625018206224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 4244649889381608096}
-  - {fileID: 5421397808851091890}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 757564897446861421}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &5421397808851091890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11090,9 +11163,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2955332067363901935}
+  - component: {fileID: 7761699614878043687}
   - component: {fileID: 8181979530632342815}
   - component: {fileID: 9181539546719163320}
-  - component: {fileID: 7761699614878043687}
   - component: {fileID: 8933449817689037972}
   - component: {fileID: 2210526272510199779}
   m_Layer: 6
@@ -11117,6 +11190,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3675384103904257216}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7761699614878043687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6163583669192012189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 8181979530632342815}
+  - {fileID: 8933449817689037972}
+  - {fileID: 2210526272510199779}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 5987303711069652701}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &8181979530632342815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11182,26 +11276,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &7761699614878043687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6163583669192012189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 8181979530632342815}
-  - {fileID: 8933449817689037972}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 5987303711069652701}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &8933449817689037972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11300,7 +11374,7 @@ MonoBehaviour:
   onEnterName: LightPunchAir1
   onEnterTime: 0.05
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &6236790458189297513
 GameObject:
   m_ObjectHideFlags: 0
@@ -11481,8 +11555,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7671762846807235667}
-  - component: {fileID: 3591214809302518234}
   - component: {fileID: 7039777641560852190}
+  - component: {fileID: 3591214809302518234}
   - component: {fileID: 5313019447591973648}
   - component: {fileID: 2289536928669045917}
   m_Layer: 6
@@ -11507,6 +11581,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7028723737484744588}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7039777641560852190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6275732389334311385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 5313019447591973648}
+  - {fileID: 2289536928669045917}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 3948346785622173736}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &3591214809302518234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11538,25 +11632,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &7039777641560852190
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6275732389334311385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 5313019447591973648}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 3948346785622173736}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &5313019447591973648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11629,7 +11704,7 @@ MonoBehaviour:
   onEnterName: SomersaultWindup
   onEnterTime: 0.2
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &6330798485065663893
 GameObject:
   m_ObjectHideFlags: 0
@@ -11829,11 +11904,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8377843844754638416}
+  - component: {fileID: 1975376254761656333}
   - component: {fileID: 8653995511402254534}
   - component: {fileID: 3239914536476910747}
   - component: {fileID: 2299099583400383993}
   - component: {fileID: 1326970059289146713}
-  - component: {fileID: 1975376254761656333}
   - component: {fileID: 8747683321289999464}
   - component: {fileID: 4185209184497774278}
   m_Layer: 6
@@ -11858,6 +11933,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7028723737484744588}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1975376254761656333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574491177993153932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 8653995511402254534}
+  - {fileID: 8747683321289999464}
+  - {fileID: 4185209184497774278}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 3948346785622173736}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &8653995511402254534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11964,26 +12060,6 @@ MonoBehaviour:
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
   enabled: 1
---- !u!114 &1975376254761656333
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6574491177993153932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 8653995511402254534}
-  - {fileID: 8747683321289999464}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 3948346785622173736}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &8747683321289999464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12077,7 +12153,7 @@ MonoBehaviour:
   onEnterName: Somersault
   onEnterTime: 0.01
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &6814723599858117605
 GameObject:
   m_ObjectHideFlags: 0
@@ -12251,8 +12327,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4189863658179928102}
-  - component: {fileID: 5394545579396957404}
   - component: {fileID: 59389784059182728}
+  - component: {fileID: 5394545579396957404}
   - component: {fileID: 8351615431519021939}
   m_Layer: 6
   m_Name: Idle
@@ -12276,6 +12352,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 986074438047136786}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &59389784059182728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6820223952866294626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 5394545579396957404}
+  - {fileID: 8351615431519021939}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 757564897446861421}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &5394545579396957404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12311,26 +12407,6 @@ MonoBehaviour:
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
---- !u!114 &59389784059182728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6820223952866294626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 5394545579396957404}
-  - {fileID: 8351615431519021939}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 757564897446861421}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &8351615431519021939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12423,9 +12499,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6014019409343752396}
+  - component: {fileID: 6899988598081522344}
   - component: {fileID: 6979073167908032003}
   - component: {fileID: 1543269672653310877}
-  - component: {fileID: 6899988598081522344}
   - component: {fileID: 2782888393297070939}
   - component: {fileID: 7392498410637128240}
   m_Layer: 6
@@ -12450,6 +12526,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4182476368529953341}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6899988598081522344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6824799447565327635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 6979073167908032003}
+  - {fileID: 2782888393297070939}
+  - {fileID: 7392498410637128240}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 5833654247008700248}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &6979073167908032003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12513,26 +12610,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &6899988598081522344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6824799447565327635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 6979073167908032003}
-  - {fileID: 2782888393297070939}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 5833654247008700248}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &2782888393297070939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12582,7 +12659,7 @@ MonoBehaviour:
   onEnterName: Headbutt
   onEnterTime: 0.1
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &6840937366610314507
 GameObject:
   m_ObjectHideFlags: 0
@@ -13957,8 +14034,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1173892547178082102}
-  - component: {fileID: 4141974295781259149}
   - component: {fileID: 5804775204058244869}
+  - component: {fileID: 4141974295781259149}
   - component: {fileID: 1351490462638976854}
   - component: {fileID: 6559009853959219429}
   m_Layer: 6
@@ -13983,6 +14060,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2048931125629623396}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5804775204058244869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7296379250413928003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 1351490462638976854}
+  - {fileID: 6559009853959219429}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 45456295673223789}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &4141974295781259149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14014,25 +14111,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &5804775204058244869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7296379250413928003}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 1351490462638976854}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 45456295673223789}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &1351490462638976854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14099,7 +14177,7 @@ MonoBehaviour:
   onEnterName: Throw
   onEnterTime: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &7342288055811217514
 GameObject:
   m_ObjectHideFlags: 0
@@ -14286,9 +14364,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4425123305009892289}
+  - component: {fileID: 5660112243806928363}
   - component: {fileID: 7421260604818229875}
   - component: {fileID: 1230435319524463856}
-  - component: {fileID: 5660112243806928363}
   m_Layer: 6
   m_Name: Aiming
   m_TagString: Untagged
@@ -14314,6 +14392,28 @@ Transform:
   - {fileID: 4694219544836043386}
   m_Father: {fileID: 2048931125629623396}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5660112243806928363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7471342363894119853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 7421260604818229875}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 45456295673223789}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField:
+  - {fileID: 9076236093463511815}
+  - {fileID: 6511899361605723830}
+  - {fileID: 2396489837623806523}
+  <ChildCount>k__BackingField: 3
 --- !u!114 &7421260604818229875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14403,28 +14503,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &5660112243806928363
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7471342363894119853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 7421260604818229875}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 45456295673223789}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField:
-  - {fileID: 9076236093463511815}
-  - {fileID: 6511899361605723830}
-  - {fileID: 2396489837623806523}
-  <ChildCount>k__BackingField: 3
 --- !u!1 &7541462348710925335
 GameObject:
   m_ObjectHideFlags: 0
@@ -14605,11 +14683,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5014433089004609597}
+  - component: {fileID: 7749773456367244962}
   - component: {fileID: 3877140044969608344}
   - component: {fileID: 6036952242168296381}
-  - component: {fileID: 7749773456367244962}
   - component: {fileID: 938294354928921193}
   - component: {fileID: 101724865787026955}
+  - component: {fileID: 752017632579194802}
   m_Layer: 6
   m_Name: HellcopterFall
   m_TagString: Untagged
@@ -14632,6 +14711,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1261920261987571038}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7749773456367244962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7640004567042433024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 3877140044969608344}
+  - {fileID: 938294354928921193}
+  - {fileID: 101724865787026955}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 7315598544489480670}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &3877140044969608344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14695,26 +14795,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &7749773456367244962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7640004567042433024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 3877140044969608344}
-  - {fileID: 938294354928921193}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 7315598544489480670}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &938294354928921193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14798,7 +14878,33 @@ MonoBehaviour:
   onEnterName: Hellcopter
   onEnterTime: 0.1
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
+--- !u!114 &752017632579194802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7640004567042433024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed047d72c584ca444a0e69c00e878b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 7749773456367244962}
+  onSetup:
+    _PersistentCalls: []
+  onAwake:
+    _PersistentCalls: []
+  onEnter:
+    _PersistentCalls: []
+  onExit:
+    _PersistentCalls: []
+  onStateChange:
+    _PersistentCalls: []
+  activateObjects:
+  - {fileID: 6567049614807394039}
 --- !u!1 &7650120129292485692
 GameObject:
   m_ObjectHideFlags: 0
@@ -15096,8 +15202,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3146629290765188103}
-  - component: {fileID: 3006665651935392090}
   - component: {fileID: 5357812896936097306}
+  - component: {fileID: 3006665651935392090}
   m_Layer: 6
   m_Name: Paused
   m_TagString: Untagged
@@ -15120,6 +15226,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6385669238997089540}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5357812896936097306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7768039867893722896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 8455434200384702600}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &3006665651935392090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15151,24 +15275,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &5357812896936097306
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7768039867893722896}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField: []
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 8455434200384702600}
-  <Layer>k__BackingField: 0
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!1 &7946590860477714497
 GameObject:
   m_ObjectHideFlags: 0
@@ -15241,10 +15347,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6499787038979050382}
+  - component: {fileID: 4130376927137963287}
   - component: {fileID: 4975428428768240672}
   - component: {fileID: 3756786567065514340}
   - component: {fileID: 9096782004905187224}
-  - component: {fileID: 4130376927137963287}
   - component: {fileID: 5765613941287539037}
   m_Layer: 6
   m_Name: Grab
@@ -15268,6 +15374,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2048931125629623396}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4130376927137963287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986475415449474893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 4975428428768240672}
+  - {fileID: 3756786567065514340}
+  - {fileID: 5765613941287539037}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 45456295673223789}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &4975428428768240672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15351,27 +15478,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &4130376927137963287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7986475415449474893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 4975428428768240672}
-  - {fileID: 3756786567065514340}
-  - {fileID: 5765613941287539037}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 45456295673223789}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &5765613941287539037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15553,9 +15659,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6993975061325138571}
+  - component: {fileID: 4517767350401232540}
   - component: {fileID: 6484935563616080972}
   - component: {fileID: 951253258747946920}
-  - component: {fileID: 4517767350401232540}
   - component: {fileID: 8818584219412789187}
   - component: {fileID: 4958404505268245693}
   m_Layer: 6
@@ -15580,6 +15686,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1261920261987571038}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4517767350401232540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8181037630459571021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 6484935563616080972}
+  - {fileID: 8818584219412789187}
+  - {fileID: 4958404505268245693}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 7315598544489480670}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &6484935563616080972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15643,26 +15770,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &4517767350401232540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8181037630459571021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 6484935563616080972}
-  - {fileID: 8818584219412789187}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 7315598544489480670}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &8818584219412789187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15704,7 +15811,7 @@ MonoBehaviour:
   onEnterName: Parry
   onEnterTime: 0.02
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &8199037953781554914
 GameObject:
   m_ObjectHideFlags: 0
@@ -15776,9 +15883,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2910622393535161883}
+  - component: {fileID: 278551599644586090}
   - component: {fileID: 3599153407553307017}
   - component: {fileID: 5512668703277878947}
-  - component: {fileID: 278551599644586090}
   - component: {fileID: 8821137642833508519}
   - component: {fileID: 8588546888960314174}
   m_Layer: 6
@@ -15803,6 +15910,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4182476368529953341}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &278551599644586090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8233020272553458984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 3599153407553307017}
+  - {fileID: 8821137642833508519}
+  - {fileID: 8588546888960314174}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 5833654247008700248}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &3599153407553307017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15866,26 +15994,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &278551599644586090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8233020272553458984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 3599153407553307017}
-  - {fileID: 8821137642833508519}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 5833654247008700248}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &8821137642833508519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15953,7 +16061,7 @@ MonoBehaviour:
   onEnterName: Uppercut
   onEnterTime: 0.1
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &8245773314306325851
 GameObject:
   m_ObjectHideFlags: 0
@@ -15963,9 +16071,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 131760227768400216}
+  - component: {fileID: 8568736502713642114}
   - component: {fileID: 1794738385307866841}
   - component: {fileID: 6748568676543395012}
-  - component: {fileID: 8568736502713642114}
   - component: {fileID: 8723284775484568847}
   - component: {fileID: 6541457861431460057}
   m_Layer: 6
@@ -15990,6 +16098,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 542910149066364657}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8568736502713642114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8245773314306325851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 1794738385307866841}
+  - {fileID: 8723284775484568847}
+  - {fileID: 6541457861431460057}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 3758855929158950712}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &1794738385307866841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16053,26 +16182,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &8568736502713642114
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8245773314306325851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 1794738385307866841}
-  - {fileID: 8723284775484568847}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 3758855929158950712}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &8723284775484568847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16122,7 +16231,7 @@ MonoBehaviour:
   onEnterName: DamageMinor
   onEnterTime: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &8276374663671568334
 GameObject:
   m_ObjectHideFlags: 0
@@ -16165,8 +16274,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 192777301579938322}
-  - component: {fileID: 7558545410218042910}
   - component: {fileID: 1188554763052459690}
+  - component: {fileID: 7558545410218042910}
   - component: {fileID: 5958159887780656694}
   - component: {fileID: 432829471624060657}
   m_Layer: 6
@@ -16191,6 +16300,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2048931125629623396}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1188554763052459690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8291585736164761318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 5958159887780656694}
+  - {fileID: 432829471624060657}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 45456295673223789}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &7558545410218042910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16222,25 +16351,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &1188554763052459690
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8291585736164761318}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 5958159887780656694}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 45456295673223789}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &5958159887780656694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16282,7 +16392,7 @@ MonoBehaviour:
   onEnterName: AirThrow
   onEnterTime: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &8370047734673085785
 GameObject:
   m_ObjectHideFlags: 0
@@ -16323,9 +16433,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3588800786915542142}
+  - component: {fileID: 4455065144974278352}
   - component: {fileID: 2644403828659727866}
   - component: {fileID: 4292147563361030305}
-  - component: {fileID: 4455065144974278352}
   - component: {fileID: 6731594654440912905}
   - component: {fileID: 1365885318711231209}
   m_Layer: 6
@@ -16350,6 +16460,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 542910149066364657}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4455065144974278352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8391892417953183193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 2644403828659727866}
+  - {fileID: 6731594654440912905}
+  - {fileID: 1365885318711231209}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 3758855929158950712}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &2644403828659727866
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16413,26 +16544,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &4455065144974278352
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8391892417953183193}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 2644403828659727866}
-  - {fileID: 6731594654440912905}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 3758855929158950712}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &6731594654440912905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16499,7 +16610,7 @@ MonoBehaviour:
   onEnterName: DamageLand
   onEnterTime: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &8450292216223193930
 GameObject:
   m_ObjectHideFlags: 0
@@ -16572,9 +16683,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 176377644018463753}
+  - component: {fileID: 3765359621817980221}
   - component: {fileID: 706258749169830515}
   - component: {fileID: 7734167829673190997}
-  - component: {fileID: 3765359621817980221}
   - component: {fileID: 4120451890021106607}
   - component: {fileID: 8058589915676015694}
   m_Layer: 6
@@ -16599,6 +16710,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7028723737484744588}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3765359621817980221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8459244022104302900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 706258749169830515}
+  - {fileID: 4120451890021106607}
+  - {fileID: 8058589915676015694}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 3948346785622173736}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &706258749169830515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16662,26 +16794,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &3765359621817980221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8459244022104302900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 706258749169830515}
-  - {fileID: 4120451890021106607}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 3948346785622173736}
-  <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &4120451890021106607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16734,7 +16846,7 @@ MonoBehaviour:
   onEnterName: BonkAir
   onEnterTime: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &8482731040741248156
 GameObject:
   m_ObjectHideFlags: 0
@@ -17044,9 +17156,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7602196013696354627}
+  - component: {fileID: 6102194210015347356}
   - component: {fileID: 1493939074062051383}
   - component: {fileID: 5563327580469889438}
-  - component: {fileID: 6102194210015347356}
   - component: {fileID: 3371901436690524646}
   - component: {fileID: 899663667312865224}
   m_Layer: 6
@@ -17071,6 +17183,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 542910149066364657}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6102194210015347356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8822378987506164119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 1493939074062051383}
+  - {fileID: 3371901436690524646}
+  - {fileID: 899663667312865224}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 3758855929158950712}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &1493939074062051383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17134,26 +17267,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &6102194210015347356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8822378987506164119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 1493939074062051383}
-  - {fileID: 3371901436690524646}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 3758855929158950712}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &3371901436690524646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17220,7 +17333,7 @@ MonoBehaviour:
   onEnterName: Bonk
   onEnterTime: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8579594802138283692}
 --- !u!1 &8885662702780661556
 GameObject:
   m_ObjectHideFlags: 0
@@ -17262,8 +17375,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5004547793418751161}
-  - component: {fileID: 4844890574885748667}
   - component: {fileID: 4570457457227430354}
+  - component: {fileID: 4844890574885748667}
   - component: {fileID: 952740506071875993}
   m_Layer: 6
   m_Name: Impact
@@ -17287,6 +17400,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4840406343167883971}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4570457457227430354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8952263921800461566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 952740506071875993}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 3520534525560279172}
+  <Layer>k__BackingField: 3
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
 --- !u!114 &4844890574885748667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17318,25 +17450,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &4570457457227430354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8952263921800461566}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 952740506071875993}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 3520534525560279172}
-  <Layer>k__BackingField: 3
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
 --- !u!114 &952740506071875993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17737,6 +17850,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1345935898135293067}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8206459135731414027 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1345935898135293067}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4065715133517577847
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17833,6 +17952,12 @@ PrefabInstance:
 --- !u!4 &5093901796595999041 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9141602376915525430, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
+    type: 3}
+  m_PrefabInstance: {fileID: 4065715133517577847}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6567049614807394039 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
     type: 3}
   m_PrefabInstance: {fileID: 4065715133517577847}
   m_PrefabAsset: {fileID: 0}
