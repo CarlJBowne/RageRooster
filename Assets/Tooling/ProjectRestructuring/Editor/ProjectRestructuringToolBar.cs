@@ -18,7 +18,12 @@ public class ProjectRestructuringToolBar : EditorWindow
         if (GUILayout.Button("Test Button"))
         {
             Debug.Log("The Test Button has been pressed!");
-            finder.FindDependencies();
+            finder.FindDependencies("Assets/Tooling/ProjectRestructuring/TestData/OriginalLocation/exportCopy/Prefabs/cubeguyPrefab.prefab");
+        }
+        if (GUILayout.Button("Move Asset Test"))
+        {
+            finder.MoveDependencies("Assets/Tooling/ProjectRestructuring/TestData/OriginalLocation/exportCopy/Prefabs/cubeguyPrefab.prefab");
+
         }
     }
 

@@ -5,12 +5,31 @@ using UnityEngine;
 
 public class DependencyFinder
 {
-    public void FindDependencies()
+    public string[] FindDependencies(string path)
     {
-        string[] dependencies = AssetDatabase.GetDependencies("Assets/Tooling/ProjectRestructuring/TestData/OriginalLocation/exportCopy/Prefabs/cubeguyPrefab.prefab");
-        foreach (string dependency in dependencies)
+        string[] dependencies = AssetDatabase.GetDependencies(path);
+        return dependencies;
+    }
+
+    public void MoveDependencies(string path)
+    {
+        List<string> allAssetPaths = new List<string>();
+
+        allAssetPaths.Add(path);
+
+        allAssetPaths.AddRange(FindDependencies(path));
+
+        foreach (string assetPath in allAssetPaths)
         {
-            Debug.Log("Dependency Found! " + dependency);
+            AssetDatabase.MoveAsset(assetPath, "Assets/" + GetFilename(assetPath));
+            Debug.Log("Moved " + GetFilename(assetPath));
         }
+        
+        //AssetDatabase.MoveAsset(path);
+    }
+
+    string GetFilename(string path)
+    {
+        return System.IO.Path.GetFileName(path);
     }
 }
