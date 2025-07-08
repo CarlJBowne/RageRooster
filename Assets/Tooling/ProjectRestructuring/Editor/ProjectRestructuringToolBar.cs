@@ -11,11 +11,14 @@ public class ProjectRestructuringToolBar : EditorWindow
         GetWindow<ProjectRestructuringToolBar>("Project Restructuring");
     }
 
+    DependencyFinder finder = new DependencyFinder();
+
     private void OnGUI()
     {
         if (GUILayout.Button("Test Button"))
         {
             Debug.Log("The Test Button has been pressed!");
+            finder.FindDependencies();
         }
     }
 
