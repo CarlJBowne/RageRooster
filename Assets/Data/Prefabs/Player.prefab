@@ -5127,6 +5127,7 @@ GameObject:
   - component: {fileID: 8954558647869373425}
   - component: {fileID: 5436814540052560995}
   - component: {fileID: 8191279611815052833}
+  - component: {fileID: 181566469930895402}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -5187,6 +5188,7 @@ MonoBehaviour:
   <ChildCount>k__BackingField: 6
   <StatesSetup>k__BackingField: 1
   <StateHolder>k__BackingField: {fileID: 6385669238997089540}
+  _singalManager: {fileID: 0}
   upgrades:
   - {fileID: 3684892169369894683, guid: 5096cd543e777e240af87643ae7b164b, type: 2}
   - {fileID: -5908332654645760598, guid: 5096cd543e777e240af87643ae7b164b, type: 2}
@@ -5466,6 +5468,7 @@ MonoBehaviour:
   currentSpeed: 0
   jumpPhase: 0
   _currentDirection: {x: 0, y: 0, z: 0}
+  playerTestScript: {fileID: 181566469930895402}
   jumpMarkers: []
 --- !u!114 &2783735533672575433
 MonoBehaviour:
@@ -5708,6 +5711,20 @@ MonoBehaviour:
   globalSignals:
     serializedList: []
   queueSignals: 1
+--- !u!114 &181566469930895402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a20f7f948dc566e44b0e4dd47e680a29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  input: {x: 0, y: 0}
+  output: {x: 0, y: 0}
 --- !u!1 &2975349023816060615
 GameObject:
   m_ObjectHideFlags: 0

@@ -199,6 +199,11 @@ namespace SLS.StateMachineH {
 
         public State this[int i] => Children[i];
 
+        /// <summary>
+        /// Implicit bool operator. Returns true if the State exists and is Active.
+        /// </summary>
+        public static implicit operator bool(State state) => state != null && state.Active;
+
     }
 
     public enum StateType

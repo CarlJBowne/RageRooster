@@ -122,8 +122,10 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     public void DirectionSet(float maxTurnSpeed, Vector3 target)
     {
-        if (target == Vector3.zero) return; 
+        if (target == Vector3.zero) return;
+        playerTestScript.input = currentDirection;
         currentDirection = Vector3.RotateTowards(currentDirection, target.normalized, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
+        playerTestScript.output = currentDirection;
     }
     public void DirectionSet(float maxTurnSpeed) => DirectionSet(maxTurnSpeed, playerController.camAdjustedMovement);
     public void InstantDirectionChange(Vector3 target)
@@ -147,7 +149,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     #endregion GetSet
 
-
+    public PlayerTestScript playerTestScript;
 
     protected override void OnAwake()
     {
