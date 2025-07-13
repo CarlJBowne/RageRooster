@@ -119,7 +119,7 @@ public class PlayerController : PlayerStateBehavior
     public void BeginActionEvent(string name) => Machine.SendSignal(name);
 
     public void ReadyNextAction() => Machine.SignalManager.Unlock();
-    public void FinishAction() => Machine.FinishSignal();
+    public void FinishAction() => Machine.SignalManager.FireSignal(new("Finish", ignoreLock: true));
 
 
 

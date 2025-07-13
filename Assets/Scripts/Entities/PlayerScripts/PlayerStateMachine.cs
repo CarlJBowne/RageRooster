@@ -164,8 +164,6 @@ public class PlayerStateMachine : StateMachine
 
     public void DeathIfAtZero() { if (health.GetCurrentHealth() == 0) Death(); }
 
-    public void FinishSignal() => SignalManager.FireSignal(new("Finish", ignoreLock: true));
-
 
 #if UNITY_EDITOR
     protected override void Update()

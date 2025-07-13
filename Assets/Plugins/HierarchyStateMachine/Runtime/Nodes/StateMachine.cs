@@ -190,40 +190,38 @@ namespace SLS.StateMachineH
                 nextState == CurrentState
                ) return;
 
-            var cursorTarget = nextState;
-            int targetDepth = nextState.Layer;
+            transitionCursorDest = nextState;
 
             if (CurrentState != null)
             {
-                CurrentState.DoExit(nextState);
-                State cursorStart = CurrentState.Parent;
-                int startDepth = CurrentState.Layer - 1;
+                transitionCursorStart = CurrentState;
+                transitionBalance = nextState.Layer - CurrentState.Layer;
 
-                while (startDepth != targetDepth || cursorStart.Parent != cursorTarget.Parent)
+                while (transitionBalance != 0 || transitionCursorStart.Parent != transitionCursorDest.Parent)
                 {
-                    bool startUp = startDepth >= targetDepth && startDepth > -1;
-                    bool targetUp = startDepth <= targetDepth && targetDepth > -1;
-
-                    if (startUp)
+                    transitionBalanceTemp = transitionBalance;
+                    if (transitionBalanceTemp < 1 && transitionCursorStart.Layer != 0)
                     {
-                        cursorStart.DoExit(nextState);
-                        cursorStart = cursorStart.Parent;
-                        startDepth--;
+                        transitionCursorStart.DoExit(nextState);
+                        transitionCursorStart = transitionCursorStart.Parent;
+                        transitionBalance++;
                     }
-                    if (targetUp)
+                    if (transitionBalanceTemp > -1 && transitionCursorDest.Layer != 0)
                     {
-                        ExitStates.Push(cursorTarget);
-                        cursorTarget = cursorTarget.Parent;
-                        targetDepth--;
+                        ExitStates.Push(transitionCursorDest);
+                        transitionCursorDest = transitionCursorDest.Parent;
+                        transitionBalance--;
                     }
                 }
 
-                if (startDepth == -1) CurrentChild = ExitStates.Peek();
+                transitionCursorStart.Parent.CurrentChild = ExitStates.Count > 0
+                    ? ExitStates.Peek()
+                    : nextState;
 
-                cursorStart.DoExit(nextState);
+                transitionCursorStart.DoExit(nextState);
             }
 
-            if (cursorTarget) ExitStates.Push(cursorTarget);
+            if (transitionCursorDest != null) ExitStates.Push(transitionCursorDest);
 
             while (ExitStates.Count > 0 || nextState.HasChildren)
             {
@@ -240,12 +238,23 @@ namespace SLS.StateMachineH
                 nextState.DoEnter(CurrentState);
             }
             CurrentState = nextState;
+
+            {
+                transitionCursorDest = null;
+                transitionCursorStart = null;
+                transitionBalance = 0;
+                transitionBalanceTemp = 0;
+            }//Cleanup
         }
 
         /// <summary>  
         /// Stack used for managing state transitions.  
         /// </summary>  
         private static Stack<State> ExitStates = new();
+        private static State transitionCursorStart;
+        private static State transitionCursorDest;
+        private static int transitionBalance = 0;
+        private static int transitionBalanceTemp = 0;
 
         /// <summary>  
         /// Builds the state machine by setting up its states.  

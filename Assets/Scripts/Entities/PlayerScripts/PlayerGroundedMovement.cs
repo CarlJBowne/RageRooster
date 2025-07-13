@@ -85,8 +85,10 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         }
         else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
 
-        if (currentSpeed >= nextPhaseThreshold && nextCondition) nextPhase.State.Enter();
-        else if (currentSpeed < prevPhaseThreshold && prevPhase != null) prevPhase.State.Enter();
+        if (currentSpeed >= nextPhaseThreshold && nextCondition) 
+            nextPhase.State.Enter();
+        else if (currentSpeed < prevPhaseThreshold && prevPhase != null) 
+            prevPhase.State.Enter();
     }
     
     private void GetConditionals(out bool thisCondition, out bool nextCondition)
