@@ -52,7 +52,17 @@ namespace SLS.StateMachineH {
         /// <summary>  
         /// The currently active child <see cref="State"/>, if any exists.  
         /// </summary>  
-        public State CurrentChild { get; internal set; }
+        public State CurrentChild
+        {
+            get => _currentChild;
+            internal set
+            {
+                if (value != null && !Children.Contains(value)) throw new System.Exception("GENUINELY HOW?????");
+                _currentChild = value;
+            }
+        }
+
+        private State _currentChild;
 
         /// <summary>  
         /// The type of this <see cref="State"/>, either Group or End.  

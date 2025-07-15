@@ -214,6 +214,10 @@ namespace SLS.StateMachineH
                     }
                 }
 
+                //transitionCursorStart = transitionCursorStart.Parent;
+                ExitStates.Push(transitionCursorDest);
+                transitionCursorDest = transitionCursorDest.Parent;
+
                 transitionCursorStart.Parent.CurrentChild = ExitStates.Count > 0
                     ? ExitStates.Peek()
                     : nextState;

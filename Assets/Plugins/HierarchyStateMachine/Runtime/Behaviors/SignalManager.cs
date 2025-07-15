@@ -122,7 +122,7 @@ namespace SLS.StateMachineH
         /// </summary>  
         protected override void OnUpdate()
         {
-            if (queueSignals && ActiveSignalLength > 0f)
+            if (queueSignals && SignalQueue.Count > 0 && ActiveSignalLength > 0f)
             {
                 SignalQueueTimer -= Time.deltaTime;
                 if (SignalQueueTimer <= 0f)
