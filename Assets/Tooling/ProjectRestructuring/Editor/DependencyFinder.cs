@@ -29,24 +29,13 @@ namespace ProjectRestructuring
             }
 
 
+            bool ValidateAssetAutomationCompatibility(AssetBase asset) // Make sure the asset doesn't have prefabs as dependencies. This tool works mostly for normal models and things.
+            {
+                //List<string> dependencies = GetDependencies(asset);
 
-            // OLD TEST IMPLEMENTATION ~ Version 0.0
-            //string newLocation = "Assets/Tooling/ProjectRestructuring/TestData/DestinationLocation";
-
-            //newLocation = AssetDatabase.CreateFolder(newLocation, System.IO.Path.GetFileNameWithoutExtension(path));
-            //Debug.Log("New folder is " + newLocation);
-
-            ////AssetDatabase.MoveAsset(path, newLocation + GetFilename(path));
-
-            //newLocation = AssetDatabase.CreateFolder(newLocation, "src");
-
-
-            //foreach (string assetPath in AssetDatabase.GetDependencies(path))
-            //{
-            //    string newPath = newLocation + GetFilename(assetPath);
-            //    //AssetDatabase.MoveAsset(assetPath, newPath);
-            //    //Debug.Log(newPath);
-            //}
+                // Temp early return.
+                return true;
+            }
         }
         AssetBase SortAssetTypeByExtension(string path)
         {
@@ -58,13 +47,6 @@ namespace ProjectRestructuring
             //if (Material.extensions.Contains(assetFileExtension)) { return new Material(path); } // This one needs to be more bulletproof. ".asset" is used for a LOT.
             return null;
         }
-        bool ValidateAssetAutomationCompatibility(AssetBase asset) // Make sure the asset doesn't have prefabs as dependencies. This tool works mostly for normal models and things.
-        {
-            //List<string> dependencies = GetDependencies(asset);
-            
-            // Temp early return.
-            return true;
-        }
         AssetStructure AssembleAssetStructure(Prefab prefab)
         {
             List<AssetBase> dependencies = GetDependencies(prefab);
@@ -72,21 +54,77 @@ namespace ProjectRestructuring
             AssetStructure assetStructure = new AssetStructure();
             assetStructure.finalAssetPrefab = prefab;
 
-   
+            SortDependencies(dependencies, assetStructure);
 
             assetStructure.RenameAssets();
             
             return assetStructure;
 
-            void SortDependencies()
+            void SortDependencies(List<AssetBase> dependencies, AssetStructure assetStructure)
             {
-                
+                assetStructure.unsortedAssets = new List<AssetBase>(dependencies);
+                //foreach (AssetBase dependency in dependencies)
+                //{
+                //    if (dependency is Texture) // nesting, yay! :D
+                //    {
+                //        assetStructure.textures.unsortedTextures.Add(dependency as Texture);
+                //    }
+                //    else if (dependency is Model)
+                //    {
+                //        assetStructure.fbxAsset = dependency as Model;
+                //    }
+                //}
             }
         }
         void MoveAssetStructureToNewLocation(AssetStructure assetStructure)
         {
-            assetStructure.DebugAssetStructure();
+            string newLocationRoot = "Assets/Tooling/ProjectRestructuring/TestData/DestinationLocation";
+
+            // Create new folder
+            string newFolderName = PRUtilities.GetFilenameWithoutExtension(assetStructure.finalAssetPrefab.path);
+            AssetDatabase.CreateFolder(newLocationRoot, newFolderName);
+            string newFolderPath = newLocationRoot + "/" + newFolderName;
+
+            // Move main asset to new folder
+            string newFinalAssetPrefabPath = newFolderPath + "/" + PRUtilities.GetFilename(assetStructure.finalAssetPrefab.path);
+            AssetDatabase.CopyAsset(assetStructure.finalAssetPrefab.path, newFinalAssetPrefabPath);
+
+            // Create sub /src folder
+            string srcFolderName = "src";
+            AssetDatabase.CreateFolder(newFolderPath, srcFolderName);
+            string srcFolderPath = newFolderPath + "/" + srcFolderName;
+
+            // Move main asset's dependencies into /src folder
+            foreach (AssetBase i in assetStructure.unsortedAssets)
+            {
+                string newAssetPath = srcFolderPath + "/" + PRUtilities.GetFilename(i.path);
+                AssetDatabase.CopyAsset(i.path, newAssetPath);
+            }
+
+            //assetStructure.DebugAssetStructure();
+
+            void OldTestImplementation()
+            {
+                // OLD TEST IMPLEMENTATION ~ Version 0.0
+                //string newLocation = "Assets/Tooling/ProjectRestructuring/TestData/DestinationLocation";
+
+                //newLocation = AssetDatabase.CreateFolder(newLocation, System.IO.Path.GetFileNameWithoutExtension(path));
+                //Debug.Log("New folder is " + newLocation);
+
+                ////AssetDatabase.MoveAsset(path, newLocation + GetFilename(path));
+
+                //newLocation = AssetDatabase.CreateFolder(newLocation, "src");
+
+
+                //foreach (string assetPath in AssetDatabase.GetDependencies(path))
+                //{
+                //    string newPath = newLocation + GetFilename(assetPath);
+                //    //AssetDatabase.MoveAsset(assetPath, newPath);
+                //    //Debug.Log(newPath);
+                //}
+            }
         }
+
         List<AssetBase> GetDependencies(AssetBase asset)
         {
             List<AssetBase> dependencies = new List<AssetBase>();

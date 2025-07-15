@@ -12,6 +12,7 @@ namespace ProjectRestructuring
         public Model fbxAsset;
         public Material material;
         public PbrTextures textures;
+        public List<AssetBase> unsortedAssets;
 
         public void RenameAssets()
         {
@@ -86,6 +87,7 @@ namespace ProjectRestructuring
         public Texture specular;
         public Texture normal;
         public Texture height;
+        public List<Texture> unsortedTextures; // To make life a little easier I guess.
 
         public void RenameAssets()
         {
