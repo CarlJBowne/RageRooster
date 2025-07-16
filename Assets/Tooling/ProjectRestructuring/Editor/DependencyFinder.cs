@@ -12,16 +12,19 @@ namespace ProjectRestructuring
     {
         List<string> processedPaths = new List<string>(); // this might not be efficient. Alternatively might be brilliant.
 
-        public List<string> GetPrefabsToSort() // Scans the project to find appropriate files.
+        public List<string> GetPrefabsToSort(string folderToScan) // Scans the project to find appropriate files.
         {
             List<string> prefabs = new List<string>();
-            prefabs = AssetDatabase.FindAssets("t:Prefab").ToList();
+            prefabs = AssetDatabase.FindAssets("t:Prefab", new[] {folderToScan}).ToList();
             prefabs = prefabs.Select(AssetDatabase.GUIDToAssetPath).ToList();
             return prefabs;
         }
 
         public void OrganizeDependencies(string path)
         {
+            // Debug.Log(path);
+            // return;
+            
             AssetBase asset = SortAssetTypeByExtension(path); // This might be silly here if it needs to be a prefab anyway... also now it requires a cast for AssembleAssetStructure().
 
             if (asset is Prefab)

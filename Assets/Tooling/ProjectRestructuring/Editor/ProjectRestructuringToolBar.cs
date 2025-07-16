@@ -23,7 +23,7 @@ namespace ProjectRestructuring
             }
             if (GUILayout.Button("Move Asset Test")) // Condition creates a button and responds to it being pressed.
             {
-                foreach (string i in finder.GetPrefabsToSort())
+                foreach (string i in finder.GetPrefabsToSort("Assets"))
                 {
                     finder.OrganizeDependencies(i);
                 }
