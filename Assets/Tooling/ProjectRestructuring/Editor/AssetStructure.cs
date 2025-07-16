@@ -31,6 +31,7 @@ namespace ProjectRestructuring
     }
     public abstract class AssetBase
     {
+        public abstract string GetPrefix();
         public string path;
 
         public AssetBase(string _path) // Abstract constructor
@@ -41,7 +42,7 @@ namespace ProjectRestructuring
     }
     public class Prefab : AssetBase
     {
-        public string prefix = "pf_";
+        public override string GetPrefix() => "pf_";
         public static List<string> extensions = new List<string>() { ".prefab" };
         public Prefab(string _path) : base(_path) { } // Constructor
 
@@ -54,7 +55,7 @@ namespace ProjectRestructuring
     }
     public class Model : AssetBase
     {
-        public string prefix = "geo_";
+        public override string GetPrefix() => "geo_";
         public static List<string> extensions = new List<string>() { ".fbx" };
         public Model(string _path) : base(_path) { } // Constructor
 
@@ -65,7 +66,7 @@ namespace ProjectRestructuring
     }
     public class Texture : AssetBase
     {
-        public string prefix = "tex_";
+        public override string GetPrefix() => "tex_";
         public static List<string> extensions = new List<string>() { ".png" };
         public Texture(string _path) : base(_path) { }  // Constructor
 
@@ -76,7 +77,7 @@ namespace ProjectRestructuring
     }
     public class Material : AssetBase
     {
-        public string prefix = "mat_";
+        public override string GetPrefix() => "mat_";
         public static List<string> extensions = new List<string>() { ".asset" };
         public Material(string _path) : base(_path) {}
         public override void RenameAsset()
