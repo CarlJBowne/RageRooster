@@ -44,6 +44,7 @@ namespace ProjectRestructuring
             if (Prefab.extensions.Contains(assetFileExtension)) { return new Prefab(path); }
             if (Model.extensions.Contains(assetFileExtension)) { return new Model(path); }
             if (Texture.extensions.Contains(assetFileExtension)) { return new Texture(path); }
+            if (AssetDatabase.GetMainAssetTypeAtPath(path) == typeof(UnityEngine.Material)) { return new Material(path); }
             //if (Material.extensions.Contains(assetFileExtension)) { return new Material(path); } // This one needs to be more bulletproof. ".asset" is used for a LOT.
             return null;
         }
