@@ -41,7 +41,8 @@ namespace ProjectRestructuring
     }
     public class Prefab : AssetBase
     {
-        public static List<string> extensions  = new List<string>() { ".prefab" };
+        public string prefix = "pf_";
+        public static List<string> extensions = new List<string>() { ".prefab" };
         public Prefab(string _path) : base(_path) { } // Constructor
 
         public override void RenameAsset()
@@ -53,6 +54,7 @@ namespace ProjectRestructuring
     }
     public class Model : AssetBase
     {
+        public string prefix = "geo_";
         public static List<string> extensions = new List<string>() { ".fbx" };
         public Model(string _path) : base(_path) { } // Constructor
 
@@ -63,6 +65,7 @@ namespace ProjectRestructuring
     }
     public class Texture : AssetBase
     {
+        public string prefix = "tex_";
         public static List<string> extensions = new List<string>() { ".png" };
         public Texture(string _path) : base(_path) { }  // Constructor
 
@@ -73,7 +76,7 @@ namespace ProjectRestructuring
     }
     public class Material : AssetBase
     {
-
+        public string prefix = "mat_";
         public static List<string> extensions = new List<string>() { ".asset" };
         public Material(string _path) : base(_path) {}
         public override void RenameAsset()
