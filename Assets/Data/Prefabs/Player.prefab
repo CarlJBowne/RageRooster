@@ -5447,7 +5447,7 @@ MonoBehaviour:
   heldItemAnchor: {fileID: 3536800914225926894}
   interacter: {fileID: 8950658755825157513}
   aimingState: {fileID: 7421260604818229875}
-  shootingState: {fileID: 0}
+  shootingState: {fileID: 6511899361605723830}
   launchVelocity: 30
   checkSphereRadius: 0.66
   checkSphereOffset: {x: 0, y: 1, z: 0.33}
@@ -16561,7 +16561,7 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 0}
-  lockOnEnter: 1
+  lockOnEnter: 0
 --- !u!114 &1365885318711231209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16601,9 +16601,8 @@ MonoBehaviour:
     _PersistentCalls: []
   onEnter:
     _PersistentCalls:
-    - _Target: {fileID: 0}
-      _MemberName: VFXCatalogue, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-        PublicKeyToken=null.Pump
+    - _Target: {fileID: 1988227033855750315}
+      _MemberName: Pump
       _PersistentArguments:
       - _Type: 2
         _Int: 0

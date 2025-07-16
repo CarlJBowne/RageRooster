@@ -17,10 +17,10 @@ public class PauseMenu : MenuSingleton<PauseMenu>
     protected override void OnOpen()
     {
         base.OnOpen();
+        onPause?.Invoke();
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        onPause?.Invoke();
     }
     protected override void OnClose()
     {

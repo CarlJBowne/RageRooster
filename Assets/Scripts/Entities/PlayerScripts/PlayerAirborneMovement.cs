@@ -58,11 +58,9 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     public override void VerticalMovement(out float? result)
     {
         result = ApplyGravity(gravity, terminalVelocity, flatGravity);
-        if (upwards)
-        {
-            VerticalUpwards(ref result);
-            if (playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref result);
-        }
+        if (upwards) VerticalUpwards(ref result);
+        else if (playerMovementBody.velocity.y <= fallStateThreshold && fallState != this) Fall(ref result);
+
     }
 
     private void HorizontalMain(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control, float deltaTime)

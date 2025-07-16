@@ -40,9 +40,11 @@ public class PlayerAiming : PlayerMovementEffector
         shootFreeLookCamera.m_YAxis.Value = vAxis.Value.Recast(vAxis.m_MinValue, vAxis.m_MaxValue, 0,1);
 
 
+        this.HorizontalMovement(out float? X, out float? Z);
+        this.VerticalMovement(out float? Y);
+        playerMovementBody.VelocitySet(X, Y, Z);
 
-
-        base.OnFixedUpdate(); 
+        //base.OnFixedUpdate(); 
     }
 
 

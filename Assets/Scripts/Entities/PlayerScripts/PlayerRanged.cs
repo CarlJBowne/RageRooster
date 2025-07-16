@@ -30,8 +30,8 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     PlayerMovementBody body;
     new AudioCaller audio;
     Animator animator;
-    [HideProperty] public PlayerAiming aimingState;
-    [HideProperty] public State shootingState;
+    public PlayerAiming aimingState;
+    public State shootingState;
     public IGrabbable currentGrabbed { get; private set; }
 
     private UIHUDSystem UI;
@@ -49,8 +49,6 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         TryGetComponent(out collider);
         TryGetComponent(out audio);
         UIHUDSystem.TryGet(out UI);
-        if (aimingState == null) aimingState = FindObjectOfType<PlayerAiming>(true);
-        if (shootingState == null) shootingState = aimingState.State.Children[0];
 
         pointer.target.position = pointer.startV.position + pointer.startV.forward * pointer.distance;
 
@@ -100,7 +98,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void TryGrabThrow(PlayerGrabAction state, State throwState)
     {
-        if (machine.SignalManager.GetCurrentNode().Locked && currentGrabbed != null)
+        if (!machine.SignalManager.Locked && currentGrabbed != null)
         {
             throwState.Enter();
             new CoroutinePlus(QuickTurn(), this);
@@ -319,6 +317,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     }
     public void ExitAiming(State normalState, State grabbingState)
     {
+        if (!aiming) return;
         machine.freeLookCamera.m_XAxis.Value = pointerH;
         animator.CrossFade("GroundBasic", 0.1f);
         (currentGrabbed == null ? normalState : grabbingState).Enter();
@@ -332,6 +331,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void ExitAimingAux()
     {
+        if (!aiming) return;
         machine.freeLookCamera.m_XAxis.Value = pointerH;
         aimingRig.enabled = false;
         aimingRig.weight = 0;
@@ -344,6 +344,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void ExitAimingInstant()
     {
+        if (!aiming) return;
         machine.freeLookCamera.m_XAxis.Value = pointerH;
         aimingRig.enabled = false;
         aimingRig.weight = 0;
@@ -359,7 +360,8 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     {
         if (!aiming) return;
         if (currentGrabbed != null) AimThrow();
-        else if (eggAmount >= 1 && !shootingState) shootingState.Enter();
+        else if (eggAmount >= 1 && !shootingState.Active) 
+            shootingState.Enter();
     }
 
     public void ShootPoint()

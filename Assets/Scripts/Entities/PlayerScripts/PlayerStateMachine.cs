@@ -66,6 +66,9 @@ public class PlayerStateMachine : StateMachine
 #endif
 
         whenInitializedEvent?.Invoke(this);
+
+        PauseMenu.onPause += Pause;
+        PauseMenu.onUnPause += UnPause;
     }
 
     public static bool DEBUG_MODE_ACTIVE;
@@ -113,8 +116,17 @@ public class PlayerStateMachine : StateMachine
         animator.Play("GroundBasic");
     }
 
+    public void Pause()
+    {
+        this.enabled = false;
+    }
+    public void UnPause()
+    {
+        this.enabled = true;
+    }
+
     private State prevState;
-    public void PauseState()
+    public void CutsceneState()
     {
         prevState = CurrentState;
         pauseState.Enter();
@@ -122,7 +134,7 @@ public class PlayerStateMachine : StateMachine
         body.CurrentSpeed = 0;
         animator.CrossFade("GroundBasic", .2f);
     }
-    public void UnPauseState()
+    public void UnCutsceneState()
     {
         prevState.Enter();
     }
