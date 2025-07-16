@@ -13,6 +13,7 @@ namespace ProjectRestructuring
         public Material material;
         public PbrTextures textures;
         public List<AssetBase> unsortedAssets;
+        public List<AssetBase> uncertainAssets;
 
         public void RenameAssets()
         {

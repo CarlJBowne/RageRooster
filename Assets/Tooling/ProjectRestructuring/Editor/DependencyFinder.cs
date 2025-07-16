@@ -60,11 +60,11 @@ namespace ProjectRestructuring
             
             return assetStructure;
 
-            void SortDependencies(List<AssetBase> dependencies, AssetStructure assetStructure)
+            void SortDependencies(List<AssetBase> dependencies, AssetStructure assetStructure) // Actually assembles the asset structure. Currently more or less being bypassed.
             {
                 assetStructure.unsortedAssets = new List<AssetBase>(dependencies);
-                //foreach (AssetBase dependency in dependencies)
-                //{
+                // foreach (AssetBase dependency in dependencies)
+                // {
                 //    if (dependency is Texture) // nesting, yay! :D
                 //    {
                 //        assetStructure.textures.unsortedTextures.Add(dependency as Texture);
@@ -73,7 +73,7 @@ namespace ProjectRestructuring
                 //    {
                 //        assetStructure.fbxAsset = dependency as Model;
                 //    }
-                //}
+                // }
             }
         }
         void MoveAssetStructureToNewLocation(AssetStructure assetStructure)
@@ -86,8 +86,7 @@ namespace ProjectRestructuring
             string newFolderPath = newLocationRoot + "/" + newFolderName;
 
             // Move main asset to new folder
-            string newFinalAssetPrefabPath = newFolderPath + "/" + PRUtilities.GetFilename(assetStructure.finalAssetPrefab.path);
-            AssetDatabase.CopyAsset(assetStructure.finalAssetPrefab.path, newFinalAssetPrefabPath);
+            MoveAsset(assetStructure.finalAssetPrefab, newFolderPath);
 
             // Create sub /src folder
             string srcFolderName = "src";
@@ -97,8 +96,7 @@ namespace ProjectRestructuring
             // Move main asset's dependencies into /src folder
             foreach (AssetBase i in assetStructure.unsortedAssets)
             {
-                string newAssetPath = srcFolderPath + "/" + PRUtilities.GetFilename(i.path);
-                AssetDatabase.CopyAsset(i.path, newAssetPath);
+                MoveAsset(i, srcFolderPath);
             }
 
             //assetStructure.DebugAssetStructure();
@@ -130,9 +128,20 @@ namespace ProjectRestructuring
             List<AssetBase> dependencies = new List<AssetBase>();
             foreach (string i in AssetDatabase.GetDependencies(asset.path).ToList<string>())
             {
-                dependencies.Add(SortAssetTypeByExtension(i));
+                if (SortAssetTypeByExtension(i) != null)
+                {
+                    dependencies.Add(SortAssetTypeByExtension(i));
+                }
+
             }
             return dependencies;
+        }
+
+
+        void MoveAsset(AssetBase asset, string newFolderPath)
+        {
+            string newAssetPath = newFolderPath + "/" + PRUtilities.GetFilename(asset.path);
+            AssetDatabase.CopyAsset(asset.path, newAssetPath);
         }
     }
 }
