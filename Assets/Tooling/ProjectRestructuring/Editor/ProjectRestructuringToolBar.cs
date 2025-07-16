@@ -23,7 +23,10 @@ namespace ProjectRestructuring
             }
             if (GUILayout.Button("Move Asset Test")) // Condition creates a button and responds to it being pressed.
             {
-                finder.OrganizeDependencies("Assets/Tooling/ProjectRestructuring/TestData/OriginalLocation/exportDefault/Prefabs/cubeguyPrefab.prefab");
+                foreach (string i in finder.GetPrefabsToSort())
+                {
+                    finder.OrganizeDependencies(i);
+                }
             }
         }
     }

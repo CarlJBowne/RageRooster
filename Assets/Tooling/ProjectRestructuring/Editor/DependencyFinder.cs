@@ -11,10 +11,19 @@ namespace ProjectRestructuring
     public class DependencyFinder
     {
         List<string> processedPaths = new List<string>(); // this might not be efficient. Alternatively might be brilliant.
+
+        public List<string> GetPrefabsToSort() // Scans the project to find appropriate files.
+        {
+            List<string> prefabs = new List<string>();
+            prefabs = AssetDatabase.FindAssets("t:Prefab").ToList();
+            prefabs = prefabs.Select(AssetDatabase.GUIDToAssetPath).ToList();
+            return prefabs;
+        }
+
         public void OrganizeDependencies(string path)
         {
             AssetBase asset = SortAssetTypeByExtension(path); // This might be silly here if it needs to be a prefab anyway... also now it requires a cast for AssembleAssetStructure().
-            
+
             if (asset is Prefab)
             {
                 if (!ValidateAssetAutomationCompatibility(asset)) return;
@@ -31,9 +40,15 @@ namespace ProjectRestructuring
 
             bool ValidateAssetAutomationCompatibility(AssetBase asset) // Make sure the asset doesn't have prefabs as dependencies. This tool works mostly for normal models and things.
             {
-                //List<string> dependencies = GetDependencies(asset);
+                foreach (string i in AssetDatabase.GetDependencies(asset.path).ToList<string>())
+                {
+                    if (AssetDatabase.GetMainAssetTypeAtPath(i) == typeof(Prefab))
+                    {
+                        Debug.Log("Asset " + asset.path + " has a prefab as a dependency and cannot be trivially processed. Aborting.");
+                        return false;
+                    }
+                }
 
-                // Temp early return.
                 return true;
             }
         }
