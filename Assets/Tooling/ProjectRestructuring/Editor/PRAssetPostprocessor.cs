@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace ProjectRestructuring 
 {
-public class PRAssetPostprocessor : AssetPostprocessor
-{
-    private void OnPreprocessModel()
+    public class PRAssetPostprocessor : AssetPostprocessor // Not currently being used but leaving it here just in case.
     {
-        Debug.Log("Preprocessing a model now.");
+        private void OnPreprocessModel()
+        {
+            Debug.Log("Preprocessing a model now.");
+        }
     }
-}
 }

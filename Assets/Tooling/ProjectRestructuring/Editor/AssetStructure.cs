@@ -1,10 +1,6 @@
-using Codice.CM.Common;
-using DependenciesHunter;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace ProjectRestructuring
 {
@@ -15,7 +11,6 @@ namespace ProjectRestructuring
         public Material material;
         public PbrTextures textures;
         public List<AssetBase> unsortedAssets;
-        public List<AssetBase> uncertainAssets;
 
         public void RenameAssets()
         {
@@ -28,12 +23,6 @@ namespace ProjectRestructuring
             fbxAsset?.RenameAsset();
             material?.RenameAsset();
             textures?.RenameAssets();
-        }
-
-        public void DebugAssetStructure()
-        {
-            string message = "AssetStructure: " + finalAssetPrefab.path;// + fbxAsset.path + material.path + textures.diffuse.path + textures.roughness.path + textures.specular.path + textures.normal.path + textures.height.path;
-            Debug.Log(message);
         }
     }
     public abstract class AssetBase
@@ -52,7 +41,7 @@ namespace ProjectRestructuring
             string oldName = PRUtilities.GetFilename(path);
             string newName = oldName;
             newName = GetPrefix() + newName;
-            string renamedResult = AssetDatabase.RenameAsset(path, /*PRUtilities.GetPathWithoutFilename(path) +*/ newName);
+            string renamedResult = AssetDatabase.RenameAsset(path, newName);
             path = PRUtilities.GetPathWithoutFilename(path) + "\\" + newName;
             Debug.Log("Renamed to " + renamedResult + " with path " + path);
         }
@@ -62,42 +51,24 @@ namespace ProjectRestructuring
         public override string GetPrefix() => "pf_";
         public static List<string> extensions = new List<string>() { ".prefab" };
         public Prefab(string _path) : base(_path) { } // Constructor
-
-        // public override void RenameAsset()
-        // {
-        // }
     }
     public class Model : AssetBase
     {
         public override string GetPrefix() => "geo_";
         public static List<string> extensions = new List<string>() { ".fbx" };
         public Model(string _path) : base(_path) { } // Constructor
-
-        // public override void RenameAsset()
-        // {
-
-        // }
     }
     public class Texture : AssetBase
     {
         public override string GetPrefix() => "tex_";
         public static List<string> extensions = new List<string>() { ".png" };
         public Texture(string _path) : base(_path) { }  // Constructor
-
-        // public override void RenameAsset()
-        // {
-
-        // }
     }
     public class Material : AssetBase
     {
         public override string GetPrefix() => "mat_";
         public static List<string> extensions = new List<string>() { ".asset" };
         public Material(string _path) : base(_path) {}
-        // public override void RenameAsset()
-        // {
-        //     throw new System.NotImplementedException();
-        // }
     }
     public class PbrTextures
     {
@@ -110,7 +81,7 @@ namespace ProjectRestructuring
 
         public void RenameAssets()
         {
-            // Using reflection to automate looping through the fields seems like it would be overkill so just brute forcing it :)
+            // Using reflection to automate looping through the fields would be overkill so just brute forcing it :)
             diffuse.RenameAsset();
             roughness.RenameAsset();
             specular.RenameAsset();
