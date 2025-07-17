@@ -165,7 +165,8 @@ namespace ProjectRestructuring
             List<AssetBase> dependencies = new List<AssetBase>();
             foreach (string i in AssetDatabase.GetDependencies(asset.path).ToList<string>())
             {
-                if (SortAssetTypeByExtension(i) != null)
+                bool isInsideAssetsFolder = i.StartsWith(System.IO.Path.GetFullPath("Assets"));
+                if (SortAssetTypeByExtension(i) != null && isInsideAssetsFolder)
                 {
                     dependencies.Add(SortAssetTypeByExtension(i));
                 }
