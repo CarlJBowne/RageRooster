@@ -33,7 +33,8 @@ namespace ProjectRestructuring
 
                 AssetStructure assetStructure = AssembleAssetStructure(asset as Prefab);
 
-                MoveAssetStructureToNewLocation(assetStructure);
+                if (assetStructure.finalAssetPrefab != null)
+                    MoveAssetStructureToNewLocation(assetStructure);
             }
             else
             {
@@ -113,15 +114,12 @@ namespace ProjectRestructuring
             }
             if (loop > 0)
             {
-                newFolderName += loop.ToString();
-                newFolderPath += loop.ToString();
+                newFolderName += "_NamingConflict_" + loop.ToString();
+                newFolderPath += "_NamingConflict_" + loop.ToString();
             }
 
 
             AssetDatabase.CreateFolder(newLocationRoot, newFolderName);
-
-            return;
-
 
             // Move main asset to new folder
             MoveAsset(assetStructure.finalAssetPrefab, newFolderPath);
