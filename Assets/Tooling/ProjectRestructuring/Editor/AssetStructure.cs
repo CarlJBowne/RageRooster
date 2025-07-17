@@ -1,6 +1,8 @@
 using Codice.CM.Common;
+using DependenciesHunter;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -18,9 +20,14 @@ namespace ProjectRestructuring
         public void RenameAssets()
         {
             finalAssetPrefab.RenameAsset();
-            //fbxAsset.RenameAsset();
-            //material.RenameAsset();
-            //textures.RenameAssets();
+            foreach (AssetBase i in unsortedAssets)
+            {
+                i.RenameAsset();
+            }
+            
+            fbxAsset?.RenameAsset();
+            material?.RenameAsset();
+            textures?.RenameAssets();
         }
 
         public void DebugAssetStructure()
@@ -38,7 +45,13 @@ namespace ProjectRestructuring
         {
             path = _path;
         }
-        public abstract void RenameAsset();
+        public virtual void RenameAsset()
+        {
+            string oldName = PRUtilities.GetFilename(path);
+            string newName = oldName;
+            newName = GetPrefix() + newName;
+            AssetDatabase.RenameAsset(path, /*PRUtilities.GetPathWithoutFilename(path) +*/ newName);
+        }
     }
     public class Prefab : AssetBase
     {
@@ -46,12 +59,9 @@ namespace ProjectRestructuring
         public static List<string> extensions = new List<string>() { ".prefab" };
         public Prefab(string _path) : base(_path) { } // Constructor
 
-        public override void RenameAsset()
-        {
-            // CharacterName
-            string originalName = PRUtilities.GetFilename(path);
-            string newName;
-        }
+        // public override void RenameAsset()
+        // {
+        // }
     }
     public class Model : AssetBase
     {
@@ -59,10 +69,10 @@ namespace ProjectRestructuring
         public static List<string> extensions = new List<string>() { ".fbx" };
         public Model(string _path) : base(_path) { } // Constructor
 
-        public override void RenameAsset()
-        {
+        // public override void RenameAsset()
+        // {
 
-        }
+        // }
     }
     public class Texture : AssetBase
     {
@@ -70,20 +80,20 @@ namespace ProjectRestructuring
         public static List<string> extensions = new List<string>() { ".png" };
         public Texture(string _path) : base(_path) { }  // Constructor
 
-        public override void RenameAsset()
-        {
+        // public override void RenameAsset()
+        // {
 
-        }
+        // }
     }
     public class Material : AssetBase
     {
         public override string GetPrefix() => "mat_";
         public static List<string> extensions = new List<string>() { ".asset" };
         public Material(string _path) : base(_path) {}
-        public override void RenameAsset()
-        {
-            throw new System.NotImplementedException();
-        }
+        // public override void RenameAsset()
+        // {
+        //     throw new System.NotImplementedException();
+        // }
     }
     public class PbrTextures
     {
@@ -119,6 +129,11 @@ namespace ProjectRestructuring
         public static string GetFileExtension(string path)
         {
             return System.IO.Path.GetExtension(path);
+        }
+
+        public static string GetPathWithoutFilename(string path)
+        {
+            return System.IO.Path.GetDirectoryName(path);
         }
     }
 }
