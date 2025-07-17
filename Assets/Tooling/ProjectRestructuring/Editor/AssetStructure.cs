@@ -53,7 +53,8 @@ namespace ProjectRestructuring
             string newName = oldName;
             newName = GetPrefix() + newName;
             string renamedResult = AssetDatabase.RenameAsset(path, /*PRUtilities.GetPathWithoutFilename(path) +*/ newName);
-            Debug.Log("Renamed to " + renamedResult);
+            path = PRUtilities.GetPathWithoutFilename(path) + newName;
+            Debug.Log("Renamed to " + renamedResult + " with path " + path);
         }
     }
     public class Prefab : AssetBase
