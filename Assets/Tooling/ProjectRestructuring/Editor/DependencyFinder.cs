@@ -46,13 +46,14 @@ namespace ProjectRestructuring
             {
                 foreach (string i in AssetDatabase.GetDependencies(asset.path).ToList<string>())
                 {
-                    if (AssetDatabase.GetMainAssetTypeAtPath(i) == typeof(Prefab))
+                    if (i == asset.path) continue;
+                    if (PRUtilities.GetFileExtension(i) == ".prefab")//AssetDatabase.GetMainAssetTypeAtPath(i) == typeof(Prefab))
                     {
                         Debug.Log("Asset " + asset.path + " has a prefab as a dependency and cannot be trivially processed. Aborting.");
                         return false;
                     }
                 }
-
+                Debug.Log("Asset " + asset.path + " validated, proceeding.");
                 return true;
             }
         }
