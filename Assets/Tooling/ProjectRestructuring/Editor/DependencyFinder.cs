@@ -100,6 +100,7 @@ namespace ProjectRestructuring
 
             // Create new folder
             string newFolderName = PRUtilities.GetFilenameWithoutExtension(assetStructure.finalAssetPrefab.path);
+            if (newFolderName.StartsWith("pf_")) newFolderName = newFolderName.Substring("pf_".Length); // Remove pf_ from folder name, doing it here because I don't want to bother with it.
             string newFolderPath = newLocationRoot + "/" + newFolderName;
 
             int loop = 0;
