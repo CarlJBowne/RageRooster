@@ -181,6 +181,7 @@ namespace ProjectRestructuring
             string newAssetPath = newFolderPath + "/" + PRUtilities.GetFilename(asset.path);
             // AssetDatabase.CopyAsset(asset.path, newAssetPath);
             AssetDatabase.MoveAsset(asset.path, newAssetPath);
+            asset.path = newAssetPath;
         }
     }
 }
