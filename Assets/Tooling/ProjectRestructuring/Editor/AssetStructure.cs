@@ -47,10 +47,13 @@ namespace ProjectRestructuring
         }
         public virtual void RenameAsset()
         {
+            if (PRUtilities.GetFilename(path).StartsWith(GetPrefix())) return;
+
             string oldName = PRUtilities.GetFilename(path);
             string newName = oldName;
             newName = GetPrefix() + newName;
-            AssetDatabase.RenameAsset(path, /*PRUtilities.GetPathWithoutFilename(path) +*/ newName);
+            string renamedResult = AssetDatabase.RenameAsset(path, /*PRUtilities.GetPathWithoutFilename(path) +*/ newName);
+            Debug.Log("Renamed to " + renamedResult);
         }
     }
     public class Prefab : AssetBase
