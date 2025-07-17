@@ -26,7 +26,7 @@ namespace ProjectRestructuring
             // return;
 
             AssetBase asset = SortAssetTypeByExtension(path); // This might be silly here if it needs to be a prefab anyway... also now it requires a cast for AssembleAssetStructure().
-            asset.RenameAsset();
+            // asset.RenameAsset();
             if (asset is Prefab)
             {
                 if (!ValidateAssetAutomationCompatibility(asset)) return;
@@ -77,7 +77,7 @@ namespace ProjectRestructuring
 
             SortDependencies(dependencies, assetStructure);
 
-            // assetStructure.RenameAssets();
+            assetStructure.RenameAssets();
             
             return assetStructure;
 
