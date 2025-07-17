@@ -24,7 +24,7 @@ namespace ProjectRestructuring
         {
             // Debug.Log(path);
             // return;
-            
+
             AssetBase asset = SortAssetTypeByExtension(path); // This might be silly here if it needs to be a prefab anyway... also now it requires a cast for AssembleAssetStructure().
 
             if (asset is Prefab)
@@ -101,8 +101,27 @@ namespace ProjectRestructuring
 
             // Create new folder
             string newFolderName = PRUtilities.GetFilenameWithoutExtension(assetStructure.finalAssetPrefab.path);
-            AssetDatabase.CreateFolder(newLocationRoot, newFolderName);
             string newFolderPath = newLocationRoot + "/" + newFolderName;
+
+            int loop = 0;
+            string pathToCheck = newFolderPath;
+            while (AssetDatabase.IsValidFolder(pathToCheck))
+            {
+                loop += 1;
+                pathToCheck = newFolderPath;
+                pathToCheck += loop.ToString();
+            }
+            if (loop > 0)
+            {
+                newFolderName += loop.ToString();
+                newFolderPath += loop.ToString();
+            }
+
+
+            AssetDatabase.CreateFolder(newLocationRoot, newFolderName);
+
+            return;
+
 
             // Move main asset to new folder
             MoveAsset(assetStructure.finalAssetPrefab, newFolderPath);
