@@ -93,7 +93,10 @@ namespace ProjectRestructuring
         }
         void MoveAssetStructureToNewLocation(AssetStructure assetStructure)
         {
-            string newLocationRoot = "Assets/Tooling/ProjectRestructuring/TestData/DestinationLocation";
+            // Create temporary destination folder for manual processing.
+            string newLocationFolderName = "ProjectRestructureDestinationTEMP";
+            string newLocationRoot = "Assets/" + newLocationFolderName;
+            if (!AssetDatabase.IsValidFolder(newLocationRoot)) AssetDatabase.CreateFolder("Assets", newLocationFolderName);
 
             // Create new folder
             string newFolderName = PRUtilities.GetFilenameWithoutExtension(assetStructure.finalAssetPrefab.path);
