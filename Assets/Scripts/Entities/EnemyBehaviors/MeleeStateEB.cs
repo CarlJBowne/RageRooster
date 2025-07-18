@@ -9,6 +9,7 @@ public class MeleeStateEB : StateBehavior
     #region Config
     [SerializeField] float attackRate;
     public Attack attack;
+    public UltEvents.UltEvent attackEvent;
     #endregion
     #region Data
 
@@ -33,6 +34,8 @@ public class MeleeStateEB : StateBehavior
 
     public void DebugAttack()
     {
+        attackEvent?.Invoke();
+
         Vector3 pos = transform.position + Vector3.up + transform.forward;
 
         var res = Physics.OverlapSphere(pos, 0.5f, Physics.AllLayers);

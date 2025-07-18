@@ -3303,7 +3303,6 @@ GameObject:
   - component: {fileID: 2412096665258663766}
   - component: {fileID: 5310199273218309757}
   - component: {fileID: 3927902439295100161}
-  - component: {fileID: 5542194556104785265}
   - component: {fileID: 7145112600956375108}
   - component: {fileID: 1171501913040398372}
   - component: {fileID: 293696221970066188}
@@ -3361,6 +3360,7 @@ MonoBehaviour:
   <ChildCount>k__BackingField: 2
   <StatesSetup>k__BackingField: 1
   <StateHolder>k__BackingField: {fileID: 4185788662303831795}
+  _singalManager: {fileID: 4232153444660359350}
 --- !u!95 &3927902439295100161
 Animator:
   serializedVersion: 5
@@ -3382,51 +3382,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5542194556104785265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3500639052055708832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96055279797595e40b7c62431ff14106, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList: []
-  lockReady: 0
-  _machine: {fileID: 0}
-  _layer: 0
-  _parent: {fileID: 0}
-  _children: []
-  _childCount: 0
-  _lineage: []
-  _behaviors: []
-  states:
-    _serializedList: []
-  signalReady: 1
-  signalQueueDecay:
-    length: 1
-    current: 0
-    running: 0
-  globalSignals:
-    _serializedList: []
 --- !u!136 &7145112600956375108
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3478,8 +3433,8 @@ MonoBehaviour:
   stunTime: 0.25
   poofPrefab: {fileID: 0}
   disableComponents:
+  - {fileID: 5310199273218309757}
   - {fileID: 3927902439295100161}
-  - {fileID: 5542194556104785265}
   enemyLootSpawner: {fileID: 0}
   tintAnimator: {fileID: 7917854226350700324}
   respawn: 0
