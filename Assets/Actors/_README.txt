@@ -1,0 +1,1 @@
+The "ACTORS" folder should include any asset with functionality in the world. Characters, moving platforms, bullets, etc. Does it have actions? Then it goes here.
