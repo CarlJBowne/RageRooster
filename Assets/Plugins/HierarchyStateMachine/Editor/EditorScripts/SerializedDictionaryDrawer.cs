@@ -132,9 +132,13 @@ namespace SLS.StateMachineH.SerializedDictionary
                 bool IsDupe(int id) => duplicates != null && duplicates.Length > id && duplicates[id];
 
                 reorderableList = new ReorderableList(property.serializedObject, serializedListProperty);
+
                 reorderableList.drawHeaderCallback = rect =>
                 {
-                    EditorGUI.LabelField(rect, property.displayName);
+                    var newRect = new Rect(rect.x, rect.y, rect.width - 10, rect.height);
+                    serializedListProperty.isExpanded = EditorGUI.Foldout(newRect, serializedListProperty.isExpanded, property.displayName, true);
+
+                    //EditorGUI.LabelField(rect, property.displayName);
                     if (Event.current.type == EventType.ContextClick && rect.Contains(Event.current.mousePosition))
                     {
                         var menu = new GenericMenu();
@@ -159,6 +163,8 @@ namespace SLS.StateMachineH.SerializedDictionary
 
                 reorderableList.drawElementCallback = (position, id, isActive, isFocused) =>
                 {
+                    if (!serializedListProperty.isExpanded) return;
+
                     drawer.KeyValuePairDrawer(serializedListProperty.GetArrayElementAtIndex(id), this, position, id, IsDupe(id));
                     //Look into more later.
                     //if (Event.current.type == EventType.ContextClick && position.Contains(Event.current.mousePosition))
@@ -188,7 +194,19 @@ namespace SLS.StateMachineH.SerializedDictionary
                     //}
                 };
 
-                reorderableList.draggable = true;
+                reorderableList.elementHeightCallback = index => serializedListProperty.isExpanded
+                                                                    ? drawer.KeyValuePairHeight(serializedListProperty, this, index)
+                                                                    : 0;
+
+                reorderableList.draggable = serializedListProperty.isExpanded;
+                reorderableList.onSelectCallback = list =>
+                {
+                    if (list.index >= 0 && list.index < serializedListProperty.arraySize)
+                    {
+                        list.Select(list.index);
+                    }
+                };
+
                 reorderableList.onChangedCallback = list => UpdateReorderableList();
                 reorderableList.onAddCallback = list =>
                 {
@@ -209,7 +227,7 @@ namespace SLS.StateMachineH.SerializedDictionary
                     }
                 };
                 reorderableList.onReorderCallbackWithDetails = (list, oldID, newID) => UpdateReorderableList();
-                reorderableList.elementHeightCallback = index => drawer.KeyValuePairHeight(serializedListProperty, this, index);
+
                 property.serializedObject.ApplyModifiedProperties();
             }
         }
