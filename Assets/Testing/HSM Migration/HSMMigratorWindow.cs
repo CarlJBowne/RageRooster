@@ -75,10 +75,9 @@ public class HSMMigratorWindow : EditorWindow
         foreach (string guid in prefabGuids)
         {
             Prefab prefab = new(AssetDatabase.GUIDToAssetPath(guid));
-
             if (prefab.readOnlyObject == null || 
-                (!prefab.readOnlyObject.TryGetComponent(out OLD.StateMachine_OLD Machine) &&
-                !prefab.readOnlyObject.TryGetComponent(out PlayerStateMachine PMachine))
+                (!prefab.readOnlyObject.TryGetComponent(out OLD.StateMachine_OLD _) &&
+                !prefab.readOnlyObject.TryGetComponent(out NEW.StateMachine _))
                 ) continue;
 
             loadedPrefabs.Add(prefab);

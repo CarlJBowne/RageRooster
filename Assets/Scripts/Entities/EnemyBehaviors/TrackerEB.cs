@@ -52,6 +52,12 @@ public class TrackerEB : StateBehavior
 
     protected override void OnAwake()
     {
+        if (!Gameplay.Active)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
         if(target == null)
         {
             PlayerStateMachine attempt = Gameplay.PlayerStateMachine;

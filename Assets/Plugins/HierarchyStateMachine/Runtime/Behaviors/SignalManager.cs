@@ -68,6 +68,8 @@ namespace SLS.StateMachineH
             return signalFired;
         }
 
+        public bool FireSignalBasic(string signalName) => FireSignal(new Signal(signalName));
+
         /// <summary>  
         /// Locks the current signal node, preventing signals from being fired.  
         /// </summary>  
