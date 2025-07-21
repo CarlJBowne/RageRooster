@@ -1,4 +1,4 @@
-﻿using SLS.StateMachineV3;
+﻿using SLS.StateMachineH;
 using UnityEngine.InputSystem;
 using UltEvents;
 using FMOD.Studio;
@@ -20,7 +20,7 @@ public class PlayerControlAction : PlayerStateBehavior
 
     public State nextState;
 
-    public override void OnEnter(State prev, bool isFinal)
+    protected override void OnEnter(State prev, bool isFinal)
     {
         if (!isFinal) return;
         //controller.currentAction = this;
@@ -50,21 +50,21 @@ public class PlayerControlAction : PlayerStateBehavior
         return false;
     }
 
-    public void Finish() => nextState.TransitionTo();
+    public void Finish() => nextState.Enter();
 
     [Button]
     public void MOVE()
     {
         State iState = GetComponent<State>();
-        iState.lockReady = lockAction;
-        foreach (PlayerControlAction.ActionEntry posAction in possibleActions)
-            iState.signals.Add(posAction.input.action.name, posAction.result);
-        if (nextState != null)
-        {
-            iState.signals.Add("Finish", new());
-            D next = nextState.TransitionTo;
-            iState.signals["Finish"].AddPersistentCall(next);
-        }
+        //iState.lockReady = lockAction;
+        //foreach (PlayerControlAction.ActionEntry posAction in possibleActions)
+        //    iState.signals.Add(posAction.input.action.name, posAction.result);
+        //if (nextState != null)
+        //{
+        //    iState.signals.Add("Finish", new());
+        //    D next = nextState.TransitionTo;
+        //    iState.signals["Finish"].AddPersistentCall(next);
+        //}
     }
     private delegate void D();
 }

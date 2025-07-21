@@ -21,13 +21,13 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
 
     #endregion 
 
-    public override void OnAwake()
+    protected override void OnAwake()
     {
         base.OnAwake();
         playerMovementBody.currentDirection = transform.forward;
     }
 
-    public override void OnFixedUpdate()
+    protected override void OnFixedUpdate()
     {
         float deltaTime = Time.fixedDeltaTime / 0.02f;
         float currentSpeed = playerMovementBody.CurrentSpeed;

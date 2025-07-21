@@ -1,4 +1,4 @@
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,15 +31,15 @@ public class PlayerMovementAnimatorConditional : PlayerMovementAnimator
 
     public bool GrabbableInFrontOf() => playerMovementBody.CheckForTypeInFront<Grabbable>() != null;
 
-    public override void OnAwake() => defaultState = locked;
+    protected override void OnAwake() => defaultState = locked;
 
-    public override void OnEnter(State prev, bool isFinal)
+    protected override void OnEnter(State prev, bool isFinal)
     {
         trueActive = isFinal; 
         locked = defaultState;
         if (checkOnEnter) Check();
     }
-    public override void OnExit(State next)
+    protected override void OnExit(State next)
     {
         locked = !defaultState;
     }

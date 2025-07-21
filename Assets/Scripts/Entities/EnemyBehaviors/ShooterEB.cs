@@ -1,4 +1,4 @@
-﻿using SLS.StateMachineV3;
+﻿using SLS.StateMachineH;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,15 +12,15 @@ public class ShooterEB : StateBehavior
     Timer_Old fireTimer;
     TrackerEB tracker;
 
-    public override void OnAwake() 
+    protected override void OnAwake() 
     {
         bulletPool.Initialize();
         //fireTimer = new(rate, Fire);
         fireTimer = new(rate, Fire);
-        tracker = state.parent.GetComponent<TrackerEB>();
+        tracker = State.Parent.GetComponent<TrackerEB>();
     }
 
-    public override void OnUpdate()
+    protected override void OnUpdate()
     {
         bulletPool.spawnPoint.rotation = Quaternion.LookRotation(tracker.Direction, Vector3.up);
         fireTimer.Increment(Time.deltaTime, Fire);

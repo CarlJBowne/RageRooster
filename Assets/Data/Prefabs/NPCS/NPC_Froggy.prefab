@@ -636,8 +636,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4264712486489549120}
-  - component: {fileID: 8215790393092172055}
-  - component: {fileID: 1753627936466461426}
+  - component: {fileID: 1039329718445696152}
+  - component: {fileID: 548331688421527683}
+  - component: {fileID: 616018993740020326}
+  - component: {fileID: 2257087215960846992}
   m_Layer: 0
   m_Name: Talking
   m_TagString: Untagged
@@ -660,7 +662,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7965652468623851697}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8215790393092172055
+--- !u!114 &1039329718445696152
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -669,30 +671,53 @@ MonoBehaviour:
   m_GameObject: {fileID: 1205560365441503824}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
+  <Behaviors>k__BackingField:
+  - {fileID: 616018993740020326}
+  - {fileID: 2257087215960846992}
+  <Machine>k__BackingField: {fileID: 8705032835185711965}
+  <Parent>k__BackingField: {fileID: 8705032835185711965}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &548331688421527683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205560365441503824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 0}
+  newState: {fileID: 1039329718445696152}
+  children: []
+--- !u!114 &616018993740020326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205560365441503824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8705032835185711965}
+  <State>k__BackingField: {fileID: 1039329718445696152}
   signals:
-    _serializedList:
+    serializedList:
     - Key: OnSpeakerEvent
       Value:
         _PersistentCalls: []
-  lockReady: 0
---- !u!114 &1753627936466461426
+  lockOnEnter: 0
+--- !u!114 &2257087215960846992
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -701,14 +726,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1205560365441503824}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8705032835185711965}
+  <State>k__BackingField: {fileID: 1039329718445696152}
   onEntry: 2
   onEnterName: Talking
   onEnterTime: 0.1
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 5713340764390724968}
 --- !u!1 &1285967677239413581
 GameObject:
   m_ObjectHideFlags: 0
@@ -2783,12 +2810,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4096348619872539493}
+  - component: {fileID: 8705032835185711965}
   - component: {fileID: 3810066800691453347}
   - component: {fileID: 2537451845475224294}
   - component: {fileID: 6965699761546536269}
   - component: {fileID: 5713340764390724968}
   - component: {fileID: 3444734424889381964}
-  - component: {fileID: 6939248087690716833}
+  - component: {fileID: 3192361171914779862}
+  - component: {fileID: 7345773605673554308}
   m_Layer: 8
   m_Name: NPC_Froggy
   m_TagString: NPC
@@ -2815,6 +2844,29 @@ Transform:
   - {fileID: 5091962254323136556}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8705032835185711965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6454999864905180250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41a2a6c6c5b407d45a1aa9d16408554a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 7345773605673554308}
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField:
+  - {fileID: 2741041052176548542}
+  - {fileID: 1039329718445696152}
+  <ChildCount>k__BackingField: 2
+  <StatesSetup>k__BackingField: 1
+  <StateHolder>k__BackingField: {fileID: 7965652468623851697}
 --- !u!114 &3810066800691453347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2916,7 +2968,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &6939248087690716833
+--- !u!114 &3192361171914779862
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2925,35 +2977,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 6454999864905180250}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96055279797595e40b7c62431ff14106, type: 3}
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
-  signals:
-    _serializedList: []
-  lockReady: 0
-  states:
-    _serializedList: []
-  signalReady: 1
-  signalQueueDecay:
-    length: 1
-    current: 0
-    running: 0
+  oldState: {fileID: 0}
+  newState: {fileID: 0}
+  children:
+  - {fileID: 1406906463267403306}
+  - {fileID: 548331688421527683}
+--- !u!114 &7345773605673554308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6454999864905180250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e318945a4f6224dad4dd3c599394f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8705032835185711965}
+  <State>k__BackingField: {fileID: 8705032835185711965}
   globalSignals:
-    _serializedList: []
+    serializedList: []
+  queueSignals: 1
 --- !u!1 &6600183530542937682
 GameObject:
   m_ObjectHideFlags: 0
@@ -3842,8 +3890,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7721671574257558559}
-  - component: {fileID: 9001615864674166167}
-  - component: {fileID: 320307805295896141}
+  - component: {fileID: 2741041052176548542}
+  - component: {fileID: 1406906463267403306}
+  - component: {fileID: 3868711808145688828}
+  - component: {fileID: 6655575387790592301}
   m_Layer: 0
   m_Name: Idle
   m_TagString: Untagged
@@ -3866,7 +3916,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7965652468623851697}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9001615864674166167
+--- !u!114 &2741041052176548542
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3875,30 +3925,53 @@ MonoBehaviour:
   m_GameObject: {fileID: 8861284293700644219}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24ca022ce6de62649a33818276bcd72e, type: 3}
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locked: 0
-  separateFromChildren: 0
-  onAwakeEvent:
-    _PersistentCalls: []
-  onEnterEvent:
-    _PersistentCalls: []
-  onExitEvent:
-    _PersistentCalls: []
-  onActiveChangeEvent:
-    _PersistentCalls: []
-  onUpdateEvent:
-    _PersistentCalls: []
-  onFixedUpdateEvent:
-    _PersistentCalls: []
+  <Behaviors>k__BackingField:
+  - {fileID: 3868711808145688828}
+  - {fileID: 6655575387790592301}
+  <Machine>k__BackingField: {fileID: 8705032835185711965}
+  <Parent>k__BackingField: {fileID: 8705032835185711965}
+  <Layer>k__BackingField: 0
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &1406906463267403306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8861284293700644219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldState: {fileID: 0}
+  newState: {fileID: 2741041052176548542}
+  children: []
+--- !u!114 &3868711808145688828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8861284293700644219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8705032835185711965}
+  <State>k__BackingField: {fileID: 2741041052176548542}
   signals:
-    _serializedList:
+    serializedList:
     - Key: 
       Value:
         _PersistentCalls: []
-  lockReady: 0
---- !u!114 &320307805295896141
+  lockOnEnter: 0
+--- !u!114 &6655575387790592301
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3907,14 +3980,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 8861284293700644219}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7332c28b49f1bf4d9bb5eb5af68bd59, type: 3}
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8705032835185711965}
+  <State>k__BackingField: {fileID: 2741041052176548542}
   onEntry: 2
   onEnterName: Idle
   onEnterTime: 0.1
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  animator: {fileID: 5713340764390724968}
 --- !u!1 &8900264931066353175
 GameObject:
   m_ObjectHideFlags: 0
