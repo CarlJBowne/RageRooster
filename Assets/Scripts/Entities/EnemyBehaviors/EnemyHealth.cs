@@ -1,5 +1,5 @@
 ﻿using EditorAttributes;
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -177,7 +177,7 @@ public class EnemyHealth : Health
     {
         gameObject.SetActive(true);
         transform.position = startPosition;
-        if (TryGetComponent(out StateMachine machine)) machine[0].Enter();
+        if (TryGetComponent(out StateMachine machine)) machine.TransitionState(machine[0]);
         SetEntityState(EntityState.Default);
         transform.rotation = Quaternion.identity;
         health = maxHealth;

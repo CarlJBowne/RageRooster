@@ -154,7 +154,7 @@ public class ConversationManager : MonoBehaviour
     {
         currentSpeaker.Reset();
         //Interface to stop player movement while in dialogue by disabling the component for movement
-        Gameplay.Player.GetComponent<PlayerStateMachine>().UnCutsceneState();
+        Gameplay.Player.GetComponent<PlayerStateMachine>().UnPauseState();
         inDialogue = false;
         PauseMenu.canPause = true;
         canExit = false;

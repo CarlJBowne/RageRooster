@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 
 public class RandomAttackChooserBB : StateBehavior
 {
@@ -9,7 +9,7 @@ public class RandomAttackChooserBB : StateBehavior
     public State[] choiceStates;
     public float[] choiceChances;
 
-    protected override void OnFixedUpdate()
+    public override void OnFixedUpdate()
     {
         chooseTimer.Tick(() =>
         {
@@ -30,11 +30,11 @@ public class RandomAttackChooserBB : StateBehavior
                 choice++;
                 passedChoiced += choiceChances[choice];
             }
-            choiceStates[choice].Enter();
+            choiceStates[choice].TransitionTo();
         });
     }
 
-    protected override void OnEnter(State prev, bool isFinal)
+    public override void OnEnter(State prev, bool isFinal)
     {
         chooseTimer.Begin();
     }

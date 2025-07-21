@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 
 public class DistanceAttackChooserBB : StateBehavior
 {
@@ -25,7 +25,7 @@ public class DistanceAttackChooserBB : StateBehavior
     private Timer.Loop attackTimer = new(100f);
     private Transform playerTransform;
 
-    protected override void OnAwake()
+    public override void OnAwake()
     {
         playerTransform = Gameplay.Player.transform;
         for (int i1 = 0; i1 < distances.Length; i1++)
@@ -33,13 +33,13 @@ public class DistanceAttackChooserBB : StateBehavior
                 distances[i1].attacksRandLength += distances[i1].attacks[i2].chance;
     }
 
-    protected override void OnFixedUpdate()
+    public override void OnFixedUpdate()
     {
         distanceCheckTimer.Tick(UpdateDistance);
         attackTimer.Tick(DoAttack);
     }
 
-    protected override void OnEnter(State prev, bool isFinal) => UpdateDistance();
+    public override void OnEnter(State prev, bool isFinal) => UpdateDistance();
 
     public void UpdateDistance()
     {
@@ -54,7 +54,7 @@ public class DistanceAttackChooserBB : StateBehavior
 
     public void DoAttack()
     {
-        if (Machine.SignalManager.GetCurrentNode().Locked) return;
+        if (!Machine.signalReady) return;
 
         float diceRoll = Random.Range(0f, distances[currentDistance].attacksRandLength);
 
@@ -68,6 +68,6 @@ public class DistanceAttackChooserBB : StateBehavior
             passedChances += distances[currentDistance].attacks[i].chance;
         }
 
-        Machine.SendSignal(new(distances[currentDistance].attacks[i].signalName, 0));
+        Machine.SendSignal(distances[currentDistance].attacks[i].signalName, addToQueue: false);
     }
 }
