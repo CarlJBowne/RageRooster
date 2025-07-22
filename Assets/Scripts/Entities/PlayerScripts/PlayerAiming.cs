@@ -1,4 +1,4 @@
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +22,7 @@ public class PlayerAiming : PlayerMovementEffector
 
     public Vector2 dInput; 
 
-    public override void OnFixedUpdate()
+    protected override void OnFixedUpdate()
     {
 
         dInput = Input.Camera;
@@ -40,9 +40,11 @@ public class PlayerAiming : PlayerMovementEffector
         shootFreeLookCamera.m_YAxis.Value = vAxis.Value.Recast(vAxis.m_MinValue, vAxis.m_MaxValue, 0,1);
 
 
+        this.HorizontalMovement(out float? X, out float? Z);
+        this.VerticalMovement(out float? Y);
+        playerMovementBody.VelocitySet(X, Y, Z);
 
-
-        base.OnFixedUpdate(); 
+        //base.OnFixedUpdate(); 
     }
 
 
