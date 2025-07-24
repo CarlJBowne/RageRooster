@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,10 +18,37 @@ namespace AssetImportPipeline
 
         private void OnGUI() // Built-in override.
         {
-            if (GUILayout.Button("Test Button")) // Condition creates a button and responds to it being pressed.
+            CreateLabel("Static Mesh");
+            CreateButtonRow(new List<string>() {"Import New Asset", "Update Existing Asset"}, new List<Delegate>());
+        }
+
+
+        private void CreateLabel(string labelText)
+        {
+            GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
+            labelStyle.alignment = TextAnchor.MiddleCenter;
+            labelStyle.fontStyle = FontStyle.Bold;
+            GUILayout.Label(labelText, labelStyle);
+        }
+
+        void CreateButtonRow(List<String> labels, List<Delegate> behaviors)
+        {
+            GUILayout.BeginHorizontal();
+            for (int i = 0; i < labels.Count; i++)
             {
-                Debug.Log("Button has been pressed!");
+                string label = labels[i];
+                if (GUILayout.Button(label)) // Condition creates a button and responds to it being pressed.
+                {
+                    // if behavior matches, do that.
+                    ButtonPlaceholderBehavior();
+                }
             }
+            GUILayout.EndHorizontal();
+        }
+
+        private void ButtonPlaceholderBehavior()
+        {
+            Debug.Log("Button has been pressed!");
         }
     }
 }
