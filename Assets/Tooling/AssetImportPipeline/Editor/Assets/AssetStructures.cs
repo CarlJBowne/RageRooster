@@ -4,20 +4,21 @@ using UnityEngine;
 
 namespace AssetImportPipeline
 {
-    public class StaticMesh
+    public abstract class AssetStructure { }
+    public class StaticMesh : AssetStructure
     {
-        public Prefab finalAssetPrefab;
-        public Model fbxAsset;
+        public Prefab prefab;
+        public Model model;
         public Material material;
         public PbrTextures textures;
     }
-    public class PbrTextures
+    public class PbrTextures : AssetStructure
     {
-        public Texture diffuse;
-        public Texture roughness;
-        public Texture specular;
-        public Texture normal;
-        public Texture height;
-        public List<Texture> unsortedTextures; // To make life a little easier I guess.
+        public Texture DiffuseMap;
+        public Texture RoughnessMap;
+        public Texture SpecularMap;
+        public Texture NormalMap;
+        public Texture HeightMap;
+        public List<Texture> UnsortedTextures; // To make life a little easier I guess.
     }
 }

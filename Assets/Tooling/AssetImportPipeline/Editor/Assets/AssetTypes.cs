@@ -7,11 +7,11 @@ namespace AssetImportPipeline
     public abstract class AssetBase
     {
         public abstract string GetPrefix();
-        public string path;
+        public string assetPath;
 
         public AssetBase(string _path) // Abstract constructor
         {
-            path = _path;
+            assetPath = _path;
         }
     }
     public class Prefab : AssetBase
@@ -36,6 +36,6 @@ namespace AssetImportPipeline
     {
         public override string GetPrefix() => "mat_";
         public static List<string> extensions = new List<string>() { ".asset" };
-        public Material(string _path) : base(_path) {}
+        public Material(string _path) : base(_path) {} // Constructor
     }
 }
