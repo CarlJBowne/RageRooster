@@ -16,6 +16,10 @@ public class WanderEB : StateBehavior
     protected override void OnAwake()
     {
         agent = GetComponentFromMachine<NavMeshAgent>();
+
+        if (!agent.isOnNavMesh && NavMesh.SamplePosition(transform.position, out NavMeshHit hit, maxWalkDistance, 1))
+            transform.position = hit.position;
+
         navMeshFailed = !agent.isOnNavMesh;
     }
 
@@ -32,6 +36,7 @@ public class WanderEB : StateBehavior
     }
     void FindNextDestination()
     {
+        if (navMeshFailed || !agent.isOnNavMesh) return; 
         for (int i = 0; i < 5; i++)
         {
             Vector3 R = Random.insideUnitSphere * maxWalkDistance;
