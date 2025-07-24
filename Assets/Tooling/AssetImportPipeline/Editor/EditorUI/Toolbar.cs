@@ -19,7 +19,16 @@ namespace AssetImportPipeline
         private void OnGUI() // Built-in override.
         {
             CreateLabel("Static Mesh");
-            CreateButtonRow(new List<string>() {"Import New Asset", "Update Existing Asset"}, new List<Delegate>());
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Import New Asset"))
+            {
+                Debug.Log("Importing a new static mesh!");
+            }
+            if (GUILayout.Button("Update Existing Asset"))
+            {
+                Debug.Log("Updating an existing static mesh!");
+            }
+            GUILayout.EndHorizontal();
         }
 
 
@@ -29,26 +38,6 @@ namespace AssetImportPipeline
             labelStyle.alignment = TextAnchor.MiddleCenter;
             labelStyle.fontStyle = FontStyle.Bold;
             GUILayout.Label(labelText, labelStyle);
-        }
-
-        void CreateButtonRow(List<String> labels, List<Delegate> behaviors)
-        {
-            GUILayout.BeginHorizontal();
-            for (int i = 0; i < labels.Count; i++)
-            {
-                string label = labels[i];
-                if (GUILayout.Button(label)) // Condition creates a button and responds to it being pressed.
-                {
-                    // if behavior matches, do that.
-                    ButtonPlaceholderBehavior();
-                }
-            }
-            GUILayout.EndHorizontal();
-        }
-
-        private void ButtonPlaceholderBehavior()
-        {
-            Debug.Log("Button has been pressed!");
         }
     }
 }
