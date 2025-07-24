@@ -99,7 +99,7 @@ namespace SLS.StateMachineH
 
             for (int i = 0; i < Behaviors.Length; i++) Behaviors[i].DoEnter(null, false);
             CurrentChild = Children[0];
-            TransitionState(this);
+            TransitionState(Children[0]);
 
             waitforMachineInit?.Invoke();
         }
@@ -192,63 +192,70 @@ namespace SLS.StateMachineH
 
             transitionCursorDest = nextState;
 
-            if (CurrentState != null)
+            try
             {
-                transitionCursorStart = CurrentState;
-                transitionBalance = nextState.Layer - CurrentState.Layer;
-
-                while (transitionBalance != 0 || transitionCursorStart.Parent != transitionCursorDest.Parent)
+                if(CurrentState != null && CurrentState.Parent == nextState.Parent)
                 {
-                    transitionBalanceTemp = transitionBalance;
-                    if (transitionBalanceTemp < 1 && transitionCursorStart.Layer != 0)
+                    CurrentState.DoExit(nextState);
+                    EnterState(nextState);
+                }
+                else
+                {
+                    if (CurrentState != null)
                     {
-                        transitionCursorStart.DoExit(nextState);
-                        transitionCursorStart = transitionCursorStart.Parent;
-                        transitionBalance++;
+                        transitionCursorStart = CurrentState;
+                        transitionBalance = nextState.Layer - CurrentState.Layer;
+
+                        while (transitionBalance != 0 || transitionCursorStart.Parent != transitionCursorDest.Parent)
+                        {
+                            transitionBalanceTemp = transitionBalance;
+                            if (transitionBalanceTemp < 1 && transitionCursorStart.Layer != 0)
+                            {
+                                transitionCursorStart.DoExit(nextState);
+                                transitionCursorStart = transitionCursorStart.Parent;
+                                transitionBalance++;
+                            }
+                            if (transitionBalanceTemp > -1 && transitionCursorDest.Layer != 0)
+                            {
+                                ExitStates.Push(transitionCursorDest);
+                                transitionCursorDest = transitionCursorDest.Parent;
+                                transitionBalance--;
+                            }
+                        }
                     }
-                    if (transitionBalanceTemp > -1 && transitionCursorDest.Layer != 0)
-                    {
-                        ExitStates.Push(transitionCursorDest);
-                        transitionCursorDest = transitionCursorDest.Parent;
-                        transitionBalance--;
-                    }
+
+                    if (transitionCursorStart != null) transitionCursorStart.DoExit(nextState);
+                    //if (transitionCursorDest != null) ExitStates.Push(transitionCursorDest); 
                 }
 
-                //transitionCursorStart = transitionCursorStart.Parent;
-                ExitStates.Push(transitionCursorDest);
-                transitionCursorDest = transitionCursorDest.Parent;
+                while (ExitStates.Count > 0 || transitionCursorDest.HasChildren)
+                {
+                    EnterState(transitionCursorDest);
 
-                transitionCursorStart.Parent.CurrentChild = ExitStates.Count > 0
-                    ? ExitStates.Peek()
-                    : nextState;
+                    transitionCursorDest = ExitStates.Count > 0
+                        ? ExitStates.Pop()
+                        : transitionCursorDest.Children[0];
+                }
+                if (transitionCursorDest != null) EnterState(transitionCursorDest);
+                if (nextState != transitionCursorDest) nextState = transitionCursorDest;
 
-                transitionCursorStart.DoExit(nextState);
+                CurrentState = nextState;
             }
-
-            if (transitionCursorDest != null) ExitStates.Push(transitionCursorDest);
-
-            while (ExitStates.Count > 0 || nextState.HasChildren)
-            {
-                nextState = ExitStates.Count > 0
-                    ? ExitStates.Pop()
-                    : nextState.Children[0];
-
-                nextState.CurrentChild = ExitStates.Count > 0
-                    ? ExitStates.Peek()
-                    : nextState.HasChildren
-                        ? nextState.Children[0]
-                        : null;
-
-                nextState.DoEnter(CurrentState);
-            }
-            CurrentState = nextState;
-
+            finally
             {
                 transitionCursorDest = null;
                 transitionCursorStart = null;
                 transitionBalance = 0;
                 transitionBalanceTemp = 0;
-            }//Cleanup
+                ExitStates.Clear();
+                //Cleanup
+            }
+             
+            void EnterState(State target)
+            {
+                if(target.Parent != null && target != null) target.Parent.CurrentChild = target;
+                target.DoEnter(CurrentState);
+            }
         }
 
         /// <summary>  
