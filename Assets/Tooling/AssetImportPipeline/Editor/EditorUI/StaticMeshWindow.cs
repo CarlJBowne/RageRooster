@@ -20,8 +20,27 @@ namespace AssetImportPipeline
         void OnGUI()
         {
             int spaceSize = 20;
+
+            GUILayout.Space(spaceSize);
+            GUILayout.Label("Category (path)");
+            if (GUILayout.Button("Browse..."))
+            {
+                string path = EditorUtility.OpenFolderPanel("Select File", "Assets/Art", "");
+                if (!string.IsNullOrEmpty(path))
+                {
+                    staticMesh.assetCategory = path;
+                }
+            }
+            GUILayout.Space(spaceSize);
+
+            GUILayout.Label("Asset name");
+            GUI.SetNextControlName("MyTextField");
+            staticMesh.assetName = GUILayout.TextField(staticMesh.assetName);
+            GUILayout.Space(spaceSize);
+
             CreateImportButton("Model Path (must be .fbx!)", staticMesh.model, "fbx");
             GUILayout.Space(spaceSize);
+
             CreateImportButton("Diffuse path", staticMesh.PbrTextures.DiffuseMap, "png");
             CreateImportButton("Roughness path", staticMesh.PbrTextures.RoughnessMap, "png");
             CreateImportButton("Specular path", staticMesh.PbrTextures.SpecularMap, "png");
@@ -73,6 +92,8 @@ namespace AssetImportPipeline
 
         bool ValidateProvidedData()
         {
+            // folder is within Assets/Art (?)
+            // name is not taken in the destination, or blank, or contains forbidden characters, or has an extension erroneously, or otherwise invalid
             // FBX is present
             // POSSIBLY something regarding internal/external textures?? probably should be done earlier actually.
             // roughness OR specular

@@ -7,6 +7,8 @@ namespace AssetImportPipeline
     public abstract class AssetStructure { }
     public class StaticMesh : AssetStructure
     {
+        public string assetName = "UnnamedAsset";
+        public string assetCategory = "Assets/Art";
         public Prefab prefab = new Prefab();
         public Model model = new Model();
         public Material material = new Material();
