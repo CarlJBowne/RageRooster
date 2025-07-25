@@ -23,19 +23,13 @@ namespace AssetImportPipeline
 
             if (selectedIndex == 0)
             {
-                CreateLabel("Static Mesh");
-                GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Import New Asset"))
+                if (GUILayout.Button("Open 'Static Mesh Import' window"))
                 {
                     Debug.Log("Importing a new static mesh!");
                     StaticMeshWindow.ShowWindow();
                 }
-                if (GUILayout.Button("Update Existing Asset"))
-                {
-                    Debug.Log("Updating an existing static mesh!");
-                }
-                GUILayout.EndHorizontal();
             }
+            else GUILayout.Label("Sorry, this hasn't been implemented.");
         }
 
 

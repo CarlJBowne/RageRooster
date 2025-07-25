@@ -11,6 +11,8 @@ namespace AssetImportPipeline
     {
         static StaticMeshWindow window; // To avoid any potential lifecycle issues with the window. Hopefully not necessary?
         StaticMesh staticMesh = new StaticMesh();
+        int spaceSize = 20;
+        int actionTypeIndex = 0;
         public static void ShowWindow()
         {
             window = GetWindow<StaticMeshWindow>("Importing Asset (Example)");
@@ -19,8 +21,15 @@ namespace AssetImportPipeline
 
         void OnGUI()
         {
-            int spaceSize = 20;
+            actionTypeIndex = EditorGUILayout.Popup("Action Type", actionTypeIndex, new[] { "Create New Asset", "Update Existing Asset" });
+            if (actionTypeIndex == 0)
+                CreateStaticMeshWindow();
+            else if (actionTypeIndex == 1)
+                GUILayout.Label("Not yet implemented, sorry!");
+        }
 
+        private void CreateStaticMeshWindow()
+        {
             GUILayout.Space(spaceSize);
             GUILayout.Label("Category");
             GUILayout.Label(staticMesh.assetCategory);
@@ -113,6 +122,7 @@ namespace AssetImportPipeline
             // apply textures to material
 
             // ??? create the prefab? Profit?
+            // possibly something with collision?? if that's not automated???????
         }
     }
 }
