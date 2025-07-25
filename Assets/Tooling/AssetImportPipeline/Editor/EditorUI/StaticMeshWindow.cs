@@ -55,7 +55,7 @@ namespace AssetImportPipeline
             GUILayout.Space(spaceSize);
 
             // Model path
-            CreateImportButton("Model Path (must be .fbx!)", staticMesh.model, "fbx");
+            staticMesh.model = CreateImportButton("Model Path (must be .fbx!)", staticMesh.model, "fbx") as Model;
             GUILayout.Space(spaceSize);
 
             // Handle textures
@@ -71,12 +71,12 @@ namespace AssetImportPipeline
                 {
                     // PBR Texture paths
                     staticMesh.pbrWorkflowIndex = EditorGUILayout.Popup("PBR Workflow", staticMesh.pbrWorkflowIndex, new[] { "Roughness", "Specular" });
-                    CreateImportButton("Diffuse path", staticMesh.PbrTextures.DiffuseMap, "png");
-                    if (staticMesh.pbrWorkflowIndex == 0) CreateImportButton("Roughness path", staticMesh.PbrTextures.RoughnessMap, "png");
-                    else CreateImportButton("Specular path", staticMesh.PbrTextures.SpecularMap, "png");
-                    CreateImportButton("Normal path", staticMesh.PbrTextures.NormalMap, "png");
-                    CreateImportButton("Height path", staticMesh.PbrTextures.HeightMap, "png");
-                    CreateImportButton("Emissive path", staticMesh.PbrTextures.EmissiveMap, "png");
+                    staticMesh.PbrTextures.DiffuseMap = CreateImportButton("Diffuse path", staticMesh.PbrTextures.DiffuseMap, "png") as Texture;
+                    if (staticMesh.pbrWorkflowIndex == 0) staticMesh.PbrTextures.RoughnessMap = CreateImportButton("Roughness path", staticMesh.PbrTextures.RoughnessMap, "png") as Texture;
+                    else staticMesh.PbrTextures.SpecularMap = CreateImportButton("Specular path", staticMesh.PbrTextures.SpecularMap, "png") as Texture;
+                    staticMesh.PbrTextures.NormalMap = CreateImportButton("Normal path", staticMesh.PbrTextures.NormalMap, "png") as Texture;
+                    staticMesh.PbrTextures.HeightMap = CreateImportButton("Height path", staticMesh.PbrTextures.HeightMap, "png") as Texture;
+                    staticMesh.PbrTextures.EmissiveMap = CreateImportButton("Emissive path", staticMesh.PbrTextures.EmissiveMap, "png") as Texture;
                 }
                 else GUILayout.Label("Sorry, this isn't a real option. Choice was an illusion all along.");
 
@@ -113,7 +113,7 @@ namespace AssetImportPipeline
             GUILayout.EndHorizontal();
         }
 
-        void CreateImportButton(string header, AssetBase asset, string forceType = "")
+        AssetBase CreateImportButton(string header, AssetBase asset, string forceType = "")
         {
             GUILayout.BeginHorizontal();
             GUILayout.Label(header, GUILayout.Width(150));
@@ -130,8 +130,16 @@ namespace AssetImportPipeline
                     asset.assetPath = path;
                 }
             }
-            if (GUILayout.Button("Clear", GUILayout.Width(50))) asset = (AssetBase)Activator.CreateInstance(asset.GetType()); // resets asset
+            if (GUILayout.Button("Clear", GUILayout.Width(50)))
+            {
+                Debug.Log("Reset asset!");
+
+                asset = (AssetBase)Activator.CreateInstance(asset.GetType()); // resets asset
+            }
+
             GUILayout.EndHorizontal();
+
+            return asset;
         }
 
         bool ValidateProvidedData()
