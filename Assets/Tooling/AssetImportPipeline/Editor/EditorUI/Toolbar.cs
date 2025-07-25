@@ -15,21 +15,27 @@ namespace AssetImportPipeline
         {
             GetWindow<Toolbar>(AssetImportPipeline);
         }
-
+        int selectedIndex = 0;
         private void OnGUI() // Built-in override.
         {
-            CreateLabel("Static Mesh");
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Import New Asset"))
+            List<string> options = new List<string>() { "Static Mesh", "FakeTestOption" };
+            selectedIndex = EditorGUILayout.Popup("Asset Type", selectedIndex, options.ToArray());
+
+            if (selectedIndex == 0)
             {
-                Debug.Log("Importing a new static mesh!");
-                StaticMeshWindow.ShowWindow();
+                CreateLabel("Static Mesh");
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Import New Asset"))
+                {
+                    Debug.Log("Importing a new static mesh!");
+                    StaticMeshWindow.ShowWindow();
+                }
+                if (GUILayout.Button("Update Existing Asset"))
+                {
+                    Debug.Log("Updating an existing static mesh!");
+                }
+                GUILayout.EndHorizontal();
             }
-            if (GUILayout.Button("Update Existing Asset"))
-            {
-                Debug.Log("Updating an existing static mesh!");
-            }
-            GUILayout.EndHorizontal();
         }
 
 
