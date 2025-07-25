@@ -13,6 +13,7 @@ namespace AssetImportPipeline
         StaticMesh staticMesh = new StaticMesh();
         int spaceSize = 20;
         int actionTypeIndex = 0;
+        bool shouldCreateNewMaterial = true;
         public static void ShowWindow()
         {
             window = GetWindow<StaticMeshWindow>("Importing Asset (Example)");
@@ -56,6 +57,13 @@ namespace AssetImportPipeline
             CreateImportButton("Specular path", staticMesh.PbrTextures.SpecularMap, "png");
             CreateImportButton("Normal path", staticMesh.PbrTextures.NormalMap, "png");
             CreateImportButton("Height path", staticMesh.PbrTextures.HeightMap, "png");
+            GUILayout.Space(20);
+
+            shouldCreateNewMaterial = GUILayout.Toggle(shouldCreateNewMaterial, "Create new material");
+            if (!shouldCreateNewMaterial)
+            {
+                GUILayout.Label("Sorry, haven't implemented a way to reuse materials yet :(");
+            }
             GUILayout.Space(20);
 
             GUILayout.BeginHorizontal();
