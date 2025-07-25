@@ -42,6 +42,7 @@ namespace AssetImportPipeline
 
                 if (confirm)
                 {
+                    ImportStaticMesh();
                     Close();
                 }
             }
@@ -69,7 +70,27 @@ namespace AssetImportPipeline
             if (GUILayout.Button("Clear", GUILayout.Width(50))) asset = (AssetBase)Activator.CreateInstance(asset.GetType()); // resets asset
             GUILayout.EndHorizontal();
         }
+
+        bool ValidateProvidedData()
+        {
+            // FBX is present
+            // POSSIBLY something regarding internal/external textures?? probably should be done earlier actually.
+            // roughness OR specular
+
+            return true;
+        }
+        void ImportStaticMesh()
+        {
+            // take the provided asset name
+            // create folder
+            // create \src folder
+            // add assets to \src
+            // standardize asset names in the process
+            // make sure normal map is set to "normal"
+            // create material (if it's blank? i think? or maybe the textures shouldn't appear if it's not... also the "update" functionality)
+            // apply textures to material
+
+            // ??? create the prefab? Profit?
+        }
     }
-
-
 }
