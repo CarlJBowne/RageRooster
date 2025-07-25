@@ -1,0 +1,1 @@
+Contains files that are referenced by scenes but otherwise a bit more difficult to sort. Some are due to improper implementation (i.e. placing .fbx files directly).
