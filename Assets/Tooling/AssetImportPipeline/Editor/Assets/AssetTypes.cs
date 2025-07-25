@@ -10,7 +10,7 @@ namespace AssetImportPipeline
         public abstract string GetPrefix();
         public string sourcePath = "No filepath set!";
         public string destinationPath = "";
-        public virtual string GetFilename(string assetName)
+        public virtual string CreateFilename(string assetName)
         {
             string filename = GetPrefix() + assetName + Utilities.GetFileExtension(sourcePath);
             return filename;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,7 +18,6 @@ namespace AssetImportPipeline
         {
             window = GetWindow<StaticMeshWindow>("Importing Asset (Example)");
         }
-
         private Vector2 scrollPosition;
         void OnGUI()
         {
@@ -66,17 +66,17 @@ namespace AssetImportPipeline
             else
             {
                 staticMesh.materialTypeIndex = EditorGUILayout.Popup("Material Type", staticMesh.materialTypeIndex, new[] { "PBR", "Something else" });
+                staticMesh.transparent = GUILayout.Toggle(staticMesh.transparent, "Transparent");
 
                 if (staticMesh.materialTypeIndex == 0)
                 {
                     // PBR Texture paths
-                    staticMesh.pbrWorkflowIndex = EditorGUILayout.Popup("PBR Workflow", staticMesh.pbrWorkflowIndex, new[] { "Roughness", "Specular" });
                     staticMesh.PbrTextures.DiffuseMap = CreateImportButton("Diffuse path", staticMesh.PbrTextures.DiffuseMap, "png") as Texture;
-                    if (staticMesh.pbrWorkflowIndex == 0) staticMesh.PbrTextures.RoughnessMap = CreateImportButton("Roughness path", staticMesh.PbrTextures.RoughnessMap, "png") as Texture;
-                    else staticMesh.PbrTextures.SpecularMap = CreateImportButton("Specular path", staticMesh.PbrTextures.SpecularMap, "png") as Texture;
+                    staticMesh.PbrTextures.RoughnessMap = CreateImportButton("Roughness path", staticMesh.PbrTextures.RoughnessMap, "png") as Texture;
                     staticMesh.PbrTextures.NormalMap = CreateImportButton("Normal path", staticMesh.PbrTextures.NormalMap, "png") as Texture;
                     staticMesh.PbrTextures.HeightMap = CreateImportButton("Height path", staticMesh.PbrTextures.HeightMap, "png") as Texture;
                     staticMesh.PbrTextures.EmissiveMap = CreateImportButton("Emissive path", staticMesh.PbrTextures.EmissiveMap, "png") as Texture;
+                    if (staticMesh.transparent) staticMesh.PbrTextures.AlphaMap = CreateImportButton("Alpha path", staticMesh.PbrTextures.AlphaMap, "png") as Texture;
                 }
                 else GUILayout.Label("Sorry, this isn't a real option. Choice was an illusion all along.");
 
@@ -154,17 +154,53 @@ namespace AssetImportPipeline
         }
         void ImportStaticMesh()
         {
-            // take the provided asset name
-            // create folder
+            // take the provided asset name and create folder
+            string newFolder = AssetDatabase.GUIDToAssetPath(AssetDatabase.CreateFolder(staticMesh.assetCategory, staticMesh.assetName));
             // create \src folder
-            // add assets to \src
-            // standardize asset names in the process
-            // make sure normal map is set to "normal"
+            string newSrcFolder = AssetDatabase.GUIDToAssetPath(AssetDatabase.CreateFolder(newFolder, "src"));
+            // add assets to \src, standardize asset names in the process
+            CopyAssetIntoProject(staticMesh.model, newSrcFolder);
+
+            if (staticMesh.materialTypeIndex == 0) // magic numbers yay
+            {
+                CopyAssetIntoProject(staticMesh.PbrTextures.DiffuseMap, newSrcFolder);
+
+                CopyAssetIntoProject(staticMesh.PbrTextures.RoughnessMap, newSrcFolder);
+
+                // make sure normal map is set to "normal"
+                CopyAssetIntoProject(staticMesh.PbrTextures.NormalMap, newSrcFolder);
+                if (!string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(staticMesh.PbrTextures.NormalMap.destinationPath)))
+                {
+                    TextureImporter normalMapImporter = AssetImporter.GetAtPath(staticMesh.PbrTextures.NormalMap.destinationPath) as TextureImporter;
+                    normalMapImporter.textureType = TextureImporterType.NormalMap;
+                    normalMapImporter.SaveAndReimport();
+                }
+
+
+                CopyAssetIntoProject(staticMesh.PbrTextures.HeightMap, newSrcFolder);
+                CopyAssetIntoProject(staticMesh.PbrTextures.EmissiveMap, newSrcFolder);
+            }
+
             // create material (if it's blank? i think? or maybe the textures shouldn't appear if it's not... also the "update" functionality)
+
+            
             // apply textures to material
 
             // ??? create the prefab? Profit?
             // possibly something with collision?? if that's not automated???????
+        }
+        void CopyAssetIntoProject(AssetBase asset, string destinationPath)
+        {
+            if (asset.sourcePath == "No filepath set!") return;
+
+            asset.destinationPath = destinationPath + "/" + asset.CreateFilename(staticMesh.assetName);
+
+            // Copy file
+            File.Copy(asset.sourcePath, asset.destinationPath, overwrite: true);
+
+            // Refresh asset database
+            AssetDatabase.ImportAsset(asset.destinationPath);
+            Debug.Log("Imported: " + asset.destinationPath);
         }
 
         bool FbxContainsEmbeddedTextures(Model model)
