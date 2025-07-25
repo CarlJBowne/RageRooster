@@ -22,7 +22,8 @@ namespace AssetImportPipeline
             int spaceSize = 20;
 
             GUILayout.Space(spaceSize);
-            GUILayout.Label("Category (path)");
+            GUILayout.Label("Category");
+            GUILayout.Label(staticMesh.assetCategory);
             if (GUILayout.Button("Browse..."))
             {
                 string path = EditorUtility.OpenFolderPanel("Select File", "Assets/Art", "");
