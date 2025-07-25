@@ -7,18 +7,18 @@ namespace AssetImportPipeline
     public abstract class AssetStructure { }
     public class StaticMesh : AssetStructure
     {
-        public Prefab prefab;
-        public Model model;
-        public Material material;
-        public PbrTextures textures;
+        public Prefab prefab = new Prefab();
+        public Model model = new Model();
+        public Material material = new Material();
+        public PbrTextures textures = new PbrTextures();
     }
     public class PbrTextures : AssetStructure
     {
-        public Texture DiffuseMap;
-        public Texture RoughnessMap;
-        public Texture SpecularMap;
-        public Texture NormalMap;
-        public Texture HeightMap;
-        public List<Texture> UnsortedTextures; // To make life a little easier I guess.
+        public Texture DiffuseMap = new Texture();
+        public Texture RoughnessMap = new Texture();
+        public Texture SpecularMap = new Texture();
+        public Texture NormalMap = new Texture();
+        public Texture HeightMap = new Texture();
+        public List<Texture> UnsortedTextures = new List<Texture>(); // To make life a little easier I guess.
     }
 }

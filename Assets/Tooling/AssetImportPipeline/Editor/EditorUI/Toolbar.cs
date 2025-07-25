@@ -23,6 +23,7 @@ namespace AssetImportPipeline
             if (GUILayout.Button("Import New Asset"))
             {
                 Debug.Log("Importing a new static mesh!");
+                StaticMeshWindow.ShowWindow();
             }
             if (GUILayout.Button("Update Existing Asset"))
             {
