@@ -1,12 +1,12 @@
 ﻿using EditorAttributes;
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 using UnityEngine;
 
 public abstract class PlayerMovementEffector : PlayerStateBehavior
 {
     [HideInEditMode, DisableInPlayMode] public bool trueActive;
 
-    protected override void OnFixedUpdate()
+    public override void OnFixedUpdate()
     {
         if (!trueActive) return;
         this.HorizontalMovement(out float? X, out float? Z);
@@ -32,5 +32,5 @@ public abstract class PlayerMovementEffector : PlayerStateBehavior
             ).Min(-terminalVelocity);
     }
 
-    protected override void OnEnter(State prev, bool isFinal) => trueActive = isFinal;
+    public override void OnEnter(State prev, bool isFinal) => trueActive = isFinal;
 }

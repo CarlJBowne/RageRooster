@@ -70,7 +70,7 @@ public class DialogueTrigger : MonoBehaviour
                 ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().Follow = targetGroup.transform;
                 ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
             }
-            Gameplay.Player.GetComponent<PlayerStateMachine>().CutsceneState();
+            Gameplay.Player.GetComponent<PlayerStateMachine>().PauseState();
             ui.SetCharNameAndColor();
             ui.inDialogue = true;
             ui.CameraChange(true);

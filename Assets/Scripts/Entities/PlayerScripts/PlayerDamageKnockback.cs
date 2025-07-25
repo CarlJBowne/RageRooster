@@ -1,4 +1,4 @@
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,19 +13,19 @@ public class PlayerDamageKnockback : PlayerMovementEffector
     private float currentTime;
     private Vector3 backwardsVector;
 
-    protected override void OnEnter(State prev, bool isFinal)
+    public override void OnEnter(State prev, bool isFinal)
     {
         base.OnEnter(prev, isFinal);
         currentTime = 0;
         playerMovementBody.grounded = false;
         playerMovementBody.VelocitySet(y: upwards.Evaluate(0));
     }
-    protected override void OnExit(State next)
+    public override void OnExit(State next)
     {
         base.OnExit(next);
     }
 
-    protected override void OnFixedUpdate()
+    public override void OnFixedUpdate()
     {
         currentTime += Time.deltaTime;
         if (currentTime > duration) currentTime = duration;
