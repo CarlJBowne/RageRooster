@@ -10,7 +10,7 @@ namespace AssetImportPipeline
         public Prefab prefab = new Prefab();
         public Model model = new Model();
         public Material material = new Material();
-        public PbrTextures textures = new PbrTextures();
+        public PbrTextures PbrTextures = new PbrTextures();
     }
     public class PbrTextures : AssetStructure
     {
