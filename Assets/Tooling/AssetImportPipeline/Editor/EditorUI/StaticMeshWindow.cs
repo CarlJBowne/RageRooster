@@ -118,7 +118,7 @@ namespace AssetImportPipeline
             GUILayout.BeginHorizontal();
             GUILayout.Label(header, GUILayout.Width(150));
             GUILayout.Label(""); // might do "|" or something idk
-            GUILayout.Label(asset.assetPath);
+            GUILayout.Label(asset.sourcePath);
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
@@ -127,7 +127,7 @@ namespace AssetImportPipeline
                 string path = EditorUtility.OpenFilePanel("Select File", "", forceType);
                 if (!string.IsNullOrEmpty(path))
                 {
-                    asset.assetPath = path;
+                    asset.sourcePath = path;
                 }
             }
             if (GUILayout.Button("Clear", GUILayout.Width(50)))

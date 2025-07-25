@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,7 +8,13 @@ namespace AssetImportPipeline
     public abstract class AssetBase
     {
         public abstract string GetPrefix();
-        public string assetPath = "No filepath set!";
+        public string sourcePath = "No filepath set!";
+        public string destinationPath = "";
+        public virtual string GetFilename(string assetName)
+        {
+            string filename = GetPrefix() + assetName + Utilities.GetFileExtension(sourcePath);
+            return filename;
+        }
     }
     public class Prefab : AssetBase
     {
