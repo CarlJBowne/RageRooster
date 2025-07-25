@@ -7,6 +7,9 @@ namespace AssetImportPipeline
     public abstract class AssetStructure { }
     public class StaticMesh : AssetStructure
     {
+        public int materialTypeIndex = 0;
+        public int pbrWorkflowIndex = 0;
+        public bool shouldCreateNewMaterial = true;
         public string assetName = "UnnamedAsset";
         public string assetCategory = "Assets/Art";
         public Prefab prefab = new Prefab();
@@ -21,6 +24,7 @@ namespace AssetImportPipeline
         public Texture SpecularMap = new Texture();
         public Texture NormalMap = new Texture();
         public Texture HeightMap = new Texture();
+        public Texture EmissiveMap = new Texture();
         public List<Texture> UnsortedTextures = new List<Texture>(); // To make life a little easier I guess.
     }
 }
