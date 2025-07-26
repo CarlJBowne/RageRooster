@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using UnityEditor;
@@ -10,6 +11,14 @@ namespace AssetImportPipeline
         public abstract string GetPrefix();
         public string sourcePath = "No filepath set!";
         public string destinationPath = "";
+        public bool SourceExists()
+        {
+            throw new NotImplementedException();
+        }
+        public bool AssetExists()
+        {
+            return !string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(destinationPath));
+        }
         public virtual string CreateFilename(string assetName)
         {
             string filename = GetPrefix() + assetName + Utilities.GetFileExtension(sourcePath);
@@ -34,6 +43,6 @@ namespace AssetImportPipeline
     public class Material : AssetBase
     {
         public override string GetPrefix() => "mat_";
-        public static List<string> extensions = new List<string>() { ".asset" };
+        public static List<string> extensions = new List<string>() { ".asset" }; // should actually be .mat i was dumb, not changing it yet just in case to remind myself in case something is Wrong
     }
 }

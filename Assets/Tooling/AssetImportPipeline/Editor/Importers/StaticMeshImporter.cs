@@ -8,12 +8,14 @@ namespace AssetImportPipeline
 {
     public class StaticMeshImporter
     {
+        string newFolder;
+        string newSrcFolder;
         public void ImportStaticMesh(StaticMesh staticMesh)
         {
             // take the provided asset name and create folder
-            string newFolder = AssetDatabase.GUIDToAssetPath(AssetDatabase.CreateFolder(staticMesh.assetCategory, staticMesh.assetName));
+            newFolder = AssetDatabase.GUIDToAssetPath(AssetDatabase.CreateFolder(staticMesh.assetCategory, staticMesh.assetName));
             // create \src folder
-            string newSrcFolder = AssetDatabase.GUIDToAssetPath(AssetDatabase.CreateFolder(newFolder, "src"));
+            newSrcFolder = AssetDatabase.GUIDToAssetPath(AssetDatabase.CreateFolder(newFolder, "src"));
             // add assets to \src, standardize asset names in the process
             CopyAssetIntoProject(staticMesh, staticMesh.model, newSrcFolder);
 
@@ -25,7 +27,8 @@ namespace AssetImportPipeline
 
                 // make sure normal map is set to "normal"
                 CopyAssetIntoProject(staticMesh, staticMesh.PbrTextures.NormalMap, newSrcFolder);
-                if (!string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(staticMesh.PbrTextures.NormalMap.destinationPath)))
+                if (staticMesh.PbrTextures.NormalMap.AssetExists())
+                // if (!string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(staticMesh.PbrTextures.NormalMap.destinationPath)))
                 {
                     TextureImporter normalMapImporter = AssetImporter.GetAtPath(staticMesh.PbrTextures.NormalMap.destinationPath) as TextureImporter;
                     normalMapImporter.textureType = TextureImporterType.NormalMap;
@@ -38,14 +41,14 @@ namespace AssetImportPipeline
             }
 
             // create material (if it's blank? i think? or maybe the textures shouldn't appear if it's not... also the "update" functionality)
-
+            CreateMaterialAssetInProject(staticMesh);
 
             // apply textures to material
 
             // ??? create the prefab? Profit?
             // possibly something with collision?? if that's not automated???????
         }
-        public void CopyAssetIntoProject(StaticMesh staticMesh, AssetBase asset, string destinationPath)
+        void CopyAssetIntoProject(StaticMesh staticMesh, AssetBase asset, string destinationPath)
         {
             if (asset.sourcePath == "No filepath set!") return;
 
@@ -57,6 +60,25 @@ namespace AssetImportPipeline
             // Refresh asset database
             AssetDatabase.ImportAsset(asset.destinationPath);
             Debug.Log("Imported: " + asset.destinationPath);
+        }
+
+        void CreateMaterialAssetInProject(StaticMesh staticMesh)
+        {
+            UnityEngine.Material materialAsset = new UnityEngine.Material(Shader.Find("Universal Render Pipeline/Lit"));
+
+            AssignTextureToMaterial(staticMesh.PbrTextures.DiffuseMap, "_BaseMap");
+            // AssignTextureToMaterial(staticMesh.PbrTextures.MetalnessMap, "")
+
+            string materialFileName = newSrcFolder + "/" + new Material().GetPrefix() + staticMesh.assetName + ".mat";
+            AssetDatabase.CreateAsset(materialAsset, materialFileName);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            void AssignTextureToMaterial(Texture texture, string shaderTextureName)
+            {
+                if (texture.AssetExists())
+                    materialAsset.SetTexture(shaderTextureName, AssetDatabase.LoadAssetAtPath<Texture2D>(texture.destinationPath));
+            }
         }
     }
 }
