@@ -55,7 +55,7 @@ namespace AssetImportPipeline
             asset.destinationPath = destinationPath + "/" + asset.CreateFilename(staticMesh.assetName);
 
             // Copy file
-            File.Copy(asset.sourcePath, asset.destinationPath, overwrite: true);
+            File.Copy(asset.sourcePath, asset.destinationPath, overwrite: true); // THIS is altering the imported FBX structure
 
             // Refresh asset database
             AssetDatabase.ImportAsset(asset.destinationPath);
