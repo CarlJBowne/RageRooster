@@ -2,7 +2,7 @@ using EditorAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 
 public class PlayerGlidingMovement : PlayerMovementEffector
 {
@@ -81,7 +81,7 @@ public class PlayerGlidingMovement : PlayerMovementEffector
         if (fallState != null) fallState.Enter();
     }
 
-    protected override void OnEnter(State prev, bool isFinal)
+    public override void OnEnter(State prev, bool isFinal)
     {
         base.OnEnter(prev, isFinal);
         if (!isFinal) return;
@@ -97,6 +97,6 @@ public class PlayerGlidingMovement : PlayerMovementEffector
         }
     }
 
-    public void Enter() => State.Enter();
+    public void Enter() => state.TransitionTo();
 
 }

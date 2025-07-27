@@ -1,6 +1,6 @@
 using DG.Tweening;
 using EditorAttributes;
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,8 +30,8 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     PlayerMovementBody body;
     new AudioCaller audio;
     Animator animator;
-    public PlayerAiming aimingState;
-    public State shootingState;
+    [HideProperty] public PlayerAiming aimingState;
+    [HideProperty] public State shootingState;
     public IGrabbable currentGrabbed { get; private set; }
 
     private UIHUDSystem UI;
@@ -49,6 +49,8 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         TryGetComponent(out collider);
         TryGetComponent(out audio);
         UIHUDSystem.TryGet(out UI);
+        if (aimingState == null) aimingState = FindObjectOfType<PlayerAiming>(true);
+        if (shootingState == null) shootingState = aimingState.state[0];
 
         pointer.target.position = pointer.startV.position + pointer.startV.forward * pointer.distance;
 
@@ -72,7 +74,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
         if(animator.enabled) animator.Update(0f);
 
-        if (aimingState.State) AimingFixedUpdate();
+        if (aimingState.state) AimingFixedUpdate();
         else NonAimingFixedUpdate();
 
     }
@@ -98,9 +100,9 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void TryGrabThrow(PlayerGrabAction state, State throwState)
     {
-        if (!machine.SignalManager.Locked && currentGrabbed != null)
+        if (machine.signalReady && currentGrabbed != null)
         {
-            throwState.Enter();
+            throwState.TransitionTo();
             new CoroutinePlus(QuickTurn(), this);
             IEnumerator QuickTurn()
             {
@@ -122,7 +124,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         if (currentGrabbed != null)
         {
             body.transform.DOBlendableRotateBy(new(0, pointer.startH.eulerAngles.y - body.transform.eulerAngles.y, 0), 0.1f);
-            (!dropLaunchUpgrade ? airThrowState : dropLaunchState).Enter();
+            (!dropLaunchUpgrade ? airThrowState : dropLaunchState).TransitionTo();
         }
         else state.BeginGrabAttempt(interacter.HasUsableGrabbable());
     }
@@ -160,7 +162,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         //animator.CrossFade(true ? "GrabAim.Hold2" : "GrabAim.Hold1", 0.2f);
     }
 
-    public void GrabPointSignal() => machine.SendSignal(new("FinishGrab", ignoreLock: true));
+    public void GrabPointSignal() => machine.SendSignal("FinishGrab", overrideReady: true);
 
     public void ThrowPoint()
     {
@@ -307,7 +309,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         if (eggCapacity == 0 && currentGrabbed != null) return;
 
         animator.CrossFade("Aim", 0.3f);
-        aimingState.State.Enter();
+        aimingState.state.TransitionTo();
         aimingRig.enabled = true;
         aimingRig.weight = 1; 
         UI.SetHitMarkerVisibility(true);
@@ -317,10 +319,9 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     }
     public void ExitAiming(State normalState, State grabbingState)
     {
-        if (!aiming) return;
         machine.freeLookCamera.m_XAxis.Value = pointerH;
         animator.CrossFade("GroundBasic", 0.1f);
-        (currentGrabbed == null ? normalState : grabbingState).Enter();
+        (currentGrabbed == null ? normalState : grabbingState).TransitionTo();
         aimingRig.enabled = false;
         aimingRig.weight = 0;
         UI.SetHitMarkerVisibility(false);
@@ -331,7 +332,6 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void ExitAimingAux()
     {
-        if (!aiming) return;
         machine.freeLookCamera.m_XAxis.Value = pointerH;
         aimingRig.enabled = false;
         aimingRig.weight = 0;
@@ -339,12 +339,11 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         shootingVCam.Priority = 9;
         shootingVCam.gameObject.SetActive(false);
         aiming = false;
-        machine.Children[0].Enter();
+        machine[0].TransitionTo();
     }
 
     public void ExitAimingInstant()
     {
-        if (!aiming) return;
         machine.freeLookCamera.m_XAxis.Value = pointerH;
         aimingRig.enabled = false;
         aimingRig.weight = 0;
@@ -353,15 +352,14 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         shootingVCam.gameObject.SetActive(false);
         aiming = false;
         animator.Play("GroundBasic");
-        machine.Children[0].Enter();
+        machine[0].TransitionTo();
     }
 
     public void Shoot()
     {
         if (!aiming) return;
         if (currentGrabbed != null) AimThrow();
-        else if (eggAmount >= 1 && !shootingState.Active) 
-            shootingState.Enter();
+        else if (eggAmount >= 1 && !shootingState) shootingState.TransitionTo();
     }
 
     public void ShootPoint()
@@ -386,7 +384,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void AimThrow()
     {
-        aimThrowState.Enter();
+        aimThrowState.TransitionTo();
     }
 
     void ChangeAmmoAmount(int offset)

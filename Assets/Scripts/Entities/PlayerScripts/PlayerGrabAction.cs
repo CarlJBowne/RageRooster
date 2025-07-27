@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EditorAttributes;
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 
 public class PlayerGrabAction : PlayerStateBehavior
 {
@@ -15,7 +15,7 @@ public class PlayerGrabAction : PlayerStateBehavior
     private PlayerRanged ranged;
     private PlayerMovementAnimator movementNegator;
 
-    protected override void OnAwake()
+    public override void OnAwake()
     {
         ranged = GetComponentFromMachine<PlayerRanged>();
         movementNegator = GetComponent<PlayerMovementAnimator>();
@@ -23,7 +23,7 @@ public class PlayerGrabAction : PlayerStateBehavior
 
     public void BeginGrabAttempt(IGrabbable attempt)
     {
-        State.Enter();
+        state.TransitionTo();
         Machine.animator.CrossFade(animationName, .1f, -1, 0f);
         if (attempt != null)
         {
@@ -54,7 +54,7 @@ public class PlayerGrabAction : PlayerStateBehavior
 
     public void Finish(State successState, State failState)
     {
-        (ranged.currentGrabbed != null ? successState : failState).Enter();
+        (ranged.currentGrabbed != null ? successState : failState).TransitionTo();
         Machine.animator.CrossFade("GroundBasic", .1f);
     }
 }

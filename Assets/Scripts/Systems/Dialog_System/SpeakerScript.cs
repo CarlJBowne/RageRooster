@@ -106,7 +106,7 @@ public class SpeakerScript : MonoBehaviour, IInteractable
             UI.currentSpeaker = this;
 
             targetGroup.m_Targets[1].target = Gameplay.I.player.transform;
-            Gameplay.PlayerStateMachine.CutsceneState();
+            Gameplay.PlayerStateMachine.PauseState();
             //UI.dialogueCamera.GetComponent<CinemachineVirtualCamera>().Follow = targetGroup.transform;
             UI.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
             UI.SetCharNameAndColor();

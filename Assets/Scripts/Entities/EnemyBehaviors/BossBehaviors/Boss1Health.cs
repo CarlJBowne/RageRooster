@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 using EditorAttributes;
 
 public class Boss1Health : Health
@@ -54,7 +54,7 @@ public class Boss1Health : Health
             animator.Play("Damage");
             return true;
         }
-        if (bossPhase != 2 && attack.HasTag("InEyes") && attack.HasTag("Egg") && machine.CurrentState.gameObject.name != "Charging")
+        if (bossPhase != 2 && attack.HasTag("InEyes") && attack.HasTag("Egg") && machine.currentState.gameObject.name != "Charging")
         {
             stunCounter++; 
             if (stunCounter > 2)
@@ -85,7 +85,7 @@ public class Boss1Health : Health
     public void BeginPhase2()
     {
         moveAnim.SetTarget(phase2StartPos);
-        jumpState.Enter();
+        jumpState.TransitionTo();
         phase2TriggerTriggered = true;
         damagable = false;
         bossPhase = 2;
@@ -94,7 +94,7 @@ public class Boss1Health : Health
     public void BeginPhase3()
     {
         moveAnim.SetTarget(phase3StartPos);
-        jumpState.Enter();
+        jumpState.TransitionTo();
         damagable = true;
         bossPhase = 3;
     }
@@ -128,7 +128,7 @@ public class Boss1Health : Health
         gameObject.SetActive(false);
         health = maxHealth;
         phase2TriggerTriggered = false;
-        machine[0][0].Enter();
+        machine[0][0].TransitionTo();
         animator.Play("Walking", -1, 0f);
         bossPhase = 1;
         damagable = true;

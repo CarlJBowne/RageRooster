@@ -272,8 +272,6 @@ namespace UltEvents
         public void SetMethod(Action method)
             => SetMethod((Delegate)method);
 
-        public void SetTarget(Object newTarget) => _Target = newTarget;
-
         /************************************************************************************************************************/
 
         /// <summary>

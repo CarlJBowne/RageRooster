@@ -1,6 +1,6 @@
 using EditorAttributes;
 using JigglePhysics;
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -122,10 +122,8 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     public void DirectionSet(float maxTurnSpeed, Vector3 target)
     {
-        if (target == Vector3.zero) return;
-        playerTestScript.input = currentDirection;
+        if (target == Vector3.zero) return; 
         currentDirection = Vector3.RotateTowards(currentDirection, target.normalized, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
-        playerTestScript.output = currentDirection;
     }
     public void DirectionSet(float maxTurnSpeed) => DirectionSet(maxTurnSpeed, playerController.camAdjustedMovement);
     public void InstantDirectionChange(Vector3 target)
@@ -140,7 +138,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         set
         {
             _currentVent = value;
-            Machine.SendSignal(new(value != null ? "EnterVent" : "ExitVent", 0,  true));
+            Machine.SendSignal(value != null ? "EnterVent" : "ExitVent", addToQueue: false, overrideReady: true);
         }
     }
     public bool isOverVent => _currentVent != null;
@@ -149,9 +147,9 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     #endregion GetSet
 
-    public PlayerTestScript playerTestScript;
 
-    protected override void OnAwake()
+
+    public override void OnAwake()
     {
         TryGetComponent(out rb);
         TryGetComponent(out collider);
@@ -161,7 +159,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         _instance = this;
     }
 
-    protected override void OnFixedUpdate()
+    public override void OnFixedUpdate()
     {
         if (rb.isKinematic)
         {
@@ -199,7 +197,7 @@ public class PlayerMovementBody : PlayerStateBehavior
             else if (grounded)
             {
                 GroundStateChange(false);
-                Machine.SendSignal(new("WalkOff", ignoreLock: true));
+                Machine.SendSignal("WalkOff", overrideReady: true);
             }
         }
 
@@ -274,7 +272,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                         stopped = true;
                 }
 
-            if (stopped && Machine.SendSignal(new("Bonk", 0, true))) return;
+            if (stopped && Machine.SendSignal("Bonk", overrideReady: true, addToQueue: false)) return;
 
             Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1); 
             Move(newDir, nextNormal, step + 1);
@@ -293,7 +291,7 @@ public class PlayerMovementBody : PlayerStateBehavior
                 else
                 {
                     GroundStateChange(false);
-                    Machine.SendSignal(new("WalkOff", ignoreLock: true));
+                    Machine.SendSignal("WalkOff", overrideReady: true);
                 }
             }
         }
@@ -327,7 +325,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         {
             jumpPhase = -1;
 
-            Machine.SendSignal(new("Land", ignoreLock: true));
+            Machine.SendSignal("Land", overrideReady: true);
 
             if (playerController.CheckJumpBuffer()) Machine.SendSignal("Jump");
         }
@@ -347,7 +345,7 @@ public class PlayerMovementBody : PlayerStateBehavior
         Vector3 contactPoint = collision.GetContact(0).normal;
         if (!grounded && velocity.y > .1f && Vector3.Dot(contactPoint, Vector3.up) < -0.75f)
         {
-            sFall.Enter();
+            sFall.TransitionTo();
             VelocitySet(y: 0);
         }
         else if (!grounded && WithinSlopeAngle(contactPoint))
@@ -386,12 +384,12 @@ public class PlayerMovementBody : PlayerStateBehavior
     {
         if(GroundCheck())
         {
-            idleState.Enter();
+            idleState.TransitionTo();
             //animator.SetTrigger("ReturnToGroundNeutral");
             if (doCrossFade) animator.CrossFade("GroundBasic", .1f);
         }
         else 
-            airNeutralState.Enter();
+            airNeutralState.TransitionTo();
     }
 
 #if UNITY_EDITOR

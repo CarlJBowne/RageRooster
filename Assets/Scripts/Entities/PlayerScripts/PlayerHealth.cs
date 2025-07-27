@@ -1,4 +1,4 @@
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,11 +41,11 @@ public class PlayerHealth : Health
             if (attack.HasTag(Attack.Tag.Pit)) machine.Death(true);
             else if (attack.HasTag(Attack.Tag.Wham)) 
             {
-                damageStateWham.Enter();
+                damageStateWham.TransitionTo();
                 body.GroundStateChange(false);
                 body.VelocitySet(y: 14);
             }
-            else damageState.Enter();
+            else damageState.TransitionTo();
         }
         Global.Update(health);
     }
@@ -56,7 +56,7 @@ public class PlayerHealth : Health
     {
         if(attack == Attack.Tag.Wham)
         {
-            damageStateWham.Enter();
+            damageStateWham.TransitionTo();
             body.GroundStateChange(false);
             body.VelocitySet(y: 14);
         }

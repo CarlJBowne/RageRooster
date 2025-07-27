@@ -1,4 +1,4 @@
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,19 +13,19 @@ public class StopAndShootEB : StateBehavior
 
     TrackerEB tracker;
 
-    protected override void OnAwake() 
+    public override void OnAwake() 
     {
         agent = GetComponentFromMachine<NavMeshAgent>();
         bulletPool.Initialize();
-        tracker = State.Parent.GetComponent<TrackerEB>();
+        tracker = state.parent.GetComponent<TrackerEB>();
     }
 
-    protected override void OnEnter(State prev, bool isFinal)
+    public override void OnEnter(State prev, bool isFinal)
     {
         agent.enabled = false;
     }
 
-    protected override void OnUpdate()
+    public override void OnUpdate()
     {
         bulletPool.spawnPoint.rotation = Quaternion.LookRotation(tracker.Direction, Vector3.up);
         fireRate.Tick(Fire);

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 
 public class PlayerGroundSlam : PlayerMovementEffector
 {
@@ -11,9 +11,9 @@ public class PlayerGroundSlam : PlayerMovementEffector
     public PlayerAirborneMovement bouncingState;
     private SphereCollider attackCollider;
 
-    protected override void OnAwake() => attackCollider = GetComponent<SphereCollider>();
+    public override void OnAwake() => attackCollider = GetComponent<SphereCollider>();
 
-    protected override void OnFixedUpdate() => attackCollider.center = Vector3.up * (.6f + (playerMovementBody.velocity.y * Time.fixedDeltaTime * 2));
+    public override void OnFixedUpdate() => attackCollider.center = Vector3.up * (.6f + (playerMovementBody.velocity.y * Time.fixedDeltaTime * 2));
 
     //public override void VerticalMovement(out float? result)
     //{

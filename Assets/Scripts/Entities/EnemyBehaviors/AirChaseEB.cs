@@ -1,4 +1,4 @@
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,12 +12,12 @@ public class AirChaseEB : StateBehavior
     private TrackerEB playerTracker;
 
 
-    protected override void OnEnter(State prev, bool isFinal)
+    public override void OnEnter(State prev, bool isFinal)
     {
-        playerTracker = State.Parent.GetComponent<TrackerEB>();
+        playerTracker = state.parent.GetComponent<TrackerEB>();
     }
 
-    protected override void OnFixedUpdate()
+    public override void OnFixedUpdate()
     {
         if (playerTracker.Distance(true) <= reachDistance)
         {

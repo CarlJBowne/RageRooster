@@ -1,0 +1,1 @@
+The "COMMON" folder is used for art assets that are not associated with any single assets. Common materials, for example.

@@ -1,0 +1,1 @@
+This folder is for any new assets until the import pipeline has been implemented. Please create a new folder for each asset with all of its dependencies (i.e. textures, model, etc.)

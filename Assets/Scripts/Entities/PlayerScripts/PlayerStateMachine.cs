@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 using System;
 using Cinemachine;
 using System.Linq;
-using AYellowpaper.SerializedCollections;
 
 public class PlayerStateMachine : StateMachine
 {
@@ -31,11 +30,9 @@ public class PlayerStateMachine : StateMachine
     public float deathTime;
     CoroutinePlus deathCoroutine;
 
-    public SerializedDictionary<string, State> states = new SerializedDictionary<string, State>();
-
     #endregion
 
-    protected override void PreSetup()
+    protected override void OnSetup()
     {
         animator = GetComponent<Animator>();
         body = GetComponent<PlayerMovementBody>();
@@ -66,9 +63,6 @@ public class PlayerStateMachine : StateMachine
 #endif
 
         whenInitializedEvent?.Invoke(this);
-
-        PauseMenu.onPause += Pause;
-        PauseMenu.onUnPause += UnPause;
     }
 
     public static bool DEBUG_MODE_ACTIVE;
@@ -77,7 +71,7 @@ public class PlayerStateMachine : StateMachine
 
     public static Action<PlayerStateMachine> whenInitializedEvent;
 
-    public bool IsStableForOriginShift() => states["Grounded"].enabled || CurrentState == states["Fall"] || states["Glide"];
+    public bool IsStableForOriginShift() => states["Grounded"].enabled || currentState == states["Fall"] || states["Glide"];
 
     public void InstantMove(Vector3 newPosition, float? yRot = null)
     {
@@ -109,34 +103,25 @@ public class PlayerStateMachine : StateMachine
 
     public void ResetState()
     {
-        Children[0].Enter();
-        //signalReady = true;
+        children[0].TransitionTo();
+        signalReady = true;
         ragDollHandler.SetState(EntityState.Default);
         animator.enabled = true;
         animator.Play("GroundBasic");
     }
 
-    public void Pause()
-    {
-        this.enabled = false;
-    }
-    public void UnPause()
-    {
-        this.enabled = true;
-    }
-
     private State prevState;
-    public void CutsceneState()
+    public void PauseState()
     {
-        prevState = CurrentState;
-        pauseState.Enter();
+        prevState = currentState;
+        pauseState.TransitionTo();
         body.velocity = Vector3.zero;
         body.CurrentSpeed = 0;
         animator.CrossFade("GroundBasic", .2f);
     }
-    public void UnCutsceneState()
+    public void UnPauseState()
     {
-        prevState.Enter();
+        prevState.TransitionTo();
     }
 
     public void Death(bool justPit = false)
@@ -146,7 +131,7 @@ public class PlayerStateMachine : StateMachine
         {
             Vector3 targetVelocity = body.velocity;
             audio.PlayOneShot("Death");
-            ragDollState.Enter();
+            ragDollState.TransitionTo();
             body.velocity = Vector3.zero;
             ragDollHandler.SetState(EntityState.RagDoll);
             ragDollHandler.SetVelocity(targetVelocity*0.75f);
@@ -177,11 +162,13 @@ public class PlayerStateMachine : StateMachine
     public void DeathIfAtZero() { if (health.GetCurrentHealth() == 0) Death(); }
 
 
+
+
 #if UNITY_EDITOR
     protected override void Update()
     {
         base.Update();
-        //queuedSignals = signalQueue.ToList();
+        queuedSignals = signalQueue.ToList();
     }
     public List<string> queuedSignals;
 #endif

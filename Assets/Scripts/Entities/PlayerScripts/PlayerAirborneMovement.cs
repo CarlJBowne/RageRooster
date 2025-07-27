@@ -2,7 +2,7 @@ using EditorAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 using static TrackerEB;
 
 public class PlayerAirborneMovement : PlayerMovementEffector
@@ -59,8 +59,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     {
         result = ApplyGravity(gravity, terminalVelocity, flatGravity);
         if (upwards) VerticalUpwards(ref result);
-        else if (playerMovementBody.velocity.y <= fallStateThreshold && fallState != this) Fall(ref result);
-
+        else if (playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref result);
     }
 
     private void HorizontalMain(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control, float deltaTime)
@@ -129,7 +128,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         if (fallState != null) fallState.Enter();
     }
 
-    protected override void OnEnter(State prev, bool isFinal)
+    public override void OnEnter(State prev, bool isFinal)
     {
         base.OnEnter(prev, isFinal);
         if (!isFinal) return;
@@ -191,11 +190,11 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     }
     //public override void OnExit(State next) => body.jumpPhase = -1;
 
-    public void Enter() => State.Enter();
+    public void Enter() => state.TransitionTo();
     public void BeginJump()
     {
         playerMovementBody.GroundStateChange(false);
-        if(!State) State.Enter();
+        if(!state) state.TransitionTo();
     }
     public void BeginJump(float power, float height, float minHeight)
     {
@@ -204,6 +203,6 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         jumpHeight = height;
         jumpMinHeight = minHeight;
 
-        State.Enter();
+        state.TransitionTo();
     }
 }

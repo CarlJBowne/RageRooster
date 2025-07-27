@@ -1,4 +1,4 @@
-﻿using SLS.StateMachineH;
+﻿using SLS.StateMachineV3;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,18 +13,22 @@ public class WanderEB : StateBehavior
     private NavMeshAgent agent;
     private bool navMeshFailed;
 
-    protected override void OnAwake()
+    public override void OnAwake()
     {
         agent = GetComponentFromMachine<NavMeshAgent>();
+
+        if (!agent.isOnNavMesh && NavMesh.SamplePosition(transform.position, out NavMeshHit hit, maxWalkDistance, 1))
+            transform.position = hit.position;
+
         navMeshFailed = !agent.isOnNavMesh;
     }
 
-    protected override void OnEnter(State prev, bool isFinal)
+    public override void OnEnter(State prev, bool isFinal)
     {
         FindNextDestination();
     }
 
-    protected override void OnFixedUpdate()
+    public override void OnFixedUpdate()
     {
         if (navMeshFailed || agent.hasPath) return;
         if (agent.remainingDistance <= agent.stoppingDistance)
@@ -32,6 +36,7 @@ public class WanderEB : StateBehavior
     }
     void FindNextDestination()
     {
+        if (navMeshFailed || !agent.isOnNavMesh) return; 
         for (int i = 0; i < 5; i++)
         {
             Vector3 R = Random.insideUnitSphere * maxWalkDistance;

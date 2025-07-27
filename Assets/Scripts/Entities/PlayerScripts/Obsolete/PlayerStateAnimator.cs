@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 using EditorAttributes;
 
 [System.Obsolete]
@@ -14,13 +14,13 @@ public class PlayerStateAnimator : StateAnimator
 
     private PlayerController controller;
 
-    protected override void OnAwake()
+    public override void OnAwake()
     {
         base.OnAwake();
         controller = Machine.GetComponent<PlayerController>();
     }
 
-    protected override void OnEnter(State prev, bool isFinal)
+    public override void OnEnter(State prev, bool isFinal)
     {
         base.OnEnter(prev, isFinal);
         //if (isAction) controller.currentAction = null;
@@ -29,25 +29,25 @@ public class PlayerStateAnimator : StateAnimator
     public void Finish() 
     {
         //if (readyOnEnd) controller.readyForNextAction = true;
-        if (onFinishState != null) onFinishState.Enter();
+        if (onFinishState != null) onFinishState.TransitionTo();
     }
 
     [Button]
     private void Move()
     {
         State iState = GetComponent<State>();
-        //iState.lockReady = isAction;
-        //if (onFinishState != null)
-        //{
-        //    iState.signals.Add("Finish", new());
-        //    D next = onFinishState.TransitionTo;
-        //    iState.signals["Finish"].AddPersistentCall(next);
-        //}
-        //
-        //StateAnimator newAnim = iState.gameObject.AddComponent<StateAnimator>();
-        //newAnim.onEntry = onEntry;
-        //newAnim.onEnterName = onEnterName;
-        //newAnim.onEnterTime = onEnterTime;
+        iState.lockReady = isAction;
+        if (onFinishState != null)
+        {
+            iState.signals.Add("Finish", new());
+            D next = onFinishState.TransitionTo;
+            iState.signals["Finish"].AddPersistentCall(next);
+        }
+
+        StateAnimator newAnim = iState.gameObject.AddComponent<StateAnimator>();
+        newAnim.onEntry = onEntry;
+        newAnim.onEnterName = onEnterName;
+        newAnim.onEnterTime = onEnterTime;
 
 
     }

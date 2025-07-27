@@ -1,4 +1,4 @@
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,7 +31,7 @@ public class PlayerWallJump : PlayerMovementEffector
         //playerMovementBody.currentDirection = fixedDirection;
 
         float distance = (transform.position - startPoint).XZ().magnitude;
-        if (distance >= minDistance) sFall.Enter();
+        if (distance >= minDistance) sFall.TransitionTo();
 
     }
     public override void VerticalMovement(out float? result) => result = ApplyGravity(gravity, terminalVelocity, flatGravity);
@@ -42,7 +42,7 @@ public class PlayerWallJump : PlayerMovementEffector
         {
             if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return false;
 
-            if (!State.Active) State.Enter();
+            if (!state.active) state.TransitionTo();
             Machine.animator.Play(animationName, -1, 0f);
             playerMovementBody.VelocitySet(y: jumpPower);
 
@@ -51,7 +51,7 @@ public class PlayerWallJump : PlayerMovementEffector
 
             playerMovementBody.InstantDirectionChange(fixedDirection);
 
-            State.Enter();
+            state.TransitionTo();
             return true;
         }
         return false;

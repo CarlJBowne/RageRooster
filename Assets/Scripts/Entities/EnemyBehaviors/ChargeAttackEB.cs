@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SLS.StateMachineH;
+using SLS.StateMachineV3;
 using UnityEngine.AI;
 using UnityEngine.Rendering;
 
@@ -16,7 +16,7 @@ public class ChargeAttackEB : StateBehavior
     public LayerMask layerMask;
     public float checkDistance;
     //float wallCheckDistance = 0.5f;
-    protected override void OnEnter(State prev, bool isFinal)
+    public override void OnEnter(State prev, bool isFinal)
     {
         rb = GetComponentFromMachine<Rigidbody>();
         //playerTransform = Gameplay.Player.transform;
@@ -24,7 +24,7 @@ public class ChargeAttackEB : StateBehavior
         //rb.transform.rotation = Quaternion.LookRotation(direction);
     }
 
-    protected override void OnFixedUpdate()
+    public override void OnFixedUpdate()
     {
         //if (rb.DirectionCast(transform.forward, wallCheckDistance, 1f, out RaycastHit hit))
         //{
@@ -40,6 +40,6 @@ public class ChargeAttackEB : StateBehavior
             layerMask,
             QueryTriggerInteraction.Ignore)
             && hitInfo.normal.y < .65f)
-            vulnerableState.Enter();
+            vulnerableState.TransitionTo();
     }
 }
