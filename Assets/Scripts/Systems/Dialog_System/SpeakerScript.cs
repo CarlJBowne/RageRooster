@@ -81,7 +81,7 @@ public class SpeakerScript : MonoBehaviour, IInteractable
 
     public void TurnToPlayer(Vector3 playerPos)
     {
-        playerPos = Gameplay.I.player.transform.position;
+        playerPos = Gameplay.Get().player.transform.position;
         transform.DOLookAt(playerPos, Vector3.Distance(transform.position, playerPos) / 5);
         string turnMotion = isRightSide(transform.forward, playerPos, Vector3.up) ? "rturn" : "lturn";
         animator.SetTrigger(turnMotion);
@@ -105,7 +105,7 @@ public class SpeakerScript : MonoBehaviour, IInteractable
         {
             UI.currentSpeaker = this;
 
-            targetGroup.m_Targets[1].target = Gameplay.I.player.transform;
+            targetGroup.m_Targets[1].target = Gameplay.Get().player.transform;
             Gameplay.PlayerStateMachine.PauseState();
             //UI.dialogueCamera.GetComponent<CinemachineVirtualCamera>().Follow = targetGroup.transform;
             UI.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
