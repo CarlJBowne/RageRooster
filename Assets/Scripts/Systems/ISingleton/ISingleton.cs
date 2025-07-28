@@ -60,6 +60,7 @@ namespace SLS.ISingleton
 
 
 
+
         /// <summary>
         /// Attempts to acquire the Singleton. If already initialized will just return the active instance.
         /// </summary>

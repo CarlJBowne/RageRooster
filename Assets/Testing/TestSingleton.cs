@@ -1,8 +1,6 @@
 using UnityEngine;
 
-public class TestSingleton : SingletonAdvanced<TestSingleton>
+public class TestSingleton
 {
-    static void Data() => SetData(InitCreate, true, true);
-
 
 }

@@ -14,6 +14,7 @@ namespace SLS.ISingleton
         protected ISingleton<T> Interface => this;
         public static T Get() => ISingleton<T>.Get(ref Instance);
         public static bool TryGet(out T result) => ISingleton<T>.TryGet(Get, out result);
+        public static bool Active => Instance != null;
 
         public void Awake() => Interface.Initialize(ref Instance);
         private void OnDestroy() => Interface.DeInitialize(ref Instance);
@@ -35,7 +36,7 @@ namespace SLS.ISingleton
         protected ISingleton<T> Interface => this;
         public static T Get() => ISingleton<T>.Get(ref Instance);
         public static bool TryGet(out T result) => ISingleton<T>.TryGet(Get, out result);
-
+        public static bool Active => Instance != null;
 
         protected void OnEnable() => Interface.Initialize(ref Instance);
         public void Awake() => Interface.Initialize(ref Instance);
@@ -58,6 +59,7 @@ namespace SLS.ISingleton
         protected ISingleton<T> Interface => this;
         public static T Get() => ISingleton<T>.Get(ref Instance, ISingleton<T>.Create);
         public static bool TryGet(out T result) => ISingleton<T>.TryGet(Get, out result);
+        public static bool Active => Instance != null;
 
         //This redirection isn't necessary if creating the coding from scratch.
         //Just use the first two methods to override Initialization and DeInitialization functionality.

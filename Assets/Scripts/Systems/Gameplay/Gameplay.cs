@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 using FMODUnity;
 using EditorAttributes;
 using System.Collections.Generic;
+using SLS.ISingleton;
+
 
 
 
@@ -14,9 +16,8 @@ using UnityEditor;
 #endif
 
 [DefaultExecutionOrder(-100)]
-public class Gameplay : Singleton<Gameplay>
+public class Gameplay : SingletonMonoBasic<Gameplay>
 {
-
     public GameObject player;
     public PlayerStateMachine playerStateMachine;
     public Transform cameraTransform;
@@ -34,14 +35,14 @@ public class Gameplay : Singleton<Gameplay>
 
     public const string GAMEPLAY_SCENE_NAME = "GameplayScene";
 
-    public static GameObject Player => I.player;
-    public static PlayerStateMachine PlayerStateMachine => I.playerStateMachine;
-    public static Transform CameraTransform => I.cameraTransform;
-    public static CinemachineVirtualCamera VirtualCam => I.virtualCam;
-    public static PauseMenu PauseMenu => I.pauseMenu;
-    public static UIHUDSystem UI => I.uI;
-    public static ZoneManager ZoneManager => I.zoneManager;
-    public static GlobalState GlobalState => I.globalState;
+    public static GameObject Player => Get().player;
+    public static PlayerStateMachine PlayerStateMachine => Get().playerStateMachine;
+    public static Transform CameraTransform => Get().cameraTransform;
+    public static CinemachineVirtualCamera VirtualCam => Get().virtualCam;
+    public static PauseMenu PauseMenu => Get().pauseMenu;
+    public static UIHUDSystem UI => Get().uI;
+    public static ZoneManager ZoneManager => Get().zoneManager;
+    public static GlobalState GlobalState => Get().globalState;
 
     protected static System.Action PostMaLoad;
     public static StudioEventEmitter musicEmitter;
@@ -113,7 +114,7 @@ public class Gameplay : Singleton<Gameplay>
     /// <summary>
     /// Called when the Gameplay singleton is awakened. Loads the global state and initializes the zone manager.
     /// </summary>
-    protected override void OnAwake()
+    protected override void OnInitialize()
     {
         StartCoroutine(Enum());
         IEnumerator Enum()
@@ -171,7 +172,7 @@ public class Gameplay : Singleton<Gameplay>
         yield return null;
     }
 
-    protected override void OnDestroyed() => EnemyCullingGroup.DeInitialize();
+    protected override void OnDeInitialize() => EnemyCullingGroup.DeInitialize();
 
 
 
@@ -285,7 +286,7 @@ public class Gameplay : Singleton<Gameplay>
             #endif
             return;
         }
-        DestroyS();
+        Destroy(Get().gameObject);
     }
 }
 
