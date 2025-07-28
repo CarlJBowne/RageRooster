@@ -1,5 +1,6 @@
 ﻿#define AYellowPaper
 
+using SLS.ISingleton;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Global Prefabs", menuName = "Global Prefabs", order = 0)]
-public class GlobalPrefabs : SingletonScriptable<GlobalPrefabs>
+public class GlobalPrefabs : SingletonAsset<GlobalPrefabs>
 {
-    protected override void OnAwake()
+    protected override void OnInitialize()
     {
 
 #if AYellowPaper

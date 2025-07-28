@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿using SLS.ISingleton;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 [CreateAssetMenu(fileName = "ButtonIcons", menuName = "ScriptableObjects/ButtonIcons")]
-public class ButtonIcons : SingletonScriptable<ButtonIcons>
+public class ButtonIcons : SingletonAsset<ButtonIcons>
 {
 
     public Sprite GetKeyboardSprite(string path)

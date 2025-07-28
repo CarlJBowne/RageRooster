@@ -6,7 +6,7 @@ using UnityEngine;
 /// A global Singleton Scriptable Object. Must be added to Preloaded Assets in the Player Settings.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class SingletonScriptable<T> : _SingletonScriptableBase where T : SingletonScriptable<T>
+public class SingletonScriptable_Old<T> : _SingletonScriptableBase where T : SingletonScriptable_Old<T>
 {
     private static T _instance;
 
