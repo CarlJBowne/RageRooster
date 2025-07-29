@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using EditorAttributes;
 using UnityEngine.Events;
 
@@ -50,8 +50,14 @@ public class TrackerEB : StateBehavior
     private float dot;
     private bool lineOfSight;
 
-    public override void OnAwake()
+    protected override void OnAwake()
     {
+        if (!Gameplay.Active)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
         if(target == null)
         {
             PlayerStateMachine attempt = Gameplay.PlayerStateMachine;
@@ -63,7 +69,7 @@ public class TrackerEB : StateBehavior
         }
     }
 
-    public override void OnEnter(State prev, bool isFinal)
+    protected override void OnEnter(State prev, bool isFinal)
     {
         if (target == null)
         {
@@ -75,7 +81,7 @@ public class TrackerEB : StateBehavior
         CheckData();
     }
 
-    public override void OnUpdate()
+    protected override void OnUpdate()
     {
         if (phases[currentPhase].autoRotateDelta > 0) 
             transform.eulerAngles = Vector3.RotateTowards(transform.forward, Direction.XZ(),
@@ -105,7 +111,7 @@ public class TrackerEB : StateBehavior
     {
         if (i == currentPhase) return;
         currentPhase = i;
-        state[currentPhase].TransitionTo();
+        State.Children[currentPhase].Enter();
     }
     public void PhaseTransition(State i) => PhaseTransition(i.transform.GetSiblingIndex());
 

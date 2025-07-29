@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using System;
 using Cinemachine;
 using System.Linq;
 using SLS.ISingleton;
+using AYellowpaper.SerializedCollections;
 
 public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 {
@@ -31,8 +32,9 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     public float deathTime;
     CoroutinePlus deathCoroutine;
 
-    #endregion
+    public SerializedDictionary<string, State> states = new SerializedDictionary<string, State>();
 
+    #endregion
 
     protected static PlayerStateMachine Instance;
     protected ISingleton<PlayerStateMachine> Interface => this;
@@ -40,15 +42,10 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     public static bool TryGet(out PlayerStateMachine result) => ISingleton<PlayerStateMachine>.TryGet(Get, out result);
     public static bool Active => Instance != null;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        Interface.Initialize(ref Instance);
-    }
 
     private void OnDestroy() => Interface.DeInitialize(ref Instance);
 
-    protected override void OnSetup()
+    protected override void PreSetup()
     {
         animator = GetComponent<Animator>();
         body = GetComponent<PlayerMovementBody>();
@@ -60,6 +57,8 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 
     protected override void OnAwake()
     {
+        Interface.Initialize(ref Instance);
+
         Gameplay.Get().playerStateMachine = this;
 
         // Initialize the Cinemachine FreeLook camera
@@ -79,6 +78,9 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 #endif
 
         whenInitializedEvent?.Invoke(this);
+
+        PauseMenu.onPause += Pause;
+        PauseMenu.onUnPause += UnPause;
     }
 
     public static bool DEBUG_MODE_ACTIVE;
@@ -87,7 +89,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 
     public static Action<PlayerStateMachine> whenInitializedEvent;
 
-    public bool IsStableForOriginShift() => states["Grounded"].enabled || currentState == states["Fall"] || states["Glide"];
+    public bool IsStableForOriginShift() => states["Grounded"].enabled || CurrentState == states["Fall"] || states["Glide"];
 
     public void InstantMove(Vector3 newPosition, float? yRot = null)
     {
@@ -119,25 +121,34 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 
     public void ResetState()
     {
-        children[0].TransitionTo();
-        signalReady = true;
+        Children[0].Enter();
+        //signalReady = true;
         ragDollHandler.SetState(EntityState.Default);
         animator.enabled = true;
         animator.Play("GroundBasic");
     }
 
-    private State prevState;
-    public void PauseState()
+    public void Pause()
     {
-        prevState = currentState;
-        pauseState.TransitionTo();
+        this.enabled = false;
+    }
+    public void UnPause()
+    {
+        this.enabled = true;
+    }
+
+    private State prevState;
+    public void CutsceneState()
+    {
+        prevState = CurrentState;
+        pauseState.Enter();
         body.velocity = Vector3.zero;
         body.CurrentSpeed = 0;
         animator.CrossFade("GroundBasic", .2f);
     }
-    public void UnPauseState()
+    public void UnCutsceneState()
     {
-        prevState.TransitionTo();
+        prevState.Enter();
     }
 
     public void Death(bool justPit = false)
@@ -147,7 +158,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
         {
             Vector3 targetVelocity = body.velocity;
             audio.PlayOneShot("Death");
-            ragDollState.TransitionTo();
+            ragDollState.Enter();
             body.velocity = Vector3.zero;
             ragDollHandler.SetState(EntityState.RagDoll);
             ragDollHandler.SetVelocity(targetVelocity*0.75f);
@@ -178,13 +189,11 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     public void DeathIfAtZero() { if (health.GetCurrentHealth() == 0) Death(); }
 
 
-
-
 #if UNITY_EDITOR
     protected override void Update()
     {
         base.Update();
-        queuedSignals = signalQueue.ToList();
+        //queuedSignals = signalQueue.ToList();
     }
     public List<string> queuedSignals;
 #endif

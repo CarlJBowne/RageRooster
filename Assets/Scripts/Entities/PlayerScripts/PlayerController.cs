@@ -1,4 +1,4 @@
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using UnityEngine;
 using System.Linq;
 using EditorAttributes;
@@ -43,7 +43,7 @@ public class PlayerController : PlayerStateBehavior
 
     #endregion
 
-    public override void OnAwake()
+    protected override void OnAwake()
 	{
 		if(!grabber) grabber = GetComponentFromMachine<PlayerRanged>();
         if(!interacter) interacter = GetComponentFromMachine<PlayerInteracter>();
@@ -82,7 +82,7 @@ public class PlayerController : PlayerStateBehavior
 
     }
 
-    public override void OnUpdate()
+    protected override void OnUpdate()
 	{
 
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
@@ -90,9 +90,9 @@ public class PlayerController : PlayerStateBehavior
 		else camAdjustedMovement = overrideMovementVector.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
 
 		//if (Machine.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
-        //    sGlide.TransitionTo();
+        //    sGlide.Enter();
         //else if(Machine.signalReady && !input.jump.IsPressed() && sGlide) 
-        //    sFall.TransitionTo();
+        //    sFall.Enter();
 
         if (Machine.freeLookCamera != null)
         {
@@ -118,8 +118,8 @@ public class PlayerController : PlayerStateBehavior
     private void BeginActionEvent(InputAction.CallbackContext callbackContext) => Machine.SendSignal(callbackContext.action.name);
     public void BeginActionEvent(string name) => Machine.SendSignal(name);
 
-    public void ReadyNextAction() => Machine.ReadySignal();
-    public void FinishAction() => Machine.FinishSignal();
+    public void ReadyNextAction() => Machine.SignalManager.Unlock();
+    public void FinishAction() => Machine.SignalManager.FireSignal(new("Finish", ignoreLock: true));
 
 
 
@@ -127,8 +127,8 @@ public class PlayerController : PlayerStateBehavior
     {
         if(hellcopterUpgrade)
         {
-            airSpin.TransitionTo();
-            if (playerMovementBody.isOverVent) Machine.SendSignal("EnterVent", addToQueue: false, overrideReady: true);
+            airSpin.Enter();
+            if (playerMovementBody.isOverVent) Machine.SendSignal(new("EnterVent", 0, true));
         }
     }
 
@@ -136,15 +136,15 @@ public class PlayerController : PlayerStateBehavior
     {
         if (!wallJumpState.WallJump(transform.forward))
         {
-            (!playerMovementBody.isOverVent ? sGlide : ventGlideState).TransitionTo();
+            (!playerMovementBody.isOverVent ? sGlide : ventGlideState).Enter();
         }
     }
     public void MidWallJumpJumpAction() => wallJumpState.WallJump(transform.forward);
 
     //Other events.
-    private void JumpRelease(CTX ctx) => Machine.SendSignal("JumpRelease", false, true);
-    private void ShootModeActivate(CTX ctx) => Machine.SendSignal("ShootMode", true, true);
-    private void ShootModeDeactivate(CTX ctx) => Machine.SendSignal("ShootModeExit", true, true);
+    private void JumpRelease(CTX ctx) => Machine.SendSignal(new("JumpRelease", 0, true));
+    private void ShootModeActivate(CTX ctx) => Machine.SendSignal(new("ShootMode", ignoreLock:true));
+    private void ShootModeDeactivate(CTX ctx) => Machine.SendSignal(new("ShootModeExit", ignoreLock: true));
 
     private void ChargeButtons(CTX ctx) => Machine.SendSignal("Charge");
 

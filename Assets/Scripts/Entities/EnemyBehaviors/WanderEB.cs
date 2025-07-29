@@ -1,4 +1,4 @@
-﻿using SLS.StateMachineV3;
+﻿using SLS.StateMachineH;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,7 +13,7 @@ public class WanderEB : StateBehavior
     private NavMeshAgent agent;
     private bool navMeshFailed;
 
-    public override void OnAwake()
+    protected override void OnAwake()
     {
         agent = GetComponentFromMachine<NavMeshAgent>();
 
@@ -23,12 +23,12 @@ public class WanderEB : StateBehavior
         navMeshFailed = !agent.isOnNavMesh;
     }
 
-    public override void OnEnter(State prev, bool isFinal)
+    protected override void OnEnter(State prev, bool isFinal)
     {
         FindNextDestination();
     }
 
-    public override void OnFixedUpdate()
+    protected override void OnFixedUpdate()
     {
         if (navMeshFailed || agent.hasPath) return;
         if (agent.remainingDistance <= agent.stoppingDistance)
