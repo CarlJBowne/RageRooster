@@ -5,8 +5,9 @@ using SLS.StateMachineV3;
 using System;
 using Cinemachine;
 using System.Linq;
+using SLS.ISingleton;
 
-public class PlayerStateMachine : StateMachine
+public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 {
     #region Config
 
@@ -31,6 +32,21 @@ public class PlayerStateMachine : StateMachine
     CoroutinePlus deathCoroutine;
 
     #endregion
+
+
+    protected static PlayerStateMachine Instance;
+    protected ISingleton<PlayerStateMachine> Interface => this;
+    public static PlayerStateMachine Get() => ISingleton<PlayerStateMachine>.Get(ref Instance);
+    public static bool TryGet(out PlayerStateMachine result) => ISingleton<PlayerStateMachine>.TryGet(Get, out result);
+    public static bool Active => Instance != null;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        Interface.Initialize(ref Instance);
+    }
+
+    private void OnDestroy() => Interface.DeInitialize(ref Instance);
 
     protected override void OnSetup()
     {
