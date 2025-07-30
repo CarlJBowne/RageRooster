@@ -16,13 +16,17 @@ namespace SLS.ISingleton
         public static bool TryGet(out T result) => ISingleton<T>.TryGet(Get, out result);
         public static bool Active => Instance != null;
 
-        public void Awake() => Interface.Initialize(ref Instance);
-        private void OnDestroy() => Interface.DeInitialize(ref Instance);
+        public void Awake()
+        {
+            Interface.Initialize(ref Instance);
+            OnInitialize();
+        }
+        private void OnDestroy()
+        {
+            Interface.DeInitialize(ref Instance);
+            OnDeInitialize();
+        }
 
-        //This redirection isn't necessary if creating the coding from scratch.
-        //Just use the first two methods to override Initialization and DeInitialization functionality.
-        void ISingleton<T>.OnInitialize() => OnInitialize();
-        void ISingleton<T>.OnDeInitialize() => OnDeInitialize();
         protected virtual void OnInitialize() { }
         protected virtual void OnDeInitialize() { }
     }
@@ -38,14 +42,23 @@ namespace SLS.ISingleton
         public static bool TryGet(out T result) => ISingleton<T>.TryGet(Get, out result);
         public static bool Active => Instance != null;
 
-        protected void OnEnable() => Interface.Initialize(ref Instance);
-        public void Awake() => Interface.Initialize(ref Instance);
-        protected virtual void OnDestroy() => Interface.DeInitialize(ref Instance);
+        protected void OnEnable()
+        {
+            Interface.Initialize(ref Instance);
+            OnInitialize();
+        }
+        public void Awake()
+        {
+            Interface.Initialize(ref Instance);
+            OnInitialize();
+        }
+        protected virtual void OnDestroy()
+        {
+            Interface.DeInitialize(ref Instance);
+            OnDeInitialize();
+        }
 
-        //This redirection isn't necessary if creating the coding from scratch.
-        //Just use the first two methods to override Initialization and DeInitialization functionality.
-        void ISingleton<T>.OnInitialize() => OnInitialize();
-        void ISingleton<T>.OnDeInitialize() => OnDeInitialize();
+
         protected virtual void OnInitialize() { }
         protected virtual void OnDeInitialize() { }
     }
@@ -61,10 +74,6 @@ namespace SLS.ISingleton
         public static bool TryGet(out T result) => ISingleton<T>.TryGet(Get, out result);
         public static bool Active => Instance != null;
 
-        //This redirection isn't necessary if creating the coding from scratch.
-        //Just use the first two methods to override Initialization and DeInitialization functionality.
-        void ISingleton<T>.OnInitialize() => OnInitialize();
-        void ISingleton<T>.OnDeInitialize() => OnDeInitialize();
         protected virtual void OnInitialize() { }
         protected virtual void OnDeInitialize() { }
     }

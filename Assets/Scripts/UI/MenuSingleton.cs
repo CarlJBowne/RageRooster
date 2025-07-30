@@ -18,17 +18,17 @@ public abstract class MenuSingleton<T> : Menu, ISingleton<T> where T : Menu, ISi
     {
         Interface.Initialize(ref Instance);
         base.Awake();
+        OnInitialize();
     }
     protected override void OnDestroy()
     {
         base.OnDestroy();
         Interface.DeInitialize(ref Instance);
+        OnDeInitialize();
     }
 
     //This redirection isn't necessary if creating the coding from scratch.
     //Just use the first two methods to override Initialization and DeInitialization functionality.
-    void ISingleton<T>.OnInitialize() => OnInitialize();
-    void ISingleton<T>.OnDeInitialize() => OnDeInitialize();
     protected virtual void OnInitialize() { }
     protected virtual void OnDeInitialize() { }
 }

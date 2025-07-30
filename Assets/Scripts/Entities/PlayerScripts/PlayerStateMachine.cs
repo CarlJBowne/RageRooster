@@ -40,10 +40,12 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     protected ISingleton<PlayerStateMachine> Interface => this;
     public static PlayerStateMachine Get() => ISingleton<PlayerStateMachine>.Get(ref Instance);
     public static bool TryGet(out PlayerStateMachine result) => ISingleton<PlayerStateMachine>.TryGet(Get, out result);
-    public static bool Active => Instance != null;
+    public static bool Loaded => Instance != null;
 
 
     private void OnDestroy() => Interface.DeInitialize(ref Instance);
+
+    public void HaveDestroyed() => Interface.DeInitialize(ref Instance);
 
     protected override void PreSetup()
     {
@@ -57,7 +59,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 
     protected override void OnAwake()
     {
-        Interface.Initialize(ref Instance);
+        Interface.Initialize(ref Instance); 
 
         Gameplay.Get().playerStateMachine = this;
 

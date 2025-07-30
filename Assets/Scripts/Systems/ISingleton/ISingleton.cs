@@ -40,23 +40,19 @@ namespace SLS.ISingleton
             {
                 instanceSlot = this as T;
                 if (dontDestroyOnLoad && typeof(T).ImplementsOrDerives(typeof(Component))) MonoBehaviour.DontDestroyOnLoad(instanceSlot);
-                OnInitialize();
             }
         }
-        protected void OnInitialize() { }
 
         /// <summary>
         /// DeInitialization method. Should be called in OnDestroy or some equivilent function.
         /// </summary>
         /// <param name="instanceSlot"></param>
-        public sealed void DeInitialize(ref T instanceSlot)
+        public sealed void DeInitialize(ref T instanceSlot, bool autoDelete = false)
         {
             if (instanceSlot == this) instanceSlot = null;
-            OnDeInitialize();
-            if (typeof(T).ImplementsOrDerives(typeof(UnityEngine.Object)))
+            if (autoDelete && typeof(T).ImplementsOrDerives(typeof(UnityEngine.Object)))
                 UnityEngine.Object.Destroy(this as UnityEngine.Object);
         }
-        protected void OnDeInitialize() { }
 
 
 
