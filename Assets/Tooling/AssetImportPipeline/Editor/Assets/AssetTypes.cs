@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Policy;
 using System.Xml.Linq;
 using EditorAttributes;
 using UnityEditor;
@@ -74,16 +75,43 @@ namespace AssetImportPipeline
     }
     public class Material : AssetBase
     {
+        public enum Shaders { CelShaderLit, UniversalRenderPipelineLit }
+        public Shaders shader = Shaders.CelShaderLit;
+
+        public URPLitSettings urplSettings = new URPLitSettings();
+        public CelShaderLitSettings cslSettings = new CelShaderLitSettings();
+
+        public bool shouldCreateNewMaterial = true;
+
+
         string prefix = "mat_";
         public override string GetPrefix() => prefix;
         public override string SetPrefix(string _prefix) => prefix = _prefix;
-
-
 
         protected override AssetBase GetNewAssetOfSubclass()
         {
             return new Material();
         }
         public static List<string> extensions = new List<string>() { ".asset" }; // should actually be .mat i was dumb, not changing it yet just in case to remind myself in case something is Wrong
+
+        public class CelShaderLitSettings
+        {
+            public Texture BaseColor = new Texture();
+            public Texture NormalMap = new Texture();
+            public Texture HeightMap = new Texture();
+            public Texture AO = new Texture();
+        }
+        public class URPLitSettings
+        {
+            public bool transparent = false;
+            public Texture DiffuseMap = new Texture();
+            public Texture MetalnessMap = new Texture();
+            public Texture RoughnessMap = new Texture();
+            public Texture SpecularMap = new Texture();
+            public Texture NormalMap = new Texture();
+            public Texture HeightMap = new Texture();
+            public Texture EmissiveMap = new Texture();
+            public Texture AlphaMap = new Texture();
+        }
     }
 }

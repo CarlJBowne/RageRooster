@@ -38,16 +38,19 @@ namespace AssetImportPipeline
         private void CreateStaticMeshWindow()
         {
             SetCategoryUI();
+            CreateSeparatorLine();
             SetAssetNameUI();
+            CreateSeparatorLine();
             if (SetModelUI())
             {
+                CreateSeparatorLine();
                 // Extract materials from FBX
                 if (!staticMesh.model.hasBeenAnalysed)
                 {
                     // Reset any leftover data from previous static mesh paths
                     staticMesh.materials.Clear();
 
-                    // Import a temporary version of the FBX for analysis
+                    // Import a temporary version of the FBX for analysis so AssetDatabase can be used
                     string tempPath = "Assets/Tooling/AssetImportPipeline/Editor/TempFiles/";
                     string tempFbxFilePath = tempPath + "temp.fbx";
                     File.Copy(staticMesh.model.sourcePath, tempFbxFilePath, overwrite: true);
@@ -56,17 +59,17 @@ namespace AssetImportPipeline
                     // Analyze the temporary asset
                     foreach (UnityEngine.Object i in AssetDatabase.LoadAllAssetsAtPath(tempFbxFilePath))
                     {
-                        if (i is UnityEngine.Material)
+                        if (i is UnityEngine.Material _material)
                         {
                             Material material = new Material();
                             material.customName = i.name;
-                            Debug.Log(material.customName + " COOLNAME");
                             // PSUEDOCODE: Try to get the original Texture paths.
+                            // ...this looks like it'd require uFBX again so actually, MAYBE NOT.
                             staticMesh.materials.Add(material);
                         }
                     }
 
-                    // Remove the temporary asset
+                    // Remove the temporary asset so it doesn't clutter up the project.
                     AssetDatabase.DeleteAsset(tempFbxFilePath);
 
                     staticMesh.model.hasBeenAnalysed = true;
@@ -74,15 +77,39 @@ namespace AssetImportPipeline
                 if (staticMesh.model.hasBeenAnalysed)
                 {
                     GUILayout.Space(spaceSize);
+                    foreach (Material i in staticMesh.materials)
+                    {
+                        GUILayout.Label("Material: " + i.customName);
 
+                        i.shader = (Material.Shaders)EditorGUILayout.Popup("Shader", (int)i.shader, Enum.GetNames(typeof(Material.Shaders)));
+                        switch (i.shader)
+                        {
+                            case Material.Shaders.UniversalRenderPipelineLit:
+                                GUILayout.BeginHorizontal();
+                                GUILayout.EndHorizontal();
+                                i.urplSettings.transparent = GUILayout.Toggle(i.urplSettings.transparent, "Transparent");
+                                i.urplSettings.DiffuseMap = CreateImportButton("Diffuse path", i.urplSettings.DiffuseMap, "png") as Texture;
+                                i.urplSettings.RoughnessMap = CreateImportButton("Roughness path", i.urplSettings.RoughnessMap, "png") as Texture;
+                                i.urplSettings.NormalMap = CreateImportButton("Normal path", i.urplSettings.NormalMap, "png") as Texture;
+                                i.urplSettings.HeightMap = CreateImportButton("Height path", i.urplSettings.HeightMap, "png") as Texture;
+                                i.urplSettings.EmissiveMap = CreateImportButton("Emissive path", i.urplSettings.EmissiveMap, "png") as Texture;
+                                if (i.urplSettings.transparent) i.urplSettings.AlphaMap = CreateImportButton("Alpha path", i.urplSettings.AlphaMap, "png") as Texture;
+                                break;
+                            case Material.Shaders.CelShaderLit:
+                                i.cslSettings.BaseColor = CreateImportButton("Base Color", i.cslSettings.BaseColor, "png") as Texture;
+                                break;
+                        }
+
+                        CreateSeparatorLine();
+                    }
 
                 }
 
 
 
 
-                //SetPbrTexturesUI();
-                //SetMaterialActionUI();
+                //OLD_SetPbrTexturesUI();
+                //OLD_SetMaterialActionUI();
 
                 GUILayout.Space(spaceSize); GUILayout.Space(spaceSize); GUILayout.Space(spaceSize);
                 FinishImportUI();
@@ -218,6 +245,16 @@ namespace AssetImportPipeline
             GUILayout.EndHorizontal();
 
             return asset;
+        }
+
+        void CreateSeparatorLine()
+        {
+            GUILayout.Space(spaceSize);
+            int i_height = 1;
+            Rect rect = EditorGUILayout.GetControlRect(false, i_height);
+            rect.height = i_height;
+            EditorGUI.DrawRect(rect, new Color(0.5f, 0.5f, 0.5f, 1));
+            GUILayout.Space(spaceSize);
         }
 
         bool ValidateProvidedData()
