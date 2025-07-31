@@ -38,13 +38,35 @@ namespace AssetImportPipeline
         {
             SetCategoryUI();
             SetAssetNameUI();
-            SetModelUI();
-            
-            SetPbrTexturesUI();
-            SetMaterialActionUI();
+            if (SetModelUI())
+            {
+                // Extract materials from FBX
+                if (GUILayout.Button("Analyse FBX"))
+                {
+                    GUILayout.Space(spaceSize);
 
-            FinishImportUI();
+                    string tempPath = "Assets/Tooling/AssetImportPipeline/Editor/TempFiles/";
+                    string tempFbxFilePath = tempPath + "temp.fbx";
+                    File.Copy(staticMesh.model.sourcePath, tempFbxFilePath, overwrite: true);
+                }
 
+
+
+
+                //SetPbrTexturesUI();
+                //SetMaterialActionUI();
+
+                GUILayout.Space(spaceSize);
+                GUILayout.Space(spaceSize);
+                GUILayout.Space(spaceSize);
+                FinishImportUI();
+            }
+
+
+
+
+
+    
             void SetCategoryUI()
             {
                 // Which folder should this asset go in?
@@ -71,14 +93,14 @@ namespace AssetImportPipeline
                 GUILayout.Space(spaceSize);
             }
 
-            void SetModelUI()
+            bool SetModelUI()
             {
                 // Model path
                 staticMesh.model = CreateImportButton("Model Path (must be .fbx!)", staticMesh.model, "fbx") as Model;
-                GUILayout.Space(spaceSize);
+                return staticMesh.model.sourcePath != "No filepath set!";
             }
 
-            void SetPbrTexturesUI()
+            void OLD_SetPbrTexturesUI()
             {
                 // Handle textures
                 if (FbxContainsEmbeddedTextures(staticMesh.model))
@@ -106,7 +128,7 @@ namespace AssetImportPipeline
                 }
             }
 
-            void SetMaterialActionUI()
+            void OLD_SetMaterialActionUI()
             {
                 // Handle material
                 staticMesh.shouldCreateNewMaterial = GUILayout.Toggle(staticMesh.shouldCreateNewMaterial, "Create new material");
@@ -165,6 +187,7 @@ namespace AssetImportPipeline
                 Debug.Log("Reset asset!");
 
                 asset = (AssetBase)Activator.CreateInstance(asset.GetType()); // resets asset
+                asset = asset.ResetAsset(false);
             }
 
             GUILayout.EndHorizontal();
