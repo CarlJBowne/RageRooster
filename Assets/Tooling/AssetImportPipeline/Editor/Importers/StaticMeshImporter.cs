@@ -22,29 +22,47 @@ namespace AssetImportPipeline
             // add assets to \src, standardize asset names in the process
             CopyAssetIntoProject(staticMesh, staticMesh.model, newSrcFolder);
 
-            if (staticMesh.materialTypeIndex == 0) // magic numbers yay
+            foreach (Material i in staticMesh.materials)
             {
-                CopyAssetIntoProject(staticMesh, staticMesh.PbrTextures.DiffuseMap, newSrcFolder);
+                // Create material asset, ensure it's linked to the fbx properly.
 
-                CopyAssetIntoProject(staticMesh, staticMesh.PbrTextures.RoughnessMap, newSrcFolder);
-
-                // make sure normal map is set to "normal"
-                CopyAssetIntoProject(staticMesh, staticMesh.PbrTextures.NormalMap, newSrcFolder);
-                if (staticMesh.PbrTextures.NormalMap.AssetExists())
-                // if (!string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(staticMesh.PbrTextures.NormalMap.destinationPath)))
+                // Create textures, link them to the material properly.
+                switch (i.shader)
                 {
-                    TextureImporter normalMapImporter = AssetImporter.GetAtPath(staticMesh.PbrTextures.NormalMap.destinationPath) as TextureImporter;
-                    normalMapImporter.textureType = TextureImporterType.NormalMap;
-                    normalMapImporter.SaveAndReimport();
+                    case Material.Shaders.CelShaderLit:
+                        break;
+                    case Material.Shaders.UniversalRenderPipelineLit:
+                        break;
                 }
-
-
-                CopyAssetIntoProject(staticMesh, staticMesh.PbrTextures.HeightMap, newSrcFolder);
-                CopyAssetIntoProject(staticMesh, staticMesh.PbrTextures.EmissiveMap, newSrcFolder);
             }
 
+
+
+
+
+            // if (staticMesh.materialTypeIndex == 0) // magic numbers yay
+            // {
+            //     CopyAssetIntoProject(staticMesh, staticMesh.PbrTextures.DiffuseMap, newSrcFolder);
+
+            //     CopyAssetIntoProject(staticMesh, staticMesh.PbrTextures.RoughnessMap, newSrcFolder);
+
+            //     // make sure normal map is set to "normal"
+            //     CopyAssetIntoProject(staticMesh, staticMesh.PbrTextures.NormalMap, newSrcFolder);
+            //     if (staticMesh.PbrTextures.NormalMap.AssetExists())
+            //     // if (!string.IsNullOrEmpty(AssetDatabase.AssetPathToGUID(staticMesh.PbrTextures.NormalMap.destinationPath)))
+            //     {
+            //         TextureImporter normalMapImporter = AssetImporter.GetAtPath(staticMesh.PbrTextures.NormalMap.destinationPath) as TextureImporter;
+            //         normalMapImporter.textureType = TextureImporterType.NormalMap;
+            //         normalMapImporter.SaveAndReimport();
+            //     }
+
+
+            //     CopyAssetIntoProject(staticMesh, staticMesh.PbrTextures.HeightMap, newSrcFolder);
+            //     CopyAssetIntoProject(staticMesh, staticMesh.PbrTextures.EmissiveMap, newSrcFolder);
+            // }
+
             // create material (if it's blank? i think? or maybe the textures shouldn't appear if it's not... also the "update" functionality)
-            CreateMaterialAssetInProject(staticMesh);
+            // CreateMaterialAssetInProject(staticMesh);
 
             // apply textures to material
 
@@ -69,7 +87,7 @@ namespace AssetImportPipeline
         {
             UnityEngine.Material materialAsset = new UnityEngine.Material(Shader.Find("Universal Render Pipeline/Lit"));
 
-            AssignTextureToMaterial(staticMesh.PbrTextures.DiffuseMap, "_BaseMap");
+            // AssignTextureToMaterial(staticMesh.PbrTextures.DiffuseMap, "_BaseMap");
             // AssignTextureToMaterial(staticMesh.PbrTextures.MetalnessMap, "")
 
             string materialFileName = newSrcFolder + "/" + new Material().GetPrefix() + staticMesh.assetName + ".mat";
@@ -77,11 +95,11 @@ namespace AssetImportPipeline
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            void AssignTextureToMaterial(Texture texture, string shaderTextureName)
-            {
-                if (texture.AssetExists())
-                    materialAsset.SetTexture(shaderTextureName, AssetDatabase.LoadAssetAtPath<Texture2D>(texture.destinationPath));
-            }
+            // void AssignTextureToMaterial(Texture texture, string shaderTextureName)
+            // {
+            //     if (texture.AssetExists())
+            //         materialAsset.SetTexture(shaderTextureName, AssetDatabase.LoadAssetAtPath<Texture2D>(texture.destinationPath));
+            // }
         }
     }
 }
