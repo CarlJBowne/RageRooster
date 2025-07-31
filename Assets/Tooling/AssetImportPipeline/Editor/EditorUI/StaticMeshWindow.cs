@@ -41,7 +41,7 @@ namespace AssetImportPipeline
             if (SetModelUI())
             {
                 // Extract materials from FBX
-                if (!staticMesh.model.hasBeenAnalysed && GUILayout.Button("Analyse FBX"))
+                if (!staticMesh.model.hasBeenAnalysed)
                 {
                     // Import a temporary version of the FBX for analysis
                     string tempPath = "Assets/Tooling/AssetImportPipeline/Editor/TempFiles/";
