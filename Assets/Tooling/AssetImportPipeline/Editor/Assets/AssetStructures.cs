@@ -7,16 +7,18 @@ namespace AssetImportPipeline
     public abstract class AssetStructure { }
     public class StaticMesh : AssetStructure
     {
-        public int materialTypeIndex = 0;
-        public bool transparent = false;
-        // public int pbrWorkflowIndex = 0;
-        public bool shouldCreateNewMaterial = true;
         public string assetName = "UnnamedAsset";
         public string assetCategory = "Assets/Art";
         public Prefab prefab = new Prefab();
         public Model model = new Model();
-        public Material material = new Material();
+        public List<Material> materials = new List<Material>();
+
+        // Old DO NOT USE
         public PbrTextures PbrTextures = new PbrTextures();
+        public int materialTypeIndex = 0;
+        public bool transparent = false;
+        // public int pbrWorkflowIndex = 0;
+        public bool shouldCreateNewMaterial = true;
     }
     public class PbrTextures : AssetStructure
     {

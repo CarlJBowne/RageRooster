@@ -12,6 +12,9 @@ namespace AssetImportPipeline
         string newSrcFolder;
         public void ImportStaticMesh(StaticMesh staticMesh)
         {
+            // TODO Maybe make a .json file for easier serialization for future updates?
+
+
             // take the provided asset name and create folder
             newFolder = AssetDatabase.GUIDToAssetPath(AssetDatabase.CreateFolder(staticMesh.assetCategory, staticMesh.assetName));
             // create \src folder

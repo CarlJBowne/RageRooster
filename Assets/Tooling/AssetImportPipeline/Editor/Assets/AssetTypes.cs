@@ -13,6 +13,7 @@ namespace AssetImportPipeline
         public abstract string SetPrefix(string _prefix);
         public string sourcePath = "No filepath set!";
         public string destinationPath = "";
+        public string customName = ""; // Allows additional sub-name for sub-assets in addition to the prefab's primary name.
         public bool SourceExists()
         {
             throw new NotImplementedException();
@@ -76,6 +77,9 @@ namespace AssetImportPipeline
         string prefix = "mat_";
         public override string GetPrefix() => prefix;
         public override string SetPrefix(string _prefix) => prefix = _prefix;
+
+
+
         protected override AssetBase GetNewAssetOfSubclass()
         {
             return new Material();

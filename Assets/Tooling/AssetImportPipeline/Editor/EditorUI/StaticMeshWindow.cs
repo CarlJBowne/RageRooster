@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using DependenciesHunter;
 using UnityEditor;
 using UnityEngine;
 
@@ -43,19 +44,35 @@ namespace AssetImportPipeline
                 // Extract materials from FBX
                 if (!staticMesh.model.hasBeenAnalysed)
                 {
+                    // Reset any leftover data from previous static mesh paths
+                    staticMesh.materials.Clear();
+
                     // Import a temporary version of the FBX for analysis
                     string tempPath = "Assets/Tooling/AssetImportPipeline/Editor/TempFiles/";
                     string tempFbxFilePath = tempPath + "temp.fbx";
                     File.Copy(staticMesh.model.sourcePath, tempFbxFilePath, overwrite: true);
                     AssetDatabase.ImportAsset(tempFbxFilePath);
 
+                    // Analyze the temporary asset
+                    foreach (UnityEngine.Object i in AssetDatabase.LoadAllAssetsAtPath(tempFbxFilePath))
+                    {
+                        if (i is UnityEngine.Material)
+                        {
+                            Material material = new Material();
+                            material.customName = i.name;
+                            Debug.Log(material.customName + " COOLNAME");
+                            // PSUEDOCODE: Try to get the original Texture paths.
+                            staticMesh.materials.Add(material);
+                        }
+                    }
+
+                    // Remove the temporary asset
                     AssetDatabase.DeleteAsset(tempFbxFilePath);
 
                     staticMesh.model.hasBeenAnalysed = true;
                 }
                 if (staticMesh.model.hasBeenAnalysed)
                 {
-                    GUILayout.Label("[i](FBX has been analyzed. See below for available material data.)[/i]");
                     GUILayout.Space(spaceSize);
 
 
@@ -67,9 +84,7 @@ namespace AssetImportPipeline
                 //SetPbrTexturesUI();
                 //SetMaterialActionUI();
 
-                GUILayout.Space(spaceSize);
-                GUILayout.Space(spaceSize);
-                GUILayout.Space(spaceSize);
+                GUILayout.Space(spaceSize); GUILayout.Space(spaceSize); GUILayout.Space(spaceSize);
                 FinishImportUI();
             }
 
@@ -111,44 +126,44 @@ namespace AssetImportPipeline
                 return staticMesh.model.sourcePath != "No filepath set!";
             }
 
-            void OLD_SetPbrTexturesUI()
-            {
-                // Handle textures
-                if (FbxContainsEmbeddedTextures(staticMesh.model))
-                {
-                    // ???
-                }
-                else
-                {
-                    staticMesh.materialTypeIndex = EditorGUILayout.Popup("Material Type", staticMesh.materialTypeIndex, new[] { "PBR", "Something else" });
-                    staticMesh.transparent = GUILayout.Toggle(staticMesh.transparent, "Transparent");
+            // void OLD_SetPbrTexturesUI()
+            // {
+            //     // Handle textures
+            //     if (FbxContainsEmbeddedTextures(staticMesh.model))
+            //     {
+            //         // ???
+            //     }
+            //     else
+            //     {
+            //         staticMesh.materialTypeIndex = EditorGUILayout.Popup("Material Type", staticMesh.materialTypeIndex, new[] { "PBR", "Something else" });
+            //         staticMesh.transparent = GUILayout.Toggle(staticMesh.transparent, "Transparent");
 
-                    if (staticMesh.materialTypeIndex == 0)
-                    {
-                        // PBR Texture paths
-                        staticMesh.PbrTextures.DiffuseMap = CreateImportButton("Diffuse path", staticMesh.PbrTextures.DiffuseMap, "png") as Texture;
-                        staticMesh.PbrTextures.RoughnessMap = CreateImportButton("Roughness path", staticMesh.PbrTextures.RoughnessMap, "png") as Texture;
-                        staticMesh.PbrTextures.NormalMap = CreateImportButton("Normal path", staticMesh.PbrTextures.NormalMap, "png") as Texture;
-                        staticMesh.PbrTextures.HeightMap = CreateImportButton("Height path", staticMesh.PbrTextures.HeightMap, "png") as Texture;
-                        staticMesh.PbrTextures.EmissiveMap = CreateImportButton("Emissive path", staticMesh.PbrTextures.EmissiveMap, "png") as Texture;
-                        if (staticMesh.transparent) staticMesh.PbrTextures.AlphaMap = CreateImportButton("Alpha path", staticMesh.PbrTextures.AlphaMap, "png") as Texture;
-                    }
-                    else GUILayout.Label("Sorry, this isn't a real option. Choice was an illusion all along.");
+            //         if (staticMesh.materialTypeIndex == 0)
+            //         {
+            //             // PBR Texture paths
+            //             staticMesh.PbrTextures.DiffuseMap = CreateImportButton("Diffuse path", staticMesh.PbrTextures.DiffuseMap, "png") as Texture;
+            //             staticMesh.PbrTextures.RoughnessMap = CreateImportButton("Roughness path", staticMesh.PbrTextures.RoughnessMap, "png") as Texture;
+            //             staticMesh.PbrTextures.NormalMap = CreateImportButton("Normal path", staticMesh.PbrTextures.NormalMap, "png") as Texture;
+            //             staticMesh.PbrTextures.HeightMap = CreateImportButton("Height path", staticMesh.PbrTextures.HeightMap, "png") as Texture;
+            //             staticMesh.PbrTextures.EmissiveMap = CreateImportButton("Emissive path", staticMesh.PbrTextures.EmissiveMap, "png") as Texture;
+            //             if (staticMesh.transparent) staticMesh.PbrTextures.AlphaMap = CreateImportButton("Alpha path", staticMesh.PbrTextures.AlphaMap, "png") as Texture;
+            //         }
+            //         else GUILayout.Label("Sorry, this isn't a real option. Choice was an illusion all along.");
 
-                    GUILayout.Space(20);
-                }
-            }
+            //         GUILayout.Space(20);
+            //     }
+            // }
 
-            void OLD_SetMaterialActionUI()
-            {
-                // Handle material
-                staticMesh.shouldCreateNewMaterial = GUILayout.Toggle(staticMesh.shouldCreateNewMaterial, "Create new material");
-                if (!staticMesh.shouldCreateNewMaterial)
-                {
-                    GUILayout.Label("Sorry, haven't implemented a way to reuse materials yet :(");
-                }
-                GUILayout.Space(20);
-            }
+            // void OLD_SetMaterialActionUI()
+            // {
+            //     // Handle material
+            //     staticMesh.shouldCreateNewMaterial = GUILayout.Toggle(staticMesh.shouldCreateNewMaterial, "Create new material");
+            //     if (!staticMesh.shouldCreateNewMaterial)
+            //     {
+            //         GUILayout.Label("Sorry, haven't implemented a way to reuse materials yet :(");
+            //     }
+            //     GUILayout.Space(20);
+            // }
 
             void FinishImportUI()
             {
