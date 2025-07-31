@@ -75,13 +75,12 @@ namespace AssetImportPipeline
     }
     public class Material : AssetBase
     {
+        public bool useExistingMaterial = false;
         public enum Shaders { CelShaderLit, UniversalRenderPipelineLit }
         public Shaders shader = Shaders.CelShaderLit;
 
         public URPLitSettings urplSettings = new URPLitSettings();
         public CelShaderLitSettings cslSettings = new CelShaderLitSettings();
-
-        public bool shouldCreateNewMaterial = true;
 
 
         string prefix = "mat_";
