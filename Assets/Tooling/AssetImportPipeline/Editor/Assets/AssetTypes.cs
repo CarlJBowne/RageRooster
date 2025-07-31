@@ -51,6 +51,7 @@ namespace AssetImportPipeline
     public class Model : AssetBase
     {
         string prefix = "geo_";
+        public bool hasBeenAnalysed = false;
         public override string GetPrefix() => prefix;
         public override string SetPrefix(string _prefix) => prefix = _prefix;
         protected override AssetBase GetNewAssetOfSubclass()

@@ -41,13 +41,24 @@ namespace AssetImportPipeline
             if (SetModelUI())
             {
                 // Extract materials from FBX
-                if (GUILayout.Button("Analyse FBX"))
+                if (!staticMesh.model.hasBeenAnalysed && GUILayout.Button("Analyse FBX"))
                 {
-                    GUILayout.Space(spaceSize);
-
+                    // Import a temporary version of the FBX for analysis
                     string tempPath = "Assets/Tooling/AssetImportPipeline/Editor/TempFiles/";
                     string tempFbxFilePath = tempPath + "temp.fbx";
                     File.Copy(staticMesh.model.sourcePath, tempFbxFilePath, overwrite: true);
+                    AssetDatabase.ImportAsset(tempFbxFilePath);
+
+                    AssetDatabase.DeleteAsset(tempFbxFilePath);
+
+                    staticMesh.model.hasBeenAnalysed = true;
+                }
+                if (staticMesh.model.hasBeenAnalysed)
+                {
+                    GUILayout.Label("[i](FBX has been analyzed. See below for available material data.)[/i]");
+                    GUILayout.Space(spaceSize);
+
+
                 }
 
 
@@ -179,14 +190,13 @@ namespace AssetImportPipeline
                 string path = EditorUtility.OpenFilePanel("Select File", "", forceType);
                 if (!string.IsNullOrEmpty(path))
                 {
+                    asset = asset.ResetAsset(false);
                     asset.sourcePath = path;
                 }
             }
             if (GUILayout.Button("Clear", GUILayout.Width(50)))
             {
                 Debug.Log("Reset asset!");
-
-                asset = (AssetBase)Activator.CreateInstance(asset.GetType()); // resets asset
                 asset = asset.ResetAsset(false);
             }
 
