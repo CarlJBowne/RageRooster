@@ -6,21 +6,19 @@ using UnityEngine;
 
 namespace AssetImportPipeline
 {
-    public class StaticMeshImporter
+    abstract public class Importer{}
+    public class StaticMeshImporter : Importer
     {
         string newFolder;
         string newSrcFolder;
         public void ImportStaticMesh(StaticMesh staticMesh)
         {
-            // TODO Maybe make a .json file for easier serialization for future updates?
-
-
             // take the provided asset name and create folder
             newFolder = AssetDatabase.GUIDToAssetPath(AssetDatabase.CreateFolder(staticMesh.assetCategory, staticMesh.assetName));
             // create \src folder
             newSrcFolder = AssetDatabase.GUIDToAssetPath(AssetDatabase.CreateFolder(newFolder, "src"));
             // add assets to \src, standardize asset names in the process
-            CopyAssetIntoProject(staticMesh, staticMesh.model, newSrcFolder);
+            CopyFileIntoProject(staticMesh, staticMesh.model, newSrcFolder);
 
             foreach (Material i in staticMesh.materials)
             {
@@ -35,17 +33,17 @@ namespace AssetImportPipeline
                     case Material.Shaders.UniversalRenderPipelineLit:
                         materialAsset = new UnityEngine.Material(Shader.Find("Universal Render Pipeline/Lit"));
                         // The following lines are from a deprecated method, but may be useful for the real implementation:
-                            // string materialFileName = newSrcFolder + "/" + new Material().GetPrefix() + staticMesh.assetName + ".mat";
-                            // AssetDatabase.CreateAsset(materialAsset, materialFileName);
-                            // AssetDatabase.SaveAssets();
-                            // AssetDatabase.Refresh();
+                        // string materialFileName = newSrcFolder + "/" + new Material().GetPrefix() + staticMesh.assetName + ".mat";
+                        // AssetDatabase.CreateAsset(materialAsset, materialFileName);
+                        // AssetDatabase.SaveAssets();
+                        // AssetDatabase.Refresh();
 
                         // Create textures
-                        CopyAssetIntoProject(staticMesh, i.urplSettings.DiffuseMap, newSrcFolder);
-                        CopyAssetIntoProject(staticMesh, i.urplSettings.RoughnessMap, newSrcFolder);
+                        CopyFileIntoProject(staticMesh, i.urplSettings.DiffuseMap, newSrcFolder);
+                        CopyFileIntoProject(staticMesh, i.urplSettings.RoughnessMap, newSrcFolder);
 
                         // make sure normal map is set to "normal"
-                        CopyAssetIntoProject(staticMesh, i.urplSettings.NormalMap, newSrcFolder);
+                        CopyFileIntoProject(staticMesh, i.urplSettings.NormalMap, newSrcFolder);
                         if (i.urplSettings.NormalMap.AssetExists())
                         {
                             TextureImporter normalMapImporter = AssetImporter.GetAtPath(i.urplSettings.NormalMap.destinationPath) as TextureImporter;
@@ -53,8 +51,8 @@ namespace AssetImportPipeline
                             normalMapImporter.SaveAndReimport(); //not sure if this is the right method (the "reimport" part specifically)
                         }
 
-                        CopyAssetIntoProject(staticMesh, i.urplSettings.HeightMap, newSrcFolder);
-                        CopyAssetIntoProject(staticMesh, i.urplSettings.EmissiveMap, newSrcFolder);
+                        CopyFileIntoProject(staticMesh, i.urplSettings.HeightMap, newSrcFolder);
+                        CopyFileIntoProject(staticMesh, i.urplSettings.EmissiveMap, newSrcFolder);
 
                         // link them to the material properly.
 
@@ -64,10 +62,10 @@ namespace AssetImportPipeline
 
             // ??? create the prefab? Profit?
             // possibly something with collision?? if that's not automated???????
-            CreateJson();
+            SerializeAssetStructure();
         }
 
-        void CopyAssetIntoProject(StaticMesh staticMesh, AssetBase asset, string destinationPath)
+        void CopyFileIntoProject(StaticMesh staticMesh, AssetBase asset, string destinationPath)
         {
             if (asset.sourcePath == "No filepath set!") return;
 
@@ -80,10 +78,10 @@ namespace AssetImportPipeline
             AssetDatabase.ImportAsset(asset.destinationPath);
             Debug.Log("Imported: " + asset.destinationPath);
         }
-        
-        void CreateJson()
+
+        void SerializeAssetStructure()
         {
-            // Create file in /src that helps serialize the Asset Data Structure for future tooling.
+            // Create Json(?) file in /src that helps serialize the Asset Data Structure for future tooling.
         }
     }
 }
