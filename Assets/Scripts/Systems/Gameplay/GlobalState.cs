@@ -1,10 +1,11 @@
 using Newtonsoft.Json.Linq;
+using SLS.ISingleton;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class GlobalState : Singleton<GlobalState>, ICustomSerialized
+public class GlobalState : SingletonMonoBasic<GlobalState>, ICustomSerialized
 {
 
     public ScriptableCollection worldChanges;
@@ -34,13 +35,13 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
     public static System.Action maxAmmoUpdateCallback;
     public static System.Action currencyUpdateCallback;
 
-    protected override void OnAwake()
+    protected override void OnInitialize()
     {
         useIndoorSky.Action += SetSkybox;
         useIndoorSky.deAction += SetSkybox;
     }
 
-    protected override void OnDestroyed()
+    protected override void OnDeInitialize()
     {
         useIndoorSky.Action -= SetSkybox;
         useIndoorSky.deAction -= SetSkybox;

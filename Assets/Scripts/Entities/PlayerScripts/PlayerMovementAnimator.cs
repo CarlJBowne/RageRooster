@@ -1,5 +1,5 @@
 using EditorAttributes;
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -113,7 +113,7 @@ public class PlayerMovementAnimator : PlayerMovementEffector
         }
     }
 
-    public override void OnExit(State next)
+    protected override void OnExit(State next)
     {
         locked = false;
     }

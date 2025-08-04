@@ -4,11 +4,20 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.SceneManagement;
+using SLS.ISingleton;
 
-public class AudioManager : SingletonAdvanced<AudioManager>
+public class AudioManager : MonoBehaviour, ISingleton<AudioManager>
 {
+
+    protected static AudioManager Instance;
+    protected ISingleton<AudioManager> Interface => this;
+    public static AudioManager Get() => ISingleton<AudioManager>.Get(ref Instance, ISingleton<AudioManager>.FromPreloaded);
+    public static bool TryGet(out AudioManager result) => ISingleton<AudioManager>.TryGet(Get, out result);
+    public static bool Active => Instance != null;
+
+
     // Set up the AudioManager with specific settings
-    static void Data() => SetData(spawnMethod: InitSavedPrefab, dontDestroyOnLoad: true, spawnOnBoot: true);
+    //static void Data() => SetData(spawnMethod: InitSavedPrefab, dontDestroyOnLoad: true, spawnOnBoot: true);
 
     // Properties to set the volume for different audio buses
     public float masterVolume { set => masterBus.setVolume(value); }
@@ -27,9 +36,9 @@ public class AudioManager : SingletonAdvanced<AudioManager>
     public EventInstance musicEventInstance;
 
     // Called when the script instance is being loaded
-    protected override void OnAwake()
+    public void Awake()
     {
-        base.Awake();
+        Interface.Initialize(ref Instance);
         DontDestroyOnLoad(gameObject);
 
         eventInstances = new List<EventInstance>();
@@ -128,6 +137,7 @@ public class AudioManager : SingletonAdvanced<AudioManager>
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
         musicEventInstance.setPaused(true);
         CleanUp();
+        Interface.DeInitialize(ref Instance);
     }
 
     // Called when a new scene is loaded

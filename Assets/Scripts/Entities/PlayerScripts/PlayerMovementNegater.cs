@@ -1,4 +1,4 @@
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -81,7 +81,7 @@ public class PlayerMovementNegater : PlayerMovementEffector
                 break;
         }
     }
-    public override void OnEnter(State prev, bool isFinal)
+    protected override void OnEnter(State prev, bool isFinal)
     {
         base.OnEnter(prev, isFinal);
         disabled = false;
@@ -93,7 +93,7 @@ public class PlayerMovementNegater : PlayerMovementEffector
             savedJumpPhase = playerMovementBody.jumpPhase;
         }
     }
-    public override void OnExit(State next)
+    protected override void OnExit(State next)
     {
         if (savePriorVelocity)
         {

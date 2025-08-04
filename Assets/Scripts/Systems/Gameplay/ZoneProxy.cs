@@ -23,7 +23,7 @@ public class ZoneProxy
         name = firstTransition;
         loaded = SceneManager.GetSceneByName(name).isLoaded;
         transitionsTo = new() { firstTransition };
-        ZoneManager.Get(out manager);
+        ZoneManager.TryGet(out manager);
     }
     public ZoneProxy(ZoneRoot Root)
     {
@@ -31,7 +31,7 @@ public class ZoneProxy
         root = Root;
         loaded = true;
         transitionsTo = new();
-        ZoneManager.Get(out manager);
+        ZoneManager.TryGet(out manager);
         task = new(LockFromUnloading(), Gameplay.Get());
     }
 

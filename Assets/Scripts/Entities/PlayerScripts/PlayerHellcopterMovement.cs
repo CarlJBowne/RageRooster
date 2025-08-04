@@ -2,7 +2,7 @@ using EditorAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 
 public class PlayerHellcopterMovement : PlayerMovementEffector
 {
@@ -118,7 +118,7 @@ public class PlayerHellcopterMovement : PlayerMovementEffector
         if (fallState != null) fallState.Enter();
     }
 
-    public override void OnEnter(State prev, bool isFinal)
+    protected override void OnEnter(State prev, bool isFinal)
     {
         base.OnEnter(prev, isFinal);
         if (!isFinal) return;
@@ -172,5 +172,5 @@ public class PlayerHellcopterMovement : PlayerMovementEffector
         }
     }
 
-    public void Enter() => state.TransitionTo();
+    public void Enter() => State.Enter();
 }

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EditorAttributes;
-using SLS.StateMachineV3;
 using UnityEngine.Animations.Rigging;
 
 public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
