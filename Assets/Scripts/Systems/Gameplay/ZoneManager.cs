@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using SLS.ISingleton;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [System.Serializable] 
-public class ZoneManager : Singleton<ZoneManager>
+public class ZoneManager : SingletonMonoBasic<ZoneManager>
 {
     [SerializeField] ZoneRoot currentZone;
     [SerializeField] AYellowpaper.SerializedCollections.SerializedDictionary<string, ZoneProxy> proxies = new();
@@ -24,7 +25,7 @@ public class ZoneManager : Singleton<ZoneManager>
     public static ZoneRoot CurrentZone => Get().currentZone;
 
     // Called when the ZoneManager is initialized. Sets up references to the player transform and state machine.
-    protected override void OnAwake()
+    protected override void OnInitialize()
     {
         playerTransform = Gameplay.Player.transform;
         playerMachine = Gameplay.Player.GetComponent<PlayerStateMachine>();

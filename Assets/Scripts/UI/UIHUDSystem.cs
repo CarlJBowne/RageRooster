@@ -5,8 +5,9 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using DG.Tweening;
+using SLS.ISingleton;
 
-public class UIHUDSystem : Singleton<UIHUDSystem>
+public class UIHUDSystem : SingletonMonoBasic<UIHUDSystem>
 {
     public List<Image> healthImages;
     public Sprite healthFullTexture;
@@ -34,7 +35,7 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
     Sequence healthBar;
 
     // Called when the singleton instance is awakened
-    protected override void OnAwake()
+    protected override void OnInitialize()
     {
         SetCurrencyText(GlobalState.currency.ToString());
         mainCamera = Camera.main;

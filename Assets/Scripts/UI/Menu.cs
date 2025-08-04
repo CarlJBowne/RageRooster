@@ -113,7 +113,7 @@ public class Menu : MonoBehaviour
     {
         public static void Initialize()
         {
-            Input.I.Asset.FindAction("Navigate").performed += FocusController;
+            Input.Get().Asset.FindAction("Navigate").performed += FocusController;
         }
 
         public static Menu currentMenu => currentMenus[^1];

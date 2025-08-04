@@ -1,10 +1,11 @@
 ﻿using FMODUnity;
+using SLS.ISingleton;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FMODEvents", menuName = "ScriptableObjects/FMODEvents")]
-public class FMODEvents : SingletonScriptable<FMODEvents>
+public class FMODEvents : SingletonAsset<FMODEvents>
 {
 
     public static FMODEvents instance => Get();

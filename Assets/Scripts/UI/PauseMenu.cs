@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using System;
+using SLS.ISingleton;
 
 public class PauseMenu : MenuSingleton<PauseMenu>
 {
@@ -17,10 +18,10 @@ public class PauseMenu : MenuSingleton<PauseMenu>
     protected override void OnOpen()
     {
         base.OnOpen();
+        onPause?.Invoke();
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        onPause?.Invoke();
     }
     protected override void OnClose()
     {
@@ -41,6 +42,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
             Time.timeScale = 1f;
             Close();
             Gameplay.musicEmitter.Stop();
+            PlayerStateMachine.Get().HaveDestroyed();
             Gameplay.DESTROY(areYouSure: true);
             SceneManager.LoadScene("MainMenu");
             SceneManager.sceneLoaded += Done;
