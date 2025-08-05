@@ -1,20 +1,13 @@
 using EditorAttributes;
-using JigglePhysics;
 using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using DG.Tweening;
-using static UnityEngine.Rendering.DebugUI;
 
-public class PlayerMovementBody : PlayerStateBehavior
+public class PlayerMovementBody : CharacterMovementBody
 {
     #region Config
-    public int movementProjectionSteps;
-    public float checkBuffer = 0.005f;
-    public float maxSlopeNormalAngle = 20f;
     public PlayerAirborneMovement jumpState1;
     public PlayerWallJump wallJumpState;
     public PlayerAirborneMovement airChargeState;
@@ -29,19 +22,14 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     #region Data
 
-    public static PlayerMovementBody Get() => _instance;
-    private static PlayerMovementBody _instance;
 
-    [HideInInspector] public Rigidbody rb;
-    [HideInInspector] public new CapsuleCollider collider;
-    [HideInInspector] public JiggleRigBuilder jiggles;
+    [HideInInspector] public PlayerStateMachine Machine;
+    [HideInInspector] public PlayerController playerController;
     [HideInInspector] public Animator animator;
 
-    [HideInEditMode, DisableInPlayMode] public Vector3 velocity;
 
     [HideInInspector] public bool baseMovability = true;
     [HideInInspector] public bool canJump = true;
-    public bool grounded = true;
     public float movementModifier = 1;
     public float CurrentSpeed
     {
@@ -49,53 +37,14 @@ public class PlayerMovementBody : PlayerStateBehavior
         set => currentSpeed = value.Min(0);
     }
     [HideInEditMode, DisableInPlayMode, SerializeField] private float currentSpeed;
-    [HideInEditMode, DisableInPlayMode] public int jumpPhase;
-    //-1 = Inactive
-    //0 = PreMinHeight
-    //1 = PreMaxHeight
-    //2 = SlowingDown
-    //3 = Falling
 
     [HideInInspector] public Vector3 _currentDirection = Vector3.forward;
-
-    public static IMovablePlatform currentAnchor;
 
     private VolcanicVent _currentVent;
     #endregion
 
     #region GetSet
-    public Vector3 position
-    {
-        get => rb.isKinematic ? transform.position : rb.position;
-        set
-        {
-            if (rb.isKinematic) 
-                return;
-            transform.position = value;
-            rb.position = value;
-            rb.MovePosition(value);
-        }  
-    }
-    public Quaternion rotationQ 
-    { get => rb.rotation; set => rb.rotation = value; }
-    public Vector3 rotation 
-    { 
-        get => transform.eulerAngles; 
-        set => transform.eulerAngles = value; 
-    }
 
-    public Vector3 center => position + collider.center;
-
-    [HideInInspector] public Vector3 currentDirection
-    {
-        get => _currentDirection;
-        set
-        {
-            if (_currentDirection == value) return;
-            _currentDirection = value;
-            playerMovementBody.rotationQ = Quaternion.LookRotation(value, Vector3.up);
-        }
-    }
 
     public void VelocitySet(float? x = null, float? y = null, float? z = null)
     {
@@ -105,33 +54,29 @@ public class PlayerMovementBody : PlayerStateBehavior
             z ?? velocity.z
             );
     }
-    public void PositionSet(float? x = null, float? y = null, float? z = null)
-    {
-        position = new Vector3(
-            x ?? position.x,
-            y ?? position.y,
-            z ?? position.z
-            );
-    }
+
+
+    /// <summary>
+    /// Sets the position even if the Rigidbody is kinematic.
+    /// </summary>
+    /// <param name="newPosition">The new position.</param>
     public void ForceSetPosition(Vector3 newPosition)
     {
         transform.position = newPosition;
-        rb.position = newPosition;
-        rb.MovePosition(newPosition);
+        RB.position = newPosition;
+        RB.MovePosition(newPosition);
     }
 
-    public void DirectionSet(float maxTurnSpeed, Vector3 target)
+    public void DirectionSet(Vector3 target, float maxTurnSpeed)
     {
         if (target == Vector3.zero) return;
-        //playerTestScript.input = currentDirection;
-        currentDirection = Vector3.RotateTowards(currentDirection, target.normalized, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
-        //playerTestScript.output = currentDirection;
+        direction = Vector3.RotateTowards(direction, target.normalized, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
     }
-    public void DirectionSet(float maxTurnSpeed) => DirectionSet(maxTurnSpeed, playerController.camAdjustedMovement);
+    public void DirectionSet(float maxTurnSpeed) => DirectionSet(playerController.camAdjustedMovement, maxTurnSpeed);
     public void InstantDirectionChange(Vector3 target)
     {
         if (target.sqrMagnitude == 0) return;
-        currentDirection = target;
+        direction = target;
     }
 
     public VolcanicVent currentVent
@@ -146,226 +91,63 @@ public class PlayerMovementBody : PlayerStateBehavior
     public bool isOverVent => _currentVent != null;
 
 
+    public new Vector3 direction
+    {
+        get => base.direction;
+        private set
+        {
+            if (base.direction == value) return;
+            base.direction = value;
+            RotationQ = Quaternion.LookRotation(value, Vector3.up);
+        }
+    }
+
 
     #endregion GetSet
 
     //public PlayerTestScript playerTestScript;
 
-    protected override void OnAwake()
+    protected override void Awake()
     {
-        TryGetComponent(out rb);
-        TryGetComponent(out collider);
-        TryGetComponent(out jiggles);
         TryGetComponent(out animator);
-        currentDirection = Vector3.forward;
-        _instance = this;
+        direction = Vector3.forward;
     }
 
-    protected override void OnFixedUpdate()
+    protected override void FixedUpdate()
     {
-        if (rb.isKinematic)
-        {
-            rb.velocity = Vector3.zero;
-            return;
-        } 
-
-        Vector3 prevPosition = rb.position;
-        {
-            Machine.animator.SetFloat("CurrentSpeed", currentSpeed);
-            rb.velocity = Vector3.zero;
-        }
-
-        initVelocity = new Vector3(velocity.x * movementModifier, velocity.y, velocity.z * movementModifier);
-        initNormal = Vector3.up; 
-
+        Machine.animator.SetFloat("CurrentSpeed", currentSpeed);
         if (PlayerStateMachine.DEBUG_MODE_ACTIVE && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
-        if (velocity.y < 0.01f || grounded) 
-        {
-            if(GroundCheck(out groundHit))
-            {
-#if UNITY_EDITOR
-                AddToQueuedHits(new(groundHit));
-#endif
-                initNormal = groundHit.normal;
-                if (WithinSlopeAngle(groundHit.normal))
-                {
-                    GroundStateChange(true, groundHit.transform);
-                    velocity.y = 0;
-                    initVelocity.y = 0;
-                    initVelocity = initVelocity.ProjectAndScale(groundHit.normal);
-                }
-            }
-            else if (grounded)
-            {
-                GroundStateChange(false);
-                Machine.SendSignal(new("WalkOff", ignoreLock: true));
-            }
-        }
-
-        Move(initVelocity * Time.fixedDeltaTime, initNormal);
-
-        Machine.freeLookCamera.transform.position += transform.position - prevPosition;
+        base.FixedUpdate();
     }
 
-    Vector3 initVelocity;
-    Vector3 initNormal;
-    RaycastHit groundHit;
 
-    /// <summary>
-    /// The Collide and Slide Algorithm.
-    /// </summary>
-    /// <param name="vel">Input Velocity.</param>
-    /// <param name="prevNormal">The Normal of the previous Step.</param>
-    /// <param name="step">The current step. Starts at 0.</param>
-    private void Move(Vector3 vel, Vector3 prevNormal, int step = 0)
+    protected override bool StopForward(ref Vector3 nextNormal, Vector3 newNormal)
     {
-        if (rb.DirectionCast(vel.normalized, vel.magnitude, checkBuffer, out RaycastHit hit))
+        nextNormal = newNormal.XZ().normalized;
+        return Machine.SendSignal(new("Bonk", 0, true));
+    }
+    protected override bool MoveForward(Vector3 offset)
+    {
+        if (Mario64StyleAntiVoid && !Physics.Raycast(transform.position + Vector3.up + offset, Vector3.down, 5000, nonVoidLayerMask, QueryTriggerInteraction.Collide))
         {
-#if UNITY_EDITOR
-            AddToQueuedHits(new(hit));
-#endif
-            Vector3 snapToSurface = vel.normalized * hit.distance;
-            Vector3 leftover = vel - snapToSurface;
-            Vector3 nextNormal = hit.normal;
-            bool stopped = false;
-
-            if (step == movementProjectionSteps) return;
-
-            if(!MoveForward(snapToSurface)) return;
-
-            if (grounded)
-            {
-                //Runs into wall/to high incline.
-                if (Mathf.Approximately(hit.normal.y, 0) || (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))) 
-                    Stop(hit.normal);
-
-                if (grounded && prevNormal.y > 0 && hit.normal.y < 0) //Floor to Cieling
-                    FloorCeilingLock(prevNormal, hit.normal);
-                else if (grounded && prevNormal.y < 0 && hit.normal.y > 0) //Ceiling to Floor
-                    FloorCeilingLock(hit.normal, prevNormal);
-            }
-            else
-            {
-                if(vel.y < .1f && WithinSlopeAngle(hit.normal))
-                {
-                    GroundStateChange(true, hit.transform);
-                    leftover.y = 0;
-                }
-                else if (vel.y < -1f && rb.DirectionCastAll(vel, vel.y.Abs(), checkBuffer, out RaycastHit[] downHits) && downHits.Length > 1)
-                {
-                    GroundStateChange(true, null);
-                    leftover.y = 0;
-                }
-                else
-                {
-                    leftover = leftover.ProjectAndScale(hit.normal);
-                    stopped = true;
-                }
-            }
-
-                void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal) => 
-                    Stop(floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal);
-
-                void Stop(Vector3 newNormal)
-                {
-                    nextNormal = newNormal.XZ().normalized;
-                    if (Vector3.Dot(newNormal, vel.normalized.XZ()) <= -.75f)
-                        stopped = true;
-                }
-
-            if (stopped && Machine.SendSignal(new("Bonk", 0, true))) return;
-
-            Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1); 
-            Move(newDir, nextNormal, step + 1);
+            velocity = Vector3.zero;
+            return false;
         }
-        else
-        {
-
-            if (step == movementProjectionSteps) return;
-            if (!MoveForward(vel)) return;
-
-            //Snap to ground when walking on a downward slope.
-            if (grounded && initVelocity.y <= 0)
-            {
-                if (rb.DirectionCast(Vector3.down, 0.5f, checkBuffer, out RaycastHit groundHit))
-                    rb.MovePosition(position + Vector3.down * groundHit.distance);
-                else
-                {
-                    GroundStateChange(false);
-                    Machine.SendSignal(new("WalkOff", ignoreLock: true));
-                }
-            }
-        }
-
-        bool MoveForward(Vector3 offset)
-        {
-            if(Mario64StyleAntiVoid && !Physics.Raycast(transform.position + Vector3.up + offset, Vector3.down, 5000, nonVoidLayerMask, QueryTriggerInteraction.Collide))
-            {
-                velocity = Vector3.zero;
-                return false;
-            }
-            else
-            {
-                rb.MovePosition(position + offset);
-                return true;
-            }
-        }
+        else return base.MoveForward(offset);
     }
 
-    /// <summary>
-    /// Call to Change the Ground State and do all the logic related to that.
-    /// </summary>
-    /// <param name="input">New Grounded Value (Will early return if the same as the current value.)</param>
-    /// <returns>Whether the Change was Successful.</returns>
-    public bool GroundStateChange(bool input, Transform anchor)
+
+    public override void Land(BodyAnchor groundHit)
     {
-        if (input == grounded || rb.velocity.y > 0.01f) return false;
-        grounded = input;
-
-        if (grounded)
-        {
-            jumpPhase = -1;
-
-            Machine.SendSignal(new("Land", ignoreLock: true));
-
-            if (playerController.CheckJumpBuffer()) Machine.SendSignal("Jump");
-        }
-
-        currentAnchor = anchor == null || !anchor.transform.TryGetComponent(out IMovablePlatform movingAnchor) 
-            ? null 
-            : movingAnchor;
-
-        return true;
-    }
-    public bool GroundStateChange(bool input) => GroundStateChange(input, null);
-
-    private bool WithinSlopeAngle(Vector3 inNormal) => Vector3.Angle(Vector3.up, inNormal) < maxSlopeNormalAngle;
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        Vector3 contactPoint = collision.GetContact(0).normal;
-        if (!grounded && velocity.y > .1f && Vector3.Dot(contactPoint, Vector3.up) < -0.75f)
-        {
-            sFall.Enter();
-            VelocitySet(y: 0);
-        }
-        else if (!grounded && WithinSlopeAngle(contactPoint))
-            GroundStateChange(true, collision.transform);
-    }
-
-    public void InstantSnapToFloor()
-    {
-        rb.DirectionCast(Vector3.down, 1000, .5f, out RaycastHit hit);
-
-        jiggles.PrepareTeleport();
-        rb.MovePosition(position + Vector3.down * hit.distance);
-        jiggles.FinishTeleport();
+        base.Land(groundHit);
+        Machine.SendSignal(new("Land", ignoreLock: true));
+        if (playerController.CheckJumpBuffer()) Machine.SendSignal("Jump");
     }
 
     public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
     {
-        Collider[] results = Physics.OverlapSphere(position + transform.TransformDirection(sphereOffset),
+        Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(sphereOffset),
                                                    checkSphereRadius);
         foreach (Collider r in results)
             if (r.TryGetComponent(out T result))
@@ -374,7 +156,7 @@ public class PlayerMovementBody : PlayerStateBehavior
     }
     public T CheckForTypeInFront<T>()
     {
-        Collider[] results = Physics.OverlapSphere(position + transform.TransformDirection(frontCheckDefaultOffset),
+        Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(frontCheckDefaultOffset),
                                                    frontCheckDefaultRadius);
         foreach (Collider r in results)
             if (r.gameObject != gameObject && r.TryGetComponent(out T result))
@@ -384,7 +166,7 @@ public class PlayerMovementBody : PlayerStateBehavior
 
     public void ReturnToNeutral(bool doCrossFade = true)
     {
-        if(GroundCheck())
+        if(GroundCheck(out _))
         {
             idleState.Enter();
             //animator.SetTrigger("ReturnToGroundNeutral");
@@ -411,10 +193,6 @@ public class PlayerMovementBody : PlayerStateBehavior
     public List<Vector3> jumpMarkers = new List<Vector3>();
 
 #endif
-
-    public bool GroundCheck(out RaycastHit groundHit) => rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out groundHit);
-    public bool GroundCheck() => rb.DirectionCast(Vector3.down, checkBuffer, checkBuffer, out _);
-
 
     public struct HitNormalDisplay
     {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour, IMovablePlatform
@@ -7,8 +8,8 @@ public class MovingPlatform : MonoBehaviour, IMovablePlatform
     public float speed = 2.0f;
 
     private Vector3 target;
-    private Transform player;
-    private Transform originalParent;
+    public List<CharacterMovementBody> bodies => _bodies;
+    private List<CharacterMovementBody> _bodies => throw new System.NotImplementedException();
 
     void Start()
     {
