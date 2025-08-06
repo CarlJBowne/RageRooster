@@ -47,16 +47,3 @@ public class RandomNavMeshNode : Unit
 
 
 }
-
-public class ValueInput<T>
-{
-    public ValueInput input;
-
-    public ValueInput(ValueInput input)
-    {
-        this.input = input;
-    }
-
-    public T Get(Flow flow) => flow.GetValue<T>(input);
-
-}
