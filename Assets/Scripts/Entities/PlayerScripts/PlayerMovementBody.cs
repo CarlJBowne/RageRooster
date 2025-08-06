@@ -146,7 +146,7 @@ public class PlayerMovementBody : CharacterMovementBody
     {
         if (JumpState == JumpState.Grounded) return;
         JumpState = JumpState.Grounded;
-        anchorPoint = groundHit;
+        anchorPoint.Update(groundHit);
         LandEvent?.Invoke();
         Machine.SendSignal(new("Land", ignoreLock: true));
         if (playerController.CheckJumpBuffer()) Machine.SendSignal("Jump");

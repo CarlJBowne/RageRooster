@@ -113,6 +113,12 @@ public class CharacterMovementBody : MonoBehaviour
     {
         if (RB == null) RB = GetComponent<Rigidbody>();
         if (Collider == null) Collider = GetComponent<CapsuleCollider>();
+        if(!InstantSnapToFloor(out RaycastHit hit))
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+        anchorPoint = new(hit.point, hit.normal, hit.collider.transform, this);
     }
 
     private void OnEnable()
@@ -138,7 +144,7 @@ public class CharacterMovementBody : MonoBehaviour
 
         if (checkGround && velocity.y <= 0)
         {
-            if (GroundCheck(out anchorPoint))
+            if (GroundCheck())
             {
                 initNormal = anchorPoint.normal;
                 if (WithinSlopeAngle(anchorPoint.normal))
@@ -160,43 +166,111 @@ public class CharacterMovementBody : MonoBehaviour
 
 
 
-    protected BodyAnchor anchorPoint = BodyAnchor.None;
+    protected BodyAnchor anchorPoint;
+    public BodyAnchor GetAnchorPoint() => anchorPoint;
     public struct BodyAnchor
     {
         public Vector3 point;
         public Vector3 normal;
         public Transform transform;
-        public IMovablePlatform movable;
+        public IMovablePlatform Movable
+        {
+            get => _movable;
+            set
+            {
+                if (value == _movable) return;
+                _movable.RemoveBody(body);
+                _movable = value;
+                _movable?.AddBody(body);
+            }
+        }
+        private IMovablePlatform _movable;
+        public readonly CharacterMovementBody body;
 
-        public BodyAnchor(Vector3 point, Vector3 normal, Transform transform, IMovablePlatform movable = null)
+        public BodyAnchor(Vector3 point, Vector3 normal, Transform transform, CharacterMovementBody body = null)
         {
             this.point = point;
             this.normal = normal;
             this.transform = transform;
-            this.movable = movable;
+
+            this.body = body;
+            _movable = null;
+            if (transform != null && body != null) 
+                Movable = transform.GetComponent<IMovablePlatform>();
+        }
+        public BodyAnchor(RaycastHit hit)
+        {
+            point = hit.point;
+            normal = hit.normal;
+            transform = hit.transform != null ? hit.transform : null;
+
+            body = null;
+            _movable = null;
+        }
+        public BodyAnchor(ContactPoint contact)
+        {
+            point = contact.point;
+            normal = contact.normal;
+            transform = contact.otherCollider != null ? contact.otherCollider.transform : null;
+
+            body = null;
+            _movable = null;
         }
 
-        public static implicit operator BodyAnchor(RaycastHit hit) => new()
+        public static implicit operator BodyAnchor(RaycastHit hit) => new(hit);
+        public static implicit operator BodyAnchor(ContactPoint contact) => new(contact);
+
+        public void Update(Vector3 point, Vector3 normal, Transform transform)
         {
-            point = hit.point,
-            normal = hit.normal,
-            transform = hit.transform,
-            movable = hit.transform != null ? hit.transform.GetComponent<IMovablePlatform>() : null
-        };
-        public static implicit operator BodyAnchor(ContactPoint contact) => new()
+            this.point = point;
+            this.normal = normal;
+            this.transform = transform;
+
+            if (body != null) 
+                Movable = transform != null 
+                    ? transform.GetComponent<IMovablePlatform>() 
+                    : null;
+        }
+        public void Update(BodyAnchor other)
         {
-            point = contact.point,
-            normal = contact.normal,
-            transform = contact.otherCollider.transform,
-            movable = contact.otherCollider.GetComponent<IMovablePlatform>()
-        };
+            point = other.point;
+            normal = other.normal;
+            transform = other.transform;
+
+            if (body != null) 
+                Movable = transform != null 
+                    ? transform.GetComponent<IMovablePlatform>() 
+                    : null;
+        }
+        public void Update(RaycastHit hit)
+        {
+            point = hit.point;
+            normal = hit.normal;
+            transform = hit.transform != null ? hit.transform : null;
+
+            if (body != null) 
+                Movable = transform != null 
+                    ? transform.GetComponent<IMovablePlatform>() 
+                    : null;
+        }
+        public void Update(ContactPoint contact)
+        {
+            point = contact.point;
+            normal = contact.normal;
+            transform = contact.otherCollider != null ? contact.otherCollider.transform : null;
+
+            if (body != null) 
+                Movable = transform != null 
+                    ? transform.GetComponent<IMovablePlatform>() 
+                    : null;
+        }
 
         public static BodyAnchor None => new()
         {
             point = Vector3.zero,
             normal = Vector3.up,
             transform = null,
-            movable = null
+            Movable = null,
         };
     }
 
@@ -341,12 +415,21 @@ public class CharacterMovementBody : MonoBehaviour
         groundHit = raycast;
         return result;
     }
+    public virtual bool GroundCheck()
+    {
+        if(DirectionCast(Vector3.down, groundCheckBuffer, groundCheckBuffer, out RaycastHit raycast))
+        {
+            anchorPoint.Update(raycast.point, raycast.normal, raycast.transform);
+            return true;
+        }
+        return false;
+    }
 
     public virtual void Land(BodyAnchor groundHit)
     {
         if (JumpState == JumpState.Grounded) return;
         JumpState = JumpState.Grounded;
-        anchorPoint = groundHit;
+        anchorPoint.Update(groundHit);
         LandEvent?.Invoke();
     }
     public Action LandEvent;
@@ -357,11 +440,8 @@ public class CharacterMovementBody : MonoBehaviour
         set
         {
             if (_jumpState == value) return;
-            if (_jumpState == JumpState.Grounded && value != JumpState.Grounded)
-            {
-                anchorPoint = BodyAnchor.None;
-                anchorPoint.normal = gravity.normalized;
-            }
+            if (_jumpState == JumpState.Grounded && value != JumpState.Grounded) 
+                anchorPoint.Update(Position, gravity.normalized, null);
             _jumpState = value;
         }
     }
@@ -369,11 +449,23 @@ public class CharacterMovementBody : MonoBehaviour
     
 
 
-    public void InstantSnapToFloor()
+    public bool InstantSnapToFloor()
     {
-        DirectionCast(Vector3.down, 1000, .5f, out RaycastHit hit);
-
-        Position += Vector3.down * hit.distance;
+        if(DirectionCast(Vector3.down, 1000, .5f, out RaycastHit hit))
+        {
+            Position += Vector3.down * hit.distance;
+            return true;
+        }
+        return false;
+    }
+    public bool InstantSnapToFloor(out RaycastHit hit)
+    {
+        if (DirectionCast(Vector3.down, 1000, .5f, out hit))
+        {
+            Position += Vector3.down * hit.distance;
+            return true;
+        }
+        return false;
     }
 
     protected virtual void OnCollisionEnter(Collision collision)
