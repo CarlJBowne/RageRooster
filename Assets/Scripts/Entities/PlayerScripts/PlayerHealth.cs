@@ -42,7 +42,7 @@ public class PlayerHealth : Health
             else if (attack.HasTag(Attack.Tag.Wham)) 
             {
                 damageStateWham.Enter();
-                body.GroundStateChange(false);
+                body.UnLand();
                 body.VelocitySet(y: 14);
             }
             else damageState.Enter();
@@ -57,7 +57,7 @@ public class PlayerHealth : Health
         if(attack == Attack.Tag.Wham)
         {
             damageStateWham.Enter();
-            body.GroundStateChange(false);
+            body.UnLand();
             body.VelocitySet(y: 14);
         }
         else machine.Death();

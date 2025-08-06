@@ -99,7 +99,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
         //body.jiggles.PrepareTeleport();
         body.ForceSetPosition(newPosition);
         //body.jiggles.FinishTeleport(); 
-        if (yRot != null) body.rotation = new(0, yRot.Value, 0);
+        if (yRot != null) body.Rotation = new(0, yRot.Value, 0);
         ResetState(); 
         freeLookCamera.PreviousStateIsValid = false;
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);
@@ -110,7 +110,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
         Vector3 camDelta = savePoint.SpawnPoint.position - transform.position;
         //body.jiggles.PrepareTeleport();
         body.ForceSetPosition(savePoint.SpawnPoint.position);
-        body.rotation = new(0, savePoint.SpawnPoint.eulerAngles.y, 0);
+        body.Rotation = new(0, savePoint.SpawnPoint.eulerAngles.y, 0);
         //body.jiggles.FinishTeleport();
         ResetState();
         ranged.Release(Vector3.zero, false);

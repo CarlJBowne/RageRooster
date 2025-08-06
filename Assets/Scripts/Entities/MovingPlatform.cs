@@ -8,8 +8,7 @@ public class MovingPlatform : MonoBehaviour, IMovablePlatform
     public float speed = 2.0f;
 
     private Vector3 target;
-    public List<CharacterMovementBody> bodies => _bodies;
-    private List<CharacterMovementBody> _bodies => throw new System.NotImplementedException();
+    public List<CharacterMovementBody> bodies { get; } = new();
 
     void Start()
     {

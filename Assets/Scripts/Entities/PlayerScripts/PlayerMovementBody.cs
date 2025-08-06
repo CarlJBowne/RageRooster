@@ -38,7 +38,6 @@ public class PlayerMovementBody : CharacterMovementBody
     }
     [HideInEditMode, DisableInPlayMode, SerializeField] private float currentSpeed;
 
-    [HideInInspector] public Vector3 _currentDirection = Vector3.forward;
 
     private VolcanicVent _currentVent;
     #endregion
@@ -136,11 +135,19 @@ public class PlayerMovementBody : CharacterMovementBody
         }
         else return base.MoveForward(offset);
     }
+    protected override void WalkOff()
+    {
+        UnLand();
+        Machine.SendSignal(new("WalkOff", ignoreLock: true));
+    } 
 
 
     public override void Land(BodyAnchor groundHit)
     {
-        base.Land(groundHit);
+        if (JumpState == JumpState.Grounded) return;
+        JumpState = JumpState.Grounded;
+        anchorPoint = groundHit;
+        LandEvent?.Invoke();
         Machine.SendSignal(new("Land", ignoreLock: true));
         if (playerController.CheckJumpBuffer()) Machine.SendSignal("Jump");
     }
@@ -209,13 +216,4 @@ public class PlayerMovementBody : CharacterMovementBody
             this.normal = fromHit.normal;
         }
     }
-}
-
-public enum JumpPhase
-{
-    Inactive = -1,
-    PreMinHeight = 0,
-    PreMaxHeight = 1,
-    SlowingDown = 2,
-    Falling = 3
 }

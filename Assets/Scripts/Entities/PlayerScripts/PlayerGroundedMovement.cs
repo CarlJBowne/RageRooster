@@ -41,7 +41,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
     public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
         float currentSpeed = playerMovementBody.CurrentSpeed;
-        Vector3 currentDirection = playerMovementBody.currentDirection;
+        Vector3 currentDirection = playerMovementBody.direction;
 
         HorizontalMain(ref currentSpeed, currentDirection, playerController.camAdjustedMovement);
 
@@ -118,9 +118,9 @@ public class PlayerGroundedMovement : PlayerMovementEffector
 
     public void LandInto()
     {
-        bool groundCollide = playerMovementBody.GroundCheck();
+        bool groundCollide = playerMovementBody.GroundCheck(out CharacterMovementBody.BodyAnchor collideResult);
         if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
-        playerMovementBody.GroundStateChange(true);
+        playerMovementBody.Land(collideResult);
         State.Enter();
         if (onEntry == EntryAnimAction.Play) Machine.animator.Play(onEnterName);
         if (onEntry == EntryAnimAction.CrossFade) Machine.animator.CrossFade(onEnterName, onEnterTime);
@@ -128,9 +128,9 @@ public class PlayerGroundedMovement : PlayerMovementEffector
     }
     public void LandInto(StateAnimator.EntryAnimAction onEntry, string onEnterName, float onEnterTime)
     {
-        bool groundCollide = playerMovementBody.GroundCheck();
+        bool groundCollide = playerMovementBody.GroundCheck(out CharacterMovementBody.BodyAnchor collideResult);
         if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
-        playerMovementBody.GroundStateChange(true);
+        playerMovementBody.Land(collideResult);
         State.Enter();
         if (onEntry == EntryAnimAction.Play) Machine.animator.Play(onEnterName);
         if (onEntry == EntryAnimAction.CrossFade) Machine.animator.CrossFade(onEnterName, onEnterTime);

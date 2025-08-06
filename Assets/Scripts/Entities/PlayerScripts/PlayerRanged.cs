@@ -68,7 +68,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     {
         if (eggAmount < eggCapacity) eggReplenishRate.Tick(() => ChangeAmmoAmount(1));
 
-        pointer.startH.position = body.position + Vector3.up;
+        pointer.startH.position = body.Position + Vector3.up;
 
         if(animator.enabled) animator.Update(0f);
 
@@ -105,12 +105,12 @@ public class PlayerRanged : MonoBehaviour, IGrabber
             IEnumerator QuickTurn()
             {
                 float time = 0f;
-                float rate = Vector3.Angle(pointer.startH.eulerAngles, body.currentDirection) / .1f;
+                float rate = Vector3.Angle(pointer.startH.eulerAngles, body.direction) / .1f;
 
                 while(time < 0.1f)
                 {
                     time += Time.deltaTime;
-                    body.rotationQ = Quaternion.RotateTowards(body.rotationQ, pointer.startH.rotation, rate * Time.deltaTime);
+                    body.RotationQ = Quaternion.RotateTowards(body.RotationQ, pointer.startH.rotation, rate * Time.deltaTime);
                     yield return null;
                 }
             }
@@ -164,14 +164,14 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void ThrowPoint()
     {
-        if (!body.grounded && dropLaunchUpgrade)
+        if (!body.Grounded && dropLaunchUpgrade)
         {
             jumpState.BeginJump();
         }
         Vector3 direction =
             aimingState
             ? pointer.startV.forward
-            : !body.grounded && dropLaunchUpgrade
+            : !body.Grounded && dropLaunchUpgrade
                 ? Vector3.down
                 : body.transform.forward;
         Release(direction * launchVelocity, true);
@@ -262,9 +262,11 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     public void AimingFixedUpdate()
     {
 
-        body.currentDirection = Vector3.RotateTowards(
-            body.currentDirection, pointer.startH.forward, 
-            playerRotationSpeed * Mathf.PI * Time.fixedTime, 0);
+        body.InstantDirectionChange(
+            Vector3.RotateTowards(
+                body.direction, pointer.startH.forward,
+                playerRotationSpeed * Mathf.PI * Time.fixedTime, 0)
+            );
 
         currentTargetDistance = pointer.distance;
 
@@ -288,7 +290,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         aimingState.hAxis.Value = pointerH; 
         aimingState.vAxis.Value = Mathf.MoveTowardsAngle(aimingState.vAxis.Value, 0, 1);
         pointerV = Mathf.MoveTowardsAngle(pointerV, 0, 1);
-        if(!body.grounded && dropLaunchUpgrade)
+        if(!body.Grounded && dropLaunchUpgrade)
         {
             realMuzzle.position = pointer.startH.position - (pointer.startH.up * (1 + (currentGrabbed == null ? 0 : currentGrabbed.AdditionalThrowDistance)));
             realMuzzle.eulerAngles = Vector3.right * 90;

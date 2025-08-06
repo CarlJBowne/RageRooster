@@ -48,7 +48,7 @@ public class PlayerController : PlayerStateBehavior
 		if(!grabber) grabber = GetComponentFromMachine<PlayerRanged>();
         if(!interacter) interacter = GetComponentFromMachine<PlayerInteracter>();
 
-		Input.Jump.performed            += BeginActionEvent;
+		Input.Jump.performed            += JumpPress;
         Input.AttackTap.performed       += BeginActionEvent;
         Input.AttackHold.performed      += BeginActionEvent;
         Input.Grab.performed         += BeginActionEvent;
@@ -142,6 +142,7 @@ public class PlayerController : PlayerStateBehavior
     public void MidWallJumpJumpAction() => wallJumpState.WallJump(transform.forward);
 
     //Other events.
+    private void JumpPress(CTX ctx) => jumpInput = Machine.SendSignal(ctx.action.name) ? 0 : jumpBuffer;
     private void JumpRelease(CTX ctx) => Machine.SendSignal(new("JumpRelease", 0, true));
     private void ShootModeActivate(CTX ctx) => Machine.SendSignal(new("ShootMode", ignoreLock:true));
     private void ShootModeDeactivate(CTX ctx) => Machine.SendSignal(new("ShootModeExit", ignoreLock: true));

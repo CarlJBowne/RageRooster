@@ -44,7 +44,7 @@ public class PlayerMovementAnimator : PlayerMovementEffector
         {
             Vector3 controlVector = playerController.camAdjustedMovement;
 
-            Vector3 targetDirection = playerMovementBody.currentDirection;
+            Vector3 targetDirection = playerMovementBody.direction;
             float targetSpeed = playerMovementBody.CurrentSpeed;
 
             if (turnability > 0) targetDirection = Vector3.RotateTowards(targetDirection, controlVector.normalized, turnability * Mathf.PI * Time.fixedDeltaTime, 0);
@@ -56,14 +56,14 @@ public class PlayerMovementAnimator : PlayerMovementEffector
             if (influence == 1)
             {
                 playerMovementBody.CurrentSpeed = targetSpeed;
-                playerMovementBody.currentDirection = targetDirection;
+                playerMovementBody.InstantDirectionChange(targetDirection);
                 resultX = targetDirection.x * targetSpeed;
                 resultZ = targetDirection.z * targetSpeed;
             }
             else
             {
                 playerMovementBody.CurrentSpeed = Mathf.Lerp(playerMovementBody.CurrentSpeed, targetSpeed, influence);
-                playerMovementBody.currentDirection = Vector3.Lerp(playerMovementBody.currentDirection, targetDirection, influence); ;
+                playerMovementBody.InstantDirectionChange(Vector3.Lerp(playerMovementBody.direction, targetDirection, influence));
                 resultX = Mathf.Lerp(resultX.Value, targetDirection.x * targetSpeed, influence);
                 resultZ = Mathf.Lerp(resultZ.Value, targetDirection.z * targetSpeed, influence);
             }

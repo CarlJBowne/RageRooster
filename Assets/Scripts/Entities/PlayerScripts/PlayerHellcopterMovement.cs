@@ -4,38 +4,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
 
-public class PlayerHellcopterMovement : PlayerMovementEffector
+public class PlayerHellcopterMovement : PlayerAirborneMovement
 {
-    [Header("Horizontal")]
-    public float acceleration;
-    public float decceleration;
-    public float maxSpeed;
-    public float stopping = 0.75f;
-    [Tooltip("1 = full second turn, 50 = 1 FixedUpdate turn")]
-    public float maxTurnSpeed = 25;
-    public bool forceOutward;
-    public float minSpeed;
-    [Header("Vertical")]
 
-    public int defaultPhase;
-    public float gravity = 9.81f;
-    public float terminalVelocity = 100f;
-    public bool flatGravity = false;
-    public PlayerHellcopterMovement fallState;
-    public float fallStateThreshold = 0;
+    //public new PlayerHellcopterMovement fallState;
+    VolcanicVent currentVent = null; 
 
-
-    public bool upwards;
-
-    protected float targetHeight;
-    VolcanicVent currentVent = null;
-
-
+    /*
+     Parameters inherited from PlayerAirborneMovement that are irrelevant and should be hidden:
+     *jumpHeight
+     *jumpPower
+     *jumpMinHeight
+     *forceDownwards
+     *allowMidFall
+     */
 
     public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
         float currentSpeed = playerMovementBody.CurrentSpeed;
-        Vector3 currentDirection = playerMovementBody.currentDirection;
+        Vector3 currentDirection = playerMovementBody.direction;
 
         if (!forceOutward) HorizontalMain(ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
         else HorizontalCharge(ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
@@ -54,123 +41,58 @@ public class PlayerHellcopterMovement : PlayerMovementEffector
         else if (playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref result);
     }
 
-    private void HorizontalMain(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control, float deltaTime)
+    protected override void VerticalUpwards(ref float? Y)
     {
-        Vector3 controlDirection = control.normalized;
-        float controlMag = control.magnitude;
-
-        if (controlMag > 0)
-        {
-            float Dot = Vector3.Dot(controlDirection, currentDirection);
-
-            if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
-
-            currentSpeed *= Dot;
-            if (currentSpeed < maxSpeed)
-                currentSpeed = currentSpeed.MoveUp(controlMag * acceleration * deltaTime, maxSpeed);
-            else if (currentSpeed > maxSpeed)
-                currentSpeed = currentSpeed.MoveDown(controlMag * decceleration * deltaTime, maxSpeed);
-
-        }
-        else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
-    }
-    private void HorizontalCharge(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control, float deltaTime)
-    {
-        Vector3 controlDirection = control.normalized;
-        float controlMag = control.magnitude;
-
-
-        if (controlMag > 0.1f)
-        {
-            if (currentSpeed < maxSpeed)
-                currentSpeed = currentSpeed.MoveUp(controlMag * acceleration * deltaTime, maxSpeed);
-        }
-        else
-        {
-            if (currentSpeed < minSpeed)
-                currentSpeed = currentSpeed.MoveUp(controlMag * acceleration * deltaTime, minSpeed);
-            if (currentSpeed > minSpeed)
-                currentSpeed = currentSpeed.MoveDown(controlMag * decceleration * deltaTime, maxSpeed);
-        }
-
-        if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed); 
-        playerMovementBody.CurrentSpeed = currentSpeed;
-
-
-    }
-
-
-    private void VerticalUpwards(ref float? Y)
-    {
-        if (playerMovementBody.jumpPhase == 1)
+        if (playerMovementBody.JumpState == JumpState.Decelerating)
         {
             Y = currentVent.hellcopterSpeed;
-            if (transform.position.y >= targetHeight) playerMovementBody.jumpPhase = 2;
+            if (transform.position.y >= targetHeight) playerMovementBody.JumpState = JumpState.Falling;
         } 
-        else if (playerMovementBody.jumpPhase == 2 && playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref Y);
+        else if (playerMovementBody.JumpState == JumpState.Falling && playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref Y);
 
     }
 
-    private void Fall(ref float? Y)
+    protected override void Fall(ref float? Y)
     {
         if (playerMovementBody.velocity.y > fallStateThreshold) Y = fallStateThreshold;
-        playerMovementBody.jumpPhase = 3;
+        playerMovementBody.JumpState = JumpState.Falling;
         if (fallState != null) fallState.Enter();
     }
 
-    protected override void OnEnter(State prev, bool isFinal)
+
+    protected override void Start_Jump() { }
+
+    protected override void Start_Decel()
     {
-        base.OnEnter(prev, isFinal);
-        if (!isFinal) return;
+        if (forceOutward) playerMovementBody.CurrentSpeed = maxSpeed;
 
-        playerMovementBody.GroundStateChange(false);
+        if (!upwards) return;
 
-        int nextJumpPhase = defaultPhase;
-        if (nextJumpPhase == -1)
+        currentVent = playerMovementBody.currentVent;
+        targetHeight = currentVent.transform.position.y + currentVent.hellcopterTargetHeight;
+
+        playerMovementBody.VelocitySet(y: currentVent.hellcopterSpeed);
+        targetHeight = (currentVent.transform.position.y + currentVent.hellcopterTargetHeight) - (currentVent.hellcopterSpeed.P()) / (2 * gravity);
+        if (targetHeight <= transform.position.y)
         {
-            nextJumpPhase = playerMovementBody.jumpPhase;
-            if (nextJumpPhase == -1) nextJumpPhase = 0;
+            playerMovementBody.VelocitySet(y: Mathf.Sqrt(2 * gravity * currentVent.hellcopterTargetHeight));
         }
-        if (defaultPhase == 0) defaultPhase = 1;
-
-        playerMovementBody.jumpPhase = nextJumpPhase;
-        switch (nextJumpPhase)
-        {
-            case 0: break;
-            case 1: StartFrom1(); break;
-            case 2: break;
-            case 3: StartFrom3(); break;
-        }
-
-        void StartFrom1()
-        {
-            if (forceOutward) playerMovementBody.CurrentSpeed = maxSpeed;
-
-            if (!upwards) return;
-
-            currentVent = playerMovementBody.currentVent;
-            targetHeight = currentVent.transform.position.y + currentVent.hellcopterTargetHeight;
-
-            playerMovementBody.VelocitySet(y: currentVent.hellcopterSpeed);
-            targetHeight = (currentVent.transform.position.y + currentVent.hellcopterTargetHeight) - (currentVent.hellcopterSpeed.P()) / (2 * gravity);
-            if (targetHeight <= transform.position.y)
-            {
-                playerMovementBody.VelocitySet(y: Mathf.Sqrt(2 * gravity * currentVent.hellcopterTargetHeight));
-            }
 
 #if UNITY_EDITOR
-            playerMovementBody.jumpMarkers = new()
+        playerMovementBody.jumpMarkers = new()
                 {
                     transform.position,
                     transform.position + Vector3.up * targetHeight
                 };
 #endif
-        }
-        void StartFrom3()
-        {
-            playerMovementBody.VelocitySet(y: playerMovementBody.velocity.y.Max(0));
-        }
     }
 
-    public void Enter() => State.Enter();
+    protected override void Start_Falling()
+    {
+        playerMovementBody.VelocitySet(y: playerMovementBody.velocity.y.Max(0));
+    }
+
+    public override void BeginJump() => throw new System.Exception("Don't Use This Method.");
+    public override void BeginJump(float power, float height, float minHeight) => throw new System.Exception("Don't Use This Method.");
+    public override void BeginJump(JumpState newState) => throw new System.Exception("Don't Use This Method.");
 }

@@ -1,9 +1,6 @@
 using SLS.StateMachineH;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider), typeof(StateMachine))]
 public class CharacterMovementBody : MonoBehaviour
@@ -27,7 +24,8 @@ public class CharacterMovementBody : MonoBehaviour
     /// </summary>
     public int movementProjectionSteps = 5;
 
-    [field: SerializeField, HideInInspector] public Rigidbody RB { get; private set; }
+    public Rigidbody RB { get => _rb; private set => _rb = value; }
+    [SerializeField] private Rigidbody _rb;
     [field: SerializeField, HideInInspector] public CapsuleCollider Collider { get; private set; }
 
     public Vector3 Position
@@ -108,8 +106,9 @@ public class CharacterMovementBody : MonoBehaviour
     }
     private CharacterRigidBodyState _rbState = CharacterRigidBodyState.Enabled;
 
-    public JumpState JumpState { get; protected set; } = JumpState.Grounded;
+    protected JumpState _jumpState = JumpState.Grounded;
 
+    [ContextMenu("GetComponents")]
     protected virtual void Awake()
     {
         if (RB == null) RB = GetComponent<Rigidbody>();
@@ -161,7 +160,7 @@ public class CharacterMovementBody : MonoBehaviour
 
 
 
-    BodyAnchor anchorPoint = BodyAnchor.None;
+    protected BodyAnchor anchorPoint = BodyAnchor.None;
     public struct BodyAnchor
     {
         public Vector3 point;
@@ -182,7 +181,7 @@ public class CharacterMovementBody : MonoBehaviour
             point = hit.point,
             normal = hit.normal,
             transform = hit.transform,
-            movable = hit.transform.GetComponent<IMovablePlatform>()
+            movable = hit.transform != null ? hit.transform.GetComponent<IMovablePlatform>() : null
         };
         public static implicit operator BodyAnchor(ContactPoint contact) => new()
         {
@@ -262,8 +261,7 @@ public class CharacterMovementBody : MonoBehaviour
             {
                 if (DirectionCast(Vector3.down, 0.5f, groundCheckBuffer, out RaycastHit groundHit))
                     Position += Vector3.down * groundHit.distance;
-                else
-                    UnLand();
+                else WalkOff();
             }
         }
     }
@@ -286,7 +284,10 @@ public class CharacterMovementBody : MonoBehaviour
         return true;
     }
 
-
+    protected virtual void WalkOff()
+    {
+        UnLand();
+    }
 
 
 
@@ -297,6 +298,7 @@ public class CharacterMovementBody : MonoBehaviour
 
 
     public virtual void ApplyGravity() => velocity -= gravity * Time.fixedDeltaTime;
+
 
     /// <summary>
     /// Casts the Rigidbody in a direction to check for collision using SweepTest.
@@ -309,11 +311,11 @@ public class CharacterMovementBody : MonoBehaviour
     /// <returns>Whether anything was Hit.</returns>
     public virtual bool DirectionCast(Vector3 direction, float distance, float buffer, out RaycastHit hit)
     {
-        if(buffer > 0) RB.MovePosition(RB.position - direction * buffer);
-        bool result = RB.SweepTest(direction.normalized, out hit, distance + buffer, QueryTriggerInteraction.Ignore);
-        if (buffer > 0) RB.MovePosition(RB.position + direction * buffer);
+        if(buffer > 0) _rb.MovePosition(_rb.position - direction * buffer);
+        bool result = _rb.SweepTest(direction.normalized, out hit, distance + buffer, QueryTriggerInteraction.Ignore);
+        if (buffer > 0) _rb.MovePosition(_rb.position + direction * buffer);
         hit.distance -= buffer;
-        return result;
+        return result; 
     }
     /// <summary>
     /// Casts the Rigidbody in a direction to check for collision using SweepTest. (Returns Multiple.)
@@ -335,7 +337,7 @@ public class CharacterMovementBody : MonoBehaviour
 
     public virtual bool GroundCheck(out BodyAnchor groundHit)
     {
-        bool result = DirectionCast(Vector3.down, groundCheckBuffer, groundCheckBuffer, out RaycastHit raycast);
+        bool result = DirectionCast(Vector3.down, groundCheckBuffer, groundCheckBuffer, out RaycastHit raycast); 
         groundHit = raycast;
         return result;
     }
@@ -347,13 +349,24 @@ public class CharacterMovementBody : MonoBehaviour
         anchorPoint = groundHit;
         LandEvent?.Invoke();
     }
-    public virtual void UnLand(JumpState newState = JumpState.PastApex)
-    {
-        JumpState = newState;
-        anchorPoint = BodyAnchor.None;
-        anchorPoint.normal = gravity.normalized;
-    }
     public Action LandEvent;
+    public virtual void UnLand(JumpState newState = JumpState.Falling) => JumpState = newState;
+    public JumpState JumpState
+    {
+        get => _jumpState; 
+        set
+        {
+            if (_jumpState == value) return;
+            if (_jumpState == JumpState.Grounded && value != JumpState.Grounded)
+            {
+                anchorPoint = BodyAnchor.None;
+                anchorPoint.normal = gravity.normalized;
+            }
+            _jumpState = value;
+        }
+    }
+
+    
 
 
     public void InstantSnapToFloor()
@@ -413,10 +426,11 @@ public class CharacterMovementBody : MonoBehaviour
 
 public enum JumpState
 {
-    Grounded,
-    Jumping,
-    PreApex,
-    PastApex,
-    Falling,
-    TerminalVelocity
+    Null = -1,
+    Grounded = 0,
+    Jumping = 1,
+    Decelerating = 2,
+    Hangtime = 3,
+    Falling = 4,
+    TerminalVelocity = 5
 }

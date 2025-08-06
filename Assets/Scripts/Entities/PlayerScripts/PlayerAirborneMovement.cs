@@ -15,11 +15,11 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     public float stopping = 0.75f;
     [Tooltip("1 = full second turn, 50 = 1 FixedUpdate turn")]
     public float maxTurnSpeed = 25;
-    public bool isDash;
+    public bool forceOutward;
     public float minSpeed;
     [Header("Vertical")]
 
-    public int defaultPhase;
+    public JumpState defaultPhase;
     public float gravity = 9.81f;
     public float terminalVelocity = 100f;
     public bool flatGravity = false;
@@ -43,9 +43,9 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
         float currentSpeed = playerMovementBody.CurrentSpeed;
-        Vector3 currentDirection = playerMovementBody.currentDirection;
+        Vector3 currentDirection = playerMovementBody.direction;
 
-        if (!isDash) HorizontalMain (ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
+        if (!forceOutward) HorizontalMain (ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
         else HorizontalCharge       (ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
 
         playerMovementBody.CurrentSpeed = currentSpeed;
@@ -63,7 +63,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
     }
 
-    private void HorizontalMain(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control, float deltaTime)
+    protected virtual void HorizontalMain(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control, float deltaTime)
     {
         Vector3 controlDirection = control.normalized;
         float controlMag = control.magnitude;
@@ -84,7 +84,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
 
     }
-    private void HorizontalCharge(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control, float deltaTime)
+    protected virtual void HorizontalCharge(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control, float deltaTime)
     {
         Vector3 controlDirection = control.normalized;
         float controlMag = control.magnitude;
@@ -110,22 +110,22 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     }
 
 
-    private void VerticalUpwards(ref float? Y)
+    protected virtual void VerticalUpwards(ref float? Y)
     {
-        if (playerMovementBody.jumpPhase == 0 && transform.position.y >= targetMinHeight) playerMovementBody.jumpPhase = 1;
-        if (playerMovementBody.jumpPhase == 1 && transform.position.y >= targetHeight) playerMovementBody.jumpPhase = 2;
+        if (playerMovementBody.JumpState == JumpState.Jumping && transform.position.y >= targetMinHeight) playerMovementBody.JumpState = JumpState.Decelerating;
+        if (playerMovementBody.JumpState == JumpState.Decelerating && transform.position.y >= targetHeight) playerMovementBody.JumpState = JumpState.Falling;
 
-        if (playerMovementBody.jumpPhase < 2) Y = jumpPower;
-        if (playerMovementBody.jumpPhase > 0 && 
+        if (playerMovementBody.JumpState < JumpState.Decelerating) Y = jumpPower;
+        if (playerMovementBody.JumpState > JumpState.Jumping && 
            (playerMovementBody.velocity.y <= fallStateThreshold || (allowMidFall && !Input.Jump.IsPressed())))
            Fall(ref Y);
 
     }
 
-    private void Fall(ref float? Y)
+    protected virtual void Fall(ref float? Y)
     {
         if (playerMovementBody.velocity.y > fallStateThreshold) Y = fallStateThreshold;
-        playerMovementBody.jumpPhase = 3;
+        playerMovementBody.JumpState = JumpState.Falling;
         if (fallState != null) fallState.Enter();
     }
 
@@ -134,70 +134,73 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         base.OnEnter(prev, isFinal);
         if (!isFinal) return;
 
-        playerMovementBody.GroundStateChange(false);
+        PrepPhase(out JumpState nextJumpPhase);
 
-        int nextJumpPhase = defaultPhase;
-        if(nextJumpPhase == -1)
-        {
-            nextJumpPhase = playerMovementBody.jumpPhase;
-            if (nextJumpPhase == -1) nextJumpPhase = 0;
-        }
-
-        playerMovementBody.jumpPhase = nextJumpPhase;
+        playerMovementBody.JumpState = nextJumpPhase;
         switch (nextJumpPhase)
         {
-            case 0: StartFrom0(); break;
-            case 1: StartFrom1(); break;
-            case 2: StartFrom2(); break;
-            case 3: StartFrom3(); break;
+            case JumpState.Jumping: Start_Jump(); break;
+            case JumpState.Decelerating: Start_Decel(); break;
+            case JumpState.Falling: Start_Falling(); break;
+        }
+    }
+
+    protected virtual void PrepPhase(out JumpState nextJumpPhase)
+    {
+        nextJumpPhase = defaultPhase;
+        if (nextJumpPhase < JumpState.Jumping)
+        {
+            nextJumpPhase = playerMovementBody.JumpState;
+            if (nextJumpPhase < JumpState.Jumping) nextJumpPhase = JumpState.Jumping;
+        }
+    }
+
+    protected virtual void Start_Jump()
+    {
+        if (forceOutward) playerMovementBody.CurrentSpeed = maxSpeed;
+
+        if (!upwards) return;
+
+        playerMovementBody.VelocitySet(y: jumpPower);
+        targetMinHeight = transform.position.y + jumpMinHeight;
+        targetHeight = (transform.position.y + jumpHeight) - (jumpPower.P()) / (2 * gravity);
+        if (targetHeight <= transform.position.y)
+        {
+            playerMovementBody.VelocitySet(y: Mathf.Sqrt(2 * gravity * jumpHeight));
+            targetMinHeight = transform.position.y;
         }
 
-        void StartFrom0()
-        {
-            if (isDash) playerMovementBody.CurrentSpeed = maxSpeed;
-
-            if (!upwards) return;
-
-            playerMovementBody.VelocitySet(y: jumpPower);
-            targetMinHeight = transform.position.y + jumpMinHeight;
-            targetHeight = (transform.position.y + jumpHeight) - (jumpPower.P()) / (2 * gravity);
-            if (targetHeight <= transform.position.y)
-            {
-                playerMovementBody.VelocitySet(y: Mathf.Sqrt(2 * gravity * jumpHeight));
-                targetMinHeight = transform.position.y;
-            }
-
-            #if UNITY_EDITOR
-            playerMovementBody.jumpMarkers = new()
+#if UNITY_EDITOR
+        playerMovementBody.jumpMarkers = new()
                 {
                     transform.position,
                     transform.position + Vector3.up * targetHeight,
                     transform.position + Vector3.up * jumpHeight
                 };
-            #endif
-        }
-        void StartFrom1()
-        {
-
-        }
-        void StartFrom2()
-        {
-
-        }
-        void StartFrom3()
-        {
-            playerMovementBody.VelocitySet(y: playerMovementBody.velocity.y.Max(0));
-        }
+#endif
     }
-    //public override void OnExit(State next) => body.jumpPhase = -1;
+    protected virtual void Start_Decel()
+    {
+
+    }
+    protected virtual void Start_Falling()
+    {
+        playerMovementBody.VelocitySet(y: playerMovementBody.velocity.y.Max(0));
+    }
+
+
+
+
+
+
+
 
     public void Enter() => State.Enter();
-    public void BeginJump()
+    public virtual void BeginJump()
     {
-        playerMovementBody.GroundStateChange(false);
         if(!State) State.Enter();
     }
-    public void BeginJump(float power, float height, float minHeight)
+    public virtual void BeginJump(float power, float height, float minHeight)
     {
         if (!upwards) throw new System.Exception("This isn't an Upward Item.");
         jumpPower = power;
@@ -205,5 +208,12 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         jumpMinHeight = minHeight;
 
         State.Enter();
+    }
+    public virtual void BeginJump(JumpState newState)
+    {
+        JumpState skippedDefault = defaultPhase;
+        defaultPhase = newState;
+        State.Enter();
+        defaultPhase = skippedDefault;
     }
 }

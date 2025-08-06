@@ -21,7 +21,7 @@ public class PlayerMovementNegater : PlayerMovementEffector
     protected bool disabled;
     protected Vector3 savedVelocity;
     protected float savedHorizontalSpeed;
-    protected int savedJumpPhase;
+    protected JumpState savedJumpPhase;
 
     public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
@@ -90,7 +90,7 @@ public class PlayerMovementNegater : PlayerMovementEffector
         {
             savedVelocity = playerMovementBody.velocity;
             savedHorizontalSpeed = playerMovementBody.CurrentSpeed;
-            savedJumpPhase = playerMovementBody.jumpPhase;
+            savedJumpPhase = playerMovementBody.JumpState;
         }
     }
     protected override void OnExit(State next)
@@ -99,7 +99,7 @@ public class PlayerMovementNegater : PlayerMovementEffector
         {
             playerMovementBody.velocity = savedVelocity;
             playerMovementBody.CurrentSpeed = savedHorizontalSpeed;
-            playerMovementBody.jumpPhase = savedJumpPhase;
+            playerMovementBody.JumpState = savedJumpPhase;
         }
     }
 }

@@ -1822,9 +1822,9 @@ MonoBehaviour:
   maxSpeed: 5
   stopping: 0.75
   maxTurnSpeed: 25
-  isDash: 0
+  forceOutward: 0
   minSpeed: 0
-  defaultPhase: 0
+  defaultPhase: 1
   gravity: 30
   terminalVelocity: 98.1
   flatGravity: 0
@@ -2038,9 +2038,9 @@ MonoBehaviour:
   maxSpeed: 10
   stopping: 0.3
   maxTurnSpeed: 10
-  isDash: 0
+  forceOutward: 0
   minSpeed: 0
-  defaultPhase: 0
+  defaultPhase: 1
   gravity: 30
   terminalVelocity: 98.1
   flatGravity: 0
@@ -3248,7 +3248,7 @@ MonoBehaviour:
   maxSpeed: 17
   stopping: 0.3
   maxTurnSpeed: 10
-  isDash: 0
+  forceOutward: 0
   minSpeed: 0
   defaultPhase: 3
   gravity: 50
@@ -4492,9 +4492,9 @@ MonoBehaviour:
   maxSpeed: 10
   stopping: 0.3
   maxTurnSpeed: 10
-  isDash: 0
+  forceOutward: 0
   minSpeed: 0
-  defaultPhase: 3
+  defaultPhase: 4
   gravity: 50
   terminalVelocity: 98.1
   flatGravity: 0
@@ -5116,7 +5116,7 @@ MonoBehaviour:
   maxSpeed: 17
   stopping: 0.3
   maxTurnSpeed: 10
-  isDash: 0
+  forceOutward: 0
   minSpeed: 0
   defaultPhase: 3
   gravity: 50
@@ -5193,7 +5193,6 @@ GameObject:
   - component: {fileID: 8954558647869373425}
   - component: {fileID: 5436814540052560995}
   - component: {fileID: 8191279611815052833}
-  - component: {fileID: 181566469930895402}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -5239,10 +5238,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 1371118413310184343}
-  - {fileID: 3941225653291784218}
   - {fileID: 8191279611815052833}
-  <Machine>k__BackingField: {fileID: 0}
-  <Parent>k__BackingField: {fileID: 0}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 8455434200384702600}
   <Layer>k__BackingField: 0
   <Children>k__BackingField:
   - {fileID: 3758855929158950712}
@@ -5503,17 +5501,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c3d6cd8aa43154aa3119b5010e205a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 8455434200384702600}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  movementProjectionSteps: 3
-  checkBuffer: 0.05
+  defaultGravity: {x: 0, y: 1, z: 0}
   maxSlopeNormalAngle: 46
-  jumpState1: {fileID: 0}
+  checkGround: 1
+  movementCheckBuffer: 0.1
+  groundCheckBuffer: 0.1
+  movementProjectionSteps: 3
+  _rb: {fileID: 1838944232945776554}
+  <Collider>k__BackingField: {fileID: 598530174602593461}
+  jumpState1: {fileID: 8452752302749071132}
   wallJumpState: {fileID: 750694679335013753}
-  airChargeState: {fileID: 0}
+  airChargeState: {fileID: 1482092204021747920}
   frontCheckDefaultOffset: {x: 0, y: 0.5, z: 1}
   frontCheckDefaultRadius: 1
   Mario64StyleAntiVoid: 1
@@ -5522,19 +5520,14 @@ MonoBehaviour:
     m_Bits: 1049
   idleState: {fileID: 59389784059182728}
   airNeutralState: {fileID: 3747663377877617945}
-  rb: {fileID: 0}
-  collider: {fileID: 0}
-  jiggles: {fileID: 0}
+  Machine: {fileID: 8455434200384702600}
+  playerController: {fileID: 1371118413310184343}
   animator: {fileID: 0}
-  velocity: {x: 0, y: 0, z: 0}
   baseMovability: 1
   canJump: 1
-  grounded: 1
   movementModifier: 1
   currentSpeed: 0
-  jumpPhase: 0
   _currentDirection: {x: 0, y: 0, z: 0}
-  playerTestScript: {fileID: 181566469930895402}
   jumpMarkers: []
 --- !u!114 &2783735533672575433
 MonoBehaviour:
@@ -5777,20 +5770,6 @@ MonoBehaviour:
   globalSignals:
     serializedList: []
   queueSignals: 1
---- !u!114 &181566469930895402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2950555048310845610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a20f7f948dc566e44b0e4dd47e680a29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  input: {x: 0, y: 0}
-  output: {x: 0, y: 0}
 --- !u!1 &2975349023816060615
 GameObject:
   m_ObjectHideFlags: 0
@@ -6687,10 +6666,20 @@ MonoBehaviour:
   maxSpeed: 8
   stopping: 0.3
   maxTurnSpeed: 10
+  forceOutward: 0
+  minSpeed: 0
+  defaultPhase: 3
   gravity: 3.04
   terminalVelocity: 5.89
   flatGravity: 0
   fallState: {fileID: 2513530225769621494}
+  fallStateThreshold: 0
+  upwards: 0
+  jumpHeight: 0
+  jumpPower: 0
+  jumpMinHeight: 0
+  forceDownwards: 0
+  allowMidFall: 1
   isVentGlide: 1
   raiseRate: 4
 --- !u!114 &4546970226547505939
@@ -7209,10 +7198,20 @@ MonoBehaviour:
   maxSpeed: 8
   stopping: 0.3
   maxTurnSpeed: 10
+  forceOutward: 0
+  minSpeed: 0
+  defaultPhase: 4
   gravity: 3.04
   terminalVelocity: 5.89
   flatGravity: 0
   fallState: {fileID: 2513530225769621494}
+  fallStateThreshold: 0
+  upwards: 0
+  jumpHeight: 0
+  jumpPower: 0
+  jumpMinHeight: 0
+  forceDownwards: 0
+  allowMidFall: 1
   isVentGlide: 0
   raiseRate: 0
 --- !u!114 &564320835148495432
@@ -7529,9 +7528,9 @@ MonoBehaviour:
   maxSpeed: 10
   stopping: 0.3
   maxTurnSpeed: 10
-  isDash: 0
+  forceOutward: 0
   minSpeed: 0
-  defaultPhase: 0
+  defaultPhase: 1
   gravity: 30
   terminalVelocity: 98.1
   flatGravity: 0
@@ -8722,6 +8721,11 @@ MonoBehaviour:
   fallState: {fileID: 3877140044969608344}
   fallStateThreshold: 0
   upwards: 1
+  jumpHeight: 0
+  jumpPower: 0
+  jumpMinHeight: 0
+  forceDownwards: 0
+  allowMidFall: 1
 --- !u!114 &2152569479813037482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10055,7 +10059,7 @@ MonoBehaviour:
   maxSpeed: 10
   stopping: 0.3
   maxTurnSpeed: 10
-  isDash: 0
+  forceOutward: 0
   minSpeed: 0
   defaultPhase: 3
   gravity: 50
@@ -10618,7 +10622,7 @@ MonoBehaviour:
   maxSpeed: 20
   stopping: 0.15
   maxTurnSpeed: 10
-  isDash: 1
+  forceOutward: 0
   minSpeed: 0
   defaultPhase: 3
   gravity: 50
@@ -11292,7 +11296,7 @@ MonoBehaviour:
   maxSpeed: 20
   stopping: 0.75
   maxTurnSpeed: 0.5
-  isDash: 1
+  forceOutward: 0
   minSpeed: 0
   defaultPhase: 0
   gravity: 30
@@ -11886,7 +11890,7 @@ MonoBehaviour:
   maxSpeed: 20
   stopping: 0.75
   maxTurnSpeed: 0.5
-  isDash: 1
+  forceOutward: 0
   minSpeed: 0
   defaultPhase: 3
   gravity: 30
@@ -13328,7 +13332,7 @@ MonoBehaviour:
   maxSpeed: 10
   stopping: 0.3
   maxTurnSpeed: 10
-  isDash: 0
+  forceOutward: 0
   minSpeed: 0
   defaultPhase: 0
   gravity: 30
@@ -14732,6 +14736,11 @@ MonoBehaviour:
   fallState: {fileID: 3877140044969608344}
   fallStateThreshold: 0
   upwards: 0
+  jumpHeight: 0
+  jumpPower: 0
+  jumpMinHeight: 0
+  forceDownwards: 0
+  allowMidFall: 1
 --- !u!114 &6036952242168296381
 MonoBehaviour:
   m_ObjectHideFlags: 0

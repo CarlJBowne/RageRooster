@@ -21,7 +21,7 @@ public abstract class PlayerMovementEffector : PlayerStateBehavior
     protected virtual bool HorizontalCast(float vX, float vZ, out RaycastHit hit)
     {
         Vector3 velocity = new(vX, 0, vZ);
-        return playerMovementBody.rb.DirectionCast(velocity.normalized, velocity.magnitude, 0, out hit);
+        return playerMovementBody.DirectionCast(velocity.normalized, velocity.magnitude, 0, out hit);
     }
 
     protected float ApplyGravity(float gravity, float terminalVelocity, bool flatGravity = false)
