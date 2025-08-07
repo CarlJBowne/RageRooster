@@ -108,6 +108,7 @@ public class PlayerMovementBody : CharacterMovementBody
 
     protected override void Awake()
     {
+        base.Awake();
         TryGetComponent(out animator);
         direction = Vector3.forward;
     }

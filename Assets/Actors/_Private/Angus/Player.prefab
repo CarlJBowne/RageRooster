@@ -5527,7 +5527,6 @@ MonoBehaviour:
   canJump: 1
   movementModifier: 1
   currentSpeed: 0
-  _currentDirection: {x: 0, y: 0, z: 0}
   jumpMarkers: []
 --- !u!114 &2783735533672575433
 MonoBehaviour:
@@ -11231,7 +11230,7 @@ GameObject:
   - component: {fileID: 5055486019544316009}
   - component: {fileID: 7692018968260677331}
   m_Layer: 6
-  m_Name: Default
+  m_Name: AirCharge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11296,9 +11295,9 @@ MonoBehaviour:
   maxSpeed: 20
   stopping: 0.75
   maxTurnSpeed: 0.5
-  forceOutward: 0
+  forceOutward: 1
   minSpeed: 0
-  defaultPhase: 0
+  defaultPhase: 1
   gravity: 30
   terminalVelocity: 98.1
   flatGravity: 0
@@ -11890,9 +11889,9 @@ MonoBehaviour:
   maxSpeed: 20
   stopping: 0.75
   maxTurnSpeed: 0.5
-  forceOutward: 0
+  forceOutward: 1
   minSpeed: 0
-  defaultPhase: 3
+  defaultPhase: 4
   gravity: 30
   terminalVelocity: 98.1
   flatGravity: 0

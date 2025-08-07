@@ -133,10 +133,12 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     public void Pause()
     {
         this.enabled = false;
+        body.enabled = false;
     }
     public void UnPause()
     {
         this.enabled = true;
+        body.enabled = true;
     }
 
     private State prevState;
