@@ -46,7 +46,7 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
         if (playerMovementBody.JumpState == JumpState.Decelerating)
         {
             Y = currentVent.hellcopterSpeed;
-            if (transform.position.y >= targetHeight) playerMovementBody.JumpState = JumpState.Falling;
+            if (transform.position.y >= targetHeight) playerMovementBody.UnLand(JumpState.Falling);
         } 
         else if (playerMovementBody.JumpState == JumpState.Falling && playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref Y);
 
@@ -55,7 +55,7 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
     protected override void Fall(ref float? Y)
     {
         if (playerMovementBody.velocity.y > fallStateThreshold) Y = fallStateThreshold;
-        playerMovementBody.JumpState = JumpState.Falling;
+        playerMovementBody.UnLand(JumpState.Falling);
         if (fallState != null) fallState.Enter();
     }
 

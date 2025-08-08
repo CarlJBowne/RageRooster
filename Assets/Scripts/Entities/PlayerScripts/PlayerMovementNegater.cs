@@ -99,7 +99,7 @@ public class PlayerMovementNegater : PlayerMovementEffector
         {
             playerMovementBody.velocity = savedVelocity;
             playerMovementBody.CurrentSpeed = savedHorizontalSpeed;
-            playerMovementBody.JumpState = savedJumpPhase;
+            playerMovementBody.UnLand(savedJumpPhase);
         }
     }
 }

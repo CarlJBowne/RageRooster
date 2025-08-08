@@ -112,8 +112,8 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
     protected virtual void VerticalUpwards(ref float? Y)
     {
-        if (playerMovementBody.JumpState == JumpState.Jumping && transform.position.y >= targetMinHeight) playerMovementBody.JumpState = JumpState.Decelerating;
-        if (playerMovementBody.JumpState == JumpState.Decelerating && transform.position.y >= targetHeight) playerMovementBody.JumpState = JumpState.Falling;
+        if (playerMovementBody.JumpState == JumpState.Jumping && transform.position.y >= targetMinHeight) playerMovementBody.UnLand(JumpState.Decelerating);
+        if (playerMovementBody.JumpState == JumpState.Decelerating && transform.position.y >= targetHeight) playerMovementBody.UnLand(JumpState.Falling);
 
         if (playerMovementBody.JumpState < JumpState.Decelerating) Y = jumpPower;
         if (playerMovementBody.JumpState > JumpState.Jumping && 
@@ -125,7 +125,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     protected virtual void Fall(ref float? Y)
     {
         if (playerMovementBody.velocity.y > fallStateThreshold) Y = fallStateThreshold;
-        playerMovementBody.JumpState = JumpState.Falling;
+        playerMovementBody.UnLand(JumpState.Falling);
         if (fallState != null) fallState.Enter();
     }
 
@@ -136,7 +136,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
         PrepPhase(out JumpState nextJumpPhase);
 
-        playerMovementBody.JumpState = nextJumpPhase;
+        playerMovementBody.UnLand(nextJumpPhase);
         switch (nextJumpPhase)
         {
             case JumpState.Jumping: Start_Jump(); break;

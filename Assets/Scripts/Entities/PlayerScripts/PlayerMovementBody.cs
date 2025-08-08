@@ -143,14 +143,29 @@ public class PlayerMovementBody : CharacterMovementBody
     } 
 
 
-    public override void Land(BodyAnchor groundHit)
+    public override void Land(AnchorPoint groundHit)
     {
-        if (JumpState == JumpState.Grounded) return;
-        JumpState = JumpState.Grounded;
-        anchorPoint.Update(groundHit);
-        LandEvent?.Invoke();
-        Machine.SendSignal(new("Land", ignoreLock: true));
-        if (playerController.CheckJumpBuffer()) Machine.SendSignal("Jump");
+        bool wasntGrounded = jumpState != JumpState.Grounded;
+        bool objectChange = anchorPoint.transform != groundHit.transform;
+
+        if (wasntGrounded && objectChange) return;
+
+        jumpState = JumpState.Grounded;
+        anchorPoint = groundHit;
+
+        if (objectChange)
+        {
+            movingAnchor?.RemoveBody(this);
+            movingAnchor = anchorPoint.transform.GetComponent<IMovablePlatform>();
+            movingAnchor?.AddBody(this);
+        }
+
+        if(wasntGrounded)
+        {
+            LandEvent?.Invoke();
+            Machine.SendSignal(new("Land", ignoreLock: true));
+            if (playerController.CheckJumpBuffer()) Machine.SendSignal("Jump");
+        }
     }
 
     public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)

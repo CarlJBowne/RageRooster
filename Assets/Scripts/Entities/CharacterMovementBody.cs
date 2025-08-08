@@ -5,6 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider), typeof(StateMachine))]
 public class CharacterMovementBody : MonoBehaviour
 {
+
+    #region Config
+
     [SerializeField] protected Vector3 defaultGravity = new(0, 1, 0);
     [SerializeField] protected float maxSlopeNormalAngle = 45f;
     /// <summary>
@@ -24,29 +27,15 @@ public class CharacterMovementBody : MonoBehaviour
     /// </summary>
     public int movementProjectionSteps = 5;
 
+    #endregion Config
+    #region Components
+
     public Rigidbody RB { get => _rb; private set => _rb = value; }
     [SerializeField] private Rigidbody _rb;
     [field: SerializeField, HideInInspector] public CapsuleCollider Collider { get; private set; }
 
-    public Vector3 Position
-    {
-        get => RB.isKinematic ? transform.position : RB.position;
-        set
-        {
-            if (RB.isKinematic)
-                return;
-            transform.position = value;
-            RB.position = value;
-            RB.MovePosition(value);
-        }
-    }
-    public Quaternion RotationQ
-    { get => RB.rotation; set => RB.rotation = value; }
-    public Vector3 Rotation
-    {
-        get => transform.eulerAngles;
-        set => transform.eulerAngles = value;
-    }
+    #endregion Components
+    #region Data
 
     /// <summary>
     /// Custom velocity value.
@@ -106,16 +95,86 @@ public class CharacterMovementBody : MonoBehaviour
     }
     private CharacterRigidBodyState _rbState = CharacterRigidBodyState.Enabled;
 
-    protected JumpState _jumpState = JumpState.Grounded;
+    protected JumpState jumpState = JumpState.Grounded;
+
+    protected AnchorPoint anchorPoint = AnchorPoint.Null;
+    protected IMovablePlatform movingAnchor;
+
+    #endregion Data
+
+    #region GetSets
+
+    public Vector3 Position
+    {
+        get => RB.isKinematic ? transform.position : RB.position;
+        set
+        {
+            if (RB.isKinematic)
+                return;
+            transform.position = value;
+            RB.position = value;
+            RB.MovePosition(value);
+        }
+    }
+    public Quaternion RotationQ
+    { get => RB.rotation; set => RB.rotation = value; }
+    public Vector3 Rotation
+    {
+        get => transform.eulerAngles;
+        set => transform.eulerAngles = value;
+    }
+
+    #endregion GetSets
+    #region Gets
+
+    /// <summary>
+    /// Returns the current velocity of the Rigidbody. (Inverted. y=1 is downwards, y=-1 is upwards.)
+    /// </summary>
+    public Vector3 Get3DGravity() => gravity;
+    /// <summary>
+    /// Returns the current velocity of the Rigidbody. (Y only.) (Inverted. 1 is downwards, -1 is upwards.)
+    /// </summary>
+    public float GetGravity() => gravity.y;
+
+    public bool Grounded => jumpState == JumpState.Grounded;
+    public JumpState JumpState => jumpState;
+
+    public Vector3 center => Position + Collider.center;
+
+    #endregion Gets
+    #region Sets
+
+    /// <summary>
+    /// Sets the current velocity of the Rigidbody. (Inverted. y=1 is downwards, y=-1 is upwards.)
+    /// </summary>
+    /// <param name="newGravity">The new gravity value.</param>
+    public void SetGravity(Vector3 newGravity) => gravity = newGravity;
+    /// <summary>
+    /// Sets the current velocity of the Rigidbody. (Y only.) (Inverted. 1 is downwards, -1 is upwards.)
+    /// </summary>
+    /// <param name="newGravity">The new gravity value.</param>
+    public void SetGravity(float newGravity) => gravity = new(0, newGravity, 0);
+    /// <summary>
+    /// Sets the current velocity of the Rigidbody. (Inverted. y=1 is downwards, y=-1 is upwards.)
+    /// </summary>
+    /// <param name="newX"> The new gravity value on the x axis. (1 = left.) </param>
+    /// <param name="newY"> The new gravity value on the y axis. (1 = down.) </param>
+    /// <param name="newZ"> The new gravity value on the z axis. (1 = back.) </param>
+    public void SetGravity(float newX, float newY, float newZ) => gravity = new(newX, newY, newZ);
+
+
+
+    #endregion Sets
+
+
 
     [ContextMenu("GetComponents")]
     protected virtual void Awake()
     {
         if (RB == null) RB = GetComponent<Rigidbody>();
         if (Collider == null) Collider = GetComponent<CapsuleCollider>();
-        anchorPoint = InstantSnapToFloor(out RaycastHit hit)
-            ? new(hit.point, hit.normal, hit.collider.transform, this)
-            : new(Position, gravity, null, this);
+        
+        if(InstantSnapToFloor(out RaycastHit hit)) Land(hit);
     }
 
     private void OnEnable()
@@ -152,7 +211,7 @@ public class CharacterMovementBody : MonoBehaviour
                     initVelocity = initVelocity.ProjectAndScale(anchorPoint.normal);
                 }
             }
-            else if (JumpState == JumpState.Grounded) UnLand();
+            else if (jumpState == JumpState.Grounded) UnLand();
         }
 
         if (!Grounded) ApplyGravity();
@@ -160,12 +219,6 @@ public class CharacterMovementBody : MonoBehaviour
 
     Vector3 initVelocity;
     Vector3 initNormal;
-
-
-
-    protected BodyAnchor anchorPoint;
-    public BodyAnchor GetAnchorPoint() => anchorPoint;
-    
 
     /// <summary>
     /// The Collide and Slide Algorithm.
@@ -257,16 +310,6 @@ public class CharacterMovementBody : MonoBehaviour
     }
 
 
-
-
-
-
-
-
-
-    public virtual void ApplyGravity() => velocity -= gravity * Time.fixedDeltaTime;
-
-
     /// <summary>
     /// Casts the Rigidbody in a direction to check for collision using SweepTest.
     /// </summary>
@@ -302,7 +345,7 @@ public class CharacterMovementBody : MonoBehaviour
         return hit.Length > 0;
     }
 
-    public virtual bool GroundCheck(out BodyAnchor groundHit)
+    public virtual bool GroundCheck(out AnchorPoint groundHit)
     {
         bool result = DirectionCast(Vector3.down, groundCheckBuffer, groundCheckBuffer, out RaycastHit raycast); 
         groundHit = raycast;
@@ -312,34 +355,46 @@ public class CharacterMovementBody : MonoBehaviour
     {
         if(DirectionCast(Vector3.down, groundCheckBuffer, groundCheckBuffer, out RaycastHit raycast))
         {
-            anchorPoint.Update(raycast.point, raycast.normal, raycast.transform);
+            Land(raycast);
             return true;
         }
         return false;
     }
 
-    public virtual void Land(BodyAnchor groundHit)
+    public virtual void Land(AnchorPoint groundHit)
     {
-        if (JumpState == JumpState.Grounded) return;
-        JumpState = JumpState.Grounded;
-        anchorPoint.Update(groundHit);
-        LandEvent?.Invoke();
-    }
-    public Action LandEvent;
-    public virtual void UnLand(JumpState newState = JumpState.Falling) => JumpState = newState;
-    public JumpState JumpState
-    {
-        get => _jumpState; 
-        set
+        bool wasntGrounded = jumpState != JumpState.Grounded;
+        bool objectChange = anchorPoint.transform != groundHit.transform;
+
+        if (wasntGrounded && objectChange) return;
+
+        jumpState = JumpState.Grounded;
+        anchorPoint = groundHit;
+
+        if (objectChange)
         {
-            if (_jumpState == value) return;
-            if (_jumpState != JumpState.Grounded && value == JumpState.Grounded) 
-                anchorPoint.Update(Position, gravity.normalized, null);
-            _jumpState = value;
+            movingAnchor?.RemoveBody(this);
+            movingAnchor = anchorPoint.transform.GetComponent<IMovablePlatform>();
+            movingAnchor?.AddBody(this);
+        }
+
+        if (wasntGrounded)
+        {
+            LandEvent?.Invoke();
         }
     }
-
-    
+    public Action LandEvent;
+    public virtual void UnLand(JumpState newState = JumpState.Falling)
+    {
+        if (newState < JumpState.Jumping) return;
+        jumpState = newState;
+        anchorPoint = AnchorPoint.Null;
+        if(movingAnchor != null)
+        {
+            movingAnchor.RemoveBody(this);
+            movingAnchor = null;
+        }
+    }
 
 
     public bool InstantSnapToFloor()
@@ -370,153 +425,10 @@ public class CharacterMovementBody : MonoBehaviour
 
     }
 
-
-
-
-
-
-
-    public struct BodyAnchor
-    {
-        public Vector3 point;
-        public Vector3 normal;
-        public Transform transform;
-        public IMovablePlatform Movable
-        {
-            readonly get => _movable;
-            set
-            {
-                if (value == _movable) return;
-                _movable?.RemoveBody(body);
-                 _movable = value;
-                _movable?.AddBody(body);
-            }
-        }
-        private IMovablePlatform _movable;
-        public readonly CharacterMovementBody body;
-
-        public BodyAnchor(Vector3 point, Vector3 normal, Transform transform, CharacterMovementBody body = null)
-        {
-            this.point = point;
-            this.normal = normal;
-            this.transform = transform;
-
-            this.body = body;
-            _movable = null;
-            if (transform != null && body != null) 
-                Movable = transform.GetComponent<IMovablePlatform>();
-        }
-        public BodyAnchor(RaycastHit hit)
-        {
-            point = hit.point;
-            normal = hit.normal;
-            transform = hit.transform != null ? hit.transform : null;
-
-            body = null;
-            _movable = null;
-        }
-        public BodyAnchor(ContactPoint contact)
-        {
-            point = contact.point;
-            normal = contact.normal;
-            transform = contact.otherCollider != null ? contact.otherCollider.transform : null;
-
-            body = null;
-            _movable = null;
-        }
-
-        public static implicit operator BodyAnchor(RaycastHit hit) => new(hit);
-        public static implicit operator BodyAnchor(ContactPoint contact) => new(contact);
-
-        public void Update(Vector3 point, Vector3 normal, Transform transform)
-        {
-            this.point = point;
-            this.normal = normal;
-            this.transform = transform;
-
-            if (body != null) 
-                Movable = transform != null 
-                    ? transform.GetComponent<IMovablePlatform>() 
-                    : null;
-        }
-        public void Update(BodyAnchor other)
-        {
-            point = other.point;
-            normal = other.normal;
-            transform = other.transform;
-
-            if (body != null) 
-                Movable = transform != null 
-                    ? transform.GetComponent<IMovablePlatform>() 
-                    : null;
-        }
-        public void Update(RaycastHit hit)
-        {
-            point = hit.point;
-            normal = hit.normal;
-            transform = hit.transform != null ? hit.transform : null;
-
-            if (body != null) 
-                Movable = transform != null 
-                    ? transform.GetComponent<IMovablePlatform>() 
-                    : null;
-        }
-        public void Update(ContactPoint contact)
-        {
-            point = contact.point;
-            normal = contact.normal;
-            transform = contact.otherCollider != null ? contact.otherCollider.transform : null;
-
-            if (body != null) 
-                Movable = transform != null 
-                    ? transform.GetComponent<IMovablePlatform>() 
-                    : null;
-        }
-
-        public static BodyAnchor None => new()
-        {
-            point = Vector3.zero,
-            normal = Vector3.up,
-            transform = null,
-            Movable = null,
-        };
-    }
-
-    #region GetSets
-
-    /// <summary>
-    /// Returns the current velocity of the Rigidbody. (Inverted. y=1 is downwards, y=-1 is upwards.)
-    /// </summary>
-    public Vector3 Get3DGravity() => gravity;
-    /// <summary>
-    /// Returns the current velocity of the Rigidbody. (Y only.) (Inverted. 1 is downwards, -1 is upwards.)
-    /// </summary>
-    public float GetGravity() => gravity.y;
-    /// <summary>
-    /// Sets the current velocity of the Rigidbody. (Inverted. y=1 is downwards, y=-1 is upwards.)
-    /// </summary>
-    /// <param name="newGravity">The new gravity value.</param>
-    public void SetGravity(Vector3 newGravity) => gravity = newGravity;
-    /// <summary>
-    /// Sets the current velocity of the Rigidbody. (Y only.) (Inverted. 1 is downwards, -1 is upwards.)
-    /// </summary>
-    /// <param name="newGravity">The new gravity value.</param>
-    public void SetGravity(float newGravity) => gravity = new(0, newGravity, 0);
-    /// <summary>
-    /// Sets the current velocity of the Rigidbody. (Inverted. y=1 is downwards, y=-1 is upwards.)
-    /// </summary>
-    /// <param name="newX"> The new gravity value on the x axis. (1 = left.) </param>
-    /// <param name="newY"> The new gravity value on the y axis. (1 = down.) </param>
-    /// <param name="newZ"> The new gravity value on the z axis. (1 = back.) </param>
-    public void SetGravity(float newX, float newY, float newZ) => gravity = new(newX, newY, newZ);
-
     private bool WithinSlopeAngle(Vector3 inNormal) => Vector3.Angle(Vector3.up, inNormal) < maxSlopeNormalAngle;
 
-    public bool Grounded => JumpState == JumpState.Grounded;
+    public virtual void ApplyGravity() => velocity -= gravity * Time.fixedDeltaTime;
 
-    public Vector3 center => Position + Collider.center;
-
-    #endregion GetSets
 }
 
 public enum JumpState

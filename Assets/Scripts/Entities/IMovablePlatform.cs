@@ -7,7 +7,7 @@ public interface IMovablePlatform
     public List<CharacterMovementBody> bodies { get; }
 
     public void AddBody(CharacterMovementBody body) => bodies.Add(body);
-    public void RemoveBody(CharacterMovementBody body) => bodies.Add(body);
+    public void RemoveBody(CharacterMovementBody body) => bodies.Remove(body);
 
     protected static void DoAnchorMove(IMovablePlatform This, Vector3 offset)
     {

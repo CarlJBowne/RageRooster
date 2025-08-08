@@ -39,12 +39,12 @@ public class PlayerGlidingMovement : PlayerAirborneMovement
         if(!isVentGlide || transform.position.y > targetHeight)
         {
             result = ApplyGravity(gravity, terminalVelocity, flatGravity);
-            playerMovementBody.JumpState = JumpState.Falling;
+            playerMovementBody.UnLand(JumpState.Falling);
         }  
         else if (transform.position.y < targetHeight)
         {
             result = raiseRate/* * currentVent.transform.up.y*/;
-            playerMovementBody.JumpState = JumpState.Hangtime;
+            playerMovementBody.UnLand(JumpState.Hangtime);
         }  
         else result = 0;
 
@@ -58,7 +58,7 @@ public class PlayerGlidingMovement : PlayerAirborneMovement
     {
         Y = Y.Value.Max(0);
 
-        playerMovementBody.JumpState = JumpState.Falling;
+        playerMovementBody.UnLand(JumpState.Falling);
         if (fallState != null) fallState.Enter();
     }
 

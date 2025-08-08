@@ -118,7 +118,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
 
     public void LandInto()
     {
-        bool groundCollide = playerMovementBody.GroundCheck(out CharacterMovementBody.BodyAnchor collideResult);
+        bool groundCollide = playerMovementBody.GroundCheck(out AnchorPoint collideResult);
         if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
         playerMovementBody.Land(collideResult);
         State.Enter();
@@ -128,7 +128,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
     }
     public void LandInto(StateAnimator.EntryAnimAction onEntry, string onEnterName, float onEnterTime)
     {
-        bool groundCollide = playerMovementBody.GroundCheck(out CharacterMovementBody.BodyAnchor collideResult);
+        bool groundCollide = playerMovementBody.GroundCheck(out AnchorPoint collideResult);
         if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
         playerMovementBody.Land(collideResult);
         State.Enter();
