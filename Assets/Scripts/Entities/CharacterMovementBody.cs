@@ -13,6 +13,10 @@ public class CharacterMovementBody : MonoBehaviour
     /// </summary>
     [SerializeField] protected Vector3 defaultGravity = new(0, 1, 0);
     /// <summary>
+    /// Whether Gravity should be automaticall applied or applied by some behavior
+    /// </summary>
+    public bool autoApplyGravity = false;
+    /// <summary>
     /// The maximum angle (in degrees) of a slope this <see cref="CharacterMovementBody"/> can stand on.
     /// </summary>
     [SerializeField] protected float maxSlopeNormalAngle = 45f;
@@ -267,7 +271,7 @@ public class CharacterMovementBody : MonoBehaviour
             else if (jumpState == JumpState.Grounded) UnLand();
         }
 
-        if (!Grounded) ApplyGravity();
+        if (autoApplyGravity && !Grounded) ApplyGravity();
     }
 
     /// <summary>
@@ -285,7 +289,7 @@ public class CharacterMovementBody : MonoBehaviour
     /// <param name="vel">Input Velocity.</param>
     /// <param name="prevNormal">The Normal of the previous Step.</param>
     /// <param name="step">The current step. Starts at 0.</param>
-    protected virtual void Move(Vector3 vel, Vector3 prevNormal, int step = 0)
+    protected virtual void Move(Vector3 vel, Vector3 prevNormal, int step = 0) 
     {
         if (DirectionCast(vel.normalized, vel.magnitude, groundCheckBuffer, out RaycastHit hit))
         {
