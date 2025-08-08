@@ -8,17 +8,6 @@ using static TrackerEB;
 public class PlayerAirborneMovement : PlayerMovementEffector
 {
 
-    [Header("Horizontal")]
-    public float acceleration;
-    public float decceleration;
-    public float maxSpeed;
-    public float stopping = 0.75f;
-    [Tooltip("1 = full second turn, 50 = 1 FixedUpdate turn")]
-    public float maxTurnSpeed = 25;
-    public bool forceOutward;
-    public float minSpeed;
-    [Header("Vertical")]
-
     public JumpState defaultPhase;
     public float gravity = 9.81f;
     public float terminalVelocity = 100f;
@@ -40,21 +29,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
 
 
-    public override void HorizontalMovement(out float? resultX, out float? resultZ)
-    {
-        float currentSpeed = playerMovementBody.CurrentSpeed;
-        Vector3 currentDirection = playerMovementBody.direction;
 
-        if (!forceOutward) HorizontalMain (ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
-        else HorizontalCharge       (ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
-
-        playerMovementBody.CurrentSpeed = currentSpeed;
-
-        Vector3 literalDirection = transform.forward * currentSpeed;
-
-        resultX = literalDirection.x;
-        resultZ = literalDirection.z;
-    }
     public override void VerticalMovement(out float? result)
     {
         result = ApplyGravity(gravity, terminalVelocity, flatGravity);
@@ -62,53 +37,6 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         else if (playerMovementBody.velocity.y <= fallStateThreshold && fallState != this) Fall(ref result);
 
     }
-
-    protected virtual void HorizontalMain(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control, float deltaTime)
-    {
-        Vector3 controlDirection = control.normalized;
-        float controlMag = control.magnitude;
-
-        if (controlMag > 0)
-        {
-            float Dot = Vector3.Dot(controlDirection, currentDirection);
-
-            if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
-
-            currentSpeed *= Dot;
-            if (currentSpeed < maxSpeed)
-                currentSpeed = currentSpeed.MoveUp(controlMag * acceleration * deltaTime, maxSpeed);
-            else if (currentSpeed > maxSpeed)
-                currentSpeed = currentSpeed.MoveDown(controlMag * decceleration * deltaTime, maxSpeed);
-
-        }
-        else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
-
-    }
-    protected virtual void HorizontalCharge(ref float currentSpeed, ref Vector3 currentDirection, Vector3 control, float deltaTime)
-    {
-        Vector3 controlDirection = control.normalized;
-        float controlMag = control.magnitude;
-
-
-        if (controlMag > 0.1f)
-        {
-            if (currentSpeed < maxSpeed)
-                currentSpeed = currentSpeed.MoveUp(controlMag * acceleration * deltaTime, maxSpeed);
-        }
-        else
-        {
-            if (currentSpeed < minSpeed)
-                currentSpeed = currentSpeed.MoveUp(controlMag * acceleration * deltaTime, minSpeed);
-            if (currentSpeed > minSpeed)
-                currentSpeed = currentSpeed.MoveDown(controlMag * decceleration * deltaTime, maxSpeed);
-        }
-
-        if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
-        playerMovementBody.CurrentSpeed = currentSpeed; 
-
-
-    }
-
 
     protected virtual void VerticalUpwards(ref float? Y)
     {
@@ -157,8 +85,6 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
     protected virtual void Start_Jump()
     {
-        if (forceOutward) playerMovementBody.CurrentSpeed = maxSpeed;
-
         if (!upwards) return;
 
         playerMovementBody.VelocitySet(y: jumpPower);

@@ -20,20 +20,7 @@ public class PlayerGlidingMovement : PlayerAirborneMovement
      */
 
     //Only change from PlayerAirborneMovement is the removal of HorizontalCharge.
-    public override void HorizontalMovement(out float? resultX, out float? resultZ)
-    {
-        float currentSpeed = playerMovementBody.CurrentSpeed;
-        Vector3 currentDirection = playerMovementBody.direction;
 
-        HorizontalMain(ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
-
-        playerMovementBody.CurrentSpeed = currentSpeed;
-
-        Vector3 literalDirection = transform.forward * currentSpeed;
-
-        resultX = literalDirection.x;
-        resultZ = literalDirection.z;
-    }
     public override void VerticalMovement(out float? result)
     {
         if(!isVentGlide || transform.position.y > targetHeight)

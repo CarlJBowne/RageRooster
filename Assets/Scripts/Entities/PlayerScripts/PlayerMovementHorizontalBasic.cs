@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SLS.StateMachineH;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -78,7 +79,11 @@ public class PlayerMovementHorizontalBasic : PlayerMovementEffector
     }
 
 
-
+    protected override void OnEnter(State prev, bool isFinal)
+    {
+        if (!isFinal) return;
+        if (forceOutward) playerMovementBody.CurrentSpeed = maxSpeed;
+    }
 
 
 

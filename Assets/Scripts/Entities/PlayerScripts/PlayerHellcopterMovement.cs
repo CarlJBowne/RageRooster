@@ -19,21 +19,7 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
      *allowMidFall
      */
 
-    public override void HorizontalMovement(out float? resultX, out float? resultZ)
-    {
-        float currentSpeed = playerMovementBody.CurrentSpeed;
-        Vector3 currentDirection = playerMovementBody.direction;
 
-        if (!forceOutward) HorizontalMain(ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
-        else HorizontalCharge(ref currentSpeed, ref currentDirection, playerController.camAdjustedMovement, Time.fixedDeltaTime * 50);
-
-        playerMovementBody.CurrentSpeed = currentSpeed;
-
-        Vector3 literalDirection = transform.forward * currentSpeed;
-
-        resultX = literalDirection.x;
-        resultZ = literalDirection.z;
-    }
     public override void VerticalMovement(out float? result)
     {
         result = ApplyGravity(gravity, terminalVelocity, flatGravity);
@@ -64,8 +50,6 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
 
     protected override void Start_Decel()
     {
-        if (forceOutward) playerMovementBody.CurrentSpeed = maxSpeed;
-
         if (!upwards) return;
 
         currentVent = playerMovementBody.currentVent;

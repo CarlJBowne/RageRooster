@@ -4,11 +4,8 @@ using UnityEngine;
 
 public abstract class PlayerMovementEffector : PlayerStateBehavior
 {
-    [HideInEditMode, DisableInPlayMode] public bool trueActive;
-
     protected override void OnFixedUpdate()
     {
-        if (!trueActive) return;
         this.HorizontalMovement(out float? X, out float? Z);
         this.VerticalMovement(out float? Y);
         playerMovementBody.VelocitySet(X, Y, Z);
@@ -32,5 +29,4 @@ public abstract class PlayerMovementEffector : PlayerStateBehavior
             ).Min(-terminalVelocity);
     }
 
-    protected override void OnEnter(State prev, bool isFinal) => trueActive = isFinal;
 }

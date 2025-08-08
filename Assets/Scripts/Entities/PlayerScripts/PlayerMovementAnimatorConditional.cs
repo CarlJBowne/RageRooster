@@ -35,7 +35,6 @@ public class PlayerMovementAnimatorConditional : PlayerMovementAnimator
 
     protected override void OnEnter(State prev, bool isFinal)
     {
-        trueActive = isFinal; 
         locked = defaultState;
         if (checkOnEnter) Check();
     }

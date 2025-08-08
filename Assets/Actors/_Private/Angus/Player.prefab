@@ -1752,6 +1752,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8409826796498701612}
   - component: {fileID: 3117915588769811748}
+  - component: {fileID: 400019598573906474}
   - component: {fileID: 5823505111254569389}
   - component: {fileID: 1632128030463539112}
   - component: {fileID: 7868266934595780143}
@@ -1792,6 +1793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
+  - {fileID: 400019598573906474}
   - {fileID: 5823505111254569389}
   - {fileID: 8308005270771097460}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -1799,6 +1801,31 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &400019598573906474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049869934697765793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe34ac105f41a84097b0a3ee58e92c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 3117915588769811748}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  trueActive: 1
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 5
+  stopping: 0.75
+  maxTurnSpeed: 25
+  forceOutward: 0
+  minSpeed: 0
 --- !u!114 &5823505111254569389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1816,14 +1843,7 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
-  trueActive: 0
-  acceleration: 0.35
-  decceleration: 0.5
-  maxSpeed: 5
-  stopping: 0.75
-  maxTurnSpeed: 25
-  forceOutward: 0
-  minSpeed: 0
+  trueActive: 1
   defaultPhase: 1
   gravity: 30
   terminalVelocity: 98.1
@@ -1968,6 +1988,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6649114412980860138}
   - component: {fileID: 4770298227795515962}
+  - component: {fileID: 8898777094738097428}
   - component: {fileID: 1027073189156208793}
   - component: {fileID: 3148531946352221550}
   - component: {fileID: 6173842201903441971}
@@ -2007,6 +2028,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
+  - {fileID: 8898777094738097428}
   - {fileID: 1027073189156208793}
   - {fileID: 6173842201903441971}
   - {fileID: 5582145816796372926}
@@ -2015,6 +2037,31 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &8898777094738097428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206808908755011029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe34ac105f41a84097b0a3ee58e92c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 4770298227795515962}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  trueActive: 1
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 10
+  stopping: 0.3
+  maxTurnSpeed: 10
+  forceOutward: 0
+  minSpeed: 0
 --- !u!114 &1027073189156208793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2032,14 +2079,7 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
-  trueActive: 0
-  acceleration: 0.35
-  decceleration: 0.5
-  maxSpeed: 10
-  stopping: 0.3
-  maxTurnSpeed: 10
-  forceOutward: 0
-  minSpeed: 0
+  trueActive: 1
   defaultPhase: 1
   gravity: 30
   terminalVelocity: 98.1
@@ -3243,13 +3283,6 @@ MonoBehaviour:
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
   trueActive: 0
-  acceleration: 0
-  decceleration: 0.5
-  maxSpeed: 17
-  stopping: 0.3
-  maxTurnSpeed: 10
-  forceOutward: 0
-  minSpeed: 0
   defaultPhase: 3
   gravity: 50
   terminalVelocity: 98.1
@@ -4423,6 +4456,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7977943911182383535}
   - component: {fileID: 3747663377877617945}
+  - component: {fileID: 656637307292455007}
   - component: {fileID: 2513530225769621494}
   - component: {fileID: 2714252772125468041}
   - component: {fileID: 3136932766002583917}
@@ -4461,6 +4495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
+  - {fileID: 656637307292455007}
   - {fileID: 2513530225769621494}
   - {fileID: 2714252772125468041}
   - {fileID: 3136932766002583917}
@@ -4469,6 +4504,31 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &656637307292455007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2425651879818459153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe34ac105f41a84097b0a3ee58e92c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 3747663377877617945}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  trueActive: 1
+  acceleration: 0.35
+  decceleration: 0
+  maxSpeed: 10
+  stopping: 0.3
+  maxTurnSpeed: 10
+  forceOutward: 0
+  minSpeed: 0
 --- !u!114 &2513530225769621494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4486,14 +4546,7 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
-  trueActive: 0
-  acceleration: 0.35
-  decceleration: 0
-  maxSpeed: 10
-  stopping: 0.3
-  maxTurnSpeed: 10
-  forceOutward: 0
-  minSpeed: 0
+  trueActive: 1
   defaultPhase: 4
   gravity: 50
   terminalVelocity: 98.1
@@ -5111,13 +5164,6 @@ MonoBehaviour:
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
   trueActive: 0
-  acceleration: 0
-  decceleration: 0.5
-  maxSpeed: 17
-  stopping: 0.3
-  maxTurnSpeed: 10
-  forceOutward: 0
-  minSpeed: 0
   defaultPhase: 3
   gravity: 50
   terminalVelocity: 98.1
@@ -5502,6 +5548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultGravity: {x: 0, y: 1, z: 0}
+  autoApplyGravity: 0
   maxSlopeNormalAngle: 46
   checkGround: 1
   movementCheckBuffer: 0.1
@@ -5509,6 +5556,8 @@ MonoBehaviour:
   movementProjectionSteps: 3
   _rb: {fileID: 1838944232945776554}
   <Collider>k__BackingField: {fileID: 598530174602593461}
+  velocity: {x: 0, y: 0, z: 0}
+  direction: {x: 0, y: 0, z: 1}
   jumpState1: {fileID: 8452752302749071132}
   wallJumpState: {fileID: 750694679335013753}
   airChargeState: {fileID: 1482092204021747920}
@@ -6596,6 +6645,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5577900753218004323}
   - component: {fileID: 8815441119551140160}
+  - component: {fileID: 9084665818476035480}
   - component: {fileID: 2095790091468025607}
   - component: {fileID: 4546970226547505939}
   - component: {fileID: 6944606189691095705}
@@ -6634,6 +6684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
+  - {fileID: 9084665818476035480}
   - {fileID: 2095790091468025607}
   - {fileID: 4546970226547505939}
   - {fileID: 6944606189691095705}
@@ -6642,6 +6693,31 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &9084665818476035480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3645675676112704684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe34ac105f41a84097b0a3ee58e92c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 8815441119551140160}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  trueActive: 1
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 8
+  stopping: 0.3
+  maxTurnSpeed: 10
+  forceOutward: 0
+  minSpeed: 0
 --- !u!114 &2095790091468025607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6659,14 +6735,7 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
-  trueActive: 0
-  acceleration: 0.35
-  decceleration: 0.5
-  maxSpeed: 8
-  stopping: 0.3
-  maxTurnSpeed: 10
-  forceOutward: 0
-  minSpeed: 0
+  trueActive: 1
   defaultPhase: 3
   gravity: 3.04
   terminalVelocity: 5.89
@@ -7127,6 +7196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1846500094994641161}
   - component: {fileID: 5659189762918028092}
+  - component: {fileID: 251214827872125079}
   - component: {fileID: 1150588390469737330}
   - component: {fileID: 564320835148495432}
   - component: {fileID: 2444952072764193927}
@@ -7166,6 +7236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
+  - {fileID: 251214827872125079}
   - {fileID: 1150588390469737330}
   - {fileID: 2444952072764193927}
   - {fileID: 6140362856135786890}
@@ -7174,6 +7245,31 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &251214827872125079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4124917820233702332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe34ac105f41a84097b0a3ee58e92c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 5659189762918028092}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  trueActive: 1
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 8
+  stopping: 0.3
+  maxTurnSpeed: 10
+  forceOutward: 0
+  minSpeed: 0
 --- !u!114 &1150588390469737330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7191,14 +7287,7 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
-  trueActive: 0
-  acceleration: 0.35
-  decceleration: 0.5
-  maxSpeed: 8
-  stopping: 0.3
-  maxTurnSpeed: 10
-  forceOutward: 0
-  minSpeed: 0
+  trueActive: 1
   defaultPhase: 4
   gravity: 3.04
   terminalVelocity: 5.89
@@ -7457,6 +7546,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6701569219199048766}
   - component: {fileID: 3376758605324004614}
+  - component: {fileID: 3898513887603300695}
   - component: {fileID: 8452752302749071132}
   - component: {fileID: 2886246656656251508}
   - component: {fileID: 9149670565680682043}
@@ -7496,6 +7586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
+  - {fileID: 3898513887603300695}
   - {fileID: 8452752302749071132}
   - {fileID: 2886246656656251508}
   - {fileID: 9149670565680682043}
@@ -7504,6 +7595,31 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &3898513887603300695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4328891485732610984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe34ac105f41a84097b0a3ee58e92c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 3376758605324004614}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  trueActive: 1
+  acceleration: 0.35
+  decceleration: 0.001
+  maxSpeed: 10
+  stopping: 0.3
+  maxTurnSpeed: 10
+  forceOutward: 0
+  minSpeed: 0
 --- !u!114 &8452752302749071132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7521,14 +7637,7 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
-  trueActive: 0
-  acceleration: 0.35
-  decceleration: 0.001
-  maxSpeed: 10
-  stopping: 0.3
-  maxTurnSpeed: 10
-  forceOutward: 0
-  minSpeed: 0
+  trueActive: 1
   defaultPhase: 1
   gravity: 30
   terminalVelocity: 98.1
@@ -8639,6 +8748,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4394942687003372090}
   - component: {fileID: 1157138829965547146}
+  - component: {fileID: 5389373411057804240}
   - component: {fileID: 4470159406448367370}
   - component: {fileID: 2152569479813037482}
   - component: {fileID: 2078370564367679410}
@@ -8679,6 +8789,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
+  - {fileID: 5389373411057804240}
   - {fileID: 4470159406448367370}
   - {fileID: 2078370564367679410}
   - {fileID: 4760351905167416853}
@@ -8688,6 +8799,31 @@ MonoBehaviour:
   <Layer>k__BackingField: 1
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &5389373411057804240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5075024688237253571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe34ac105f41a84097b0a3ee58e92c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 1157138829965547146}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  trueActive: 1
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 7.5
+  stopping: 0.75
+  maxTurnSpeed: 25
+  forceOutward: 0
+  minSpeed: 0
 --- !u!114 &4470159406448367370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8705,14 +8841,7 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
-  trueActive: 0
-  acceleration: 0.35
-  decceleration: 0.5
-  maxSpeed: 7.5
-  stopping: 0.75
-  maxTurnSpeed: 25
-  forceOutward: 0
-  minSpeed: 0
+  trueActive: 1
   defaultPhase: 1
   gravity: 30.4
   terminalVelocity: 4.5
@@ -9102,8 +9231,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4547898824433997722}
   - {fileID: 7671762846807235667}
+  - {fileID: 4547898824433997722}
   - {fileID: 8377843844754638416}
   - {fileID: 176377644018463753}
   m_Father: {fileID: 7427727485705586250}
@@ -9125,8 +9254,8 @@ MonoBehaviour:
   <Parent>k__BackingField: {fileID: 4554088299833102073}
   <Layer>k__BackingField: 1
   <Children>k__BackingField:
-  - {fileID: 3460612446326371314}
   - {fileID: 7039777641560852190}
+  - {fileID: 3460612446326371314}
   - {fileID: 1975376254761656333}
   - {fileID: 3765359621817980221}
   <ChildCount>k__BackingField: 4
@@ -10053,13 +10182,6 @@ MonoBehaviour:
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
   trueActive: 0
-  acceleration: 0.35
-  decceleration: 0
-  maxSpeed: 10
-  stopping: 0.3
-  maxTurnSpeed: 10
-  forceOutward: 0
-  minSpeed: 0
   defaultPhase: 3
   gravity: 50
   terminalVelocity: 98.1
@@ -10616,13 +10738,6 @@ MonoBehaviour:
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
   trueActive: 0
-  acceleration: 0.35
-  decceleration: 0.5
-  maxSpeed: 20
-  stopping: 0.15
-  maxTurnSpeed: 10
-  forceOutward: 0
-  minSpeed: 0
   defaultPhase: 3
   gravity: 50
   terminalVelocity: 98.1
@@ -11223,6 +11338,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4547898824433997722}
   - component: {fileID: 3460612446326371314}
+  - component: {fileID: 6873359722650928636}
   - component: {fileID: 1482092204021747920}
   - component: {fileID: 6805981411971009349}
   - component: {fileID: 8033490198668130849}
@@ -11264,6 +11380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
+  - {fileID: 6873359722650928636}
   - {fileID: 1482092204021747920}
   - {fileID: 6805981411971009349}
   - {fileID: 7692018968260677331}
@@ -11272,6 +11389,31 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &6873359722650928636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6246743017282741172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe34ac105f41a84097b0a3ee58e92c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 3460612446326371314}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  trueActive: 1
+  acceleration: 0.35
+  decceleration: 0
+  maxSpeed: 20
+  stopping: 0.75
+  maxTurnSpeed: 10
+  forceOutward: 1
+  minSpeed: 0
 --- !u!114 &1482092204021747920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11289,14 +11431,7 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
-  trueActive: 0
-  acceleration: 0.35
-  decceleration: 0.5
-  maxSpeed: 20
-  stopping: 0.75
-  maxTurnSpeed: 0.5
-  forceOutward: 1
-  minSpeed: 0
+  trueActive: 1
   defaultPhase: 1
   gravity: 30
   terminalVelocity: 98.1
@@ -11817,6 +11952,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8377843844754638416}
   - component: {fileID: 1975376254761656333}
+  - component: {fileID: 5156964752186679917}
   - component: {fileID: 8653995511402254534}
   - component: {fileID: 3239914536476910747}
   - component: {fileID: 2299099583400383993}
@@ -11858,6 +11994,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
+  - {fileID: 5156964752186679917}
   - {fileID: 8653995511402254534}
   - {fileID: 8747683321289999464}
   - {fileID: 4185209184497774278}
@@ -11866,6 +12003,31 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &5156964752186679917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6574491177993153932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe34ac105f41a84097b0a3ee58e92c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 1975376254761656333}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  trueActive: 1
+  acceleration: 0.35
+  decceleration: 0
+  maxSpeed: 20
+  stopping: 0.75
+  maxTurnSpeed: 10
+  forceOutward: 1
+  minSpeed: 0
 --- !u!114 &8653995511402254534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11883,14 +12045,7 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
-  trueActive: 0
-  acceleration: 0.35
-  decceleration: 0.5
-  maxSpeed: 20
-  stopping: 0.75
-  maxTurnSpeed: 0.5
-  forceOutward: 1
-  minSpeed: 0
+  trueActive: 1
   defaultPhase: 4
   gravity: 30
   terminalVelocity: 98.1
@@ -13326,13 +13481,6 @@ MonoBehaviour:
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
   trueActive: 0
-  acceleration: 0.35
-  decceleration: 0.001
-  maxSpeed: 10
-  stopping: 0.3
-  maxTurnSpeed: 10
-  forceOutward: 0
-  minSpeed: 0
   defaultPhase: 0
   gravity: 30
   terminalVelocity: 98.1
@@ -14654,6 +14802,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5014433089004609597}
   - component: {fileID: 7749773456367244962}
+  - component: {fileID: 9085656038977677026}
   - component: {fileID: 3877140044969608344}
   - component: {fileID: 6036952242168296381}
   - component: {fileID: 938294354928921193}
@@ -14694,6 +14843,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
+  - {fileID: 9085656038977677026}
   - {fileID: 3877140044969608344}
   - {fileID: 938294354928921193}
   - {fileID: 101724865787026955}
@@ -14703,6 +14853,31 @@ MonoBehaviour:
   <Layer>k__BackingField: 1
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
+--- !u!114 &9085656038977677026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7640004567042433024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe34ac105f41a84097b0a3ee58e92c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 7749773456367244962}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  trueActive: 1
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 7.5
+  stopping: 0.75
+  maxTurnSpeed: 25
+  forceOutward: 1
+  minSpeed: 7.5
 --- !u!114 &3877140044969608344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14720,14 +14895,7 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
-  trueActive: 0
-  acceleration: 0.35
-  decceleration: 0.5
-  maxSpeed: 7.5
-  stopping: 0.75
-  maxTurnSpeed: 25
-  forceOutward: 1
-  minSpeed: 7.5
+  trueActive: 1
   defaultPhase: 3
   gravity: 3.04
   terminalVelocity: 4.5
