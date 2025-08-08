@@ -8,7 +8,13 @@ public class CharacterMovementBody : MonoBehaviour
 
     #region Config
 
+    /// <summary>
+    /// The default gravity vector for this <see cref="CharacterMovementBody"/>.
+    /// </summary>
     [SerializeField] protected Vector3 defaultGravity = new(0, 1, 0);
+    /// <summary>
+    /// The maximum angle (in degrees) of a slope this <see cref="CharacterMovementBody"/> can stand on.
+    /// </summary>
     [SerializeField] protected float maxSlopeNormalAngle = 45f;
     /// <summary>
     /// Whether this body should automatically check the grounded status before movement.
@@ -30,8 +36,14 @@ public class CharacterMovementBody : MonoBehaviour
     #endregion Config
     #region Components
 
+    /// <summary>
+    /// The Rigidbody component attached to this <see cref="CharacterMovementBody"/>.
+    /// </summary>
     public Rigidbody RB { get => _rb; private set => _rb = value; }
     [SerializeField] private Rigidbody _rb;
+    /// <summary>
+    /// The CapsuleCollider component attached to this <see cref="CharacterMovementBody"/>.
+    /// </summary>
     [field: SerializeField, HideInInspector] public CapsuleCollider Collider { get; private set; }
 
     #endregion Components
@@ -47,7 +59,7 @@ public class CharacterMovementBody : MonoBehaviour
     [NonSerialized] public Vector3 angularVelocity = new(0, 0, 0);
 
     /// <summary>
-    /// The active direction of the character. Simpler controllers can probably avoid using this.
+    /// The active direction of this <see cref="CharacterMovementBody"/>. Simpler controllers can probably avoid using this.
     /// </summary>
     public Vector3 direction = new(0, 0, 1);
     /// <summary>
@@ -55,14 +67,20 @@ public class CharacterMovementBody : MonoBehaviour
     /// </summary>
     [NonSerialized] private Vector3 gravity = new(0, 9.8f, 0);
 
-    public enum CharacterRigidBodyState
+    /// <summary>
+    /// The possible states for a <see cref="CharacterMovementBody"/>.
+    /// </summary>
+    public enum CharacterMovementBodyState
     {
         Enabled,
         Kinematic,
         Ragdoll,
         OFF
     }
-    public CharacterRigidBodyState RBState
+    /// <summary>
+    /// The current state of this <see cref="CharacterMovementBody"/>.
+    /// </summary>
+    public CharacterMovementBodyState RBState
     {
         get => _rbState;
         set
@@ -70,22 +88,22 @@ public class CharacterMovementBody : MonoBehaviour
             _rbState = value;
             switch (value)
             {
-                case CharacterRigidBodyState.Enabled:
+                case CharacterMovementBodyState.Enabled:
                     RB.isKinematic = false;
                     RB.detectCollisions = true;
                     RB.useGravity = false;
                     break;
-                case CharacterRigidBodyState.Kinematic:
+                case CharacterMovementBodyState.Kinematic:
                     RB.isKinematic = true;
                     RB.detectCollisions = true;
                     RB.useGravity = false;
                     break;
-                case CharacterRigidBodyState.Ragdoll:
+                case CharacterMovementBodyState.Ragdoll:
                     RB.isKinematic = false;
                     RB.detectCollisions = true;
                     RB.useGravity = true;
                     break;
-                case CharacterRigidBodyState.OFF:
+                case CharacterMovementBodyState.OFF:
                     RB.isKinematic = true;
                     RB.detectCollisions = false;
                     RB.useGravity = false;
@@ -93,17 +111,29 @@ public class CharacterMovementBody : MonoBehaviour
             }
         }
     }
-    private CharacterRigidBodyState _rbState = CharacterRigidBodyState.Enabled;
+    private CharacterMovementBodyState _rbState = CharacterMovementBodyState.Enabled;
 
+    /// <summary>
+    /// The current jump state of this body.
+    /// </summary>
     protected JumpState jumpState = JumpState.Grounded;
 
+    /// <summary>
+    /// The current anchor point this body is attached to.
+    /// </summary>
     protected AnchorPoint anchorPoint = AnchorPoint.Null;
+    /// <summary>
+    /// The current moving platform this body is anchored to, if any.
+    /// </summary>
     protected IMovablePlatform movingAnchor;
 
     #endregion Data
 
     #region GetSets
 
+    /// <summary>
+    /// Gets or sets the position of the character.
+    /// </summary>
     public Vector3 Position
     {
         get => RB.isKinematic ? transform.position : RB.position;
@@ -116,8 +146,14 @@ public class CharacterMovementBody : MonoBehaviour
             RB.MovePosition(value);
         }
     }
+    /// <summary>
+    /// Gets or sets the rotation of the Rigidbody as a Quaternion.
+    /// </summary>
     public Quaternion RotationQ
     { get => RB.rotation; set => RB.rotation = value; }
+    /// <summary>
+    /// Gets or sets the rotation of the character in Euler angles.
+    /// </summary>
     public Vector3 Rotation
     {
         get => transform.eulerAngles;
@@ -128,68 +164,85 @@ public class CharacterMovementBody : MonoBehaviour
     #region Gets
 
     /// <summary>
-    /// Returns the current velocity of the Rigidbody. (Inverted. y=1 is downwards, y=-1 is upwards.)
+    /// Returns the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
     /// </summary>
     public Vector3 Get3DGravity() => gravity;
     /// <summary>
-    /// Returns the current velocity of the Rigidbody. (Y only.) (Inverted. 1 is downwards, -1 is upwards.)
+    /// Returns the current gravity value on the Y axis. (Inverted. 1 is downwards, -1 is upwards.)
     /// </summary>
     public float GetGravity() => gravity.y;
 
+    /// <summary>
+    /// Whether the character is currently grounded.
+    /// </summary>
     public bool Grounded => jumpState == JumpState.Grounded;
+    /// <summary>
+    /// The current jump state of the character.
+    /// </summary>
     public JumpState JumpState => jumpState;
 
+    /// <summary>
+    /// The center position of the character's collider.
+    /// </summary>
     public Vector3 center => Position + Collider.center;
 
     #endregion Gets
     #region Sets
 
     /// <summary>
-    /// Sets the current velocity of the Rigidbody. (Inverted. y=1 is downwards, y=-1 is upwards.)
+    /// Sets the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
     /// </summary>
     /// <param name="newGravity">The new gravity value.</param>
     public void SetGravity(Vector3 newGravity) => gravity = newGravity;
     /// <summary>
-    /// Sets the current velocity of the Rigidbody. (Y only.) (Inverted. 1 is downwards, -1 is upwards.)
+    /// Sets the current gravity value on the Y axis. (Inverted. 1 is downwards, -1 is upwards.)
     /// </summary>
     /// <param name="newGravity">The new gravity value.</param>
     public void SetGravity(float newGravity) => gravity = new(0, newGravity, 0);
     /// <summary>
-    /// Sets the current velocity of the Rigidbody. (Inverted. y=1 is downwards, y=-1 is upwards.)
+    /// Sets the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
     /// </summary>
     /// <param name="newX"> The new gravity value on the x axis. (1 = left.) </param>
     /// <param name="newY"> The new gravity value on the y axis. (1 = down.) </param>
     /// <param name="newZ"> The new gravity value on the z axis. (1 = back.) </param>
     public void SetGravity(float newX, float newY, float newZ) => gravity = new(newX, newY, newZ);
 
-
-
     #endregion Sets
 
-
-
+    /// <summary>
+    /// Gets required components and optionally snaps the character to the floor on Awake.
+    /// </summary>
     [ContextMenu("GetComponents")]
     protected virtual void Awake()
     {
         if (RB == null) RB = GetComponent<Rigidbody>();
         if (Collider == null) Collider = GetComponent<CapsuleCollider>();
-        
-        if(InstantSnapToFloor(out RaycastHit hit)) Land(hit);
+
+        if (InstantSnapToFloor(out RaycastHit hit)) Land(hit);
     }
 
+    /// <summary>
+    /// Called when the component is enabled.
+    /// </summary>
     private void OnEnable()
     {
-        if(_rbState == CharacterRigidBodyState.OFF) 
-            RBState = CharacterRigidBodyState.Enabled;
+        if (_rbState == CharacterMovementBodyState.OFF)
+            RBState = CharacterMovementBodyState.Enabled;
     }
+    /// <summary>
+    /// Called when the component is disabled.
+    /// </summary>
     private void OnDisable()
     {
-        RBState = CharacterRigidBodyState.OFF;
+        RBState = CharacterMovementBodyState.OFF;
     }
 
+    /// <summary>
+    /// Handles physics-based movement and state updates.
+    /// </summary>
     protected virtual void FixedUpdate()
     {
-        if(RBState != CharacterRigidBodyState.Enabled) return;
+        if (RBState != CharacterMovementBodyState.Enabled) return;
         RB.velocity = Vector3.zero;
         RB.angularVelocity = Vector3.zero;
 
@@ -217,7 +270,13 @@ public class CharacterMovementBody : MonoBehaviour
         if (!Grounded) ApplyGravity();
     }
 
+    /// <summary>
+    /// The initial velocity used in the current physics step.
+    /// </summary>
     Vector3 initVelocity;
+    /// <summary>
+    /// The initial normal used in the current physics step.
+    /// </summary>
     Vector3 initNormal;
 
     /// <summary>
@@ -245,9 +304,9 @@ public class CharacterMovementBody : MonoBehaviour
                     if (StopForward(ref nextNormal, hit.normal)) return;
 
                 if (Grounded && prevNormal.y > 0 && hit.normal.y < 0) //Floor to Cieling
-                    if(FloorCeilingLock(prevNormal, hit.normal)) return;
-                else if (Grounded && prevNormal.y < 0 && hit.normal.y > 0) //Ceiling to Floor
-                    if(FloorCeilingLock(hit.normal, prevNormal)) return;
+                    if (FloorCeilingLock(prevNormal, hit.normal)) return;
+                    else if (Grounded && prevNormal.y < 0 && hit.normal.y > 0) //Ceiling to Floor
+                        if (FloorCeilingLock(hit.normal, prevNormal)) return;
             }
             else
             {
@@ -287,7 +346,7 @@ public class CharacterMovementBody : MonoBehaviour
     }
 
     /// <summary>
-    /// Stops the forward movement and updates the next normal vector.
+    /// Called during <see cref="Move"/> to stop the forward movement and update the next normal vector. Overridable.
     /// </summary>
     /// <param name="nextNormal">A reference to the vector that will be updated to the normalized XZ components of <paramref name="newNormal"/>.</param>
     /// <param name="newNormal">The vector whose XZ components are used to calculate the updated normal.</param>
@@ -298,22 +357,28 @@ public class CharacterMovementBody : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Called during <see cref="Move"/> to move this body forward. Overridable.
+    /// </summary>
+    /// <param name="offset">The offset to move by.</param>
+    /// <returns>True if the movement was successful, false otherwise.</returns>
     protected virtual bool MoveForward(Vector3 offset)
     {
         Position += offset;
         return true;
     }
 
+    /// <summary>
+    /// Called during <see cref="Move"/> when the character walks off a ledge or platform. Overridable.
+    /// </summary>
     protected virtual void WalkOff()
     {
         UnLand();
     }
 
-
     /// <summary>
     /// Casts the Rigidbody in a direction to check for collision using SweepTest.
     /// </summary>
-    /// <param name="rb">The Rigidbody in question.</param>
     /// <param name="direction">The direction the Rigidbody is going.</param>
     /// <param name="distance">The distance the Rigidbody is set to travel.</param>
     /// <param name="buffer">A buffer that the Rigidbody is temporarily moved backwards by before the Sweep Test.</param>
@@ -321,16 +386,15 @@ public class CharacterMovementBody : MonoBehaviour
     /// <returns>Whether anything was Hit.</returns>
     public virtual bool DirectionCast(Vector3 direction, float distance, float buffer, out RaycastHit hit)
     {
-        if(buffer > 0) _rb.MovePosition(_rb.position - direction * buffer);
+        if (buffer > 0) _rb.MovePosition(_rb.position - direction * buffer);
         bool result = _rb.SweepTest(direction.normalized, out hit, distance + buffer, QueryTriggerInteraction.Ignore);
         if (buffer > 0) _rb.MovePosition(_rb.position + direction * buffer);
         hit.distance -= buffer;
-        return result; 
+        return result;
     }
     /// <summary>
     /// Casts the Rigidbody in a direction to check for collision using SweepTest. (Returns Multiple.)
     /// </summary>
-    /// <param name="rb">The Rigidbody in question.</param>
     /// <param name="direction">The direction the Rigidbody is going.</param>
     /// <param name="distance">The distance the Rigidbody is set to travel.</param>
     /// <param name="buffer">A buffer that the Rigidbody is temporarily moved backwards by before the Sweep Test.</param>
@@ -345,15 +409,24 @@ public class CharacterMovementBody : MonoBehaviour
         return hit.Length > 0;
     }
 
+    /// <summary>
+    /// Checks if the character is grounded and outputs the ground hit information.
+    /// </summary>
+    /// <param name="groundHit">The anchor point of the ground hit.</param>
+    /// <returns>True if grounded, false otherwise.</returns>
     public virtual bool GroundCheck(out AnchorPoint groundHit)
     {
-        bool result = DirectionCast(Vector3.down, groundCheckBuffer, groundCheckBuffer, out RaycastHit raycast); 
+        bool result = DirectionCast(Vector3.down, groundCheckBuffer, groundCheckBuffer, out RaycastHit raycast);
         groundHit = raycast;
         return result;
     }
+    /// <summary>
+    /// Checks if the character is grounded, Runs <see cref="Land"/> if so.
+    /// </summary>
+    /// <returns>True if grounded, false otherwise.</returns>
     public virtual bool GroundCheck()
     {
-        if(DirectionCast(Vector3.down, groundCheckBuffer, groundCheckBuffer, out RaycastHit raycast))
+        if (DirectionCast(Vector3.down, groundCheckBuffer, groundCheckBuffer, out RaycastHit raycast))
         {
             Land(raycast);
             return true;
@@ -361,6 +434,10 @@ public class CharacterMovementBody : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Lands the body on the ground described by the AnchorPoint.
+    /// </summary>
+    /// <param name="groundHit">The anchor point of the ground hit.</param>
     public virtual void Land(AnchorPoint groundHit)
     {
         bool wasntGrounded = jumpState != JumpState.Grounded;
@@ -383,29 +460,44 @@ public class CharacterMovementBody : MonoBehaviour
             LandEvent?.Invoke();
         }
     }
+    /// <summary>
+    /// Event invoked when the character lands.
+    /// </summary>
     public Action LandEvent;
+    /// <summary>
+    /// Tells this body it is leaving the ground and what JumpState to enter.
+    /// </summary>
+    /// <param name="newState">The new jump state to set. Defaults to Falling.</param>
     public virtual void UnLand(JumpState newState = JumpState.Falling)
     {
         if (newState < JumpState.Jumping) return;
         jumpState = newState;
         anchorPoint = AnchorPoint.Null;
-        if(movingAnchor != null)
+        if (movingAnchor != null)
         {
             movingAnchor.RemoveBody(this);
             movingAnchor = null;
         }
     }
 
-
+    /// <summary>
+    /// Instantly snaps the character to the floor below, if any.
+    /// </summary>
+    /// <returns>True if snapped to floor, false otherwise.</returns>
     public bool InstantSnapToFloor()
     {
-        if(DirectionCast(Vector3.down, 1000, .5f, out RaycastHit hit))
+        if (DirectionCast(Vector3.down, 1000, .5f, out RaycastHit hit))
         {
             Position += Vector3.down * hit.distance;
             return true;
         }
         return false;
     }
+    /// <summary>
+    /// Instantly snaps the character to the floor below, if any, and outputs the hit information.
+    /// </summary>
+    /// <param name="hit">The RaycastHit of the floor.</param>
+    /// <returns>True if snapped to floor, false otherwise.</returns>
     public bool InstantSnapToFloor(out RaycastHit hit)
     {
         if (DirectionCast(Vector3.down, 1000, .5f, out hit))
@@ -416,6 +508,10 @@ public class CharacterMovementBody : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Handles collision events with other objects.
+    /// </summary>
+    /// <param name="collision">The collision information.</param>
     protected virtual void OnCollisionEnter(Collision collision)
     {
         Vector3 contactPoint = collision.GetContact(0).normal;
@@ -425,12 +521,23 @@ public class CharacterMovementBody : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Determines if the given normal is within the allowed slope angle.
+    /// </summary>
+    /// <param name="inNormal">The normal to check.</param>
+    /// <returns>True if within the slope angle, false otherwise.</returns>
     private bool WithinSlopeAngle(Vector3 inNormal) => Vector3.Angle(Vector3.up, inNormal) < maxSlopeNormalAngle;
 
+    /// <summary>
+    /// Runs the calculations to automatically apply the current gravity to this body.
+    /// </summary>
     public virtual void ApplyGravity() => velocity -= gravity * Time.fixedDeltaTime;
 
 }
 
+/// <summary>
+/// The possible states of a jump.
+/// </summary>
 public enum JumpState
 {
     Null = -1,
