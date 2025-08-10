@@ -301,16 +301,21 @@ public class CharacterMovementBody : MonoBehaviour
 
             if (!MoveForward(snapToSurface)) return;
 
-            if (Grounded)
+            //Runs into wall/to high incline.
+            if (Mathf.Approximately(hit.normal.y, 0) || (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal)))
             {
-                //Runs into wall/to high incline.
-                if (Mathf.Approximately(hit.normal.y, 0) || (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal)))
-                    if (StopForward(ref nextNormal, hit.normal)) return;
-
+                if (StopForward(ref nextNormal, hit.normal)) return;
+            }
+            else if (Grounded)
+            {
                 if (Grounded && prevNormal.y > 0 && hit.normal.y < 0) //Floor to Cieling
+                {
                     if (FloorCeilingLock(prevNormal, hit.normal)) return;
-                    else if (Grounded && prevNormal.y < 0 && hit.normal.y > 0) //Ceiling to Floor
-                        if (FloorCeilingLock(hit.normal, prevNormal)) return;
+                }
+                else if (Grounded && prevNormal.y < 0 && hit.normal.y > 0) //Ceiling to Floor
+                {
+                    if (FloorCeilingLock(hit.normal, prevNormal)) return;
+                }
             }
             else
             {
