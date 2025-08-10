@@ -9,31 +9,24 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 {
 
     public JumpState defaultPhase;
+    public float jumpHeight;
+    public float jumpPower;
+    public float jumpMinHeight;
     public float gravity = 9.81f;
     public float terminalVelocity = 100f;
     public bool flatGravity = false;
+    public bool allowMidFall = true;
     public PlayerAirborneMovement fallState;
     public float fallStateThreshold = 0;
 
-
-    [ToggleGroup("Upwards", nameof(jumpHeight), nameof(jumpPower), nameof(jumpMinHeight), nameof(allowMidFall))]
-    public bool upwards;
-    [HideProperty] public float jumpHeight;
-    [HideProperty] public float jumpPower;
-    [HideProperty] public float jumpMinHeight;
-    [HideField(nameof(upwards))] public bool forceDownwards;
-    [HideProperty, ShowField(nameof(upwards))] public bool allowMidFall = true;
-
     protected float targetMinHeight;
     protected float targetHeight;
-
-
-
+    public bool isUpward => defaultPhase == JumpState.Jumping;
 
     public override void VerticalMovement(out float? result)
     {
         result = ApplyGravity(gravity, terminalVelocity, flatGravity);
-        if (upwards) VerticalUpwards(ref result);
+        if (isUpward) VerticalUpwards(ref result);
         else if (playerMovementBody.velocity.y <= fallStateThreshold && fallState != this) Fall(ref result);
 
     }
@@ -67,9 +60,9 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         playerMovementBody.UnLand(nextJumpPhase);
         switch (nextJumpPhase)
         {
-            case JumpState.Jumping: Start_Jump(); break;
-            case JumpState.Decelerating: Start_Decel(); break;
-            case JumpState.Falling: Start_Falling(); break;
+            case JumpState.Jumping: StartFrom_Jump(); break;
+            case JumpState.Decelerating: StartFrom_Decel(); break;
+            case JumpState.Falling: StartFrom_Falling(); break;
         }
     }
 
@@ -83,10 +76,8 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         }
     }
 
-    protected virtual void Start_Jump()
+    protected virtual void StartFrom_Jump()
     {
-        if (!upwards) return;
-
         playerMovementBody.VelocitySet(y: jumpPower);
         targetMinHeight = transform.position.y + jumpMinHeight;
         targetHeight = (transform.position.y + jumpHeight) - (jumpPower.P()) / (2 * gravity);
@@ -105,11 +96,11 @@ public class PlayerAirborneMovement : PlayerMovementEffector
                 };
 #endif
     }
-    protected virtual void Start_Decel()
+    protected virtual void StartFrom_Decel()
     {
 
     }
-    protected virtual void Start_Falling()
+    protected virtual void StartFrom_Falling()
     {
         playerMovementBody.VelocitySet(y: playerMovementBody.velocity.y.Max(0));
     }
@@ -128,7 +119,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     }
     public virtual void BeginJump(float power, float height, float minHeight)
     {
-        if (!upwards) throw new System.Exception("This isn't an Upward Item.");
+        if (!isUpward) throw new System.Exception("This isn't an Upward Item.");
         jumpPower = power;
         jumpHeight = height;
         jumpMinHeight = minHeight;
