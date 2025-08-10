@@ -167,6 +167,11 @@ public class PlayerMovementBody : CharacterMovementBody
             if (playerController.CheckJumpBuffer()) Machine.SendSignal("Jump");
         }
     }
+    public void Land()
+    {
+        if (!GroundCheck(out AnchorPoint groundHit)) return;
+        Land(groundHit);
+    }
 
     public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
     {
