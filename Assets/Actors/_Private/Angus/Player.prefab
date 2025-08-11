@@ -82,6 +82,7 @@ GameObject:
   - component: {fileID: 2400415427521850279}
   - component: {fileID: 1372049473211158197}
   - component: {fileID: 2880865178664761174}
+  - component: {fileID: 9066500272068540472}
   m_Layer: 6
   m_Name: GroundSlam
   m_TagString: Untagged
@@ -356,6 +357,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &9066500272068540472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 66178844183588776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4102fd6f65e010c4182a319dd0ffab7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateAnimator: {fileID: 2400415427521850279}
+  playerMovementAnimator: {fileID: 7176607167937864984}
+  animator: {fileID: 8579594802138283692}
+  animationClip: {fileID: 7400000, guid: 933be64bd179dfb4d99e4949efe8f264, type: 2}
 --- !u!1 &214909014890575270
 GameObject:
   m_ObjectHideFlags: 0
