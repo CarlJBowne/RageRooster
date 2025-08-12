@@ -42,4 +42,7 @@ public class PlayerMovementAnimatorConditional : PlayerMovementAnimator
     {
         locked = !defaultState;
     }
+
+    public override void RunTransfer() => MiscHelperMethods.PlayerMovementAnimatorTransferToRoots.Conditional(this);
+
 }
