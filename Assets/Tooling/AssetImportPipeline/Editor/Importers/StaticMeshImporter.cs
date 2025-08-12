@@ -56,7 +56,10 @@ namespace AssetImportPipeline
             UnityEngine.Material SetupUrplMaterial(StaticMesh staticMesh, Material i)
             {
                 UnityEngine.Material newMaterialAsset = new UnityEngine.Material(Shader.Find("Universal Render Pipeline/Lit"));
-                string materialFilePath = newSrcFolder + "/" + i.GetPrefix() + staticMesh.assetName + "_" + i.customName + ".mat"; // not a great solution for readability... CustomName will need a LOT of formatting to work with this.
+                string materialName = staticMesh.assetName + "_" + i.customName;
+                string materialFilePath = newSrcFolder + "/" + i.GetPrefix() + materialName + ".mat"; // not a great solution for readability... CustomName will need a LOT of formatting to work with this.
+                AssetDatabase.CreateAsset(newMaterialAsset, materialFilePath);
+
                 Debug.Log(materialFilePath);
                 // The following lines are from a deprecated method, but may be useful for the real implementation:
                 //// string materialFileName = newSrcFolder + "/" + new Material().GetPrefix() + staticMesh.assetName + ".mat";
@@ -65,14 +68,14 @@ namespace AssetImportPipeline
                 //// AssetDatabase.Refresh();
 
                 // Create textures
-                CopyFileIntoProject(staticMesh, i.urplSettings.DiffuseMap, newSrcFolder);
-                CopyFileIntoProject(staticMesh, i.urplSettings.MetalnessMap, newSrcFolder);
-                CopyFileIntoProject(staticMesh, i.urplSettings.RoughnessMap, newSrcFolder);
-                CopyFileIntoProject(staticMesh, i.urplSettings.SpecularMap, newSrcFolder);
-                CopyNormalMapIntoProject(staticMesh, i.urplSettings.NormalMap);
-                CopyFileIntoProject(staticMesh, i.urplSettings.HeightMap, newSrcFolder);
-                CopyFileIntoProject(staticMesh, i.urplSettings.EmissiveMap, newSrcFolder);
-                CopyFileIntoProject(staticMesh, i.urplSettings.AlphaMap, newSrcFolder);
+                CopyFileIntoProject(staticMesh, i.urplSettings.DiffuseMap, newSrcFolder, materialName);
+                CopyFileIntoProject(staticMesh, i.urplSettings.MetalnessMap, newSrcFolder, materialName);
+                CopyFileIntoProject(staticMesh, i.urplSettings.RoughnessMap, newSrcFolder, materialName);
+                CopyFileIntoProject(staticMesh, i.urplSettings.SpecularMap, newSrcFolder, materialName);
+                CopyNormalMapIntoProject(staticMesh, i.urplSettings.NormalMap, materialName);
+                CopyFileIntoProject(staticMesh, i.urplSettings.HeightMap, newSrcFolder, materialName);
+                CopyFileIntoProject(staticMesh, i.urplSettings.EmissiveMap, newSrcFolder, materialName);
+                CopyFileIntoProject(staticMesh, i.urplSettings.AlphaMap, newSrcFolder, materialName);
 
                 // link them to the material properly.
 
@@ -80,10 +83,10 @@ namespace AssetImportPipeline
             }
         }
 
-        private void CopyNormalMapIntoProject(StaticMesh staticMesh, Texture normalMap)
+        private void CopyNormalMapIntoProject(StaticMesh staticMesh, Texture normalMap, string materialName)
         {
             // make sure normal map is set to "normal"
-            CopyFileIntoProject(staticMesh, normalMap, newSrcFolder);
+            CopyFileIntoProject(staticMesh, normalMap, newSrcFolder, materialName);
             if (normalMap.AssetExists())
             {
                 TextureImporter normalMapImporter = AssetImporter.GetAtPath(normalMap.destinationPath) as TextureImporter;
@@ -92,11 +95,11 @@ namespace AssetImportPipeline
             }
         }
 
-        void CopyFileIntoProject(StaticMesh staticMesh, AssetBase asset, string destinationPath)
+        void CopyFileIntoProject(StaticMesh staticMesh, AssetBase asset, string destinationPath, string customName = "")
         {
             if (asset.sourcePath == "No filepath set!") return;
-
-            asset.destinationPath = destinationPath + "/" + asset.CreateFilename(staticMesh.assetName);
+            if (customName == "") customName = staticMesh.assetName;
+            asset.destinationPath = destinationPath + "/" + asset.CreateFilename(customName);
 
             // Copy file
             File.Copy(asset.sourcePath, asset.destinationPath, overwrite: true); // This alters the imported FBX structure WHEN USING AN EXISTING ASSET AS A SOURCE PATH
