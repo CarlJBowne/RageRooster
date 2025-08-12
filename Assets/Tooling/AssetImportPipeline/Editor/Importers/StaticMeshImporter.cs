@@ -27,18 +27,18 @@ namespace AssetImportPipeline
 
             foreach (Material i in staticMesh.materials)
             {
-                // Create material asset, ensure it's linked to the fbx properly.
+                // Create material asset
                 UnityEngine.Material newMaterialAsset;
-
                 switch (i.shader)
                 {
                     case Material.Shaders.CelShaderLit:
-                        newMaterialAsset = SetupCelShaderLitMaterial();
+                        newMaterialAsset = SetupCslMaterial(staticMesh, i);
                         break;
                     case Material.Shaders.UniversalRenderPipelineLit:
                         newMaterialAsset = SetupUrplMaterial(staticMesh, i);
                         break;
                 }
+                // ensure it's linked to the fbx properly
             }
 
             // ??? create the prefab? Profit?
@@ -47,9 +47,23 @@ namespace AssetImportPipeline
 
 
 
-            UnityEngine.Material SetupCelShaderLitMaterial()
+            UnityEngine.Material SetupCslMaterial(StaticMesh staticMesh, Material i)
             {
+                // some duplicate code here, would be good to simplify (maybe lambdas?)
                 UnityEngine.Material newMaterialAsset = new UnityEngine.Material(Shader.Find("Shader Graphs/CelShaderLit"));
+                string materialName = staticMesh.assetName + "_" + i.customName;
+                string materialFilePath = newSrcFolder + "/" + i.GetPrefix() + materialName + ".mat";
+                AssetDatabase.CreateAsset(newMaterialAsset, materialFilePath);
+
+                // Create textures
+                CopyFileIntoProject(staticMesh, i.cslSettings.BaseColor, newSrcFolder, materialName);
+                CopyNormalMapIntoProject(staticMesh, i.cslSettings.NormalMap, materialName);
+                CopyFileIntoProject(staticMesh, i.cslSettings.HeightMap, newSrcFolder, materialName);
+                CopyFileIntoProject(staticMesh, i.cslSettings.AO, newSrcFolder, materialName);
+
+                // Link them to the material properly
+
+
                 return newMaterialAsset;
             }
 
@@ -60,12 +74,12 @@ namespace AssetImportPipeline
                 string materialFilePath = newSrcFolder + "/" + i.GetPrefix() + materialName + ".mat"; // not a great solution for readability... CustomName will need a LOT of formatting to work with this.
                 AssetDatabase.CreateAsset(newMaterialAsset, materialFilePath);
 
-                Debug.Log(materialFilePath);
-                // The following lines are from a deprecated method, but may be useful for the real implementation:
-                //// string materialFileName = newSrcFolder + "/" + new Material().GetPrefix() + staticMesh.assetName + ".mat";
-                //// AssetDatabase.CreateAsset(materialAsset, materialFileName);
-                //// AssetDatabase.SaveAssets();
-                //// AssetDatabase.Refresh();
+                    Debug.Log(materialFilePath);
+                    // The following lines are from a deprecated method, but may be useful for the real implementation:
+                    //// string materialFileName = newSrcFolder + "/" + new Material().GetPrefix() + staticMesh.assetName + ".mat";
+                    //// AssetDatabase.CreateAsset(materialAsset, materialFileName);
+                    //// AssetDatabase.SaveAssets();
+                    //// AssetDatabase.Refresh();
 
                 // Create textures
                 CopyFileIntoProject(staticMesh, i.urplSettings.DiffuseMap, newSrcFolder, materialName);
@@ -78,6 +92,7 @@ namespace AssetImportPipeline
                 CopyFileIntoProject(staticMesh, i.urplSettings.AlphaMap, newSrcFolder, materialName);
 
                 // link them to the material properly.
+
 
                 return newMaterialAsset;
             }
@@ -98,6 +113,7 @@ namespace AssetImportPipeline
         void CopyFileIntoProject(StaticMesh staticMesh, AssetBase asset, string destinationPath, string customName = "")
         {
             if (asset.sourcePath == "No filepath set!") return;
+
             if (customName == "") customName = staticMesh.assetName;
             asset.destinationPath = destinationPath + "/" + asset.CreateFilename(customName);
 
