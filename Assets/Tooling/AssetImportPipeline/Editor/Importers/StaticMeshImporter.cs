@@ -45,15 +45,23 @@ namespace AssetImportPipeline
             // possibly something with collision?? if that's not automated???????
             SerializeAssetStructure();
 
-
-
-            UnityEngine.Material SetupCslMaterial(StaticMesh staticMesh, Material i)
+            UnityEngine.Material CreateMaterialAssetWithShader(StaticMesh staticMesh, Material i, string shaderPath, out string materialName)
             {
                 // some duplicate code here, would be good to simplify (maybe lambdas?)
-                UnityEngine.Material newMaterialAsset = new UnityEngine.Material(Shader.Find("Shader Graphs/CelShaderLit"));
-                string materialName = staticMesh.assetName + "_" + i.customName;
+                UnityEngine.Material newMaterialAsset = new UnityEngine.Material(Shader.Find(shaderPath));
+                materialName = staticMesh.assetName + "_" + i.customName;
                 string materialFilePath = newSrcFolder + "/" + i.GetPrefix() + materialName + ".mat";
                 AssetDatabase.CreateAsset(newMaterialAsset, materialFilePath);
+                // The following lines are from a deprecated method, but may be useful for the real implementation:
+                    //// string materialFileName = newSrcFolder + "/" + new Material().GetPrefix() + staticMesh.assetName + ".mat";
+                    //// AssetDatabase.CreateAsset(materialAsset, materialFileName);
+                    //// AssetDatabase.SaveAssets();
+                    //// AssetDatabase.Refresh();
+                return newMaterialAsset;
+            }
+            UnityEngine.Material SetupCslMaterial(StaticMesh staticMesh, Material i)
+            {
+                UnityEngine.Material newMaterialAsset = CreateMaterialAssetWithShader(staticMesh, i, "Shader Graphs/CelShaderLit", out string materialName);
 
                 // Create textures
                 CopyFileIntoProject(staticMesh, i.cslSettings.BaseColor, newSrcFolder, materialName);
@@ -69,17 +77,7 @@ namespace AssetImportPipeline
 
             UnityEngine.Material SetupUrplMaterial(StaticMesh staticMesh, Material i)
             {
-                UnityEngine.Material newMaterialAsset = new UnityEngine.Material(Shader.Find("Universal Render Pipeline/Lit"));
-                string materialName = staticMesh.assetName + "_" + i.customName;
-                string materialFilePath = newSrcFolder + "/" + i.GetPrefix() + materialName + ".mat"; // not a great solution for readability... CustomName will need a LOT of formatting to work with this.
-                AssetDatabase.CreateAsset(newMaterialAsset, materialFilePath);
-
-                    Debug.Log(materialFilePath);
-                    // The following lines are from a deprecated method, but may be useful for the real implementation:
-                    //// string materialFileName = newSrcFolder + "/" + new Material().GetPrefix() + staticMesh.assetName + ".mat";
-                    //// AssetDatabase.CreateAsset(materialAsset, materialFileName);
-                    //// AssetDatabase.SaveAssets();
-                    //// AssetDatabase.Refresh();
+                UnityEngine.Material newMaterialAsset = CreateMaterialAssetWithShader(staticMesh, i, "Universal Render Pipeline/Lit", out string materialName);
 
                 // Create textures
                 CopyFileIntoProject(staticMesh, i.urplSettings.DiffuseMap, newSrcFolder, materialName);
