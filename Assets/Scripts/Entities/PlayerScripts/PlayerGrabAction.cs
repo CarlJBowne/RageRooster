@@ -12,13 +12,14 @@ public class PlayerGrabAction : PlayerStateBehavior
     [HideProperty] public bool success;
 
     private IGrabbable selectedGrabbable;
-    private PlayerRanged ranged;
-    private PlayerMovementAnimator movementNegator;
+    [SerializeField] private PlayerRanged ranged;
+    [SerializeField] private PlayerMovementAnimator movementNegator;
 
-    protected override void OnAwake()
+    protected override void OnSetup()
     {
+        base.OnSetup();
         ranged = GetComponentFromMachine<PlayerRanged>();
-        movementNegator = GetComponent<PlayerMovementAnimator>();
+        movementNegator = GetComponentFromMachine<PlayerMovementAnimator>();
     }
 
     public void BeginGrabAttempt(IGrabbable attempt)

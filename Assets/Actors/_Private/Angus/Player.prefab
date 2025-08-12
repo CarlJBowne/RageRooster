@@ -63,7 +63,7 @@ Transform:
   m_Children:
   - {fileID: 607292570192004129}
   m_Father: {fileID: 1858017805129491221}
-  m_LocalEulerAnglesHint: {x: 2.400357, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 6.411821, y: 0, z: 0}
 --- !u!1 &66178844183588776
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,7 +75,6 @@ GameObject:
   - component: {fileID: 7436032913961434174}
   - component: {fileID: 8183052182198313434}
   - component: {fileID: 547781473977101329}
-  - component: {fileID: 7176607167937864984}
   - component: {fileID: 4580158878298351375}
   - component: {fileID: 799993360474819687}
   - component: {fileID: 5331018696689330221}
@@ -118,7 +117,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 547781473977101329}
-  - {fileID: 7176607167937864984}
   - {fileID: 4580158878298351375}
   - {fileID: 2400415427521850279}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -188,38 +186,6 @@ MonoBehaviour:
             _W: 0
             _Object: {fileID: 0}
   lockOnEnter: 0
---- !u!114 &7176607167937864984
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 66178844183588776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 8183052182198313434}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 10
-  verticalAddSpeed: -80
-  terminalVelocity: 98.1
-  setVerticalInfluence: 1
-  setVerticalVelocity: 0
-  defaultGravity: 0
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 0
-  intendedAnimationName: GroundSlam_Start
 --- !u!114 &4580158878298351375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,7 +435,7 @@ Transform:
   m_Children:
   - {fileID: 4966123876549837000}
   m_Father: {fileID: 1858017805129491221}
-  m_LocalEulerAnglesHint: {x: 6.8727007, y: -0.22763212, z: 0.4413929}
+  m_LocalEulerAnglesHint: {x: 19.235462, y: -0.00000090425584, z: 72.180626}
 --- !u!136 &4618663977433446479
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -744,7 +710,7 @@ Transform:
   m_Children:
   - {fileID: 4050914387091275796}
   m_Father: {fileID: 167776559115597949}
-  m_LocalEulerAnglesHint: {x: 1.6726334, y: 4.6807585, z: -14.817928}
+  m_LocalEulerAnglesHint: {x: -11.548843, y: -51.73935, z: -9.495087}
 --- !u!1 &459786801788715542
 GameObject:
   m_ObjectHideFlags: 0
@@ -776,7 +742,7 @@ Transform:
   m_Children:
   - {fileID: 8939347847130576805}
   m_Father: {fileID: 7800904279591170895}
-  m_LocalEulerAnglesHint: {x: 0.07091012, y: 0.8439531, z: -6.7746587}
+  m_LocalEulerAnglesHint: {x: -6.4195867, y: -71.03013, z: -2.1701717}
 --- !u!1 &469540947907413664
 GameObject:
   m_ObjectHideFlags: 0
@@ -787,10 +753,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4593628155627854849}
   - component: {fileID: 8822842600920580472}
-  - component: {fileID: 2536310429355348171}
   - component: {fileID: 4928657066015808323}
   - component: {fileID: 6164013334802910877}
   - component: {fileID: 1608307018703560638}
+  - component: {fileID: 5092132492528747721}
   m_Layer: 6
   m_Name: LightPunch2
   m_TagString: Untagged
@@ -826,48 +792,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 2536310429355348171}
   - {fileID: 6164013334802910877}
   - {fileID: 1608307018703560638}
+  - {fileID: 5092132492528747721}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &2536310429355348171
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 469540947907413664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39c049a12457eb047a181fd559f33454, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 8822842600920580472}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0.5
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 0
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0.5
-  setVerticalVelocity: 0
-  defaultGravity: 50
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 1
-  intendedAnimationName: LightPunchAir2
-  check: 0
-  checkOnEnter: 1
 --- !u!114 &4928657066015808323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -998,6 +930,26 @@ MonoBehaviour:
   onEnterTime: 0.1
   doWhenNotFinal: 0
   animator: {fileID: 8579594802138283692}
+--- !u!114 &5092132492528747721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 469540947907413664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acf0feb66e3ce714fb25f91394ad0236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 8822842600920580472}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  check: 0
+  checkOnEnter: 1
+  animator: {fileID: 1081188095233249612}
 --- !u!1 &531144083629005765
 GameObject:
   m_ObjectHideFlags: 0
@@ -1039,7 +991,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8762820116621655547}
   - component: {fileID: 5549325383090932593}
-  - component: {fileID: 3985390449464073207}
   - component: {fileID: 8552609587650290044}
   - component: {fileID: 7416429843383829149}
   - component: {fileID: 79467573303735202}
@@ -1078,7 +1029,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 3985390449464073207}
   - {fileID: 7416429843383829149}
   - {fileID: 79467573303735202}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -1086,38 +1036,6 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &3985390449464073207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 622944000673277637}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 5549325383090932593}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 0
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0
-  setVerticalVelocity: 0
-  defaultGravity: 0
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 0
-  intendedAnimationName: LightPunch2
 --- !u!114 &8552609587650290044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1253,7 +1171,6 @@ GameObject:
   - component: {fileID: 9047614155566188650}
   - component: {fileID: 6542662269160061587}
   - component: {fileID: 1181195091599698405}
-  - component: {fileID: 6132819690470820842}
   - component: {fileID: 5381935237969057074}
   - component: {fileID: 2650107836693273814}
   m_Layer: 6
@@ -1292,7 +1209,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 1181195091599698405}
-  - {fileID: 6132819690470820842}
   - {fileID: 2650107836693273814}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
@@ -1319,38 +1235,8 @@ MonoBehaviour:
   air: 1
   animationName: GrabAir
   success: 0
---- !u!114 &6132819690470820842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 624970041063503452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 6542662269160061587}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0.05
-  speedChangeRate: 15
-  turnability: 0
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0
-  setVerticalVelocity: 0
-  defaultGravity: 50
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 1
-  intendedAnimationName: GrabAir
+  ranged: {fileID: 2714541672873312079}
+  movementNegator: {fileID: 1081188095233249612}
 --- !u!114 &5381935237969057074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1496,7 +1382,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 5.1379845e-15, y: -129.47813, z: 180}
+  m_LocalEulerAnglesHint: {x: 7.016709e-15, y: -129.64166, z: 180}
 --- !u!1 &687889684402466875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1528,7 +1414,7 @@ Transform:
   m_Children:
   - {fileID: 2336290526861720586}
   m_Father: {fileID: 320510031820970702}
-  m_LocalEulerAnglesHint: {x: 9.217147e-18, y: 1.04827375e-13, z: 0.03404356}
+  m_LocalEulerAnglesHint: {x: 1.25874315e-17, y: 1.431579e-13, z: 0.034044}
 --- !u!1 &738880317920313741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1559,7 +1445,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 107765510827790769}
-  m_LocalEulerAnglesHint: {x: 0, y: 55.789547, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 55.789543, z: 0}
 --- !u!1 &802237103855762903
 GameObject:
   m_ObjectHideFlags: 0
@@ -1708,7 +1594,7 @@ Transform:
   m_Children:
   - {fileID: 6248451968428804049}
   m_Father: {fileID: 1336325588524243921}
-  m_LocalEulerAnglesHint: {x: 28.129198, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1022511735685379741
 GameObject:
   m_ObjectHideFlags: 0
@@ -2279,7 +2165,7 @@ Transform:
   - {fileID: 8240657446396116129}
   - {fileID: 3858517113413183086}
   m_Father: {fileID: 1495339210815947155}
-  m_LocalEulerAnglesHint: {x: 14.380434, y: -9.984116, z: -11.765825}
+  m_LocalEulerAnglesHint: {x: 13.158895, y: -13.046364, z: -32.918682}
 --- !u!136 &2091434887376190187
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2542,7 +2428,7 @@ Transform:
   m_Children:
   - {fileID: 3408567397223948204}
   m_Father: {fileID: 5735276715730193203}
-  m_LocalEulerAnglesHint: {x: -20.514557, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1288466975036708354
 GameObject:
   m_ObjectHideFlags: 0
@@ -2838,7 +2724,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1206198214367745091}
   - component: {fileID: 6590708857773316528}
-  - component: {fileID: 1488171615571765429}
   - component: {fileID: 1487847476849349252}
   - component: {fileID: 4269038792820991052}
   m_Layer: 6
@@ -2876,7 +2761,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 1488171615571765429}
   - {fileID: 1487847476849349252}
   - {fileID: 4269038792820991052}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -2884,38 +2768,6 @@ MonoBehaviour:
   <Layer>k__BackingField: 1
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &1488171615571765429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1328720359275537980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 6590708857773316528}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 1
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 150
-  turnability: 10
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 1
-  setVerticalVelocity: 0
-  defaultGravity: 0
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 0
-  intendedAnimationName: DamageFall
 --- !u!114 &1487847476849349252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3004,7 +2856,7 @@ Transform:
   m_Children:
   - {fileID: 7797816273129980962}
   m_Father: {fileID: 9001384091169506472}
-  m_LocalEulerAnglesHint: {x: 0.8608591, y: 5.152743, z: 5.9770956}
+  m_LocalEulerAnglesHint: {x: 5.5066404, y: -52.37282, z: 2.4819262}
 --- !u!1 &1426614998149336543
 GameObject:
   m_ObjectHideFlags: 0
@@ -3069,7 +2921,7 @@ Transform:
   m_Children:
   - {fileID: 117627124187634055}
   m_Father: {fileID: 623109168336613573}
-  m_LocalEulerAnglesHint: {x: -0.46870136, y: -2.517445, z: 3.924853}
+  m_LocalEulerAnglesHint: {x: 3.0614784, y: -60.034527, z: 2.501423}
 --- !u!1 &1538063396066996421
 GameObject:
   m_ObjectHideFlags: 0
@@ -3131,7 +2983,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0, y: -50.521854, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -50.35834, z: 0}
 --- !u!1 &1600631366863650440
 GameObject:
   m_ObjectHideFlags: 0
@@ -3370,7 +3222,7 @@ Transform:
   m_Children:
   - {fileID: 803023330293522026}
   m_Father: {fileID: 3167158787834191802}
-  m_LocalEulerAnglesHint: {x: -0.5590823, y: -19.919298, z: -3.2687397}
+  m_LocalEulerAnglesHint: {x: 16.613876, y: -89.218056, z: 11.536125}
 --- !u!1 &1838506262058880858
 GameObject:
   m_ObjectHideFlags: 0
@@ -3567,7 +3419,7 @@ Transform:
   - {fileID: 1858017805129491221}
   - {fileID: 2680535561233752795}
   m_Father: {fileID: 802911248559169720}
-  m_LocalEulerAnglesHint: {x: -13.611525, y: -77.79759, z: -79.7368}
+  m_LocalEulerAnglesHint: {x: 2.3240094, y: -58.55369, z: -93.79383}
 --- !u!114 &1743517778221320810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3755,7 +3607,7 @@ Transform:
   - {fileID: 4526751030249330902}
   - {fileID: 9182058685849620617}
   m_Father: {fileID: 5771110087808811478}
-  m_LocalEulerAnglesHint: {x: -4.0562064e-32, y: 2.043307e-31, z: 11.2279215}
+  m_LocalEulerAnglesHint: {x: 48.171776, y: 4.402933, z: 0.7844107}
 --- !u!135 &6687836394462944028
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3881,7 +3733,7 @@ Transform:
   m_Children:
   - {fileID: 8147292128537384582}
   m_Father: {fileID: 2886384581990183456}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 11.190884}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 11.190883}
 --- !u!1 &2026498524776619450
 GameObject:
   m_ObjectHideFlags: 0
@@ -3923,9 +3775,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6974781987043796759}
   - component: {fileID: 172757351869591046}
-  - component: {fileID: 1627855894347979437}
   - component: {fileID: 1122838218020578483}
   - component: {fileID: 3432230067973307783}
+  - component: {fileID: 5114646355297611046}
   m_Layer: 6
   m_Name: AirKick
   m_TagString: Untagged
@@ -3961,48 +3813,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 1627855894347979437}
   - {fileID: 1122838218020578483}
   - {fileID: 3432230067973307783}
+  - {fileID: 5114646355297611046}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &1627855894347979437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2124590860796095726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39c049a12457eb047a181fd559f33454, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 172757351869591046}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0.5
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 0
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0.5
-  setVerticalVelocity: 0
-  defaultGravity: 50
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 1
-  intendedAnimationName: AirKick
-  check: 0
-  checkOnEnter: 1
 --- !u!114 &1122838218020578483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4121,6 +3939,26 @@ MonoBehaviour:
   onEnterTime: 0.1
   doWhenNotFinal: 0
   animator: {fileID: 8579594802138283692}
+--- !u!114 &5114646355297611046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124590860796095726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acf0feb66e3ce714fb25f91394ad0236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 172757351869591046}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  check: 0
+  checkOnEnter: 1
+  animator: {fileID: 1081188095233249612}
 --- !u!1 &2212145017621531694
 GameObject:
   m_ObjectHideFlags: 0
@@ -4131,7 +3969,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8220131811468243921}
   - component: {fileID: 2580061565448867863}
-  - component: {fileID: 3599756768954574801}
   - component: {fileID: 3384534770515375707}
   m_Layer: 6
   m_Name: Ragdoll
@@ -4167,45 +4004,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 3599756768954574801}
+  <Behaviors>k__BackingField: []
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 8455434200384702600}
   <Layer>k__BackingField: 0
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &3599756768954574801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2212145017621531694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 2580061565448867863}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0
-  fullStop: 1
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 10
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 1
-  setVerticalVelocity: 0
-  defaultGravity: 0
-  worldspaceInfluence: 1
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 0
-  intendedAnimationName: 
 --- !u!114 &3384534770515375707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4354,7 +4158,7 @@ Transform:
   m_Children:
   - {fileID: 966123755836798842}
   m_Father: {fileID: 176165724537986964}
-  m_LocalEulerAnglesHint: {x: -0.55908126, y: -19.919298, z: -3.2687397}
+  m_LocalEulerAnglesHint: {x: -3.05928, y: -77.50107, z: -1.2803361}
 --- !u!1 &2354280182447277193
 GameObject:
   m_ObjectHideFlags: 0
@@ -4791,7 +4595,7 @@ Transform:
   m_Children:
   - {fileID: 2996069801756204323}
   m_Father: {fileID: 1991288485900147151}
-  m_LocalEulerAnglesHint: {x: 1.6726334, y: 4.6807585, z: -14.817928}
+  m_LocalEulerAnglesHint: {x: -59.541508, y: -102.65488, z: -6.287345}
 --- !u!1 &2660924070909395955
 GameObject:
   m_ObjectHideFlags: 0
@@ -4823,7 +4627,7 @@ Transform:
   m_Children:
   - {fileID: 1336325588524243921}
   m_Father: {fileID: 5779348743443458172}
-  m_LocalEulerAnglesHint: {x: -14.383179, y: 88.509056, z: -162.79544}
+  m_LocalEulerAnglesHint: {x: 18.471598, y: 95.0222, z: -176.97816}
 --- !u!1 &2734696187005230167
 GameObject:
   m_ObjectHideFlags: 0
@@ -4990,7 +4794,7 @@ Transform:
   m_Children:
   - {fileID: 1792655390282577440}
   m_Father: {fileID: 3493459175929092484}
-  m_LocalEulerAnglesHint: {x: 1.9352905, y: 2.3535562, z: -0.07448865}
+  m_LocalEulerAnglesHint: {x: 0.9739753, y: -55.259422, z: -1.6740793}
 --- !u!1 &2863929371712086765
 GameObject:
   m_ObjectHideFlags: 0
@@ -5236,6 +5040,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 1371118413310184343}
   - {fileID: 8191279611815052833}
+  - {fileID: 1081188095233249612}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 8455434200384702600}
   <Layer>k__BackingField: 0
@@ -5784,9 +5589,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 8455434200384702600}
-  Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
   influence: 0
   fullStop: 0
   maxSpeed: 0
@@ -5833,7 +5638,7 @@ Transform:
   m_Children:
   - {fileID: 8595673336906404351}
   m_Father: {fileID: 2235979652216157829}
-  m_LocalEulerAnglesHint: {x: 8.786879, y: -6.5978703, z: 43.78186}
+  m_LocalEulerAnglesHint: {x: 44.22932, y: -79.98488, z: 5.2865505}
 --- !u!1 &3015113785128034345
 GameObject:
   m_ObjectHideFlags: 0
@@ -5955,7 +5760,7 @@ Transform:
   m_Children:
   - {fileID: 649473815463013265}
   m_Father: {fileID: 6711681285055233071}
-  m_LocalEulerAnglesHint: {x: 0.860858, y: 5.1527424, z: 5.9770956}
+  m_LocalEulerAnglesHint: {x: 1.2328135, y: 1.5810934, z: 5.9118214}
 --- !u!1 &3142001384897984004
 GameObject:
   m_ObjectHideFlags: 0
@@ -6019,7 +5824,7 @@ Transform:
   m_Children:
   - {fileID: 4014306286370617634}
   m_Father: {fileID: 3887420343133292225}
-  m_LocalEulerAnglesHint: {x: 2.0444952e-18, y: 1.0501749e-13, z: 4.2440777}
+  m_LocalEulerAnglesHint: {x: -1.9103935e-16, y: 1.4198054e-13, z: -19.607988}
 --- !u!1 &3153349235850506757
 GameObject:
   m_ObjectHideFlags: 0
@@ -6050,7 +5855,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3183256197336686995}
-  m_LocalEulerAnglesHint: {x: -20.514557, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3192652428292773103
 GameObject:
   m_ObjectHideFlags: 0
@@ -6113,7 +5918,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0, y: -68.3821, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -68.282906, z: 0}
 --- !u!1 &3236555439406268692
 GameObject:
   m_ObjectHideFlags: 0
@@ -6145,7 +5950,7 @@ Transform:
   m_Children:
   - {fileID: 3834352168240870593}
   m_Father: {fileID: 5303980009881695466}
-  m_LocalEulerAnglesHint: {x: 1.9352893, y: 2.3535562, z: -0.07448865}
+  m_LocalEulerAnglesHint: {x: 0.60848564, y: -54.013893, z: 58.099873}
 --- !u!1 &3244875344704272238
 GameObject:
   m_ObjectHideFlags: 0
@@ -6156,7 +5961,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4725053154384593640}
   - component: {fileID: 5281776910968683532}
-  - component: {fileID: 7248501645845252710}
   - component: {fileID: 1073467550040047801}
   - component: {fileID: 8404342100878825337}
   - component: {fileID: 2750038254075230046}
@@ -6196,7 +6000,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 7248501645845252710}
   - {fileID: 2750038254075230046}
   - {fileID: 2575273106558408250}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -6204,38 +6007,6 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &7248501645845252710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3244875344704272238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 5281776910968683532}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 0
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0
-  setVerticalVelocity: 0
-  defaultGravity: 0
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 0
-  intendedAnimationName: LightPunch1
 --- !u!114 &1073467550040047801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6523,7 +6294,7 @@ Transform:
   m_Children:
   - {fileID: 1973264757699722387}
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0, y: -9.93169, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -9.931691, z: 0}
 --- !u!1 &3452394626786213421
 GameObject:
   m_ObjectHideFlags: 0
@@ -6556,7 +6327,7 @@ Transform:
   - {fileID: 4979379062830307293}
   - {fileID: 5788834958485409761}
   m_Father: {fileID: 2290438708623670232}
-  m_LocalEulerAnglesHint: {x: 6.8083715, y: 6.0818253, z: -7.677826}
+  m_LocalEulerAnglesHint: {x: 0.41963142, y: 0, z: -0}
 --- !u!1 &3474216825182463027
 GameObject:
   m_ObjectHideFlags: 0
@@ -6587,7 +6358,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7868241083879984591}
-  m_LocalEulerAnglesHint: {x: 2.400357, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 6.411821, y: 0, z: 0}
 --- !u!1 &3510662445348264541
 GameObject:
   m_ObjectHideFlags: 0
@@ -6815,7 +6586,7 @@ Transform:
   m_Children:
   - {fileID: 4777414735926822176}
   m_Father: {fileID: 8595673336906404351}
-  m_LocalEulerAnglesHint: {x: -2.2266047, y: -2.650407, z: 4.588654}
+  m_LocalEulerAnglesHint: {x: -0.88619876, y: -18.498919, z: 5.021909}
 --- !u!1 &3712787637314966735
 GameObject:
   m_ObjectHideFlags: 0
@@ -6973,7 +6744,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1843710722454031686}
-  m_LocalEulerAnglesHint: {x: 0.89375573, y: 0.09866183, z: 79.94404}
+  m_LocalEulerAnglesHint: {x: 0.8937567, y: 0.09866128, z: 79.944046}
 --- !u!1 &3812191633557376584
 GameObject:
   m_ObjectHideFlags: 0
@@ -7005,7 +6776,7 @@ Transform:
   m_Children:
   - {fileID: 3493459175929092484}
   m_Father: {fileID: 1843710722454031686}
-  m_LocalEulerAnglesHint: {x: 19.569395, y: 40.155674, z: 78.28977}
+  m_LocalEulerAnglesHint: {x: 73.430115, y: 3.2214785, z: 47.888332}
 --- !u!1 &3871232000662767217
 GameObject:
   m_ObjectHideFlags: 0
@@ -7037,7 +6808,7 @@ Transform:
   m_Children:
   - {fileID: 6160283659054376205}
   m_Father: {fileID: 5771110087808811478}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 40.103645, y: 1.3052723, z: -6.2610693}
 --- !u!1 &3891853534095089435
 GameObject:
   m_ObjectHideFlags: 0
@@ -7069,7 +6840,7 @@ Transform:
   m_Children:
   - {fileID: 7800904279591170895}
   m_Father: {fileID: 2235979652216157829}
-  m_LocalEulerAnglesHint: {x: -44.40681, y: -22.247631, z: 35.137707}
+  m_LocalEulerAnglesHint: {x: -34.3993, y: -31.115078, z: 27.066032}
 --- !u!1 &3961416142194591544
 GameObject:
   m_ObjectHideFlags: 0
@@ -7132,7 +6903,7 @@ Transform:
   m_Children:
   - {fileID: 5499737714371279999}
   m_Father: {fileID: 7214892127163713643}
-  m_LocalEulerAnglesHint: {x: -0.88061726, y: -12.638889, z: 1.0327296}
+  m_LocalEulerAnglesHint: {x: 0.70991737, y: -84.62379, z: 1.1567279}
 --- !u!1 &4050727503730904888
 GameObject:
   m_ObjectHideFlags: 0
@@ -7165,7 +6936,7 @@ Transform:
   - {fileID: 3873723486330190406}
   - {fileID: 5164167323936637691}
   m_Father: {fileID: 4587243299707619477}
-  m_LocalEulerAnglesHint: {x: -0.29730982, y: 10.589571, z: 60.44622}
+  m_LocalEulerAnglesHint: {x: -20.690767, y: -11.402374, z: -14.038304}
 --- !u!1 &4124917820233702332
 GameObject:
   m_ObjectHideFlags: 0
@@ -7396,7 +7167,7 @@ Transform:
   - {fileID: 362155934586423713}
   - {fileID: 1495339210815947155}
   m_Father: {fileID: 5788834958485409761}
-  m_LocalEulerAnglesHint: {x: -10.561932, y: 3.6555462, z: -29.809814}
+  m_LocalEulerAnglesHint: {x: -54.051838, y: 10.896509, z: -26.62859}
 --- !u!1 &4227211285194161474
 GameObject:
   m_ObjectHideFlags: 0
@@ -8026,7 +7797,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0, y: -17.438505, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -17.438503, z: 0}
 --- !u!1 &4442479507630211551
 GameObject:
   m_ObjectHideFlags: 0
@@ -8058,7 +7829,7 @@ Transform:
   m_Children:
   - {fileID: 5899751091713101155}
   m_Father: {fileID: 1013759457902555881}
-  m_LocalEulerAnglesHint: {x: 28.129198, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4472181365031472309
 GameObject:
   m_ObjectHideFlags: 0
@@ -8158,7 +7929,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 5.1379854e-15, y: -111.6179, z: 180}
+  m_LocalEulerAnglesHint: {x: 7.01671e-15, y: -111.71709, z: 180}
 --- !u!1 &4594552405087050133
 GameObject:
   m_ObjectHideFlags: 0
@@ -8189,7 +7960,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1262491231416579091}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 39.97843, y: -1.3260108, z: -7.951524}
 --- !u!1 &4673781514129227438
 GameObject:
   m_ObjectHideFlags: 0
@@ -8200,7 +7971,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2559043128292996688}
   - component: {fileID: 1419214192395305568}
-  - component: {fileID: 3201008532590326604}
   - component: {fileID: 6107030437731684822}
   - component: {fileID: 5783652258050704555}
   - component: {fileID: 4261638721166669242}
@@ -8239,7 +8009,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 3201008532590326604}
   - {fileID: 5783652258050704555}
   - {fileID: 4261638721166669242}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -8247,38 +8016,6 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &3201008532590326604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4673781514129227438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 1419214192395305568}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0.75
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 15
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0
-  setVerticalVelocity: 1
-  defaultGravity: 50
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 0
-  intendedAnimationName: ParryAir
 --- !u!114 &6107030437731684822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8592,7 +8329,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 107765510827790769}
-  m_LocalEulerAnglesHint: {x: 0, y: 62.26675, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 62.266747, z: 0}
 --- !u!1 &5075024688237253571
 GameObject:
   m_ObjectHideFlags: 0
@@ -8865,7 +8602,7 @@ Transform:
   m_Children:
   - {fileID: 5001198678599861603}
   m_Father: {fileID: 7021510372728876682}
-  m_LocalEulerAnglesHint: {x: 0.07091022, y: 0.8439581, z: -6.7746587}
+  m_LocalEulerAnglesHint: {x: -5.678003, y: -56.568188, z: -3.7021873}
 --- !u!1 &5165479597960252976
 GameObject:
   m_ObjectHideFlags: 0
@@ -8897,7 +8634,7 @@ Transform:
   m_Children:
   - {fileID: 5303980009881695466}
   m_Father: {fileID: 2235979652216157829}
-  m_LocalEulerAnglesHint: {x: 19.569399, y: 40.155674, z: 78.28977}
+  m_LocalEulerAnglesHint: {x: 78.805435, y: -55.982094, z: 19.522608}
 --- !u!1 &5240960325302126777
 GameObject:
   m_ObjectHideFlags: 0
@@ -8928,7 +8665,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 5.1379854e-15, y: -162.56148, z: 180}
+  m_LocalEulerAnglesHint: {x: 7.016709e-15, y: -162.56148, z: 180}
 --- !u!1 &5300167671746722696
 GameObject:
   m_ObjectHideFlags: 0
@@ -9124,7 +8861,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2235979652216157829}
-  m_LocalEulerAnglesHint: {x: 0.89375544, y: 0.09866068, z: 79.94404}
+  m_LocalEulerAnglesHint: {x: 0.89375633, y: 0.09865971, z: 79.944046}
 --- !u!1 &5350170132851519808
 GameObject:
   m_ObjectHideFlags: 0
@@ -9469,7 +9206,7 @@ Transform:
   m_Children:
   - {fileID: 3073134984744117967}
   m_Father: {fileID: 5752581404150150080}
-  m_LocalEulerAnglesHint: {x: 0.4590525, y: 2.231685, z: -90.02389}
+  m_LocalEulerAnglesHint: {x: 0.7514301, y: 2.1973596, z: -96.16556}
 --- !u!1 &5527142845277668158
 GameObject:
   m_ObjectHideFlags: 0
@@ -9850,7 +9587,7 @@ Transform:
   m_Children:
   - {fileID: 8223577994529571659}
   m_Father: {fileID: 6160359505296045728}
-  m_LocalEulerAnglesHint: {x: -0.8806161, y: -12.638889, z: 1.0327295}
+  m_LocalEulerAnglesHint: {x: 0.39997602, y: -70.22643, z: 1.2969109}
 --- !u!1 &5627539061402960759
 GameObject:
   m_ObjectHideFlags: 0
@@ -10143,7 +9880,7 @@ Transform:
   m_Children:
   - {fileID: 1289324306660635235}
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0, y: 9.93169, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 9.931691, z: 0}
 --- !u!1 &5810941962839966450
 GameObject:
   m_ObjectHideFlags: 0
@@ -10174,7 +9911,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 278327566310101171}
-  m_LocalEulerAnglesHint: {x: -13.26656, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 10.112273, y: 0, z: 0}
 --- !u!1 &5837539354396237054
 GameObject:
   m_ObjectHideFlags: 0
@@ -10210,7 +9947,7 @@ Transform:
   - {fileID: 278327566310101171}
   - {fileID: 3303590720151803541}
   m_Father: {fileID: 2290438708623670232}
-  m_LocalEulerAnglesHint: {x: 20.300346, y: -153.25908, z: -2.9747858}
+  m_LocalEulerAnglesHint: {x: 15.331667, y: -140.1732, z: 13.270784}
 --- !u!136 &4981369500122297432
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -10337,7 +10074,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4791203585736954220}
-  m_LocalEulerAnglesHint: {x: 28.129198, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5911819457794312854
 GameObject:
   m_ObjectHideFlags: 0
@@ -10766,7 +10503,7 @@ Transform:
   m_Children:
   - {fileID: 9001384091169506472}
   m_Father: {fileID: 1843710722454031686}
-  m_LocalEulerAnglesHint: {x: 12.564892, y: 3.4239297, z: 59.267487}
+  m_LocalEulerAnglesHint: {x: 55.58216, y: -46.33867, z: 28.058548}
 --- !u!1 &6045153092598020073
 GameObject:
   m_ObjectHideFlags: 0
@@ -10803,7 +10540,7 @@ Transform:
   - {fileID: 167776559115597949}
   - {fileID: 6784346919768058046}
   m_Father: {fileID: 5735276715730193203}
-  m_LocalEulerAnglesHint: {x: -79.24515, y: 61.58213, z: 64.37816}
+  m_LocalEulerAnglesHint: {x: -19.160988, y: -8.504658, z: -42.780437}
 --- !u!1 &6055514174411675304
 GameObject:
   m_ObjectHideFlags: 0
@@ -10835,7 +10572,7 @@ Transform:
   m_Children:
   - {fileID: 6869476211955867676}
   m_Father: {fileID: 2680535561233752795}
-  m_LocalEulerAnglesHint: {x: -13.26656, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 10.112273, y: 0, z: 0}
 --- !u!1 &6163583669192012189
 GameObject:
   m_ObjectHideFlags: 0
@@ -10846,10 +10583,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2955332067363901935}
   - component: {fileID: 7761699614878043687}
-  - component: {fileID: 8181979530632342815}
   - component: {fileID: 9181539546719163320}
   - component: {fileID: 8933449817689037972}
   - component: {fileID: 2210526272510199779}
+  - component: {fileID: 1072101426346537800}
   m_Layer: 6
   m_Name: LightPunch1
   m_TagString: Untagged
@@ -10885,48 +10622,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 8181979530632342815}
   - {fileID: 8933449817689037972}
   - {fileID: 2210526272510199779}
+  - {fileID: 1072101426346537800}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &8181979530632342815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6163583669192012189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39c049a12457eb047a181fd559f33454, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 7761699614878043687}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0.5
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 0
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0.5
-  setVerticalVelocity: 0
-  defaultGravity: 50
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 1
-  intendedAnimationName: LightPunchAir1
-  check: 0
-  checkOnEnter: 1
 --- !u!114 &9181539546719163320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11057,6 +10760,26 @@ MonoBehaviour:
   onEnterTime: 0.05
   doWhenNotFinal: 0
   animator: {fileID: 8579594802138283692}
+--- !u!114 &1072101426346537800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6163583669192012189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acf0feb66e3ce714fb25f91394ad0236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 7761699614878043687}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  check: 0
+  checkOnEnter: 1
+  animator: {fileID: 1081188095233249612}
 --- !u!1 &6236790458189297513
 GameObject:
   m_ObjectHideFlags: 0
@@ -11786,7 +11509,7 @@ Transform:
   m_Children:
   - {fileID: 7021510372728876682}
   m_Father: {fileID: 1843710722454031686}
-  m_LocalEulerAnglesHint: {x: -44.406815, y: -22.247625, z: 35.137707}
+  m_LocalEulerAnglesHint: {x: -36.315704, y: -28.922956, z: 28.559837}
 --- !u!1 &6574491177993153932
 GameObject:
   m_ObjectHideFlags: 0
@@ -12407,7 +12130,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6014019409343752396}
   - component: {fileID: 6899988598081522344}
-  - component: {fileID: 6979073167908032003}
   - component: {fileID: 1543269672653310877}
   - component: {fileID: 2782888393297070939}
   - component: {fileID: 7392498410637128240}
@@ -12446,7 +12168,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 6979073167908032003}
   - {fileID: 2782888393297070939}
   - {fileID: 7392498410637128240}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -12454,38 +12175,6 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &6979073167908032003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6824799447565327635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 6899988598081522344}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0.5
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 10
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0
-  setVerticalVelocity: 0
-  defaultGravity: 0
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 0
-  intendedAnimationName: Headbutt
 --- !u!114 &1543269672653310877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12687,7 +12376,7 @@ Transform:
   - {fileID: 1474029645955272187}
   - {fileID: 3939897321903873431}
   m_Father: {fileID: 1336325588524243921}
-  m_LocalEulerAnglesHint: {x: 77.74884, y: -41.305286, z: -63.308014}
+  m_LocalEulerAnglesHint: {x: 1.694837e-14, y: -5.0951907e-15, z: -63.849686}
 --- !u!136 &6384657599475047141
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -13047,7 +12736,7 @@ Transform:
   - {fileID: 7868241083879984591}
   - {fileID: 4587243299707619477}
   m_Father: {fileID: 2290438708623670232}
-  m_LocalEulerAnglesHint: {x: -14.513918, y: -164.59007, z: 164.87729}
+  m_LocalEulerAnglesHint: {x: -32.22725, y: 141.74702, z: 143.89894}
 --- !u!136 &3469111838332611519
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -13411,7 +13100,7 @@ Transform:
   m_Children:
   - {fileID: 9154178742155163141}
   m_Father: {fileID: 871982966420425774}
-  m_LocalEulerAnglesHint: {x: -2.2266037, y: -2.650407, z: 4.588654}
+  m_LocalEulerAnglesHint: {x: 2.675467, y: -60.059727, z: 4.3426366}
 --- !u!1 &7201320770876682637
 GameObject:
   m_ObjectHideFlags: 0
@@ -13594,7 +13283,7 @@ Transform:
   - {fileID: 515695939648151693}
   - {fileID: 4755844292091512137}
   m_Father: {fileID: 1013759457902555881}
-  m_LocalEulerAnglesHint: {x: 77.74884, y: -41.30528, z: -63.308014}
+  m_LocalEulerAnglesHint: {x: -33.306847, y: -75.38993, z: -20.434778}
 --- !u!136 &6826063150398287425
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -13721,7 +13410,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0, y: -61.73458, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -54.878414, z: 0}
 --- !u!1 &7236015119662936257
 GameObject:
   m_ObjectHideFlags: 0
@@ -13757,7 +13446,7 @@ Transform:
   - {fileID: 5735276715730193203}
   - {fileID: 4791203585736954220}
   m_Father: {fileID: 362155934586423713}
-  m_LocalEulerAnglesHint: {x: 14.380436, y: -9.9841175, z: -11.765825}
+  m_LocalEulerAnglesHint: {x: 13.158894, y: -13.046365, z: -32.91868}
 --- !u!136 &3584424210357328177
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -14247,7 +13936,7 @@ Transform:
   m_Children:
   - {fileID: 871982966420425774}
   m_Father: {fileID: 1843710722454031686}
-  m_LocalEulerAnglesHint: {x: 8.786879, y: -6.5978703, z: 43.78186}
+  m_LocalEulerAnglesHint: {x: 41.238804, y: -60.75787, z: 18.404642}
 --- !u!1 &7471342363894119853
 GameObject:
   m_ObjectHideFlags: 0
@@ -14873,7 +14562,7 @@ Transform:
   m_Children:
   - {fileID: 1176947240285938664}
   m_Father: {fileID: 8240657446396116129}
-  m_LocalEulerAnglesHint: {x: -25.291828, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -3.417666, y: 0, z: 0}
 --- !u!1 &7687921319952885065
 GameObject:
   m_ObjectHideFlags: 0
@@ -14908,7 +14597,7 @@ Transform:
   m_Children:
   - {fileID: 5752581404150150080}
   m_Father: {fileID: 2680535561233752795}
-  m_LocalEulerAnglesHint: {x: -39.872738, y: 1.0049883, z: 20.666916}
+  m_LocalEulerAnglesHint: {x: 30.336817, y: 0.0000009892273, z: 52.57711}
 --- !u!136 &1732715681751885354
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -15036,7 +14725,7 @@ Transform:
   m_Children:
   - {fileID: 8922394875303098419}
   m_Father: {fileID: 3343154836349968328}
-  m_LocalEulerAnglesHint: {x: -0.46870232, y: -2.517445, z: 3.924853}
+  m_LocalEulerAnglesHint: {x: 3.587222, y: -74.449356, z: 1.6611015}
 --- !u!1 &7757866779982890630
 GameObject:
   m_ObjectHideFlags: 0
@@ -15067,7 +14756,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0, y: -35.111996, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -28.67759, z: 0}
 --- !u!1 &7763240431029852604
 GameObject:
   m_ObjectHideFlags: 0
@@ -15098,7 +14787,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8479078116207083057}
-  m_LocalEulerAnglesHint: {x: -25.291828, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -3.417666, y: 0, z: 0}
 --- !u!1 &7768039867893722896
 GameObject:
   m_ObjectHideFlags: 0
@@ -15274,7 +14963,7 @@ Transform:
   m_Children:
   - {fileID: 3887420343133292225}
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -4.855062}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: -4.855064}
 --- !u!1 &7954612019771168692
 GameObject:
   m_ObjectHideFlags: 0
@@ -15317,7 +15006,6 @@ GameObject:
   - component: {fileID: 6499787038979050382}
   - component: {fileID: 4130376927137963287}
   - component: {fileID: 4975428428768240672}
-  - component: {fileID: 3756786567065514340}
   - component: {fileID: 9096782004905187224}
   - component: {fileID: 5765613941287539037}
   m_Layer: 6
@@ -15356,7 +15044,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 4975428428768240672}
-  - {fileID: 3756786567065514340}
   - {fileID: 5765613941287539037}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 6346063711828928810}
@@ -15383,38 +15070,8 @@ MonoBehaviour:
   air: 0
   animationName: Grab
   success: 0
---- !u!114 &3756786567065514340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7986475415449474893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 4130376927137963287}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0.5
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 0
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0
-  setVerticalVelocity: 0
-  defaultGravity: 0
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 1
-  intendedAnimationName: Grab
+  ranged: {fileID: 2714541672873312079}
+  movementNegator: {fileID: 1081188095233249612}
 --- !u!114 &9096782004905187224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15555,7 +15212,7 @@ Transform:
   m_Children:
   - {fileID: 1013759457902555881}
   m_Father: {fileID: 5779348743443458172}
-  m_LocalEulerAnglesHint: {x: 14.383082, y: -88.50879, z: 27.007809}
+  m_LocalEulerAnglesHint: {x: 52.71672, y: -126.177414, z: 13.48412}
 --- !u!1 &8080908558534702520
 GameObject:
   m_ObjectHideFlags: 0
@@ -15628,7 +15285,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6993975061325138571}
   - component: {fileID: 4517767350401232540}
-  - component: {fileID: 6484935563616080972}
   - component: {fileID: 951253258747946920}
   - component: {fileID: 8818584219412789187}
   - component: {fileID: 4958404505268245693}
@@ -15667,7 +15323,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 6484935563616080972}
   - {fileID: 8818584219412789187}
   - {fileID: 4958404505268245693}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -15675,38 +15330,6 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &6484935563616080972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8181037630459571021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 4517767350401232540}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0.75
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 15
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0
-  setVerticalVelocity: 0
-  defaultGravity: 50
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 0
-  intendedAnimationName: Parry
 --- !u!114 &951253258747946920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15810,7 +15433,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3858517113413183086}
-  m_LocalEulerAnglesHint: {x: 28.129198, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8217506179758699186
 GameObject:
   m_ObjectHideFlags: 0
@@ -15841,7 +15464,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 5.1379845e-15, y: -118.2654, z: 180}
+  m_LocalEulerAnglesHint: {x: 7.016709e-15, y: -125.121574, z: -180}
 --- !u!1 &8233020272553458984
 GameObject:
   m_ObjectHideFlags: 0
@@ -15852,7 +15475,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2910622393535161883}
   - component: {fileID: 278551599644586090}
-  - component: {fileID: 3599153407553307017}
   - component: {fileID: 5512668703277878947}
   - component: {fileID: 8821137642833508519}
   - component: {fileID: 8588546888960314174}
@@ -15891,7 +15513,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 3599153407553307017}
   - {fileID: 8821137642833508519}
   - {fileID: 8588546888960314174}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -15899,38 +15520,6 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &3599153407553307017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8233020272553458984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 278551599644586090}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 0
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0
-  setVerticalVelocity: 0
-  defaultGravity: 0
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 0
-  intendedAnimationName: Uppercut
 --- !u!114 &5512668703277878947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16040,7 +15629,6 @@ GameObject:
   m_Component:
   - component: {fileID: 131760227768400216}
   - component: {fileID: 8568736502713642114}
-  - component: {fileID: 1794738385307866841}
   - component: {fileID: 6748568676543395012}
   - component: {fileID: 8723284775484568847}
   - component: {fileID: 6541457861431460057}
@@ -16079,7 +15667,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 1794738385307866841}
   - {fileID: 8723284775484568847}
   - {fileID: 6541457861431460057}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -16087,38 +15674,6 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &1794738385307866841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8245773314306325851}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 8568736502713642114}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 1
-  fullStop: 0
-  maxSpeed: -0.5
-  minSpeed: -0.5
-  speedChangeRate: 15
-  turnability: 10
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0
-  setVerticalVelocity: 0
-  defaultGravity: 0
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 0
-  intendedAnimationName: DamageMinor
 --- !u!114 &6748568676543395012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16232,7 +15787,7 @@ Transform:
   - {fileID: 7250269832979079049}
   - {fileID: 1262491231416579091}
   m_Father: {fileID: 5779348743443458172}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.018573739}
+  m_LocalEulerAnglesHint: {x: 23.995373, y: 3.2043204, z: -5.2591195}
 --- !u!1 &8291585736164761318
 GameObject:
   m_ObjectHideFlags: 0
@@ -16402,7 +15957,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3588800786915542142}
   - component: {fileID: 4455065144974278352}
-  - component: {fileID: 2644403828659727866}
   - component: {fileID: 4292147563361030305}
   - component: {fileID: 6731594654440912905}
   - component: {fileID: 1365885318711231209}
@@ -16442,7 +15996,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 2644403828659727866}
   - {fileID: 6731594654440912905}
   - {fileID: 1365885318711231209}
   - {fileID: 7470117012448968723}
@@ -16451,38 +16004,6 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &2644403828659727866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8391892417953183193}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 4455065144974278352}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 10
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0
-  setVerticalVelocity: 0
-  defaultGravity: 0
-  worldspaceInfluence: 1
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 0
-  intendedAnimationName: DamageLand
 --- !u!114 &4292147563361030305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16647,7 +16168,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7031270093804584012}
-  m_LocalEulerAnglesHint: {x: 5.1379854e-15, y: -144.888, z: 180}
+  m_LocalEulerAnglesHint: {x: 7.0167083e-15, y: -151.3224, z: 180}
 --- !u!1 &8456721909318098692
 GameObject:
   m_ObjectHideFlags: 0
@@ -16690,7 +16211,6 @@ GameObject:
   m_Component:
   - component: {fileID: 176377644018463753}
   - component: {fileID: 3765359621817980221}
-  - component: {fileID: 706258749169830515}
   - component: {fileID: 7734167829673190997}
   - component: {fileID: 4120451890021106607}
   - component: {fileID: 8058589915676015694}
@@ -16729,7 +16249,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 706258749169830515}
   - {fileID: 4120451890021106607}
   - {fileID: 8058589915676015694}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -16737,38 +16256,6 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &706258749169830515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8459244022104302900}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 3765359621817980221}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0.5
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 0
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 1
-  setVerticalVelocity: 0
-  defaultGravity: 0
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 0
-  intendedAnimationName: BonkAir
 --- !u!114 &7734167829673190997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16881,7 +16368,7 @@ Transform:
   - {fileID: 1991288485900147151}
   - {fileID: 7131444296845478749}
   m_Father: {fileID: 8240657446396116129}
-  m_LocalEulerAnglesHint: {x: -76.379814, y: 115.45418, z: 22.682709}
+  m_LocalEulerAnglesHint: {x: -29.292454, y: -9.2172365, z: -72.80904}
 --- !u!1 &8519334009095618754
 GameObject:
   m_ObjectHideFlags: 0
@@ -16943,7 +16430,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2336290526861720586}
-  m_LocalEulerAnglesHint: {x: 7.649922e-18, y: 1.8871195e-13, z: 4.4603567}
+  m_LocalEulerAnglesHint: {x: 1.0447145e-17, y: 2.577152e-13, z: 4.460356}
 --- !u!1 &8692962487590442838
 GameObject:
   m_ObjectHideFlags: 0
@@ -17112,7 +16599,7 @@ Transform:
   m_Children:
   - {fileID: 5331686706469530154}
   m_Father: {fileID: 3303590720151803541}
-  m_LocalEulerAnglesHint: {x: -7.079243, y: -3.81553, z: 103.99391}
+  m_LocalEulerAnglesHint: {x: -28.074896, y: -27.310987, z: -28.427755}
 --- !u!1 &8776230784378080119
 GameObject:
   m_ObjectHideFlags: 0
@@ -17144,7 +16631,7 @@ Transform:
   m_Children:
   - {fileID: 6711681285055233071}
   m_Father: {fileID: 2235979652216157829}
-  m_LocalEulerAnglesHint: {x: 12.564892, y: 3.4239225, z: 59.267487}
+  m_LocalEulerAnglesHint: {x: 59.898563, y: -72.28828, z: 5.992611}
 --- !u!1 &8822378987506164119
 GameObject:
   m_ObjectHideFlags: 0
@@ -17155,7 +16642,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7602196013696354627}
   - component: {fileID: 6102194210015347356}
-  - component: {fileID: 1493939074062051383}
   - component: {fileID: 5563327580469889438}
   - component: {fileID: 3371901436690524646}
   - component: {fileID: 899663667312865224}
@@ -17194,7 +16680,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 1493939074062051383}
   - {fileID: 3371901436690524646}
   - {fileID: 899663667312865224}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -17202,38 +16687,6 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &1493939074062051383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8822378987506164119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 6102194210015347356}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0.5
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 0
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0
-  setVerticalVelocity: 0
-  defaultGravity: 0
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 0
-  intendedAnimationName: Bonk
 --- !u!114 &5563327580469889438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17536,7 +16989,7 @@ Transform:
   m_Children:
   - {fileID: 5779348743443458172}
   m_Father: {fileID: 6624796882083950603}
-  m_LocalEulerAnglesHint: {x: 6.7558784, y: 6.0011563, z: 15.855972}
+  m_LocalEulerAnglesHint: {x: 8.090637, y: -0.00000021558922, z: 23.257719}
 --- !u!65 &4440761599346357628
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17662,7 +17115,7 @@ Transform:
   m_Children:
   - {fileID: 4020530439917054758}
   m_Father: {fileID: 4966123876549837000}
-  m_LocalEulerAnglesHint: {x: 2.117883, y: 5.3326044, z: -79.60096}
+  m_LocalEulerAnglesHint: {x: 0.75140333, y: 2.1973422, z: -96.16555}
 --- !u!1 &9046388068125570024
 GameObject:
   m_ObjectHideFlags: 0
