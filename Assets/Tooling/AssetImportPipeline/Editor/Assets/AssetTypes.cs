@@ -93,14 +93,15 @@ namespace AssetImportPipeline
         }
         public static List<string> extensions = new List<string>() { ".asset" }; // should actually be .mat i was dumb, not changing it yet just in case to remind myself in case something is Wrong
 
-        public class CelShaderLitSettings
+        public abstract class ShaderSettings{}
+        public class CelShaderLitSettings : ShaderSettings
         {
             public Texture BaseColor = new Texture();
             public Texture NormalMap = new Texture();
             public Texture HeightMap = new Texture();
             public Texture AO = new Texture();
         }
-        public class URPLitSettings
+        public class URPLitSettings : ShaderSettings
         {
             public bool transparent = false;
             public Texture DiffuseMap = new Texture();

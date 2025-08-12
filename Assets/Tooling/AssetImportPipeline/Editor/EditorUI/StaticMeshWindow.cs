@@ -67,6 +67,8 @@ namespace AssetImportPipeline
                             // ...this looks like it'd require uFBX again so actually, MAYBE NOT.
                             staticMesh.materials.Add(material);
                         }
+
+                        // TODO: Set up failsafe in case .fbx has 0 materials.
                     }
 
                     // Remove the temporary asset so it doesn't clutter up the project.

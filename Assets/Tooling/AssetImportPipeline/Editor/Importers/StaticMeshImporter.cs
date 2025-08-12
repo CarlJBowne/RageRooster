@@ -11,51 +11,32 @@ namespace AssetImportPipeline
     {
         string newFolder;
         string newSrcFolder;
+        
         public void ImportStaticMesh(StaticMesh staticMesh)
         {
             // take the provided asset name and create folder
             newFolder = AssetDatabase.GUIDToAssetPath(AssetDatabase.CreateFolder(staticMesh.assetCategory, staticMesh.assetName));
-            // create \src folder
-            newSrcFolder = AssetDatabase.GUIDToAssetPath(AssetDatabase.CreateFolder(newFolder, "src"));
+            newSrcFolder = AssetDatabase.GUIDToAssetPath(AssetDatabase.CreateFolder(newFolder, "src")); // create \src folder
+
             // add assets to \src, standardize asset names in the process
-            CopyFileIntoProject(staticMesh, staticMesh.model, newSrcFolder);
+            CopyFileIntoProject(staticMesh, staticMesh.model, newSrcFolder); // Copy FBX into \src
+
+            ModelImporter modelImporter = AssetImporter.GetAtPath(staticMesh.model.destinationPath) as ModelImporter;
+            modelImporter.materialImportMode = ModelImporterMaterialImportMode.ImportStandard;
+            modelImporter.materialLocation = ModelImporterMaterialLocation.External; // might be legacy maybe avoid...
 
             foreach (Material i in staticMesh.materials)
             {
                 // Create material asset, ensure it's linked to the fbx properly.
-                UnityEngine.Material materialAsset;
+                UnityEngine.Material newMaterialAsset;
 
                 switch (i.shader)
                 {
                     case Material.Shaders.CelShaderLit:
-                        materialAsset = new UnityEngine.Material(Shader.Find("Shader Graphs/CelShaderLit"));
+                        newMaterialAsset = SetupCelShaderLitMaterial();
                         break;
                     case Material.Shaders.UniversalRenderPipelineLit:
-                        materialAsset = new UnityEngine.Material(Shader.Find("Universal Render Pipeline/Lit"));
-                        // The following lines are from a deprecated method, but may be useful for the real implementation:
-                        // string materialFileName = newSrcFolder + "/" + new Material().GetPrefix() + staticMesh.assetName + ".mat";
-                        // AssetDatabase.CreateAsset(materialAsset, materialFileName);
-                        // AssetDatabase.SaveAssets();
-                        // AssetDatabase.Refresh();
-
-                        // Create textures
-                        CopyFileIntoProject(staticMesh, i.urplSettings.DiffuseMap, newSrcFolder);
-                        CopyFileIntoProject(staticMesh, i.urplSettings.RoughnessMap, newSrcFolder);
-
-                        // make sure normal map is set to "normal"
-                        CopyFileIntoProject(staticMesh, i.urplSettings.NormalMap, newSrcFolder);
-                        if (i.urplSettings.NormalMap.AssetExists())
-                        {
-                            TextureImporter normalMapImporter = AssetImporter.GetAtPath(i.urplSettings.NormalMap.destinationPath) as TextureImporter;
-                            normalMapImporter.textureType = TextureImporterType.NormalMap;
-                            normalMapImporter.SaveAndReimport(); //not sure if this is the right method (the "reimport" part specifically)
-                        }
-
-                        CopyFileIntoProject(staticMesh, i.urplSettings.HeightMap, newSrcFolder);
-                        CopyFileIntoProject(staticMesh, i.urplSettings.EmissiveMap, newSrcFolder);
-
-                        // link them to the material properly.
-
+                        newMaterialAsset = SetupUrplMaterial(staticMesh, i);
                         break;
                 }
             }
@@ -63,6 +44,52 @@ namespace AssetImportPipeline
             // ??? create the prefab? Profit?
             // possibly something with collision?? if that's not automated???????
             SerializeAssetStructure();
+
+
+
+            UnityEngine.Material SetupCelShaderLitMaterial()
+            {
+                UnityEngine.Material newMaterialAsset = new UnityEngine.Material(Shader.Find("Shader Graphs/CelShaderLit"));
+                return newMaterialAsset;
+            }
+
+            UnityEngine.Material SetupUrplMaterial(StaticMesh staticMesh, Material i)
+            {
+                UnityEngine.Material newMaterialAsset = new UnityEngine.Material(Shader.Find("Universal Render Pipeline/Lit"));
+                string materialFilePath = newSrcFolder + "/" + i.GetPrefix() + staticMesh.assetName + "_" + i.customName + ".mat"; // not a great solution for readability... CustomName will need a LOT of formatting to work with this.
+                Debug.Log(materialFilePath);
+                // The following lines are from a deprecated method, but may be useful for the real implementation:
+                //// string materialFileName = newSrcFolder + "/" + new Material().GetPrefix() + staticMesh.assetName + ".mat";
+                //// AssetDatabase.CreateAsset(materialAsset, materialFileName);
+                //// AssetDatabase.SaveAssets();
+                //// AssetDatabase.Refresh();
+
+                // Create textures
+                CopyFileIntoProject(staticMesh, i.urplSettings.DiffuseMap, newSrcFolder);
+                CopyFileIntoProject(staticMesh, i.urplSettings.MetalnessMap, newSrcFolder);
+                CopyFileIntoProject(staticMesh, i.urplSettings.RoughnessMap, newSrcFolder);
+                CopyFileIntoProject(staticMesh, i.urplSettings.SpecularMap, newSrcFolder);
+                CopyNormalMapIntoProject(staticMesh, i.urplSettings.NormalMap);
+                CopyFileIntoProject(staticMesh, i.urplSettings.HeightMap, newSrcFolder);
+                CopyFileIntoProject(staticMesh, i.urplSettings.EmissiveMap, newSrcFolder);
+                CopyFileIntoProject(staticMesh, i.urplSettings.AlphaMap, newSrcFolder);
+
+                // link them to the material properly.
+
+                return newMaterialAsset;
+            }
+        }
+
+        private void CopyNormalMapIntoProject(StaticMesh staticMesh, Texture normalMap)
+        {
+            // make sure normal map is set to "normal"
+            CopyFileIntoProject(staticMesh, normalMap, newSrcFolder);
+            if (normalMap.AssetExists())
+            {
+                TextureImporter normalMapImporter = AssetImporter.GetAtPath(normalMap.destinationPath) as TextureImporter;
+                normalMapImporter.textureType = TextureImporterType.NormalMap;
+                normalMapImporter.SaveAndReimport(); //not sure if this is the right method (the "reimport" part specifically)
+            }
         }
 
         void CopyFileIntoProject(StaticMesh staticMesh, AssetBase asset, string destinationPath)
