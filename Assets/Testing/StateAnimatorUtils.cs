@@ -2,13 +2,50 @@ using SLS.StateMachineH;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class StateAnimatorUtils : MonoBehaviour
 {
+    public StateMachine stateMachine;
+
+    [ContextMenu("Convert All")]
+    public void ConvertAll()
+    {
+        AttemptConvert(stateMachine, true);
+    }
+
+    private void AttemptConvert(State This, bool isRoot = false)
+    {
+        if (!isRoot && This.TryGetComponent(out PlayerMovementAnimator playerMovementAnimator))
+            playerMovementAnimator.RunTransfer();
+        foreach (var child in This.Children) AttemptConvert(child);
+    }
+
+
+    
+    public List<AnimationClip> clips;
+    public Animator animator;
+
+    [ContextMenu("Get Clips")]
+    public void GetClips()
+    {
+               if (animator == null) return;
+        var runtime = animator.runtimeAnimatorController;
+        if (runtime == null) return;
+        var animatorController = runtime as AnimatorController;
+        if (animatorController == null) return;
+        clips = animatorController.animationClips.ToList();
+        //for (int i = 0; i < animatorController.animationClips.Length; i++)
+        //{
+        //    clips[i] = animatorController.animationClips[i];
+        //}
+    }
+    
+
+    /*
     public StateAnimator stateAnimator;
     public PlayerMovementAnimator playerMovementAnimator;
     public Animator animator;
@@ -121,5 +158,5 @@ public class StateAnimatorUtils : MonoBehaviour
     }
 
 
-    public AnimationCurve Curve;
+    public AnimationCurve Curve;*/
 }

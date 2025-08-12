@@ -126,7 +126,7 @@ public class PlayerMovementAnimator : PlayerMovementEffector
 
 
     [ContextMenu("Recast")]
-    private void RunTransfer()
+    public void RunTransfer()
     {
         TryGetComponent(out StateAnimator stateAnimator);
         if (stateAnimator == null) return;
@@ -225,7 +225,8 @@ public class PlayerMovementAnimator : PlayerMovementEffector
             {
                 float value = (float)field.GetValue(blankSource);
                 Debug.Log($"No Binding found for {name}. Using value from Script which is {value}.");
-                outputCurve = AnimationCurve.Constant(0f, clip.length, value);
+                outputCurve = new AnimationCurve(new Keyframe(0, value));
+                //outputCurve = AnimationCurve.Constant(0f, clip.length, value);
             }
         }
 
