@@ -3,12 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
-using static TrackerEB;
 
 public class PlayerAirborneMovement : PlayerMovementEffector
 {
 
-    public JumpState defaultPhase;
+    public JumpState defaultPhase = JumpState.Jumping;
     public float jumpHeight;
     public float jumpPower;
     public float jumpMinHeight;

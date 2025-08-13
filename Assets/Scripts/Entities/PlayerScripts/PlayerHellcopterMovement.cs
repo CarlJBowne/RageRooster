@@ -23,8 +23,8 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
     public override void VerticalMovement(out float? result)
     {
         result = ApplyGravity(gravity, terminalVelocity, flatGravity);
-        if (isUpward) VerticalUpwards(ref result);
-        else if (playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref result);
+        VerticalUpwards(ref result);
+        if (playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref result);
     }
 
     protected override void VerticalUpwards(ref float? Y)
@@ -46,9 +46,7 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
     }
 
 
-    protected override void StartFrom_Jump() { }
-
-    protected override void StartFrom_Decel()
+    protected override void StartFrom_Jump()
     {
         if (!isUpward) return;
 
@@ -56,7 +54,7 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
         targetHeight = currentVent.transform.position.y + currentVent.hellcopterTargetHeight;
 
         playerMovementBody.VelocitySet(y: currentVent.hellcopterSpeed);
-        targetHeight = (currentVent.transform.position.y + currentVent.hellcopterTargetHeight) - (currentVent.hellcopterSpeed.P()) / (2 * gravity);
+        targetHeight -= (currentVent.hellcopterSpeed.P()) / (2 * gravity * Time.deltaTime);
         if (targetHeight <= transform.position.y)
         {
             playerMovementBody.VelocitySet(y: Mathf.Sqrt(2 * gravity * currentVent.hellcopterTargetHeight));
@@ -69,6 +67,11 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
                     transform.position + Vector3.up * targetHeight
                 };
 #endif
+    }
+
+    protected override void StartFrom_Decel()
+    {
+        
     }
 
     protected override void StartFrom_Falling()
