@@ -148,10 +148,11 @@ public class PlayerMovementBody : CharacterMovementBody
         bool wasntGrounded = jumpState != JumpState.Grounded;
         bool objectChange = anchorPoint.transform != groundHit.transform;
 
-        if (wasntGrounded && objectChange) return;
+        if (!wasntGrounded && !objectChange) return;
 
         jumpState = JumpState.Grounded;
         anchorPoint = groundHit;
+        velocity.y = 0;
 
         if (objectChange)
         {

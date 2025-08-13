@@ -250,26 +250,23 @@ public class CharacterMovementBody : MonoBehaviour
         RB.velocity = Vector3.zero;
         RB.angularVelocity = Vector3.zero;
 
+        if (checkGround && velocity.y <= 0)
+        {
+            if (GroundCheck(out AnchorPoint groundHit)) 
+            {
+                Land(groundHit);
+                velocity.y = 0;
+                initVelocity.y = 0;
+                initVelocity = initVelocity.ProjectAndScale(groundHit.normal);
+            }
+            else UnLand();
+        }
+
         initVelocity = velocity * Time.fixedDeltaTime;
         initNormal = anchorPoint.normal;
 
+        //moveTestString = "";
         Move(initVelocity, initNormal);
-
-        if (checkGround && velocity.y <= 0)
-        {
-            if (GroundCheck())
-            {
-                initNormal = anchorPoint.normal;
-                if (WithinSlopeAngle(anchorPoint.normal))
-                {
-                    Land(anchorPoint);
-                    velocity.y = 0;
-                    initVelocity.y = 0;
-                    initVelocity = initVelocity.ProjectAndScale(anchorPoint.normal);
-                }
-            }
-            else if (jumpState == JumpState.Grounded) UnLand();
-        }
 
         if (autoApplyGravity && !Grounded) ApplyGravity();
     }
@@ -291,23 +288,40 @@ public class CharacterMovementBody : MonoBehaviour
     /// <param name="step">The current step. Starts at 0.</param>
     protected virtual void Move(Vector3 vel, Vector3 prevNormal, int step = 0) 
     {
+        //moveTestString += $"Step {step}: {vel}\n";
+
         if (DirectionCast(vel.normalized, vel.magnitude, groundCheckBuffer, out RaycastHit hit))
         {
+            //moveTestString += $"Hit: {hit.normal} at distance {hit.distance}\n";
             Vector3 snapToSurface = vel.normalized * hit.distance;
             Vector3 leftover = vel - snapToSurface;
             Vector3 nextNormal = hit.normal;
+            bool scaleByDot = false;
 
             if (step == movementProjectionSteps) return;
 
             if (!MoveForward(snapToSurface)) return;
 
-            //Runs into wall/to high incline.
-            if (Mathf.Approximately(hit.normal.y, 0) || (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal)))
-            {
-                if (StopForward(ref nextNormal, hit.normal)) return;
-            }
             else if (Grounded)
             {
+                //moveTestString += "Is Grounded.\n";
+
+                if (Mathf.Approximately(hit.normal.y, 0))
+                {
+                    //moveTestString += "Hit a wall.\n";
+                    scaleByDot = true;
+                    leftover.y = 0;
+                    if (StopForward(ref nextNormal, hit.normal)) return;
+                }
+                else if (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
+                {
+                    //moveTestString += "Hit a steep slope.\n";
+                    scaleByDot = true;
+                    leftover.y = 0;
+                    if (StopForward(ref nextNormal, hit.normal)) return;
+                }
+                    
+
                 if (Grounded && prevNormal.y > 0 && hit.normal.y < 0) //Floor to Cieling
                 {
                     if (FloorCeilingLock(prevNormal, hit.normal)) return;
@@ -316,30 +330,52 @@ public class CharacterMovementBody : MonoBehaviour
                 {
                     if (FloorCeilingLock(hit.normal, prevNormal)) return;
                 }
+
+                bool FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
+                {
+                    //moveTestString += "Encountered Vertical Squish.\n";
+                    scaleByDot = true;
+                    return StopForward(ref nextNormal, floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal);
+                }
+                    
             }
             else
             {
-                if (vel.y < .1f && WithinSlopeAngle(hit.normal))
+                //moveTestString += "Isnt Grounded.\n";
+
+
+                if (Mathf.Approximately(hit.normal.y, 0))
                 {
-                    Land(hit);
-                    leftover.y = 0;
+                    //moveTestString += "Hit a Wall.\n";
+                    if (StopForward(ref nextNormal, hit.normal)) return;
                 }
-                else if (vel.y < -1f && DirectionCastAll(vel, vel.y.Abs(), groundCheckBuffer, out RaycastHit[] downHits) && downHits.Length > 1)
+                else if(hit.normal.y > 0)
                 {
-                    UnLand();
-                    leftover.y = 0;
+                    if(WithinSlopeAngle(hit.normal))
+                    {
+                        //moveTestString += "Landed on a standable ground.\n";
+                        Land(hit);
+                        leftover.y = 0;
+                    }
+                    else
+                    {
+                        //moveTestString += "Hit a steep slope while falling.\n";
+                    }
                 }
-                else leftover = leftover.ProjectAndScale(hit.normal);
+                else
+                {
+                    //moveTestString += "Hit a sloped ceiling while jumping.\n";
+                }
             }
 
-            bool FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal) =>
-                StopForward(ref nextNormal, floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal);
 
-            Vector3 newDir = leftover.ProjectAndScale(nextNormal) * (Vector3.Dot(leftover.normalized, nextNormal) + 1);
+            Vector3 newDir = leftover.ProjectAndScale(nextNormal);
+            if (scaleByDot) newDir *= Vector3.Dot(leftover.normalized, nextNormal) + 1;
             Move(newDir, nextNormal, step + 1);
         }
         else
         {
+            //moveTestString += "No Hit\n";
 
             if (step == movementProjectionSteps) return;
             if (!MoveForward(vel)) return;
@@ -385,6 +421,8 @@ public class CharacterMovementBody : MonoBehaviour
         UnLand();
     }
 
+    //public string moveTestString = "";
+
     /// <summary>
     /// Casts the Rigidbody in a direction to check for collision using SweepTest.
     /// </summary>
@@ -425,22 +463,9 @@ public class CharacterMovementBody : MonoBehaviour
     /// <returns>True if grounded, false otherwise.</returns>
     public virtual bool GroundCheck(out AnchorPoint groundHit)
     {
-        bool result = DirectionCast(Vector3.down, groundCheckBuffer, groundCheckBuffer, out RaycastHit raycast);
+        bool result = DirectionCast(Vector3.down, groundCheckBuffer, groundCheckBuffer, out RaycastHit raycast) && WithinSlopeAngle(raycast.normal);
         groundHit = raycast;
         return result;
-    }
-    /// <summary>
-    /// Checks if the character is grounded, Runs <see cref="Land"/> if so.
-    /// </summary>
-    /// <returns>True if grounded, false otherwise.</returns>
-    public virtual bool GroundCheck()
-    {
-        if (DirectionCast(Vector3.down, groundCheckBuffer, groundCheckBuffer, out RaycastHit raycast))
-        {
-            Land(raycast);
-            return true;
-        }
-        return false;
     }
 
     /// <summary>
@@ -528,7 +553,7 @@ public class CharacterMovementBody : MonoBehaviour
         else if (!Grounded && WithinSlopeAngle(contactPoint))
             Land(collision.GetContact(0));
 
-    }
+    } 
 
     /// <summary>
     /// Determines if the given normal is within the allowed slope angle.
