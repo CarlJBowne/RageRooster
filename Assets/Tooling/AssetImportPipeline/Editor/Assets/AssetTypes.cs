@@ -79,6 +79,12 @@ namespace AssetImportPipeline
         public enum Shaders { CelShaderLit, UniversalRenderPipelineLit }
         public Shaders shader = Shaders.CelShaderLit;
 
+
+        public string GetMaterialName(StaticMesh staticMesh)
+        {
+            return staticMesh.assetName + "_" + customName;
+        }
+
         public URPLitSettings urplSettings = new URPLitSettings();
         public CelShaderLitSettings cslSettings = new CelShaderLitSettings();
 
@@ -101,7 +107,7 @@ namespace AssetImportPipeline
             public Texture HeightMap = new Texture();
             public Texture AO = new Texture();
         }
-        public class URPLitSettings : ShaderSettings
+        public class URPLitSettings : ShaderSettings // Please note this does not currently correspond to the URPL shader
         {
             public bool transparent = false;
             public Texture DiffuseMap = new Texture();
