@@ -177,14 +177,11 @@ public static class MiscHelperMethods
         }
     }
 
-
-
-    
-
-
-
-
-
+    [MenuItem("Rage Rooster Tooling/Open Player Prefab")]
+    public static void OpenPlayerPrefab() => 
+        AssetDatabase.OpenAsset(
+            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Actors/_Private/Angus/Player.prefab")
+            );
 
 
 
@@ -204,5 +201,12 @@ public static class MiscHelperMethods
 
 
 
-    
+
+
+
+
+
+
+
+
 }
