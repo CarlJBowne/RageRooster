@@ -35,15 +35,23 @@ namespace AssetImportPipeline
                         newMaterialAsset = SetupCslMaterial(staticMesh, i);
                         break;
                     case Material.Shaders.UniversalRenderPipelineLit:
-                        // newMaterialAsset = SetupUrplMaterial(staticMesh, i);
-                        newMaterialAsset = SetupCslMaterial(staticMesh, i); // because it's not implemented and i'm lazy
+                        // newMaterialAsset = SetupUrplMaterial(staticMesh, i);  // because it's not implemented and i'm lazy
+                        newMaterialAsset = SetupCslMaterial(staticMesh, i);
                         break;
                 }
                 // ensure it's linked to the fbx properly
+                // ????
             }
 
-            // ??? create the prefab? Profit?
+            // Create the prefab
+            GameObject modelGameObject = PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(staticMesh.model.destinationPath)) as GameObject;
+            staticMesh.prefab.destinationPath = newFolder + "/" + staticMesh.prefab.CreateFilename(staticMesh.assetName) + ".prefab";
+            PrefabUtility.SaveAsPrefabAsset(modelGameObject, staticMesh.prefab.destinationPath);
+            Object.DestroyImmediate(modelGameObject);
+
             // possibly something with collision?? if that's not automated???????
+
+            // Create serialization for easier future automation
             SerializeAssetStructure();
 
             UnityEngine.Material CreateMaterialAssetWithShader(StaticMesh staticMesh, Material i, string shaderPath)
