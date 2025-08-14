@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Security.Policy;
 using System.Xml.Linq;
 using EditorAttributes;
@@ -80,9 +81,12 @@ namespace AssetImportPipeline
         public Shaders shader = Shaders.CelShaderLit;
 
 
+        public string fbxMaterialSlotName = ""; // Storing it separately because it needs to be immutable after being set
+
+
         public string GetMaterialName(StaticMesh staticMesh)
         {
-            return staticMesh.assetName + "_" + customName;
+            return staticMesh.assetName + "-" + customName;
         }
 
         public URPLitSettings urplSettings = new URPLitSettings();

@@ -63,8 +63,8 @@ namespace AssetImportPipeline
                         {
                             Material material = new Material();
                             material.customName = i.name;
-                            // PSUEDOCODE: Try to get the original Texture paths.
-                            // ...this looks like it'd require uFBX again so actually, MAYBE NOT.
+                            material.fbxMaterialSlotName = i.name;
+                            // PSUEDOCODE: Try to get the original Texture paths. // ...this looks like it'd require uFBX again so actually, MAYBE NOT.
                             staticMesh.materials.Add(material);
                         }
 

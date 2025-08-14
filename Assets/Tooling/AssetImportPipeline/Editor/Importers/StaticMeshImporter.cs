@@ -21,14 +21,14 @@ namespace AssetImportPipeline
             // add assets to \src, standardize asset names in the process
             CopyFileIntoProject(staticMesh, staticMesh.model, newSrcFolder); // Copy FBX into \src
 
+            // Set ModelImporter settings to allow using external material assets instead of internally generated subassets
             ModelImporter modelImporter = AssetImporter.GetAtPath(staticMesh.model.destinationPath) as ModelImporter;
-            modelImporter.materialImportMode = ModelImporterMaterialImportMode.ImportStandard;
-            modelImporter.materialLocation = ModelImporterMaterialLocation.External; // might be legacy maybe avoid...
+            // modelImporter.materialImportMode = ModelImporterMaterialImportMode.None;
 
             foreach (Material i in staticMesh.materials)
             {
                 // Create material asset
-                UnityEngine.Material newMaterialAsset;
+                UnityEngine.Material newMaterialAsset = null;
                 switch (i.shader)
                 {
                     case Material.Shaders.CelShaderLit:
@@ -39,8 +39,11 @@ namespace AssetImportPipeline
                         newMaterialAsset = SetupCslMaterial(staticMesh, i);
                         break;
                 }
+
                 // ensure it's linked to the fbx properly
-                // ????
+                AssetImporter.SourceAssetIdentifier id = new AssetImporter.SourceAssetIdentifier(typeof(UnityEngine.Material), i.fbxMaterialSlotName);
+                modelImporter.AddRemap(id, newMaterialAsset);
+                modelImporter.SaveAndReimport();
             }
 
             // Create the prefab
@@ -63,7 +66,7 @@ namespace AssetImportPipeline
                 // The following lines are from a deprecated method, but may be useful for the real implementation:
                     //// string materialFileName = newSrcFolder + "/" + new Material().GetPrefix() + staticMesh.assetName + ".mat";
                     //// AssetDatabase.CreateAsset(materialAsset, materialFileName);
-                    //// AssetDatabase.SaveAssets();
+                    // AssetDatabase.SaveAssets();
                     //// AssetDatabase.Refresh();
                 return newMaterialAsset;
             }
