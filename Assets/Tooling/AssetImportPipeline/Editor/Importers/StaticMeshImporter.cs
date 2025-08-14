@@ -35,7 +35,8 @@ namespace AssetImportPipeline
                         newMaterialAsset = SetupCslMaterial(staticMesh, i);
                         break;
                     case Material.Shaders.UniversalRenderPipelineLit:
-                        newMaterialAsset = SetupUrplMaterial(staticMesh, i);
+                        // newMaterialAsset = SetupUrplMaterial(staticMesh, i);
+                        newMaterialAsset = SetupCslMaterial(staticMesh, i); // because it's not implemented and i'm lazy
                         break;
                 }
                 // ensure it's linked to the fbx properly
@@ -72,7 +73,7 @@ namespace AssetImportPipeline
                 return newMaterialAsset;
             }
 
-            UnityEngine.Material SetupUrplMaterial(StaticMesh staticMesh, Material i)
+            UnityEngine.Material SetupUrplMaterial(StaticMesh staticMesh, Material i) // NOT implemented right now actually
             {
                 var sm = staticMesh; // shorter :D
                 UnityEngine.Material newMaterialAsset = CreateMaterialAssetWithShader(sm, i, "Universal Render Pipeline/Lit");

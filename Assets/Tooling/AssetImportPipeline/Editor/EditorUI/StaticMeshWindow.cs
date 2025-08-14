@@ -88,18 +88,13 @@ namespace AssetImportPipeline
                         switch (i.shader)
                         {
                             case Material.Shaders.UniversalRenderPipelineLit:
-                                GUILayout.BeginHorizontal();
-                                GUILayout.EndHorizontal();
-                                i.urplSettings.transparent = GUILayout.Toggle(i.urplSettings.transparent, "Transparent");
-                                i.urplSettings.DiffuseMap = CreateImportButton("Diffuse path", i.urplSettings.DiffuseMap, "png") as Texture;
-                                i.urplSettings.RoughnessMap = CreateImportButton("Roughness path", i.urplSettings.RoughnessMap, "png") as Texture;
-                                i.urplSettings.NormalMap = CreateImportButton("Normal path", i.urplSettings.NormalMap, "png") as Texture;
-                                i.urplSettings.HeightMap = CreateImportButton("Height path", i.urplSettings.HeightMap, "png") as Texture;
-                                i.urplSettings.EmissiveMap = CreateImportButton("Emissive path", i.urplSettings.EmissiveMap, "png") as Texture;
-                                if (i.urplSettings.transparent) i.urplSettings.AlphaMap = CreateImportButton("Alpha path", i.urplSettings.AlphaMap, "png") as Texture;
+                                GUILayout.Label("Not yet implemented, sorry!");
                                 break;
                             case Material.Shaders.CelShaderLit:
                                 i.cslSettings.BaseColor = CreateImportButton("Base Color", i.cslSettings.BaseColor, "png") as Texture;
+                                i.cslSettings.NormalMap = CreateImportButton("Normal Map", i.cslSettings.NormalMap, "png") as Texture;
+                                i.cslSettings.HeightMap = CreateImportButton("Height Map", i.cslSettings.HeightMap, "png") as Texture;
+                                i.cslSettings.AO = CreateImportButton("Ambient Occlusion", i.cslSettings.AO, "png") as Texture;
                                 break;
                         }
 
