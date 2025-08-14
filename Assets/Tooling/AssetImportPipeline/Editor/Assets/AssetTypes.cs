@@ -79,19 +79,17 @@ namespace AssetImportPipeline
         public bool useExistingMaterial = false;
         public enum Shaders { CelShaderLit, UniversalRenderPipelineLit }
         public Shaders shader = Shaders.CelShaderLit;
-
-
-        public string fbxMaterialSlotName = ""; // Storing it separately because it needs to be immutable after being set
-
+        public string fbxMaterialSlotName = ""; // Storing this value redundantly on purpose because it needs to be immutable after being set.
 
         public string GetMaterialName(StaticMesh staticMesh)
         {
+            if (customName.StartsWith("m_")) customName = customName.Substring(2);
+            
             return staticMesh.assetName + "-" + customName;
         }
 
         public URPLitSettings urplSettings = new URPLitSettings();
         public CelShaderLitSettings cslSettings = new CelShaderLitSettings();
-
 
         string prefix = "mat_";
         public override string GetPrefix() => prefix;

@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using DependenciesHunter;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,14 +9,12 @@ namespace AssetImportPipeline
     
     public class StaticMeshWindow : EditorWindow
     {
-        static StaticMeshWindow window; // To avoid any potential lifecycle issues with the window. Hopefully not necessary?
         StaticMesh staticMesh = new StaticMesh();
-
         int spaceSize = 20;
         int actionTypeIndex = 0;
         public static void ShowWindow()
         {
-            window = GetWindow<StaticMeshWindow>("Importing Asset (Example)");
+            GetWindow<StaticMeshWindow>("Importing Asset (Example)");
         }
         private Vector2 scrollPosition;
         void OnGUI()
@@ -41,9 +36,11 @@ namespace AssetImportPipeline
             CreateSeparatorLine();
             SetAssetNameUI();
             CreateSeparatorLine();
+            
             if (SetModelUI())
             {
                 CreateSeparatorLine();
+            
                 // Extract materials from FBX
                 if (!staticMesh.model.hasBeenAnalysed)
                 {
@@ -79,6 +76,7 @@ namespace AssetImportPipeline
 
                 if (staticMesh.model.hasBeenAnalysed)
                 {
+                    // Populate materials UI
                     GUILayout.Space(spaceSize);
                     foreach (Material i in staticMesh.materials)
                     {
@@ -150,22 +148,31 @@ namespace AssetImportPipeline
                 // Finalize import dialog
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("");
-                if (GUILayout.Button("Confirm final import", GUILayout.Width(200)))
+                if (ValidateProvidedData())
                 {
-                    bool confirm = EditorUtility.DisplayDialog(
-                        "Confirm Import",
-                        "Good work! All strictly necessary information has been entered. :)\n\nAre you ready to import this asset, or would you like to make more adjustments?",
-                        "I'm ready",
-                        "Go Back"
-                    );
-
-                    if (confirm)
+                    if (GUILayout.Button("Confirm final import", GUILayout.Width(200)))
                     {
-                        StaticMeshImporter staticMeshImporter = new StaticMeshImporter();
-                        staticMeshImporter.ImportStaticMesh(staticMesh);
-                        Close();
+                        bool confirm = EditorUtility.DisplayDialog(
+                            "Confirm Import",
+                            /*Good work! All strictly necessary information has been entered. :)\n\n*/
+                            "Are you sure you are ready to import this asset, or would you like to make more adjustments?",
+                            "I'm ready",
+                            "Go Back"
+                        );
+
+                        if (confirm)
+                        {
+                            StaticMeshImporter staticMeshImporter = new StaticMeshImporter();
+                            staticMeshImporter.ImportStaticMesh(staticMesh);
+                            Close();
+                        }
                     }
                 }
+                else
+                {
+                    Debug.Log("Information not validated.");
+                }
+                
                 GUILayout.Label("");
                 GUILayout.EndHorizontal();
             }
@@ -212,6 +219,8 @@ namespace AssetImportPipeline
 
         bool ValidateProvidedData()
         {
+            // TODO: Make sure data is acceptable.
+            
             // folder is within Assets/Art (?)
             // name is not taken in the destination, or blank, or contains forbidden characters, or has an extension erroneously, or otherwise invalid
             // FBX is present
