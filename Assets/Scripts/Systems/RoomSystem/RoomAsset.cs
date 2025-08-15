@@ -7,14 +7,14 @@ using UnityEngine;
 public class RoomAsset : ScriptableObject
 {
     //Serialized Data
-    [field: SerializeField] public AreaAsset Area { get; protected set; }
-    public SceneReference scene;
-    public GameObject landmarkPrefab;
+    [field: SerializeField] public AreaAsset area { get; protected set; }
+    [field: SerializeField] public SceneReference scene { get; protected set; }
+    [field: SerializeField] public Prefab adjacentLOD { get; protected set; }
 
 
     //Active Data
-    public RoomRoot Root { get; protected set; }
-
+    public RoomRoot root { get; protected set; }
+    public GameObject adjacentLODInstance { get; protected set; }
 
 
 

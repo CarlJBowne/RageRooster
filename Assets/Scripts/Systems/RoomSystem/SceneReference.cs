@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Codice.Client.BaseCommands.Merge.Xml;
 
 
 #if UNITY_EDITOR
@@ -225,19 +224,26 @@ public class SceneObjectDrawer : PropertyDrawer
     {
         EditorGUI.BeginProperty(position, label, property);
 
-        // Draw the asset field
+        // Draw the asset field, limiting to scene assets only
         Rect assetRect = position;
         assetRect.width -= EditorGUIUtility.singleLineHeight + 2; // Reserve space for warning icon
+
+        SerializedProperty assetProp = property.FindPropertyRelative("<asset>k__BackingField");
         EditorGUI.BeginChangeCheck();
-        EditorGUI.PropertyField(assetRect, property.FindPropertyRelative("<asset>k__BackingField"), label);
+        // Use ObjectField with a filter for SceneAsset type
+        assetProp.objectReferenceValue = EditorGUI.ObjectField(
+            assetRect,
+            label,
+            assetProp.objectReferenceValue,
+            typeof(UnityEditor.SceneAsset),
+            false
+        );
         if (EditorGUI.EndChangeCheck())
         {
             // Force update of SceneObject struct after asset change
             Object targetObject = property.serializedObject.targetObject;
             var so = (SceneReference)fieldInfo.GetValue(targetObject);
 
-            // Update fields based on new asset
-            SerializedProperty assetProp = property.FindPropertyRelative("<asset>k__BackingField");
             Object newAsset = assetProp.objectReferenceValue;
             if (newAsset != null)
             {
@@ -254,7 +260,7 @@ public class SceneObjectDrawer : PropertyDrawer
         SceneRefState state = SceneRefState.Null;
 
         // Draw warning icon if not in build list
-        UnityEngine.Object asset = property.FindPropertyRelative("<asset>k__BackingField").objectReferenceValue;
+        UnityEngine.Object asset = assetProp.objectReferenceValue;
         string scenePath = property.FindPropertyRelative("<scenePath>k__BackingField").stringValue;
 
         if (asset != null && !string.IsNullOrEmpty(scenePath))
@@ -301,9 +307,9 @@ public class SceneObjectDrawer : PropertyDrawer
 
         GUIContent iconContent = new(icon, tooltip);
         if (GUI.Button(iconRect, iconContent, GUIStyle.none))
-            if(state is SceneRefState.NotInList or SceneRefState.InListButDisabled)
+            if (state is SceneRefState.NotInList or SceneRefState.InListButDisabled)
                 EditorWindow.GetWindow(System.Type.GetType("UnityEditor.BuildPlayerWindow,UnityEditor"));
-         
+
         EditorGUI.EndProperty();
     }
 }
