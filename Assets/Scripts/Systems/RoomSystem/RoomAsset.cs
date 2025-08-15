@@ -8,7 +8,7 @@ public class RoomAsset : ScriptableObject
 {
     //Serialized Data
     [field: SerializeField] public AreaAsset Area { get; protected set; }
-    public Object scene;
+    public SceneReference scene;
     public GameObject landmarkPrefab;
 
 
