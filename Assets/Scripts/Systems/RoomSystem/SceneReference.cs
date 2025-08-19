@@ -164,13 +164,13 @@ public struct SceneReference
 
     public void LoadSingle()
     {
-        if(Valid) throw new System.InvalidOperationException("Invalid Scene.");
+        if(!Valid) throw new System.InvalidOperationException("Invalid Scene.");
         if(Loaded) throw new System.InvalidOperationException("Scene is already loaded.");
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
     public AsyncOperation LoadSingleAsync()
     {
-        if (Valid) throw new System.InvalidOperationException("Invalid Scene.");
+        if (!Valid) throw new System.InvalidOperationException("Invalid Scene.");
         if (Loaded) throw new System.InvalidOperationException("Scene is already loaded.");
         asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         state = SceneState.Loading;
@@ -180,13 +180,13 @@ public struct SceneReference
 
     public void Load()
     {
-        if (Valid) throw new System.InvalidOperationException("Invalid Scene.");
+        if (!Valid) throw new System.InvalidOperationException("Invalid Scene.");
         if (Loaded) throw new System.InvalidOperationException("Scene is already loaded.");
         SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
     }
     public AsyncOperation LoadAsync()
     {
-        if (Valid) throw new System.InvalidOperationException("Invalid Scene.");
+        if (!Valid) throw new System.InvalidOperationException("Invalid Scene.");
         if (Loaded) throw new System.InvalidOperationException("Scene is already loaded.");
         asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         state = SceneState.Loading;
@@ -195,7 +195,7 @@ public struct SceneReference
     }
     public AsyncOperation Unload()
     {
-        if (Valid) throw new System.InvalidOperationException("Invalid Scene.");
+        if (!Valid) throw new System.InvalidOperationException("Invalid Scene.");
         if (!Loaded) throw new System.InvalidOperationException("Scene is not loaded.");
         asyncOperation = SceneManager.UnloadSceneAsync(sceneName);
         state = SceneState.Unloading;
