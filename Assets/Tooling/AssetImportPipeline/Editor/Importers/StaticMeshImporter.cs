@@ -1,4 +1,5 @@
 using System.IO;
+using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
@@ -51,7 +52,7 @@ namespace AssetImportPipeline
             // TODO: possibly something with collision here?
 
             // Create serialization for easier future automation
-            SerializeAssetStructure();
+            SerializeAssetStructure(staticMesh, newSrcFolder);
 
             UnityEngine.Material CreateMaterialAssetWithShader(StaticMesh staticMesh, Material i, string shaderPath)
             {
@@ -127,9 +128,11 @@ namespace AssetImportPipeline
             // Refresh asset database
             AssetDatabase.ImportAsset(asset.destinationPath);
         }
-        void SerializeAssetStructure()
+        void SerializeAssetStructure(StaticMesh staticMesh, string destination)
         {
-            // TODO: Create Json(?) file in /src that helps serialize the Asset Data Structure for future tooling.
+            // Create Json file in /src that helps serialize the Asset Data Structure for future tooling.
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(staticMesh, Newtonsoft.Json.Formatting.Indented);
+            File.WriteAllText(destination + "/asset_info.json", json);
         }
     }
 }
