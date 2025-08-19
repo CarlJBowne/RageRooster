@@ -68,7 +68,7 @@ namespace AssetImportPipeline
                         // TODO: Set up failsafe in case .fbx has 0 materials.
                     }
 
-                    // Remove the temporary asset so it doesn't clutter up the project.
+                    // Remove the temporary asset
                     AssetDatabase.DeleteAsset(tempFbxFilePath);
 
                     staticMesh.model.hasBeenAnalysed = true;
@@ -80,8 +80,16 @@ namespace AssetImportPipeline
                     GUILayout.Space(spaceSize);
                     foreach (Material i in staticMesh.materials)
                     {
-                        GUILayout.Label("Material: " + i.customName);
+                        // Display and modify material asset name
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Label("Material Name: ");
+                        GUILayout.Label("mat_" + staticMesh.assetName + "-", GUILayout.ExpandWidth(false));
+                        i.customName = i.StripMaterialName();
+                        i.customName = GUILayout.TextField(i.customName, GUILayout.ExpandWidth(false)); // Some slight redundancy going on here between this and StaticMeshImporter. Not enough to warrant a change *yet* but keep it in mind.
+                        GUILayout.Label(".mat",GUILayout.ExpandWidth(false));
+                        GUILayout.EndHorizontal();
 
+                        // Set UI based on the shader type used.
                         i.shader = (Material.Shaders)EditorGUILayout.Popup("Shader", (int)i.shader, Enum.GetNames(typeof(Material.Shaders)));
                         switch (i.shader)
                         {

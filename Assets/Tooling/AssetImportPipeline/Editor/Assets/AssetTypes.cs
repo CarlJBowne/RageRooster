@@ -81,10 +81,14 @@ namespace AssetImportPipeline
         public Shaders shader = Shaders.CelShaderLit;
         public string fbxMaterialSlotName = ""; // Storing this value redundantly on purpose because it needs to be immutable after being set.
 
+        public string StripMaterialName()
+        {
+            foreach (string i in new[] { "m_", "mat_" })
+                if (customName.StartsWith(i, StringComparison.OrdinalIgnoreCase)) customName = customName.Substring(i.Length);
+            return customName;
+        }
         public string GetMaterialName(StaticMesh staticMesh)
         {
-            if (customName.StartsWith("m_")) customName = customName.Substring(2);
-            
             return staticMesh.assetName + "-" + customName;
         }
 
