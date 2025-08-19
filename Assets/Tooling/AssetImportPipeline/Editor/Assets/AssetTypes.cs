@@ -1,10 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Policy;
-using System.Xml.Linq;
-using EditorAttributes;
 using UnityEditor;
-using UnityEngine;
 
 namespace AssetImportPipeline
 {
@@ -78,10 +74,21 @@ namespace AssetImportPipeline
         public bool useExistingMaterial = false;
         public enum Shaders { CelShaderLit, UniversalRenderPipelineLit }
         public Shaders shader = Shaders.CelShaderLit;
+        public string fbxMaterialSlotName = ""; // Storing this value redundantly on purpose because it needs to be immutable after being set.
+
+        public string StripMaterialName()
+        {
+            foreach (string i in new[] { "m_", "mat_" })
+                if (customName.StartsWith(i, StringComparison.OrdinalIgnoreCase)) customName = customName.Substring(i.Length);
+            return customName;
+        }
+        public string GetMaterialName(StaticMesh staticMesh)
+        {
+            return staticMesh.assetName + "-" + customName;
+        }
 
         public URPLitSettings urplSettings = new URPLitSettings();
         public CelShaderLitSettings cslSettings = new CelShaderLitSettings();
-
 
         string prefix = "mat_";
         public override string GetPrefix() => prefix;
@@ -93,14 +100,15 @@ namespace AssetImportPipeline
         }
         public static List<string> extensions = new List<string>() { ".asset" }; // should actually be .mat i was dumb, not changing it yet just in case to remind myself in case something is Wrong
 
-        public class CelShaderLitSettings
+        public abstract class ShaderSettings{}
+        public class CelShaderLitSettings : ShaderSettings
         {
             public Texture BaseColor = new Texture();
             public Texture NormalMap = new Texture();
             public Texture HeightMap = new Texture();
             public Texture AO = new Texture();
         }
-        public class URPLitSettings
+        public class URPLitSettings : ShaderSettings // Please note this does not currently correspond to the URPL shader
         {
             public bool transparent = false;
             public Texture DiffuseMap = new Texture();
