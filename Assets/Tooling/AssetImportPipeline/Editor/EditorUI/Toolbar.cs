@@ -30,14 +30,5 @@ namespace AssetImportPipeline
             }
             else GUILayout.Label("Sorry, this hasn't been implemented.");
         }
-
-
-        private void CreateLabel(string labelText)
-        {
-            GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
-            labelStyle.alignment = TextAnchor.MiddleCenter;
-            labelStyle.fontStyle = FontStyle.Bold;
-            GUILayout.Label(labelText, labelStyle);
-        }
     }
 }
