@@ -66,10 +66,10 @@ namespace AssetImportPipeline
                 UnityEngine.Material newMaterialAsset = CreateMaterialAssetWithShader(sm, i, "Shader Graphs/CelShaderLit");
 
                 // Create textures and link them to the material properly
-                CopyTextureIntoProjectAndAssignToMaterial(sm, i.cslSettings.BaseColor, i, newMaterialAsset, "_Texture");
+                CopyTextureIntoProjectAndAssignToMaterial(sm, i.cslSettings.BaseColor, i, newMaterialAsset, "_Texture", "tex_color_");
                 CopyNormalMapIntoProjectAndAssignToMaterial(sm, i.cslSettings.NormalMap, i, newMaterialAsset, "_Normal");
-                CopyTextureIntoProjectAndAssignToMaterial(sm, i.cslSettings.HeightMap, i, newMaterialAsset, "_Height");
-                CopyTextureIntoProjectAndAssignToMaterial(sm, i.cslSettings.AO, i, newMaterialAsset, "_AO");
+                CopyTextureIntoProjectAndAssignToMaterial(sm, i.cslSettings.HeightMap, i, newMaterialAsset, "_Height", "tex_height_");
+                CopyTextureIntoProjectAndAssignToMaterial(sm, i.cslSettings.AO, i, newMaterialAsset, "_AO", "tex_ao_");
 
                 return newMaterialAsset;
             }
@@ -99,7 +99,7 @@ namespace AssetImportPipeline
 
         private void CopyNormalMapIntoProjectAndAssignToMaterial(StaticMesh staticMesh, Texture normalMap, Material i, UnityEngine.Material newMaterialAsset, string textureSlotName)
         {
-            CopyTextureIntoProjectAndAssignToMaterial(staticMesh, normalMap, i, newMaterialAsset, textureSlotName);
+            CopyTextureIntoProjectAndAssignToMaterial(staticMesh, normalMap, i, newMaterialAsset, textureSlotName, "tex_nrm_");
 
             if (!normalMap.AssetExists()) return;
 
@@ -107,8 +107,9 @@ namespace AssetImportPipeline
             normalMapImporter.textureType = TextureImporterType.NormalMap;
             normalMapImporter.SaveAndReimport();
         }
-        void CopyTextureIntoProjectAndAssignToMaterial(StaticMesh staticMesh, Texture texture, Material i, UnityEngine.Material newMaterialAsset, string textureSlotName)
+        void CopyTextureIntoProjectAndAssignToMaterial(StaticMesh staticMesh, Texture texture, Material i, UnityEngine.Material newMaterialAsset, string textureSlotName, string customPrefix)
         {
+            texture.SetPrefix(customPrefix);
             CopyFileIntoProject(staticMesh, texture, newSrcFolder, i.GetMaterialName(staticMesh));
             UnityEngine.Texture2D texture2D = AssetDatabase.LoadAssetAtPath<Texture2D>(texture.destinationPath);
             newMaterialAsset.SetTexture(textureSlotName, texture2D);
