@@ -178,7 +178,7 @@ namespace AssetImportPipeline
                 }
                 else
                 {
-                    Debug.Log("Information not validated.");
+                    // Debug.Log("Information not validated.");
                 }
                 
                 GUILayout.Label("");
@@ -206,7 +206,6 @@ namespace AssetImportPipeline
             }
             if (GUILayout.Button("Clear", GUILayout.Width(50)))
             {
-                Debug.Log("Reset asset!");
                 asset = asset.ResetAsset(false);
             }
 

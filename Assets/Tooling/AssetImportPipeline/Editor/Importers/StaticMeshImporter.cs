@@ -125,7 +125,6 @@ namespace AssetImportPipeline
 
             // Refresh asset database
             AssetDatabase.ImportAsset(asset.destinationPath);
-            Debug.Log("Imported: " + asset.destinationPath);
         }
         void SerializeAssetStructure()
         {
