@@ -27,9 +27,9 @@ public class RoomAsset : ScriptableObject
 
 
 
-
-    internal void _SetArea(AreaAsset newArea) => area = newArea;
-
+#if UNITY_EDITOR
+    internal void _AreaSet_EditorOnly(AreaAsset newArea) => area = newArea;
+#endif
 }
 
 #if UNITY_EDITOR

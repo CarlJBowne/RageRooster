@@ -127,7 +127,7 @@ public class AreaAssetEditor : Editor
             AssetDatabase.SaveAssets();
             roomsProperty.arraySize++;
             roomsProperty.GetArrayElementAtIndex(roomsProperty.arraySize - 1).objectReferenceValue = newRoom;
-            newRoom._SetArea((AreaAsset)target); // Set the area reference
+            newRoom._AreaSet_EditorOnly((AreaAsset)target); // Set the area reference
             serializedObject.ApplyModifiedProperties();
         };
 
@@ -240,7 +240,7 @@ public class AreaAssetEditor : Editor
             if(oldRoom != null)
             {
                 //oldRoom.area.rooms.Remove(oldRoom);
-                oldRoom._SetArea(null);
+                oldRoom._AreaSet_EditorOnly(null);
                 if (deleteOld)
                 {
                     DestroyImmediate(oldRoom, true);
@@ -253,20 +253,67 @@ public class AreaAssetEditor : Editor
                 if(newRoom.area != null && newRoom.area != This)
                 {
                     newRoom.area.rooms.Remove(newRoom);
-                    newRoom._SetArea(null);
+                    newRoom._AreaSet_EditorOnly(null);
                 }
-                newRoom._SetArea(This);
+                newRoom._AreaSet_EditorOnly(This);
             }
         }
         else
         {
             roomsList.serializedProperty.arraySize++;
             roomsList.serializedProperty.GetArrayElementAtIndex(roomsList.serializedProperty.arraySize - 1).objectReferenceValue = newRoom;
-            newRoom._SetArea(This);
+            newRoom._AreaSet_EditorOnly(This);
         }
 
         roomsList.serializedProperty.serializedObject.ApplyModifiedProperties();
     }
+
+
+
+    public void RegisterRoom(SerializedProperty room, SerializedProperty area)
+    {
+
+    }
+    public void UnregisterRoom(SerializedProperty room, SerializedProperty area)
+    {
+    }
+
+
+    /*
+    public void AddRoom(RoomAsset room, SerializedProperty list, int id)
+    {
+
+    }
+    public void RemoveRoom(RoomAsset room, SerializedProperty list, int id)
+    {
+
+    }
+
+    public void RegisterRoom(RoomAsset room, AreaAsset area)
+    {
+        area.rooms.Add(room);
+        room._AreaSet_EditorOnly(area);
+    }
+    public void UnregisterRoom(RoomAsset room, AreaAsset area)
+    {
+        area.rooms.Remove(room);
+        room._AreaSet_EditorOnly(null);
+    }
+    public void RegisterRoom(RoomAsset room, SerializedProperty area)
+    {
+        area.objectReferenceValue = room;
+        room._AreaSet_EditorOnly(area);
+    }
+    public void UnregisterRoom(RoomAsset room, SerializedProperty area)
+    {
+        area.objectReferenceValue = null;
+        room._AreaSet_EditorOnly(null);
+    }
+    */
+
+
+
+
 
 }
 
