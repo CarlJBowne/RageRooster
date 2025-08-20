@@ -164,8 +164,10 @@ public class PrefabDrawer : PropertyDrawer
         EditorGUI.BeginProperty(position, label, property);
 
         // Get the GameObject reference and path properties
-        var objProp = property.FindPropertyRelative("<readOnlyObject>k__BackingField");
-        var pathProp = property.FindPropertyRelative("<path>k__BackingField");
+        //var objProp = property.FindPropertyRelative("<readOnlyObject>k__BackingField");
+        //var pathProp = property.FindPropertyRelative("<path>k__BackingField");
+        var objProp = property.FindProperty("readOnlyObject", backingField: true);
+        var pathProp = property.FindProperty("path", backingField: true);
 
         // Show the path as a tooltip on the label
         string path = pathProp.stringValue;

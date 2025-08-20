@@ -2,6 +2,7 @@ using Cinemachine;
 using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -210,3 +211,31 @@ public static class MiscHelperMethods
 
 
 }
+
+#if UNITY_EDITOR
+
+public static class MiscHelperMethods_Editor
+{
+    public static SerializedProperty FindProperty(this SerializedProperty prop, string propertyName, string nestedPath = null, bool backingField = false)
+    {
+        string path =
+            (string.IsNullOrEmpty(nestedPath) ? "" : nestedPath.EndsWith(".") ? nestedPath : nestedPath + ".")
+            + (backingField ? "<" : "")
+            + propertyName 
+            + (backingField ? ">k__BackingField" : "");
+
+        return prop.FindPropertyRelative(path);
+    }
+    public static SerializedProperty FindProperty(this SerializedObject obj, string propertyName, string nestedPath = null, bool backingField = false)
+    {
+        string path =
+            (string.IsNullOrEmpty(nestedPath) ? "" : nestedPath.EndsWith(".") ? nestedPath : nestedPath + ".")
+            + (backingField ? "<" : "")
+            + propertyName
+            + (backingField ? ">k__BackingField" : "");
+
+        return obj.FindProperty(path);
+    }
+}
+
+#endif
