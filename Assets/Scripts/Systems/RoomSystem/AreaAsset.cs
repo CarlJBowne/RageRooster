@@ -72,21 +72,7 @@ public class AreaAssetEditor : Editor
         list.draggable = true;
         list.drawHeaderCallback = (Rect rect) => { EditorGUI.LabelField(rect, "Rooms"); };
 
-        list.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
-        {
-            SerializedProperty element = roomsList.serializedProperty.GetArrayElementAtIndex(index);
-            RoomAsset oldRoom = element.objectReferenceValue as RoomAsset;
-            AreaAsset This = (AreaAsset)target;
-
-            EditorGUI.BeginChangeCheck();
-            RoomAsset newRoom = (RoomAsset)EditorGUI.ObjectField(
-                new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
-                oldRoom,
-                typeof(RoomAsset),
-                false
-            );
-            if (EditorGUI.EndChangeCheck()) ListOperation(oldRoom, newRoom, This, element);
-        };
+        list.drawElementCallback = DrawElementCallback;
 
 
         list.elementHeightCallback = (int index) =>
@@ -106,10 +92,7 @@ public class AreaAssetEditor : Editor
             string areaFolderPath = System.IO.Path.Combine(areaAssetDirectory, areaFolderName);
 
             // Ensure the folder exists
-            if (!AssetDatabase.IsValidFolder(areaFolderPath))
-            {
-                AssetDatabase.CreateFolder(areaAssetDirectory, areaFolderName);
-            }
+            if (!AssetDatabase.IsValidFolder(areaFolderPath)) AssetDatabase.CreateFolder(areaAssetDirectory, areaFolderName);
 
             do
             {
@@ -123,11 +106,10 @@ public class AreaAssetEditor : Editor
 
             string roomAssetPath = System.IO.Path.Combine(areaFolderPath, $"{assetName}.asset");
             AssetDatabase.CreateAsset(newRoom, roomAssetPath);
+            roomsProperty.arraySize++;
+            RegisterRoom(new(newRoom), serializedObject, roomsProperty.GetArrayElementAtIndex(roomsProperty.arraySize - 1));
             Undo.RegisterCreatedObjectUndo(newRoom, "Added New Object");
             AssetDatabase.SaveAssets();
-            roomsProperty.arraySize++;
-            roomsProperty.GetArrayElementAtIndex(roomsProperty.arraySize - 1).objectReferenceValue = newRoom;
-            newRoom._AreaSet_EditorOnly((AreaAsset)target); // Set the area reference
             serializedObject.ApplyModifiedProperties();
         };
 
@@ -138,11 +120,11 @@ public class AreaAssetEditor : Editor
                 if (roomsProperty.arraySize == 0) return;
                 int index = l.index;
                 if (index < 0 || index >= roomsProperty.arraySize) return;
+
                 SerializedProperty element = roomsProperty.GetArrayElementAtIndex(index);
-                Object roomObj = element.objectReferenceValue;
-                if (roomObj != null)
+                RoomAsset roomObj = element.objectReferenceValue as RoomAsset;
+                if (element.objectReferenceValue != null)
                 {
-                    string roomPath = AssetDatabase.GetAssetPath(roomObj);
                     bool shouldDelete = EditorUtility.DisplayDialog(
                         "Remove Room",
                         $"Do you want to delete the RoomAsset '{roomObj.name}' from the project?\n\n" +
@@ -150,14 +132,21 @@ public class AreaAssetEditor : Editor
                         "Delete",
                         "Keep"
                     );
+                    UnregisterRoom(new(element.objectReferenceValue), l.serializedProperty, index, true);
                     if (shouldDelete)
                     {
-                        AssetDatabase.DeleteAsset(roomPath);
+                        // With this updated code:  
+                        //string assetPath = AssetDatabase.GetAssetPath(roomObj);
+                        //DestroyImmediate(roomObj, true);
+                        AssetDatabase.DeleteAsset(AssetDatabase.GetAssetPath(roomObj));
+                        AssetDatabase.SaveAssets();
                     }
                 }
-                // Remove the element from the list
-                element.FindProperty(nameof(RoomAsset.area), backingField: true).objectReferenceValue = null; // Clear the area reference
-                roomsProperty.DeleteArrayElementAtIndex(index);
+                else
+                {
+                    roomsProperty.DeleteArrayElementAtIndex(index);
+                }
+                
                 serializedObject.ApplyModifiedProperties();
             };
         };
@@ -165,118 +154,150 @@ public class AreaAssetEditor : Editor
         return list;
     }
 
-    void ListOperation(RoomAsset oldRoom, RoomAsset newRoom, AreaAsset This, SerializedProperty element)
+
+    void DrawElementCallback(Rect rect, int index, bool isActive, bool isFocused)
     {
-        // Gather all possible scenarios and decisions
-        bool addAdditional = false;
-        bool deleteOld = false;
+        SerializedProperty listProperty = roomsList.serializedProperty;
+        SerializedProperty element = listProperty.GetArrayElementAtIndex(index);
 
+        RoomAsset oldRoom = element.objectReferenceValue as RoomAsset;
+        AreaAsset This = (AreaAsset)target;
 
+        EditorGUI.BeginChangeCheck();
+        RoomAsset newRoom = (RoomAsset)EditorGUI.ObjectField(
+            new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight),
+            oldRoom,
+            typeof(RoomAsset),
+            false
+        );
+        if (EditorGUI.EndChangeCheck()) ListOperation();
 
-        if (oldRoom == newRoom) return; //No Chance, nothing to do.
-        if (newRoom != null) //NewRoom isnt Null
+        void ListOperation()
         {
-            if (newRoom != null && This.rooms.Contains(newRoom) && newRoom != oldRoom) //Room Already Exists in same list
+            var oldRoomS = new SerializedObject(oldRoom);
+            var newRoomS = new SerializedObject(newRoom);
+
+            // Gather all possible scenarios and decisions
+            bool addAdditional = false;
+            bool deleteOld = false;
+
+            if (oldRoom == newRoom) return; //No Chance, nothing to do.
+            if (newRoom != null) //NewRoom isnt Null
             {
-                EditorUtility.DisplayDialog(
-                    "Room Already Exists",
-                    $"RoomAsset '{newRoom.name}' is already in this Area's room list.",
-                    "OK"
-                );
-                return;
-            }
-            if (newRoom.area != null && newRoom.area != This) //Target Room already registered to another Area
-            {
-                bool res = EditorUtility.DisplayDialog(
-                    "Move Room?",
-                    $"RoomAsset '{newRoom.name}' is already registered to AreaAsset '{newRoom.area.name}'.\n" +
-                    "Rooms should not be registered under more than one area.\n" +
-                    "Would you like to move this Room to the new Area?",
-                    "Move", "Cancel"
-                );
-                if (!res) return;
-            }
-            if(oldRoom != null) //Slot had another room in it.
-            {
-                int res = EditorUtility.DisplayDialogComplex(
-                    "Replace Room?",
-                    $"Do you want to replace '{oldRoom.name}' with '{newRoom.name}'?",
-                    "Replace", "Cancel", "Add in new slot instead"
-                );
-                if(res == 0)
+                if (newRoom != null && This.rooms.Contains(newRoom) && newRoom != oldRoom) //Room Already Exists in same list
                 {
-                    addAdditional = false;
+                    EditorUtility.DisplayDialog(
+                        "Room Already Exists",
+                        $"RoomAsset '{newRoom.name}' is already in this Area's room list.",
+                        "OK"
+                    );
+                    return;
                 }
-                else if (res == 2)
+                if (newRoom.area != null && newRoom.area != This) //Target Room already registered to another Area
                 {
-                    addAdditional = true;
+                    bool res = EditorUtility.DisplayDialog(
+                        "Move Room?",
+                        $"RoomAsset '{newRoom.name}' is already registered to AreaAsset '{newRoom.area.name}'.\n" +
+                        "Rooms should not be registered under more than one area.\n" +
+                        "Would you like to move this Room to the new Area?",
+                        "Move", "Cancel"
+                    );
+                    if (!res) return;
+                }
+                if (oldRoom != null) //Slot had another room in it.
+                {
+                    int res = EditorUtility.DisplayDialogComplex(
+                        "Replace Room?",
+                        $"Do you want to replace '{oldRoom.name}' with '{newRoom.name}'?",
+                        "Replace", "Cancel", "Add in new slot instead"
+                    );
+                    if (res == 0)
+                    {
+                        addAdditional = false;
+                    }
+                    else if (res == 2)
+                    {
+                        addAdditional = true;
+                    }
+                    else return;
+                }
+            }
+            else //Emptying Slot
+            {
+                int emptyingChoice = EditorUtility.DisplayDialogComplex(
+                    "Remove Room?",
+                    $"Do you want to remove '{oldRoom.name}' from this area or delete it from the project?",
+                    "Remove From Area", "Cancel", "Delete from Project"
+                );
+                if (emptyingChoice == 0)
+                {
+
+                }
+                else if (emptyingChoice == 2)
+                {
+                    deleteOld = true;
                 }
                 else return;
             }
-        }
-        else //Emptying Slot
-        {
-            int emptyingChoice = EditorUtility.DisplayDialogComplex(
-                "Remove Room?",
-                $"Do you want to remove '{oldRoom.name}' from this area or delete it from the project?",
-                "Remove From Area", "Cancel", "Delete from Project"
-            );
-            if (emptyingChoice == 0)
+
+
+
+
+            if (!addAdditional)
             {
-                
-            }
-            else if (emptyingChoice == 2)
-            {
-                deleteOld = true;
-            }
-            else return;
-        }
-
-
-
-
-        if (!addAdditional)
-        {
-            if(oldRoom != null)
-            {
-                //oldRoom.area.rooms.Remove(oldRoom);
-                oldRoom._AreaSet_EditorOnly(null);
-                if (deleteOld)
+                if (oldRoom != null)
                 {
-                    DestroyImmediate(oldRoom, true);
-                    AssetDatabase.SaveAssets();
+                    UnregisterRoom(oldRoomS, listProperty, index);
+                    if (deleteOld)
+                    {
+                        DestroyImmediate(oldRoom, true);
+                        AssetDatabase.SaveAssets();
+                    }
+                }
+                if (newRoom != null)
+                {
+                    UnregisterRoom(newRoomS);
+                    RegisterRoom(newRoomS, serializedObject, listProperty.GetArrayElementAtIndex(index));
                 }
             }
-            element.objectReferenceValue = newRoom;
-            if (newRoom != null)
+            else
             {
-                if(newRoom.area != null && newRoom.area != This)
-                {
-                    newRoom.area.rooms.Remove(newRoom);
-                    newRoom._AreaSet_EditorOnly(null);
-                }
-                newRoom._AreaSet_EditorOnly(This);
+                listProperty.arraySize++;
+                RegisterRoom(newRoomS, serializedObject, listProperty.GetArrayElementAtIndex(listProperty.arraySize - 1));
             }
+
+            listProperty.serializedObject.ApplyModifiedProperties();
         }
-        else
-        {
-            roomsList.serializedProperty.arraySize++;
-            roomsList.serializedProperty.GetArrayElementAtIndex(roomsList.serializedProperty.arraySize - 1).objectReferenceValue = newRoom;
-            newRoom._AreaSet_EditorOnly(This);
-        }
-
-        roomsList.serializedProperty.serializedObject.ApplyModifiedProperties();
     }
 
+    
 
-
-    public void RegisterRoom(SerializedProperty room, SerializedProperty area)
+    public void RegisterRoom(SerializedObject room, SerializedObject area, SerializedProperty listSlot)
     {
-
+        room.FindProperty(nameof(RoomAsset.area), backingField: true).objectReferenceValue = area.targetObject;
+        room.ApplyModifiedProperties(); // Ensure changes are applied to the SerializedObject  
+        listSlot.objectReferenceValue = room.targetObject;
     }
-    public void UnregisterRoom(SerializedProperty room, SerializedProperty area)
+    public void UnregisterRoom(SerializedObject room, SerializedProperty listProperty, int index, bool deleteSlot = false, bool deleteFile = false)
     {
+        listProperty.GetArrayElementAtIndex(index).objectReferenceValue = null;
+        room.FindProperty(nameof(RoomAsset.area), backingField: true).objectReferenceValue = null;
+        room.ApplyModifiedProperties();
+        if (deleteSlot) listProperty.DeleteArrayElementAtIndex(index);
     }
+    public void UnregisterRoom(SerializedObject room)
+    {
+        SerializedProperty areaProp = room.FindProperty(nameof(RoomAsset.area), backingField: true);
+        var area = areaProp.objectReferenceValue as AreaAsset;
+        int ID = area.rooms.IndexOf(room.targetObject as RoomAsset);
+
+        areaProp.objectReferenceValue = null;
+        room.ApplyModifiedProperties();
+        areaProp.serializedObject.FindProperty(nameof(AreaAsset.rooms), backingField:true).DeleteArrayElementAtIndex(ID);
+    }
+
+
+
 
 
     /*
