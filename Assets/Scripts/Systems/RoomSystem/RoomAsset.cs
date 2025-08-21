@@ -39,15 +39,39 @@ public class RoomAssetEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-#if true
-
-        base.OnInspectorGUI();
-#else
         RoomAsset roomAsset = (RoomAsset)target;
+
+        // Draw Area link or orphan warning
+        SerializedProperty areaProp = serializedObject.FindProperty(nameof(RoomAsset.area), backingField: true);
+        AreaAsset areaAsset = areaProp.objectReferenceValue as AreaAsset;
+
+        GUILayout.Space(8);
+
+        if (areaAsset != null)
+        {
+            GUIStyle linkStyle = new GUIStyle(EditorStyles.label);
+            linkStyle.normal.textColor = new Color(0.2f, 0.5f, 1f);
+            linkStyle.fontStyle = FontStyle.Bold;
+
+            if (GUILayout.Button($"Area: {areaAsset.areaDisplayName}", linkStyle))
+            {
+                Selection.activeObject = areaAsset;
+                EditorGUIUtility.PingObject(areaAsset);
+            }
+        }
+        else
+        {
+            GUIStyle redStyle = new GUIStyle(EditorStyles.label);
+            redStyle.normal.textColor = Color.red;
+            redStyle.fontStyle = FontStyle.Bold;
+            GUILayout.Label("ORPHAN ROOM, PLEASE ADD TO AREA", redStyle);
+        }
+
+        GUILayout.Space(8);
+
         EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.roomDisplayName), backingField: true));
         EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.scene), backingField: true));
         EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.adjacentLOD), backingField: true));
-#endif
     }
 }
 
