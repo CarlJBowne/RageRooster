@@ -5223,6 +5223,7 @@ MonoBehaviour:
   hellcopterUpgrade: {fileID: -8222721850088587547, guid: 5096cd543e777e240af87643ae7b164b,
     type: 2}
   overrideMovementControl: 0
+  canGlide: 0
   overrideMovementVector: {x: 0, y: 0}
   jumpInput: 0
   camAdjustedMovement: {x: 0, y: 0, z: 0}
@@ -7384,15 +7385,15 @@ MonoBehaviour:
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
   defaultPhase: 1
-  jumpHeight: 4
-  jumpPower: 14
-  jumpMinHeight: 2.6
+  jumpHeight: 5
+  jumpPower: 12
+  jumpMinHeight: 5
   gravity: 30
   terminalVelocity: 98.1
   flatGravity: 0
   allowMidFall: 1
   fallState: {fileID: 2513530225769621494}
-  fallStateThreshold: 0
+  fallStateThreshold: 200
 --- !u!114 &2886246656656251508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8698,6 +8699,7 @@ Transform:
   m_Children:
   - {fileID: 6701569219199048766}
   - {fileID: 7977943911182383535}
+  - {fileID: 5236279915379825418}
   - {fileID: 1846500094994641161}
   - {fileID: 5577900753218004323}
   - {fileID: 8409826796498701612}
@@ -9280,7 +9282,7 @@ MonoBehaviour:
   playerController: {fileID: 1371118413310184343}
   acceleration: 0.35
   decceleration: 0.5
-  maxSpeed: 10
+  maxSpeed: 12
   stopping: 0.3
   maxTurnSpeed: 10
   outwardTurn: 0
@@ -9316,7 +9318,31 @@ MonoBehaviour:
         _PersistentCalls:
         - _Target: {fileID: 8452752302749071132}
           _MemberName: BeginJump
-          _PersistentArguments: []
+          _PersistentArguments:
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 12
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 5
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 5
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
     - Key: AttackTap
       Value:
         _PersistentCalls:
@@ -12084,7 +12110,31 @@ MonoBehaviour:
         _PersistentCalls:
         - _Target: {fileID: 8452752302749071132}
           _MemberName: BeginJump
-          _PersistentArguments: []
+          _PersistentArguments:
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 12
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 5
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 5
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
     - Key: AttackTap
       Value:
         _PersistentCalls:
@@ -15265,6 +15315,228 @@ Transform:
   - {fileID: 1013759457902555881}
   m_Father: {fileID: 5779348743443458172}
   m_LocalEulerAnglesHint: {x: 52.71672, y: -126.177414, z: 13.48412}
+--- !u!1 &8049265791893607870
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5236279915379825418}
+  - component: {fileID: 5053124606871739153}
+  - component: {fileID: 4493778458310292792}
+  - component: {fileID: 2771762524060739608}
+  - component: {fileID: 6789020503660480038}
+  - component: {fileID: 4131903286581524159}
+  - component: {fileID: 6896803056501004272}
+  m_Layer: 6
+  m_Name: DoubleJump
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5236279915379825418
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8049265791893607870}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7427727485705586250}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5053124606871739153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8049265791893607870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 4493778458310292792}
+  - {fileID: 2771762524060739608}
+  - {fileID: 6789020503660480038}
+  - {fileID: 4131903286581524159}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 4554088299833102073}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &4493778458310292792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8049265791893607870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe34ac105f41a84097b0a3ee58e92c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 5053124606871739153}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  acceleration: 0.35
+  decceleration: 0.001
+  maxSpeed: 10
+  stopping: 0.3
+  maxTurnSpeed: 10
+  forceOutward: 0
+  minSpeed: 0
+--- !u!114 &2771762524060739608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8049265791893607870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89a8416e01b52494193d14c59b41a835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 5053124606871739153}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  defaultPhase: 1
+  jumpHeight: 3
+  jumpPower: 12
+  jumpMinHeight: 3
+  gravity: 30
+  terminalVelocity: 98.1
+  flatGravity: 0
+  allowMidFall: 1
+  fallState: {fileID: 2513530225769621494}
+  fallStateThreshold: 200
+--- !u!114 &6789020503660480038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8049265791893607870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 5053124606871739153}
+  signals:
+    serializedList:
+    - Key: Charge
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7039777641560852190}
+          _MemberName: Enter
+          _PersistentArguments: []
+    - Key: Grab
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: TryGrabThrowAir
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+              PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 1181195091599698405}
+    - Key: AttackTap
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7761699614878043687}
+          _MemberName: Enter
+          _PersistentArguments: []
+    - Key: AttackHold
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 0}
+          _MemberName: Enter
+          _PersistentArguments: []
+    - Key: Parry
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 1371118413310184343}
+          _MemberName: ParryActionAirborne
+          _PersistentArguments: []
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: LandInto
+          _PersistentArguments: []
+  lockOnEnter: 0
+--- !u!114 &4131903286581524159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8049265791893607870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 5053124606871739153}
+  onEntry: 2
+  onEnterName: Jump
+  onEnterTime: 0.01
+  doWhenNotFinal: 0
+  animator: {fileID: 8579594802138283692}
+--- !u!114 &6896803056501004272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8049265791893607870}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 429739900
+      Data2: 1217161715
+      Data3: 2054162569
+      Data4: -681217051
+    Path: event:/SFX/Player SFX/Movement/Jump
+  Event: 
+  PlayEvent: 11
+  StopEvent: 12
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &8080908558534702520
 GameObject:
   m_ObjectHideFlags: 0
