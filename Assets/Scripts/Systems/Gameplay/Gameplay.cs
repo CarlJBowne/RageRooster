@@ -144,7 +144,7 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
     /// </summary>
     private void OnFirstLoad()
     {
-        SavePoint spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
+        SavePoint_Old spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
         spawnPointID = spawn.GetID();
         PlayerStateMachine.InstantMove(spawn);
         PlayerHealth.Global.UpdateMax(GlobalState.maxHealth);

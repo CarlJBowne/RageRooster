@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
+
 
 
 #if UNITY_EDITOR
@@ -177,6 +179,15 @@ public struct SceneReference
         asyncOperation.completed += FinishLoad;
         return asyncOperation;
     }
+    public IEnumerator LoadSingleEnum()
+    {
+        if (!Valid) throw new System.InvalidOperationException("Invalid Scene.");
+        if (Loaded) throw new System.InvalidOperationException("Scene is already loaded.");
+        asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+        state = SceneState.Loading;
+        while(!asyncOperation.isDone) yield return null;
+        FinishLoad(asyncOperation);
+    }
 
     public void Load()
     {
@@ -193,7 +204,17 @@ public struct SceneReference
         asyncOperation.completed += FinishLoad;
         return asyncOperation;
     }
-    public AsyncOperation Unload()
+    public IEnumerator LoadEnum()
+    {
+        if (!Valid) throw new System.InvalidOperationException("Invalid Scene.");
+        if (Loaded) throw new System.InvalidOperationException("Scene is already loaded.");
+        asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        state = SceneState.Loading;
+        while (!asyncOperation.isDone) yield return null;
+        FinishLoad(asyncOperation);
+    }
+
+    public AsyncOperation UnloadAsync()
     {
         if (!Valid) throw new System.InvalidOperationException("Invalid Scene.");
         if (!Loaded) throw new System.InvalidOperationException("Scene is not loaded.");
@@ -201,6 +222,15 @@ public struct SceneReference
         state = SceneState.Unloading;
         asyncOperation.completed += FinishUnload;
         return asyncOperation;
+    }
+    public IEnumerator UnloadEnum()
+    {
+        if (!Valid) throw new System.InvalidOperationException("Invalid Scene.");
+        if (!Loaded) throw new System.InvalidOperationException("Scene is not loaded.");
+        asyncOperation = SceneManager.UnloadSceneAsync(sceneName);
+        state = SceneState.Unloading;
+        while (!asyncOperation.isDone) yield return null;
+        FinishUnload(asyncOperation);
     }
 
     private void FinishLoad(AsyncOperation op) => state = SceneState.Loaded;

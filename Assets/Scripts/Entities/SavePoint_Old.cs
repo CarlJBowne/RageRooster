@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SavePoint : MonoBehaviour, IInteractable
+public class SavePoint_Old : MonoBehaviour, IInteractable
 {
     public Transform SpawnPoint;
     public UltEvents.UltEvent onSpawnEvent;

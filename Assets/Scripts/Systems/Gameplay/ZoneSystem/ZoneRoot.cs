@@ -12,15 +12,15 @@ using UnityEngine.SceneManagement;
 public class ZoneRoot : MonoBehaviour
 {
     public ZoneTransition[] transitions;
-    public SavePoint defaultPlayerSpawn;
+    public SavePoint_Old defaultPlayerSpawn;
     public EventReference music;
 
-    public SavePoint[] spawns {get{
+    public SavePoint_Old[] spawns {get{
             if (_spawns == null || _spawns.Length == 0) 
-                _spawns = gameObject.GetComponentsInChildren<SavePoint>();
+                _spawns = gameObject.GetComponentsInChildren<SavePoint_Old>();
             return _spawns; 
         }}
-    [SerializeField] private SavePoint[] _spawns; 
+    [SerializeField] private SavePoint_Old[] _spawns; 
     [HideInInspector] public new string name;
     public Vector3 originOffset;
     [SerializeField] private Light[] directionalLights;
@@ -44,7 +44,7 @@ public class ZoneRoot : MonoBehaviour
         originOffset = transform.position;
 
         if(transitions == null || transitions.Length == 0) transitions = gameObject.GetComponentsInChildren<ZoneTransition>();
-        if(spawns == null || spawns.Length == 0) _spawns = gameObject.GetComponentsInChildren<SavePoint>();
+        if(spawns == null || spawns.Length == 0) _spawns = gameObject.GetComponentsInChildren<SavePoint_Old>();
         
         if(directionalLights == null || directionalLights.Length == 0) directionalLights = gameObject.GetComponentsInChildren<Light>().Where(l => l.type == LightType.Directional).ToArray();
         foreach (var item in directionalLights) item.enabled = false;
@@ -62,7 +62,7 @@ public class ZoneRoot : MonoBehaviour
 
     }
 
-    public SavePoint GetSpawn(int id) => id == -1 ? defaultPlayerSpawn : spawns[id];
+    public SavePoint_Old GetSpawn(int id) => id == -1 ? defaultPlayerSpawn : spawns[id];
 
     
     public void OnTransition()
@@ -88,7 +88,7 @@ public class ZoneRoot : MonoBehaviour
     public void SetupComponents()
     {
         if (transitions == null || transitions.Length == 0) transitions = gameObject.GetComponentsInChildren<ZoneTransition>();
-        if (spawns == null || spawns.Length == 0) _spawns = gameObject.GetComponentsInChildren<SavePoint>();
+        if (spawns == null || spawns.Length == 0) _spawns = gameObject.GetComponentsInChildren<SavePoint_Old>();
         directionalLights = gameObject.GetComponentsInChildren<Light>().Where(l => l.type == LightType.Directional).ToArray();
         //foreach (var item in directionalLights) DestroyImmediate(item.gameObject);
 #if UNITY_EDITOR

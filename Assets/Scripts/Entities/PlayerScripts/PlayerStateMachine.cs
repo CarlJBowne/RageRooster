@@ -105,7 +105,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
         freeLookCamera.OnTargetObjectWarped(transform, camDelta);
         body.velocity = Vector3.zero;
     }
-    public void InstantMove(SavePoint savePoint)
+    public void InstantMove(SavePoint_Old savePoint)
     {
         Vector3 camDelta = savePoint.SpawnPoint.position - transform.position;
         //body.jiggles.PrepareTeleport();
