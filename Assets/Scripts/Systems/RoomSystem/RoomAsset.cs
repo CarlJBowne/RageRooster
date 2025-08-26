@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.VisualScripting;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -13,30 +15,18 @@ namespace RageRooster.RoomSystem
         //Serialized Data
         [field: SerializeField] public string roomDisplayName { get; protected set; } = "INSERT_DISPLAY_NAME";
         [field: SerializeField] public AreaAsset area { get; protected set; }
-        [field: SerializeField] public SceneReference scene { get; protected set; }
-        [field: SerializeField] public Prefab adjacentLOD { get; protected set; }
-
         [field: SerializeField] public Vector3 globalCenter { get; protected set; }
-        [field: SerializeField] public float outerRadius { get; protected set; }
-        [field: SerializeField] public float innerRadius { get; protected set; }
+        [field: SerializeField] public SceneReference scene { get; protected set; }
+        [field: SerializeField] public float loadSceneRadius { get; protected set; }
+        [field: SerializeField] public RoomLOD[] lods { get; protected set; }
+
+
 
 
         //Active Data
         public RoomRoot root { get; protected set; }
-        public GameObject adjacentLODInstance { get; protected set; }
+        public int distance = RoomLOD.lowestLOD;
 
-        public enum RoomVersionState
-        {
-            Null,
-            Loading,
-            Unloading,
-            Present,
-            LockedToBePresent,
-        }
-        RoomVersionState alodState = RoomVersionState.Null;
-        RoomVersionState sceneState = RoomVersionState.Null;
-        bool withinLODRange;
-        bool withinLoadRange;
 
         public IEnumerator LoadInto()
         {
@@ -46,24 +36,51 @@ namespace RageRooster.RoomSystem
 
         public void Connect(RoomRoot root) => this.root = root;
 
-        public void Update()
+        public void UpdateDistance()
         {
-            Vector3 playerPos = PlayerStateMachine.Get().transform.position;
+            Vector3 playerPos = PlayerMovementBody.PositionGet;
+            int prevDistance = distance;
 
-            withinLODRange = Vector3.SqrMagnitude(playerPos - globalCenter) <= outerRadius * outerRadius;
-            withinLoadRange = Vector3.SqrMagnitude(playerPos - globalCenter) <= innerRadius * innerRadius;
+            distance = GetDistance();
 
-            if(alodState == RoomVersionState.Null && withinLODRange) 
-                ALODLoad().Begin(root);
-            else if (alodState == RoomVersionState.Present && !withinLODRange) 
-                ALODUnload().Begin(root);
+            if(prevDistance == distance) return;
 
-            if (sceneState == RoomVersionState.Null && withinLoadRange) 
-                SceneLoad().Begin(root);
-            else if (sceneState == RoomVersionState.Present && !withinLoadRange) 
-                SceneUnload().Begin(root);
+            if(distance == RoomLOD.playerWithin)
+            {
+                //Load Scene
+            }
+            else if (prevDistance == RoomLOD.playerWithin)
+            {
+                //Unload Scene
+            }
+
+            {
+                lods[prevDistance].Unload();
+            }
+            {
+                lods[distance].Load(area.root);
+            }
         }
+        public int GetDistance()
+        {
+            if(RoomManager.currentRoom == this) return RoomLOD.playerWithin;
 
+            if(CompareDistance(loadSceneRadius)) return RoomLOD.sceneLoaded;
+
+            if (!CompareDistance(lods[^1].range)) return RoomLOD.lowestLOD;
+
+            for (int i = 0; i < lods.Length; i++)
+            {
+                if (CompareDistance(lods[i].range)) return i;
+            }
+
+            #if UNITY_EDITOR
+            Debug.LogError("I'm not sure how this happened?");
+            #endif
+            return RoomLOD.lowestLOD;
+        }
+        private bool CompareDistance(float threshold) => 
+            Vector3.SqrMagnitude(PlayerMovementBody.PositionGet - globalCenter) <= threshold * threshold;
 
 
         public IEnumerator ALODLoad()
@@ -126,9 +143,69 @@ namespace RageRooster.RoomSystem
 
 
 
+        public class RoomLOD
+        {
+            public float range;
+            public Prefab prefab;
+            public GameObject instance;
+            RoomLODState state;
+
+            public enum RoomLODState
+            {
+                Null,
+                Loading,
+                Unloading,
+                Present,
+                LockedToBePresent,
+            }
+
+            private AsyncInstantiateOperation currentOP;
+            private CoroutinePlus currentCoroutine;
+
+            public void Load(MonoBehaviour runner)
+            {
+                currentCoroutine = Load().Begin(runner);
+                IEnumerator Load()
+                {
+                    if (instance != null || state > RoomLODState.Null) yield break;
+                    state = RoomLODState.Loading;
+                    currentOP = prefab.InstantiateAsync(runner.transform);
+
+                    while (!currentOP.isDone) yield return null;
+
+                    instance = currentOP.Result[0] as GameObject;
+                    state = RoomLODState.LockedToBePresent;
+
+                    yield return new WaitForSecondsRealtime(20);
+
+                    state = RoomLODState.Present;
+                }
+            }
+            public void CancelLoad()
+            {
+                if(state != RoomLODState.Loading) return;
+                currentOP.Cancel();
+                currentCoroutine.StopAuto();
+                state = RoomLODState.Null;
+            }
+            public void Unload()
+            {
+                if (instance == null || state < RoomLODState.Present) return;
+                Destroy(instance);
+                instance = null;
+                state = RoomLODState.Null;
+            }
 
 
 
+
+
+            public const int playerWithin = -2;
+            public const int sceneLoaded = -1;
+            public const int lowestLOD = 999;
+        }
+
+        
     }
 
 #if UNITY_EDITOR

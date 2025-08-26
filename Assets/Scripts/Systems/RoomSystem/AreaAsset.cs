@@ -20,7 +20,7 @@ namespace RageRooster.RoomSystem
         //Config Fields
         [field: SerializeField] public string areaDisplayName { get; protected set; } = "INSERT_DISPLAY_NAME";
         [field: SerializeField] public SceneReference landmarkScene { get; protected set; }
-        [field: SerializeField] public List<RoomAsset> rooms { get; protected set; } = new List<RoomAsset>();
+        [field: SerializeField] public List<RoomAsset> rooms { get; protected set; } = new();
 
         //Active Data
         public AreaRoot root { get; protected set; }

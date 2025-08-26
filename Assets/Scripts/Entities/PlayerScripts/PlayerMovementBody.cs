@@ -1,11 +1,12 @@
 using EditorAttributes;
+using SLS.ISingleton;
 using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class PlayerMovementBody : CharacterMovementBody
+public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMovementBody>
 {
     #region Config
     public PlayerAirborneMovement jumpState1;
@@ -37,6 +38,9 @@ public class PlayerMovementBody : CharacterMovementBody
         set => currentSpeed = value.Min(0);
     }
     [HideInEditMode, DisableInPlayMode, SerializeField] private float currentSpeed;
+
+    public static System.Action MovingUpdateAction;
+    private Timer.Loop _movingUpdateActionTimer = new(1f);
 
 
     private VolcanicVent _currentVent;
@@ -102,7 +106,17 @@ public class PlayerMovementBody : CharacterMovementBody
     }
 
 
+    public static Vector3 PositionGet { get; private set; }
+
     #endregion GetSet
+
+    #region Singleton Stuff
+    protected static PlayerMovementBody Instance;
+    protected ISingleton<PlayerMovementBody> Interface => this;
+    public static PlayerMovementBody Get() => ISingleton<PlayerMovementBody>.Get(ref Instance);
+    public static bool TryGet(out PlayerMovementBody result) => ISingleton<PlayerMovementBody>.TryGet(Get, out result);
+    public static bool Loaded => Instance != null;
+    #endregion
 
     //public PlayerTestScript playerTestScript;
 
@@ -111,7 +125,10 @@ public class PlayerMovementBody : CharacterMovementBody
         base.Awake();
         TryGetComponent(out animator);
         direction = Vector3.forward;
+        Interface.Initialize(ref Instance);
     }
+
+    private void OnDestroy() => Interface.DeInitialize(ref Instance);
 
     protected override void FixedUpdate()
     {
@@ -119,6 +136,9 @@ public class PlayerMovementBody : CharacterMovementBody
         if (PlayerStateMachine.DEBUG_MODE_ACTIVE && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
         base.FixedUpdate();
+
+        PositionGet = Position;
+        _movingUpdateActionTimer.Tick(MovingUpdateAction);
     }
 
 

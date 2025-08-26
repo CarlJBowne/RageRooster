@@ -7,8 +7,8 @@ namespace RageRooster.RoomSystem
 {
     public class RoomManager : SingletonMonoBasic<RoomManager>
     {
-        public AreaAsset currentArea { get; private set; }
-        public RoomAsset currentRoom { get; private set; }
+        public static AreaAsset currentArea { get; private set; }
+        public static RoomAsset currentRoom { get; private set; }
 
         private void Update()
         {
@@ -17,7 +17,7 @@ namespace RageRooster.RoomSystem
                 for (int i = 0; i < currentArea.rooms.Count; i++)
                 {
                     if (currentArea.rooms[i] == currentRoom) continue;
-                    currentArea.rooms[i].Update();
+                    currentArea.rooms[i].UpdateDistance();
                 }
             }
         }
