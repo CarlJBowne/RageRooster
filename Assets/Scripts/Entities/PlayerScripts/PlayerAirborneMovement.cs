@@ -15,6 +15,9 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     public float terminalVelocity = 100f;
     public bool flatGravity = false;
     public bool allowMidFall = true;
+    public bool allowDoubleJump = true;
+    public bool allowGlide = false;
+
     public PlayerAirborneMovement fallState;
     public float fallStateThreshold = 0;
 
@@ -36,9 +39,9 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         if (playerMovementBody.JumpState == JumpState.Decelerating && transform.position.y >= targetHeight) playerMovementBody.UnLand(JumpState.Falling);
 
         if (playerMovementBody.JumpState < JumpState.Decelerating) Y = jumpPower;
-        if (playerMovementBody.JumpState > JumpState.Jumping && 
+        if (playerMovementBody.JumpState > JumpState.Jumping &&
            (playerMovementBody.velocity.y <= fallStateThreshold || (allowMidFall && !Input.Jump.IsPressed())))
-           Fall(ref Y);
+            Fall(ref Y);
 
     }
 
@@ -105,7 +108,11 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     }
 
 
-
+    IEnumerator GlideEnable()
+    {
+        yield return new WaitForSeconds(0.2f);
+        allowGlide = true;
+    }
 
 
 
@@ -114,7 +121,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     public void Enter() => State.Enter();
     public virtual void BeginJump()
     {
-        if(!State) State.Enter();
+        if (!State) State.Enter();
     }
     public virtual void BeginJump(float power, float height, float minHeight)
     {
@@ -131,5 +138,21 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         defaultPhase = newState;
         State.Enter();
         defaultPhase = skippedDefault;
+    }
+
+    public virtual void BeginDoubleJump(float power, float height, float minHeight)
+    {
+        if (!allowDoubleJump)
+            return;
+        else
+        {
+            jumpPower = power;
+            jumpHeight = height;
+            jumpMinHeight = minHeight;
+
+            State.Enter();
+            allowDoubleJump = false;
+            StartCoroutine(GlideEnable());
+        }
     }
 }

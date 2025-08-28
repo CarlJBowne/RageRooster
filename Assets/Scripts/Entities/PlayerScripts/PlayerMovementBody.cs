@@ -11,6 +11,7 @@ public class PlayerMovementBody : CharacterMovementBody
     public PlayerAirborneMovement jumpState1;
     public PlayerWallJump wallJumpState;
     public PlayerAirborneMovement airChargeState;
+    public PlayerAirborneMovement doubleJump;
     public Vector3 frontCheckDefaultOffset;
     public float frontCheckDefaultRadius;
     public bool Mario64StyleAntiVoid;
@@ -147,6 +148,8 @@ public class PlayerMovementBody : CharacterMovementBody
     {
         bool wasntGrounded = jumpState != JumpState.Grounded;
         bool objectChange = anchorPoint.transform != groundHit.transform;
+        doubleJump.allowDoubleJump = true;
+        doubleJump.allowGlide = false;
 
         if (!wasntGrounded && !objectChange) return;
 
@@ -172,6 +175,8 @@ public class PlayerMovementBody : CharacterMovementBody
     {
         if (!GroundCheck(out AnchorPoint groundHit)) return;
         Land(groundHit);
+        doubleJump.allowDoubleJump = true;
+        doubleJump.allowGlide = false;
     }
 
     public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
