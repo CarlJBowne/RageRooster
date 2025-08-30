@@ -31,12 +31,21 @@ namespace RageRooster.RoomSystem
         public IEnumerator LoadArea()
         {
             yield return landmarkScene.LoadEnum();
-            yield return new WaitUntil(() => root != null);
+            landmarkScene.TryGetRootScript(out AreaRoot root);
+            if (root == null) yield return new WaitUntil(() => root != null);
+            for (int i = 0; i < rooms.Count; i++) 
+                PlayerMovementBody.MovingUpdateAction += rooms[i].Update;
         }
 
         public void Connect(AreaRoot root) => this.root = root;
 
-
+        public IEnumerator UnloadArea()
+        {
+            for (int i = 0; i < rooms.Count; i++)
+                PlayerMovementBody.MovingUpdateAction -= rooms[i].Update;
+            yield return landmarkScene.UnloadEnum();
+            root = null;
+        }
 
 
 

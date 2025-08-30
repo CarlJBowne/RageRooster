@@ -26,88 +26,190 @@ namespace RageRooster.RoomSystem
 
         //Active Data
         public RoomRoot root { get; protected set; }
-        public int distance = RoomLOD.lowestLOD;
-        public RoomLOD.RoomLODState sceneState = RoomLOD.RoomLODState.Null;
-
-
-        public IEnumerator LoadInto()
+        public enum RoomState
         {
-            yield return scene.LoadEnum();
-            yield return new WaitUntil(()=> root != null);
+            Null = -1,
+            Lowest,
+            LODS,
+            Unloading,
+            Loading,
+            Present,
+            Current
         }
+        public RoomState state { get; protected set; }
+        public int currentLOD { get; protected set; } = -1;
+
 
         public void Connect(RoomRoot root) => this.root = root;
 
-        public void UpdateDistance()
+        
+        public void Enter() => RoomManager.EnterRoom(this);
+        internal void _Enter()
         {
-            Vector3 playerPos = PlayerMovementBody.PositionGet;
-            int prevDistance = distance;
+            state = RoomState.Current;
+        }
+        internal void _Exit()
+        {
+            state = RoomState.Present;
+        }
 
-            distance = GetDistance();
 
-            if(prevDistance == distance) return;
+        public void Update()
+        {
+            if (state is RoomState.Current or RoomState.Unloading or RoomState.Loading) return;
 
-            if(distance == RoomLOD.playerWithin)
+            CalculateDistance();
+
+            if (state is RoomState.Present)
             {
-                
+                if (!CompareDistance(unloadSceneRadius)) 
+                    SceneUnload().Begin(area.root);
             }
-            else if (prevDistance == RoomLOD.playerWithin)
+            else
             {
-                //Unload Scene
-            }
-
-            {
-                lods[prevDistance].Unload();
-            }
-            {
-                lods[distance].Load(area.root);
+                if (CompareDistance(loadSceneRadius))
+                {
+                    SceneLoad().Begin(area.root);
+                    return;
+                }
+                else if(state is RoomState.Lowest && CompareDistance(lods[^1].range))
+                {
+                    state = RoomState.LODS;
+                    EnterLod(FindLod(0));
+                }
+                else if (state is RoomState.LODS)
+                {
+                    if (!CompareDistance(lods[currentLOD].range)) 
+                        EnterLod(FindLod(currentLOD + 1));
+                    else 
+                        EnterLod(FindLodReverse(currentLOD - 1));
+                }
             }
         }
-        public int GetDistance()
+
+        private float CalculateDistance()
         {
-            if(RoomManager.currentRoom == this) return RoomLOD.playerWithin;
+            PlayerDistance = Vector3.SqrMagnitude(PlayerMovementBody.PositionGet - globalCenter);
+            return PlayerDistance;
+        }
+        private float PlayerDistance;
+        private bool CompareDistance(float threshold) =>
+            PlayerDistance <= threshold * threshold;
 
-            if(CompareDistance(loadSceneRadius)) return RoomLOD.sceneLoaded;
-
-            if (!CompareDistance(lods[^1].range)) return RoomLOD.lowestLOD;
-
-            for (int i = 0; i < lods.Length; i++) 
-                if (CompareDistance(lods[i].range)) 
+        int FindLod(int start)
+        {
+            for (int i = start; i < lods.Length; i++)
+                if (CompareDistance(lods[i].range))
                     return i;
-
-            Debug.LogError("I'm not sure how this happened?");
-            return RoomLOD.lowestLOD;
+            return -1;
         }
-        private bool CompareDistance(float threshold) => 
-            Vector3.SqrMagnitude(PlayerMovementBody.PositionGet - globalCenter) <= threshold * threshold;
+        int FindLodReverse(int start)
+        {
+            if (lods.Length == 1) return 0;
+            int i = start;
+            for (; i > 0; i--)
+                if (!CompareDistance(lods[i].range))
+                    return i + 1;
+            return i;
+        }
+        void EnterLod(int ID)
+        {
+            if (ID == currentLOD) return;
+            if (ID == -1)
+            {
+                lods[currentLOD].TurnOff();
+                currentLOD = -1;
+                state = RoomState.Lowest;
+            }
+            else
+            {
+                lods[currentLOD].TurnOff();
+                currentLOD = ID;
+                lods[currentLOD].TurnOn();
+            }
+        }
+
+
+        public IEnumerator PrepEnter()
+        {
+            yield return scene.LoadEnum();
+            scene.TryGetRootScript(out RoomRoot root);
+            if (root == null) yield return new WaitUntil(() => root != null);
+            state = RoomState.Present;
+        }
+        public IEnumerator PrepSurrounding()
+        {
+            if(CompareDistance(loadSceneRadius))
+            {
+                yield return SceneLoad();
+                state = RoomState.Present;
+            }
+            else
+            {
+                int ID = FindLod(0);
+                if (ID != -1)
+                {
+                    state = RoomState.Lowest;
+                }
+                else
+                {
+                    currentLOD = ID;
+                    yield return lods[currentLOD].Load();
+                    state = RoomState.LODS;
+                }
+            }
+        }
+
+
+
 
         public IEnumerator SceneLoad()
         {
-            if (scene.Loaded || sceneState > RoomLOD.RoomLODState.Null) yield break;
-            sceneState = RoomLOD.RoomLODState.Loading;
+            if (scene.Loaded || state >= RoomState.Loading) yield break;
+            state = RoomState.Loading;
             AsyncOperation op = scene.LoadAsync();
 
             while (!op.isDone) yield return null;
 
-            sceneState = RoomLOD.RoomLODState.LockedToBePresent;
+            scene.TryGetRootScript(out RoomRoot root);
+            if (root == null) yield return new WaitUntil(() => root != null);
 
-            yield return new WaitForSecondsRealtime(300);
-
-            sceneState = RoomLOD.RoomLODState.Present;
+            state = RoomState.Present;
         }
         public IEnumerator SceneUnload()
         {
-            if (!scene.Loaded || sceneState < RoomLOD.RoomLODState.Present) yield break;
-            sceneState = RoomLOD.RoomLODState.Unloading;
+            if (!scene.Loaded || state <= RoomState.Unloading) yield break;
+            state = RoomState.Unloading;
             AsyncOperation op = scene.UnloadAsync();
 
             while (!op.isDone) yield return null;
 
-            sceneState = RoomLOD.RoomLODState.Null;
+            root = null;
+
+            state = RoomState.LODS;
         }
 
 
+        public IEnumerator CompleteUnload()
+        {
+            if(scene.state == SceneReference.SceneState.Loaded)
+            {
+                yield return scene.UnloadEnum();
+            }
+            else if (scene.state == SceneReference.SceneState.Unloading)
+            {
+                yield return new WaitUntil(() => scene.state == SceneReference.SceneState.Valid);
+            }
+            else if (scene.state == SceneReference.SceneState.Loading)
+            {
+                yield return new WaitUntil(() => scene.state == SceneReference.SceneState.Loaded);
+                yield return scene.UnloadEnum();
+            }
 
+            for (int i = 0; i < lods.Length; i++) lods[i].CompleteUnload();
+            state = RoomState.Null;
+            currentLOD = -1;
+        }
 
 
         public class RoomLOD
@@ -115,61 +217,65 @@ namespace RageRooster.RoomSystem
             public float range;
             public Prefab prefab;
             public GameObject instance;
-            RoomLODState state;
-
-            public enum RoomLODState
-            {
-                Null,
-                Loading,
-                Unloading,
-                Present,
-                LockedToBePresent,
-            }
+            bool loaded = false;
 
             private AsyncInstantiateOperation currentOP;
             private CoroutinePlus currentCoroutine;
 
-            public void Load(MonoBehaviour runner)
+
+            public void TurnOn()
             {
-                currentCoroutine = Load().Begin(runner);
-                IEnumerator Load()
+                if (loaded)
                 {
-                    if (instance != null || state > RoomLODState.Null) yield break;
-                    state = RoomLODState.Loading;
-                    currentOP = prefab.InstantiateAsync(runner.transform);
-
-                    while (!currentOP.isDone) yield return null;
-
-                    instance = currentOP.Result[0] as GameObject;
-                    state = RoomLODState.LockedToBePresent;
-
-                    yield return new WaitForSecondsRealtime(20);
-
-                    state = RoomLODState.Present;
+                    instance.SetActive(true);
                 }
+                else
+                {
+                    Load().Begin(RoomManager.currentArea.root);
+                }
+            }
+            public void TurnOff()
+            {
+                if (loaded)
+                {
+                    instance.SetActive(false);
+                }
+                else
+                {
+                    CancelLoad();
+                }
+            }
+
+            public IEnumerator Load()
+            {
+                if (loaded == true) yield break;
+                currentOP = prefab.InstantiateAsync(RoomManager.currentArea.root.transform);
+
+                while (!currentOP.isDone) yield return null;
+
+                instance = currentOP.Result[0] as GameObject;
+                instance.SetActive(true);
+                loaded = true;
             }
             public void CancelLoad()
             {
-                if(state != RoomLODState.Loading) return;
+                if(currentOP == null || currentCoroutine == null) return;
                 currentOP.Cancel();
                 currentCoroutine.StopAuto();
-                state = RoomLODState.Null;
             }
             public void Unload()
             {
-                if (instance == null || state < RoomLODState.Present) return;
+                if (loaded == false) return;
                 Destroy(instance);
                 instance = null;
-                state = RoomLODState.Null;
+                loaded = false;
             }
 
-
-
-
-
-            public const int playerWithin = -2;
-            public const int sceneLoaded = -1;
-            public const int lowestLOD = 999;
+            public void CompleteUnload()
+            {
+                instance = null;
+                loaded = false;
+            }
         }
 
         
@@ -214,7 +320,7 @@ namespace RageRooster.RoomSystem
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.roomDisplayName), backingField: true));
             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.scene), backingField: true));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.adjacentLOD), backingField: true));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.lods), backingField: true));
         }
     }
 

@@ -10,58 +10,51 @@ namespace RageRooster.RoomSystem
         public static AreaAsset currentArea { get; private set; }
         public static RoomAsset currentRoom { get; private set; }
 
-        private void Update()
-        {
-            if(currentArea != null)
-            {
-                for (int i = 0; i < currentArea.rooms.Count; i++)
-                {
-                    if (currentArea.rooms[i] == currentRoom) continue;
-                    currentArea.rooms[i].UpdateDistance();
-                }
-            }
-        }
 
-        public IEnumerator ExitArea()
+
+
+        public static IEnumerator ExitArea()
         {
-            yield return null;
+            foreach (var room in currentArea.rooms)
+                yield return room.CompleteUnload();
+            yield return currentArea.UnloadArea();
+            currentArea = null;
+            currentRoom = null;
         }
-        public IEnumerator EnterArea(RoomDestination dest)
+        public static IEnumerator EnterArea(RoomDestination dest)
         {
             yield return null;
 
-            if (dest.areaAsset == null)
-            {
-                //Get Area Asset from Area Registry.
+            if (dest.areaAsset == null) 
                 dest.areaAsset = AreaRegistry.GetArea(dest.areaName);
-            }
 
             yield return dest.areaAsset.LoadArea();
             AreaRoot areaRoot = dest.areaAsset.root;
 
-            if (dest.roomAsset == null)
-            {
-                //Get Room Asset from intended Area.
+            if (dest.roomAsset == null) 
                 dest.roomAsset = dest.areaAsset.rooms[dest.roomID];
-            }
 
-            yield return dest.roomAsset.LoadInto();
+            yield return dest.roomAsset.PrepEnter();
             RoomRoot roomRoot = dest.roomAsset.root;
+            EnterRoom(dest.roomAsset);
 
-            if (dest.spawnPoint == null)
-            {
-                //Get Spawn Point from ID list.
+            if (dest.spawnPoint == null) 
                 dest.spawnPoint = roomRoot.spawns[dest.spawnID];
-            }
             dest.spawnPoint.SpawnPlayerAt();
-            yield return ForceLoadNearbyAreas();
 
+            foreach (RoomAsset room in currentArea.rooms)
+            {
+                if (room == currentRoom) continue;
+                yield return room.PrepSurrounding();
+            }
         }
 
-        public IEnumerator ForceLoadNearbyAreas()
+
+        public static void EnterRoom(RoomAsset nextRoom)
         {
-            yield return null;
+            if(currentRoom != null) currentRoom._Exit();
+            currentRoom = nextRoom;
+            currentRoom._Enter();
         }
-
     }
 }

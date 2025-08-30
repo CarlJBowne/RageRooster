@@ -135,10 +135,12 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
         Machine.animator.SetFloat("CurrentSpeed", currentSpeed);
         if (PlayerStateMachine.DEBUG_MODE_ACTIVE && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
+        Vector3 prePos = Position;
+
         base.FixedUpdate();
 
         PositionGet = Position;
-        _movingUpdateActionTimer.Tick(MovingUpdateAction);
+        if(prePos != Position) _movingUpdateActionTimer.Tick(MovingUpdateAction);
     }
 
 

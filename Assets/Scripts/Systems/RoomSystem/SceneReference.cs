@@ -236,6 +236,33 @@ public struct SceneReference
     private void FinishLoad(AsyncOperation op) => state = SceneState.Loaded;
     private void FinishUnload(AsyncOperation op) => state = SceneState.Valid;
 
+    public GameObject GetRootGameObject()
+    {
+        if(!Loaded) return null;
+        return managerScene.GetRootGameObjects()[0];
+    }
+
+    public GameObject[] GetRootGameObjects()
+    {
+        if(!Loaded) return null;
+        return managerScene.GetRootGameObjects();
+    }
+
+    public T GetRootScript<T>() where T : Component
+    {
+        if(!Loaded) return null;
+        return managerScene.GetRootGameObjects()[0].GetComponent<T>();
+    }
+    public bool TryGetRootScript<T>(out T result) where T : Component
+    {
+        if (!Loaded)
+        {
+            result = null;
+            return false;
+        }
+        return managerScene.GetRootGameObjects()[0].TryGetComponent(out result);
+    }
+
 }
 
 #if UNITY_EDITOR
