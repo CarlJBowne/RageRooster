@@ -18,6 +18,7 @@ namespace RageRooster.RoomSystem
         [field: SerializeField] public Vector3 globalCenter { get; protected set; }
         [field: SerializeField] public SceneReference scene { get; protected set; }
         [field: SerializeField] public float loadSceneRadius { get; protected set; }
+        [field: SerializeField] public float unloadSceneRadius { get; protected set; }
         [field: SerializeField] public RoomLOD[] lods { get; protected set; }
 
 
@@ -26,6 +27,7 @@ namespace RageRooster.RoomSystem
         //Active Data
         public RoomRoot root { get; protected set; }
         public int distance = RoomLOD.lowestLOD;
+        public RoomLOD.RoomLODState sceneState = RoomLOD.RoomLODState.Null;
 
 
         public IEnumerator LoadInto()
@@ -47,7 +49,7 @@ namespace RageRooster.RoomSystem
 
             if(distance == RoomLOD.playerWithin)
             {
-                //Load Scene
+                
             }
             else if (prevDistance == RoomLOD.playerWithin)
             {
@@ -69,74 +71,39 @@ namespace RageRooster.RoomSystem
 
             if (!CompareDistance(lods[^1].range)) return RoomLOD.lowestLOD;
 
-            for (int i = 0; i < lods.Length; i++)
-            {
-                if (CompareDistance(lods[i].range)) return i;
-            }
+            for (int i = 0; i < lods.Length; i++) 
+                if (CompareDistance(lods[i].range)) 
+                    return i;
 
-            #if UNITY_EDITOR
             Debug.LogError("I'm not sure how this happened?");
-            #endif
             return RoomLOD.lowestLOD;
         }
         private bool CompareDistance(float threshold) => 
             Vector3.SqrMagnitude(PlayerMovementBody.PositionGet - globalCenter) <= threshold * threshold;
 
-
-        public IEnumerator ALODLoad()
-        {
-            if (adjacentLODInstance != null || alodState > RoomVersionState.Null) yield break;
-            alodState = RoomVersionState.Loading;
-            AsyncInstantiateOperation op = adjacentLOD.InstantiateAsync(area.root.transform);
-
-            while (!op.isDone)
-            {
-                yield return null;
-                if (!withinLODRange)
-                {
-                    op.Cancel();
-                    yield break;
-                }
-            }
-
-            adjacentLODInstance = op.Result[0] as GameObject;
-            alodState = RoomVersionState.LockedToBePresent;
-
-            yield return new WaitForSecondsRealtime(20);
-
-            alodState = RoomVersionState.Present;
-        }
-        public IEnumerator ALODUnload()
-        {
-            if (adjacentLODInstance == null || alodState < RoomVersionState.Present) yield break;
-            Destroy(adjacentLODInstance);
-            adjacentLODInstance = null;
-            alodState = RoomVersionState.Null;
-        }
-
         public IEnumerator SceneLoad()
         {
-            if (scene.Loaded || sceneState > RoomVersionState.Null) yield break;
-            sceneState = RoomVersionState.Loading;
+            if (scene.Loaded || sceneState > RoomLOD.RoomLODState.Null) yield break;
+            sceneState = RoomLOD.RoomLODState.Loading;
             AsyncOperation op = scene.LoadAsync();
 
             while (!op.isDone) yield return null;
 
-            sceneState = RoomVersionState.LockedToBePresent;
+            sceneState = RoomLOD.RoomLODState.LockedToBePresent;
 
             yield return new WaitForSecondsRealtime(300);
 
-            sceneState = RoomVersionState.Present;
+            sceneState = RoomLOD.RoomLODState.Present;
         }
         public IEnumerator SceneUnload()
         {
-            if (!scene.Loaded || sceneState < RoomVersionState.Present) yield break;
-            sceneState = RoomVersionState.Unloading;
+            if (!scene.Loaded || sceneState < RoomLOD.RoomLODState.Present) yield break;
+            sceneState = RoomLOD.RoomLODState.Unloading;
             AsyncOperation op = scene.UnloadAsync();
 
             while (!op.isDone) yield return null;
 
-            sceneState = RoomVersionState.Null;
+            sceneState = RoomLOD.RoomLODState.Null;
         }
 
 
