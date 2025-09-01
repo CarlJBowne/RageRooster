@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace RageRooster.RoomSystem
 {
+    [CreateAssetMenu(fileName = "AreaRegistry", menuName = "RageRooster/RoomSystem/AreaRegistry", order = 1)]
     public class AreaRegistry : SingletonAsset<AreaRegistry>
     {
         [SerializeField]

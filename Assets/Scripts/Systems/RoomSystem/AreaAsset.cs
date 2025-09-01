@@ -18,7 +18,7 @@ namespace RageRooster.RoomSystem
     public class AreaAsset : ScriptableObject
     {
         //Config Fields
-        [field: SerializeField] public string areaDisplayName { get; protected set; } = "INSERT_DISPLAY_NAME";
+        [field: SerializeField] public string displayName { get; protected set; } = "INSERT_DISPLAY_NAME";
         [field: SerializeField] public SceneReference landmarkScene { get; protected set; }
         [field: SerializeField] public List<RoomAsset> rooms { get; protected set; } = new();
 
@@ -76,20 +76,28 @@ namespace RageRooster.RoomSystem
             AreaAsset areaAsset = (AreaAsset)target;
 
             // draw AreaName and LandmarkScene fields
-            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(areaAsset.areaDisplayName), backingField: true));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(areaAsset.landmarkScene), backingField: true), true);
+            serializedObject.Update();
+            EditorGUI.BeginChangeCheck();
+
+            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AreaAsset.displayName), backingField: true));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AreaAsset.landmarkScene), backingField: true), true);
 
             // draw Rooms List as a custom reorderable list
             SerializedProperty roomsProperty = serializedObject.FindProperty("Rooms", backingField: true);
 
             roomsList.DoLayoutList();
 
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+                Undo.RecordObject(areaAsset, "Modified Area Asset");
+                EditorUtility.SetDirty(areaAsset);
+            }
+        }
 
-
-
-
-
-
+        protected void OnDisable()
+        {
+            AssetDatabase.SaveAssetIfDirty(target);
         }
 
         private ReorderableList CreateRoomsList()

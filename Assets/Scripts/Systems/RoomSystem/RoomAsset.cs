@@ -13,7 +13,8 @@ namespace RageRooster.RoomSystem
     public class RoomAsset : ScriptableObject
     {
         //Serialized Data
-        [field: SerializeField] public string roomDisplayName { get; protected set; } = "INSERT_DISPLAY_NAME";
+
+        [field: SerializeField] public string displayName { get; protected set; } = "INSERT_DISPLAY_NAME";
         [field: SerializeField] public AreaAsset area { get; protected set; }
         [field: SerializeField] public Vector3 globalCenter { get; protected set; }
         [field: SerializeField] public SceneReference scene { get; protected set; }
@@ -211,7 +212,7 @@ namespace RageRooster.RoomSystem
             currentLOD = -1;
         }
 
-
+        [System.Serializable]
         public class RoomLOD
         {
             public float range;
@@ -302,7 +303,7 @@ namespace RageRooster.RoomSystem
                 linkStyle.normal.textColor = new Color(0.2f, 0.5f, 1f);
                 linkStyle.fontStyle = FontStyle.Bold;
 
-                if (GUILayout.Button($"Area: {areaAsset.areaDisplayName}", linkStyle))
+                if (GUILayout.Button($"Area: {areaAsset.displayName}", linkStyle))
                 {
                     Selection.activeObject = areaAsset;
                     EditorGUIUtility.PingObject(areaAsset);
@@ -318,9 +319,21 @@ namespace RageRooster.RoomSystem
 
             GUILayout.Space(8);
 
-            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.roomDisplayName), backingField: true));
+            serializedObject.Update();
+            EditorGUI.BeginChangeCheck();
+            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.displayName), backingField: true));
             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.scene), backingField: true));
             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.lods), backingField: true));
+            if(EditorGUI.EndChangeCheck())
+            {
+                serializedObject.ApplyModifiedProperties();
+                Undo.RecordObject(roomAsset, "Modified Room Asset");
+                EditorUtility.SetDirty(roomAsset);
+            }
+        }
+        protected void OnDisable()
+        {
+            AssetDatabase.SaveAssetIfDirty(target);
         }
     }
 
