@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RageRooster.RoomSystem
 {
-    public class RoomTransition : MonoBehaviour
+    public class RoomEntrance : MonoBehaviour
     {
         public float loadRadius = 20f;
         public float unloadRadius = 30f;

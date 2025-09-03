@@ -124,10 +124,10 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
 
         SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
     }
-    public static void BeginEditor(RoomDestination destination)
+    public static void BeginEditor(TransitionDestination destination)
     {
         if (Gameplay.Active) return;
-        if (!EditorState.EditorDestination.IsValid()) EditorState.EditorDestination = RoomDestination.GameplaySceneStart();
+        if (!EditorState.EditorDestination.IsValid()) EditorState.EditorDestination = TransitionDestination.GameplaySceneStart();
 
         SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
     }

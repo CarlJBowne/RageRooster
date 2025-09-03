@@ -19,7 +19,7 @@ namespace RageRooster.RoomSystem
     {
         //Config Fields
         [field: SerializeField] public string displayName { get; protected set; } = "INSERT_DISPLAY_NAME";
-        [field: SerializeField] public SceneReference landmarkScene { get; protected set; }
+        [field: SerializeField] public SceneReference shellScene { get; protected set; }
         [field: SerializeField] public List<RoomAsset> rooms { get; protected set; } = new();
 
         //Active Data
@@ -30,8 +30,8 @@ namespace RageRooster.RoomSystem
 
         public IEnumerator LoadArea()
         {
-            yield return landmarkScene.LoadEnum();
-            landmarkScene.TryGetRootScript(out AreaRoot root);
+            yield return shellScene.LoadEnum();
+            shellScene.TryGetRootScript(out AreaRoot root);
             if (root == null) yield return new WaitUntil(() => root != null);
             for (int i = 0; i < rooms.Count; i++) 
                 PlayerMovementBody.MovingUpdateAction += rooms[i].Update;
@@ -43,7 +43,7 @@ namespace RageRooster.RoomSystem
         {
             for (int i = 0; i < rooms.Count; i++)
                 PlayerMovementBody.MovingUpdateAction -= rooms[i].Update;
-            yield return landmarkScene.UnloadEnum();
+            yield return shellScene.UnloadEnum();
             root = null;
         }
 
@@ -80,7 +80,7 @@ namespace RageRooster.RoomSystem
             EditorGUI.BeginChangeCheck();
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AreaAsset.displayName), backingField: true));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AreaAsset.landmarkScene), backingField: true), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AreaAsset.shellScene), backingField: true), true);
 
             // draw Rooms List as a custom reorderable list
             SerializedProperty roomsProperty = serializedObject.FindProperty("Rooms", backingField: true);

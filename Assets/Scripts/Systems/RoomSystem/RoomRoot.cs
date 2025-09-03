@@ -37,13 +37,13 @@ namespace RageRooster.RoomSystem
                 throw new System.Exception($"ERROR: The RoomRoot in scene {scene.name} does not have an associated RoomAsset. Please create a RoomAsset and assign it to the RoomRoot before saving the scene.");
             }
 
-            RoomTransition[] transitions = gameObject.GetComponentsInChildren<RoomTransition>();
+            RoomEntrance[] transitions = gameObject.GetComponentsInChildren<RoomEntrance>();
 
-            asset.transitions.Clear();
-            foreach (RoomTransition transition in transitions)
+            asset.entrances.Clear();
+            foreach (RoomEntrance transition in transitions)
             {
                 transition.root = this;
-                asset.transitions.Add(transition.GetData());
+                asset.entrances.Add(transition.GetData());
             }
 
             spawns = gameObject.GetComponentsInChildren<SpawnPoint>();

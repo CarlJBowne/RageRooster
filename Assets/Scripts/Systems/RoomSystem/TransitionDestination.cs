@@ -1,6 +1,6 @@
 namespace RageRooster.RoomSystem
 {
-    public struct RoomDestination
+    public struct TransitionDestination
     {
         public AreaAsset area;
         public RoomAsset room;
@@ -8,7 +8,7 @@ namespace RageRooster.RoomSystem
 
         public int spawnID;
 
-        public static RoomDestination Default() => new()
+        public static TransitionDestination Default() => new()
         {
             area = null,
             room = null,
@@ -21,7 +21,7 @@ namespace RageRooster.RoomSystem
         /// <summary>
         /// This Constructor is for use when reading serialized data from a save file or similar.
         /// </summary>
-        public RoomDestination(string areaName, int roomID = 0, int spawnID = 0)
+        public TransitionDestination(string areaName, int roomID = 0, int spawnID = 0)
         {
             area = AreaRegistry.GetArea(areaName);
             if (area == null) throw new System.Exception("Invalid name does not belong to any area.");
@@ -34,7 +34,7 @@ namespace RageRooster.RoomSystem
         /// <summary>
         /// This Constructor is for use when a developer has pressed play when a Room Scene was open in the editor.
         /// </summary>
-        public RoomDestination(RoomRoot areaRoot)
+        public TransitionDestination(RoomRoot areaRoot)
         {
             area = areaRoot.asset.area;
             room = areaRoot.asset;
@@ -45,7 +45,7 @@ namespace RageRooster.RoomSystem
         /// <summary>
         /// This Constructor is for use when a developer has pressed play when a Area Scene was open in the editor.
         /// </summary>
-        public RoomDestination(AreaRoot areaRoot)
+        public TransitionDestination(AreaRoot areaRoot)
         {
             area = areaRoot.asset;
             room = areaRoot.asset.rooms[0];
@@ -56,7 +56,7 @@ namespace RageRooster.RoomSystem
         /// <summary>
         /// This Constructor is for use when a developer has pressed "Play from here" on a Spawn Point.
         /// </summary>
-        public RoomDestination(SpawnPoint spawn)
+        public TransitionDestination(SpawnPoint spawn)
         {
             area = spawn.root.asset.area;
             room = spawn.root.asset;
@@ -67,7 +67,7 @@ namespace RageRooster.RoomSystem
         /// This Constructor is for when a developer begins directly from the Gameplay Scene. Either defaults to very first spawn in the game or reads the Debug Save File.
         /// </summary>
         /// <param name="gameplay"></param>
-        public static RoomDestination GameplaySceneStart()
+        public static TransitionDestination GameplaySceneStart()
         {
             if (false) // Replace false with a check for a debug save file.
             {
@@ -75,7 +75,7 @@ namespace RageRooster.RoomSystem
             }
             else
             {
-                RoomDestination dest = new();
+                TransitionDestination dest = new();
                 dest.area = AreaRegistry.GetFirstArea();
                 dest.room = dest.area.rooms[0];
                 dest.spawnID = 0;

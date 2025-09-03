@@ -21,7 +21,7 @@ namespace RageRooster.RoomSystem
             currentArea = null;
             currentRoom = null;
         }
-        public static IEnumerator EnterArea(RoomDestination dest)
+        public static IEnumerator EnterArea(TransitionDestination dest)
         {
             yield return null;
 

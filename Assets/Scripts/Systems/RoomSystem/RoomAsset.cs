@@ -20,7 +20,7 @@ namespace RageRooster.RoomSystem
         [field: SerializeField] public SceneReference scene { get; protected set; }
         [field: SerializeField] public RoomLOD lod { get; protected set; }
 
-        [field: SerializeField] public List<RoomTransition.Data> transitions { get; protected set; } = new();
+        [field: SerializeField] public List<RoomEntrance.Data> entrances { get; protected set; } = new();
 
 
         //Active Data
@@ -87,11 +87,11 @@ namespace RageRooster.RoomSystem
         private bool WithinLoadRange(Vector3 player)
         {
             // Early exit if there are no transitions
-            if (transitions == null || transitions.Count == 0)
+            if (entrances == null || entrances.Count == 0)
                 return false;
 
             // Use foreach, but return immediately on first match
-            foreach (RoomTransition.Data item in transitions)
+            foreach (RoomEntrance.Data item in entrances)
             {
                 if (item.direction != Vector3.zero && Vector3.Dot(item.point - player, item.direction) < 0) continue;
                 if (Vector3.SqrMagnitude(player - item.point) < item.loadRadius * item.loadRadius)
@@ -102,11 +102,11 @@ namespace RageRooster.RoomSystem
         private bool WithinUnloadRange(Vector3 player)
         {
             // Early exit if there are no transitions
-            if (transitions == null || transitions.Count == 0)
+            if (entrances == null || entrances.Count == 0)
                 return false;
 
             // Use foreach, but return immediately on first match
-            foreach (RoomTransition.Data item in transitions)
+            foreach (RoomEntrance.Data item in entrances)
             {
                 if (item.direction != Vector3.zero && Vector3.Dot(item.point - player, item.direction) < 0) continue;
                 if (Vector3.SqrMagnitude(player - item.point) < item.unloadRadius * item.unloadRadius)
@@ -117,11 +117,11 @@ namespace RageRooster.RoomSystem
         private bool WithinLodRange(Vector3 player)
         {
             // Early exit if there are no transitions
-            if (transitions == null || transitions.Count == 0)
+            if (entrances == null || entrances.Count == 0)
                 return false;
 
             // Use foreach, but return immediately on first match
-            foreach (RoomTransition.Data item in transitions)
+            foreach (RoomEntrance.Data item in entrances)
             {
                 if (item.direction != Vector3.zero && Vector3.Dot(item.point - player, item.direction) < 0) continue;
                 if (Vector3.SqrMagnitude(player - item.point) < item.lodRadius * item.lodRadius)
@@ -343,7 +343,7 @@ namespace RageRooster.RoomSystem
             GUILayout.Space(8);
 
             // Display foldable, uneditable list of transitions
-            SerializedProperty transitionsProp = serializedObject.FindProperty(nameof(RoomAsset.transitions), backingField: true);
+            SerializedProperty transitionsProp = serializedObject.FindProperty(nameof(RoomAsset.entrances), backingField: true);
             bool transitionsFoldout = EditorPrefs.GetBool("RoomAsset_TransitionsFoldout", true);
             transitionsFoldout = EditorGUILayout.Foldout(transitionsFoldout, "Transitions", true);
             EditorPrefs.SetBool("RoomAsset_TransitionsFoldout", transitionsFoldout);
