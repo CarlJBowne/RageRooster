@@ -23,6 +23,12 @@ public static class _ExtensionMethods
 	public static Color SetAlpha(this ref Color color, float set) => new Color(color.r, color.g, color.b, set);
 	public static Color ChangeAlpha(this ref Color color, float change) => new Color(color.r, color.g, color.b, color.a + change);
 
+	public static void ClearNull<T>(this List<T> list) where T : class
+	{
+		for (int i = list.Count - 1; i >= 0; i--)
+			if (list[i] == null)
+				list.RemoveAt(i);
+    }
 
 }
 

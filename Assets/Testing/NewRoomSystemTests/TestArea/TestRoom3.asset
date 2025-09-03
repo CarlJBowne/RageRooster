@@ -24,4 +24,20 @@ MonoBehaviour:
       type: 3}
   <loadSceneRadius>k__BackingField: 0
   <unloadSceneRadius>k__BackingField: 0
-  <lods>k__BackingField: []
+  <lod>k__BackingField:
+    range: 0
+    prefab:
+      <readOnlyObject>k__BackingField: {fileID: 0}
+      <path>k__BackingField: 
+    instance: {fileID: 0}
+  <transitions>k__BackingField:
+  - point: {x: 5.5, y: 0, z: -27.25}
+    direction: {x: 0, y: 0, z: 1}
+    loadRadius: 20
+    unloadRadius: 30
+    lodRadius: 50
+  - point: {x: -34, y: 0, z: -50.75}
+    direction: {x: 0, y: 0, z: 1}
+    loadRadius: 20
+    unloadRadius: 30
+    lodRadius: 50

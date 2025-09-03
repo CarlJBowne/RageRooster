@@ -148,6 +148,7 @@ public class CharacterMovementBody : MonoBehaviour
             transform.position = value;
             RB.position = value;
             RB.MovePosition(value);
+            OnSetPosition(value);
         }
     }
     /// <summary>
@@ -210,6 +211,8 @@ public class CharacterMovementBody : MonoBehaviour
     /// <param name="newY"> The new gravity value on the y axis. (1 = down.) </param>
     /// <param name="newZ"> The new gravity value on the z axis. (1 = back.) </param>
     public void SetGravity(float newX, float newY, float newZ) => gravity = new(newX, newY, newZ);
+
+    protected virtual void OnSetPosition(Vector3 newPos) { }
 
     #endregion Sets
 

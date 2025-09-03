@@ -22,6 +22,20 @@ MonoBehaviour:
     <scenePath>k__BackingField: Assets/Testing/NewRoomSystemTests/TestArea_Scenes/TestRoom1.unity
     <asset>k__BackingField: {fileID: 102900000, guid: 59bccf0019c5dab488c4864a22e66a46,
       type: 3}
-  <loadSceneRadius>k__BackingField: 0
-  <unloadSceneRadius>k__BackingField: 0
-  <lods>k__BackingField: []
+  <lod>k__BackingField:
+    range: 0
+    prefab:
+      <readOnlyObject>k__BackingField: {fileID: 0}
+      <path>k__BackingField: 
+    instance: {fileID: 0}
+  <transitions>k__BackingField:
+  - point: {x: -16.5, y: 0, z: -6.5}
+    direction: {x: 1, y: 0, z: 0}
+    loadRadius: 20
+    unloadRadius: 30
+    lodRadius: 50
+  - point: {x: -3, y: 0, z: -24.5}
+    direction: {x: 0, y: 0, z: 1}
+    loadRadius: 20
+    unloadRadius: 30
+    lodRadius: 50

@@ -25,22 +25,13 @@ namespace RageRooster.RoomSystem
         {
             yield return null;
 
-            if (dest.areaAsset == null) 
-                dest.areaAsset = AreaRegistry.GetArea(dest.areaName);
+            yield return dest.room.PrepEnter();
+            RoomRoot roomRoot = dest.room.root;
+            EnterRoom(dest.room);
 
-            yield return dest.areaAsset.LoadArea();
-            AreaRoot areaRoot = dest.areaAsset.root;
-
-            if (dest.roomAsset == null) 
-                dest.roomAsset = dest.areaAsset.rooms[dest.roomID];
-
-            yield return dest.roomAsset.PrepEnter();
-            RoomRoot roomRoot = dest.roomAsset.root;
-            EnterRoom(dest.roomAsset);
-
-            if (dest.spawnPoint == null) 
-                dest.spawnPoint = roomRoot.spawns[dest.spawnID];
-            dest.spawnPoint.SpawnPlayerAt();
+            if (dest.spawn == null) 
+                dest.spawn = roomRoot.spawns[dest.spawnID];
+            dest.spawn.SpawnPlayerAt();
 
             foreach (RoomAsset room in currentArea.rooms)
             {

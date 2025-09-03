@@ -1,3 +1,4 @@
+using RageRooster.RoomSystem;
 using SLS.ISingleton;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,13 @@ public class EditorState : SingletonAsset<EditorState>
     {
         get => Get().loadFromSavePointID;
         set => Get().loadFromSavePointID = value;
+    }
+
+    private RoomDestination editorDestination = RoomDestination.Default();
+    public static RoomDestination EditorDestination
+    {
+        get => Get().editorDestination;
+        set => Get().editorDestination = value;
     }
 
     public enum OnBuildStateMachineHandling

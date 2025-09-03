@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RageRooster.RoomSystem
 {
-    [CreateAssetMenu(fileName = "AreaRegistry", menuName = "RageRooster/RoomSystem/AreaRegistry", order = 1)]
+    //[CreateAssetMenu(fileName = "AreaRegistry", menuName = "RageRooster/RoomSystem/AreaRegistry", order = 1)]
     public class AreaRegistry : SingletonAsset<AreaRegistry>
     {
         [SerializeField]
@@ -32,6 +32,7 @@ namespace RageRooster.RoomSystem
             if (!dictionarybuilt) BuildDictionary();
             return dictionary[name];
         }
+        public static AreaAsset GetFirstArea() => Get().areaAssets[0];
 
     }
 

@@ -18,11 +18,9 @@ namespace RageRooster.RoomSystem
         [field: SerializeField] public AreaAsset area { get; protected set; }
         [field: SerializeField] public Vector3 globalCenter { get; protected set; }
         [field: SerializeField] public SceneReference scene { get; protected set; }
-        [field: SerializeField] public float loadSceneRadius { get; protected set; }
-        [field: SerializeField] public float unloadSceneRadius { get; protected set; }
-        [field: SerializeField] public RoomLOD[] lods { get; protected set; }
+        [field: SerializeField] public RoomLOD lod { get; protected set; }
 
-
+        [field: SerializeField] public List<RoomTransition.Data> transitions { get; protected set; } = new();
 
 
         //Active Data
@@ -59,76 +57,87 @@ namespace RageRooster.RoomSystem
         {
             if (state is RoomState.Current or RoomState.Unloading or RoomState.Loading) return;
 
-            CalculateDistance();
-
+            Vector3 player = PlayerMovementBody.PositionGet;
             if (state is RoomState.Present)
             {
-                if (!CompareDistance(unloadSceneRadius)) 
+                if (!WithinUnloadRange(player)) 
                     SceneUnload().Begin(area.root);
             }
             else
             {
-                if (CompareDistance(loadSceneRadius))
+                if (WithinLoadRange(player))
                 {
                     SceneLoad().Begin(area.root);
                     return;
                 }
-                else if(state is RoomState.Lowest && CompareDistance(lods[^1].range))
+                else if(state is RoomState.Lowest && WithinLodRange(player))
                 {
                     state = RoomState.LODS;
-                    EnterLod(FindLod(0));
+                    lod.TurnOn();
                 }
-                else if (state is RoomState.LODS)
+                else if (state is RoomState.LODS && !WithinLodRange(player))
                 {
-                    if (!CompareDistance(lods[currentLOD].range)) 
-                        EnterLod(FindLod(currentLOD + 1));
-                    else 
-                        EnterLod(FindLodReverse(currentLOD - 1));
+                    state = RoomState.Lowest;
+                    lod.TurnOff();
                 }
             }
         }
 
-        private float CalculateDistance()
+        #region Range Calculators
+        private bool WithinLoadRange(Vector3 player)
         {
-            PlayerDistance = Vector3.SqrMagnitude(PlayerMovementBody.PositionGet - globalCenter);
-            return PlayerDistance;
-        }
-        private float PlayerDistance;
-        private bool CompareDistance(float threshold) =>
-            PlayerDistance <= threshold * threshold;
+            // Early exit if there are no transitions
+            if (transitions == null || transitions.Count == 0)
+                return false;
 
-        int FindLod(int start)
-        {
-            for (int i = start; i < lods.Length; i++)
-                if (CompareDistance(lods[i].range))
-                    return i;
-            return -1;
-        }
-        int FindLodReverse(int start)
-        {
-            if (lods.Length == 1) return 0;
-            int i = start;
-            for (; i > 0; i--)
-                if (!CompareDistance(lods[i].range))
-                    return i + 1;
-            return i;
-        }
-        void EnterLod(int ID)
-        {
-            if (ID == currentLOD) return;
-            if (ID == -1)
+            // Use foreach, but return immediately on first match
+            foreach (RoomTransition.Data item in transitions)
             {
-                lods[currentLOD].TurnOff();
-                currentLOD = -1;
-                state = RoomState.Lowest;
+                if (item.direction != Vector3.zero && Vector3.Dot(item.point - player, item.direction) < 0) continue;
+                if (Vector3.SqrMagnitude(player - item.point) < item.loadRadius * item.loadRadius)
+                    return true;
             }
-            else
-            {
-                lods[currentLOD].TurnOff();
-                currentLOD = ID;
-                lods[currentLOD].TurnOn();
-            }
+            return false;
         }
+        private bool WithinUnloadRange(Vector3 player)
+        {
+            // Early exit if there are no transitions
+            if (transitions == null || transitions.Count == 0)
+                return false;
+
+            // Use foreach, but return immediately on first match
+            foreach (RoomTransition.Data item in transitions)
+            {
+                if (item.direction != Vector3.zero && Vector3.Dot(item.point - player, item.direction) < 0) continue;
+                if (Vector3.SqrMagnitude(player - item.point) < item.unloadRadius * item.unloadRadius)
+                    return true;
+            }
+            return false;
+        }
+        private bool WithinLodRange(Vector3 player)
+        {
+            // Early exit if there are no transitions
+            if (transitions == null || transitions.Count == 0)
+                return false;
+
+            // Use foreach, but return immediately on first match
+            foreach (RoomTransition.Data item in transitions)
+            {
+                if (item.direction != Vector3.zero && Vector3.Dot(item.point - player, item.direction) < 0) continue;
+                if (Vector3.SqrMagnitude(player - item.point) < item.lodRadius * item.lodRadius)
+                    return true;
+            }
+            return false;
+        }
+        #endregion
+
+
+
+
+
+
+
+
 
 
         public IEnumerator PrepEnter()
@@ -140,23 +149,22 @@ namespace RageRooster.RoomSystem
         }
         public IEnumerator PrepSurrounding()
         {
-            if(CompareDistance(loadSceneRadius))
+            Vector3 player = PlayerMovementBody.PositionGet;
+            if (WithinLoadRange(player))
             {
                 yield return SceneLoad();
                 state = RoomState.Present;
             }
             else
             {
-                int ID = FindLod(0);
-                if (ID != -1)
+                if (WithinLodRange(player))
                 {
-                    state = RoomState.Lowest;
+                    state = RoomState.LODS;
+                    yield return lod.Load();
                 }
                 else
                 {
-                    currentLOD = ID;
-                    yield return lods[currentLOD].Load();
-                    state = RoomState.LODS;
+                    state = RoomState.Lowest;
                 }
             }
         }
@@ -207,7 +215,8 @@ namespace RageRooster.RoomSystem
                 yield return scene.UnloadEnum();
             }
 
-            for (int i = 0; i < lods.Length; i++) lods[i].CompleteUnload();
+            //for (int i = 0; i < lods.Length; i++) lods[i].CompleteUnload();
+            lod.CompleteUnload();
             state = RoomState.Null;
             currentLOD = -1;
         }
@@ -323,12 +332,50 @@ namespace RageRooster.RoomSystem
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.displayName), backingField: true));
             EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.scene), backingField: true));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.lods), backingField: true));
-            if(EditorGUI.EndChangeCheck())
+            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.lod), backingField: true));
+            if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
                 Undo.RecordObject(roomAsset, "Modified Room Asset");
                 EditorUtility.SetDirty(roomAsset);
+            }
+
+            GUILayout.Space(8);
+
+            // Display foldable, uneditable list of transitions
+            SerializedProperty transitionsProp = serializedObject.FindProperty(nameof(RoomAsset.transitions), backingField: true);
+            bool transitionsFoldout = EditorPrefs.GetBool("RoomAsset_TransitionsFoldout", true);
+            transitionsFoldout = EditorGUILayout.Foldout(transitionsFoldout, "Transitions", true);
+            EditorPrefs.SetBool("RoomAsset_TransitionsFoldout", transitionsFoldout);
+
+            if (transitionsFoldout)
+            {
+                if (transitionsProp != null && transitionsProp.isArray)
+                {
+                    int count = transitionsProp.arraySize;
+                    if (count == 0)
+                    {
+                        EditorGUILayout.LabelField("No transitions attached.");
+                    }
+                    else
+                    {
+                        EditorGUI.indentLevel++;
+                        for (int i = 0; i < count; i++)
+                        {
+                            SerializedProperty itemProp = transitionsProp.GetArrayElementAtIndex(i);
+                            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                            EditorGUI.BeginDisabledGroup(true);
+                            EditorGUILayout.PropertyField(itemProp, new($"Transition {i + 1}"), true);
+                            EditorGUI.EndDisabledGroup();
+                            EditorGUILayout.EndVertical();
+                        }
+                        EditorGUI.indentLevel--;
+                    }
+                }
+                else
+                {
+                    EditorGUILayout.LabelField("Transitions property not found.");
+                }
             }
         }
         protected void OnDisable()

@@ -11,6 +11,13 @@ namespace RageRooster.RoomSystem
 
         private void Awake()
         {
+            if (!RoomManager.Active)
+            {
+                if (!EditorState.EditorDestination.IsValid()) EditorState.EditorDestination = new(this);
+                Gameplay.BeginEditor(EditorState.EditorDestination);
+                return;
+            }
+
             asset.Connect(this);
         }
 

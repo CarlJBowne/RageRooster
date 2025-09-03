@@ -7,6 +7,8 @@ using FMODUnity;
 using EditorAttributes;
 using System.Collections.Generic;
 using SLS.ISingleton;
+using RageRooster.RoomSystem;
+
 
 
 
@@ -34,6 +36,7 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
 
 
     public const string GAMEPLAY_SCENE_NAME = "GameplayScene";
+    public static SceneReference GAMEPLAY_SCENE = new(GAMEPLAY_SCENE_NAME);
 
     public static GameObject Player => Get().player;
     public static PlayerStateMachine PlayerStateMachine => Get().playerStateMachine;
@@ -49,6 +52,8 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
     public static System.Action PreReloadSave;
     public static bool fullyLoaded;
     public static System.Action onPlayerRespawn;
+
+
 
     /// <summary>
     /// Begins the main menu by loading the gameplay scene and setting the active save file.
@@ -111,6 +116,29 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
         SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
     }
 
+
+
+    public static void BeginSaveFile(int fileNo)
+    {
+        if (Gameplay.Active) return;
+
+        SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
+    }
+    public static void BeginEditor(RoomDestination destination)
+    {
+        if (Gameplay.Active) return;
+        if (!EditorState.EditorDestination.IsValid()) EditorState.EditorDestination = RoomDestination.GameplaySceneStart();
+
+        SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
+    }
+
+
+
+
+
+
+
+
     /// <summary>
     /// Called when the Gameplay singleton is awakened. Loads the global state and initializes the zone manager.
     /// </summary>
@@ -127,13 +155,18 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
             GlobalState.Load();
             PostMaLoad?.Invoke();
 
-            spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
+            if (EditorState.EditorDestination.IsValid())
+            {
+
+            }
+
+            //spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
 
             if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
 
-            SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
+            //SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
 
-            ZoneManager.OnFirstLoad += OnFirstLoad;
+            //ZoneManager.OnFirstLoad += OnFirstLoad;
 
             Input.Pause.performed += c => { Menu.Manager.Escape(); };
         }

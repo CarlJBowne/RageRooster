@@ -184,7 +184,7 @@ public class PrefabDrawer : PropertyDrawer
         }
 
         Rect prefabLabelRect = position;
-        prefabLabelRect.xMax -= 8;
+        prefabLabelRect.xMax -= EditorGUIUtility.singleLineHeight;
         prefabLabelRect.xMin = prefabLabelRect.xMax - 60;
         EditorGUI.LabelField(prefabLabelRect, "(Prefab)");
 

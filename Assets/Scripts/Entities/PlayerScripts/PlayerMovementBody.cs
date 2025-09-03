@@ -68,6 +68,7 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
         transform.position = newPosition;
         RB.position = newPosition;
         RB.MovePosition(newPosition);
+        OnSetPosition(newPosition);
     }
 
     public void DirectionSet(Vector3 target, float maxTurnSpeed)
@@ -139,7 +140,6 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
 
         base.FixedUpdate();
 
-        PositionGet = Position;
         if(prePos != Position) _movingUpdateActionTimer.Tick(MovingUpdateAction);
     }
 
@@ -195,6 +195,9 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
         if (!GroundCheck(out AnchorPoint groundHit)) return;
         Land(groundHit);
     }
+
+
+    protected override void OnSetPosition(Vector3 newPos) => PositionGet = newPos;
 
     public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
     {

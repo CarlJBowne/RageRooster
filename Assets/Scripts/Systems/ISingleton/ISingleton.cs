@@ -65,7 +65,11 @@ namespace SLS.ISingleton
         public static T Get(ref T instanceSlot)
         {
 #if UNITY_EDITOR
-            if (!Application.isPlaying) { Debug.LogError($"{typeof(T)} accessed outside of runtime. Don't."); return null; }
+            if (!Application.isPlaying && !typeof(T).ImplementsOrDerives(typeof(ScriptableObject))) 
+            { 
+                Debug.LogError($"{typeof(T)} accessed outside of runtime. Don't."); 
+                return null; 
+            }
 #endif
             if (instanceSlot != null) return instanceSlot;
 
@@ -84,7 +88,11 @@ namespace SLS.ISingleton
         public static T Get(ref T instanceSlot, Delegate secondMethod)
         {
 #if UNITY_EDITOR
-            if (!Application.isPlaying) { Debug.LogError($"{typeof(T)} accessed outside of runtime. Don't."); return null; }
+            if (!Application.isPlaying && !typeof(T).ImplementsOrDerives(typeof(ScriptableObject)))
+            {
+                Debug.LogError($"{typeof(T)} accessed outside of runtime. Don't.");
+                return null;
+            }
 #endif
             if (instanceSlot != null) return instanceSlot;
 
@@ -106,7 +114,11 @@ namespace SLS.ISingleton
         public static T Get(ref T instanceSlot, DelegatePath secondMethod, string path)
         {
 #if UNITY_EDITOR
-            if (!Application.isPlaying) { Debug.LogError($"{typeof(T)} accessed outside of runtime. Don't."); return null; }
+            if (!Application.isPlaying && !typeof(T).ImplementsOrDerives(typeof(ScriptableObject)))
+            {
+                Debug.LogError($"{typeof(T)} accessed outside of runtime. Don't.");
+                return null;
+            }
 #endif
             if (instanceSlot != null) return instanceSlot;
 
