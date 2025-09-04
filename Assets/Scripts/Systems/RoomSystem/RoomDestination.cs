@@ -1,3 +1,5 @@
+using Newtonsoft.Json.Linq;
+
 namespace RageRooster.RoomSystem
 {
     public struct RoomDestination
@@ -19,7 +21,7 @@ namespace RageRooster.RoomSystem
 
 
         /// <summary>
-        /// This Constructor is for use when reading serialized data from a save file or similar.
+        /// This Constructor is for use when reading deSerialized data from a save file or similar.
         /// </summary>
         public RoomDestination(string areaName, int roomID = 0, int spawnID = 0)
         {
@@ -83,6 +85,17 @@ namespace RageRooster.RoomSystem
                 return dest;
             }
         }
+
+
+        public JToken Serialize(string name = null) => new JObject
+        {
+            ["area"] = area.name,
+            ["roomID"] = area.rooms.IndexOf(room),
+            ["spawnID"] = spawnID
+        };
+        public static RoomDestination Deserialize(JToken Data) => new((string)Data["area"], (int)Data["roomID"], (int)Data["spawnID"]);
+
+
 
         //Possibly Unnecessary Constructors, real constructers will be created on a necessary case basis to ensure no willy-nilly usage of potentially malformed Destinations.
         /* 
