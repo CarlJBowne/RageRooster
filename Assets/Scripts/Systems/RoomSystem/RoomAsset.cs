@@ -146,6 +146,7 @@ namespace RageRooster.RoomSystem
 
         public IEnumerator PrepEnter()
         {
+            Debug.Log($"Prepping for Enter Room {name}");
             yield return scene.LoadEnum();
             yield return null;
             root = scene.GetRootScript<RoomRoot>();
@@ -155,6 +156,7 @@ namespace RageRooster.RoomSystem
         }
         public IEnumerator PrepSurrounding()
         {
+            Debug.Log($"Prepping for Existence Room {name}");
             if (this == RoomManager.currentRoom) yield break;
             Vector3 player = PlayerMovementBody.PositionGet;
             if (WithinLoadRange(player))

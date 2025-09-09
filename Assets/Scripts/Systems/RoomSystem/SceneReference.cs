@@ -1,6 +1,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System;
+
+using System.Reflection;
+
 
 
 
@@ -111,7 +115,8 @@ public class SceneReference : ISerializationCallbackReceiver
 
     public void OnBeforeSerialize()
     {
-        if (new System.Diagnostics.StackTrace().GetFrame(1) != null) return;
+        var trace = new System.Diagnostics.StackTrace().GetFrame(1);
+        if (trace != null && trace.GetMethod().Name != "DoEditorSerialize") return;
 
         //Debug.Log($"Serializing Scene Reference : {sceneName}");
 
@@ -156,15 +161,47 @@ public class SceneReference : ISerializationCallbackReceiver
 
     public void Validate()
     {
-        if (!Valid) throw new System.InvalidOperationException("Invalid Scene.");
+        if (!Valid)throw new System.InvalidOperationException("Invalid Scene at runtime.");
+    }
+
+    public void ValidateAsset()
+    {
+#if UNITY_EDITOR
+        if (asset != null)
+        {
+            string path = AssetDatabase.GetAssetPath(asset);
+            if (!path.EndsWith(".unity")) throw new System.ArgumentException("SceneObject constructor expects a scene asset.");
+            scenePath = path;
+            sceneName = System.IO.Path.GetFileNameWithoutExtension(path);
+
+            Scene runtimeScene = SceneManager.GetSceneByPath(scenePath);
+            if (runtimeScene.IsValid())
+            {
+                state = runtimeScene.isLoaded ? SceneState.Loaded : SceneState.Valid;
+                buildIndex = runtimeScene.buildIndex;
+            }
+            else
+            {
+                state = SceneState.INVALID;
+            }
+        }
+        else
+        {
+            sceneName = null;
+            buildIndex = -1;
+            scenePath = null;
+            state = SceneState.NULL;
+        }
+#endif
+
     }
 
 
 #if UNITY_EDITOR
 
-    [field: SerializeField] public Object asset { get; private set; }
+    [field: SerializeField] public UnityEngine.Object asset { get; private set; }
 
-    public SceneReference(Object sceneAsset)
+    public SceneReference(UnityEngine.Object sceneAsset)
     {
         asset = sceneAsset;
         this.sceneName = null;
@@ -289,15 +326,26 @@ public class SceneReferenceDrawer : PropertyDrawer
     {
         EditorGUI.BeginProperty(position, label, property);
 
-        // Draw the asset field, limiting to scene assets only
-        Rect assetRect = position;
-        assetRect.width -= EditorGUIUtility.singleLineHeight + 2; // Reserve space for warning icon
 
-        SerializedProperty assetProp = property.FindPropertyRelative("<asset>k__BackingField");
+
+        Rect iconRect = new Rect(
+            position.x + EditorGUIUtility.labelWidth - EditorGUIUtility.singleLineHeight,
+            position.y,
+            EditorGUIUtility.singleLineHeight,
+            EditorGUIUtility.singleLineHeight
+        );
+        Rect detailsRect = new(
+            position.x,
+            position.y + EditorGUIUtility.singleLineHeight,
+            position.width,
+            EditorGUIUtility.singleLineHeight * 4
+            );
+
+
+        SerializedProperty assetProp = property.FindPropertyRelative(nameof(SceneReference.asset).BackingField());
         EditorGUI.BeginChangeCheck();
-        // Use ObjectField with a filter for SceneAsset type
-        assetProp.objectReferenceValue = EditorGUI.ObjectField(
-            assetRect,
+        var asset = EditorGUI.ObjectField(
+            position,
             label,
             assetProp.objectReferenceValue,
             typeof(UnityEditor.SceneAsset),
@@ -306,68 +354,129 @@ public class SceneReferenceDrawer : PropertyDrawer
         if (EditorGUI.EndChangeCheck())
         {
             property.serializedObject.Update();
+            assetProp.objectReferenceValue = asset; 
+
+            // Use reflection to call ValidateAsset() on the SceneReference instance
+            var sceneRef = GetTargetObjectOfProperty(property) as SceneReference;
+            if (sceneRef != null)
+            {
+                var method = typeof(SceneReference).GetMethod("ValidateAsset", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                if (method != null) method.Invoke(sceneRef, null);
+            }
+
             property.serializedObject.ApplyModifiedProperties();
         }
 
-        //Icon and Tooltip
+        // Icon and Tooltip
+        SceneRefState state = SceneRefState.Null;
+        string scenePath = property.FindPropertyRelative(nameof(SceneReference.scenePath).BackingField()).stringValue;
+
+        if (asset != null && !string.IsNullOrEmpty(scenePath))
         {
-            SceneRefState state = SceneRefState.Null;
-
-            // Draw warning icon if not in build list
-            UnityEngine.Object asset = assetProp.objectReferenceValue;
-            string scenePath = property.FindPropertyRelative("<scenePath>k__BackingField").stringValue;
-
-            if (asset != null && !string.IsNullOrEmpty(scenePath))
+            state = SceneRefState.NotInList;
+            var scenes = UnityEditor.EditorBuildSettings.scenes;
+            for (int i = 0; i < scenes.Length; i++)
             {
-                state = SceneRefState.NotInList;
-                var scenes = UnityEditor.EditorBuildSettings.scenes;
-                for (int i = 0; i < scenes.Length; i++)
+                if (scenes[i].path == scenePath)
                 {
-                    if (scenes[i].path == scenePath)
-                    {
-                        state = scenes[i].enabled ? SceneRefState.Valid : SceneRefState.InListButDisabled;
-                        break;
-                    }
+                    state = scenes[i].enabled ? SceneRefState.Valid : SceneRefState.InListButDisabled;
+                    break;
                 }
             }
-
-            Rect iconRect = position;
-            iconRect.x = assetRect.xMax + 2;
-            iconRect.width = EditorGUIUtility.singleLineHeight;
-            iconRect.height = EditorGUIUtility.singleLineHeight;
-
-            string tooltip = "";
-            Texture2D icon = null;
-
-            switch (state)
-            {
-                case SceneRefState.Null:
-                    tooltip = "This Scene Reference is Null. Ensure it is filled with a valid scene before use.";
-                    icon = EditorGUIUtility.IconContent("console.erroricon").image as Texture2D;
-                    break;
-                case SceneRefState.NotInList:
-                    tooltip = "This Scene is not in the Build List. Click to open Build Settings.";
-                    icon = EditorGUIUtility.IconContent("console.warnicon").image as Texture2D;
-                    break;
-                case SceneRefState.InListButDisabled:
-                    tooltip = "This Scene is in the Build List, but is not enabled. Click to open Build Settings.";
-                    icon = EditorGUIUtility.IconContent("console.warnicon").image as Texture2D;
-                    break;
-                case SceneRefState.Valid:
-                    tooltip = "This Scene is validly set up.";
-                    icon = EditorGUIUtility.IconContent("TestPassed").image as Texture2D; // Green checkmark icon
-                    break;
-            }
-
-            GUIContent iconContent = new(icon, tooltip);
-            if (GUI.Button(iconRect, iconContent, GUIStyle.none))
-                if (state is SceneRefState.NotInList or SceneRefState.InListButDisabled)
-                    EditorWindow.GetWindow(System.Type.GetType("UnityEditor.BuildPlayerWindow,UnityEditor"));
         }
-        
+
+        string tooltip = "";
+        Texture2D icon = null;
+
+        switch (state)
+        {
+            case SceneRefState.Null:
+                tooltip = "This Scene Reference is Null. Ensure it is filled with a valid scene before use.";
+                icon = EditorGUIUtility.IconContent("console.erroricon").image as Texture2D;
+                break;
+            case SceneRefState.NotInList:
+                tooltip = "This Scene is not in the Build List. Click to open Build Settings.";
+                icon = EditorGUIUtility.IconContent("console.warnicon").image as Texture2D;
+                break;
+            case SceneRefState.InListButDisabled:
+                tooltip = "This Scene is in the Build List, but is not enabled. Click to open Build Settings.";
+                icon = EditorGUIUtility.IconContent("console.warnicon").image as Texture2D;
+                break;
+            case SceneRefState.Valid:
+                tooltip = "This Scene is validly set up.";
+                icon = EditorGUIUtility.IconContent("TestPassed").image as Texture2D;
+                break;
+        }
+
+        GUIContent iconContent = new(icon, tooltip);
+        if (GUI.Button(iconRect, iconContent, GUIStyle.none))
+            if (state is SceneRefState.NotInList or SceneRefState.InListButDisabled)
+                EditorWindow.GetWindow(System.Type.GetType("UnityEditor.BuildPlayerWindow,UnityEditor"));
+
+
+
+        bool sceneReferenceDetailsShow = EditorPrefs.GetBool("SceneReference_DetailsShow", true);
+        GUIContent dropdownIcon = new(EditorGUIUtility.IconContent(sceneReferenceDetailsShow ? "IN Foldout on" : "IN Foldout").image);
+        sceneReferenceDetailsShow = EditorGUI.Foldout(position, sceneReferenceDetailsShow, "", true);
+        EditorPrefs.SetBool("SceneReference_DetailsShow", sceneReferenceDetailsShow);
+
+
+
+        // Draw dropdown if open
+        if (sceneReferenceDetailsShow)
+        {
+            EditorGUILayout.Space(detailsRect.height);
+            EditorGUI.indentLevel++;
+            Rect detailRect = position;
+            detailRect.y += EditorGUIUtility.singleLineHeight + 2;
+            detailRect.height = EditorGUIUtility.singleLineHeight;
+
+
+            EditorGUI.BeginDisabledGroup(true);
+            // Show SceneReference data
+            EditorGUI.TextField(detailRect, "Scene Name:", property.FindPropertyRelative(nameof(SceneReference.sceneName).BackingField()).stringValue);
+            detailRect.y += EditorGUIUtility.singleLineHeight;
+            EditorGUI.IntField(detailRect, "Build Index:", property.FindPropertyRelative(nameof(SceneReference.buildIndex).BackingField()).intValue);
+            detailRect.y += EditorGUIUtility.singleLineHeight;
+            SerializedProperty stateProp = property.FindPropertyRelative(nameof(SceneReference.state).BackingField());
+            EditorGUI.EnumPopup(detailRect, "State: ", (SceneReference.SceneState)stateProp.enumValueIndex);
+            detailRect.y += EditorGUIUtility.singleLineHeight;
+            EditorGUI.EndDisabledGroup();
+            EditorGUI.LabelField(detailRect, tooltip);
+            EditorGUI.indentLevel--;
+        }
 
         EditorGUI.EndProperty();
     }
+
+    public static object GetTargetObjectOfProperty(SerializedProperty prop)
+    {
+        if (prop == null) return null;
+
+        string[] path = prop.propertyPath.Replace(".Array.data[", "[")
+            .Split('.');
+        object obj = prop.serializedObject.targetObject;
+        foreach (string element in path)
+        {
+            if (element.Contains("["))
+            {
+                string elementName = element.Substring(0, element.IndexOf("["));
+                int index = Convert.ToInt32(
+                    element.Substring(element.IndexOf("[")).Replace("[", "").Replace("]", "")
+                );
+                var field = obj.GetType().GetField(elementName, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                var list = field.GetValue(obj) as IList;
+                obj = list[index];
+            }
+            else
+            {
+                var field = obj.GetType().GetField(element, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                obj = field.GetValue(obj);
+            }
+        }
+        return obj;
+    }
+
 }
 
 
