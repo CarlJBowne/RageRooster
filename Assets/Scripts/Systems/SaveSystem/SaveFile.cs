@@ -11,7 +11,7 @@ namespace RageRooster.Systems.SaveSystem
     public class SaveFile
     {
 
-        public RoomDestination location;
+        public TransitionDestination location;
         public SavedPlayerStats playerStats;
         public PowerEggs powerEggs;
         public SavedHens hensRescued;
@@ -73,7 +73,7 @@ namespace RageRooster.Systems.SaveSystem
                 if (result != JsonFile.LoadResult.Success) return result;
             }
 
-            location = RoomDestination.Deserialize(playerFile.Data[nameof(location)]);
+            location = TransitionDestination.Deserialize(playerFile.Data[nameof(location)]);
             JToken playerStatsLoad = playerFile.Data[nameof(playerStats)];
             playerStats.maxHealth = (int)playerStatsLoad[nameof(SavedPlayerStats.maxHealth)];
             playerStats.maxAmmo = (int)playerStatsLoad[nameof(SavedPlayerStats.maxAmmo)];

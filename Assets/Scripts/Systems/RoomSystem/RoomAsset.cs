@@ -35,7 +35,11 @@ namespace RageRooster.RoomSystem
             Present,
             Current
         }
-        public RoomState state { get; protected set; }
+        public RoomState state 
+        { 
+            get; 
+            protected set; 
+        }
         public int currentLOD { get; protected set; } = -1;
 
 
@@ -143,12 +147,15 @@ namespace RageRooster.RoomSystem
         public IEnumerator PrepEnter()
         {
             yield return scene.LoadEnum();
-            scene.TryGetRootScript(out RoomRoot root);
+            yield return null;
+            root = scene.GetRootScript<RoomRoot>();
             if (root == null) yield return new WaitUntil(() => root != null);
             state = RoomState.Present;
+            yield return null; 
         }
         public IEnumerator PrepSurrounding()
         {
+            if (this == RoomManager.currentRoom) yield break;
             Vector3 player = PlayerMovementBody.PositionGet;
             if (WithinLoadRange(player))
             {
@@ -180,7 +187,8 @@ namespace RageRooster.RoomSystem
 
             while (!op.isDone) yield return null;
 
-            scene.TryGetRootScript(out RoomRoot root);
+            yield return null;
+            root = scene.GetRootScript<RoomRoot>();
             if (root == null) yield return new WaitUntil(() => root != null);
 
             state = RoomState.Present;
@@ -340,13 +348,11 @@ namespace RageRooster.RoomSystem
                 EditorUtility.SetDirty(roomAsset);
             }
 
-            GUILayout.Space(8);
-
             // Display foldable, uneditable list of transitions
             SerializedProperty transitionsProp = serializedObject.FindProperty(nameof(RoomAsset.entrances), backingField: true);
-            bool transitionsFoldout = EditorPrefs.GetBool("RoomAsset_TransitionsFoldout", true);
-            transitionsFoldout = EditorGUILayout.Foldout(transitionsFoldout, "Transitions", true);
-            EditorPrefs.SetBool("RoomAsset_TransitionsFoldout", transitionsFoldout);
+            bool transitionsFoldout = EditorPrefs.GetBool("RoomAsset_EntrancesFoldout", true);
+            transitionsFoldout = EditorGUILayout.Foldout(transitionsFoldout, "Entrances", true);
+            EditorPrefs.SetBool("RoomAsset_EntrancesFoldout", transitionsFoldout);
 
             if (transitionsFoldout)
             {
@@ -355,7 +361,7 @@ namespace RageRooster.RoomSystem
                     int count = transitionsProp.arraySize;
                     if (count == 0)
                     {
-                        EditorGUILayout.LabelField("No transitions attached.");
+                        EditorGUILayout.LabelField("No Entrances attached.");
                     }
                     else
                     {
@@ -365,7 +371,7 @@ namespace RageRooster.RoomSystem
                             SerializedProperty itemProp = transitionsProp.GetArrayElementAtIndex(i);
                             EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                             EditorGUI.BeginDisabledGroup(true);
-                            EditorGUILayout.PropertyField(itemProp, new($"Transition {i + 1}"), true);
+                            EditorGUILayout.PropertyField(itemProp, new($"Entrance {i + 1}"), true);
                             EditorGUI.EndDisabledGroup();
                             EditorGUILayout.EndVertical();
                         }
@@ -374,7 +380,7 @@ namespace RageRooster.RoomSystem
                 }
                 else
                 {
-                    EditorGUILayout.LabelField("Transitions property not found.");
+                    EditorGUILayout.LabelField("Entrances property not found.");
                 }
             }
         }

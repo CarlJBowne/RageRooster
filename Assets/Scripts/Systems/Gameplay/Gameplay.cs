@@ -128,6 +128,7 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
     {
         if (Gameplay.Active) return;
         if (!EditorState.EditorDestination.IsValid()) EditorState.EditorDestination = TransitionDestination.GameplaySceneStart();
+        RoomManager.transitionDestination = EditorState.EditorDestination;
 
         SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
     }
@@ -154,15 +155,15 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
 
             GlobalState.Load();
             PostMaLoad?.Invoke();
+            if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+            Overlay.OverHUD.SetAlpha(1);
 
-            if (EditorState.EditorDestination.IsValid())
-            {
-
-            }
+            yield return RoomManager.TransitionIn();
+            Overlay.OverHUD.BasicFadeIn();
 
             //spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
 
-            if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+
 
             //SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
 

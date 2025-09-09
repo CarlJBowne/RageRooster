@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [DefaultExecutionOrder(-12)]
 public class Overlay : MonoBehaviour
@@ -18,13 +19,15 @@ public class Overlay : MonoBehaviour
     public static Overlay OverMenus => ActiveOverlays[OverlayLayer.OverMenus];
 
     public OverlayLayer intendedLayer;
+    public Image blackout;
 
     private Animator animator;
 
     private void Awake()
     {
         ActiveOverlays.Add(intendedLayer, this);
-        animator = GetComponent<Animator>();
+        if (animator == null) animator = GetComponent<Animator>();
+        if (blackout == null) blackout = transform.Find("Basic Fade").GetComponent<Image>();
     }
 
     public void BasicFadeOut(float duration = 1f)
@@ -57,6 +60,9 @@ public class Overlay : MonoBehaviour
         animator.SetFloat("DurationSpeed", 1 / duration);
         yield return new WaitForSecondsRealtime(duration);
     }
+
+
+    public void SetAlpha(float alpha) => blackout.color = new(blackout.color.r, blackout.color.g, blackout.color.b, alpha);
 
     public void Reset() => animator.Play("Null");
 

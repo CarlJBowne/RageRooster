@@ -185,7 +185,19 @@ public static class MiscHelperMethods
             AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Actors/_Private/Angus/Player.prefab")
             );
 
+    public static bool OnBeforeSerializationWasEditorCommonUpdate(out string name)
+    {
+        name = "";
+#if UNITY_EDITOR
+        name = new System.Diagnostics.StackTrace().GetFrame(2)?.GetMethod()?.Name;
 
+        if (name == "Internal_VerifyModifiedMonoBehaviours"
+            || name == "Update"
+            || name == "RecordObject")
+            return true;
+#endif
+        return false;
+    }
 
 
 

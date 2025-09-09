@@ -13,7 +13,7 @@ namespace RageRooster.RoomSystem
 
 
 
-        public static IEnumerator ExitArea()
+        public static IEnumerator TransitionOut()
         {
             foreach (var room in currentArea.rooms)
                 yield return room.CompleteUnload();
@@ -21,23 +21,24 @@ namespace RageRooster.RoomSystem
             currentArea = null;
             currentRoom = null;
         }
-        public static IEnumerator EnterArea(TransitionDestination dest)
+        public static TransitionDestination transitionDestination;
+        public static IEnumerator TransitionIn()
         {
+            if (!transitionDestination.IsValid()) throw new System.Exception("No valid destination.");
+
             yield return null;
 
-            yield return dest.room.PrepEnter();
-            RoomRoot roomRoot = dest.room.root;
-            EnterRoom(dest.room);
+            currentArea = transitionDestination.area;
 
-            if (dest.spawn == null) 
-                dest.spawn = roomRoot.spawns[dest.spawnID];
-            dest.spawn.SpawnPlayerAt();
+            yield return transitionDestination.room.PrepEnter();
+            EnterRoom(transitionDestination.room);
 
-            foreach (RoomAsset room in currentArea.rooms)
-            {
-                if (room == currentRoom) continue;
+            if (transitionDestination.spawn == null) 
+                transitionDestination.spawn = currentRoom.root.spawns[transitionDestination.spawnID];
+            transitionDestination.spawn.SpawnPlayerAt();
+
+            foreach (RoomAsset room in currentArea.rooms) 
                 yield return room.PrepSurrounding();
-            }
         }
 
 

@@ -15,7 +15,7 @@ public class EditorState : SingletonAsset<EditorState>
         set => Get().loadFromSavePointID = value;
     }
 
-    private TransitionDestination editorDestination = TransitionDestination.Default();
+    private TransitionDestination editorDestination = TransitionDestination.Default;
     public static TransitionDestination EditorDestination
     {
         get => Get().editorDestination;

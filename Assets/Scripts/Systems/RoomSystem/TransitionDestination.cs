@@ -10,7 +10,7 @@ namespace RageRooster.RoomSystem
 
         public int spawnID;
 
-        public static TransitionDestination Default() => new()
+        public static TransitionDestination Default => new()
         {
             area = null,
             room = null,
@@ -93,7 +93,7 @@ namespace RageRooster.RoomSystem
             ["roomID"] = area.rooms.IndexOf(room),
             ["spawnID"] = spawnID
         };
-        public static RoomDestination Deserialize(JToken Data) => new((string)Data["area"], (int)Data["roomID"], (int)Data["spawnID"]);
+        public static TransitionDestination Deserialize(JToken Data) => new((string)Data["area"], (int)Data["roomID"], (int)Data["spawnID"]);
 
 
 

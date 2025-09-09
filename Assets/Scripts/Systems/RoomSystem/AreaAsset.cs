@@ -31,7 +31,8 @@ namespace RageRooster.RoomSystem
         public IEnumerator LoadArea()
         {
             yield return shellScene.LoadEnum();
-            shellScene.TryGetRootScript(out AreaRoot root);
+            yield return null;
+            root = shellScene.GetRootScript<AreaRoot>();
             if (root == null) yield return new WaitUntil(() => root != null);
             for (int i = 0; i < rooms.Count; i++) 
                 PlayerMovementBody.MovingUpdateAction += rooms[i].Update;
