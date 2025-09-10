@@ -15,23 +15,25 @@ using UnityEditor;
 [System.Serializable]
 public class SceneReference : ISerializationCallbackReceiver
 {
+    #region Values
+
     [field: SerializeField] public string sceneName { get; private set; }
-    [field: SerializeField] public int buildIndex { get; private set; }
+    [field: SerializeField] public int buildIndex { get; private set; } = -1;
     [field: SerializeField] public string scenePath { get; private set; }
     // Remove serialization for managerScene, only set at runtime
 
-    public Scene managedScene
+    public Scene runtimeScene
     {
         get
         {
-            if (_managedScene.IsValid()) return _managedScene;
+            if (_runtimeScene.IsValid()) return _runtimeScene;
             if (buildIndex != -1)
-                _managedScene = SceneManager.GetSceneByBuildIndex(buildIndex);
+                _runtimeScene = SceneManager.GetSceneByBuildIndex(buildIndex);
             else if (!string.IsNullOrEmpty(sceneName))
-                _managedScene = SceneManager.GetSceneByName(sceneName);
-            return _managedScene;
+                _runtimeScene = SceneManager.GetSceneByName(sceneName);
+            return _runtimeScene;
         }
-    } private Scene _managedScene;
+    } private Scene _runtimeScene;
 
     public AsyncOperation asyncOperation { get; private set; }
 
@@ -51,179 +53,120 @@ public class SceneReference : ISerializationCallbackReceiver
 
     public bool isSerialized = false;
 
+    #endregion Values
+
 
     public SceneReference(string sceneName)
     {
         this.sceneName = sceneName;
-        this.scenePath = null;
-        this.buildIndex = -1;
-        this.asyncOperation = null;
-
-        Scene runtimeScene = SceneManager.GetSceneByName(sceneName);
-        if (runtimeScene.IsValid())
-        {
-            state = runtimeScene.isLoaded ? SceneState.Loaded : SceneState.Valid;
-            scenePath = runtimeScene.path;
-            buildIndex = runtimeScene.buildIndex;
-        }
-        else state = SceneState.INVALID;
-#if UNITY_EDITOR
-        asset = null;
-#endif
+        ValidateRuntime();
     }
 
     public SceneReference(int buildIndex)
     {
         this.buildIndex = buildIndex;
-        this.sceneName = null;
-        this.scenePath = null;
-        this.asyncOperation = null;
-
-        Scene runtimeScene = SceneManager.GetSceneByBuildIndex(buildIndex);
-        if (runtimeScene.IsValid())
-        {
-            state = runtimeScene.isLoaded ? SceneState.Loaded : SceneState.Valid;
-            sceneName = runtimeScene.name;
-            scenePath = runtimeScene.path;
-        }
-        else state = SceneState.INVALID;
-#if UNITY_EDITOR
-        asset = null;
-#endif
+        ValidateRuntime();
     }
 
     public SceneReference(string sceneName, string folderPath)
     {
         this.sceneName = sceneName;
         this.scenePath = $"{folderPath}{sceneName}.unity";
-        this.buildIndex = -1;
-        this.asyncOperation = null;
-
-        Scene runtimeScene = SceneManager.GetSceneByPath(scenePath);
-        if (runtimeScene.IsValid())
-        {
-            this.sceneName = runtimeScene.name;
-            state = runtimeScene.isLoaded ? SceneState.Loaded : SceneState.Valid;
-            buildIndex = runtimeScene.buildIndex;
-        }
-        else state = SceneState.INVALID;
-#if UNITY_EDITOR
-        asset = null;
-#endif
+        ValidateRuntime();
     }
 
-
-    public void OnBeforeSerialize()
+    public void ValidateRuntime()
     {
-        var trace = new System.Diagnostics.StackTrace().GetFrame(1);
-        if (trace != null && trace.GetMethod().Name != "DoEditorSerialize") return;
+        if (Valid) return;
 
-        //Debug.Log($"Serializing Scene Reference : {sceneName}");
+        if(buildIndex == -1 && string.IsNullOrEmpty(sceneName)) throw new System.InvalidOperationException("SceneReference is not properly set up.");
 
-#if UNITY_EDITOR
-        if (asset != null)
+        if (buildIndex != -1)
         {
-            string path = AssetDatabase.GetAssetPath(asset);
-            if (!path.EndsWith(".unity")) throw new System.ArgumentException("SceneObject constructor expects a scene asset.");
-            scenePath = path;
-            sceneName = System.IO.Path.GetFileNameWithoutExtension(path);
-
-            Scene runtimeScene = SceneManager.GetSceneByPath(scenePath);
-            if (runtimeScene.IsValid())
+            _runtimeScene = SceneManager.GetSceneByBuildIndex(buildIndex);
+            if (_runtimeScene.IsValid())
             {
-                state = runtimeScene.isLoaded ? SceneState.Loaded : SceneState.Valid;
-                buildIndex = runtimeScene.buildIndex;
-            }
-            else
-            {
-                state = SceneState.INVALID;
+                sceneName = _runtimeScene.name;
+                scenePath = _runtimeScene.path;
+                state = _runtimeScene.isLoaded ? SceneState.Loaded : SceneState.Valid;
+                return;
             }
         }
-        else
+        else if (!string.IsNullOrEmpty(sceneName))
         {
-            sceneName = null;
-            buildIndex = -1;
-            scenePath = null;
-            state = SceneState.NULL;
-        }
-#endif
-    }
-    public void OnAfterDeserialize()
-    {
-        if (state > SceneState.Valid) state = SceneState.Valid;
-        //if(managerScene == default && Application.isPlaying)
-        //{
-        //    if (buildIndex != -1) managerScene = SceneManager.GetSceneByBuildIndex(buildIndex);
-        //    else if (!string.IsNullOrEmpty(sceneName)) managerScene = SceneManager.GetSceneByName(sceneName);
-        //}
-        //Debug.Log($"Deserialized Scene Reference : {sceneName}");
-    }
-
-    public void Validate()
-    {
-        if (!Valid)throw new System.InvalidOperationException("Invalid Scene at runtime.");
-    }
-
-    public void ValidateAsset()
-    {
-#if UNITY_EDITOR
-        if (asset != null)
-        {
-            string path = AssetDatabase.GetAssetPath(asset);
-            if (!path.EndsWith(".unity")) throw new System.ArgumentException("SceneObject constructor expects a scene asset.");
-            scenePath = path;
-            sceneName = System.IO.Path.GetFileNameWithoutExtension(path);
-
-            Scene runtimeScene = SceneManager.GetSceneByPath(scenePath);
-            if (runtimeScene.IsValid())
+            _runtimeScene = SceneManager.GetSceneByName(sceneName);
+            if (_runtimeScene.IsValid())
             {
-                state = runtimeScene.isLoaded ? SceneState.Loaded : SceneState.Valid;
-                buildIndex = runtimeScene.buildIndex;
-            }
-            else
-            {
-                state = SceneState.INVALID;
+                scenePath = _runtimeScene.path;
+                buildIndex = _runtimeScene.buildIndex;
+                state = _runtimeScene.isLoaded ? SceneState.Loaded : SceneState.Valid;
+                return;
             }
         }
-        else
-        {
-            sceneName = null;
-            buildIndex = -1;
-            scenePath = null;
-            state = SceneState.NULL;
-        }
-#endif
 
+        if (!Valid) throw new System.InvalidOperationException("Invalid Scene at runtime.");
     }
 
-
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
 
     [field: SerializeField] public UnityEngine.Object asset { get; private set; }
 
     public SceneReference(UnityEngine.Object sceneAsset)
     {
         asset = sceneAsset;
-        this.sceneName = null;
-        this.scenePath = null;
-        this.buildIndex = -1;
-        this.asyncOperation = null;
-
-        OnBeforeSerialize();
+        ValidateSerialized();
     }
 
+    public void ValidateSerialized()
+    {
+        buildIndex = -1;
+        sceneName = null;
+        scenePath = null;
+        state = SceneState.NULL;
+
+        if (asset == null) return;
+
+        string path = AssetDatabase.GetAssetPath(asset);
+        if (!path.EndsWith(".unity")) throw new System.ArgumentException("Error 1 : SceneObject constructor expects a scene asset.");
+        scenePath = path;
+        sceneName = System.IO.Path.GetFileNameWithoutExtension(path);
+
+        EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
+        for (int i = 0; i < scenes.Length; i++)
+            if (scenes[i].path == scenePath)
+            {
+                buildIndex = i;
+                break;
+            }
+        if (buildIndex == -1) return;
+
+        state = scenes[buildIndex].enabled ? SceneState.Valid : SceneState.INVALID;
+    }
 
 #endif
 
+
+    public void OnBeforeSerialize()
+    {
+        if (state > SceneState.Valid) state = SceneState.Valid;
+    }
+    public void OnAfterDeserialize()
+    {
+        if (state > SceneState.Valid) state = SceneState.Valid;
+    }
+
+
+    #region Functionality
+
     public void LoadSingle()
     {
-        Validate();
+        ValidateRuntime();
         if (Loaded) throw new System.InvalidOperationException("Scene is already loaded.");
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
     public AsyncOperation LoadSingleAsync()
     {
-        Validate();
+        ValidateRuntime();
         if (Loaded) throw new System.InvalidOperationException("Scene is already loaded.");
         asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         state = SceneState.Loading;
@@ -232,7 +175,7 @@ public class SceneReference : ISerializationCallbackReceiver
     }
     public IEnumerator LoadSingleEnum()
     {
-        Validate();
+        ValidateRuntime();
         if (Loaded) throw new System.InvalidOperationException("Scene is already loaded.");
         asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         state = SceneState.Loading;
@@ -242,13 +185,13 @@ public class SceneReference : ISerializationCallbackReceiver
 
     public void Load()
     {
-        Validate();
+        ValidateRuntime();
         if (Loaded) throw new System.InvalidOperationException("Scene is already loaded.");
         SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
     }
     public AsyncOperation LoadAsync()
     {
-        Validate();
+        ValidateRuntime();
         if (Loaded) throw new System.InvalidOperationException("Scene is already loaded.");
         asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         state = SceneState.Loading;
@@ -257,7 +200,7 @@ public class SceneReference : ISerializationCallbackReceiver
     }
     public IEnumerator LoadEnum()
     {
-        Validate();
+        ValidateRuntime();
         if (Loaded) throw new System.InvalidOperationException("Scene is already loaded.");
         asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         state = SceneState.Loading;
@@ -267,7 +210,7 @@ public class SceneReference : ISerializationCallbackReceiver
 
     public AsyncOperation UnloadAsync()
     {
-        Validate();
+        ValidateRuntime();
         if (!Loaded) throw new System.InvalidOperationException("Scene is not loaded.");
         asyncOperation = SceneManager.UnloadSceneAsync(sceneName);
         state = SceneState.Unloading;
@@ -276,7 +219,7 @@ public class SceneReference : ISerializationCallbackReceiver
     }
     public IEnumerator UnloadEnum()
     {
-        Validate();
+        ValidateRuntime();
         if (!Loaded) throw new System.InvalidOperationException("Scene is not loaded.");
         asyncOperation = SceneManager.UnloadSceneAsync(sceneName);
         state = SceneState.Unloading;
@@ -294,11 +237,11 @@ public class SceneReference : ISerializationCallbackReceiver
     }
 
 
-    public GameObject GetRootGameObject() => Loaded ? managedScene.GetRootGameObjects()[0] : null;
+    public GameObject GetRootGameObject() => Loaded ? runtimeScene.GetRootGameObjects()[0] : null;
 
-    public GameObject[] GetRootGameObjects() => Loaded ? managedScene.GetRootGameObjects() : null;
+    public GameObject[] GetRootGameObjects() => Loaded ? runtimeScene.GetRootGameObjects() : null;
 
-    public T GetRootScript<T>() where T : Component => Loaded ? managedScene.GetRootGameObjects()[0].GetComponent<T>() : null;
+    public T GetRootScript<T>() where T : Component => Loaded ? runtimeScene.GetRootGameObjects()[0].GetComponent<T>() : null;
     public bool TryGetRootScript<T>(out T result) where T : Component
     {
         if (!Loaded)
@@ -306,8 +249,11 @@ public class SceneReference : ISerializationCallbackReceiver
             result = null;
             return false;
         }
-        return managedScene.GetRootGameObjects()[0].TryGetComponent(out result);
+        return runtimeScene.GetRootGameObjects()[0].TryGetComponent(out result);
     }
+
+    #endregion Functionality
+
 }
 
 #if UNITY_EDITOR
@@ -355,12 +301,13 @@ public class SceneReferenceDrawer : PropertyDrawer
         {
             property.serializedObject.Update();
             assetProp.objectReferenceValue = asset; 
+            property.serializedObject.ApplyModifiedProperties();
 
             // Use reflection to call ValidateAsset() on the SceneReference instance
             var sceneRef = GetTargetObjectOfProperty(property) as SceneReference;
             if (sceneRef != null)
             {
-                var method = typeof(SceneReference).GetMethod("ValidateAsset", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                var method = typeof(SceneReference).GetMethod(nameof(SceneReference.ValidateSerialized), BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                 if (method != null) method.Invoke(sceneRef, null);
             }
 
@@ -438,8 +385,9 @@ public class SceneReferenceDrawer : PropertyDrawer
             detailRect.y += EditorGUIUtility.singleLineHeight;
             EditorGUI.IntField(detailRect, "Build Index:", property.FindPropertyRelative(nameof(SceneReference.buildIndex).BackingField()).intValue);
             detailRect.y += EditorGUIUtility.singleLineHeight;
+
             SerializedProperty stateProp = property.FindPropertyRelative(nameof(SceneReference.state).BackingField());
-            EditorGUI.EnumPopup(detailRect, "State: ", (SceneReference.SceneState)stateProp.enumValueIndex);
+            EditorGUI.EnumPopup(detailRect, "State: ", (SceneReference.SceneState)stateProp.enumValueIndex-2);
             detailRect.y += EditorGUIUtility.singleLineHeight;
             EditorGUI.EndDisabledGroup();
             EditorGUI.LabelField(detailRect, tooltip);
