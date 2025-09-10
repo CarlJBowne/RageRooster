@@ -15,8 +15,6 @@ namespace RageRooster.RoomSystem
 
         public static IEnumerator TransitionOut()
         {
-            foreach (var room in currentArea.rooms)
-                yield return room.CompleteUnload();
             yield return currentArea.UnloadArea();
             currentArea = null;
             currentRoom = null;
@@ -25,6 +23,8 @@ namespace RageRooster.RoomSystem
         public static IEnumerator TransitionIn()
         {
             if (!transitionDestination.IsValid()) throw new System.Exception("No valid destination.");
+
+            OverlayLoading.SetVisible(true);
 
             yield return null;
 
@@ -40,6 +40,10 @@ namespace RageRooster.RoomSystem
 
             foreach (RoomAsset room in currentArea.rooms) 
                 yield return room.PrepSurrounding();
+
+            yield return new WaitForSecondsRealtime(0.5f);
+
+            OverlayLoading.SetVisible(false);
         }
 
 

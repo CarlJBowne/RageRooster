@@ -8,6 +8,7 @@ public class SpawnPoint : MonoBehaviour
 {
     //Make private but visible later.
     public int ID;
+    public bool rotate;
 
     [SerializeField, HideInInspector] internal RoomRoot root;
 
@@ -21,6 +22,6 @@ public class SpawnPoint : MonoBehaviour
 #endif
     public void SpawnPlayerAt()
     {
-        //PlayerStateMachine.Get().InstantMove(this);
+        PlayerStateMachine.Get().InstantMove(transform.position, rotate ? transform.eulerAngles.y : null);
     }
 }

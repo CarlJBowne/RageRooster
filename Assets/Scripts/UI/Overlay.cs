@@ -21,9 +21,9 @@ public class Overlay : MonoBehaviour
     public OverlayLayer intendedLayer;
     public Image blackout;
 
-    private Animator animator;
+    protected Animator animator;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         ActiveOverlays.Add(intendedLayer, this);
         if (animator == null) animator = GetComponent<Animator>();

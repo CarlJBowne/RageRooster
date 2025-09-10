@@ -54,7 +54,7 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
     public static System.Action onPlayerRespawn;
 
 
-
+    [Obsolete]
     /// <summary>
     /// Begins the main menu by loading the gameplay scene and setting the active save file.
     /// </summary>
@@ -82,6 +82,7 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
         }
     }
 
+    [Obsolete]
     /// <summary>
     /// Begins a new scene by loading the specified scene.
     /// </summary>
@@ -100,6 +101,7 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
         SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
     }
 
+    [Obsolete]
     /// <summary>
     /// Begins a scene from a save point by loading the specified scene and spawn point.
     /// </summary>

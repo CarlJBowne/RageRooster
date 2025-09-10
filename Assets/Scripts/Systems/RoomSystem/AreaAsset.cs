@@ -42,8 +42,11 @@ namespace RageRooster.RoomSystem
 
         public IEnumerator UnloadArea()
         {
-            for (int i = 0; i < rooms.Count; i++)
-                PlayerMovementBody.MovingUpdateAction -= rooms[i].Update;
+            foreach (var room in rooms)
+            {
+                PlayerMovementBody.MovingUpdateAction -= room.Update;
+                yield return room.CompleteUnload();
+            }
             yield return shellScene.UnloadEnum();
             root = null;
         }
