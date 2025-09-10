@@ -15,7 +15,7 @@ public class PlayerController : PlayerStateBehavior
 
     public PlayerAirborneMovement airChargeState;
     public PlayerAirborneMovement airChargeFallState;
-    public PlayerAirborneMovement glideCheck;
+    public PlayerAirborneMovement glideCheck; //Keeping this here for now in case we decide to re-implement the gliding.
 	public PlayerWallJump wallJumpState;
     public PlayerRanged ranged;
     public PlayerAiming aimingState;
@@ -137,8 +137,6 @@ public class PlayerController : PlayerStateBehavior
     {
         if (!wallJumpState.WallJump(transform.forward))
         {
-            if (!glideCheck.allowGlide) //Keeping this here for now in case we decide to re-implement the gliding.
-                return;
             (!playerMovementBody.isOverVent ? sGlide : ventGlideState).Enter();
         }
     }
