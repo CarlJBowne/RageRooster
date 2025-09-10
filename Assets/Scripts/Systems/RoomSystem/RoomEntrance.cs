@@ -14,7 +14,11 @@ namespace RageRooster.RoomSystem
         [SerializeField, HideInInspector] internal RoomRoot root;
 
 
-
+        public void OnTriggerEnter(Collider other)
+        {
+            if (other != PlayerMovementBody.Get().Collider) return;
+            RoomManager.EnterRoom(root.asset);
+        }
 
 
 

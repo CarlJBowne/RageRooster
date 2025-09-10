@@ -40,7 +40,7 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
     [HideInEditMode, DisableInPlayMode, SerializeField] private float currentSpeed;
 
     public static System.Action MovingUpdateAction;
-    private Timer.Loop _movingUpdateActionTimer = new(1f);
+    private Timer.Loop _movingUpdateActionTimer = new(0.2f);
 
 
     private VolcanicVent _currentVent;

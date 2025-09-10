@@ -29,6 +29,7 @@ namespace RageRooster.RoomSystem
             yield return null;
 
             currentArea = transitionDestination.area;
+            yield return currentArea.LoadArea();
 
             yield return transitionDestination.room.PrepEnter();
             EnterRoom(transitionDestination.room);
