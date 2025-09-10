@@ -231,6 +231,11 @@ namespace RageRooster.RoomSystem
             currentLOD = -1;
         }
 
+        private void OnDisable()
+        {
+            state = RoomState.Null;
+        }
+
         [System.Serializable]
         public class RoomLOD
         {
