@@ -137,7 +137,7 @@ public class PlayerController : PlayerStateBehavior
     {
         if (!wallJumpState.WallJump(transform.forward))
         {
-            if (!glideCheck.allowGlide)
+            if (!glideCheck.allowGlide) //Keeping this here for now in case we decide to re-implement the gliding.
                 return;
             (!playerMovementBody.isOverVent ? sGlide : ventGlideState).Enter();
         }

@@ -16,7 +16,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     public bool flatGravity = false;
     public bool allowMidFall = true;
     public bool allowDoubleJump = true;
-    public bool allowGlide = false;
+    //public bool allowGlide = false; //Keeping this here for now in case we decide to re-implement the gliding.
 
     public PlayerAirborneMovement fallState;
     public float fallStateThreshold = 0;
@@ -108,11 +108,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     }
 
 
-    IEnumerator GlideEnable()
-    {
-        yield return new WaitForSeconds(0.2f);
-        allowGlide = true;
-    }
+
 
 
 
@@ -152,7 +148,6 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
             State.Enter();
             allowDoubleJump = false;
-            StartCoroutine(GlideEnable());
         }
     }
 }
