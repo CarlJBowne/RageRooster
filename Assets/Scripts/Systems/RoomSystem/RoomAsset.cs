@@ -209,17 +209,17 @@ namespace RageRooster.RoomSystem
 
         public IEnumerator CompleteUnload()
         {
-            if(scene.state == SceneReference.SceneState.Loaded)
+            if(scene.state == SceneState.Loaded)
             {
                 yield return scene.UnloadEnum();
             }
-            else if (scene.state == SceneReference.SceneState.Unloading)
+            else if (scene.state == SceneState.Unloading)
             {
-                yield return new WaitUntil(() => scene.state == SceneReference.SceneState.Valid);
+                yield return new WaitUntil(() => scene.state == SceneState.Valid);
             }
-            else if (scene.state == SceneReference.SceneState.Loading)
+            else if (scene.state == SceneState.Loading)
             {
-                yield return new WaitUntil(() => scene.state == SceneReference.SceneState.Loaded);
+                yield return new WaitUntil(() => scene.state == SceneState.Loaded);
                 yield return scene.UnloadEnum();
             }
 
