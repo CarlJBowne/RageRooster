@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -35,11 +37,9 @@ namespace RageRooster.RoomSystem
             Present,
             Current
         }
-        public RoomState state 
-        { 
-            get; 
-            protected set; 
-        }
+        public RoomState state { get; protected set; } = RoomState.Null;
+
+
         public int currentLOD { get; protected set; } = -1;
 
 
@@ -146,12 +146,8 @@ namespace RageRooster.RoomSystem
 
         public IEnumerator PrepEnter()
         {
-            yield return scene.LoadEnum();
-            yield return null;
-            root = scene.GetRootScript<RoomRoot>();
-            if (root == null) yield return new WaitUntil(() => root != null);
-            state = RoomState.Present;
-            yield return null; 
+            yield return SceneLoad();
+            state = RoomState.Current;
         }
         public IEnumerator PrepSurrounding()
         {
@@ -181,27 +177,20 @@ namespace RageRooster.RoomSystem
 
         public IEnumerator SceneLoad()
         {
-            if (scene.Loaded || state >= RoomState.Loading) yield break;
+            if (state >= RoomState.Loading) yield break;
             state = RoomState.Loading;
-            AsyncOperation op = scene.LoadAsync();
 
-            while (!op.isDone) yield return null;
-
-            yield return null;
-            root = scene.GetRootScript<RoomRoot>();
+            yield return SceneOperationRoutine.Load(scene);
             if (root == null) yield return new WaitUntil(() => root != null);
 
             state = RoomState.Present;
         }
         public IEnumerator SceneUnload()
         {
-            if (!scene.Loaded || state <= RoomState.Unloading) yield break;
+            if (state <= RoomState.Unloading) yield break;
             state = RoomState.Unloading;
-            AsyncOperation op = scene.UnloadAsync();
 
-            while (!op.isDone) yield return null;
-
-            root = null;
+            yield return SceneOperationRoutine.Unload(scene);
 
             state = RoomState.LODS;
         }
@@ -209,21 +198,20 @@ namespace RageRooster.RoomSystem
 
         public IEnumerator CompleteUnload()
         {
-            if(scene.state == SceneState.Loaded)
+            if (state > RoomState.Present)
             {
-                yield return scene.UnloadEnum();
+                yield return SceneUnload();
             }
-            else if (scene.state == SceneState.Unloading)
+            else if (state == RoomState.Unloading)
             {
-                yield return new WaitUntil(() => scene.state == SceneState.Valid);
+                yield return new WaitUntil(() => state != RoomState.Unloading);
             }
-            else if (scene.state == SceneState.Loading)
+            else if (state == RoomState.Loading)
             {
-                yield return new WaitUntil(() => scene.state == SceneState.Loaded);
-                yield return scene.UnloadEnum();
+                yield return new WaitUntil(() => state != RoomState.Loading);
+                yield return SceneUnload();
             }
 
-            //for (int i = 0; i < lods.Length; i++) lods[i].CompleteUnload();
             lod.CompleteUnload();
             state = RoomState.Null;
             currentLOD = -1;

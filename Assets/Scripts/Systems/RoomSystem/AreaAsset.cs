@@ -5,6 +5,8 @@ using UnityEngine.UIElements;
 using Unity.VisualScripting;
 
 using static UnityEditor.Rendering.FilterWindow;
+using UnityEngine.SceneManagement;
+
 
 
 #if UNITY_EDITOR
@@ -25,15 +27,19 @@ namespace RageRooster.RoomSystem
         //Active Data
         public AreaRoot root { get; protected set; }
 
+        public SceneState state { get; protected set; } = SceneState.Valid;
+
         public bool isCurrent { get; protected set; }
 
 
         public IEnumerator LoadArea()
         {
-            yield return shellScene.LoadEnum();
-            yield return null;
-            root = shellScene.GetRootScript<AreaRoot>();
+            state = SceneState.Loading;
+
+            yield return SceneOperationRoutine.Load(shellScene);
             if (root == null) yield return new WaitUntil(() => root != null);
+
+            state = SceneState.Loaded;
             for (int i = 0; i < rooms.Count; i++) 
                 PlayerMovementBody.MovingUpdateAction += rooms[i].Update;
         }
@@ -42,13 +48,16 @@ namespace RageRooster.RoomSystem
 
         public IEnumerator UnloadArea()
         {
-            foreach (var room in rooms)
+            state = SceneState.Unloading;
+            foreach (RoomAsset room in rooms)
             {
                 PlayerMovementBody.MovingUpdateAction -= room.Update;
                 yield return room.CompleteUnload();
             }
-            yield return shellScene.UnloadEnum();
-            root = null;
+
+            yield return SceneOperationRoutine.Unload(shellScene);
+
+            state = SceneState.Valid;
         }
 
 
