@@ -15,6 +15,7 @@ public class PlayerController : PlayerStateBehavior
 
     public PlayerAirborneMovement airChargeState;
     public PlayerAirborneMovement airChargeFallState;
+    public PlayerAirborneMovement glideCheck; //Keeping this here for now in case we decide to re-implement the gliding.
 	public PlayerWallJump wallJumpState;
     public PlayerRanged ranged;
     public PlayerAiming aimingState;

@@ -1734,6 +1734,8 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   allowMidFall: 0
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 2513530225769621494}
   fallStateThreshold: 0
 --- !u!135 &1632128030463539112
@@ -2028,6 +2030,8 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   allowMidFall: 0
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 2513530225769621494}
   fallStateThreshold: 0
 --- !u!114 &3148531946352221550
@@ -3126,6 +3130,8 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   allowMidFall: 0
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 2513530225769621494}
   fallStateThreshold: -9
 --- !u!114 &6863511468890911359
@@ -4322,6 +4328,8 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   allowMidFall: 0
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 2513530225769621494}
   fallStateThreshold: 0
 --- !u!114 &2714252772125468041
@@ -4343,9 +4351,33 @@ MonoBehaviour:
     - Key: Jump
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 1371118413310184343}
-          _MemberName: MidJumpJumpAction
-          _PersistentArguments: []
+        - _Target: {fileID: 8452752302749071132}
+          _MemberName: BeginDoubleJump
+          _PersistentArguments:
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 10
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 3
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 3
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
     - Key: Grab
       Value:
         _PersistentCalls:
@@ -4936,6 +4968,8 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   allowMidFall: 0
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 2513530225769621494}
   fallStateThreshold: -9
 --- !u!114 &3925105769051910635
@@ -5207,6 +5241,7 @@ MonoBehaviour:
   jumpBuffer: 0.3
   airChargeState: {fileID: 0}
   airChargeFallState: {fileID: 0}
+  glideCheck: {fileID: 8452752302749071132}
   wallJumpState: {fileID: 750694679335013753}
   ranged: {fileID: 2714541672873312079}
   aimingState: {fileID: 7421260604818229875}
@@ -5318,6 +5353,7 @@ MonoBehaviour:
   jumpState1: {fileID: 8452752302749071132}
   wallJumpState: {fileID: 750694679335013753}
   airChargeState: {fileID: 1482092204021747920}
+  doubleJump: {fileID: 8452752302749071132}
   frontCheckDefaultOffset: {x: 0, y: 0.5, z: 1}
   frontCheckDefaultRadius: 1
   Mario64StyleAntiVoid: 1
@@ -6497,6 +6533,8 @@ MonoBehaviour:
   terminalVelocity: 5.89
   flatGravity: 0
   allowMidFall: 1
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 2513530225769621494}
   fallStateThreshold: 0
   isVentGlide: 1
@@ -7045,6 +7083,8 @@ MonoBehaviour:
   terminalVelocity: 5.89
   flatGravity: 0
   allowMidFall: 1
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 2513530225769621494}
   fallStateThreshold: 0
   isVentGlide: 0
@@ -7384,15 +7424,17 @@ MonoBehaviour:
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
   defaultPhase: 1
-  jumpHeight: 4
-  jumpPower: 14
-  jumpMinHeight: 2.6
+  jumpHeight: 5
+  jumpPower: 12
+  jumpMinHeight: 5
   gravity: 30
   terminalVelocity: 98.1
   flatGravity: 0
   allowMidFall: 1
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 2513530225769621494}
-  fallStateThreshold: 0
+  fallStateThreshold: 200
 --- !u!114 &2886246656656251508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8440,6 +8482,8 @@ MonoBehaviour:
   terminalVelocity: 4.5
   flatGravity: 0
   allowMidFall: 1
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 3877140044969608344}
   fallStateThreshold: 0
 --- !u!114 &2152569479813037482
@@ -9280,7 +9324,7 @@ MonoBehaviour:
   playerController: {fileID: 1371118413310184343}
   acceleration: 0.35
   decceleration: 0.5
-  maxSpeed: 10
+  maxSpeed: 12
   stopping: 0.3
   maxTurnSpeed: 10
   outwardTurn: 0
@@ -9316,7 +9360,31 @@ MonoBehaviour:
         _PersistentCalls:
         - _Target: {fileID: 8452752302749071132}
           _MemberName: BeginJump
-          _PersistentArguments: []
+          _PersistentArguments:
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 12
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 5
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 5
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
     - Key: AttackTap
       Value:
         _PersistentCalls:
@@ -9758,6 +9826,8 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   allowMidFall: 0
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 814242899083696415}
   fallStateThreshold: 0
 --- !u!114 &7248614259385223845
@@ -10311,6 +10381,8 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   allowMidFall: 0
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 2513530225769621494}
   fallStateThreshold: -9
 --- !u!114 &1778052757026292899
@@ -10978,6 +11050,8 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   allowMidFall: 0
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 8653995511402254534}
   fallStateThreshold: 0
 --- !u!114 &6805981411971009349
@@ -11646,6 +11720,8 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   allowMidFall: 0
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 0}
   fallStateThreshold: 0
 --- !u!135 &3239914536476910747
@@ -12084,7 +12160,31 @@ MonoBehaviour:
         _PersistentCalls:
         - _Target: {fileID: 8452752302749071132}
           _MemberName: BeginJump
-          _PersistentArguments: []
+          _PersistentArguments:
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 12
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 5
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 5
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
     - Key: AttackTap
       Value:
         _PersistentCalls:
@@ -13031,6 +13131,8 @@ MonoBehaviour:
   terminalVelocity: 98.1
   flatGravity: 0
   allowMidFall: 1
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 814242899083696415}
   fallStateThreshold: 0
 --- !u!114 &1619968782090707706
@@ -14417,6 +14519,8 @@ MonoBehaviour:
   terminalVelocity: 4.5
   flatGravity: 0
   allowMidFall: 1
+  allowDoubleJump: 1
+  allowGlide: 0
   fallState: {fileID: 3877140044969608344}
   fallStateThreshold: 0
 --- !u!114 &6036952242168296381

@@ -25,20 +25,10 @@ namespace AssetImportPipeline
             {
                 if (GUILayout.Button("Open 'Static Mesh Import' window"))
                 {
-                    Debug.Log("Importing a new static mesh!");
                     StaticMeshWindow.ShowWindow();
                 }
             }
             else GUILayout.Label("Sorry, this hasn't been implemented.");
-        }
-
-
-        private void CreateLabel(string labelText)
-        {
-            GUIStyle labelStyle = new GUIStyle(GUI.skin.label);
-            labelStyle.alignment = TextAnchor.MiddleCenter;
-            labelStyle.fontStyle = FontStyle.Bold;
-            GUILayout.Label(labelText, labelStyle);
         }
     }
 }

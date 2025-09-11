@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using DependenciesHunter;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,14 +9,12 @@ namespace AssetImportPipeline
     
     public class StaticMeshWindow : EditorWindow
     {
-        static StaticMeshWindow window; // To avoid any potential lifecycle issues with the window. Hopefully not necessary?
         StaticMesh staticMesh = new StaticMesh();
-
         int spaceSize = 20;
         int actionTypeIndex = 0;
         public static void ShowWindow()
         {
-            window = GetWindow<StaticMeshWindow>("Importing Asset (Example)");
+            GetWindow<StaticMeshWindow>("Importing Asset (Example)");
         }
         private Vector2 scrollPosition;
         void OnGUI()
@@ -41,9 +36,11 @@ namespace AssetImportPipeline
             CreateSeparatorLine();
             SetAssetNameUI();
             CreateSeparatorLine();
+            
             if (SetModelUI())
             {
                 CreateSeparatorLine();
+            
                 // Extract materials from FBX
                 if (!staticMesh.model.hasBeenAnalysed)
                 {
@@ -63,13 +60,15 @@ namespace AssetImportPipeline
                         {
                             Material material = new Material();
                             material.customName = i.name;
-                            // PSUEDOCODE: Try to get the original Texture paths.
-                            // ...this looks like it'd require uFBX again so actually, MAYBE NOT.
+                            material.fbxMaterialSlotName = i.name;
+                            // PSUEDOCODE: Try to get the original Texture paths. // ...this looks like it'd require uFBX again so actually, MAYBE NOT.
                             staticMesh.materials.Add(material);
                         }
+
+                        // TODO: Set up failsafe in case .fbx has 0 materials.
                     }
 
-                    // Remove the temporary asset so it doesn't clutter up the project.
+                    // Remove the temporary asset
                     AssetDatabase.DeleteAsset(tempFbxFilePath);
 
                     staticMesh.model.hasBeenAnalysed = true;
@@ -77,27 +76,31 @@ namespace AssetImportPipeline
 
                 if (staticMesh.model.hasBeenAnalysed)
                 {
+                    // Populate materials UI
                     GUILayout.Space(spaceSize);
                     foreach (Material i in staticMesh.materials)
                     {
-                        GUILayout.Label("Material: " + i.customName);
+                        // Display and modify material asset name
+                        GUILayout.BeginHorizontal();
+                        GUILayout.Label("Material Name: ");
+                        GUILayout.Label("mat_" + staticMesh.assetName + "-", GUILayout.ExpandWidth(false));
+                        i.customName = i.StripMaterialName();
+                        i.customName = GUILayout.TextField(i.customName, GUILayout.ExpandWidth(false)); // Some slight redundancy going on here between this and StaticMeshImporter. Not enough to warrant a change *yet* but keep it in mind.
+                        GUILayout.Label(".mat",GUILayout.ExpandWidth(false));
+                        GUILayout.EndHorizontal();
 
+                        // Set UI based on the shader type used.
                         i.shader = (Material.Shaders)EditorGUILayout.Popup("Shader", (int)i.shader, Enum.GetNames(typeof(Material.Shaders)));
                         switch (i.shader)
                         {
                             case Material.Shaders.UniversalRenderPipelineLit:
-                                GUILayout.BeginHorizontal();
-                                GUILayout.EndHorizontal();
-                                i.urplSettings.transparent = GUILayout.Toggle(i.urplSettings.transparent, "Transparent");
-                                i.urplSettings.DiffuseMap = CreateImportButton("Diffuse path", i.urplSettings.DiffuseMap, "png") as Texture;
-                                i.urplSettings.RoughnessMap = CreateImportButton("Roughness path", i.urplSettings.RoughnessMap, "png") as Texture;
-                                i.urplSettings.NormalMap = CreateImportButton("Normal path", i.urplSettings.NormalMap, "png") as Texture;
-                                i.urplSettings.HeightMap = CreateImportButton("Height path", i.urplSettings.HeightMap, "png") as Texture;
-                                i.urplSettings.EmissiveMap = CreateImportButton("Emissive path", i.urplSettings.EmissiveMap, "png") as Texture;
-                                if (i.urplSettings.transparent) i.urplSettings.AlphaMap = CreateImportButton("Alpha path", i.urplSettings.AlphaMap, "png") as Texture;
+                                GUILayout.Label("Not yet implemented, sorry!");
                                 break;
                             case Material.Shaders.CelShaderLit:
                                 i.cslSettings.BaseColor = CreateImportButton("Base Color", i.cslSettings.BaseColor, "png") as Texture;
+                                i.cslSettings.NormalMap = CreateImportButton("Normal Map", i.cslSettings.NormalMap, "png") as Texture;
+                                i.cslSettings.HeightMap = CreateImportButton("Height Map", i.cslSettings.HeightMap, "png") as Texture;
+                                i.cslSettings.AO = CreateImportButton("Ambient Occlusion", i.cslSettings.AO, "png") as Texture;
                                 break;
                         }
 
@@ -153,22 +156,31 @@ namespace AssetImportPipeline
                 // Finalize import dialog
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("");
-                if (GUILayout.Button("Confirm final import", GUILayout.Width(200)))
+                if (ValidateProvidedData())
                 {
-                    bool confirm = EditorUtility.DisplayDialog(
-                        "Confirm Import",
-                        "Good work! All strictly necessary information has been entered. :)\n\nAre you ready to import this asset, or would you like to make more adjustments?",
-                        "I'm ready",
-                        "Go Back"
-                    );
-
-                    if (confirm)
+                    if (GUILayout.Button("Confirm final import", GUILayout.Width(200)))
                     {
-                        StaticMeshImporter staticMeshImporter = new StaticMeshImporter();
-                        staticMeshImporter.ImportStaticMesh(staticMesh);
-                        Close();
+                        bool confirm = EditorUtility.DisplayDialog(
+                            "Confirm Import",
+                            /*Good work! All strictly necessary information has been entered. :)\n\n*/
+                            "Are you sure you are ready to import this asset, or would you like to make more adjustments?",
+                            "I'm ready",
+                            "Go Back"
+                        );
+
+                        if (confirm)
+                        {
+                            StaticMeshImporter staticMeshImporter = new StaticMeshImporter();
+                            staticMeshImporter.ImportStaticMesh(staticMesh);
+                            Close();
+                        }
                     }
                 }
+                else
+                {
+                    // Debug.Log("Information not validated.");
+                }
+                
                 GUILayout.Label("");
                 GUILayout.EndHorizontal();
             }
@@ -194,7 +206,6 @@ namespace AssetImportPipeline
             }
             if (GUILayout.Button("Clear", GUILayout.Width(50)))
             {
-                Debug.Log("Reset asset!");
                 asset = asset.ResetAsset(false);
             }
 
@@ -215,6 +226,8 @@ namespace AssetImportPipeline
 
         bool ValidateProvidedData()
         {
+            // TODO: Make sure data is acceptable.
+            
             // folder is within Assets/Art (?)
             // name is not taken in the destination, or blank, or contains forbidden characters, or has an extension erroneously, or otherwise invalid
             // FBX is present
