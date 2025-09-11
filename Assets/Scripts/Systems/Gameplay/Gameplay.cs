@@ -152,7 +152,12 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
         {
             musicEmitter = GetComponent<StudioEventEmitter>();
 
-            yield return WaitFor.Until(() => PlayerHealth.Global.playerObject && PlayerRanged.Ammo.playerObject);
+            yield return WaitFor.Until(Initialized);
+
+            bool Initialized() => PlayerHealth.Global.playerObject 
+                && PlayerRanged.Ammo.playerObject 
+                && RoomManager.Active;
+
             EnemyCullingGroup.Initialize(this);
 
             GlobalState.Load();

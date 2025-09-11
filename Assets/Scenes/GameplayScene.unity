@@ -299,9 +299,9 @@ GameObject:
   m_Component:
   - component: {fileID: 158189929}
   - component: {fileID: 158189931}
-  - component: {fileID: 158189933}
   - component: {fileID: 158189934}
   - component: {fileID: 158189935}
+  - component: {fileID: 158189936}
   m_Layer: 0
   m_Name: GAMEPLAY
   m_TagString: Untagged
@@ -358,37 +358,11 @@ MonoBehaviour:
   virtualCam: {fileID: 0}
   pauseMenu: {fileID: 2048139105}
   uI: {fileID: 1102896214256913182}
-  zoneManager: {fileID: 158189933}
+  zoneManager: {fileID: 0}
   globalState: {fileID: 158189934}
   settingsMenu: {fileID: 2048139104}
   overlayPrefab: {fileID: 641485463558439992, guid: 2c1e8ca4ad82a614d97577d47f395b15,
     type: 3}
---- !u!114 &158189933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 158189928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 268a7e41585d3494ca770b12e65914ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentZone: {fileID: 0}
-  proxies:
-    _serializedList: []
-  defaultAreaScene: Level0_Farmhouse
-  minLoadTime: 15
-  updateTimer:
-    rate: 0.5
-    current: 0
-    disabled: 0
-  offsetSetTimer:
-    rate: 15
-    current: 0
-    disabled: 0
-  distanceToOriginShift: 1000
 --- !u!114 &158189934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,6 +416,18 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &158189936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158189928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5196f2ceceb58fb43b9ca1ea9db8b5ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &266701122
 GameObject:
   m_ObjectHideFlags: 0

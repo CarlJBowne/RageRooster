@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RageRooster.RoomSystem
 {
-    [DefaultExecutionOrder(-200)]
+    [DefaultExecutionOrder(-90)]
     public class AreaRoot : MonoBehaviour
     {
         [field: SerializeField] public AreaAsset asset { get; protected set; }

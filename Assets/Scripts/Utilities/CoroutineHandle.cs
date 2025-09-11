@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Coroutine+
 // A customized, advanced form of Coroutine that keeps track of things about how it is running and has various other features.
@@ -173,16 +174,24 @@ public class CoroutinePlus : IEnumerator
 
 public static class SceneOperationRoutine
 {
-    public static IEnumerator Load(string sceneName, UnityEngine.SceneManagement.LoadSceneMode mode = UnityEngine.SceneManagement.LoadSceneMode.Additive)
+    public static IEnumerator Load(string sceneName, UnityEngine.SceneManagement.LoadSceneMode mode = LoadSceneMode.Additive)
     {
+        if (SceneManager.GetSceneByName(sceneName).IsValid()) yield break;
         var operation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, mode);
-        while (!operation.isDone) yield return null;
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
     }
 
     public static IEnumerator Unload(string sceneName)
     {
+        if (!SceneManager.GetSceneByName(sceneName).IsValid()) yield break;
         var operation = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(sceneName);
-        while (!operation.isDone) yield return null;
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
     }
 }
     //Bonus!
