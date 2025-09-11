@@ -60,7 +60,7 @@ public class TrackerEB : StateBehavior
 
         if(target == null)
         {
-            PlayerStateMachine attempt = Gameplay.PlayerStateMachine;
+            PlayerStateMachine attempt = Player.StateMachine;
             if (attempt != null) target = attempt.transform; 
             else PlayerStateMachine.whenInitializedEvent += player => 
             { 

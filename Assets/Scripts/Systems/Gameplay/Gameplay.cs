@@ -18,18 +18,13 @@ using UnityEditor;
 #endif
 
 [DefaultExecutionOrder(-100)]
-public class Gameplay : SingletonMonoBasic<Gameplay>
+public class Gameplay : MonoBehaviour
 {
-    public GameObject player;
-    public PlayerStateMachine playerStateMachine;
-    public Transform cameraTransform;
-    public CinemachineVirtualCamera virtualCam;
-    public PauseMenu pauseMenu;
-    public UIHUDSystem uI;
-    public ZoneManager zoneManager;
-    public GlobalState globalState;
-    public SettingsMenu settingsMenu;
-    public DontDestroyMeOnLoad overlayPrefab;
+
+    public static bool Active { get; private set; }
+    public static Gameplay Instance { get; private set; }
+    public static GameObject GameObject { get; private set; }
+
 
     public static string spawnSceneName = null;
     public static int spawnPointID = -1;
@@ -38,20 +33,71 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
     public const string GAMEPLAY_SCENE_NAME = "GameplayScene";
     public static SceneReference GAMEPLAY_SCENE = new(GAMEPLAY_SCENE_NAME);
 
-    public static GameObject Player => Get().player;
-    public static PlayerStateMachine PlayerStateMachine => Get().playerStateMachine;
-    public static Transform CameraTransform => Get().cameraTransform;
-    public static CinemachineVirtualCamera VirtualCam => Get().virtualCam;
-    public static PauseMenu PauseMenu => Get().pauseMenu;
-    public static UIHUDSystem UI => Get().uI;
-    public static ZoneManager ZoneManager => Get().zoneManager;
-    public static GlobalState GlobalState => Get().globalState;
-
     protected static System.Action PostMaLoad;
     public static StudioEventEmitter musicEmitter;
     public static System.Action PreReloadSave;
     public static bool fullyLoaded;
     public static System.Action onPlayerRespawn;
+
+    #region Instance Fields
+
+    [SerializeField] Transform cameraTransform;
+    [SerializeField] PauseMenu pauseMenu;
+    [SerializeField] UIHUDSystem uI;
+    [SerializeField] SettingsMenu settingsMenu;
+    [SerializeField] DontDestroyMeOnLoad overlayPrefab;
+    [SerializeField] Player inputPlayer;
+
+    #endregion Instance Fields
+
+    private void Awake()
+    {
+        if(Active)
+        {
+            if(Instance != this) Destroy(gameObject);
+            return;
+        }
+
+        musicEmitter = GetComponent<StudioEventEmitter>();
+        Instance = this;
+        Active = true;
+        GameObject = gameObject;
+        if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+        Overlay.OverHUD.SetAlpha(1);
+        DontDestroyOnLoad(gameObject);
+        inputPlayer.Awake();
+        GetComponent<Cameras>().Awake();
+        
+        StartCoroutine(Enum());
+        IEnumerator Enum()
+        {
+            yield return WaitFor.Until(Initialized);
+
+            bool Initialized() => Active
+                && PlayerHealth.Global.playerObject
+                && PlayerRanged.Ammo.playerObject
+                && RoomManager.Active;
+
+            EnemyCullingGroup.Initialize(this);
+
+            GlobalState.Load();
+            PostMaLoad?.Invoke();
+
+            yield return RoomManager.TransitionIn();
+            Overlay.OverHUD.BasicFadeIn();
+
+            //spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
+
+
+
+            //SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
+
+            //ZoneManager.OnFirstLoad += OnFirstLoad;
+
+            Input.Pause.performed += c => { Menu.Manager.Escape(); };
+        }
+    }
+
 
 
     [Obsolete]
@@ -142,43 +188,6 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
 
 
 
-    /// <summary>
-    /// Called when the Gameplay singleton is awakened. Loads the global state and initializes the zone manager.
-    /// </summary>
-    protected override void OnInitialize()
-    {
-        StartCoroutine(Enum());
-        IEnumerator Enum()
-        {
-            musicEmitter = GetComponent<StudioEventEmitter>();
-
-            yield return WaitFor.Until(Initialized);
-
-            bool Initialized() => PlayerHealth.Global.playerObject 
-                && PlayerRanged.Ammo.playerObject 
-                && RoomManager.Active;
-
-            EnemyCullingGroup.Initialize(this);
-
-            GlobalState.Load();
-            PostMaLoad?.Invoke();
-            if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
-            Overlay.OverHUD.SetAlpha(1);
-
-            yield return RoomManager.TransitionIn();
-            Overlay.OverHUD.BasicFadeIn();
-
-            //spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
-
-
-
-            //SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
-
-            //ZoneManager.OnFirstLoad += OnFirstLoad;
-
-            Input.Pause.performed += c => { Menu.Manager.Escape(); };
-        }
-    }
 
     /// <summary>
     /// Called on the first load of the zone manager. Moves the player to the spawn point and activates the player.
@@ -187,7 +196,7 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
     {
         SavePoint_Old spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
         spawnPointID = spawn.GetID();
-        PlayerStateMachine.InstantMove(spawn);
+        Player.InstantMove(spawn);
         PlayerHealth.Global.UpdateMax(GlobalState.maxHealth);
         Player.SetActive(true);
         fullyLoaded = true;
@@ -201,7 +210,7 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
         yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
 
         ZoneManager.DoTransition(spawnSceneName);
-        PlayerStateMachine.InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
+        Player.InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
         onPlayerRespawn?.Invoke();
     }
 
@@ -213,7 +222,7 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
         yield return null;
     }
 
-    protected override void OnDeInitialize() => EnemyCullingGroup.DeInitialize();
+    //protected override void OnDeInitialize() => EnemyCullingGroup.DeInitialize();
 
 
 
@@ -327,8 +336,9 @@ public class Gameplay : SingletonMonoBasic<Gameplay>
             #endif
             return;
         }
-        Destroy(Get().gameObject);
+        Destroy(GameObject);
     }
+
 }
 
 #if UNITY_EDITOR

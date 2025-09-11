@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[System.Serializable]
+[System.Serializable, System.Obsolete]
 public class ZoneProxy
 {
     public string name;
@@ -32,7 +32,7 @@ public class ZoneProxy
         loaded = true;
         transitionsTo = new();
         ZoneManager.TryGet(out manager);
-        task = new(LockFromUnloading(), Gameplay.Get());
+        task = new(LockFromUnloading(), Gameplay.Instance);
     }
 
     public void Update()
@@ -42,11 +42,11 @@ public class ZoneProxy
 
         if (value && !loaded)
         {
-            task = new(Loading(), Gameplay.Get());
+            task = new(Loading(), Gameplay.Instance);
         }
         else if (!value && loaded)
         {
-            task = new(Unloading(), Gameplay.Get());
+            task = new(Unloading(), Gameplay.Instance);
         }
 
     }
@@ -87,7 +87,7 @@ public class ZoneProxy
         SetTraversable(true);
         root = null;
 
-        task = CheckForLoad() ? new(Loading(), Gameplay.Get()) : null;
+        task = CheckForLoad() ? new(Loading(), Gameplay.Instance) : null;
     }
     IEnumerator LockFromUnloading()
     {

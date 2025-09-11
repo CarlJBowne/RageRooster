@@ -66,17 +66,17 @@ public class DialogueTrigger : MonoBehaviour
             
             if(targetGroup != null)
             {
-                targetGroup.m_Targets[1].target = Gameplay.Get().player.transform;
+                targetGroup.m_Targets[1].target = Player.Transform;
                 ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().Follow = targetGroup.transform;
                 ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
             }
-            Gameplay.Player.GetComponent<PlayerStateMachine>().CutsceneState();
+            Player.StateMachine.CutsceneState();
             ui.SetCharNameAndColor();
             ui.inDialogue = true;
             ui.CameraChange(true);
             ui.ClearText();
             ui.FadeUI(true, .2f, .65f);
-            currentSpeaker.TurnToPlayer(Gameplay.Get().player.transform.position);
+            currentSpeaker.TurnToPlayer(Player.Position);
         }
     }
 }

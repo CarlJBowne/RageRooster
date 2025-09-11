@@ -19,7 +19,7 @@ public class MovementAnimator : MonoBehaviour
     private void Awake()
     {
         TryGetComponent(out rb);
-        target = Gameplay.Player.transform;
+        target = Player.Transform;
         influence = 0;
         relativeVelocity = Vector3.zero;
         angularVelocity = 0;

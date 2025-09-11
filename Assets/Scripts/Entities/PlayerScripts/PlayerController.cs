@@ -89,21 +89,6 @@ public class PlayerController : PlayerStateBehavior
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
 		if(!overrideMovementControl) camAdjustedMovement = Input.Movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
 		else camAdjustedMovement = overrideMovementVector.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
-
-		//if (Machine.signalReady && input.jump.IsPressed() && sFall && !grabber.currentGrabbed) 
-        //    sGlide.Enter();
-        //else if(Machine.signalReady && !input.jump.IsPressed() && sGlide) 
-        //    sFall.Enter();
-
-        if (Machine.freeLookCamera != null)
-        {
-            Machine.freeLookCamera.Follow = transform;
-            Machine.freeLookCamera.LookAt = transform;
-        }
-
-        //if (Input.Aim.IsPressed() && Machine.signalReady && sGrounded 
-        //    && !ranged.aimingState && (ranged.hasEggsToShoot || grabber.currentGrabbed != null)) 
-        //    ranged.EnterAiming();
     }
 
     public bool CheckJumpBuffer()

@@ -23,7 +23,7 @@ public class TestScript : MonoBehaviour, IInteractable
 
     bool IInteractable.Interaction()
     {
-        Enum().Begin(Gameplay.Get());
+        Enum().Begin(Gameplay.Instance);
         return true;
         IEnumerator Enum()
         {

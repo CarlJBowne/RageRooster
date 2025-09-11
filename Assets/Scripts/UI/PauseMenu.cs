@@ -42,7 +42,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
             Time.timeScale = 1f;
             Close();
             Gameplay.musicEmitter.Stop();
-            PlayerStateMachine.Get().HaveDestroyed();
+            Player.StateMachine.HaveDestroyed();
             Gameplay.DESTROY(areYouSure: true);
             SceneManager.LoadScene("MainMenu");
             SceneManager.sceneLoaded += Done;
@@ -63,7 +63,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
     public void Respawn()
     {
-        SpawnPlayer_CR().Begin(Gameplay.Get());
+        SpawnPlayer_CR().Begin(Gameplay.Instance);
         IEnumerator SpawnPlayer_CR()
         {
             yield return Overlay.OverMenus.BasicFadeOutWait(1f);
@@ -76,7 +76,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
     }
     public void ReloadSave()
     {
-        Enum().Begin(Gameplay.Get());
+        Enum().Begin(Gameplay.Instance);
         IEnumerator Enum()
         {
             Gameplay.PreReloadSave?.Invoke();

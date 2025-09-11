@@ -14,7 +14,7 @@ public class ShockwaveScript : MonoBehaviour
 
     private void Awake()
     {
-        if (target == null) target = Gameplay.Player.transform;
+        if (target == null) target = Player.Transform;
         transform = base.transform;
     }
 

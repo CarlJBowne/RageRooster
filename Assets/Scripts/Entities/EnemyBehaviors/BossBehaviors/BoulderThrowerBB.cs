@@ -18,7 +18,7 @@ public class BoulderThrowerBB : MonoBehaviour
 
     public void Awake()
     {
-        target = Gameplay.Player.transform;
+        target = Player.Transform;
     }
 
     private void Update()

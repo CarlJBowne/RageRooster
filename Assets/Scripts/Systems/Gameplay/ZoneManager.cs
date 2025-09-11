@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[System.Serializable] 
+[System.Serializable, System.Obsolete] 
 public class ZoneManager : SingletonMonoBasic<ZoneManager>
 {
     [SerializeField] ZoneRoot currentZone;
@@ -27,8 +27,8 @@ public class ZoneManager : SingletonMonoBasic<ZoneManager>
     // Called when the ZoneManager is initialized. Sets up references to the player transform and state machine.
     protected override void OnInitialize()
     {
-        playerTransform = Gameplay.Player.transform;
-        playerMachine = Gameplay.Player.GetComponent<PlayerStateMachine>();
+        playerTransform = Player.Transform;
+        playerMachine = Player.StateMachine;
     }
 
     // Updates all zone proxies and ticks the offset timer.
@@ -117,7 +117,7 @@ public class ZoneManager : SingletonMonoBasic<ZoneManager>
            playerTransform.position.z > distanceToOriginShift || playerTransform.position.z < -distanceToOriginShift)
         {
             currentOffset -= playerTransform.position;
-            playerMachine.InstantMove(Vector3.zero);
+            Player.InstantMove(Vector3.zero);
 
             currentZone.transform.position = currentZone.originOffset + currentOffset;
             foreach (ZoneProxy item in proxies.Values)

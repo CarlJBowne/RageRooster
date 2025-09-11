@@ -27,7 +27,7 @@ public class DistanceAttackChooserBB : StateBehavior
 
     protected override void OnAwake()
     {
-        playerTransform = Gameplay.Player.transform;
+        playerTransform = Player.Transform;
         for (int i1 = 0; i1 < distances.Length; i1++)
             for (int i2 = 0; i2 < distances[i1].attacks.Length; i2++)
                 distances[i1].attacksRandLength += distances[i1].attacks[i2].chance;

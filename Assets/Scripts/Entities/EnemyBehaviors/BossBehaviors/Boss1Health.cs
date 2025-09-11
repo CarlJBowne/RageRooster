@@ -116,7 +116,7 @@ public class Boss1Health : Health
             3 => phase3Event,
             _ => null
         })?.Invoke();
-        moveAnim.SetTarget(Gameplay.Player.transform);
+        moveAnim.SetTarget(Player.Transform);
     }
 
     public void ResetBoss()

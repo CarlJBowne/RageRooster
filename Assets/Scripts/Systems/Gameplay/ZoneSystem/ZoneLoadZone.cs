@@ -12,13 +12,13 @@ public class ZoneLoadZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!Gameplay.Active || other.gameObject != Gameplay.Player) return;
+        if (!Gameplay.Active || other != Player.Collider) return;
         isWithin = true;
         Gameplay.onPlayerRespawn += PlayerDisabled;
     }
     private void OnTriggerExit(Collider other)
     {
-        if (!Gameplay.Active || other.gameObject != Gameplay.Player) return;
+        if (!Gameplay.Active || other != Player.Collider) return;
         isWithin = false;
         Gameplay.onPlayerRespawn -= PlayerDisabled;
     }

@@ -19,7 +19,7 @@ public class ChargeAttackEB : StateBehavior
     protected override void OnEnter(State prev, bool isFinal)
     {
         rb = GetComponentFromMachine<Rigidbody>();
-        //playerTransform = Gameplay.Player.transform;
+        //playerTransform = Player.Transform;
         //direction = (playerTransform.position - rb.transform.position).XZ().normalized;
         //rb.transform.rotation = Quaternion.LookRotation(direction);
     }

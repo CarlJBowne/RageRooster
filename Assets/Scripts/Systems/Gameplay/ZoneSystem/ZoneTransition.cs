@@ -26,7 +26,7 @@ public class ZoneTransition : MonoBehaviour
             return;
         }
         //collider = GetComponent<Collider>();
-        playerTransform = Gameplay.Get().player.transform;
+        playerTransform = Player.Transform;
         radiusSQR = radius * radius;
         ZoneManager.AddTransition(this);
     }
@@ -51,7 +51,7 @@ public class ZoneTransition : MonoBehaviour
             && Vector3.Dot(transform.forward, transform.position - playerTransform.position) > 0
             && (transform.position - playerTransform.position).sqrMagnitude < radiusSQR;
 
-    private void OnTriggerEnter(Collider other) { if (other.gameObject == Gameplay.Player) ZoneManager.DoTransition(Scene); }
+    private void OnTriggerEnter(Collider other) { if (other == Player.Collider) ZoneManager.DoTransition(Scene); }
 
     public static implicit operator string(ZoneTransition A) => A.Scene;
 }

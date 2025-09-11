@@ -183,7 +183,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         else if(currentGrabbed != null) currentGrabbed.Release();
         //OnRelease
 
-        CoroutinePlus.Begin(ref layerFadeCoroutine, TurnOffLayers(1f), gameObject.activeInHierarchy ? this : Gameplay.Get());
+        CoroutinePlus.Begin(ref layerFadeCoroutine, TurnOffLayers(1f), gameObject.activeInHierarchy ? this : Gameplay.Instance);
         IEnumerator TurnOffLayers(float rate)
         {
             float V = 1;
@@ -285,7 +285,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void NonAimingFixedUpdate()
     {
-        pointerH = machine.freeLookCamera.State.FinalOrientation.eulerAngles.y;
+        pointerH = Cameras.normalCamera.State.FinalOrientation.eulerAngles.y;
         pointer.target.position = Vector3.MoveTowards(pointer.target.position, pointer.startV.position + pointer.startV.forward * pointer.distance, .5f);
         aimingState.hAxis.Value = pointerH; 
         aimingState.vAxis.Value = Mathf.MoveTowardsAngle(aimingState.vAxis.Value, 0, 1);
@@ -320,7 +320,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     public void ExitAiming(State normalState, State grabbingState)
     {
         if (!aiming) return;
-        machine.freeLookCamera.m_XAxis.Value = pointerH;
+        Cameras.normalCamera.m_XAxis.Value = pointerH;
         animator.CrossFade("GroundBasic", 0.1f);
         (currentGrabbed == null ? normalState : grabbingState).Enter();
         aimingRig.enabled = false;
@@ -334,7 +334,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     public void ExitAimingAux()
     {
         if (!aiming) return;
-        machine.freeLookCamera.m_XAxis.Value = pointerH;
+        Cameras.normalCamera.m_XAxis.Value = pointerH;
         aimingRig.enabled = false;
         aimingRig.weight = 0;
         UI.SetHitMarkerVisibility(false);
@@ -347,7 +347,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     public void ExitAimingInstant()
     {
         if (!aiming) return;
-        machine.freeLookCamera.m_XAxis.Value = pointerH;
+        Cameras.normalCamera.m_XAxis.Value = pointerH;
         aimingRig.enabled = false;
         aimingRig.weight = 0;
         UI.SetHitMarkerVisibility(false);

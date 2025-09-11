@@ -24,7 +24,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     [HideInInspector] public PlayerRanged ranged;
     [HideInInspector] public new AudioCaller audio;
     public Transform cameraTransform;
-    public CinemachineFreeLook freeLookCamera;
+    //public CinemachineFreeLook freeLookCamera;
     public State pauseState;
     public State ragDollState;
     public RagdollHandler ragDollHandler;
@@ -36,16 +36,10 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 
     #endregion
 
-    protected static PlayerStateMachine Instance;
-    protected ISingleton<PlayerStateMachine> Interface => this;
-    public static PlayerStateMachine Get() => ISingleton<PlayerStateMachine>.Get(ref Instance);
-    public static bool TryGet(out PlayerStateMachine result) => ISingleton<PlayerStateMachine>.TryGet(Get, out result);
-    public static bool Loaded => Instance != null;
 
+    private void OnDestroy() { }
 
-    private void OnDestroy() => Interface.DeInitialize(ref Instance);
-
-    public void HaveDestroyed() => Interface.DeInitialize(ref Instance);
+    public void HaveDestroyed() { }
 
     protected override void PreSetup()
     {
@@ -59,17 +53,13 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 
     protected override void OnAwake()
     {
-        Interface.Initialize(ref Instance); 
-
-        Gameplay.Get().playerStateMachine = this;
-
         // Initialize the Cinemachine FreeLook camera
-        freeLookCamera = FindObjectOfType<CinemachineFreeLook>();
-        if (freeLookCamera != null)
-        {
-            freeLookCamera.Follow = transform;
-            freeLookCamera.LookAt = transform;
-        }
+        //freeLookCamera = FindObjectOfType<CinemachineFreeLook>();
+        //if (freeLookCamera != null)
+        //{
+        //    freeLookCamera.Follow = transform;
+        //    freeLookCamera.LookAt = transform;
+        //}
 
 #if UNITY_EDITOR
         Input.Get().Asset.FindAction("DebugActivate").performed += (_) => 
@@ -92,34 +82,6 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     public static Action<PlayerStateMachine> whenInitializedEvent;
 
     public bool IsStableForOriginShift() => states["Grounded"].enabled || CurrentState == states["Fall"] || states["Glide"];
-
-    public void InstantMove(Vector3 newPosition, float? yRot = null)
-    {
-        Vector3 camDelta = newPosition - transform.position;
-        //body.jiggles.PrepareTeleport();
-        body.ForceSetPosition(newPosition);
-        //body.jiggles.FinishTeleport(); 
-        if (yRot != null) body.Rotation = new(0, yRot.Value, 0);
-        ResetState(); 
-        freeLookCamera.PreviousStateIsValid = false;
-        freeLookCamera.OnTargetObjectWarped(transform, camDelta);
-        body.velocity = Vector3.zero;
-    }
-    public void InstantMove(SavePoint_Old savePoint)
-    {
-        Vector3 camDelta = savePoint.SpawnPoint.position - transform.position;
-        //body.jiggles.PrepareTeleport();
-        body.ForceSetPosition(savePoint.SpawnPoint.position);
-        body.Rotation = new(0, savePoint.SpawnPoint.eulerAngles.y, 0);
-        //body.jiggles.FinishTeleport();
-        ResetState();
-        ranged.Release(Vector3.zero, false);
-        freeLookCamera.PreviousStateIsValid = false;
-        freeLookCamera.OnTargetObjectWarped(transform, camDelta);
-        body.velocity = Vector3.zero;
-        body.InstantSnapToFloor();
-        savePoint.onSpawnEvent?.Invoke();
-    }
 
     public void ResetState()
     {
@@ -157,7 +119,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 
     public void Death(bool justPit = false)
     {
-        CoroutinePlus.Begin(ref deathCoroutine, Enum(justPit), Gameplay.Get());
+        CoroutinePlus.Begin(ref deathCoroutine, Enum(justPit), Gameplay.Instance);
         IEnumerator Enum(bool justPit)
         {
             Vector3 targetVelocity = body.velocity;

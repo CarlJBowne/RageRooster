@@ -113,7 +113,7 @@ public class WaveController : MonoBehaviour
             activeEnemies++;
 
             pooledEnemy.SetPosition(spawnPoints[i]);
-            pooledEnemy.SetRotation((Gameplay.Player.transform.position - spawnPoints[i]).DirToRot());
+            pooledEnemy.SetRotation((Player.Transform.position - spawnPoints[i]).DirToRot());
         }
     }
 

@@ -22,6 +22,6 @@ public class SpawnPoint : MonoBehaviour
 #endif
     public void SpawnPlayerAt()
     {
-        PlayerStateMachine.Get().InstantMove(transform.position, rotate ? transform.eulerAngles.y : null);
+        Player.InstantMove(transform.position, rotate ? transform.eulerAngles.y : null);
     }
 }

@@ -15,7 +15,7 @@ public class PlayerParryCollider : MonoBehaviour, IAttackSource
 
     public void Contact(GameObject target)
     {
-        if (target == Gameplay.Player) return;
+        if (target == Player.GameObject) return;
         if (target.TryGetComponent(out AttackProjectile targetProjectile))
         {
             targetProjectile.Reflect(false);
