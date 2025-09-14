@@ -2,9 +2,6 @@
 using RageRooster.RoomSystem;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RageRooster.Systems.SaveSystem
 {
@@ -32,19 +29,24 @@ namespace RageRooster.Systems.SaveSystem
         {
             public int maxHealth;
             public int maxAmmo;
-            public int powerEggs;
             public Dictionary<string, bool> upgrades;
         }
 
         public class PowerEggs
         {
-            public int totalEggs;
+            public int total;
+            public List<bool> isCollected;
+        }
+
+        public class Wishbones
+        {
+            public int total;
             public List<bool> isCollected;
         }
 
         public class SavedHens
         {
-            public int totalHens;
+            public int total;
             public List<bool> isRescued;
         }
 
@@ -77,13 +79,13 @@ namespace RageRooster.Systems.SaveSystem
             JToken playerStatsLoad = playerFile.Data[nameof(playerStats)];
             playerStats.maxHealth = (int)playerStatsLoad[nameof(SavedPlayerStats.maxHealth)];
             playerStats.maxAmmo = (int)playerStatsLoad[nameof(SavedPlayerStats.maxAmmo)];
-            playerStats.powerEggs = (int)playerStatsLoad[nameof(SavedPlayerStats.powerEggs)];
+            //playerStats.powerEggs = (int)playerStatsLoad[nameof(SavedPlayerStats.powerEggs)];
 
             JToken powerEggsLoad = worldChangesFile.Data[nameof(powerEggs)];
             JToken hensRescuedLoad = worldChangesFile.Data[nameof(hensRescued)];
             JToken globalChangesLoad = worldChangesFile.Data[nameof(globalChanges)];
 
-            powerEggs.totalEggs = (int)powerEggsLoad[nameof(PowerEggs.totalEggs)];
+            powerEggs.total = (int)powerEggsLoad[nameof(PowerEggs.total)];
             //Continue work
 
 

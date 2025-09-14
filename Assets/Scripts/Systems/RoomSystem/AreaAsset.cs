@@ -2,12 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Unity.VisualScripting;
-
-using static UnityEditor.Rendering.FilterWindow;
-using UnityEngine.SceneManagement;
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
