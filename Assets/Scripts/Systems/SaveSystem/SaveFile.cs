@@ -79,7 +79,7 @@ namespace RageRooster.Systems.SaveSystem
             JToken playerStatsLoad = playerFile.Data[nameof(playerStats)];
             playerStats.maxHealth = (int)playerStatsLoad[nameof(SavedPlayerStats.maxHealth)];
             playerStats.maxAmmo = (int)playerStatsLoad[nameof(SavedPlayerStats.maxAmmo)];
-            playerStats.powerEggs = (int)playerStatsLoad[nameof(SavedPlayerStats.powerEggs)];
+            //playerStats.powerEggs = (int)playerStatsLoad[nameof(SavedPlayerStats.powerEggs)];
 
             JToken powerEggsLoad = worldChangesFile.Data[nameof(powerEggs)];
             JToken hensRescuedLoad = worldChangesFile.Data[nameof(hensRescued)];
