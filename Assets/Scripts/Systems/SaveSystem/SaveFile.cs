@@ -9,7 +9,7 @@ namespace RageRooster.Systems.SaveSystem
 {
     public class SaveFile
     {
-
+        public const string targetFileVersion = "1.0.0";
         public TransitionDestination location;
         public SavedPlayerStats playerStats = new();
         public PowerEggs powerEggs = new();
@@ -22,6 +22,8 @@ namespace RageRooster.Systems.SaveSystem
         {
             public int maxHealth = 3;
             public int maxAmmo = 0;
+            public int currency = 0;
+            public TimeSpan playTime = TimeSpan.Zero;
             public Dictionary<string, bool> upgrades = new();
         }
 
@@ -66,10 +68,17 @@ namespace RageRooster.Systems.SaveSystem
             JsonFile.LoadResult result = IO.LoadFile();
             if (result != JsonFile.LoadResult.Success) return result;
 
+            if((string)IO.playerFile.Data["FileVersion"] != targetFileVersion)
+            {
+                UnityEngine.Debug.LogWarning($"Save file version mismatch. Expected {targetFileVersion}, found {(string)IO.playerFile.Data["FileVersion"]}. Attempting to load anyway.");
+            }
+
             location = TransitionDestination.Deserialize(IO.playerFile.Data[nameof(location)]);
             playerStats.maxHealth = (int)IO.playerFile.Data[nameof(SavedPlayerStats.maxHealth)];
             playerStats.maxAmmo = (int)IO.playerFile.Data[nameof(SavedPlayerStats.maxAmmo)];
-            
+            playerStats.currency = (int)IO.playerFile.Data[nameof(SavedPlayerStats.currency)];
+            playerStats.playTime = TimeSpan.Parse((string)IO.playerFile.Data[nameof(SavedPlayerStats.playTime)]);
+
             JToken upgradesLoad = IO.playerFile.Data[nameof(SavedPlayerStats.upgrades)];
             foreach (var ID in playerStats.upgrades.Keys) 
                 playerStats.upgrades[ID] = (bool)upgradesLoad[ID];
@@ -105,9 +114,12 @@ namespace RageRooster.Systems.SaveSystem
 
             IO.playerFile.Data = new JObject
             {
+                ["FileVersion"] = targetFileVersion,
                 [nameof(location)] = location.Serialize(nameof(location)),
                 [nameof(SavedPlayerStats.maxHealth)] = playerStats.maxHealth,
                 [nameof(SavedPlayerStats.maxAmmo)] = playerStats.maxAmmo,
+                [nameof(SavedPlayerStats.currency)] = playerStats.currency,
+                [nameof(SavedPlayerStats.playTime)] = playerStats.playTime.ToString(),
                 [nameof(SavedPlayerStats.upgrades)] = JObject.FromObject(playerStats.upgrades)
             };
 
