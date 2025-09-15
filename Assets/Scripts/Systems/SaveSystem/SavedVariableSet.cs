@@ -6,9 +6,9 @@ using Newtonsoft.Json.Linq;
 
 namespace RageRooster.Systems.SaveSystem.Variables
 {
-    [CreateAssetMenu(fileName = "newFile", menuName = "Save System/Saved Variable Set")]
     public class SavedVariableSet : ScriptableObject
     {
+        Variable var1;
         public SerializedDictionary<string, Variable> flags;
     }
 }
