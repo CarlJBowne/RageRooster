@@ -18,6 +18,9 @@ namespace RageRooster.RoomSystem
         [field: SerializeField] public SceneReference shellScene { get; protected set; }
         [field: SerializeField] public List<RoomAsset> rooms { get; protected set; } = new();
 
+        [field: SerializeField] public SavedFlagSet flagDefaults { get; protected set; }
+
+
         //Active Data
         public AreaRoot root { get; protected set; }
 
@@ -79,20 +82,36 @@ namespace RageRooster.RoomSystem
 
         public override void OnInspectorGUI()
         {
-            //base.OnInspectorGUI();
             AreaAsset areaAsset = (AreaAsset)target;
 
-            // draw AreaName and LandmarkScene fields
             serializedObject.Update();
             EditorGUI.BeginChangeCheck();
 
-            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AreaAsset.displayName), backingField: true));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AreaAsset.shellScene), backingField: true), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AreaAsset.displayName), true));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AreaAsset.shellScene), true), true);
 
-            // draw Rooms List as a custom reorderable list
             SerializedProperty roomsProperty = serializedObject.FindProperty("Rooms", backingField: true);
-
             roomsList.DoLayoutList();
+
+            var flagSetProp = serializedObject.FindProperty(nameof(AreaAsset.flagDefaults), true);
+            EditorGUILayout.PropertyField(flagSetProp);
+            if (flagSetProp.objectReferenceValue == null)
+            {
+                if (GUILayout.Button("Create and Attach FlagSet"))
+                {
+                    // Create new SavedFlagSet asset in the same folder as AreaAsset
+                    string flagSetPath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(AssetDatabase.GetAssetPath(areaAsset)), $"{areaAsset.name}_FlagDefaults.asset");
+
+                    var flagSet = ScriptableObject.CreateInstance<SavedFlagSet>();
+                    AssetDatabase.CreateAsset(flagSet, flagSetPath);
+                    AssetDatabase.SaveAssets();
+
+                    flagSetProp.objectReferenceValue = flagSet;
+                    serializedObject.ApplyModifiedProperties();
+                    Undo.RegisterCreatedObjectUndo(flagSet, "Create FlagSet");
+                    EditorUtility.SetDirty(areaAsset);
+                }
+            }
 
             if (EditorGUI.EndChangeCheck())
             {

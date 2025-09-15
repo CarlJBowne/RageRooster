@@ -78,7 +78,7 @@ namespace RageRooster.RoomSystem
             else
             {
                 TransitionDestination dest = new();
-                dest.area = AreaRegistry.GetFirstArea();
+                dest.area = AreaRegistry.GetAll()[0];
                 dest.room = dest.area.rooms[0];
                 dest.spawnID = 0;
                 dest.spawn = null;

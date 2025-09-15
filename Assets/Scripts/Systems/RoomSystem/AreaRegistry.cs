@@ -8,9 +8,10 @@ namespace RageRooster.RoomSystem
     //[CreateAssetMenu(fileName = "AreaRegistry", menuName = "RageRooster/RoomSystem/AreaRegistry", order = 1)]
     public class AreaRegistry : SingletonAsset<AreaRegistry>
     {
-        [SerializeField]
-        private AreaAsset[] areaAssets;
+        [SerializeField] private AreaAsset[] areaAssets;
+        
 
+        
         private static bool dictionarybuilt = false;
         private static Dictionary<string, AreaAsset> dictionary;
 
@@ -32,7 +33,7 @@ namespace RageRooster.RoomSystem
             if (!dictionarybuilt) BuildDictionary();
             return dictionary[name];
         }
-        public static AreaAsset GetFirstArea() => Get().areaAssets[0];
+        public static AreaAsset[] GetAll() => Get().areaAssets;
 
     }
 
