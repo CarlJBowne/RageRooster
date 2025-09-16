@@ -24,9 +24,12 @@ namespace RageRooster.RoomSystem
         {
             if (!transitionDestination.IsValid()) throw new System.Exception("No valid destination.");
 
+            Player.SetActive(false);
             OverlayLoading.SetVisible(true);
 
             yield return null;
+
+            if (transitionDestination.area == null) transitionDestination.area = transitionDestination.room.area;
 
             currentArea = transitionDestination.area;
             yield return currentArea.LoadArea();
@@ -44,6 +47,7 @@ namespace RageRooster.RoomSystem
             yield return new WaitForSecondsRealtime(0.5f);
 
             OverlayLoading.SetVisible(false);
+            Player.SetActive(true);
         }
 
 

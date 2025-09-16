@@ -1,4 +1,7 @@
 using Newtonsoft.Json.Linq;
+using RageRooster.Systems.SaveSystem;
+using System;
+using System.Collections.Generic;
 
 namespace RageRooster.RoomSystem
 {
@@ -17,8 +20,7 @@ namespace RageRooster.RoomSystem
             spawn = null,
             spawnID = -1
         };
-        public bool IsValid() => area != null && room != null && room.area == area && (spawnID >= 0 || spawnID == -1);
-
+        
 
         /// <summary>
         /// This Constructor is for use when reading deSerialized data from a save file or similar.
@@ -33,60 +35,6 @@ namespace RageRooster.RoomSystem
             spawn = null;
         }
 
-        /// <summary>
-        /// This Constructor is for use when a developer has pressed play when a Room Scene was open in the editor.
-        /// </summary>
-        public TransitionDestination(RoomRoot areaRoot)
-        {
-            area = areaRoot.asset.area;
-            room = areaRoot.asset;
-            spawnID = 0;
-            spawn = null;
-            // NOTE: Add Debug Save File Checking Later.
-        }
-        /// <summary>
-        /// This Constructor is for use when a developer has pressed play when a Area Scene was open in the editor.
-        /// </summary>
-        public TransitionDestination(AreaRoot areaRoot)
-        {
-            area = areaRoot.asset;
-            room = areaRoot.asset.rooms[0];
-            spawnID = 0;
-            spawn = null;
-            // NOTE: Add Debug Save File Checking Later.
-        }
-        /// <summary>
-        /// This Constructor is for use when a developer has pressed "Play from here" on a Spawn Point.
-        /// </summary>
-        public TransitionDestination(SpawnPoint spawn)
-        {
-            area = spawn.root.asset.area;
-            room = spawn.root.asset;
-            this.spawn = spawn; // This is most likely going to end up nulled at some point during the loading process.
-            spawnID = spawn.ID;
-        }
-        /// <summary>
-        /// This Constructor is for when a developer begins directly from the Gameplay Scene. Either defaults to very first spawn in the game or reads the Debug Save File.
-        /// </summary>
-        /// <param name="gameplay"></param>
-        public static TransitionDestination GameplaySceneStart()
-        {
-            if (false) // Replace false with a check for a debug save file.
-            {
-                
-            }
-            else
-            {
-                TransitionDestination dest = new();
-                dest.area = AreaRegistry.GetAll()[0];
-                dest.room = dest.area.rooms[0];
-                dest.spawnID = 0;
-                dest.spawn = null;
-                return dest;
-            }
-        }
-
-
         public JToken Serialize(string name = null) => new JObject
         {
             ["area"] = area.name,
@@ -94,6 +42,31 @@ namespace RageRooster.RoomSystem
             ["spawnID"] = spawnID
         };
         public static TransitionDestination Deserialize(JToken Data) => new((string)Data["area"], (int)Data["roomID"], (int)Data["spawnID"]);
+
+
+        public bool IsValid() => room != null && (area == null || room.area == area) && (spawnID >= 0 || spawnID == -1);
+        public bool IsFullyDefined() => area != null && room != null && room.area == area && (spawnID >= 0 || (spawnID == -1 && spawn != null && spawn.root.asset == room));
+        public bool IsDefault() => area == null && room == null && spawn == null && spawnID == -1;
+
+        public static bool operator ==(TransitionDestination a, TransitionDestination b) => a.area == b.area && a.room == b.room && a.spawnID == b.spawnID;
+        public static bool operator !=(TransitionDestination a, TransitionDestination b) => !(a.area == b.area && a.room == b.room && a.spawnID == b.spawnID);
+
+        public static implicit operator bool(TransitionDestination destination) => destination.IsValid();
+
+        public override bool Equals(object obj) => obj is TransitionDestination destination && EqualityComparer<AreaAsset>.Default.Equals(area, destination.area) && EqualityComparer<RoomAsset>.Default.Equals(room, destination.room) && EqualityComparer<SpawnPoint>.Default.Equals(spawn, destination.spawn) && spawnID == destination.spawnID;
+        public override int GetHashCode() => HashCode.Combine(area, room, spawn, spawnID);
+
+        public static TransitionDestination StartingDefault() => new()
+        {
+            area = AreaRegistry.GetAll()[0],
+            room = AreaRegistry.GetAll()[0].rooms[0],
+            spawnID = 0,
+            spawn = null
+        };
+
+
+
+
 
 
 

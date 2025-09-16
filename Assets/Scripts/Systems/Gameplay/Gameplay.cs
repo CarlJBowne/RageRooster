@@ -8,6 +8,8 @@ using EditorAttributes;
 using System.Collections.Generic;
 using SLS.ISingleton;
 using RageRooster.RoomSystem;
+using RageRooster.Systems.SaveSystem;
+
 
 
 
@@ -30,8 +32,7 @@ public class Gameplay : MonoBehaviour
     public static int spawnPointID = -1;
 
 
-    public const string GAMEPLAY_SCENE_NAME = "GameplayScene";
-    public static SceneReference GAMEPLAY_SCENE = new(GAMEPLAY_SCENE_NAME);
+    public static SceneReference GAMEPLAY_SCENE = new("GameplayScene");
 
     protected static System.Action PostMaLoad;
     public static StudioEventEmitter musicEmitter;
@@ -120,7 +121,7 @@ public class Gameplay : MonoBehaviour
             Cursor.visible = false;
 
             Menu.Manager.CloseAllMenus();
-            var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE_NAME);
+            var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE);
 
             yield return WaitFor.Until(() => Load.isDone && fullyLoaded);
             yield return WaitFor.SecondsRealtime(0.2f);
@@ -144,7 +145,7 @@ public class Gameplay : MonoBehaviour
                 spawnPointID = -1;
             }
         };
-        SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
+        SceneManager.LoadScene(GAMEPLAY_SCENE);
     }
 
     [Obsolete]
@@ -161,7 +162,7 @@ public class Gameplay : MonoBehaviour
             spawnSceneName = sceneToLoad;
             spawnPointID = spawnID;
         };
-        SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
+        SceneManager.LoadScene(GAMEPLAY_SCENE);
     }
 
 
@@ -170,18 +171,55 @@ public class Gameplay : MonoBehaviour
     {
         if (Gameplay.Active) return;
 
-        SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
+        SceneManager.LoadScene(GAMEPLAY_SCENE);
     }
-    public static void BeginEditor(TransitionDestination destination)
+    public static void BeginEditor()
     {
         if (Gameplay.Active) return;
-        if (!EditorState.EditorDestination.IsValid()) EditorState.EditorDestination = TransitionDestination.GameplaySceneStart();
+
+        SaveFile.IO.SetFileTarget(0);
+        SaveFile.Current = new();
+        SaveFile.IO.Load(SaveFile.Current);
+
+        if (!EditorState.EditorDestination.IsValid()) 
+            EditorState.EditorDestination = CalculateEditorSpawn();
         RoomManager.transitionDestination = EditorState.EditorDestination;
 
-        SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
+        SceneManager.LoadScene(GAMEPLAY_SCENE);
     }
 
+    private static TransitionDestination CalculateEditorSpawn()
+    {
+        TransitionDestination target = EditorState.EditorDestination;
 
+        // If target is default, use the save file location
+        if (target.IsDefault()) return SaveFile.Current.location;
+
+        TransitionDestination fileDest = SaveFile.Current.location;
+
+        if(target.area == null && target.room != null) target.area = target.room.area;
+
+        // Fill in missing area from save file if needed
+        if (target.area == null) target.area = fileDest.area;
+
+        // If area matches save file, fill in missing room/spawnID from save file
+        if (target.area == fileDest.area)
+        {
+            if (target.room == null) target.room = fileDest.room;
+            if (target.spawnID == -1) target.spawnID = fileDest.spawnID;
+        }
+        else // If area is different, fill missing room/spawnID with 0th values
+        {
+            if (target.room == null) target.room = target.area.rooms[0];
+            if (target.spawnID == -1) target.spawnID = 0;
+        }
+
+        // If room is set but spawnID is missing, fill from save file if area matches, else use 0
+        if (target.room != null && target.spawnID == -1)
+            target.spawnID = (target.room.area == fileDest.area) ? fileDest.spawnID : 0;
+
+        return target;
+    }
 
 
 

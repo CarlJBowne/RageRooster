@@ -16,7 +16,13 @@ public class SpawnPoint : MonoBehaviour
     [Button("Play from here.")]
     public void BeginFromHere()
     {
-        EditorState.EditorDestination = new TransitionDestination(this);
+        EditorState.EditorDestination = new() 
+        {
+            area = root.asset.area,
+            room = root.asset,
+            spawn = this,
+            spawnID = ID
+        };
         UnityEditor.EditorApplication.isPlaying = true;
     }
 #endif

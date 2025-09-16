@@ -25,7 +25,7 @@ public class SavedValueManager : SingletonAsset<SavedValueManager>
     { 
         SaveFile.IO.SetFileTarget(6);
         SaveFile S = new();
-        S.Save();
+        SaveFile.IO.Save(S);
     }
 
 }
