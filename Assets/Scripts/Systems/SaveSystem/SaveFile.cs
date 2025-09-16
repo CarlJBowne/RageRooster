@@ -9,12 +9,15 @@ namespace RageRooster.Systems.SaveSystem
 {
     public class SaveFile
     {
+        public static SaveFile Current;
+
+
         public const string targetFileVersion = "1.0.0";
         public TransitionDestination location;
         public SavedPlayerStats playerStats = new();
-        public PowerEggs powerEggs = new();
-        public Wishbones wishbones = new();
-        public SavedHens hensRescued = new();
+        public SavedCollectible powerEggs = new();
+        public SavedCollectible wishbones = new();
+        public SavedCollectible hensRescued = new();
         public SavedFlagSet globalChanges = new();
         public Dictionary<AreaAsset, SavedFlagSet> areaChanges = new();
 
@@ -27,19 +30,7 @@ namespace RageRooster.Systems.SaveSystem
             public Dictionary<string, bool> upgrades = new();
         }
 
-        public class PowerEggs
-        {
-            public int total = 0;
-            public List<bool> isCollected;
-        }
-
-        public class Wishbones
-        {
-            public int total = 0;
-            public List<bool> isCollected;
-        }
-
-        public class SavedHens
+        public class SavedCollectible
         {
             public int total = 0;
             public List<bool> isCollected;
@@ -88,17 +79,17 @@ namespace RageRooster.Systems.SaveSystem
             JToken hensRescuedLoad = IO.worldChangesFile.Data[nameof(hensRescued)];
             JToken globalChangesLoad = IO.worldChangesFile.Data[nameof(globalChanges)];
 
-            powerEggs.total = (int)powerEggsLoad[nameof(PowerEggs.total)];
+            powerEggs.total = (int)powerEggsLoad[nameof(SavedCollectible.total)];
             for (int i = 0; i < powerEggs.isCollected.Count; i++)
-                powerEggs.isCollected[i] = (bool)powerEggsLoad[nameof(PowerEggs.isCollected)][i];
+                powerEggs.isCollected[i] = (bool)powerEggsLoad[nameof(SavedCollectible.isCollected)][i];
 
-            wishbones.total = (int)wishbonesLoad[nameof(PowerEggs.total)];
+            wishbones.total = (int)wishbonesLoad[nameof(SavedCollectible.total)];
             for (int i = 0; i < wishbones.isCollected.Count; i++)
-                wishbones.isCollected[i] = (bool)wishbonesLoad[nameof(PowerEggs.isCollected)][i];
+                wishbones.isCollected[i] = (bool)wishbonesLoad[nameof(SavedCollectible.isCollected)][i];
 
-            hensRescued.total = (int)hensRescuedLoad[nameof(PowerEggs.total)];
+            hensRescued.total = (int)hensRescuedLoad[nameof(SavedCollectible.total)];
             for (int i = 0; i < hensRescued.isCollected.Count; i++)
-                hensRescued.isCollected[i] = (bool)hensRescuedLoad[nameof(PowerEggs.isCollected)][i];
+                hensRescued.isCollected[i] = (bool)hensRescuedLoad[nameof(SavedCollectible.isCollected)][i];
             
             globalChanges.LoadFromJson(globalChangesLoad);
 
@@ -127,18 +118,18 @@ namespace RageRooster.Systems.SaveSystem
             {
                 [nameof(powerEggs)] = new JObject
                 {
-                    [nameof(PowerEggs.total)] = powerEggs.total,
-                    [nameof(PowerEggs.isCollected)] = new JArray(powerEggs.isCollected)
+                    [nameof(SavedCollectible.total)] = powerEggs.total,
+                    [nameof(SavedCollectible.isCollected)] = new JArray(powerEggs.isCollected)
                 },
                 [nameof(wishbones)] = new JObject
                 {
-                    [nameof(PowerEggs.total)] = wishbones.total,
-                    [nameof(PowerEggs.isCollected)] = new JArray(wishbones.isCollected)
+                    [nameof(SavedCollectible.total)] = wishbones.total,
+                    [nameof(SavedCollectible.isCollected)] = new JArray(wishbones.isCollected)
                 },
                 [nameof(hensRescued)] = new JObject
                 {
-                    [nameof(PowerEggs.total)] = hensRescued.total,
-                    [nameof(PowerEggs.isCollected)] = new JArray(hensRescued.isCollected)
+                    [nameof(SavedCollectible.total)] = hensRescued.total,
+                    [nameof(SavedCollectible.isCollected)] = new JArray(hensRescued.isCollected)
                 },
                 [nameof(globalChanges)] = globalChanges.flags != null
                                             ? JObject.FromObject(globalChanges.flags)
