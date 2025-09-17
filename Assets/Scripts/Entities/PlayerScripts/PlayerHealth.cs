@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class PlayerHealth : Health
 {
+    #region Instance Variables
+
     public float invincibilityTime;
     public State damageState;
     public State damageStateWham;
@@ -14,19 +16,17 @@ public class PlayerHealth : Health
 
     private CoroutinePlus invincibility;
     private new Collider collider;
-    private UIHUDSystem UI;
-    private PlayerMovementBody body;
-    private PlayerStateMachine machine;
-    private PlayerRanged ranged;
+
+    #endregion Instance Variables
+
+    #region Instance Methods
+
+
 
     protected override void Awake()
     {
         base.Awake();
         collider = GetComponent<Collider>();
-        UIHUDSystem.TryGet(out UI);
-        TryGetComponent(out body);
-        TryGetComponent(out machine);
-        TryGetComponent(out ranged);
         Global.playerObject = this;
     }
 
@@ -36,15 +36,15 @@ public class PlayerHealth : Health
         if (tintAnimator) tintAnimator.BeginAnimation();
         if (health != 0)
         {
-            if(ranged.aimingState) ranged.ExitAimingAux();
+            if(Player.Ranged.aimingState) Player.Ranged.ExitAimingAux();
             CoroutinePlus.Begin(ref invincibility, InvinceEnum(invincibilityTime), this);
             damagable = false;
-            if (attack.HasTag(Attack.Tag.Pit)) machine.Death(true);
+            if (attack.HasTag(Attack.Tag.Pit)) Player.StateMachine.Death(true);
             else if (attack.HasTag(Attack.Tag.Wham)) 
             {
                 damageStateWham.Enter();
-                body.UnLand();
-                body.VelocitySet(y: 14);
+                Player.MovementBody.UnLand();
+                Player.MovementBody.VelocitySet(y: 14);
             }
             else damageState.Enter();
         }
@@ -58,10 +58,10 @@ public class PlayerHealth : Health
         if(attack == Attack.Tag.Wham)
         {
             damageStateWham.Enter();
-            body.UnLand();
-            body.VelocitySet(y: 14);
+            Player.MovementBody.UnLand();
+            Player.MovementBody.VelocitySet(y: 14);
         }
-        else machine.Death();
+        else Player.StateMachine.Death();
     }
 
     private IEnumerator InvinceEnum(float time)
@@ -91,6 +91,8 @@ public class PlayerHealth : Health
             }
         }
     }
+
+    #endregion Instance Methods
 
     public static class Global
     {

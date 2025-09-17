@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace RageRooster.RoomSystem
 {
-    public struct TransitionDestination
+    public struct Destination
     {
         public AreaAsset area;
         public RoomAsset room;
@@ -13,7 +13,7 @@ namespace RageRooster.RoomSystem
 
         public int spawnID;
 
-        public static TransitionDestination Default => new()
+        public static Destination Default => new()
         {
             area = null,
             room = null,
@@ -25,7 +25,7 @@ namespace RageRooster.RoomSystem
         /// <summary>
         /// This Constructor is for use when reading deSerialized data from a save file or similar.
         /// </summary>
-        public TransitionDestination(string areaName, int roomID = 0, int spawnID = 0)
+        public Destination(string areaName, int roomID = 0, int spawnID = 0)
         {
             area = AreaRegistry.GetArea(areaName);
             if (area == null) throw new System.Exception("Invalid name does not belong to any area.");
@@ -41,22 +41,22 @@ namespace RageRooster.RoomSystem
             ["roomID"] = area.rooms.IndexOf(room),
             ["spawnID"] = spawnID
         };
-        public static TransitionDestination Deserialize(JToken Data) => new((string)Data["area"], (int)Data["roomID"], (int)Data["spawnID"]);
+        public static Destination Deserialize(JToken Data) => new((string)Data["area"], (int)Data["roomID"], (int)Data["spawnID"]);
 
 
         public bool IsValid() => room != null && (area == null || room.area == area) && (spawnID >= 0 || spawnID == -1);
         public bool IsFullyDefined() => area != null && room != null && room.area == area && (spawnID >= 0 || (spawnID == -1 && spawn != null && spawn.root.asset == room));
         public bool IsDefault() => area == null && room == null && spawn == null && spawnID == -1;
 
-        public static bool operator ==(TransitionDestination a, TransitionDestination b) => a.area == b.area && a.room == b.room && a.spawnID == b.spawnID;
-        public static bool operator !=(TransitionDestination a, TransitionDestination b) => !(a.area == b.area && a.room == b.room && a.spawnID == b.spawnID);
+        public static bool operator ==(Destination a, Destination b) => a.area == b.area && a.room == b.room && a.spawnID == b.spawnID;
+        public static bool operator !=(Destination a, Destination b) => !(a.area == b.area && a.room == b.room && a.spawnID == b.spawnID);
 
-        public static implicit operator bool(TransitionDestination destination) => destination.IsValid();
+        public static implicit operator bool(Destination destination) => destination.IsValid();
 
-        public override bool Equals(object obj) => obj is TransitionDestination destination && EqualityComparer<AreaAsset>.Default.Equals(area, destination.area) && EqualityComparer<RoomAsset>.Default.Equals(room, destination.room) && EqualityComparer<SpawnPoint>.Default.Equals(spawn, destination.spawn) && spawnID == destination.spawnID;
+        public override bool Equals(object obj) => obj is Destination destination && EqualityComparer<AreaAsset>.Default.Equals(area, destination.area) && EqualityComparer<RoomAsset>.Default.Equals(room, destination.room) && EqualityComparer<SpawnPoint>.Default.Equals(spawn, destination.spawn) && spawnID == destination.spawnID;
         public override int GetHashCode() => HashCode.Combine(area, room, spawn, spawnID);
 
-        public static TransitionDestination StartingDefault() => new()
+        public static Destination StartingDefault() => new()
         {
             area = AreaRegistry.GetAll()[0],
             room = AreaRegistry.GetAll()[0].rooms[0],

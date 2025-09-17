@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using DG.Tweening;
+using RageRooster.Systems.SaveSystem;
 using UnityEngine;
 
 public class ItemPickup : MonoBehaviour
@@ -41,7 +42,8 @@ public class ItemPickup : MonoBehaviour
 
         if (type == ItemType.Coin)
         {
-            GlobalState.AddCurrency(addAmount);
+            //GlobalState.AddCurrency(addAmount);
+            Gameplay.SaveData.playerStats.currency += addAmount;
         }
         else if (type == ItemType.Health)
         {

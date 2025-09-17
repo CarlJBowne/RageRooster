@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[Obsolete]
 [RequireComponent(typeof(Collider))]
 public class ZoneTransition : MonoBehaviour
 {

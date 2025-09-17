@@ -1,6 +1,7 @@
 using AYellowpaper.SerializedCollections;
 using EditorAttributes;
 using FMODUnity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[Obsolete]
 [DefaultExecutionOrder(-200)]
 public class ZoneRoot : MonoBehaviour
 {

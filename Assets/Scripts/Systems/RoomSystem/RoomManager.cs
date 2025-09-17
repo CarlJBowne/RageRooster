@@ -10,6 +10,8 @@ namespace RageRooster.RoomSystem
         public static AreaAsset currentArea { get; private set; }
         public static RoomAsset currentRoom { get; private set; }
 
+        public static Destination respawnDestination = Destination.Default;
+        public static Destination deathRespawnDestination = Destination.Default;
 
 
 
@@ -19,7 +21,7 @@ namespace RageRooster.RoomSystem
             currentArea = null;
             currentRoom = null;
         }
-        public static TransitionDestination transitionDestination;
+        public static Destination transitionDestination;
         public static IEnumerator TransitionIn()
         {
             if (!transitionDestination.IsValid()) throw new System.Exception("No valid destination.");

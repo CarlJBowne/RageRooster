@@ -30,7 +30,7 @@ public class TestScript : MonoBehaviour, IInteractable
             yield return Overlay.OverMenus.BasicFadeOutWait(1f);
             OverlayLoading.SetVisible(true);
             yield return RoomManager.TransitionOut();
-            RoomManager.transitionDestination = new TransitionDestination()
+            RoomManager.transitionDestination = new Destination()
             {
                 area = area,
                 room = room,

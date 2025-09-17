@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+[System.Obsolete]
 public class GlobalState : SingletonMonoBasic<GlobalState>, ICustomSerialized
 {
 

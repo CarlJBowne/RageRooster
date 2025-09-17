@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using static Unity.VisualScripting.Member;
 
 
 public static class _ExtensionMethods
@@ -134,7 +137,7 @@ public static class _MonoBehaviorHelpers
 		if (parent != null) T.parent = parent;
 	}
 
-	public static GameObject NewGameObject(this Object O, string name = "NewGameObject", Vector3? pos = null, Quaternion? rot = null, Vector3? scale = null, Transform parent = null, params System.Type[] additions)
+	public static GameObject NewGameObject(this UnityEngine.Object O, string name = "NewGameObject", Vector3? pos = null, Quaternion? rot = null, Vector3? scale = null, Transform parent = null, params System.Type[] additions)
 	{
 		GameObject result = new(name, additions);
 
@@ -212,3 +215,25 @@ public static class _MonoBehaviorHelpers
 }
 
 public delegate void BasicDelegate();
+
+/// <summary>
+/// A better Cloneable interface that enforces support for deep cloning data into an existing object.
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public interface ICloneable<T> where T : class
+{
+    /// <summary>
+    /// Deep Clones this object, returning a new instance or populating the provided instance.
+    /// </summary>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public T Clone(T result = null);
+}
+
+public static class ICloneable_Extension
+{
+    /// <summary>
+    /// This is just a more readable alias for Clone when you want to copy data from one object to another existing object.
+    /// </summary>
+    public static void CloneFrom<T>(this ICloneable<T> target, T source) where T : class => target.Clone(source);
+}

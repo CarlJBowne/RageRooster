@@ -1,19 +1,15 @@
 ﻿using Newtonsoft.Json.Linq;
 using RageRooster.RoomSystem;
 using System;
-using System.IO;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.IO;
 
 namespace RageRooster.Systems.SaveSystem
 {
-    public class SaveFile
+    public class SaveFile : ICloneable<SaveFile>
     {
-        public static SaveFile Current;
-
-
         public const string targetFileVersion = "1.0.0";
-        public TransitionDestination location;
+        public Destination location;
         public SavedPlayerStats playerStats = new();
         public SavedCollectible powerEggs = new();
         public SavedCollectible wishbones = new();
@@ -30,10 +26,18 @@ namespace RageRooster.Systems.SaveSystem
             public Upgrades upgrades;
         }
 
-        public class SavedCollectible
+        public class SavedCollectible : ICloneable<SavedCollectible>
         {
             public int total = 0;
             public List<bool> isCollected;
+
+            public SavedCollectible Clone(SavedCollectible result = null)
+            {
+                result ??= new SavedCollectible();
+                result.total = total;
+                result.isCollected = new List<bool>(isCollected);
+                return result;
+            }
         }
 
         /// <summary>
@@ -41,18 +45,43 @@ namespace RageRooster.Systems.SaveSystem
         /// </summary>
         public SaveFile()
         {
-            location = TransitionDestination.StartingDefault();
+            location = Destination.StartingDefault();
             playerStats.upgrades = SavedValueManager.Upgrades.Clone();
             powerEggs.isCollected = new(new bool[SavedValueManager.PowerEggs.Count]);
             hensRescued.isCollected = new(new bool[SavedValueManager.HensRescued.Count]);
             wishbones.isCollected = new(new bool[SavedValueManager.Wishbones.Count]);
-            globalChanges = UnityEngine.Object.Instantiate(SavedValueManager.GlobalFlagDefaults);
-            foreach (var area in AreaRegistry.GetAll()) 
-                areaChanges.Add(area, UnityEngine.Object.Instantiate(area.flagDefaults));
+            globalChanges.CloneFrom(SavedValueManager.GlobalFlagDefaults);
+            foreach (var area in AreaRegistry.GetAll())
+                areaChanges.Add(area, area.flagDefaults.Clone());
         }
+
+        public SaveFile Clone(SaveFile result = null)
+        {
+            result ??= new SaveFile();
+
+            result.location = location;
+
+            result.playerStats.maxHealth = playerStats.maxHealth;
+            result.playerStats.maxAmmo = playerStats.maxAmmo;
+            result.playerStats.currency = playerStats.currency;
+            result.playerStats.playTime = playerStats.playTime;
+            playerStats.upgrades.Clone(result.playerStats.upgrades);
+
+            powerEggs.Clone(result.powerEggs);
+            wishbones.Clone(result.wishbones);
+            hensRescued.Clone(result.hensRescued);
+            globalChanges.Clone(result.globalChanges);
+            foreach (var area in AreaRegistry.GetAll())
+                areaChanges[area].Clone(result.areaChanges[area]);
+
+            return result;
+        }
+
 
         public static class IO
         {
+            public static SaveFile file = new();
+
             public static int fileID = -1;
             public static string fileRoot;
 
@@ -87,7 +116,7 @@ namespace RageRooster.Systems.SaveSystem
                 areaChangesFiles = null;
             }
 
-            public static JsonFile.LoadResult Load(SaveFile saveFile)
+            public static JsonFile.LoadResult Load()
             {
                 if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
 
@@ -108,82 +137,82 @@ namespace RageRooster.Systems.SaveSystem
                     UnityEngine.Debug.LogWarning($"Save file version mismatch. Expected {targetFileVersion}, found {(string)playerFile.Data["FileVersion"]}. Attempting to load anyway.");
                 }
 
-                saveFile.location = TransitionDestination.Deserialize(playerFile.Data[nameof(saveFile.location)]);
-                saveFile.playerStats.maxHealth = (int)playerFile.Data[nameof(SavedPlayerStats.maxHealth)];
-                saveFile.playerStats.maxAmmo = (int)playerFile.Data[nameof(SavedPlayerStats.maxAmmo)];
-                saveFile.playerStats.currency = (int)playerFile.Data[nameof(SavedPlayerStats.currency)];
-                saveFile.playerStats.playTime = TimeSpan.Parse((string)playerFile.Data[nameof(SavedPlayerStats.playTime)]);
+                file.location = Destination.Deserialize(playerFile.Data[nameof(file.location)]);
+                file.playerStats.maxHealth = (int)playerFile.Data[nameof(SavedPlayerStats.maxHealth)];
+                file.playerStats.maxAmmo = (int)playerFile.Data[nameof(SavedPlayerStats.maxAmmo)];
+                file.playerStats.currency = (int)playerFile.Data[nameof(SavedPlayerStats.currency)];
+                file.playerStats.playTime = TimeSpan.Parse((string)playerFile.Data[nameof(SavedPlayerStats.playTime)]);
 
                 JToken upgradesLoad = playerFile.Data[nameof(SavedPlayerStats.upgrades)];
-                saveFile.playerStats.upgrades = upgradesLoad.ToObject<Upgrades>();
+                file.playerStats.upgrades = upgradesLoad.ToObject<Upgrades>();
 
-                JToken powerEggsLoad = worldChangesFile.Data[nameof(saveFile.powerEggs)];
-                JToken wishbonesLoad = worldChangesFile.Data[nameof(saveFile.wishbones)];
-                JToken hensRescuedLoad = worldChangesFile.Data[nameof(saveFile.hensRescued)];
-                JToken globalChangesLoad = worldChangesFile.Data[nameof(saveFile.globalChanges)];
+                JToken powerEggsLoad = worldChangesFile.Data[nameof(file.powerEggs)];
+                JToken wishbonesLoad = worldChangesFile.Data[nameof(file.wishbones)];
+                JToken hensRescuedLoad = worldChangesFile.Data[nameof(file.hensRescued)];
+                JToken globalChangesLoad = worldChangesFile.Data[nameof(file.globalChanges)];
 
-                saveFile.powerEggs.total = (int)powerEggsLoad[nameof(SavedCollectible.total)];
-                for (int i = 0; i < saveFile.powerEggs.isCollected.Count; i++)
-                    saveFile.powerEggs.isCollected[i] = (bool)powerEggsLoad[nameof(SavedCollectible.isCollected)][i];
+                file.powerEggs.total = (int)powerEggsLoad[nameof(SavedCollectible.total)];
+                for (int i = 0; i < file.powerEggs.isCollected.Count; i++)
+                    file.powerEggs.isCollected[i] = (bool)powerEggsLoad[nameof(SavedCollectible.isCollected)][i];
 
-                saveFile.wishbones.total = (int)wishbonesLoad[nameof(SavedCollectible.total)];
-                for (int i = 0; i < saveFile.wishbones.isCollected.Count; i++)
-                    saveFile.wishbones.isCollected[i] = (bool)wishbonesLoad[nameof(SavedCollectible.isCollected)][i];
+                file.wishbones.total = (int)wishbonesLoad[nameof(SavedCollectible.total)];
+                for (int i = 0; i < file.wishbones.isCollected.Count; i++)
+                    file.wishbones.isCollected[i] = (bool)wishbonesLoad[nameof(SavedCollectible.isCollected)][i];
 
-                saveFile.hensRescued.total = (int)hensRescuedLoad[nameof(SavedCollectible.total)];
-                for (int i = 0; i < saveFile.hensRescued.isCollected.Count; i++)
-                    saveFile.hensRescued.isCollected[i] = (bool)hensRescuedLoad[nameof(SavedCollectible.isCollected)][i];
+                file.hensRescued.total = (int)hensRescuedLoad[nameof(SavedCollectible.total)];
+                for (int i = 0; i < file.hensRescued.isCollected.Count; i++)
+                    file.hensRescued.isCollected[i] = (bool)hensRescuedLoad[nameof(SavedCollectible.isCollected)][i];
 
-                saveFile.globalChanges.LoadFromJson(globalChangesLoad);
+                file.globalChanges.LoadFromJson(globalChangesLoad);
 
                 foreach (var area in AreaRegistry.GetAll())
-                    saveFile.areaChanges[area].LoadFromJson(areaChangesFiles[area].Data);
+                    file.areaChanges[area].LoadFromJson(areaChangesFiles[area].Data);
 
                 return JsonFile.LoadResult.Success;
             }
 
-            public static JsonFile.FileState Save(SaveFile saveFile)
+            public static JsonFile.FileState Save()
             {
                 if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
 
                 playerFile.Data = new JObject
                 {
                     ["FileVersion"] = targetFileVersion,
-                    [nameof(saveFile.location)] = saveFile.location.Serialize(nameof(saveFile.location)),
-                    [nameof(SavedPlayerStats.maxHealth)] = saveFile.playerStats.maxHealth,
-                    [nameof(SavedPlayerStats.maxAmmo)] = saveFile.playerStats.maxAmmo,
-                    [nameof(SavedPlayerStats.currency)] = saveFile.playerStats.currency,
-                    [nameof(SavedPlayerStats.playTime)] = saveFile.playerStats.playTime.ToString(),
-                    [nameof(SavedPlayerStats.upgrades)] = JObject.FromObject(saveFile.playerStats.upgrades)
+                    [nameof(file.location)] = file.location.Serialize(nameof(file.location)),
+                    [nameof(SavedPlayerStats.maxHealth)] = file.playerStats.maxHealth,
+                    [nameof(SavedPlayerStats.maxAmmo)] = file.playerStats.maxAmmo,
+                    [nameof(SavedPlayerStats.currency)] = file.playerStats.currency,
+                    [nameof(SavedPlayerStats.playTime)] = file.playerStats.playTime.ToString(),
+                    [nameof(SavedPlayerStats.upgrades)] = JObject.FromObject(file.playerStats.upgrades)
                 };
 
                 worldChangesFile.Data = new JObject
                 {
-                    [nameof(saveFile.powerEggs)] = new JObject
+                    [nameof(file.powerEggs)] = new JObject
                     {
-                        [nameof(SavedCollectible.total)] = saveFile.powerEggs.total,
-                        [nameof(SavedCollectible.isCollected)] = new JArray(saveFile.powerEggs.isCollected)
+                        [nameof(SavedCollectible.total)] = file.powerEggs.total,
+                        [nameof(SavedCollectible.isCollected)] = new JArray(file.powerEggs.isCollected)
                     },
-                    [nameof(saveFile.wishbones)] = new JObject
+                    [nameof(file.wishbones)] = new JObject
                     {
-                        [nameof(SavedCollectible.total)] = saveFile.wishbones.total,
-                        [nameof(SavedCollectible.isCollected)] = new JArray(saveFile.wishbones.isCollected)
+                        [nameof(SavedCollectible.total)] = file.wishbones.total,
+                        [nameof(SavedCollectible.isCollected)] = new JArray(file.wishbones.isCollected)
                     },
-                    [nameof(saveFile.hensRescued)] = new JObject
+                    [nameof(file.hensRescued)] = new JObject
                     {
-                        [nameof(SavedCollectible.total)] = saveFile.hensRescued.total,
-                        [nameof(SavedCollectible.isCollected)] = new JArray(saveFile.hensRescued.isCollected)
+                        [nameof(SavedCollectible.total)] = file.hensRescued.total,
+                        [nameof(SavedCollectible.isCollected)] = new JArray(file.hensRescued.isCollected)
                     },
-                    [nameof(saveFile.globalChanges)] = saveFile.globalChanges.flags != null
-                                                        ? JObject.FromObject(saveFile.globalChanges.flags)
+                    [nameof(file.globalChanges)] = file.globalChanges.flags != null
+                                                        ? JObject.FromObject(file.globalChanges.flags)
                                                         : new JObject()
                 };
 
                 // Save areaChanges to areaChangesFiles
                 foreach (var area in AreaRegistry.GetAll())
                 {
-                    areaChangesFiles[area].Data = saveFile.areaChanges[area].flags != null
-                        ? JObject.FromObject(saveFile.areaChanges[area].flags)
+                    areaChangesFiles[area].Data = file.areaChanges[area].flags != null
+                        ? JObject.FromObject(file.areaChanges[area].flags)
                         : new JObject();
                 }
 
@@ -201,5 +230,6 @@ namespace RageRooster.Systems.SaveSystem
                 return JsonFile.FileState.Valid;
             }
         }
+
     }
 }
