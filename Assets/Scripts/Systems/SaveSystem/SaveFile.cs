@@ -27,7 +27,7 @@ namespace RageRooster.Systems.SaveSystem
             public int maxAmmo = 0;
             public int currency = 0;
             public TimeSpan playTime = TimeSpan.Zero;
-            public Dictionary<string, bool> upgrades = new();
+            public Upgrades upgrades;
         }
 
         public class SavedCollectible
@@ -42,7 +42,7 @@ namespace RageRooster.Systems.SaveSystem
         public SaveFile()
         {
             location = TransitionDestination.StartingDefault();
-            playerStats.upgrades = SavedValueManager.Upgrades; // Check Validity later.
+            playerStats.upgrades = SavedValueManager.Upgrades.Clone();
             powerEggs.isCollected = new(new bool[SavedValueManager.PowerEggs.Count]);
             hensRescued.isCollected = new(new bool[SavedValueManager.HensRescued.Count]);
             wishbones.isCollected = new(new bool[SavedValueManager.Wishbones.Count]);
@@ -115,8 +115,7 @@ namespace RageRooster.Systems.SaveSystem
                 saveFile.playerStats.playTime = TimeSpan.Parse((string)playerFile.Data[nameof(SavedPlayerStats.playTime)]);
 
                 JToken upgradesLoad = playerFile.Data[nameof(SavedPlayerStats.upgrades)];
-                foreach (var ID in saveFile.playerStats.upgrades.Keys)
-                    saveFile.playerStats.upgrades[ID] = (bool)upgradesLoad[ID];
+                saveFile.playerStats.upgrades = upgradesLoad.ToObject<Upgrades>();
 
                 JToken powerEggsLoad = worldChangesFile.Data[nameof(saveFile.powerEggs)];
                 JToken wishbonesLoad = worldChangesFile.Data[nameof(saveFile.wishbones)];

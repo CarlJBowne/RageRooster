@@ -11,14 +11,14 @@ public class SavedValueManager : SingletonAsset<SavedValueManager>
     [SerializeField] private List<string> powerEggs = new();
     [SerializeField] private List<string> wishbones = new();
     [SerializeField] private List<string> hensRescued = new();
-    [SerializeField] private SerializedDictionary<string, bool> upgrades = new();
+    [SerializeField] private Upgrades upgradeDefaults = new();
     [SerializeField] private SavedFlagSet globalFlagDefaults;
 
     public static List<string> PowerEggs => Get().powerEggs;
     public static List<string> Wishbones => Get().wishbones;
     public static List<string> HensRescued => Get().hensRescued;
     public static SavedFlagSet GlobalFlagDefaults => Get().globalFlagDefaults;
-    public static SerializedDictionary<string, bool> Upgrades => Get().upgrades;
+    public static Upgrades Upgrades => Get().upgradeDefaults;
 
     [EditorAttributes.Button("TestSaveSystem")]
     public void TestSaveSystem()

@@ -7,12 +7,11 @@ using Cinemachine;
 using System.Linq;
 using SLS.ISingleton;
 using AYellowpaper.SerializedCollections;
+using RageRooster.Systems.SaveSystem;
 
 public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 {
     #region Config
-
-    [SerializeField] Upgrade[] upgrades;
 
     #endregion
 
@@ -64,8 +63,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 #if UNITY_EDITOR
         Input.Get().Asset.FindAction("DebugActivate").performed += (_) => 
         {
-            DEBUG_MODE_ACTIVE = !DEBUG_MODE_ACTIVE;
-            for (int i = 0; i < upgrades.Length; i++) upgrades[i].EnableUpgrade();
+            SaveFile.Current.playerStats.upgrades = Upgrades.Debug();
         };
 #endif
 
@@ -75,7 +73,6 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
         PauseMenu.onUnPause += UnPause;
     }
 
-    public static bool DEBUG_MODE_ACTIVE;
 
 
 

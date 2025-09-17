@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using Cinemachine;
 using System.Collections.Generic;
 using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
+using RageRooster.Systems.SaveSystem;
 
 public class PlayerController : PlayerStateBehavior
 {
@@ -23,10 +24,6 @@ public class PlayerController : PlayerStateBehavior
     public State airSpin;
     public PlayerHellcopterMovement airUpwardTornado;
     public State ventGlideState; 
-    public Upgrade groundSlamUpgrade;
-	public Upgrade wallJumpUpgrade;
-    public Upgrade ragingChargeUpgrade;
-    public Upgrade hellcopterUpgrade;
 
     public bool overrideMovementControl;
     public Vector2 overrideMovementVector;
@@ -111,7 +108,7 @@ public class PlayerController : PlayerStateBehavior
 
     public void ParryActionAirborne()
     {
-        if(hellcopterUpgrade)
+        if(Upgrades.Active.hellcopter)
         {
             airSpin.Enter();
             if (playerMovementBody.isOverVent) Machine.SendSignal(new("EnterVent", 0, true));

@@ -1,3 +1,4 @@
+using RageRooster.Systems.SaveSystem;
 using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,8 +14,6 @@ public class PlayerWallJump : PlayerMovementEffector
     public float outwardVelocity;
     public float minDistance;
     public float maxAngleDifference;
-
-    public Upgrade upgrade;
 
     public string animationName = "WallJump";
 
@@ -38,7 +37,7 @@ public class PlayerWallJump : PlayerMovementEffector
 
     public bool WallJump(Vector3 direction)
     {
-        if(upgrade && playerMovementBody.DirectionCast(playerMovementBody.direction, 0.5f, playerMovementBody.movementCheckBuffer, out RaycastHit hit))
+        if(Upgrades.Active.wallJump && playerMovementBody.DirectionCast(playerMovementBody.direction, 0.5f, playerMovementBody.movementCheckBuffer, out RaycastHit hit))
         {
             if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return false;
 

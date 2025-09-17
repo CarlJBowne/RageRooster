@@ -1,4 +1,5 @@
 using EditorAttributes;
+using RageRooster.Systems.SaveSystem;
 using SLS.ISingleton;
 using SLS.StateMachineH;
 using System.Collections;
@@ -135,7 +136,7 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
     protected override void FixedUpdate()
     {
         Machine.animator.SetFloat("CurrentSpeed", currentSpeed);
-        if (PlayerStateMachine.DEBUG_MODE_ACTIVE && Input.Jump.IsPressed()) VelocitySet(y: 10f);
+        if (Upgrades.Active.d_moonJump && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
         Vector3 prePos = Position;
 

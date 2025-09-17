@@ -1,3 +1,4 @@
+using RageRooster.Systems.SaveSystem;
 using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
@@ -72,7 +73,7 @@ public class PlayerHealth : Health
 
     }
 
-    protected override bool OverrideDamageable(Attack attack) => !ConversationManager.instance.inDialogue;
+    protected override bool OverrideDamageable(Attack attack) => !ConversationManager.instance.inDialogue && !Upgrades.Active.d_invincibility;
 
     protected override void OverrideDamageValue(ref Attack attack)
     {

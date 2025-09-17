@@ -1,11 +1,13 @@
 ﻿using EditorAttributes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RageRooster.Systems.SaveSystem;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[System.Obsolete]
 public class Upgrade : ScriptableObject, ICustomSerialized
 {
     [SerializeField, DisableInEditMode, DisableInPlayMode]
@@ -35,4 +37,5 @@ public class Upgrade : ScriptableObject, ICustomSerialized
         UnityEditor.EditorUtility.SetDirty(this);
 #endif
     }
+
 }

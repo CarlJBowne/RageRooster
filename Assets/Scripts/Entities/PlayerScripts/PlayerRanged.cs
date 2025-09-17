@@ -1,5 +1,6 @@
 using DG.Tweening;
 using EditorAttributes;
+using RageRooster.Systems.SaveSystem;
 using SLS.StateMachineH;
 using System;
 using System.Collections;
@@ -19,7 +20,6 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     public PlayerAirborneMovement jumpState;
     public State airThrowState;
     public State dropLaunchState;
-    public Upgrade dropLaunchUpgrade;
     public Transform heldItemAnchor;
     public PlayerInteracter interacter; 
 
@@ -122,7 +122,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         if (currentGrabbed != null)
         {
             body.transform.DOBlendableRotateBy(new(0, pointer.startH.eulerAngles.y - body.transform.eulerAngles.y, 0), 0.1f);
-            (!dropLaunchUpgrade ? airThrowState : dropLaunchState).Enter();
+            (!Upgrades.Active.dropLaunch ? airThrowState : dropLaunchState).Enter();
         }
         else state.BeginGrabAttempt(interacter.HasUsableGrabbable());
     }
@@ -164,14 +164,14 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void ThrowPoint()
     {
-        if (!body.Grounded && dropLaunchUpgrade)
+        if (!body.Grounded && Upgrades.Active.dropLaunch)
         {
             jumpState.BeginJump();
         }
         Vector3 direction =
             aimingState
             ? pointer.startV.forward
-            : !body.Grounded && dropLaunchUpgrade
+            : !body.Grounded && Upgrades.Active.dropLaunch
                 ? Vector3.down
                 : body.transform.forward;
         Release(direction * launchVelocity, true);
@@ -290,7 +290,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         aimingState.hAxis.Value = pointerH; 
         aimingState.vAxis.Value = Mathf.MoveTowardsAngle(aimingState.vAxis.Value, 0, 1);
         pointerV = Mathf.MoveTowardsAngle(pointerV, 0, 1);
-        if(!body.Grounded && dropLaunchUpgrade)
+        if(!body.Grounded && Upgrades.Active.dropLaunch)
         {
             realMuzzle.position = pointer.startH.position - (pointer.startH.up * (1 + (currentGrabbed == null ? 0 : currentGrabbed.AdditionalThrowDistance)));
             realMuzzle.eulerAngles = Vector3.right * 90;

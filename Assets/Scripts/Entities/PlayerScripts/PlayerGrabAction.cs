@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EditorAttributes;
 using SLS.StateMachineH;
+using RageRooster.Systems.SaveSystem;
 
 public class PlayerGrabAction : PlayerStateBehavior
 {
@@ -48,7 +49,7 @@ public class PlayerGrabAction : PlayerStateBehavior
             selectedGrabbable = lastMinute;
         }
         ranged.GrabPoint(selectedGrabbable);
-        if (air && ranged.dropLaunchUpgrade && Input.Grab.IsPressed()) ranged.TryGrabThrowAir(this);
+        if (air && Upgrades.Active.dropLaunch && Input.Grab.IsPressed()) ranged.TryGrabThrowAir(this);
         success = false;
         selectedGrabbable = null;
     }

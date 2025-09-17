@@ -1,4 +1,5 @@
 using EditorAttributes;
+using RageRooster.Systems.SaveSystem;
 using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
@@ -96,13 +97,13 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         thisCondition = 
             (!needs1Charge || Input.Charge1.IsPressed() || Input.Charge2.IsPressed()) &&      
             (!needs2Charge || (Input.Charge1.IsPressed() && Input.Charge2.IsPressed())) &&     
-            (!needsRagingUpgrade || playerController.ragingChargeUpgrade)           
+            (!needsRagingUpgrade || Upgrades.Active.ragingCharge)           
             ;
 
         nextCondition = nextPhase != null &&
             (!nextPhase.needs1Charge || Input.Charge1.IsPressed() || Input.Charge2.IsPressed()) &&
             (!nextPhase.needs2Charge || (Input.Charge1.IsPressed() && Input.Charge2.IsPressed())) &&
-            (!nextPhase.needsRagingUpgrade || playerController.ragingChargeUpgrade)
+            (!nextPhase.needsRagingUpgrade || Upgrades.Active.ragingCharge)
             ;
     }
 
