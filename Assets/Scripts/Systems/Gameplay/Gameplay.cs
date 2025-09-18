@@ -37,8 +37,6 @@ public class Gameplay : MonoBehaviour
     public static StudioEventEmitter musicEmitter;
     public static System.Action PreReloadSave;
 
-    public static SaveFile SaveData;
-    public static SaveFile DeathReloadData;
 
 
     #region Instance Fields
@@ -61,7 +59,7 @@ public class Gameplay : MonoBehaviour
             return;
         }
 
-        
+        DontDestroyOnLoad(gameObject);
 
         Instance = this;
         Active = true;
@@ -86,7 +84,7 @@ public class Gameplay : MonoBehaviour
 
             EnemyCullingGroup.Initialize(this);
 
-            yield return RoomManager.TransitionIn();
+            yield return RoomManager.Transition(true);
             Overlay.OverHUD.BasicFadeIn();
 
             Input.Pause.performed += c => { Menu.Manager.Escape(); };
@@ -111,7 +109,7 @@ public class Gameplay : MonoBehaviour
             Cursor.visible = false;
 
             InitializeSaves(fileNo);
-            RoomManager.transitionDestination = SaveData.location;
+            RoomManager.destination = SaveFile.Current.location;
 
             Menu.Manager.CloseAllMenus();
             var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE);
@@ -129,7 +127,8 @@ public class Gameplay : MonoBehaviour
 
         if (!EditorState.EditorDestination.IsValid()) 
             EditorState.EditorDestination = CalculateEditorSpawn();
-        RoomManager.transitionDestination = EditorState.EditorDestination;
+        if (!EditorState.EditorDestination.IsValid()) EditorState.EditorDestination = Destination.StartingDefault();
+        RoomManager.destination = EditorState.EditorDestination;
 
         SceneManager.LoadScene(GAMEPLAY_SCENE);
     }
@@ -138,9 +137,7 @@ public class Gameplay : MonoBehaviour
     {
         SaveFile.IO.SetFileTarget(fileNo);
         SaveFile.IO.Load();
-
-        SaveFile.IO.file.Clone(SaveData);
-        SaveData.Clone(DeathReloadData);
+        SaveFile.RevertToSaveFile();
     }
 
     private static Destination CalculateEditorSpawn()
@@ -148,9 +145,9 @@ public class Gameplay : MonoBehaviour
         Destination target = EditorState.EditorDestination;
 
         // If target is default, use the save file location
-        if (target.IsDefault()) return SaveData.location;
+        if (target.IsDefault()) return SaveFile.Current.location;
 
-        Destination fileDest = SaveData.location;
+        Destination fileDest = SaveFile.Current.location;
 
         if(target.area == null && target.room != null) target.area = target.room.area;
 
@@ -176,45 +173,24 @@ public class Gameplay : MonoBehaviour
         return target;
     }
 
-    [Obsolete("Unfinished", true)]
-    public static IEnumerator PitRespawn()
+
+
+    public static IEnumerator Respawn()
     {
-        yield return Overlay.OverGameplay.BasicFadeOutWait(.5f);
-
+        yield return RoomManager.Transition(SaveFile.Current.location);
         Player.onRespawn?.Invoke();
-
-        Overlay.OverGameplay.BasicFadeIn(.5f);
     }
 
-    [Obsolete("Unfinished", true)]
     public static IEnumerator Death()
     {
-        yield return Overlay.OverGameplay.GameOverAnim();
-        yield return WaitFor.SecondsRealtime(Player.deathTime);
-        yield return Overlay.OverMenus.BasicFadeOutWait(1f);
-        Player.Health.Current = Player.Health.Max;
-
-        Overlay.OverGameplay.Reset();
-
-        Overlay.OverMenus.BasicFadeIn(1f);
+        SaveFile.RevertToDeathData();
+        yield return RoomManager.Transition(SaveFile.Current.location, true);
     }
 
-    [Obsolete("Unfinished", true)]
-    public static IEnumerator ReturnToSpawnpoint()
-    {
-        yield return null;
-    }
-
-    [Obsolete("Unfinished", true)]
-    public static IEnumerator ReturnToCheckpoint()
-    {
-        yield return null;
-    }
-
-    [Obsolete("Unfinished", true)]
     public static IEnumerator ReloadSave()
     {
-        yield return null;
+        SaveFile.RevertToSaveFile();
+        yield return RoomManager.Transition(SaveFile.Current.location, true);
     }
 
 
@@ -324,12 +300,6 @@ public class Gameplay : MonoBehaviour
     }
 
 
-
-
-    public static void QuitToTitle()
-    {
-
-    }
 
     public static void DESTROY(bool areYouSure = false)
     {

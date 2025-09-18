@@ -14,7 +14,7 @@ namespace RageRooster.Entities.Collectibles
     {
         protected override List<string> targetRegistryList => SavedValueManager.Wishbones;
 
-        protected override SaveFile.SavedCollectible targetSavedCollectible => Gameplay.SaveData.wishbones;
+        protected override SaveFile.SavedCollectible targetSavedCollectible => SaveFile.Current.wishbones;
 
 
         private void OnTriggerEnter(Collider other)

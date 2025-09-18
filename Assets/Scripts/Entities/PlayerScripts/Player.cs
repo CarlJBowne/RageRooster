@@ -1,3 +1,4 @@
+using RageRooster.Systems.SaveSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -104,7 +105,7 @@ public class Player : MonoBehaviour
         public static void Initialize()
         {
             playerObject = GameObject.GetComponent<PlayerHealth>();
-            max = Gameplay.SaveData.playerStats.maxHealth;
+            max = SaveFile.Current.playerStats.maxHealth;
             current = max;
         }
         public static PlayerHealth playerObject;
@@ -130,7 +131,7 @@ public class Player : MonoBehaviour
                 if (max == value) return;
 
                 max = value;
-                Gameplay.SaveData.playerStats.maxHealth = value;
+                SaveFile.Current.playerStats.maxHealth = value;
                 updateMaxHealth?.Invoke();
             }
         }
@@ -150,7 +151,7 @@ public class Player : MonoBehaviour
         public static void Initialize()
         {
             playerObject = GameObject.GetComponent<PlayerRanged>();
-            max = Gameplay.SaveData.playerStats.maxAmmo;
+            max = SaveFile.Current.playerStats.maxAmmo;
             current = max;
         }
         public static PlayerRanged playerObject;
@@ -176,7 +177,7 @@ public class Player : MonoBehaviour
                 if (max == value) return;
 
                 max = value;
-                Gameplay.SaveData.playerStats.maxAmmo = value;
+                SaveFile.Current.playerStats.maxAmmo = value;
                 updateMaxAmmo?.Invoke();
             }
         }
@@ -193,7 +194,7 @@ public class Player : MonoBehaviour
         private static int current;
         public static void Initialize()
         {
-            current = Gameplay.SaveData.playerStats.currency;
+            current = SaveFile.Current.playerStats.currency;
         }
         public static int Current
         {
@@ -202,7 +203,7 @@ public class Player : MonoBehaviour
             {
                 if (current == value) return;
                 current = value;
-                Gameplay.SaveData.playerStats.currency = value;
+                SaveFile.Current.playerStats.currency = value;
                 updateCurrency?.Invoke();
             }
         }
@@ -228,7 +229,20 @@ public class Player : MonoBehaviour
 
             yield return WaitFor.SecondsRealtime(justPit ? fallDownPitTime : fallDownPitTime + 1);
 
-            yield return justPit ? Gameplay.PitRespawn() : Gameplay.Death();
+            if (!justPit)
+            {
+                yield return Overlay.OverGameplay.GameOverAnim();
+                yield return WaitFor.SecondsRealtime(deathTime);
+                yield return Overlay.OverMenus.BasicFadeOutWait(1f);
+                Overlay.OverGameplay.Reset();
+                yield return Gameplay.Death();
+            }
+            else
+            {
+                yield return Overlay.OverMenus.BasicFadeOutWait(1f);
+                Overlay.OverGameplay.Reset();
+                yield return Gameplay.Respawn();
+            }
         }
     }
 }

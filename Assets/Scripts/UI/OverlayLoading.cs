@@ -1,3 +1,5 @@
+using RageRooster.RoomSystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,8 +7,19 @@ using UnityEngine.UI;
 
 public class OverlayLoading : Overlay
 {
-
     public static OverlayLoading overlay;
+    [SerializeField] float showTime;
+
+    public static void ShowIfLong()
+    {
+        Enum().Begin(overlay);
+        static IEnumerator Enum()
+        {
+            yield return new WaitUntil(() => overlay);
+            yield return new WaitForSecondsRealtime(overlay.showTime);
+            if (RoomManager.loading) SetVisible(true);
+        }
+    }
 
 
     protected override void Awake()

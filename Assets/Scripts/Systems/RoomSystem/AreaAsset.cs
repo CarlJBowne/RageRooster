@@ -33,7 +33,7 @@ namespace RageRooster.RoomSystem
         {
             state = SceneState.Loading;
 
-            yield return SceneOperationRoutine.Load(shellScene);
+            yield return SceneOperationRoutine.Load(shellScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
             if (root == null) yield return new WaitUntil(() => root != null);
 
             state = SceneState.Loaded;

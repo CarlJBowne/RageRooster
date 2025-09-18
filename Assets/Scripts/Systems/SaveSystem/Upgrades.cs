@@ -13,7 +13,7 @@ namespace RageRooster.Systems.SaveSystem
         [JsonIgnore] public bool d_invincibility;
         [JsonIgnore] public bool d_moonJump;
 
-        public static Upgrades Active => Gameplay.SaveData.playerStats.upgrades;
+        public static Upgrades Active => SaveFile.Current.playerStats.upgrades;
 
         public static Upgrades Default => SavedValueManager.Upgrades.Clone();
 

@@ -59,7 +59,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 #if UNITY_EDITOR
         Input.Get().Asset.FindAction("DebugActivate").performed += (_) => 
         {
-            Gameplay.SaveData.playerStats.upgrades = Upgrades.Debug();
+            SaveFile.Current.playerStats.upgrades = Upgrades.Debug();
         };
 #endif
 

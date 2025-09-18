@@ -29,14 +29,12 @@ public class TestScript : MonoBehaviour, IInteractable
         {
             yield return Overlay.OverMenus.BasicFadeOutWait(1f);
             OverlayLoading.SetVisible(true);
-            yield return RoomManager.TransitionOut();
-            RoomManager.transitionDestination = new Destination()
+            yield return RoomManager.Transition(new Destination()
             {
                 area = area,
                 room = room,
                 spawnID = 0
-            };
-            yield return RoomManager.TransitionIn();
+            }, true);
             yield return Overlay.OverMenus.BasicFadeInWait(1f);
         }
     }

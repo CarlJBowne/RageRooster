@@ -10,46 +10,49 @@ namespace RageRooster.RoomSystem
         public static AreaAsset currentArea { get; private set; }
         public static RoomAsset currentRoom { get; private set; }
 
-        public static Destination respawnDestination = Destination.Default;
-        public static Destination deathRespawnDestination = Destination.Default;
+        public static Destination destination;
+        public static bool loading;
 
-
-
-        public static IEnumerator TransitionOut()
+        public static IEnumerator Transition(Destination destination, bool forceFullTransition = false)
         {
-            yield return currentArea.UnloadArea();
-            currentArea = null;
-            currentRoom = null;
+            RoomManager.destination = destination;
+            return Transition(forceFullTransition);
         }
-        public static Destination transitionDestination;
-        public static IEnumerator TransitionIn()
+        public static IEnumerator Transition(bool forceFullTransition = false)
         {
-            if (!transitionDestination.IsValid()) throw new System.Exception("No valid destination.");
+            if (!destination.IsValid()) throw new System.Exception("No valid destination.");
 
             Player.SetActive(false);
-            OverlayLoading.SetVisible(true);
-
             yield return null;
+            loading = true;
+            OverlayLoading.ShowIfLong();
 
-            if (transitionDestination.area == null) transitionDestination.area = transitionDestination.room.area;
+            if (destination.area == null) destination.area = destination.room.area;
 
-            currentArea = transitionDestination.area;
-            yield return currentArea.LoadArea();
+            if(currentArea != destination.area || forceFullTransition)
+            {
+                if (currentArea != null) yield return currentArea.UnloadArea();
+                currentArea = null;
+                currentRoom = null;
+                currentArea = destination.area;
+                yield return currentArea.LoadArea();
+            }
 
-            yield return transitionDestination.room.PrepEnter();
-            EnterRoom(transitionDestination.room);
+            yield return destination.room.PrepEnter();
+            EnterRoom(destination.room);
 
-            if (transitionDestination.spawn == null) 
-                transitionDestination.spawn = currentRoom.root.spawns[transitionDestination.spawnID];
-            transitionDestination.spawn.SpawnPlayerAt();
+            if (destination.spawn == null)
+                destination.spawn = currentRoom.root.spawns[destination.spawnID];
+            destination.spawn.SpawnPlayerAt();
 
-            foreach (RoomAsset room in currentArea.rooms) 
+            foreach (RoomAsset room in currentArea.rooms)
                 yield return room.PrepSurrounding();
 
-            yield return new WaitForSecondsRealtime(0.5f);
-
+            loading = false;
             OverlayLoading.SetVisible(false);
             Player.SetActive(true);
+
+            destination = Destination.Default;
         }
 
 

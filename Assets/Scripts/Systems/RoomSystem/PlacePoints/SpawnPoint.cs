@@ -30,4 +30,12 @@ public class SpawnPoint : MonoBehaviour
     {
         Player.InstantMove(transform.position, rotate ? transform.eulerAngles.y : null);
     }
+
+    public Destination GetDestination() => new()
+    {
+        area = root.asset.area,
+        room = root.asset,
+        spawn = this,
+        spawnID = ID
+    };
 }

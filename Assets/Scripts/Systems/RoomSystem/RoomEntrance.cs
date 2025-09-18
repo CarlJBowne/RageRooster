@@ -1,3 +1,4 @@
+using RageRooster.Systems.SaveSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,15 +12,19 @@ namespace RageRooster.RoomSystem
         public float lodRadius = 50f;
         public Vector3 direction = Vector3.forward;
 
+        public SpawnPoint spawnPoint;
+        public bool forDeathOnly = false;
+
         [SerializeField, HideInInspector] internal RoomRoot root;
 
 
         public void OnTriggerEnter(Collider other)
         {
-            if (other != PlayerMovementBody.Get().Collider) return;
+            if (other != Player.Collider) return;
             RoomManager.EnterRoom(root.asset);
+            if(spawnPoint != null)
+                (forDeathOnly ? SaveFile.DeathReloadData : SaveFile.Current).location = spawnPoint.GetDestination();
         }
-
 
 
 
@@ -44,6 +49,19 @@ namespace RageRooster.RoomSystem
             public float unloadRadius;
             public float lodRadius;
         }
+
+#if UNITY_EDITOR
+        [ContextMenu("Add Spawn Point")]
+        private void AddSpawnPoint()
+        {
+            GameObject G = new("SpawnPoint");
+            G.transform.SetParent(transform);
+            G.transform.localPosition = Vector3.zero;
+            G.transform.localRotation = Quaternion.identity;
+            spawnPoint = G.AddComponent<SpawnPoint>();
+        }
+#endif
+
     }
 
 }

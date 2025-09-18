@@ -8,6 +8,9 @@ namespace RageRooster.Systems.SaveSystem
 {
     public class SaveFile : ICloneable<SaveFile>
     {
+        public static SaveFile Current;
+        public static SaveFile DeathReloadData;
+
         public const string targetFileVersion = "1.0.0";
         public Destination location;
         public SavedPlayerStats playerStats = new();
@@ -238,6 +241,32 @@ namespace RageRooster.Systems.SaveSystem
 
                 return JsonFile.FileState.Valid;
             }
+        }
+
+
+        public static void RevertToDeathData()
+        {
+            DeathReloadData.Clone(Current);
+            Player.Health.Max = Current.playerStats.maxHealth;
+            Player.Health.Current = Player.Health.Max;
+            Player.Ammo.Max = Current.playerStats.maxAmmo;
+            Player.Ammo.Current = Player.Ammo.Max;
+            Player.Currency.Current = Current.playerStats.currency;
+        }
+        public static void RevertToSaveFile()
+        {
+            IO.file.Clone(Current);
+            IO.file.Clone(DeathReloadData);
+            Player.Health.Max = Current.playerStats.maxHealth;
+            Player.Health.Current = Player.Health.Max;
+            Player.Ammo.Max = Current.playerStats.maxAmmo;
+            Player.Ammo.Current = Player.Ammo.Max;
+            Player.Currency.Current = Current.playerStats.currency;
+        }
+        public static void ApplyToSaveFile()
+        {
+            Current.Clone(IO.file);
+            Current.Clone(DeathReloadData);
         }
 
     }
