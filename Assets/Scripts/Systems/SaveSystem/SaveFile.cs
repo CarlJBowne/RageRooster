@@ -19,8 +19,17 @@ namespace RageRooster.Systems.SaveSystem
 
         public class SavedPlayerStats
         {
+            /// <summary>
+            /// Don't access this directly outside of the SaveFile System. Use <see cref="Player.Health.MaxHealth"/> instead.
+            /// </summary>
             public int maxHealth = 3;
+            /// <summary>
+            /// Don't access this directly outside of the SaveFile System. Use <see cref="Player.Ammo.MaxAmmo"/> instead.
+            /// </summary>
             public int maxAmmo = 0;
+            /// <summary>
+            /// Don't access this directly outside of the SaveFile System. Use <see cref="Player.Currency.Amount"/> instead.
+            /// </summary>
             public int currency = 0;
             public TimeSpan playTime = TimeSpan.Zero;
             public Upgrades upgrades;

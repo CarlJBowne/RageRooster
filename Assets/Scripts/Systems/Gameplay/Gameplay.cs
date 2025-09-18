@@ -41,8 +41,8 @@ public class Gameplay : MonoBehaviour
     public static System.Action onPlayerRespawn;
 
     public static SaveFile SaveData => _saveData;
-    private static SaveFile _saveData = new();
-    public static SaveFile DeathReloadData = new();
+    private static SaveFile _saveData;
+    public static SaveFile DeathReloadData;
 
 
     #region Instance Fields
@@ -53,6 +53,7 @@ public class Gameplay : MonoBehaviour
     [SerializeField] SettingsMenu settingsMenu;
     [SerializeField] DontDestroyMeOnLoad overlayPrefab;
     [SerializeField] Player inputPlayer;
+    [SerializeField] UIHUDSystem inputUI;
 
     #endregion Instance Fields
 
@@ -64,7 +65,8 @@ public class Gameplay : MonoBehaviour
             return;
         }
 
-        musicEmitter = GetComponent<StudioEventEmitter>();
+        
+
         Instance = this;
         Active = true;
         GameObject = gameObject;
@@ -72,16 +74,18 @@ public class Gameplay : MonoBehaviour
         Overlay.OverHUD.SetAlpha(1);
         DontDestroyOnLoad(gameObject);
         inputPlayer.Awake();
+        inputUI.Awake();
         GetComponent<Cameras>().Awake();
+        musicEmitter = GetComponent<StudioEventEmitter>();
         
         StartCoroutine(Enum());
         IEnumerator Enum()
         {
+            yield return null;
             yield return WaitFor.Until(Initialized);
 
             bool Initialized() => Active
-                && PlayerHealth.Global.playerObject
-                && PlayerRanged.Ammo.playerObject
+                && Player.Active
                 && RoomManager.Active;
 
             EnemyCullingGroup.Initialize(this);
@@ -112,7 +116,9 @@ public class Gameplay : MonoBehaviour
 
         SaveFile.IO.SetFileTarget(0);
         SaveFile.IO.Load();
-        SaveData.CloneFrom(SaveFile.IO.file.Clone());
+
+        SaveFile.IO.file.Clone(_saveData);
+        _saveData.Clone(DeathReloadData);
 
         if (!EditorState.EditorDestination.IsValid()) 
             EditorState.EditorDestination = CalculateEditorSpawn();
@@ -368,34 +374,17 @@ public class Gameplay : MonoBehaviour
         SavePoint_Old spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
         spawnPointID = spawn.GetID();
         Player.InstantMove(spawn);
-        PlayerHealth.Global.UpdateMax(GlobalState.maxHealth);
+        //PlayerHealth.Global.UpdateMax(GlobalState.maxHealth);
         Player.SetActive(true);
         fullyLoaded = true;
     }
 
     #endregion
-}
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(Gameplay), true)]
-public class GameplayEditor : Editor
-{
-    Gameplay This;
-
-    void OnEnable()
+    [CustomEditor(typeof(Gameplay))]
+    public class Editor : UnityEditor.Editor
     {
     }
-
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-        serializedObject.Update();
-
-        GUILayout.Label(Gameplay.spawnSceneName);
-        GUILayout.Label(Gameplay.spawnPointID.ToString());
-
-        serializedObject.ApplyModifiedProperties();
-    }
-}
 #endif
-
+}

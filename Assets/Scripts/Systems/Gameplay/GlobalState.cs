@@ -63,10 +63,10 @@ public class GlobalState : SingletonMonoBasic<GlobalState>, ICustomSerialized
         if (File == null) InitializeSaveFile(0);
         if (File.LoadFromFile() == JsonFile.LoadResult.Success) Get().Deserialize(File.Data);
 
-        PlayerHealth.Global.UpdateMax(maxHealth);
-        PlayerRanged.Ammo.UpdateMax(maxAmmo);
-        PlayerRanged.Ammo.Update(maxAmmo);
-        UIHUDSystem.SetCurrencyText(currency.ToString());
+        //PlayerHealth.Global.UpdateMax(maxHealth);
+        //PlayerRanged.Ammo.UpdateMax(maxAmmo);
+        //PlayerRanged.Ammo.Update(maxAmmo);
+        //UIHUDSystem.SetCurrencyText(currency.ToString());
         Get().SetSkybox(); 
     }
 
@@ -116,7 +116,7 @@ public class GlobalState : SingletonMonoBasic<GlobalState>, ICustomSerialized
     {
         GlobalState.currency += currency;
         if (GlobalState.currency < 0) GlobalState.currency = 0;
-        UIHUDSystem.SetCurrencyText(GlobalState.currency > 0 ? GlobalState.currency.ToString() : "Broke.");
+        //UIHUDSystem.SetCurrencyText(GlobalState.currency > 0 ? GlobalState.currency.ToString() : "Broke.");
         currencyUpdateCallback?.Invoke();
     }
 

@@ -28,7 +28,7 @@ public class HenCollectibleEntity : MonoBehaviour, IInteractable
     }
     bool IInteractable.Interaction()
     {
-        PlayerRanged.Ammo.UpdateMax(PlayerRanged.Ammo.maxAmmo + 1);
+        Player.Ammo.Max++;
         worldChange.Enable();
         gameObject.SetActive(false);
         PlayerInteracter.LostInteractable(this);

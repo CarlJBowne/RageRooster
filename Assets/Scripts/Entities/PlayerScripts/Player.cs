@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,6 @@ public class Player : MonoBehaviour
     public static PlayerController Controller { get; private set; }
     public static PlayerRanged Ranged { get; private set; }
     public static PlayerInteracter Interacter { get; private set; }
-    public static PlayerHealth Health { get; private set; }
     public static Animator Animator { get; private set; }
     public static AudioCaller Audio { get; private set; }
 
@@ -45,9 +45,11 @@ public class Player : MonoBehaviour
         Controller = GetComponent<PlayerController>();
         Ranged = GetComponent<PlayerRanged>();
         Interacter = GetComponent<PlayerInteracter>();
-        Health = GetComponent<PlayerHealth>();
         Animator = GetComponent<Animator>();
         Audio = GetComponent<AudioCaller>();
+        Health.Initialize();
+        Ammo.Initialize();
+        Currency.Initialize();
 
         Exists = true;
         Active = true;
@@ -95,7 +97,120 @@ public class Player : MonoBehaviour
         savePoint.onSpawnEvent?.Invoke();
     }
 
+    /// <summary>
+    /// The Model part of the MVC pattern for Player Health, not to be confused with <see cref="PlayerHealth"/> or <see cref="UIHUDSystem"/>.
+    /// </summary>
+    public static class Health
+    {
+        private static int current;
+        private static int max;
+
+        public static void Initialize()
+        {
+            playerObject = GameObject.GetComponent<PlayerHealth>();
+            max = Gameplay.SaveData.playerStats.maxHealth;
+            current = max;
+        }
+        public static PlayerHealth playerObject;
 
 
+        public static int Current
+        {
+            get => current;
+            set
+            {
+                if(value > max) value = max;
+                if(current == value) return;
+
+                current = value;
+                updateHealth?.Invoke();
+            }
+        }
+        public static int Max
+        {
+            get => max;
+            set
+            {
+                if (max == value) return;
+
+                max = value;
+                Gameplay.SaveData.playerStats.maxHealth = value;
+                updateMaxHealth?.Invoke();
+            }
+        }
+
+        public static Action updateHealth;
+        public static Action updateMaxHealth;
+    }
+
+    /// <summary>
+    /// The Model part of the MVC pattern for Player Ammo, not to be confused with <see cref="PlayerRanged"/> or <see cref="UIHUDSystem"/>.
+    /// </summary>
+    public static class Ammo
+    {
+        private static int current;
+        private static int max;
+
+        public static void Initialize()
+        {
+            playerObject = GameObject.GetComponent<PlayerRanged>();
+            max = Gameplay.SaveData.playerStats.maxAmmo;
+            current = max;
+        }
+        public static PlayerRanged playerObject;
+
+
+        public static int Current
+        {
+            get => current;
+            set
+            {
+                if (value > max) value = max;
+                if (current == value) return;
+
+                current = value;
+                updateAmmo?.Invoke();
+            }
+        }
+        public static int Max
+        {
+            get => max;
+            set
+            {
+                if (max == value) return;
+
+                max = value;
+                Gameplay.SaveData.playerStats.maxAmmo = value;
+                updateMaxAmmo?.Invoke();
+            }
+        }
+
+        public static Action updateAmmo;
+        public static Action updateMaxAmmo;
+    }
+
+    /// <summary>
+    /// The Model part of the MV pattern for Player Ammo, not to be confused with <see cref="UIHUDSystem"/>.
+    /// </summary>
+    public static class Currency
+    {
+        private static int current;
+        public static void Initialize()
+        {
+            current = Gameplay.SaveData.playerStats.currency;
+        }
+        public static int Current
+        {
+            get => current;
+            set
+            {
+                if (current == value) return;
+                current = value;
+                Gameplay.SaveData.playerStats.currency = value;
+                updateCurrency?.Invoke();
+            }
+        }
+        public static Action updateCurrency;
+    }
 
 }

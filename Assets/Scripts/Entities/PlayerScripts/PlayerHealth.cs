@@ -27,7 +27,16 @@ public class PlayerHealth : Health
     {
         base.Awake();
         collider = GetComponent<Collider>();
-        Global.playerObject = this;
+        Player.Health.updateHealth += HealthChangeCallback;
+        Player.Health.updateMaxHealth += MaxHealthChangeCallback;
+
+        //Global.playerObject = this;
+    }
+
+    private void OnDestroy()
+    {
+        Player.Health.updateHealth -= HealthChangeCallback;
+        Player.Health.updateMaxHealth -= MaxHealthChangeCallback;
     }
 
     protected override void OnDamage(Attack attack)
@@ -48,10 +57,10 @@ public class PlayerHealth : Health
             }
             else damageState.Enter();
         }
-        Global.Update(health);
+        Player.Health.Current = health;
     }
 
-    protected override void OnHeal(int amount) => Global.Update(health);
+    protected override void OnHeal(int amount) => Player.Health.Current = health;
 
     protected override void OnDeplete(Attack attack)
     {
@@ -92,36 +101,21 @@ public class PlayerHealth : Health
         }
     }
 
-    #endregion Instance Methods
 
-    public static class Global
+    private void HealthChangeCallback()
     {
-        public static int currentHealth;
-        public static int maxHealth;
-
-        public static PlayerHealth playerObject;
-        public static UIHUDSystem UI;
-
-        public static void Update(int current)
-        {
-            currentHealth = current;
-            playerObject.health = current;
-
-            UI.UpdateHealth(current, maxHealth);
-        }
-        public static void UpdateMax(int max)
-        {
-            currentHealth = max;
-            maxHealth = max;
-
-            playerObject.health = max;
-            playerObject.maxHealth = max;
-            UI.UpdateHealth(max, max);
-
-            GlobalState.maxHealth = max;
-        }
-
-        public static void HealToFull() => Update(maxHealth);
-
+        if (health == Player.Health.Current) return;
+        health = Player.Health.Current;
+        if(health < 1) OnDeplete(default);
     }
+    private void MaxHealthChangeCallback()
+    {
+        if (maxHealth == Player.Health.Max) return;
+        maxHealth = Player.Health.Max;
+    }
+
+    public void DoAwake() => Awake();
+
+
+    #endregion Instance Methods
 }

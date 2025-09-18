@@ -140,7 +140,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
                 yield return Overlay.OverGameplay.GameOverAnim();
                 yield return WaitFor.SecondsRealtime(deathTime);
                 yield return Overlay.OverMenus.BasicFadeOutWait(1f);
-                PlayerHealth.Global.Update(PlayerHealth.Global.maxHealth);
+                Player.Health.Current = Player.Health.Max;
                 yield return Gameplay.DoReloadSave();
                 Overlay.OverGameplay.Reset();
                 yield return Gameplay.SpawnPlayer();

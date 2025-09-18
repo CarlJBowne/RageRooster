@@ -4,15 +4,7 @@ using RageRooster.Systems.SaveSystem;
 using SLS.StateMachineH;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.Animations.Rigging;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
-using UnityEngine.SocialPlatforms;
 
 public class PlayerRanged : MonoBehaviour, IGrabber
 {
@@ -53,11 +45,9 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         pointer.target.position = pointer.startV.position + pointer.startV.forward * pointer.distance;
 
         eggPool.Initialize();
-        //eggCapacity = GlobalState.maxAmmo;
-        //eggAmount = eggCapacity;
-        //UI.UpdateAmmo(eggAmount);
-        //GlobalState.maxAmmoUpdateCallback += UpdateMaxAmmo;
-        Ammo.playerObject = this;
+        Player.Ammo.updateAmmo += UI.ammo.UpdateAmmo;
+        Player.Ammo.updateMaxAmmo += UI.ammo.UpdateMax;
+
     }
 
     private void OnEnable() => PauseMenu.onPause += ExitAimingInstant;
@@ -66,7 +56,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     private void FixedUpdate()
     {
-        if (eggAmount < eggCapacity) eggReplenishRate.Tick(() => ChangeAmmoAmount(1));
+        if (eggAmount < eggCapacity) eggReplenishRate.Tick(() => Player.Ammo.Current++);
 
         pointer.startH.position = body.Position + Vector3.up;
 
@@ -82,7 +72,8 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     }
     private void OnDestroy()
     {
-        //GlobalState.maxAmmoUpdateCallback -= UpdateMaxAmmo;
+        Player.Ammo.updateAmmo -= UI.ammo.UpdateAmmo;
+        Player.Ammo.updateMaxAmmo -= UI.ammo.UpdateMax;
     }
 
     #region Grabbing Throwing
@@ -239,7 +230,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     public ObjectPool eggPool;
     public float playerRotationSpeed = 10;
     public Timer.Loop eggReplenishRate = new(1f);
-    public Rig aimingRig;
+    public UnityEngine.Animations.Rigging.Rig aimingRig;
     public State aimThrowState;
 
     [HideProperty] public int eggAmount = 10;
@@ -376,7 +367,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
         audio.PlayOneShot("EggShoot");
         eggPool.Pump().GetComponent<ProjectileMovement>().Send();
-        ChangeAmmoAmount(-1);
+        Player.Ammo.Current--;
         justShot = true;
         CoroutinePlus.Begin(ref justShotCO, Enum(), this);
         IEnumerator Enum()
@@ -390,40 +381,4 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     {
         aimThrowState.Enter();
     }
-
-    void ChangeAmmoAmount(int offset)
-    {
-        Ammo.Update(eggAmount + offset);
-        //eggAmount += offset;
-        //UI.UpdateAmmo(eggAmount);
-    }
-    //void UpdateMaxAmmo()
-    //{
-    //    eggCapacity = GlobalState.maxAmmo;
-    //    UI.UpdateAmmo(eggAmount);
-    //}
-
-    public static class Ammo
-    {
-        public static int currentAmmo;
-        public static int maxAmmo;
-
-        public static PlayerRanged playerObject;
-        public static UIHUDSystem UI;
-
-        public static void Update(int newAmount)
-        {
-            currentAmmo = newAmount;
-            playerObject.eggAmount = newAmount;
-            UI.UpdateAmmo(currentAmmo);
-        }
-        public static void UpdateMax(int newMax)
-        {
-            maxAmmo = newMax;
-            playerObject.eggCapacity = newMax;
-            GlobalState.maxAmmo = newMax;
-            UI.UpdateAmmo(currentAmmo);
-        }
-    }
-
 }
