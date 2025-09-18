@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[Obsolete]
+/*[Obsolete]
 [RequireComponent(typeof(Collider))]
 public class ZoneTransition : MonoBehaviour
 {
@@ -56,4 +56,4 @@ public class ZoneTransition : MonoBehaviour
     private void OnTriggerEnter(Collider other) { if (other == Player.Collider) ZoneManager.DoTransition(Scene); }
 
     public static implicit operator string(ZoneTransition A) => A.Scene;
-}
+}*/

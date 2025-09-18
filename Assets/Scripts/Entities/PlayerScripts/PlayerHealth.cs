@@ -48,7 +48,7 @@ public class PlayerHealth : Health
             if(Player.Ranged.aimingState) Player.Ranged.ExitAimingAux();
             CoroutinePlus.Begin(ref invincibility, InvinceEnum(invincibilityTime), this);
             damagable = false;
-            if (attack.HasTag(Attack.Tag.Pit)) Player.StateMachine.Death(true);
+            if (attack.HasTag(Attack.Tag.Pit)) Player.Death(true);
             else if (attack.HasTag(Attack.Tag.Wham)) 
             {
                 damageStateWham.Enter();
@@ -70,7 +70,7 @@ public class PlayerHealth : Health
             Player.MovementBody.UnLand();
             Player.MovementBody.VelocitySet(y: 14);
         }
-        else Player.StateMachine.Death();
+        else Player.Death();
     }
 
     private IEnumerator InvinceEnum(float time)

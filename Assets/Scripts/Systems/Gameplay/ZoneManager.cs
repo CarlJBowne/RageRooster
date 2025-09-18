@@ -3,7 +3,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+/*
 [System.Serializable, System.Obsolete] 
 public class ZoneManager : SingletonMonoBasic<ZoneManager>
 {
@@ -173,3 +173,4 @@ public struct Vector3Double
         return This;
     }
 }
+*/

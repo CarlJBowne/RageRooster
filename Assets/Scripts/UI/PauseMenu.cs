@@ -68,7 +68,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
         {
             yield return Overlay.OverMenus.BasicFadeOutWait(1f);
 
-            yield return Gameplay.SpawnPlayer();
+            yield return Gameplay.ReturnToCheckpoint();
 
             TrueClose();
             Overlay.OverMenus.BasicFadeIn(1f);
@@ -82,9 +82,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
             Gameplay.PreReloadSave?.Invoke();
             yield return Overlay.OverMenus.BasicFadeOutWait(1.2f);
 
-            yield return Gameplay.DoReloadSave();
-
-            yield return Gameplay.SpawnPlayer();
+            yield return Gameplay.ReloadSave();
 
             TrueClose();
             Overlay.OverMenus.BasicFadeIn(1.2f);

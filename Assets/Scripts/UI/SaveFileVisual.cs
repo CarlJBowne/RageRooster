@@ -11,16 +11,16 @@ public class SaveFileVisual : MonoBehaviour
 
     private void Awake()
     {
-        File = new(GlobalState.SaveFilePath, $"SaveFile{ID}");
+        //File = new(GlobalState.SaveFilePath, $"SaveFile{ID}");
         UpdateFile();
     }
 
 
-    public void PlayFile() => Gameplay.BeginMainMenu(ID);
+    public void PlayFile() => Gameplay.BeginSaveFile(ID);
 
     public void DeleteFile()
     {
-        GlobalState.DeleteSaveFile(ID);
+        //GlobalState.DeleteSaveFile(ID);
         UpdateFile();
     }
 

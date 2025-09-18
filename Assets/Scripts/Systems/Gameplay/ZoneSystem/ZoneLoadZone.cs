@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Obsolete]
+/*[Obsolete]
 public class ZoneLoadZone : MonoBehaviour
 {
     public ZoneTransition transition;
@@ -31,3 +31,4 @@ public class ZoneLoadZone : MonoBehaviour
         Gameplay.onPlayerRespawn -= PlayerDisabled;
     }
 }
+*/

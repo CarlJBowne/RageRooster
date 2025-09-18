@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[System.Serializable, System.Obsolete]
+/*[System.Serializable, System.Obsolete]
 public class ZoneProxy
 {
     public string name;
@@ -99,5 +99,5 @@ public class ZoneProxy
     { foreach (ZoneTransition transition in transitionsTo) transition.SetTraversable(value); }
 
     public ZoneRoot GetRoot() => root != null ? root : throw new System.Exception("ERROR: The Player is attempting to transition to a Zone that has not yet Loaded. Ideally, there would be a collider attached to the visual proxy to prevent this from ever happening.");
-
-}
+    
+}*/

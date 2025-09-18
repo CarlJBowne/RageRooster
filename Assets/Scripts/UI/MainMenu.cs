@@ -89,7 +89,7 @@ public class MainMenu : MenuSingleton<MainMenu>
 
     public void PlayGameDebug()
     {
-        Gameplay.BeginMainMenu(0);
+        Gameplay.BeginSaveFile(0);
         Close();
     }
 

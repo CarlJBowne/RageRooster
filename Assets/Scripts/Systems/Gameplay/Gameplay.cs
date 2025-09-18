@@ -34,14 +34,10 @@ public class Gameplay : MonoBehaviour
 
     public static SceneReference GAMEPLAY_SCENE = new("GameplayScene");
 
-    protected static System.Action PostMaLoad;
     public static StudioEventEmitter musicEmitter;
     public static System.Action PreReloadSave;
-    public static bool fullyLoaded;
-    public static System.Action onPlayerRespawn;
 
-    public static SaveFile SaveData => _saveData;
-    private static SaveFile _saveData;
+    public static SaveFile SaveData;
     public static SaveFile DeathReloadData;
 
 
@@ -90,9 +86,6 @@ public class Gameplay : MonoBehaviour
 
             EnemyCullingGroup.Initialize(this);
 
-            GlobalState.Load();
-            PostMaLoad?.Invoke();
-
             yield return RoomManager.TransitionIn();
             Overlay.OverHUD.BasicFadeIn();
 
@@ -108,23 +101,46 @@ public class Gameplay : MonoBehaviour
     {
         if (Active) return;
 
-        SceneManager.LoadScene(GAMEPLAY_SCENE);
+        Enum().Begin(Overlay.OverMenus);
+        IEnumerator Enum()
+        {
+
+            yield return Overlay.OverMenus.BasicFadeOutWait();
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+            InitializeSaves(fileNo);
+            RoomManager.transitionDestination = SaveData.location;
+
+            Menu.Manager.CloseAllMenus();
+            var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE);
+
+            yield return WaitFor.Until(() => Load.isDone && Active);
+            yield return WaitFor.SecondsRealtime(0.2f);
+            Overlay.OverMenus.BasicFadeIn();
+        }
     }
     public static void BeginEditor()
     {
         if (Active) return;
 
-        SaveFile.IO.SetFileTarget(0);
-        SaveFile.IO.Load();
-
-        SaveFile.IO.file.Clone(_saveData);
-        _saveData.Clone(DeathReloadData);
+        InitializeSaves(0);
 
         if (!EditorState.EditorDestination.IsValid()) 
             EditorState.EditorDestination = CalculateEditorSpawn();
         RoomManager.transitionDestination = EditorState.EditorDestination;
 
         SceneManager.LoadScene(GAMEPLAY_SCENE);
+    }
+
+    public static void InitializeSaves(int fileNo)
+    {
+        SaveFile.IO.SetFileTarget(fileNo);
+        SaveFile.IO.Load();
+
+        SaveFile.IO.file.Clone(SaveData);
+        SaveData.Clone(DeathReloadData);
     }
 
     private static Destination CalculateEditorSpawn()
@@ -160,28 +176,52 @@ public class Gameplay : MonoBehaviour
         return target;
     }
 
-
-
-
-    public static IEnumerator SpawnPlayer()
+    [Obsolete("Unfinished", true)]
+    public static IEnumerator PitRespawn()
     {
-        spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
-        if (!ZoneManager.ZoneIsReady(spawnSceneName)) SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
+        yield return Overlay.OverGameplay.BasicFadeOutWait(.5f);
 
-        yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
+        Player.onRespawn?.Invoke();
 
-        ZoneManager.DoTransition(spawnSceneName);
-        Player.InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
-        onPlayerRespawn?.Invoke();
+        Overlay.OverGameplay.BasicFadeIn(.5f);
     }
 
-    public static IEnumerator DoReloadSave()
+    [Obsolete("Unfinished", true)]
+    public static IEnumerator Death()
     {
-        Player.SetActive(false);
-        yield return ZoneManager.UnloadAll();
-        GlobalState.Load();
+        yield return Overlay.OverGameplay.GameOverAnim();
+        yield return WaitFor.SecondsRealtime(Player.deathTime);
+        yield return Overlay.OverMenus.BasicFadeOutWait(1f);
+        Player.Health.Current = Player.Health.Max;
+
+        Overlay.OverGameplay.Reset();
+
+        Overlay.OverMenus.BasicFadeIn(1f);
+    }
+
+    [Obsolete("Unfinished", true)]
+    public static IEnumerator ReturnToSpawnpoint()
+    {
         yield return null;
     }
+
+    [Obsolete("Unfinished", true)]
+    public static IEnumerator ReturnToCheckpoint()
+    {
+        yield return null;
+    }
+
+    [Obsolete("Unfinished", true)]
+    public static IEnumerator ReloadSave()
+    {
+        yield return null;
+    }
+
+
+
+
+
+
 
     //protected override void OnDeInitialize() => EnemyCullingGroup.DeInitialize();
 
@@ -286,7 +326,10 @@ public class Gameplay : MonoBehaviour
 
 
 
+    public static void QuitToTitle()
+    {
 
+    }
 
     public static void DESTROY(bool areYouSure = false)
     {
@@ -300,86 +343,6 @@ public class Gameplay : MonoBehaviour
         Destroy(GameObject);
     }
 
-    #region OBSOLETE
-    [Obsolete]
-    /// <summary>
-    /// Begins the main menu by loading the gameplay scene and setting the active save file.
-    /// </summary>
-    /// <param name="fileNo">The File Number. Intended to be set somewhere in the Main Menu.</param>
-    public static void BeginMainMenu(int fileNo)
-    {
-        if (Gameplay.Active) return;
-
-        Overlay.OverMenus.StartCoroutine(Enum());
-        IEnumerator Enum()
-        {
-
-            yield return Overlay.OverMenus.BasicFadeOutWait();
-
-            GlobalState.InitializeSaveFile(fileNo);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-
-            Menu.Manager.CloseAllMenus();
-            var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE);
-
-            yield return WaitFor.Until(() => Load.isDone && fullyLoaded);
-            yield return WaitFor.SecondsRealtime(0.2f);
-            Overlay.OverMenus.BasicFadeIn();
-        }
-    }
-
-    [Obsolete]
-    /// <summary>
-    /// Begins a new scene by loading the specified scene.
-    /// </summary>
-    /// <param name="sceneToLoad">The name of the Scene to Load.</param>
-    public static void BeginScene(string sceneToLoad)
-    {
-        if (Gameplay.Active) return;
-        PostMaLoad += () =>
-        {
-            if (spawnSceneName != sceneToLoad)
-            {
-                spawnSceneName = sceneToLoad;
-                spawnPointID = -1;
-            }
-        };
-        SceneManager.LoadScene(GAMEPLAY_SCENE);
-    }
-
-    [Obsolete]
-    /// <summary>
-    /// Begins a scene from a save point by loading the specified scene and spawn point.
-    /// </summary>
-    /// <param name="sceneToLoad">The name of the Scene to Load.</param>
-    /// <param name="spawnID">The Intended Spawn Point ID.</param>
-    public static void BeginSavePoint(string sceneToLoad, int spawnID)
-    {
-        if (Gameplay.Active) return;
-        PostMaLoad += () =>
-        {
-            spawnSceneName = sceneToLoad;
-            spawnPointID = spawnID;
-        };
-        SceneManager.LoadScene(GAMEPLAY_SCENE);
-    }
-
-    [Obsolete]
-    /// <summary>
-    /// Called on the first load of the zone manager. Moves the player to the spawn point and activates the player.
-    /// </summary>
-    private void OnFirstLoad()
-    {
-        SavePoint_Old spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
-        spawnPointID = spawn.GetID();
-        Player.InstantMove(spawn);
-        //PlayerHealth.Global.UpdateMax(GlobalState.maxHealth);
-        Player.SetActive(true);
-        fullyLoaded = true;
-    }
-
-    #endregion
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(Gameplay))]

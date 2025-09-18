@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+/*
 public class SavePoint_Old : MonoBehaviour, IInteractable
 {
     public Transform SpawnPoint;
@@ -64,3 +64,4 @@ public class SavePoint_Old : MonoBehaviour, IInteractable
 
     public Vector3 PopupPosition => transform.position + Vector3.up * 2;
 }
+*/

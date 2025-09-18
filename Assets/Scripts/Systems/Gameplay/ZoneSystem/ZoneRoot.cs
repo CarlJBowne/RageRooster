@@ -8,7 +8,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+/*
 [Obsolete]
 [DefaultExecutionOrder(-200)]
 public class ZoneRoot : MonoBehaviour
@@ -100,4 +100,4 @@ public class ZoneRoot : MonoBehaviour
 
     }
 
-}
+}*/

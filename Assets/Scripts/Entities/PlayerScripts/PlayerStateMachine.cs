@@ -26,10 +26,6 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     //public CinemachineFreeLook freeLookCamera;
     public State pauseState;
     public State ragDollState;
-    public RagdollHandler ragDollHandler;
-    public float fallDownPitTime;
-    public float deathTime;
-    CoroutinePlus deathCoroutine;
 
     public SerializedDictionary<string, State> states = new SerializedDictionary<string, State>();
 
@@ -84,7 +80,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     {
         Children[0].Enter();
         //signalReady = true;
-        ragDollHandler.SetState(EntityState.Default);
+        Player.RagdollHandler.SetState(EntityState.Default);
         animator.enabled = true;
         animator.Play("GroundBasic");
     }
@@ -114,42 +110,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
         prevState.Enter();
     }
 
-    public void Death(bool justPit = false)
-    {
-        CoroutinePlus.Begin(ref deathCoroutine, Enum(justPit), Gameplay.Instance);
-        IEnumerator Enum(bool justPit)
-        {
-            Vector3 targetVelocity = body.velocity;
-            audio.PlayOneShot("Death");
-            ragDollState.Enter();
-            body.velocity = Vector3.zero;
-            ragDollHandler.SetState(EntityState.RagDoll);
-            ragDollHandler.SetVelocity(targetVelocity*0.75f);
-            animator.enabled = false;
-
-            yield return WaitFor.SecondsRealtime(justPit ? fallDownPitTime : fallDownPitTime + 1);
-
-            if (justPit)
-            {
-                yield return Overlay.OverGameplay.BasicFadeOutWait(.5f);
-                yield return Gameplay.SpawnPlayer();
-                Overlay.OverGameplay.BasicFadeIn(.5f);
-            }
-            else
-            {
-                yield return Overlay.OverGameplay.GameOverAnim();
-                yield return WaitFor.SecondsRealtime(deathTime);
-                yield return Overlay.OverMenus.BasicFadeOutWait(1f);
-                Player.Health.Current = Player.Health.Max;
-                yield return Gameplay.DoReloadSave();
-                Overlay.OverGameplay.Reset();
-                yield return Gameplay.SpawnPlayer();
-                Overlay.OverMenus.BasicFadeIn(1f);
-            }
-        }
-    }
-
-    public void DeathIfAtZero() { if (health.GetCurrentHealth() == 0) Death(); }
+    public void DeathIfAtZero() { if (health.GetCurrentHealth() == 0) Player.Death(); }
 
 
 #if UNITY_EDITOR

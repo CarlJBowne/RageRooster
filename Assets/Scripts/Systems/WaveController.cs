@@ -51,7 +51,7 @@ public class WaveController : MonoBehaviour
 
         isActive = true;
         SetWalls(true);
-        Gameplay.onPlayerRespawn += ResetArena;
+        Player.onRespawn += ResetArena;
         HandleWaves().Begin(this);
     }
 
@@ -129,10 +129,10 @@ public class WaveController : MonoBehaviour
         activeEnemies = 0;
         isActive = false;
         CoroutinePlus.Stop(ref coroutine);
-        Gameplay.onPlayerRespawn -= ResetArena;
+        Player.onRespawn -= ResetArena;
     }
 
-    private void OnDestroy() => Gameplay.onPlayerRespawn -= ResetArena;
+    private void OnDestroy() => Player.onRespawn -= ResetArena;
 
     private void OnDrawGizmosSelected()
     {

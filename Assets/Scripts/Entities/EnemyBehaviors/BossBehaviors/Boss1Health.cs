@@ -38,11 +38,11 @@ public class Boss1Health : Health
 
     private void OnEnable()
     {
-        Gameplay.onPlayerRespawn += ResetBoss;
+        Player.onRespawn += ResetBoss;
     }
     private void OnDestroy()
     {
-        Gameplay.onPlayerRespawn -= ResetBoss; 
+        Player.onRespawn -= ResetBoss; 
     }
 
     protected override bool OverrideDamageable(Attack attack)
@@ -133,7 +133,7 @@ public class Boss1Health : Health
         bossPhase = 1;
         damagable = true;
         ResetBossEvent?.Invoke();
-        Gameplay.onPlayerRespawn -= ResetBoss;
+        Player.onRespawn -= ResetBoss;
     }
 
     public void FinishBoss()

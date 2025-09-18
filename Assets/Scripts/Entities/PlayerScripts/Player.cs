@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public static PlayerInteracter Interacter { get; private set; }
     public static Animator Animator { get; private set; }
     public static AudioCaller Audio { get; private set; }
+    public static RagdollHandler RagdollHandler { get; private set; }
 
     public static Vector3 Position => Transform.position;
     public static Quaternion Rotation => Transform.rotation;
@@ -27,13 +28,18 @@ public class Player : MonoBehaviour
 
     #region Instance Fields
 
-
+    public float inFallDownPitTime;
+    public float inDeathTime;
 
 
 
 
 
     #endregion Instance Fields
+
+
+    public static Action onRespawn;
+
 
     public void Awake()
     {
@@ -47,12 +53,16 @@ public class Player : MonoBehaviour
         Interacter = GetComponent<PlayerInteracter>();
         Animator = GetComponent<Animator>();
         Audio = GetComponent<AudioCaller>();
+        RagdollHandler = GetComponent<RagdollHandler>();
         Health.Initialize();
         Ammo.Initialize();
         Currency.Initialize();
 
         Exists = true;
         Active = true;
+
+        fallDownPitTime = inFallDownPitTime;
+        deathTime = inDeathTime;
     }
 
     public static void SetActive(bool active)
@@ -81,20 +91,6 @@ public class Player : MonoBehaviour
         Cameras.currentVirtualCamera.PreviousStateIsValid = false;
         Cameras.currentVirtualCamera.OnTargetObjectWarped(Transform, camDelta);
         MovementBody.velocity = Vector3.zero;
-    }
-    public static void InstantMove(SavePoint_Old savePoint)
-    {
-        if (!Exists) return;
-        Vector3 camDelta = savePoint.SpawnPoint.position - Transform.position;
-        MovementBody.ForceSetPosition(savePoint.SpawnPoint.position);
-        MovementBody.Rotation = new(0, savePoint.SpawnPoint.eulerAngles.y, 0);
-        StateMachine.ResetState();
-        Ranged.Release(Vector3.zero, false);
-        Cameras.currentVirtualCamera.PreviousStateIsValid = false;
-        Cameras.currentVirtualCamera.OnTargetObjectWarped(Transform, camDelta);
-        MovementBody.velocity = Vector3.zero;
-        MovementBody.InstantSnapToFloor();
-        savePoint.onSpawnEvent?.Invoke();
     }
 
     /// <summary>
@@ -213,4 +209,26 @@ public class Player : MonoBehaviour
         public static Action updateCurrency;
     }
 
+
+    public static float fallDownPitTime { get; protected set; }
+    public static float deathTime { get; protected set; }
+    static CoroutinePlus deathCoroutine;
+    public static void Death(bool justPit = false)
+    {
+        CoroutinePlus.Begin(ref deathCoroutine, Enum(justPit), Gameplay.Instance);
+        IEnumerator Enum(bool justPit)
+        {
+            Vector3 targetVelocity = MovementBody.velocity;
+            Audio.PlayOneShot("Death");
+            StateMachine.ragDollState.Enter();
+            MovementBody.velocity = Vector3.zero;
+            RagdollHandler.SetState(EntityState.RagDoll);
+            RagdollHandler.SetVelocity(targetVelocity * 0.75f);
+            Animator.enabled = false;
+
+            yield return WaitFor.SecondsRealtime(justPit ? fallDownPitTime : fallDownPitTime + 1);
+
+            yield return justPit ? Gameplay.PitRespawn() : Gameplay.Death();
+        }
+    }
 }
