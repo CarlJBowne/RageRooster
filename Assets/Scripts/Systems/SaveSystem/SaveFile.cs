@@ -3,6 +3,7 @@ using RageRooster.RoomSystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 
 namespace RageRooster.Systems.SaveSystem
 {
@@ -43,12 +44,11 @@ namespace RageRooster.Systems.SaveSystem
             public int total = 0;
             public List<bool> isCollected;
 
-            public SavedCollectible Clone(SavedCollectible result = null)
+            public void Clone(ref SavedCollectible target)
             {
-                result ??= new SavedCollectible();
-                result.total = total;
-                result.isCollected = new List<bool>(isCollected);
-                return result;
+                target ??= new SavedCollectible();
+                target.total = total;
+                target.isCollected = new List<bool>(isCollected);
             }
         }
 
@@ -62,33 +62,31 @@ namespace RageRooster.Systems.SaveSystem
             powerEggs.isCollected = new(new bool[SavedValueManager.PowerEggs.Count]);
             hensRescued.isCollected = new(new bool[SavedValueManager.HensRescued.Count]);
             wishbones.isCollected = new(new bool[SavedValueManager.Wishbones.Count]);
-            globalChanges.CloneFrom(SavedValueManager.GlobalFlagDefaults);
+            globalChanges = SavedValueManager.GlobalFlagDefaults.Clone();
             foreach (var area in AreaRegistry.GetAll())
                 areaChanges.Add(area, area.flagDefaults.Clone());
         }
 
-        public SaveFile Clone(SaveFile result = null)
+        public void Clone(ref SaveFile target)
         {
-            result ??= new SaveFile();
+            target ??= new SaveFile();
 
-            result.location = location;
+            target.location = location;
 
-            result.playerStats.maxHealth = playerStats.maxHealth;
-            result.playerStats.maxAmmo = playerStats.maxAmmo;
-            result.playerStats.currency = playerStats.currency;
-            result.playerStats.playTime = playerStats.playTime;
-            playerStats.upgrades.Clone(result.playerStats.upgrades);
+            target.playerStats.maxHealth = playerStats.maxHealth;
+            target.playerStats.maxAmmo = playerStats.maxAmmo;
+            target.playerStats.currency = playerStats.currency;
+            target.playerStats.playTime = playerStats.playTime;
+            playerStats.upgrades.Clone(ref target.playerStats.upgrades);
 
-            powerEggs.Clone(result.powerEggs);
-            wishbones.Clone(result.wishbones);
-            hensRescued.Clone(result.hensRescued);
-            globalChanges.Clone(result.globalChanges);
-            foreach (var area in AreaRegistry.GetAll())
-                areaChanges[area].Clone(result.areaChanges[area]);
-
-            return result;
+            powerEggs.Clone(ref target.powerEggs);
+            wishbones.Clone(ref target.wishbones);
+            hensRescued.Clone(ref target.hensRescued);
+            globalChanges.Clone(ref target.globalChanges);
+            foreach (AreaAsset area in AreaRegistry.GetAll())
+                target.areaChanges[area].CloneFrom(areaChanges[area]);
+                
         }
-
 
         public static class IO
         {
@@ -246,7 +244,7 @@ namespace RageRooster.Systems.SaveSystem
 
         public static void RevertToDeathData()
         {
-            DeathReloadData.Clone(Current);
+            DeathReloadData.Clone(ref Current);
             Player.Health.Max = Current.playerStats.maxHealth;
             Player.Health.Current = Player.Health.Max;
             Player.Ammo.Max = Current.playerStats.maxAmmo;
@@ -255,8 +253,8 @@ namespace RageRooster.Systems.SaveSystem
         }
         public static void RevertToSaveFile()
         {
-            IO.file.Clone(Current);
-            IO.file.Clone(DeathReloadData);
+            IO.file.Clone(ref Current);
+            IO.file.Clone(ref DeathReloadData);
             Player.Health.Max = Current.playerStats.maxHealth;
             Player.Health.Current = Player.Health.Max;
             Player.Ammo.Max = Current.playerStats.maxAmmo;
@@ -265,8 +263,8 @@ namespace RageRooster.Systems.SaveSystem
         }
         public static void ApplyToSaveFile()
         {
-            Current.Clone(IO.file);
-            Current.Clone(DeathReloadData);
+            Current.Clone(ref IO.file);
+            Current.Clone(ref DeathReloadData);
         }
 
     }

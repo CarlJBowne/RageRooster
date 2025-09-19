@@ -18,15 +18,14 @@ public class SavedFlagSet : ScriptableObject, ICloneable<SavedFlagSet>
         }
     }
 
-    public SavedFlagSet Clone(SavedFlagSet result = null)
+    public void Clone(ref SavedFlagSet target)
     {
-        if (result == null) result = Instantiate(this);
-        else foreach (var key in result.flags.Keys)
-            {
-                result.flags[key] = flags.ContainsKey(key)
-                    ? flags[key]
-                    : false;
-            }
-        return result;
+        if (target == null) target = Instantiate(this);
+        else
+        {
+            target.flags.Clear();
+            foreach (var key in flags.Keys) 
+                target.flags.Add(key, flags[key]);
+        }
     }
 }

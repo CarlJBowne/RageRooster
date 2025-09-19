@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AYellowpaper.SerializedCollections;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -223,17 +224,29 @@ public delegate void BasicDelegate();
 public interface ICloneable<T> where T : class
 {
     /// <summary>
-    /// Deep Clones this object, returning a new instance or populating the provided instance.
+    /// Deep Clones this object, Populating the provided instance field.
     /// </summary>
-    /// <param name="result"></param>
-    /// <returns></returns>
-    public T Clone(T result = null);
+    /// <param name="target"></param>
+    public void Clone(ref T target);
 }
 
-public static class ICloneable_Extension
+public static class _CloneableExtensions
 {
     /// <summary>
-    /// This is just a more readable alias for Clone when you want to copy data from one object to another existing object.
+    /// Deep Clones this object, returning a new instance.
     /// </summary>
-    public static void CloneFrom<T>(this ICloneable<T> target, T source) where T : class => target.Clone(source);
+    /// <typeparam name="T"></typeparam>
+    /// <param name="source"></param>
+    /// <returns></returns>
+    public static T Clone<T>(this ICloneable<T> source) where T : class
+	{
+		T result = null;
+		source.Clone(ref result);
+		return result;
+	}
+    /// <summary>
+    /// Populates this object with a Deep Clone of all of the source's data. <br/>
+	/// NOTE: Does NOT work with null fields.
+    /// </summary>
+    public static void CloneFrom<T>(this T target, T source) where T : class, ICloneable<T> => source.Clone(ref target);
 }

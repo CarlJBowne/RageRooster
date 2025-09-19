@@ -313,6 +313,11 @@ public class Gameplay : MonoBehaviour
         Destroy(GameObject);
     }
 
+    private void OnDestroy()
+    {
+        EnemyCullingGroup.DeInitialize();
+    }
+
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(Gameplay))]

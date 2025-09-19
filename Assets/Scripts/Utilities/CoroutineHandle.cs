@@ -178,20 +178,15 @@ public static class SceneOperationRoutine
     {
         if (SceneManager.GetSceneByName(sceneName).IsValid()) yield break;
         var operation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, mode);
-        while (!operation.isDone)
-        {
-            yield return null;
-        }
+        while (operation != null && !operation.isDone) yield return null;
+
     }
 
     public static IEnumerator Unload(string sceneName)
     {
         if (!SceneManager.GetSceneByName(sceneName).IsValid()) yield break;
         var operation = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(sceneName);
-        while (!operation.isDone)
-        {
-            yield return null;
-        }
+        if (operation != null && !operation.isDone) yield return null;
     }
 }
     //Bonus!

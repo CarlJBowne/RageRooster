@@ -48,7 +48,11 @@ public class PlayerHealth : Health
             if(Player.Ranged.aimingState) Player.Ranged.ExitAimingAux();
             CoroutinePlus.Begin(ref invincibility, InvinceEnum(invincibilityTime), this);
             damagable = false;
-            if (attack.HasTag(Attack.Tag.Pit)) Player.Death(true);
+            if (attack.HasTag(Attack.Tag.Pit))
+            {
+                Player.Death(true);
+                damagable = true;
+            }
             else if (attack.HasTag(Attack.Tag.Wham)) 
             {
                 damageStateWham.Enter();
@@ -82,7 +86,13 @@ public class PlayerHealth : Health
 
     }
 
-    protected override bool OverrideDamageable(Attack attack) => !ConversationManager.instance.inDialogue && !Upgrades.Active.d_invincibility;
+    protected override bool OverrideDamageable(Attack attack)
+    {
+        if (Upgrades.Active.d_invincibility && !attack.HasTag(Attack.Tag.Pit)) return false;
+
+        if (ConversationManager.instance && ConversationManager.instance.inDialogue) return false;
+        return true;
+    }
 
     protected override void OverrideDamageValue(ref Attack attack)
     {

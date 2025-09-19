@@ -228,21 +228,23 @@ public class Player : MonoBehaviour
             Animator.enabled = false;
 
             yield return WaitFor.SecondsRealtime(justPit ? fallDownPitTime : fallDownPitTime + 1);
+            float fadeTime = justPit ? 0.5f : 1f;
 
             if (!justPit)
             {
                 yield return Overlay.OverGameplay.GameOverAnim();
                 yield return WaitFor.SecondsRealtime(deathTime);
-                yield return Overlay.OverMenus.BasicFadeOutWait(1f);
+                yield return Overlay.OverMenus.BasicFadeOutWait(fadeTime);
                 Overlay.OverGameplay.Reset();
                 yield return Gameplay.Death();
             }
             else
             {
-                yield return Overlay.OverMenus.BasicFadeOutWait(1f);
+                yield return Overlay.OverMenus.BasicFadeOutWait(fadeTime);
                 Overlay.OverGameplay.Reset();
                 yield return Gameplay.Respawn();
             }
+            Overlay.OverMenus.BasicFadeIn(fadeTime);
         }
     }
 }

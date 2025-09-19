@@ -12,10 +12,10 @@ public class OverlayLoading : Overlay
 
     public static void ShowIfLong()
     {
+        if (overlay != null || !overlay.isActiveAndEnabled) return;
         Enum().Begin(overlay);
         static IEnumerator Enum()
         {
-            yield return new WaitUntil(() => overlay);
             yield return new WaitForSecondsRealtime(overlay.showTime);
             if (RoomManager.loading) SetVisible(true);
         }

@@ -198,7 +198,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 34084
+    surfaceParameter: 34000
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: -8894674620610811335
@@ -220,6 +220,7 @@ GameObject:
   - component: {fileID: 144120434}
   - component: {fileID: 144120433}
   - component: {fileID: 144120432}
+  - component: {fileID: 144120435}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -315,6 +316,25 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 144120430}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &144120435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 144120430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e08d19e70a0a44ba49ccb39b83df8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attack:
+    amount: 0
+    velocity: {x: 0, y: 0, z: 0}
+    tags:
+    - name: FromEnemy
+  sourceEntity: {fileID: 0}
+  enabled: 1
 --- !u!1 &173858160
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,7 +365,8 @@ Transform:
   m_LocalPosition: {x: 26.06344, y: 0, z: 36.639587}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1783102106}
   m_Father: {fileID: 841564673}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &173858162
@@ -385,6 +406,8 @@ MonoBehaviour:
   unloadRadius: 30
   lodRadius: 50
   direction: {x: 0, y: 0, z: -1}
+  spawnPoint: {fileID: 1783102105}
+  forDeathOnly: 0
   root: {fileID: 841564672}
 --- !u!1 &174955397
 GameObject:
@@ -652,6 +675,53 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &518008249
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 518008251}
+  - component: {fileID: 518008250}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &518008250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518008249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 1
+  rotate: 1
+  root: {fileID: 841564672}
+--- !u!4 &518008251
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518008249}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0.00000016391276}
+  m_LocalPosition: {x: -7.57, y: 0, z: -0.92}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 797379128}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &546175449
 GameObject:
   m_ObjectHideFlags: 3
@@ -875,7 +945,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 33626
+    surfaceParameter: 33544
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: -8894674620610811335
@@ -1187,7 +1257,8 @@ Transform:
   m_LocalPosition: {x: -13.43656, y: 0, z: 13.139587}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 518008251}
   m_Father: {fileID: 841564673}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &797379129
@@ -1227,6 +1298,8 @@ MonoBehaviour:
   unloadRadius: 30
   lodRadius: 50
   direction: {x: 0, y: 0, z: -1}
+  spawnPoint: {fileID: 518008250}
+  forDeathOnly: 0
   root: {fileID: 841564672}
 --- !u!1 &841564671
 GameObject:
@@ -1259,7 +1332,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <asset>k__BackingField: {fileID: 11400000, guid: bd7c4db54484e9f49835bea549b54113,
     type: 2}
-  <spawns>k__BackingField: []
+  <spawns>k__BackingField:
+  - {fileID: 1783102105}
+  - {fileID: 518008250}
 --- !u!4 &841564673
 Transform:
   m_ObjectHideFlags: 0
@@ -1354,7 +1429,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 34084
+    surfaceParameter: 34000
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: -8894674620610811335
@@ -2830,6 +2905,53 @@ MonoBehaviour:
     - EdgeIndices: 050000000400000003000000
       TexGenIndex: 4
     Generation: 2
+--- !u!1 &1783102104
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1783102106}
+  - component: {fileID: 1783102105}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1783102105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783102104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 0
+  rotate: 1
+  root: {fileID: 841564672}
+--- !u!4 &1783102106
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783102104}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.00000058114523}
+  m_LocalPosition: {x: -8.47, y: 0, z: -24.82}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 173858161}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!1 &1916765146
 GameObject:
   m_ObjectHideFlags: 0

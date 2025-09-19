@@ -1,3 +1,4 @@
+using RageRooster.Systems.SaveSystem;
 using SLS.ISingleton;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,7 +30,9 @@ namespace RageRooster.RoomSystem
 
             if (destination.area == null) destination.area = destination.room.area;
 
-            if(currentArea != destination.area || forceFullTransition)
+            bool fullTransition = currentArea != destination.area || forceFullTransition;
+
+            if (fullTransition)
             {
                 if (currentArea != null) yield return currentArea.UnloadArea();
                 currentArea = null;
@@ -44,6 +47,12 @@ namespace RageRooster.RoomSystem
             if (destination.spawn == null)
                 destination.spawn = currentRoom.root.spawns[destination.spawnID];
             destination.spawn.SpawnPlayerAt();
+
+            if (fullTransition)
+            {
+                SaveFile.Current.location = destination;
+                SaveFile.DeathReloadData.location = destination;
+            }
 
             foreach (RoomAsset room in currentArea.rooms)
                 yield return room.PrepSurrounding();
