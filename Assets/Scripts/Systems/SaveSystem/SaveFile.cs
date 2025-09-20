@@ -88,24 +88,27 @@ namespace RageRooster.Systems.SaveSystem
                 
         }
 
-        public static class IO
+        public static IOSystem IO = new();
+
+        public class IOSystem
         {
-            public static SaveFile file = new();
+            public SaveFile file = new();
 
-            public static int fileID = -1;
-            public static string fileRoot;
+            public int fileID = -1;
+            public string fileRoot;
+            public bool doesFileExist => Directory.Exists(fileRoot);
 
-            public static JsonFile playerFile;
+            public JsonFile playerFile;
             //Contains location and playerStats.
 
-            public static JsonFile worldChangesFile;
+            public JsonFile worldChangesFile;
             //Contains powerEggs, hensRescued, and globalChanges
 
-            public static Dictionary<AreaAsset, JsonFile> areaChangesFiles;
+            public Dictionary<AreaAsset, JsonFile> areaChangesFiles;
 
-            public static void SetFileTarget(int fileID)
+            public void SetFileTarget(int fileID)
             {
-                IO.fileID = fileID;
+                this.fileID = fileID;
                 fileRoot = Path.Combine(UnityEngine.Application.persistentDataPath, "Saves", $"File{fileID}");
 
                 playerFile = new JsonFile(fileRoot, "playerData");
@@ -117,7 +120,7 @@ namespace RageRooster.Systems.SaveSystem
                 }
             }
 
-            public static void ClearFileTarget()
+            public void ClearFileTarget()
             {
                 fileID = -1;
                 fileRoot = null;
@@ -126,9 +129,10 @@ namespace RageRooster.Systems.SaveSystem
                 areaChangesFiles = null;
             }
 
-            public static JsonFile.LoadResult Load()
+            public JsonFile.LoadResult Load()
             {
                 if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
+                if (!doesFileExist) return JsonFile.LoadResult.FileNotFound;
 
                 JsonFile.LoadResult result;
                 result = playerFile.LoadFromFile();
@@ -181,7 +185,7 @@ namespace RageRooster.Systems.SaveSystem
                 return JsonFile.LoadResult.Success;
             }
 
-            public static JsonFile.FileState Save()
+            public JsonFile.FileState Save()
             {
                 if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
 
@@ -239,6 +243,31 @@ namespace RageRooster.Systems.SaveSystem
 
                 return JsonFile.FileState.Valid;
             }
+
+            public JsonFile.FileState Delete()
+            {
+                if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
+                playerFile.DeleteFile();
+                worldChangesFile.DeleteFile();
+                foreach (var value in areaChangesFiles.Values) value.DeleteFile();
+                Directory.Delete(fileRoot);
+                file = new();
+                return JsonFile.FileState.Null;
+            }
+
+            public float GetCompletionPercentage()
+            {
+                if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
+                int totalCollectibles = SavedValueManager.PowerEggs.Count + SavedValueManager.Wishbones.Count + SavedValueManager.HensRescued.Count;
+                if (totalCollectibles == 0) return 100f;
+                int collected = 0;
+                collected += file.powerEggs.total;
+                collected += file.wishbones.total;
+                collected += file.hensRescued.total;
+
+                return (collected / (float)totalCollectibles) * 100f;
+            }
+
         }
 
 

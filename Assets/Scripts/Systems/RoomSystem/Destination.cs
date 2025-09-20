@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace RageRooster.RoomSystem
 {
+    [System.Serializable]
     public struct Destination
     {
         public AreaAsset area;

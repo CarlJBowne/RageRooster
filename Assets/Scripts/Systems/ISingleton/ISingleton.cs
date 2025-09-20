@@ -65,7 +65,7 @@ namespace SLS.ISingleton
         public static T Get(ref T instanceSlot)
         {
 #if UNITY_EDITOR
-            if (!Application.isPlaying && !typeof(T).ImplementsOrDerives(typeof(ScriptableObject))) 
+            if (!typeof(T).ImplementsOrDerives(typeof(ScriptableObject))&& !Application.isPlaying) 
             { 
                 Debug.LogError($"{typeof(T)} accessed outside of runtime. Don't."); 
                 return null; 

@@ -32,23 +32,27 @@ public class Overlay : MonoBehaviour
 
     public void BasicFadeOut(float duration = 1f)
     {
+        SetAnimated(true);
         animator.Play("BasicFadeOut", -1, 0f);
         animator.SetFloat("DurationSpeed", 1 / duration);
     }
     public void BasicFadeIn(float duration = 1f)
     {
+        SetAnimated(true);
         animator.Play("BasicFadeIn", -1, 0f);
         animator.SetFloat("DurationSpeed", 1 / duration);
     }
 
     public IEnumerator BasicFadeOutWait(float duration = 1f)
     {
+        SetAnimated(true);
         animator.Play("BasicFadeOut", -1, 0f);
         animator.SetFloat("DurationSpeed", 1 / duration);
         yield return new WaitForSecondsRealtime(duration);
     }
     public IEnumerator BasicFadeInWait(float duration = 1f)
     {
+        SetAnimated(true);
         animator.Play("BasicFadeIn", -1, 0f);
         animator.SetFloat("DurationSpeed", 1 / duration);
         yield return new WaitForSecondsRealtime(duration);
@@ -56,12 +60,13 @@ public class Overlay : MonoBehaviour
 
     public IEnumerator GameOverAnim(float duration = 1f)
     {
+        SetAnimated(true);
         animator.Play("GameOverAnim", -1, 0f);
         animator.SetFloat("DurationSpeed", 1 / duration);
         yield return new WaitForSecondsRealtime(duration);
     }
 
-
+    public void SetAnimated(bool value) => animator.enabled = value;
     public void SetAlpha(float alpha) => blackout.color = new(blackout.color.r, blackout.color.g, blackout.color.b, alpha);
 
     public void Reset() => animator.Play("Null");
