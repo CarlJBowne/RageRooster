@@ -1,73 +1,59 @@
+using MBT;
 using Newtonsoft.Json.Linq;
 using RageRooster.Systems.SaveSystem;
 using System;
 using System.Collections.Generic;
+using static RageRooster.RoomSystem.RoomAsset;
 
 namespace RageRooster.RoomSystem
 {
     [System.Serializable]
     public struct Destination
     {
-        public AreaAsset area;
         public RoomAsset room;
-        public SpawnPoint spawn;
-
         public int spawnID;
+        public AreaAsset area => room.area;
 
         public static Destination Default => new()
         {
-            area = null,
             room = null,
-            spawn = null,
             spawnID = -1
         };
-        
 
-        /// <summary>
-        /// This Constructor is for use when reading deSerialized data from a save file or similar.
-        /// </summary>
-        public Destination(string areaName, int roomID = 0, int spawnID = 0)
+        public static Destination StartingDefault() => new()
         {
-            area = AreaRegistry.GetArea(areaName);
-            if (area == null) throw new System.Exception("Invalid name does not belong to any area.");
-            if (roomID < 0 || roomID >= area.rooms.Count) throw new System.Exception("Invalid roomID does not belong to the specified area.");
-            room = area.rooms[roomID];
-            this.spawnID = spawnID;
-            spawn = null;
-        }
-
-        public JToken Serialize(string name = null) => new JObject
-        {
-            ["area"] = area.name,
-            ["roomID"] = area.rooms.IndexOf(room),
-            ["spawnID"] = spawnID
+            room = AreaRegistry.GetAll()[0].rooms[0],
+            spawnID = 0
         };
-        public static Destination Deserialize(JToken Data) => new((string)Data["area"], (int)Data["roomID"], (int)Data["spawnID"]);
 
 
-        public bool IsValid() => room != null && (area == null || room.area == area) && (spawnID >= 0 || spawnID == -1);
-        public bool IsFullyDefined() => area != null && room != null && room.area == area && (spawnID >= 0 || (spawnID == -1 && spawn != null && spawn.root.asset == room));
-        public bool IsDefault() => area == null && room == null && spawn == null && spawnID == -1;
+        public bool IsValid() => room != null && spawnID >= 0;
+        public bool IsDefault() => room == null && spawnID == -1;
 
         public static bool operator ==(Destination a, Destination b) => a.area == b.area && a.room == b.room && a.spawnID == b.spawnID;
         public static bool operator !=(Destination a, Destination b) => !(a.area == b.area && a.room == b.room && a.spawnID == b.spawnID);
 
         public static implicit operator bool(Destination destination) => destination.IsValid();
 
-        public override bool Equals(object obj) => obj is Destination destination && EqualityComparer<AreaAsset>.Default.Equals(area, destination.area) && EqualityComparer<RoomAsset>.Default.Equals(room, destination.room) && EqualityComparer<SpawnPoint>.Default.Equals(spawn, destination.spawn) && spawnID == destination.spawnID;
-        public override int GetHashCode() => HashCode.Combine(area, room, spawn, spawnID);
+        public override bool Equals(object obj) => obj is Destination destination && EqualityComparer<AreaAsset>.Default.Equals(area, destination.area) && EqualityComparer<RoomAsset>.Default.Equals(room, destination.room) && spawnID == destination.spawnID;
+        public override int GetHashCode() => HashCode.Combine(area, room, spawnID);
 
-        public static Destination StartingDefault() => new()
+
+
+
+
+
+
+        public static implicit operator Destination(RoomAsset room) => new()
         {
-            area = AreaRegistry.GetAll()[0],
-            room = AreaRegistry.GetAll()[0].rooms[0],
-            spawnID = 0,
-            spawn = null
+            room = room,
+            spawnID = -1
         };
-
-
-
-
+        public static implicit operator Destination(SpawnPoint spawn) => new()
+        {
+            room = spawn.root.asset,
+            spawnID = spawn.ID
+        };
 
 
 
@@ -130,5 +116,51 @@ namespace RageRooster.RoomSystem
             spawnID = -2;
         }
         */
+    }
+
+    public struct DestinationSerial
+    {
+        public string areaName;
+        public int roomID;
+        public int spawnID;
+
+        public static implicit operator JToken(DestinationSerial serial) => new JObject
+        {
+            ["area"] = serial.areaName,
+            ["roomID"] = serial.roomID,
+            ["spawnID"] = serial.spawnID
+        };
+        public static implicit operator DestinationSerial(JToken Data) => new()
+        {
+            areaName = (string)Data["area"],
+            roomID = (int)Data["roomID"],
+            spawnID = (int)Data["spawnID"]
+        };
+
+        /// <summary>
+        /// Converts this Destination into the serializable format equivalent.
+        /// </summary>
+        /// <returns></returns>
+        public static explicit operator DestinationSerial(Destination destination) => new()
+        {
+            areaName = destination.area.name,
+            roomID = destination.area.rooms.IndexOf(destination.room),
+            spawnID = destination.spawnID
+        };
+
+        /// <summary>
+        /// Converts this Serial Destination back into the runtime Asset-based equivalent.
+        /// </summary>
+        public static explicit operator Destination(DestinationSerial input)
+        {
+            AreaAsset area = AreaRegistry.GetArea(input.areaName);
+            if (area == null) throw new System.Exception("Invalid name does not belong to any area.");
+            if (input.roomID < 0 || input.roomID >= area.rooms.Count) throw new System.Exception("Invalid roomID does not belong to the specified area.");
+            return new Destination
+            {
+                room = area.rooms[input.roomID],
+                spawnID = input.spawnID
+            };
+        }
     }
 }

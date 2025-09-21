@@ -19,9 +19,7 @@ public class SpawnPoint : MonoBehaviour
     {
         EditorState.EditorDestination = new() 
         {
-            area = root.asset.area,
             room = root.asset,
-            spawn = this,
             spawnID = ID
         };
         UnityEditor.EditorApplication.isPlaying = true;
@@ -39,9 +37,7 @@ public class SpawnPoint : MonoBehaviour
 
     public Destination GetDestination() => new()
     {
-        area = root.asset.area,
         room = root.asset,
-        spawn = this,
         spawnID = ID
     };
 }

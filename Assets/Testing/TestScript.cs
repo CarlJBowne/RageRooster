@@ -31,7 +31,6 @@ public class TestScript : MonoBehaviour, IInteractable
             OverlayLoading.SetVisible(true);
             yield return RoomManager.Transition(new Destination()
             {
-                area = area,
                 room = room,
                 spawnID = 0
             }, true);

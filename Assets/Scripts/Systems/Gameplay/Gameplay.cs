@@ -152,10 +152,12 @@ public class Gameplay : MonoBehaviour
 
         Destination fileDest = SaveFile.Current.location;
 
-        if(target.area == null && target.room != null) target.area = target.room.area;
-
-        // Fill in missing area from save file if needed
-        if (target.area == null) target.area = fileDest.area;
+        if(EditorState.EditorDestinationArea != null && EditorState.EditorDestinationArea != fileDest.area)
+        {
+            target.room ??= EditorState.EditorDestinationArea.rooms[0];
+            target.spawnID = 0;
+            return target;
+        }
 
         // If area matches save file, fill in missing room/spawnID from save file
         if (target.area == fileDest.area)

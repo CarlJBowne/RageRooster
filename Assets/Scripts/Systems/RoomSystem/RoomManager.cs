@@ -28,8 +28,6 @@ namespace RageRooster.RoomSystem
             loading = true;
             OverlayLoading.ShowIfLong();
 
-            if (destination.area == null) destination.area = destination.room.area;
-
             bool fullTransition = currentArea != destination.area || forceFullTransition;
 
             if (fullTransition)
@@ -44,9 +42,9 @@ namespace RageRooster.RoomSystem
             yield return destination.room.PrepEnter();
             EnterRoom(destination.room);
 
-            if (destination.spawn == null)
-                destination.spawn = currentRoom.root.spawns[destination.spawnID];
-            destination.spawn.SpawnPlayerAt();
+            SpawnPoint targetSpawn = currentRoom.root.spawns[destination.spawnID];
+
+            targetSpawn.SpawnPlayerAt();
 
             if (fullTransition)
             {

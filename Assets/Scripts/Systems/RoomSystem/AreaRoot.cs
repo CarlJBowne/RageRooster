@@ -14,13 +14,14 @@ namespace RageRooster.RoomSystem
             if (!RoomManager.Active)
             {
                 if (EditorState.EditorDestination.IsDefault())
+                {
+                    EditorState.EditorDestinationArea = asset;
                     EditorState.EditorDestination = new()
                     {
-                        area = asset,
                         room = null,
-                        spawn = null,
                         spawnID = -1
                     }; Gameplay.BeginEditor();
+                }   
                 return;
             }
 

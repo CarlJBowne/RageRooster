@@ -21,6 +21,12 @@ public class EditorState : SingletonAsset<EditorState>
         get => Get().editorDestination;
         set => Get().editorDestination = value;
     }
+    private AreaAsset editorDestinationArea = null;
+    public static AreaAsset EditorDestinationArea
+    {
+        get => Get().editorDestinationArea;
+        set => Get().editorDestinationArea = value;
+    }
 
     public enum OnBuildStateMachineHandling
     {
