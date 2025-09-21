@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Unity.VisualScripting;
+using UnityEngine;
 
 namespace RageRooster.Systems.SaveSystem
 {
@@ -44,11 +45,12 @@ namespace RageRooster.Systems.SaveSystem
             public int total = 0;
             public List<bool> isCollected;
 
-            public void Clone(ref SavedCollectible target)
+            public SavedCollectible Clone(SavedCollectible target = null)
             {
                 target ??= new SavedCollectible();
                 target.total = total;
                 target.isCollected = new List<bool>(isCollected);
+                return target;
             }
         }
 
@@ -67,7 +69,7 @@ namespace RageRooster.Systems.SaveSystem
                 areaChanges.Add(area, area.flagDefaults.Clone());
         }
 
-        public void Clone(ref SaveFile target)
+        public SaveFile Clone(SaveFile target = null)
         {
             target ??= new SaveFile();
 
@@ -77,15 +79,15 @@ namespace RageRooster.Systems.SaveSystem
             target.playerStats.maxAmmo = playerStats.maxAmmo;
             target.playerStats.currency = playerStats.currency;
             target.playerStats.playTime = playerStats.playTime;
-            playerStats.upgrades.Clone(ref target.playerStats.upgrades);
+            playerStats.upgrades.Clone(target.playerStats.upgrades);
 
-            powerEggs.Clone(ref target.powerEggs);
-            wishbones.Clone(ref target.wishbones);
-            hensRescued.Clone(ref target.hensRescued);
-            globalChanges.Clone(ref target.globalChanges);
+            powerEggs.Clone(target.powerEggs);
+            wishbones.Clone(target.wishbones);
+            hensRescued.Clone(target.hensRescued);
+            globalChanges.Clone(target.globalChanges);
             foreach (AreaAsset area in AreaRegistry.GetAll())
                 target.areaChanges[area].CloneFrom(areaChanges[area]);
-                
+            return target;
         }
 
         public static IOSystem IO = new();
@@ -193,6 +195,7 @@ namespace RageRooster.Systems.SaveSystem
                 {
                     ["FileVersion"] = targetFileVersion,
                     [nameof(file.location)] = file.location.Serialize(nameof(file.location)),
+                    [nameof(SavedPlayerStats.playTime)] = file.playerStats.playTime,
                     [nameof(SavedPlayerStats.maxHealth)] = file.playerStats.maxHealth,
                     [nameof(SavedPlayerStats.maxAmmo)] = file.playerStats.maxAmmo,
                     [nameof(SavedPlayerStats.currency)] = file.playerStats.currency,
@@ -273,7 +276,7 @@ namespace RageRooster.Systems.SaveSystem
 
         public static void RevertToDeathData()
         {
-            DeathReloadData.Clone(ref Current);
+            DeathReloadData.Clone(Current);
             Player.Health.Max = Current.playerStats.maxHealth;
             Player.Health.Current = Player.Health.Max;
             Player.Ammo.Max = Current.playerStats.maxAmmo;
@@ -282,8 +285,8 @@ namespace RageRooster.Systems.SaveSystem
         }
         public static void RevertToSaveFile()
         {
-            IO.file.Clone(ref Current);
-            IO.file.Clone(ref DeathReloadData);
+            Current = IO.file.Clone(Current);
+            DeathReloadData = IO.file.Clone(DeathReloadData);
             Player.Health.Max = Current.playerStats.maxHealth;
             Player.Health.Current = Player.Health.Max;
             Player.Ammo.Max = Current.playerStats.maxAmmo;
@@ -292,8 +295,19 @@ namespace RageRooster.Systems.SaveSystem
         }
         public static void ApplyToSaveFile()
         {
-            Current.Clone(ref IO.file);
-            Current.Clone(ref DeathReloadData);
+            Current.Clone(IO.file);
+            Current.Clone(DeathReloadData);
+        }
+
+
+        public static void SaveFileToDisk(Destination destination)
+        {
+            Current.location = destination;
+
+            Current.playerStats.playTime += TimeSpan.FromSeconds(Gameplay.UpdateGameTime());
+
+            ApplyToSaveFile();
+            IO.Save();
         }
 
     }

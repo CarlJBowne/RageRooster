@@ -1,3 +1,4 @@
+using RageRooster.RoomSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ namespace RageRooster.Systems.SaveSystem
     public class SaveFileVisual : MonoBehaviour
     {
         public int ID = 1;
+        public GameObject details;
+        public TMPro.TextMeshProUGUI locationText;
         public TMPro.TextMeshProUGUI timeText;
         public TMPro.TextMeshProUGUI completionText;
         public TMPro.TextMeshProUGUI totalHealthText;
@@ -39,27 +42,23 @@ namespace RageRooster.Systems.SaveSystem
             {
                 file.Load();
 
-                timeText.enabled = true;
-                completionText.enabled = true;
-                totalHealthText.enabled = true;
-                powerEggsText.enabled = true;
-                hensRescuedText.enabled = true;
+                details.SetActive(true);
 
+                Destination location = file.file.location;
+                locationText.text = $"{location.area.displayName} -- {location.room.displayName}";
 
-                var TS = (TimeSpan)file.playerFile.Data[nameof(SaveFile.SavedPlayerStats.playTime)];
+                var TS = file.file.playerStats.playTime;
                 timeText.text = $"{TS.Hours}:{TS.Minutes}:{TS.Seconds}";
+
                 completionText.text = $"{file.GetCompletionPercentage()}%";
-                totalHealthText.text = file.playerFile.Data[nameof(SaveFile.SavedPlayerStats.maxHealth)].ToString();
-                powerEggsText.text = file.worldChangesFile.Data[nameof(SaveFile.powerEggs)][nameof(SaveFile.SavedCollectible.total)].ToString();
-                hensRescuedText.text = file.playerFile.Data[nameof(SaveFile.hensRescued)][nameof(SaveFile.SavedCollectible.total)].ToString();
+
+                totalHealthText.text = file.file.playerStats.maxHealth.ToString();
+                powerEggsText.text = file.file.powerEggs.total.ToString();
+                hensRescuedText.text = file.file.hensRescued.total.ToString(); 
             }
             else
             {
-                timeText.enabled = false;
-                completionText.enabled = false;
-                totalHealthText.enabled = false;
-                powerEggsText.enabled = false;
-                hensRescuedText.enabled = false;
+                details.SetActive(false);
             }
 
                 

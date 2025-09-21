@@ -26,7 +26,7 @@ namespace RageRooster.Systems.SaveSystem
             d_invincibility = true,
             d_moonJump = true
         };
-        public void Clone(ref Upgrades target)
+        public Upgrades Clone(Upgrades target = null)
         {
             target ??= new Upgrades();
             target.dropLaunch = dropLaunch;
@@ -35,6 +35,7 @@ namespace RageRooster.Systems.SaveSystem
             target.ragingCharge = ragingCharge;
             target.d_invincibility = d_invincibility;
             target.d_moonJump = d_moonJump;
+            return target;
         }
     }
 }

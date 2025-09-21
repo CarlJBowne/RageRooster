@@ -12,20 +12,19 @@ public class SavedFlagSet : ScriptableObject, ICloneable<SavedFlagSet>
 
     public void LoadFromJson(JToken json)
     {
-        foreach (var key in flags.Keys)
-        {
-            if (json[key] != null) flags[key] = (bool)json[key];
-        }
+        foreach (string key in new List<string>(flags.Keys)) 
+            if (json[key] != null) 
+                flags[key] = (bool)json[key];
     }
 
-    public void Clone(ref SavedFlagSet target)
+    public SavedFlagSet Clone(SavedFlagSet target = null)
     {
         if (target == null) target = Instantiate(this);
         else
         {
-            target.flags.Clear();
-            foreach (var key in flags.Keys) 
-                target.flags.Add(key, flags[key]);
+            foreach (string key in new List<string>(target.flags.Keys))
+                target.flags[key] = flags[key];
         }
+        return target;
     }
 }

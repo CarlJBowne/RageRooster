@@ -24,6 +24,7 @@ public class CheckPoint : MonoBehaviour
     {
         if (other != Player.Collider) return;
 
-        (forDeathOnly ? SaveFile.DeathReloadData : SaveFile.Current).location = spawnPoint.GetDestination();
+        if(!forDeathOnly) SaveFile.Current.location = spawnPoint.GetDestination();
+        SaveFile.DeathReloadData.location = spawnPoint.GetDestination();
     }
 }

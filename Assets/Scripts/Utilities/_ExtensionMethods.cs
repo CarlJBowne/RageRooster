@@ -224,29 +224,30 @@ public delegate void BasicDelegate();
 public interface ICloneable<T> where T : class
 {
     /// <summary>
-    /// Deep Clones this object, Populating the provided instance field.
+    /// Deep Clones this object, Creating a new instance or populating the provided instance field. <br/>
+	/// Note: Does not properly populate existing null fields. Use <see cref="CloneInto"/> instead.
     /// </summary>
-    /// <param name="target"></param>
-    public void Clone(ref T target);
+    public T Clone(T target = null);
 }
 
 public static class _CloneableExtensions
 {
-    /// <summary>
-    /// Deep Clones this object, returning a new instance.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="source"></param>
-    /// <returns></returns>
-    public static T Clone<T>(this ICloneable<T> source) where T : class
+	/// <summary>
+	/// Deep Clones this object into the null field provided.
+	/// </summary>
+	public static T CloneInto<T>(this T source, out T result) where T : class, ICloneable<T>
 	{
-		T result = null;
-		source.Clone(ref result);
+		result = source.Clone();
 		return result;
 	}
-    /// <summary>
+
+	/// <summary>
     /// Populates this object with a Deep Clone of all of the source's data. <br/>
 	/// NOTE: Does NOT work with null fields.
     /// </summary>
-    public static void CloneFrom<T>(this T target, T source) where T : class, ICloneable<T> => source.Clone(ref target);
+    public static T CloneFrom<T>(this T target, T source) where T : class, ICloneable<T>
+	{
+        source.Clone(target);
+		return target;
+    }
 }

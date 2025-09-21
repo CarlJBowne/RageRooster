@@ -37,7 +37,7 @@ public class Gameplay : MonoBehaviour
     public static StudioEventEmitter musicEmitter;
     public static System.Action PreReloadSave;
 
-
+    public static double lastSaveInteractionTime;
 
     #region Instance Fields
 
@@ -72,6 +72,8 @@ public class Gameplay : MonoBehaviour
         GetComponent<Cameras>().Awake();
         musicEmitter = GetComponent<StudioEventEmitter>();
         
+
+
         StartCoroutine(Enum());
         IEnumerator Enum()
         {
@@ -85,6 +87,7 @@ public class Gameplay : MonoBehaviour
             EnemyCullingGroup.Initialize(this);
 
             yield return RoomManager.Transition(true);
+            UpdateGameTime();
             Overlay.OverHUD.BasicFadeIn();
 
             Input.Pause.performed += c => { Menu.Manager.Escape(); };
@@ -193,7 +196,12 @@ public class Gameplay : MonoBehaviour
         yield return RoomManager.Transition(SaveFile.Current.location, true);
     }
 
-
+    public static double UpdateGameTime()
+    {
+        var previousSaveInteractionTime = lastSaveInteractionTime;
+        lastSaveInteractionTime = Time.timeAsDouble;
+        return Time.timeAsDouble - previousSaveInteractionTime;
+    }
 
 
 
@@ -311,6 +319,7 @@ public class Gameplay : MonoBehaviour
             return;
         }
         Destroy(GameObject);
+        Active = false;
     }
 
     private void OnDestroy()

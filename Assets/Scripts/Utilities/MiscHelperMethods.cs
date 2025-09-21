@@ -181,9 +181,11 @@ public static class MiscHelperMethods
 
     [MenuItem("Rage Rooster Tooling/Open Player Prefab")]
     public static void OpenPlayerPrefab() => 
-        AssetDatabase.OpenAsset(
-            AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Actors/_Private/Angus/Player.prefab")
-            );
+        AssetDatabase.OpenAsset(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Actors/_Private/Angus/Player.prefab"));
+
+    [MenuItem("Rage Rooster Tooling/Open Gameplay Scene")]
+    public static void OpenGameplayScene() => EditorSceneManager.OpenScene("Assets/Scenes/GameplayScene.unity");
+        
 
     public static bool OnBeforeSerializationWasEditorCommonUpdate(out string name)
     {

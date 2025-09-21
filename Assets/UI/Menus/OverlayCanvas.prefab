@@ -533,7 +533,7 @@ PrefabInstance:
     - target: {fileID: 3712021933855541114, guid: 29db10e34981498459cc07b07b249f92,
         type: 3}
       propertyPath: m_Color.a
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4553390418133213223, guid: 29db10e34981498459cc07b07b249f92,
         type: 3}
@@ -555,6 +555,12 @@ PrefabInstance:
       insertIndex: 4
       addedObject: {fileID: 6211742759012428167}
   m_SourcePrefab: {fileID: 100100000, guid: 29db10e34981498459cc07b07b249f92, type: 3}
+--- !u!95 &4808905804123242555 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1105361953210145172, guid: 29db10e34981498459cc07b07b249f92,
+    type: 3}
+  m_PrefabInstance: {fileID: 5614760094106786223}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5386934925097157058 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 516117678390892653, guid: 29db10e34981498459cc07b07b249f92,
@@ -575,6 +581,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   intendedLayer: 0
   blackout: {fileID: 9108638851880787669}
+  animator: {fileID: 4808905804123242555}
+  showTime: 0.5
 --- !u!224 &7472734912643039892 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3053403444157717307, guid: 29db10e34981498459cc07b07b249f92,
