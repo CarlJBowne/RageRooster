@@ -98,7 +98,7 @@ public class PlayerMovementAnimator : PlayerMovementEffector
 
         result = playerMovementBody.velocity.y;
 
-        if (!Mathf.Approximately(verticalAddSpeed, 0)) result = (result.Value + verticalAddSpeed * Time.fixedDeltaTime).Min(-terminalVelocity);
+        if (influence > 0 && !Mathf.Approximately(verticalAddSpeed, 0)) result = (result.Value + verticalAddSpeed * Time.fixedDeltaTime * influence).Min(-terminalVelocity);
         if(setVerticalInfluence > 0) 
             result = setVerticalInfluence == 1 
                 ? setVerticalVelocity 
@@ -129,6 +129,11 @@ public class PlayerMovementAnimator : PlayerMovementEffector
     public virtual void RunTransfer() => MiscHelperMethods.PlayerMovementAnimatorTransferToRoots.Basic(this);
 
 
+    public void ResetActive()
+    {
+        influence = 0;
+        fullStop = false;
+    }
 
 
 }

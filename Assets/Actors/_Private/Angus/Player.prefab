@@ -2342,8 +2342,6 @@ MonoBehaviour:
   outwardVelocity: 10
   minDistance: 5
   maxAngleDifference: 0.1
-  upgrade: {fileID: -5908332654645760598, guid: 5096cd543e777e240af87643ae7b164b,
-    type: 2}
   animationName: WallJump
 --- !u!114 &4655094921710202761
 MonoBehaviour:
@@ -5067,6 +5065,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f53dcb109650cd40b63bf8d437626bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inFallDownPitTime: 0
+  inDeathTime: 0
 --- !u!114 &8455434200384702600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5098,12 +5098,6 @@ MonoBehaviour:
   <StatesSetup>k__BackingField: 1
   <StateHolder>k__BackingField: {fileID: 6385669238997089540}
   _singalManager: {fileID: 8191279611815052833}
-  upgrades:
-  - {fileID: 3684892169369894683, guid: 5096cd543e777e240af87643ae7b164b, type: 2}
-  - {fileID: -5908332654645760598, guid: 5096cd543e777e240af87643ae7b164b, type: 2}
-  - {fileID: 3210499484089810659, guid: 5096cd543e777e240af87643ae7b164b, type: 2}
-  - {fileID: -8222721850088587547, guid: 5096cd543e777e240af87643ae7b164b, type: 2}
-  - {fileID: -5536983315783184865, guid: 5096cd543e777e240af87643ae7b164b, type: 2}
   animator: {fileID: 8579594802138283692}
   body: {fileID: 3941225653291784218}
   controller: {fileID: 1371118413310184343}
@@ -5111,12 +5105,8 @@ MonoBehaviour:
   ranged: {fileID: 2714541672873312079}
   audio: {fileID: 6199145597115895703}
   cameraTransform: {fileID: 0}
-  freeLookCamera: {fileID: 0}
   pauseState: {fileID: 5357812896936097306}
   ragDollState: {fileID: 2580061565448867863}
-  ragDollHandler: {fileID: 5436814540052560995}
-  fallDownPitTime: 1.2
-  deathTime: 4
   states:
     _serializedList:
     - Key: Grounded
@@ -5257,14 +5247,6 @@ MonoBehaviour:
   airSpin: {fileID: 1419214192395305568}
   airUpwardTornado: {fileID: 4470159406448367370}
   ventGlideState: {fileID: 8815441119551140160}
-  groundSlamUpgrade: {fileID: 3684892169369894683, guid: 5096cd543e777e240af87643ae7b164b,
-    type: 2}
-  wallJumpUpgrade: {fileID: -5908332654645760598, guid: 5096cd543e777e240af87643ae7b164b,
-    type: 2}
-  ragingChargeUpgrade: {fileID: -5536983315783184865, guid: 5096cd543e777e240af87643ae7b164b,
-    type: 2}
-  hellcopterUpgrade: {fileID: -8222721850088587547, guid: 5096cd543e777e240af87643ae7b164b,
-    type: 2}
   overrideMovementControl: 0
   overrideMovementVector: {x: 0, y: 0}
   jumpInput: 0
@@ -5286,8 +5268,6 @@ MonoBehaviour:
   jumpState: {fileID: 1027073189156208793}
   airThrowState: {fileID: 1188554763052459690}
   dropLaunchState: {fileID: 4770298227795515962}
-  dropLaunchUpgrade: {fileID: 3210499484089810659, guid: 5096cd543e777e240af87643ae7b164b,
-    type: 2}
   heldItemAnchor: {fileID: 3536800914225926894}
   interacter: {fileID: 8950658755825157513}
   aimingState: {fileID: 7421260604818229875}
@@ -5561,7 +5541,10 @@ MonoBehaviour:
   thrownEvent:
     _PersistentCalls: []
   bounceEvent:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 1081188095233249612}
+      _MemberName: ResetActive
+      _PersistentArguments: []
   thrownAttack:
     amount: 1
     velocity: {x: 0, y: 0, z: 0}
@@ -9110,8 +9093,6 @@ MonoBehaviour:
     amount: 5
     velocity: {x: 3, y: 0, z: 0}
     tags: []
-  hellcopterUpgrade: {fileID: -8222721850088587547, guid: 5096cd543e777e240af87643ae7b164b,
-    type: 2}
   collider: {fileID: 3587290060280392779}
 --- !u!54 &1285737906182916520
 Rigidbody:
