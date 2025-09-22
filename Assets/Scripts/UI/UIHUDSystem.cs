@@ -7,7 +7,8 @@ using System.Linq;
 using DG.Tweening;
 using SLS.ISingleton;
 
-public class UIHUDSystem : SingletonMonoBasic<UIHUDSystem>
+[DefaultExecutionOrder(ExecutionOrders.GameplaySystems)]
+public class UIHUDSystem : MonoBehaviour
 {
     public GameObject hintHolder;
     public TextMeshProUGUI hintText;
@@ -22,11 +23,17 @@ public class UIHUDSystem : SingletonMonoBasic<UIHUDSystem>
     Camera mainCamera;
     float hintTimer;
 
+    public static UIHUDSystem Instance { get; private set; }
 
-    // Called when the singleton instance is awakened
-    protected override void OnInitialize()
+    public void Awake()
     {
-        //SetCurrencyText(GlobalState.currency.ToString());
+        if(Instance != null && Instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+        Instance = this;
+
         mainCamera = Camera.main;
         transform.parent.TryGetComponent(out canvas);
         transform.parent.TryGetComponent(out canvasRect);
@@ -44,7 +51,7 @@ public class UIHUDSystem : SingletonMonoBasic<UIHUDSystem>
         Player.Currency.updateCurrency += SetCurrencyText;
     }
 
-    protected override void OnDeInitialize()
+    protected void OnDestroy()
     {
         Player.Health.updateHealth -= health.UpdateHeath;
         Player.Health.updateMaxHealth -= health.UpdateMax;
@@ -225,7 +232,7 @@ public class UIHUDSystem : SingletonMonoBasic<UIHUDSystem>
         int currentCombo;
 
         // Adds to the combo count
-        public static void AddCombo() => Get().combo.AddCombo_();
+        public static void AddCombo() => Instance.combo.AddCombo_();
         private void AddCombo_()
         {
             currentCombo++;

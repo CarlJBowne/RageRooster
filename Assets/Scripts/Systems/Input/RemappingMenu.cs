@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using Button = UnityEngine.InputSystem.InputAction;
 using RebindOP = UnityEngine.InputSystem.InputActionRebindingExtensions.RebindingOperation;
 
+[DefaultExecutionOrder(ExecutionOrders.GameplaySystems)]
 public class RemappingMenu : MonoBehaviour, ICustomSerialized
 {
     public GameObject rebindingOverlay;

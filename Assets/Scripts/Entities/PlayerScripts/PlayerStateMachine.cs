@@ -9,6 +9,7 @@ using SLS.ISingleton;
 using AYellowpaper.SerializedCollections;
 using RageRooster.Systems.SaveSystem;
 
+[DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 {
     #region Config

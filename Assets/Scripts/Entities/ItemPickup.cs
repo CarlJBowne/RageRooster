@@ -52,16 +52,16 @@ public class ItemPickup : MonoBehaviour
         }
         else if (type == ItemType.Hint)
         {
-            UIHUDSystem.Get().ShowHint(hintString);
+            UIHUDSystem.Instance.ShowHint(hintString);
         }
         else if (type == ItemType.Wishbone)
         {
             //PlayerHealth.Global.UpdateMax(PlayerHealth.Global.maxHealth + addAmount);
-            UIHUDSystem.Get().ShowHint(hintString);
+            UIHUDSystem.Instance.ShowHint(hintString);
         }
         else if(type == ItemType.Hen)
         {
-            UIHUDSystem.Get().ShowHint(hintString);
+            UIHUDSystem.Instance.ShowHint(hintString);
         }
 
         if (type != ItemType.Hint) 

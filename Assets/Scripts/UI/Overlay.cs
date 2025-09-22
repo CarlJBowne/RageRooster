@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[DefaultExecutionOrder(-12)]
+[DefaultExecutionOrder(ExecutionOrders.GameplaySystems)]
 public class Overlay : MonoBehaviour
 {
     public enum OverlayLayer

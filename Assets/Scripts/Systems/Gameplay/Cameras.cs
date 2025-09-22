@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(ExecutionOrders.GameplaySystems)]
 public class Cameras : MonoBehaviour
 {
     private static Cameras instance;

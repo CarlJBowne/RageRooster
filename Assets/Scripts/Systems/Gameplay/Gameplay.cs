@@ -19,7 +19,7 @@ using RageRooster.Systems.SaveSystem;
 using UnityEditor;
 #endif
 
-[DefaultExecutionOrder(-100)]
+[DefaultExecutionOrder(ExecutionOrders.Gameplay)]
 public class Gameplay : MonoBehaviour
 {
 

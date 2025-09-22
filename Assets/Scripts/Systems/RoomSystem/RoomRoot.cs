@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace RageRooster.RoomSystem
 {
-    [DefaultExecutionOrder(-90)]
+    [DefaultExecutionOrder(ExecutionOrders.Room)]
     public partial class RoomRoot : MonoBehaviour
     {
         [field: SerializeField] public RoomAsset asset { get; protected set; }

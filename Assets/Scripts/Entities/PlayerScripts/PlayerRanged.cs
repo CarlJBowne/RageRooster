@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerRanged : MonoBehaviour, IGrabber
 {
     #region Config
@@ -40,7 +41,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         TryGetComponent(out animator);
         TryGetComponent(out collider);
         TryGetComponent(out audio);
-        UIHUDSystem.TryGet(out UI);
+        UI = UIHUDSystem.Instance;
 
         pointer.target.position = pointer.startV.position + pointer.startV.forward * pointer.distance;
 

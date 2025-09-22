@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[DefaultExecutionOrder(-99), RequireComponent(typeof(PlayerStateMachine))]
+[DefaultExecutionOrder(ExecutionOrders.Player), RequireComponent(typeof(PlayerStateMachine))]
 public class Player : MonoBehaviour
 {
     public static bool Exists { get; private set; } = false;

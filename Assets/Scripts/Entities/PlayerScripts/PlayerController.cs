@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
 using RageRooster.Systems.SaveSystem;
 
+[DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerController : PlayerStateBehavior
 {
 	#region Config

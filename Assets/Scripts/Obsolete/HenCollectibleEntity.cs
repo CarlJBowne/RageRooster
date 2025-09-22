@@ -35,7 +35,7 @@ namespace RageRooster.Obsolete
             worldChange.Enable();
             gameObject.SetActive(false);
             PlayerInteracter.LostInteractable(this);
-            UIHUDSystem.Get().ShowHint(hintString);
+            UIHUDSystem.Instance.ShowHint(hintString);
             interactEvent?.Invoke();
             return true;
         }

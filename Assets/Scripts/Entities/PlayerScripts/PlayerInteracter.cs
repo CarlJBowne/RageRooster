@@ -7,6 +7,7 @@ using static Input;
 /// <summary>
 /// Now Combined with the Dialogue Trigger
 /// </summary>
+[DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
 {
     public static GameObject ThisGameObject;
