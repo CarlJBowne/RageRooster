@@ -42,7 +42,15 @@ public class UIHUDSystem : SingletonMonoBasic<UIHUDSystem>
         Player.Ammo.updateAmmo += ammo.UpdateAmmo;
         Player.Ammo.updateMaxAmmo += ammo.UpdateMax;
         Player.Currency.updateCurrency += SetCurrencyText;
+    }
 
+    protected override void OnDeInitialize()
+    {
+        Player.Health.updateHealth -= health.UpdateHeath;
+        Player.Health.updateMaxHealth -= health.UpdateMax;
+        Player.Ammo.updateAmmo -= ammo.UpdateAmmo;
+        Player.Ammo.updateMaxAmmo -= ammo.UpdateMax;
+        Player.Currency.updateCurrency -= SetCurrencyText;
     }
 
     // Called every frame to update the HUD
@@ -178,7 +186,11 @@ public class UIHUDSystem : SingletonMonoBasic<UIHUDSystem>
 
 
     // Sets the currency text on the HUD
-    public static void SetCurrencyText() => Get().currencyText.text = Player.Currency.Current.ToString();
+    public static void SetCurrencyText()
+    {
+        //if (!TryGet(out var UI)) return;
+        //UI.currencyText.text = Player.Currency.Current.ToString();
+    }
 
 
 

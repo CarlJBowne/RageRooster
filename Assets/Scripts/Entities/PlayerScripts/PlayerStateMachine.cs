@@ -32,7 +32,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     #endregion
 
 
-    private void OnDestroy() { }
+    
 
     public void HaveDestroyed() { }
 
@@ -69,7 +69,11 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
         PauseMenu.onUnPause += UnPause;
     }
 
-
+    private void OnDestroy()
+    {
+        PauseMenu.onPause -= Pause;
+        PauseMenu.onUnPause -= UnPause; 
+    }
 
 
     public static Action<PlayerStateMachine> whenInitializedEvent;

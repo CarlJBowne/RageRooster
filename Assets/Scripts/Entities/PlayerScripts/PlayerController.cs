@@ -64,7 +64,7 @@ public class PlayerController : PlayerStateBehavior
 
 	private void OnDestroy()
 	{
-        Input.Jump.performed -= BeginActionEvent;
+        Input.Jump.performed -= JumpPress;
         Input.AttackTap.performed -= BeginActionEvent;
         Input.AttackHold.performed -= BeginActionEvent;
         Input.Grab.performed -= BeginActionEvent;

@@ -31,8 +31,8 @@ public class SpawnPoint : MonoBehaviour
         Vector3 target = transform.position;
         if (snapToFloor && Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit)) target = hit.point;
 
-        Player.InstantMove(transform.position, rotate ? transform.eulerAngles.y : null);
-        Player.MovementBody.InstantSnapToFloor();
+        Player.InstantMove(target, rotate ? transform.eulerAngles.y : null);
+        //Player.MovementBody.InstantSnapToFloor();
     }
 
     public Destination GetDestination() => new()

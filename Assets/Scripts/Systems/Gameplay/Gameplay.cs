@@ -84,7 +84,7 @@ public class Gameplay : MonoBehaviour
                 && Player.Active
                 && RoomManager.Active;
 
-            EnemyCullingGroup.Initialize(this);
+            //EnemyCullingGroup.Initialize(this); 
 
             yield return RoomManager.Transition(true);
             UpdateGameTime();
@@ -225,7 +225,7 @@ public class Gameplay : MonoBehaviour
     }
     public static List<BobAndTurn> bobAndTurnList = new();
 
-
+    /*
     public static class EnemyCullingGroup
     {
         static Transform camera;
@@ -307,7 +307,7 @@ public class Gameplay : MonoBehaviour
         }
 
 
-    }
+    }*/
 
 
 
@@ -326,7 +326,7 @@ public class Gameplay : MonoBehaviour
 
     private void OnDestroy()
     {
-        EnemyCullingGroup.DeInitialize();
+        //EnemyCullingGroup.DeInitialize();
     }
 
 

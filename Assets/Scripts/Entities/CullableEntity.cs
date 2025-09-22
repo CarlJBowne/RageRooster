@@ -13,7 +13,7 @@ public class CullableEntity : MonoBehaviour
     //Data
     public bool active = false;
     public bool init = false;
-
+    /*
     private void Awake()
     {
         if(!Gameplay.Active) return;
@@ -39,6 +39,6 @@ public class CullableEntity : MonoBehaviour
     {
         entityModel.SetActive(culled);
     }
-
+    */
 
 }
