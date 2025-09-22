@@ -20,7 +20,7 @@ public class ItemPickup : MonoBehaviour
     [TextArea]
     public string hintString;
     public int addAmount = 1;
-    public WorldChange oneTime;
+    public RageRooster.Obsolete.WorldChange oneTime;
 
 
     private void Awake()

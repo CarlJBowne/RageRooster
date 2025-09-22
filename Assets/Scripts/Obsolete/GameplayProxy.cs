@@ -2,34 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Obsolete] //Replace with a deliberate deletion of Gameplay when going to the Main Menu later.
-public class GameplayProxy : MonoBehaviour
+namespace RageRooster.Obsolete
 {
-    public bool reverseProxy;
+    [System.Obsolete] //Replace with a deliberate deletion of Gameplay when going to the Main Menu later.
+    public class GameplayProxy : MonoBehaviour
+    {
+        public bool reverseProxy;
 
-    private void Start()
-     {
-        var attempt = GameObject.Find("Gameplay");
-        if(!reverseProxy)
+        private void Start()
         {
-            if(attempt == null)
+            var attempt = GameObject.Find("Gameplay");
+            if (!reverseProxy)
             {
-                GameObject NEW = Instantiate(GlobalPrefabs.NamedPrefab("Gameplay"));
-                NEW.name = "Gameplay";
-                DontDestroyOnLoad(NEW);
-                PlayerHealth Player = NEW.transform.GetChild(0).GetComponent<PlayerHealth>();
-                //Player.SetRespawnPoint(transform.position);
-                //Player.Respawn();
+                if (attempt == null)
+                {
+                    GameObject NEW = Instantiate(GlobalPrefabs.NamedPrefab("Gameplay"));
+                    NEW.name = "Gameplay";
+                    DontDestroyOnLoad(NEW);
+                    PlayerHealth Player = NEW.transform.GetChild(0).GetComponent<PlayerHealth>();
+                    //Player.SetRespawnPoint(transform.position);
+                    //Player.Respawn();
 
-                Destroy(gameObject);
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    PlayerHealth Player = attempt.transform.GetChild(0).GetComponent<PlayerHealth>();
+                    //Player.SetRespawnPoint(transform.position);
+                    //Player.Respawn();
+                }
             }
-            else
-            {
-                PlayerHealth Player = attempt.transform.GetChild(0).GetComponent<PlayerHealth>();
-                //Player.SetRespawnPoint(transform.position);
-                //Player.Respawn();
-            }
+            else if (reverseProxy && attempt != null) Destroy(attempt);
         }
-        else if(reverseProxy && attempt != null) Destroy(attempt);
     }
 }

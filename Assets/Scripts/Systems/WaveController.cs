@@ -25,7 +25,7 @@ public class WaveController : MonoBehaviour
 
     [Header("World & Trigger")]
     public GameObject[] wallsToDisable;
-    public WorldChange worldChange;
+    public RageRooster.Obsolete.WorldChange worldChange;
     public PlayerEnterTrigger3 trigger;
 
     private int currentWave = 0;

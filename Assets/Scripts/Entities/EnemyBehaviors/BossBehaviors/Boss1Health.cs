@@ -15,7 +15,7 @@ public class Boss1Health : Health
 
     public UltEvents.UltEvent ResetBossEvent;
     public UltEvents.UltEvent FinishBossEvent;
-    public WorldChange finishedBossWorldChange;
+    public RageRooster.Obsolete.WorldChange finishedBossWorldChange;
 
     [HideInEditMode] public int bossPhase = 1;
     private bool phase2TriggerTriggered;
