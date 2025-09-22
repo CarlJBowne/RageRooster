@@ -14,7 +14,7 @@ namespace RageRooster.RoomSystem
         public int spawnID;
         public AreaAsset area => room.area;
 
-        public static Destination Default => new()
+        public static Destination Null => new()
         {
             room = null,
             spawnID = -1
@@ -28,7 +28,7 @@ namespace RageRooster.RoomSystem
 
 
         public bool IsValid() => room != null && spawnID >= 0;
-        public bool IsDefault() => room == null && spawnID == -1;
+        public bool IsNull() => room == null && spawnID == -1;
 
         public static bool operator ==(Destination a, Destination b) => a.area == b.area && a.room == b.room && a.spawnID == b.spawnID;
         public static bool operator !=(Destination a, Destination b) => !(a.area == b.area && a.room == b.room && a.spawnID == b.spawnID);

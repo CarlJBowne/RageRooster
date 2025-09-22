@@ -16,7 +16,7 @@ namespace RageRooster.RoomSystem
         {
             if (!RoomManager.Active)
             {
-                if (EditorState.EditorDestination.IsDefault())
+                if (EditorState.EditorDestination.IsNull())
                     EditorState.EditorDestination = new()
                     {
                         room = asset,

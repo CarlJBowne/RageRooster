@@ -59,7 +59,7 @@ namespace RageRooster.RoomSystem
             OverlayLoading.SetVisible(false);
             Player.SetActive(true);
 
-            destination = Destination.Default;
+            destination = Destination.Null;
         }
 
 

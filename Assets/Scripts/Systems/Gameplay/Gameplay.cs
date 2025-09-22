@@ -132,6 +132,7 @@ public class Gameplay : MonoBehaviour
             EditorState.EditorDestination = CalculateEditorSpawn();
         if (!EditorState.EditorDestination.IsValid()) EditorState.EditorDestination = Destination.StartingDefault();
         RoomManager.destination = EditorState.EditorDestination;
+        EditorState.EditorDestination = Destination.Null;
 
         SceneManager.LoadScene(GAMEPLAY_SCENE);
     }
@@ -148,7 +149,7 @@ public class Gameplay : MonoBehaviour
         Destination target = EditorState.EditorDestination;
 
         // If target is default, use the save file location
-        if (target.IsDefault()) return SaveFile.Current.location;
+        if (target.IsNull()) return SaveFile.Current.location;
 
         Destination fileDest = SaveFile.Current.location;
 
