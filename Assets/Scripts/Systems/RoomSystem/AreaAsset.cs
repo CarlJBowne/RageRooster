@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.IO;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -59,7 +61,16 @@ namespace RageRooster.RoomSystem
 
 
 
+#if UNITY_EDITOR
 
+        public void Editor_Setup(string name, UnityEngine.Object sceneAsset)
+        {
+            displayName = name;
+            shellScene = new SceneReference(AssetDatabase.GetAssetPath(sceneAsset));
+            EditorUtility.SetDirty(this);
+        }
+
+#endif
     }
 
 #if UNITY_EDITOR
