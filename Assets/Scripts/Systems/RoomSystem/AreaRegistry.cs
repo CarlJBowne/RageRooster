@@ -35,6 +35,18 @@ namespace RageRooster.RoomSystem
         }
         public static AreaAsset[] GetAll() => Get().areaAssets;
 
+
+#if UNITY_EDITOR
+        public static void Editor_AddArea(AreaAsset area)
+        {
+            AreaRegistry This = Get();
+            var areas = new List<AreaAsset>(This.areaAssets)
+            {area};
+            This.areaAssets = areas.ToArray();
+            UnityEditor.EditorUtility.SetDirty(This);
+        }
+#endif
+
     }
 
 }

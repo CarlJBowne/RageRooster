@@ -14,10 +14,13 @@ public static class LevelDesignTools
         var Area = ScriptableObject.CreateInstance<AreaAsset>();
         AssetDatabase.CreateAsset(Area, targetPath);
 
+        AreaRegistry.Editor_AddArea(Area);
+
         //Copy AreaTemplate scene from Assets/Templates/AreaTemplate.unity
         string templatePath = "Assets/Templates/AreaTemplate.unity";
         string scenePath = targetPath.Replace(".asset", "_Scene.unity");
 
+        Debug.Log($"Copying file at path {templatePath} to path {scenePath}");
         if (!AssetDatabase.CopyAsset(templatePath, scenePath)) return;
 
         Area.Editor_Setup(Path.GetFileNameWithoutExtension(targetPath), AssetDatabase.LoadAssetAtPath<Object>(scenePath));
