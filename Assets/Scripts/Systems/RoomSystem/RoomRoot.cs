@@ -7,7 +7,7 @@ using UnityEditor;
 namespace RageRooster.RoomSystem
 {
     [DefaultExecutionOrder(ExecutionOrders.Room)]
-    public partial class RoomRoot : MonoBehaviour
+    public class RoomRoot : MonoBehaviour
     {
         [field: SerializeField] public RoomAsset asset { get; protected set; }
         [field: SerializeField] public SpawnPoint[] spawns { get; protected set; }
@@ -30,11 +30,9 @@ namespace RageRooster.RoomSystem
         }
 
 
-    }
 
 #if UNITY_EDITOR
-    public partial class RoomRoot
-    {
+
         internal void OnSaveScene(Scene scene)
         {
             if (asset == null)
@@ -62,18 +60,38 @@ namespace RageRooster.RoomSystem
             EditorUtility.SetDirty(asset);
             EditorUtility.SetDirty(this);
         }
-    }
 
-    [InitializeOnLoad]
-    public static class _RoomRootSceneHook
-    {
-        static _RoomRootSceneHook() => UnityEditor.SceneManagement.EditorSceneManager.sceneSaving += OnSceneSaving;
-
-        private static void OnSceneSaving(Scene scene, string path)
+        public class Editor : UnityEditor.Editor
         {
-            if (!scene.GetRootGameObjects()[0].TryGetComponent(out RoomRoot roomRoot)) return;
-            roomRoot.OnSaveScene(scene);
+
+            public static void AttachAsset(RoomRoot This, RoomAsset room)
+            {
+                This.asset = room;
+                UnityEditor.EditorUtility.SetDirty(This);
+            }
+
+
+
+
+
+
+
+
+            [InitializeOnLoad]
+            public static class RoomRootSceneHook
+            {
+                static RoomRootSceneHook() => UnityEditor.SceneManagement.EditorSceneManager.sceneSaving += OnSceneSaving;
+
+                private static void OnSceneSaving(Scene scene, string path)
+                {
+                    if (!scene.GetRootGameObjects()[0].TryGetComponent(out RoomRoot roomRoot)) return;
+                    roomRoot.OnSaveScene(scene);
+                }
+            }
+
         }
-    }
+
 #endif
+    }
+
 }

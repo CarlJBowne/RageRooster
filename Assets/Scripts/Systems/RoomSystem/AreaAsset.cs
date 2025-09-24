@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.IO;
+using UnityEditor.SceneManagement;
+using Unity.VisualScripting;
+
+
 
 
 #if UNITY_EDITOR
@@ -387,13 +391,40 @@ namespace RageRooster.RoomSystem
                 room.ApplyModifiedProperties();
             }
 
-
-            public static void Setup(AreaAsset This, string name, UnityEngine.Object sceneAsset)
+            [MenuItem("File/Create Area", priority = 0)]
+            public static void CREATE_BEGIN() => CreateAreaPopupWindow.Show(CREATE);
+            public static void CREATE(string name)
             {
-                This.displayName = name;
-                This.shellScene = new SceneReference(sceneAsset);
-                CreateFlagSet(This);
-                EditorUtility.SetDirty(This);
+
+                string assetPath = $"Assets/World/Areas/{name}.asset";
+                string scenePath = $"Assets/World/Areas/{name}_Scene.unity";
+
+
+                // Create AreaAsset
+                var area = ScriptableObject.CreateInstance<AreaAsset>();
+                AssetDatabase.CreateAsset(area, assetPath);
+                AreaRegistry.Editor_AddArea(area);
+
+                // Create scene from template
+                if (!AssetDatabase.CopyAsset("Assets/Editor/AreaTemplate.unity", scenePath)) return;
+
+                // Set up AreaAsset properties
+                area.displayName = name;
+                area.shellScene = new SceneReference(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(scenePath));
+                CreateFlagSet(area);
+                EditorUtility.SetDirty(area);
+
+                // Open, attach, save, and close scene
+                var scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
+                AreaRoot.Editor.AttachAsset(scene.GetRootGameObjects()[0].GetComponent<AreaRoot>(), area);
+                EditorSceneManager.MarkSceneDirty(scene);
+                EditorSceneManager.SaveScene(scene);
+                EditorSceneManager.CloseScene(scene, true);
+
+                Directory.CreateDirectory($"Assets/World/Rooms/{name}");
+                AssetDatabase.Refresh();
+
+                Debug.Log($"Successfully created new Area: {name}. Note that its Scene cannot be automatically registered in the build settings, YOU have to do that.");
             }
 
             public static void CreateFlagSet(AreaAsset This)
@@ -410,6 +441,34 @@ namespace RageRooster.RoomSystem
                 EditorUtility.SetDirty(This);
             }
 
+            private class CreateAreaPopupWindow : EditorWindow
+            {
+                private string roomName = "";
+                private System.Action<string> onCreate;
+
+                public static void Show(System.Action<string> onCreate)
+                {
+                    var window = ScriptableObject.CreateInstance<CreateAreaPopupWindow>();
+                    window.titleContent = new GUIContent("Create Area");
+                    window.position = new Rect(Screen.width / 2, Screen.height / 2, 350, EditorGUIUtility.singleLineHeight * 3);
+                    window.onCreate = onCreate;
+                    window.ShowUtility();
+                }
+
+                private void OnGUI()
+                {
+                    GUILayout.Label("Create New Area", EditorStyles.boldLabel);
+                    roomName = EditorGUILayout.TextField("Area Name", roomName);
+
+                    EditorGUI.BeginDisabledGroup(string.IsNullOrWhiteSpace(roomName));
+                    if (GUILayout.Button("Create"))
+                    {
+                        Close();
+                        onCreate?.Invoke(roomName);
+                    }
+                    EditorGUI.EndDisabledGroup();
+                }
+            }
         }
 
 #endif
