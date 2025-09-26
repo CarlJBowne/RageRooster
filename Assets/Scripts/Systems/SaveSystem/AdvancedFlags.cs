@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace RageRooster.Systems.SaveSystem.Flags
 {
     [System.Serializable]
@@ -30,6 +34,10 @@ namespace RageRooster.Systems.SaveSystem.Flags
                 _ => null,
             };
         }
+
+#if UNITY_EDITOR
+        public abstract void Draw(Rect position, SerializedProperty property);
+#endif
     }
 
     public enum FlagTypes
@@ -84,6 +92,19 @@ namespace RageRooster.Systems.SaveSystem.Flags
             t.value = value;
             return t;
         }
+
+
+#if UNITY_EDITOR
+        public override void Draw(Rect position, SerializedProperty property)
+        {
+            bool input = EditorGUI.Toggle(position, GUIContent.none, value);
+            if (input != value)
+            {
+                value = input;
+                property.serializedObject.ApplyModifiedProperties();
+            }
+        }
+#endif
     }
 
     public class Flag_Int : FlagBase
@@ -129,6 +150,19 @@ namespace RageRooster.Systems.SaveSystem.Flags
             t.value = value;
             return t;
         }
+
+
+#if UNITY_EDITOR
+        public override void Draw(Rect position, SerializedProperty property)
+        {
+            int input = EditorGUI.DelayedIntField(position, GUIContent.none, value);
+            if (input != value)
+            {
+                value = input;
+                property.serializedObject.ApplyModifiedProperties();
+            }
+        }
+#endif
     }
 
     public class Flag_Float : FlagBase
@@ -174,6 +208,19 @@ namespace RageRooster.Systems.SaveSystem.Flags
             t.value = value;
             return t;
         }
+
+
+#if UNITY_EDITOR
+        public override void Draw(Rect position, SerializedProperty property)
+        {
+            float input = EditorGUI.DelayedFloatField(position, GUIContent.none, value);
+            if (input != value)
+            {
+                value = input;
+                property.serializedObject.ApplyModifiedProperties();
+            }
+        }
+#endif
     }
 
     public class Flag_Vector3 : FlagBase
@@ -219,6 +266,19 @@ namespace RageRooster.Systems.SaveSystem.Flags
             t.value = value;
             return t;
         }
+
+
+#if UNITY_EDITOR
+        public override void Draw(Rect position, SerializedProperty property)
+        {
+            Vector3 input = EditorGUI.Vector3Field(position, GUIContent.none, value);
+            if (input != value)
+            {
+                value = input;
+                property.serializedObject.ApplyModifiedProperties();
+            }
+        }
+#endif
     }
 
     public class Flag_String : FlagBase
@@ -264,5 +324,18 @@ namespace RageRooster.Systems.SaveSystem.Flags
             t.value = value;
             return t;
         }
+
+
+#if UNITY_EDITOR
+        public override void Draw(Rect position, SerializedProperty property)
+        {
+            string input = EditorGUI.TextField(position, GUIContent.none, value);
+            if (input != value)
+            {
+                value = input;
+                property.serializedObject.ApplyModifiedProperties();
+            }
+        }
+#endif
     }
 }

@@ -69,10 +69,10 @@ namespace RageRooster.Systems.SaveSystem.Flags
                     Enum enumOutput = EditorGUI.EnumPopup(enumRect, valueObj.type);
                     if (enumOutput != (Enum)valueObj.type)
                     {
-                        valueProp.managedReferenceValue = FlagBase.CreateInstanceFromEnum((FlagTypes)enumOutput);
+                        valueObj = FlagBase.CreateInstanceFromEnum((FlagTypes)enumOutput);
                         drawerInstance.property.serializedObject.ApplyModifiedProperties();
                     }
-                    EditorGUI.PropertyField(valueRect, valueProp, GUIContent.none);
+                    valueObj.Draw(valueRect, valueProp.FindPropertyRelative("value"));
                 }
                 protected override float KeyValuePairHeight(SerializedProperty serializedListProperty, Instance drawerInstance, int index)
                     => EditorGUIUtility.singleLineHeight * 2 + EditorGUIUtility.standardVerticalSpacing;
@@ -96,69 +96,6 @@ namespace RageRooster.Systems.SaveSystem.Flags
                     drawerInstance.UpdateReorderableList();
                 }
             }
-
-            /*[CustomEditor(typeof(SavedFlagSet))]
-            public class Editor : UnityEditor.Editor
-            {
-                private ReorderableList displayList;
-                public override VisualElement CreateInspectorGUI()
-                {
-                    displayList = new ReorderableList(
-                        serializedObject, 
-                        serializedObject.FindProperty("flags._serializedList"), 
-                        true,
-                        true,
-                        true,
-                        true);
-
-                    displayList.drawHeaderCallback = (Rect rect) => { EditorGUI.LabelField(rect, "Flags"); };
-                    displayList.drawElementCallback = DrawElement;
-                    displayList.onAddCallback = Add;
-
-
-                    var root = new VisualElement();
-                    // Add your custom UI here, e.g., IMGUIContainer for ReorderableList
-                    root.Add(new IMGUIContainer(() => displayList.DoLayoutList()));
-                    return root;
-                }
-
-                void DrawElement(Rect rect, int index, bool isActive, bool isFocused)
-                {
-                    var element = displayList.serializedProperty.GetArrayElementAtIndex(index);
-                    var keyProp = element.FindPropertyRelative("Key");
-                    var flagTypeProp = element.FindPropertyRelative("Value").FindPropertyRelative("Item2");
-                    var flagValueProp = element.FindPropertyRelative("Value").FindPropertyRelative("Item1");
-
-                    float padding = 2f;
-                    float rowHeight = EditorGUIUtility.singleLineHeight;
-                    float enumWidth = 80f;
-                    float spacing = 5f;
-
-                    // First row: Key as string
-                    Rect keyRect = new Rect(rect.x, rect.y + padding, rect.width, rowHeight);
-                    EditorGUI.PropertyField(keyRect, keyProp, GUIContent.none);
-
-                    // Second row: Enum and value
-                    Rect enumRect = new Rect(rect.x, rect.y + rowHeight + padding + spacing, enumWidth, rowHeight);
-                    Rect valueRect = new Rect(rect.x + enumWidth + spacing, rect.y + rowHeight + padding + spacing, rect.width - enumWidth - spacing, rowHeight);
-
-                    EditorGUI.PropertyField(enumRect, flagTypeProp, GUIContent.none);
-                    EditorGUI.PropertyField(valueRect, flagValueProp, GUIContent.none);
-                }
-                void Add(ReorderableList list)
-                {
-                    var index = list.serializedProperty.arraySize;
-                    list.serializedProperty.arraySize++;
-                    list.index = index;
-                    var element = list.serializedProperty.GetArrayElementAtIndex(index);
-                    var keyProp = element.FindPropertyRelative("Key");
-                    var valueProp = element.FindPropertyRelative("Value");
-                    keyProp.stringValue = "NewFlag";
-                    valueProp.FindPropertyRelative("Item1").objectReferenceValue = null;
-                    valueProp.FindPropertyRelative("Item2").enumValueIndex = 0;
-                    serializedObject.ApplyModifiedProperties();
-                }
-            }*/
         }
     }
 }
