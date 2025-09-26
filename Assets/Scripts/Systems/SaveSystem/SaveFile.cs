@@ -19,8 +19,8 @@ namespace RageRooster.Systems.SaveSystem
         public SavedCollectible powerEggs = new();
         public SavedCollectible wishbones = new();
         public SavedCollectible hensRescued = new();
-        public SavedFlagSet globalChanges;
-        public Dictionary<AreaAsset, SavedFlagSet> areaChanges = new();
+        public Flags.SavedFlagSet globalChanges;
+        public Dictionary<AreaAsset, Flags.SavedFlagSet> areaChanges = new();
 
         public class SavedPlayerStats
         {

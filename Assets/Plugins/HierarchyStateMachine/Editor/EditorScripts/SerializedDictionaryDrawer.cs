@@ -208,24 +208,8 @@ namespace SLS.StateMachineH.SerializedDictionary
                 };
 
                 reorderableList.onChangedCallback = list => UpdateReorderableList();
-                reorderableList.onAddCallback = list =>
-                {
-                    if (serializedListProperty.arraySize < 1)
-                        serializedListProperty.InsertArrayElementAtIndex(0);
-                    else
-                        serializedListProperty.InsertArrayElementAtIndex(serializedListProperty.arraySize - 1);
-                    serializedListProperty.serializedObject.ApplyModifiedProperties();
-                    UpdateReorderableList();
-                };
-                reorderableList.onRemoveCallback = list =>
-                {
-                    if (serializedListProperty.arraySize > 0)
-                    {
-                        serializedListProperty.DeleteArrayElementAtIndex(list.index);
-                        serializedListProperty.serializedObject.ApplyModifiedProperties();
-                        UpdateReorderableList();
-                    }
-                };
+                reorderableList.onAddCallback = list => {drawer.AddNewItem(serializedListProperty, this, list);};
+                reorderableList.onRemoveCallback = list => {drawer.RemoveItem(serializedListProperty, this, list);};
                 reorderableList.onReorderCallbackWithDetails = (list, oldID, newID) => UpdateReorderableList();
 
                 property.serializedObject.ApplyModifiedProperties();
@@ -275,6 +259,24 @@ namespace SLS.StateMachineH.SerializedDictionary
                 EditorGUIUtility.singleLineHeight
                 );
         }
+
+        protected virtual void AddNewItem(SerializedProperty serializedListProperty, Instance drawerInstance, ReorderableList list)
+        {
+            int place = serializedListProperty.arraySize > 0 ? serializedListProperty.arraySize - 1 : 0;
+            serializedListProperty.InsertArrayElementAtIndex(place);
+            serializedListProperty.serializedObject.ApplyModifiedProperties();
+            drawerInstance.UpdateReorderableList();
+        }
+        protected virtual void RemoveItem(SerializedProperty serializedListProperty, Instance drawerInstance, ReorderableList list)
+        {
+            if (serializedListProperty.arraySize > 0)
+            {
+                serializedListProperty.DeleteArrayElementAtIndex(list.index);
+                serializedListProperty.serializedObject.ApplyModifiedProperties();
+                drawerInstance.UpdateReorderableList();
+            }
+        }
+
 
         [InitializeOnLoadMethod]
         private static void ClearInstancesOnReload() => instanceDrawers?.Clear();
