@@ -1,12 +1,13 @@
 ﻿using Newtonsoft.Json.Linq;
+using SLS.StateMachineH.SerializedDictionary;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
-using SLS.StateMachineH.SerializedDictionary;
 
 namespace RageRooster.Systems.SaveSystem.Flags
 {
@@ -49,33 +50,74 @@ namespace RageRooster.Systems.SaveSystem.Flags
             {
                 protected override void KeyValuePairDrawer(SerializedProperty item, Instance drawerInstance, Rect position, int id, bool isDupe)
                 {
-                    var keyProp = item.FindPropertyRelative("Key");
-                    var valueProp = item.FindPropertyRelative("Value");
-                    FlagBase valueObj = valueProp.managedReferenceValue as FlagBase;
-
-                    float padding = 2f;
                     float rowHeight = EditorGUIUtility.singleLineHeight;
                     float enumWidth = 80f;
                     float spacing = 5f;
 
-                    // First row: Key as string
-                    Rect keyRect = new Rect(position.x, position.y + padding, position.width, rowHeight);
-                    EditorGUI.PropertyField(keyRect, keyProp, GUIContent.none);
+                    Rect keyRect = new Rect(position.x, position.y, position.width, rowHeight);
+                    Rect enumRect = new Rect(position.x, position.y + rowHeight + spacing, enumWidth, rowHeight);
+                    Rect valueRect = new Rect(position.x + enumWidth + spacing, position.y + rowHeight + spacing, position.width - enumWidth - spacing, rowHeight);
 
-                    // Second row: Enum and value
-                    Rect enumRect = new Rect(position.x, position.y + rowHeight + padding + spacing, enumWidth, rowHeight);
-                    Rect valueRect = new Rect(position.x + enumWidth + spacing, position.y + rowHeight + padding + spacing, position.width - enumWidth - spacing, rowHeight);
+                    EditorGUI.PropertyField(keyRect, item.FindPropertyRelative("Key"), GUIContent.none);
 
-                    Enum enumOutput = EditorGUI.EnumPopup(enumRect, valueObj.type);
-                    if (enumOutput != (Enum)valueObj.type)
+                    //EditorGUI.BeginChangeCheck();
+
+                    var flagProp = item.FindPropertyRelative("Value");
+
+                    FlagBase flagObj = flagProp.managedReferenceValue as FlagBase;
+
+                    Enum enumOutput = EditorGUI.EnumPopup(enumRect, flagObj.type);
+                    if (enumOutput != (Enum)flagObj.type)
                     {
-                        valueObj = FlagBase.CreateInstanceFromEnum((FlagTypes)enumOutput);
-                        drawerInstance.property.serializedObject.ApplyModifiedProperties();
+                        flagProp.managedReferenceValue = FlagBase.CreateInstanceFromEnum((FlagTypes)enumOutput);
+                        flagObj = flagProp.managedReferenceValue as FlagBase;
                     }
-                    valueObj.Draw(valueRect, valueProp.FindPropertyRelative("value"));
+
+
+
+                    if (flagObj.type == FlagTypes.Bool)
+                    {
+                        flagObj.TryGetValue(out bool existingValue);
+                        var input = EditorGUI.Toggle(valueRect, GUIContent.none, existingValue);
+                        if(input != existingValue) Enforce();
+
+                    }
+                    else if (flagObj.type == FlagTypes.Int)
+                    {
+                        flagObj.TryGetValue(out int existingValue);
+                        var input = EditorGUI.IntField(valueRect, GUIContent.none, existingValue);
+                        if (input != existingValue) Enforce();
+                    }
+                    else if (flagObj.type == FlagTypes.Float)
+                    {
+                        flagObj.TryGetValue(out float existingValue);
+                        var input = EditorGUI.FloatField(valueRect, GUIContent.none, existingValue);
+                        if (input != existingValue) Enforce();
+                    }
+                    else if (flagObj.type == FlagTypes.Vector3)
+                    {
+                        flagObj.TryGetValue(out Vector3 existingValue);
+                        var input = EditorGUI.Vector3Field(valueRect, GUIContent.none, existingValue);
+                        if (input != existingValue) Enforce();
+                    }
+                    else if (flagObj.type == FlagTypes.String)
+                    {
+                        flagObj.TryGetValue(out string existingValue);
+                        var input = EditorGUI.TextField(valueRect, GUIContent.none, existingValue);
+                        if (input != existingValue) Enforce();
+                    } 
+
+                    void Enforce()
+                    {
+                        drawerInstance.property.serializedObject.ApplyModifiedProperties();
+                        EditorUtility.SetDirty(drawerInstance.property.serializedObject.targetObject);
+                    }
+
+                    //if (EditorGUI.EndChangeCheck()) drawerInstance.property.serializedObject.ApplyModifiedProperties();
+
                 }
                 protected override float KeyValuePairHeight(SerializedProperty serializedListProperty, Instance drawerInstance, int index)
-                    => EditorGUIUtility.singleLineHeight * 2 + EditorGUIUtility.standardVerticalSpacing;
+                    => EditorGUIUtility.singleLineHeight * 2 + EditorGUIUtility.standardVerticalSpacing + 5;
 
                 protected override void AddNewItem(SerializedProperty serializedListProperty, Instance drawerInstance, ReorderableList list)
                 {
