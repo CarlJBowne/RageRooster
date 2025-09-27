@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEditorInternal;
@@ -76,10 +77,15 @@ namespace SLS.StateMachineH.SerializedDictionary
             public ISerializedDictionaryNonGeneric TargetDictionary;
             public ReorderableList reorderableList;
 
+            protected bool isReorderableListValid => reorderableList != null
+                    && reorderableList.list != null
+                    && reorderableList.drawElementCallback != null
+                    && reorderableList.elementHeightCallback != null
+                    && reorderableList.draggable;
 
             public float GetPropertyHeight()
             {
-                if (reorderableList == null || reorderableList.list == null || reorderableList.draggable == false) UpdateReorderableList();
+                if (!isReorderableListValid)UpdateReorderableList();
                 try
                 {
                     return reorderableList.GetHeight();
@@ -88,7 +94,7 @@ namespace SLS.StateMachineH.SerializedDictionary
                 {
                     try
                     {
-                        Update();
+                        UpdateReorderableList();
                         return reorderableList.GetHeight();
                     }
                     catch (System.ArgumentNullException)
@@ -102,6 +108,7 @@ namespace SLS.StateMachineH.SerializedDictionary
             public void OnGUI()
             {
                 EditorGUI.BeginProperty(startingPosition, label, property);
+                EditorGUI.BeginChangeCheck();
 
                 if (reorderableList == null || reorderableList.draggable == false) UpdateReorderableList();
                 try
@@ -115,6 +122,12 @@ namespace SLS.StateMachineH.SerializedDictionary
                 }
                 finally
                 {
+                    if(EditorGUI.EndChangeCheck())
+                    {
+                        property.serializedObject.ApplyModifiedProperties();
+                        Update(updateList: true);
+                    }
+
                     EditorGUI.EndProperty();
                 }
             }
@@ -132,6 +145,7 @@ namespace SLS.StateMachineH.SerializedDictionary
                 bool IsDupe(int id) => duplicates != null && duplicates.Length > id && duplicates[id];
 
                 reorderableList = new ReorderableList(property.serializedObject, serializedListProperty);
+                reorderableList.list = TargetDictionary.listAccess;
 
                 reorderableList.drawHeaderCallback = rect =>
                 {
@@ -198,19 +212,14 @@ namespace SLS.StateMachineH.SerializedDictionary
                                                                     ? drawer.KeyValuePairHeight(serializedListProperty, this, index)
                                                                     : 0;
 
-                reorderableList.draggable = serializedListProperty.isExpanded;
-                reorderableList.onSelectCallback = list =>
-                {
-                    if (list.index >= 0 && list.index < serializedListProperty.arraySize)
-                    {
-                        list.Select(list.index);
-                    }
-                };
+                reorderableList.draggable = true;
 
                 reorderableList.onChangedCallback = list => UpdateReorderableList();
                 reorderableList.onAddCallback = list => {drawer.AddNewItem(serializedListProperty, this, list);};
                 reorderableList.onRemoveCallback = list => {drawer.RemoveItem(serializedListProperty, this, list);};
                 reorderableList.onReorderCallbackWithDetails = (list, oldID, newID) => UpdateReorderableList();
+
+
 
                 property.serializedObject.ApplyModifiedProperties();
             }
@@ -231,7 +240,7 @@ namespace SLS.StateMachineH.SerializedDictionary
             Rect valueRect = new Rect(position.x + position.width * .3f, position.y, position.width * .7f, elementHeight);
 
             var prevColor = GUI.color;
-            if (isDupe) GUI.color = new Color(1.5f, 1, 1);
+            if (isDupe) GUI.color = redWarning;
 
             try
             {
@@ -277,6 +286,7 @@ namespace SLS.StateMachineH.SerializedDictionary
             }
         }
 
+        protected Color redWarning = new Color(1.5f, 1, 1);
 
         [InitializeOnLoadMethod]
         private static void ClearInstancesOnReload() => instanceDrawers?.Clear();

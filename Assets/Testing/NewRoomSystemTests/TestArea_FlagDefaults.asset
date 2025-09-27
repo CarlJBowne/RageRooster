@@ -13,4 +13,21 @@ MonoBehaviour:
   m_Name: TestArea_FlagDefaults
   m_EditorClassIdentifier: 
   flags:
-    serializedList: []
+    serializedList:
+    - Key: test
+      Value:
+        rid: 4196940951543349435
+    - Key: test1
+      Value:
+        rid: 4196940951543349437
+  references:
+    version: 2
+    RefIds:
+    - rid: 4196940951543349435
+      type: {class: Flag_Bool, ns: RageRooster.Systems.SaveSystem.Flags, asm: Assembly-CSharp}
+      data:
+        value: 0
+    - rid: 4196940951543349437
+      type: {class: Flag_Bool, ns: RageRooster.Systems.SaveSystem.Flags, asm: Assembly-CSharp}
+      data:
+        value: 0

@@ -48,76 +48,64 @@ namespace RageRooster.Systems.SaveSystem.Flags
             [CustomPropertyDrawer(typeof(FlagDictionary), true)]
             public class FlagDictionaryDrawer : SerializedDictionaryDrawer
             {
+                float enumWidth = 70f;
+                float spacing = 2f;
+                float rowHeight => EditorGUIUtility.singleLineHeight;
+
                 protected override void KeyValuePairDrawer(SerializedProperty item, Instance drawerInstance, Rect position, int id, bool isDupe)
                 {
-                    float rowHeight = EditorGUIUtility.singleLineHeight;
-                    float enumWidth = 80f;
-                    float spacing = 5f;
+                    if (isDupe) GUI.color = redWarning;
 
-                    Rect keyRect = new Rect(position.x, position.y, position.width, rowHeight);
-                    Rect enumRect = new Rect(position.x, position.y + rowHeight + spacing, enumWidth, rowHeight);
-                    Rect valueRect = new Rect(position.x + enumWidth + spacing, position.y + rowHeight + spacing, position.width - enumWidth - spacing, rowHeight);
+                    Rect keyRect = new(position.x, position.y + 1, position.width, rowHeight);
+                    Rect enumRect = new(position.x, position.y + rowHeight + spacing, enumWidth, rowHeight);
+                    Rect valueRect = new(position.x + enumWidth + spacing, position.y + rowHeight + spacing, position.width - enumWidth - spacing, rowHeight);
 
                     EditorGUI.PropertyField(keyRect, item.FindPropertyRelative("Key"), GUIContent.none);
 
-                    //EditorGUI.BeginChangeCheck();
+                    EditorGUI.BeginChangeCheck();
 
                     var flagProp = item.FindPropertyRelative("Value");
-
                     FlagBase flagObj = flagProp.managedReferenceValue as FlagBase;
 
-                    Enum enumOutput = EditorGUI.EnumPopup(enumRect, flagObj.type);
-                    if (enumOutput != (Enum)flagObj.type)
+                    Enum prevEnum = flagObj.type;
+                    Enum enumOutput = EditorGUI.EnumPopup(enumRect, prevEnum);
+                    if (!Equals(enumOutput, prevEnum))
                     {
                         flagProp.managedReferenceValue = FlagBase.CreateInstanceFromEnum((FlagTypes)enumOutput);
                         flagObj = flagProp.managedReferenceValue as FlagBase;
+                        flagProp.serializedObject.ApplyModifiedProperties();
+                        EditorUtility.SetDirty(flagProp.serializedObject.targetObject);
                     }
 
+                    flagObj.TryGetValueObj(out object existingValue);
+                    object inputValue = existingValue;
 
+                    inputValue = flagObj.type switch
+                    {
+                        FlagTypes.Bool => EditorGUI.Toggle(valueRect, GUIContent.none, (bool)existingValue),
+                        FlagTypes.Int => EditorGUI.DelayedIntField(valueRect, GUIContent.none, (int)existingValue),
+                        FlagTypes.Float => EditorGUI.DelayedFloatField(valueRect, GUIContent.none, (float)existingValue),
+                        FlagTypes.Vector3 => EditorGUI.Vector3Field(valueRect, GUIContent.none, (Vector3)existingValue),
+                        FlagTypes.String => EditorGUI.DelayedTextField(valueRect, GUIContent.none, (string)existingValue),
+                        _ => throw new System.Exception("Invalid Type.")
+                    };
 
-                    if (flagObj.type == FlagTypes.Bool)
+                    if (!Equals(inputValue, existingValue))
                     {
-                        flagObj.TryGetValue(out bool existingValue);
-                        var input = EditorGUI.Toggle(valueRect, GUIContent.none, existingValue);
-                        if(input != existingValue) Enforce();
-
-                    }
-                    else if (flagObj.type == FlagTypes.Int)
-                    {
-                        flagObj.TryGetValue(out int existingValue);
-                        var input = EditorGUI.IntField(valueRect, GUIContent.none, existingValue);
-                        if (input != existingValue) Enforce();
-                    }
-                    else if (flagObj.type == FlagTypes.Float)
-                    {
-                        flagObj.TryGetValue(out float existingValue);
-                        var input = EditorGUI.FloatField(valueRect, GUIContent.none, existingValue);
-                        if (input != existingValue) Enforce();
-                    }
-                    else if (flagObj.type == FlagTypes.Vector3)
-                    {
-                        flagObj.TryGetValue(out Vector3 existingValue);
-                        var input = EditorGUI.Vector3Field(valueRect, GUIContent.none, existingValue);
-                        if (input != existingValue) Enforce();
-                    }
-                    else if (flagObj.type == FlagTypes.String)
-                    {
-                        flagObj.TryGetValue(out string existingValue);
-                        var input = EditorGUI.TextField(valueRect, GUIContent.none, existingValue);
-                        if (input != existingValue) Enforce();
-                    } 
-
-                    void Enforce()
-                    {
-                        drawerInstance.property.serializedObject.ApplyModifiedProperties();
-                        EditorUtility.SetDirty(drawerInstance.property.serializedObject.targetObject);
+                        flagObj.TrySetValueObj(inputValue);
+                        flagProp.managedReferenceValue = flagObj;
                     }
 
-                    //if (EditorGUI.EndChangeCheck()) drawerInstance.property.serializedObject.ApplyModifiedProperties();
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        flagProp.serializedObject.ApplyModifiedProperties();
+                        EditorUtility.SetDirty(flagProp.serializedObject.targetObject);
+                    }
 
+                    if (isDupe) GUI.color = Color.white;
                 }
                 protected override float KeyValuePairHeight(SerializedProperty serializedListProperty, Instance drawerInstance, int index)
-                    => EditorGUIUtility.singleLineHeight * 2 + EditorGUIUtility.standardVerticalSpacing + 5;
+                    => EditorGUIUtility.singleLineHeight * 2 + EditorGUIUtility.standardVerticalSpacing + spacing;
 
                 protected override void AddNewItem(SerializedProperty serializedListProperty, Instance drawerInstance, ReorderableList list)
                 {

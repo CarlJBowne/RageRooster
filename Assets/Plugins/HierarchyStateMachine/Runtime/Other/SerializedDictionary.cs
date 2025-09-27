@@ -17,6 +17,8 @@ namespace SLS.StateMachineH.SerializedDictionary
             occurences = new();
         }
 
+        public System.Collections.IList listAccess => serializedList;
+
         public void OnBeforeSerialize()
         {
 #if UNITY_EDITOR
@@ -230,6 +232,8 @@ namespace SLS.StateMachineH.SerializedDictionary
             occurences = new();
         }
 
+        public System.Collections.IList listAccess => serializedList;
+
         public void OnBeforeSerialize()
         {
 #if UNITY_EDITOR
@@ -440,6 +444,8 @@ namespace SLS.StateMachineH.SerializedDictionary
 
     public interface ISerializedDictionaryNonGeneric
     {
+        public System.Collections.IList listAccess { get; }
+
         public void OnBeforeSerialize();
         public void OnAfterDeserialize();
         public object this[object key] { get; set; }
