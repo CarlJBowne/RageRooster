@@ -19,19 +19,43 @@ namespace RageRooster.Systems.SaveSystem.Flags
 
         public void LoadFromJson(JToken json)
         {
-            throw new System.NotImplementedException();
-            //foreach (string key in new List<string>(flags.Keys))
-            //    if (json[key] != null)
-            //        flags[key] = (bool)json[key];
+            foreach (var pair in new List<KeyValuePair<string, FlagBase>>(flags))
+            {
+                if (json[pair.Key] is JToken token)
+                {
+                    Enum.TryParse((string)token["type"], out FlagTypes type);
+
+                    if (type != pair.Value.type) continue;
+
+                    pair.Value.TrySetValueObj(token["value"].ToObject<object>());
+                }
+            }
         }
+
+        public JToken SaveToJson()
+        {
+            var result = new JObject();
+
+            foreach (var pair in flags)
+            {
+                pair.Value.TryGetValueObj(out object value);
+                result[pair.Key] = new JObject()
+                {
+                    ["type"] = pair.Value.type.ToString(),
+                    ["value"] = (JToken)value
+                };
+            }
+            return result;
+        }
+
 
         public SavedFlagSet Clone(SavedFlagSet target = null)
         {
             if (target == null) target = Instantiate(this);
             else
             {
-                foreach (string key in new List<string>(target.flags.Keys))
-                    target.flags[key] = flags[key];
+                foreach (string key in flags.Keys)
+                    flags[key].Clone(target.flags[key]);
             }
             return target;
         }

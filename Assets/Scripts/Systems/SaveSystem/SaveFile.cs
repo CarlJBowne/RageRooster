@@ -201,7 +201,7 @@ namespace RageRooster.Systems.SaveSystem
                     [nameof(SavedPlayerStats.currency)] = file.playerStats.currency,
                     [nameof(SavedPlayerStats.playTime)] = file.playerStats.playTime.ToString(),
                     [nameof(SavedPlayerStats.upgrades)] = JObject.FromObject(file.playerStats.upgrades)
-                }; 
+                };
 
                 worldChangesFile.Data = new JObject
                 {
@@ -220,18 +220,12 @@ namespace RageRooster.Systems.SaveSystem
                         [nameof(SavedCollectible.total)] = file.hensRescued.total,
                         [nameof(SavedCollectible.isCollected)] = new JArray(file.hensRescued.isCollected)
                     },
-                    [nameof(file.globalChanges)] = file.globalChanges.flags != null
-                                                        ? JObject.FromObject(file.globalChanges.flags)
-                                                        : new JObject()
+                    [nameof(file.globalChanges)] = file.globalChanges.SaveToJson()
                 };
 
                 // Save areaChanges to areaChangesFiles
                 foreach (var area in AreaRegistry.GetAll())
-                {
-                    areaChangesFiles[area].Data = file.areaChanges[area].flags != null
-                        ? JObject.FromObject(file.areaChanges[area].flags)
-                        : new JObject();
-                }
+                    areaChangesFiles[area].Data = file.areaChanges[area].SaveToJson();
 
                 // Save all files
                 JsonFile.FileState state = playerFile.SaveToFile();
