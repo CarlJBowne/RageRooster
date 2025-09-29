@@ -16,17 +16,17 @@ PrefabInstance:
     - target: {fileID: 2505213574692443504, guid: 579ecc845da450945885c2ac30e09557,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 163
       objectReference: {fileID: 0}
     - target: {fileID: 2505213574692443504, guid: 579ecc845da450945885c2ac30e09557,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.050000012
+      value: 428.08
       objectReference: {fileID: 0}
     - target: {fileID: 2505213574692443504, guid: 579ecc845da450945885c2ac30e09557,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 21.91
+      value: 759.30536
       objectReference: {fileID: 0}
     - target: {fileID: 2505213574692443504, guid: 579ecc845da450945885c2ac30e09557,
         type: 3}
@@ -36,17 +36,17 @@ PrefabInstance:
     - target: {fileID: 2505213574692443504, guid: 579ecc845da450945885c2ac30e09557,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2505213574692443504, guid: 579ecc845da450945885c2ac30e09557,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2505213574692443504, guid: 579ecc845da450945885c2ac30e09557,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2505213574692443504, guid: 579ecc845da450945885c2ac30e09557,
         type: 3}
@@ -71,6 +71,11 @@ PrefabInstance:
     - target: {fileID: 4906831177318307996, guid: 579ecc845da450945885c2ac30e09557,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4955049059810562381, guid: 579ecc845da450945885c2ac30e09557,
+        type: 3}
+      propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
@@ -109,8 +114,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
-    _objectReferences: []
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"PlayerRange","value":{"$content":0.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"FollowRange","value":{"$content":15.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"AttackRange","value":{"$content":8.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"BackupRange","value":{"$content":3.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"Player","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Transform,
+      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"AttackCooldown","value":{"$content":2.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"AttackReady","value":{"$content":true,"$type":"System.Boolean"},"typeHandle":{"Identification":"System.Boolean,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+    _objectReferences:
+    - {fileID: 0}
 --- !u!114 &6592355524855935042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,5 +137,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"nest":{"source":"Macro","macro":null,"embed":null}}'
-    _objectReferences: []
+    _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
+    _objectReferences:
+    - {fileID: 11400000, guid: c9f2c5ae06aa550489fcfd206a1db786, type: 2}

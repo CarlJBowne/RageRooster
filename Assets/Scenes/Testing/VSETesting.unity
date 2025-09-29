@@ -1143,32 +1143,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GroundedShooterEnemy
       objectReference: {fileID: 0}
-    - target: {fileID: 1365628373773503803, guid: dd57e8d02248c0840b6a587f6af1f209,
-        type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5428491965921827096, guid: dd57e8d02248c0840b6a587f6af1f209,
-        type: 3}
-      propertyPath: disableComponents.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6592355524855935042, guid: dd57e8d02248c0840b6a587f6af1f209,
-        type: 3}
-      propertyPath: _data._json
-      value: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
-      objectReference: {fileID: 0}
-    - target: {fileID: 6592355524855935042, guid: dd57e8d02248c0840b6a587f6af1f209,
-        type: 3}
-      propertyPath: _data._objectReferences.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6592355524855935042, guid: dd57e8d02248c0840b6a587f6af1f209,
-        type: 3}
-      propertyPath: _data._objectReferences.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: c9f2c5ae06aa550489fcfd206a1db786,
-        type: 2}
     - target: {fileID: 8427430491670776070, guid: dd57e8d02248c0840b6a587f6af1f209,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1226,21 +1200,37 @@ PrefabInstance:
         mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"FollowRange","value":{"$content":15.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
         mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"AttackRange","value":{"$content":8.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
         mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"BackupRange","value":{"$content":3.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
-        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"Player","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Transform,
-        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"AttackCooldown","value":{"$content":2.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"AttackCooldown","value":{"$content":2.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
         mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"AttackReady","value":{"$content":true,"$type":"System.Boolean"},"typeHandle":{"Identification":"System.Boolean,
-        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"BulletPool","value":{"prefabObject":0,"defaultPoolDepth":4,"canGrow":true,"parent":1,"autoDisableTime":-1.0,"spawnPoint":2,"rotate":true,"autoSpawnRate":0.0,"$type":"ObjectPool"},"typeHandle":{"Identification":"ObjectPool,
+        Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
       objectReference: {fileID: 0}
     - target: {fileID: 9150581688874274018, guid: dd57e8d02248c0840b6a587f6af1f209,
         type: 3}
       propertyPath: _data._objectReferences.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9150581688874274018, guid: dd57e8d02248c0840b6a587f6af1f209,
         type: 3}
       propertyPath: _data._objectReferences.Array.data[0]
       value: 
-      objectReference: {fileID: 873811661}
+      objectReference: {fileID: 1536271116400417345, guid: ecd0681902479df4182d2aa655d7ff14,
+        type: 3}
+    - target: {fileID: 9150581688874274018, guid: dd57e8d02248c0840b6a587f6af1f209,
+        type: 3}
+      propertyPath: _data._objectReferences.Array.data[1]
+      value: 
+      objectReference: {fileID: 1059562793}
+    - target: {fileID: 9150581688874274018, guid: dd57e8d02248c0840b6a587f6af1f209,
+        type: 3}
+      propertyPath: _data._objectReferences.Array.data[2]
+      value: 
+      objectReference: {fileID: 8051181383148435741}
+    - target: {fileID: 9150581688874274018, guid: dd57e8d02248c0840b6a587f6af1f209,
+        type: 3}
+      propertyPath: _data._objectReferences.Array.data[3]
+      value: 
+      objectReference: {fileID: 8051181383148435741}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1249,6 +1239,12 @@ PrefabInstance:
 --- !u!4 &8051181383148435740 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8427430491670776070, guid: dd57e8d02248c0840b6a587f6af1f209,
+    type: 3}
+  m_PrefabInstance: {fileID: 8051181383148435739}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8051181383148435741 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1606748408542214330, guid: dd57e8d02248c0840b6a587f6af1f209,
     type: 3}
   m_PrefabInstance: {fileID: 8051181383148435739}
   m_PrefabAsset: {fileID: 0}
