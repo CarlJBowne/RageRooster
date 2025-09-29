@@ -36,6 +36,7 @@ public class Gameplay : MonoBehaviour
 
     public static StudioEventEmitter musicEmitter;
     public static System.Action PreReloadSave;
+    public static System.Action onUpdate;
 
     public static double lastSaveInteractionTime;
 
@@ -94,7 +95,10 @@ public class Gameplay : MonoBehaviour
         }
     }
 
-
+    private void Update()
+    {
+        onUpdate?.Invoke();
+    }
 
 
 
