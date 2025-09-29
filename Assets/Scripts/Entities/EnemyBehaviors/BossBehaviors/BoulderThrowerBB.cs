@@ -1,4 +1,4 @@
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +18,7 @@ public class BoulderThrowerBB : MonoBehaviour
 
     public void Awake()
     {
-        target = Gameplay.Player.transform;
+        target = Player.Transform;
     }
 
     private void Update()

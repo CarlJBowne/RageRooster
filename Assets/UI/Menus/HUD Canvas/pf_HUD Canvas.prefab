@@ -1836,25 +1836,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02ba19567560c534497c90a4cbf376fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthImages:
-  - {fileID: 418371967366255319}
-  healthFullTexture: {fileID: 21300000, guid: 97530d180e09bb4479337e8ea03e16ab, type: 3}
-  healthEmptyTexture: {fileID: 21300000, guid: 29b17351e0132fc449962ac5a675b5f6, type: 3}
   hintHolder: {fileID: 2393541813916632475}
   hintText: {fileID: 5507067753741835809}
   currencyText: {fileID: 1427723586582102142}
   hintTime: 4
-  comboTime:
-    length: 0
-    current: 0
-    running: 0
-  comboCounterText: {fileID: 0}
-  comboFlavorText: {fileID: 0}
-  comboLevels: []
-  ammoText: {fileID: 4456027742441587475}
   hitMarker: {fileID: 9137005549954484247}
   hitMarkerInputDistance: {x: 2, y: 10.5}
   hitMarkerOutputScale: {x: 1.6, y: 0.45}
+  health:
+    healthImages:
+    - {fileID: 418371967366255319}
+    healthFullTexture: {fileID: 21300000, guid: bc408b48b86ff9541a0341d33c695ac6,
+      type: 3}
+    healthEmptyTexture: {fileID: 21300000, guid: 8b741798574bd5443aec98c5493fa2a6,
+      type: 3}
+  ammo:
+    ammoText: {fileID: 4456027742441587475}
+  combo:
+    comboTime:
+      length: 0
+      current: 0
+      running: 0
+    comboCounterText: {fileID: 0}
+    comboFlavorText: {fileID: 0}
+    comboLevels: []
 --- !u!1 &7667637404388598665
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,10 @@
-﻿using System.Collections;
+﻿using AYellowpaper.SerializedCollections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using static Unity.VisualScripting.Member;
 
 
 public static class _ExtensionMethods
@@ -23,6 +27,12 @@ public static class _ExtensionMethods
 	public static Color SetAlpha(this ref Color color, float set) => new Color(color.r, color.g, color.b, set);
 	public static Color ChangeAlpha(this ref Color color, float change) => new Color(color.r, color.g, color.b, color.a + change);
 
+	public static void ClearNull<T>(this List<T> list) where T : class
+	{
+		for (int i = list.Count - 1; i >= 0; i--)
+			if (list[i] == null)
+				list.RemoveAt(i);
+    }
 
 }
 
@@ -128,7 +138,7 @@ public static class _MonoBehaviorHelpers
 		if (parent != null) T.parent = parent;
 	}
 
-	public static GameObject NewGameObject(this Object O, string name = "NewGameObject", Vector3? pos = null, Quaternion? rot = null, Vector3? scale = null, Transform parent = null, params System.Type[] additions)
+	public static GameObject NewGameObject(this UnityEngine.Object O, string name = "NewGameObject", Vector3? pos = null, Quaternion? rot = null, Vector3? scale = null, Transform parent = null, params System.Type[] additions)
 	{
 		GameObject result = new(name, additions);
 
@@ -166,31 +176,78 @@ public static class _MonoBehaviorHelpers
 
     public static void SetPositionAndRotation(this Transform target, Transform influence) => target.SetPositionAndRotation(influence.position, influence.rotation);
 
-    public static List<T> GetComponentsRecursive<T>(this GameObject gameObject) where T : Component
+    public static List<T> GetComponentsRecursive<T>(this Component This) where T : Component
     {
-        int length = gameObject.transform.childCount;
+        int length = This.transform.childCount;
         List<T> components = new List<T>(length + 1);
-        T comp = gameObject.transform.GetComponent<T>();
+        T comp = This.transform.GetComponent<T>();
         if (comp != null) components.Add(comp);
         for (int i = 0; i < length; i++)
         {
-            comp = gameObject.transform.GetChild(i).GetComponent<T>();
+            comp = This.transform.GetChild(i).GetComponent<T>();
             if (comp != null) components.Add(comp);
         }
         return components;
     }
 
-    public static List<T> GetComponentsInDirectChildren<T>(this GameObject gameObject) where T : Component
+    public static List<T> GetComponentsInDirectChildren<T>(this Component This) where T : Component
     {
-        int length = gameObject.transform.childCount;
+        int length = This.transform.childCount;
         List<T> components = new List<T>(length);
         for (int i = 0; i < length; i++)
         {
-            T comp = gameObject.transform.GetChild(i).GetComponent<T>();
+            T comp = This.transform.GetChild(i).GetComponent<T>();
             if (comp != null) components.Add(comp);
         }
         return components;
+    }
+
+	public static T FindComponentInAncestry<T>(this Component This) where T : Component
+	{
+		Transform current = This.transform;
+		while (current != null)
+		{
+			if (current.TryGetComponent(out T component))
+				return component;
+			current = current.parent;
+		}
+		return null;
     }
 }
 
 public delegate void BasicDelegate();
+
+/// <summary>
+/// A better Cloneable interface that enforces support for deep cloning data into an existing object.
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public interface ICloneable<T> where T : class
+{
+    /// <summary>
+    /// Deep Clones this object, Creating a new instance or populating the provided instance field. <br/>
+	/// Note: Does not properly populate existing null fields. Use <see cref="CloneInto"/> instead.
+    /// </summary>
+    public T Clone(T target = null);
+}
+
+public static class _CloneableExtensions
+{
+	/// <summary>
+	/// Deep Clones this object into the null field provided.
+	/// </summary>
+	public static T CloneInto<T>(this T source, out T result) where T : class, ICloneable<T>
+	{
+		result = source.Clone();
+		return result;
+	}
+
+	/// <summary>
+    /// Populates this object with a Deep Clone of all of the source's data. <br/>
+	/// NOTE: Does NOT work with null fields.
+    /// </summary>
+    public static T CloneFrom<T>(this T target, T source) where T : class, ICloneable<T>
+	{
+        source.Clone(target);
+		return target;
+    }
+}

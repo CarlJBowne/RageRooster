@@ -6,6 +6,12 @@ using UnityEngine.SceneManagement;
 using FMODUnity;
 using EditorAttributes;
 using System.Collections.Generic;
+using SLS.ISingleton;
+using RageRooster.RoomSystem;
+using RageRooster.Systems.SaveSystem;
+
+
+
 
 
 
@@ -13,165 +19,198 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-[DefaultExecutionOrder(-100)]
-public class Gameplay : Singleton<Gameplay>
+[DefaultExecutionOrder(ExecutionOrders.Gameplay)]
+public class Gameplay : MonoBehaviour
 {
 
-    public GameObject player;
-    public PlayerStateMachine playerStateMachine;
-    public Transform cameraTransform;
-    public CinemachineVirtualCamera virtualCam;
-    public PauseMenu pauseMenu;
-    public UIHUDSystem uI;
-    public ZoneManager zoneManager;
-    public GlobalState globalState;
-    public SettingsMenu settingsMenu;
-    public DontDestroyMeOnLoad overlayPrefab;
+    public static bool Active { get; private set; }
+    public static Gameplay Instance { get; private set; }
+    public static GameObject GameObject { get; private set; }
+
 
     public static string spawnSceneName = null;
     public static int spawnPointID = -1;
 
 
-    public const string GAMEPLAY_SCENE_NAME = "GameplayScene";
+    public static SceneReference GAMEPLAY_SCENE = new("GameplayScene");
 
-    public static GameObject Player => I.player;
-    public static PlayerStateMachine PlayerStateMachine => I.playerStateMachine;
-    public static Transform CameraTransform => I.cameraTransform;
-    public static CinemachineVirtualCamera VirtualCam => I.virtualCam;
-    public static PauseMenu PauseMenu => I.pauseMenu;
-    public static UIHUDSystem UI => I.uI;
-    public static ZoneManager ZoneManager => I.zoneManager;
-    public static GlobalState GlobalState => I.globalState;
-
-    protected static System.Action PostMaLoad;
     public static StudioEventEmitter musicEmitter;
     public static System.Action PreReloadSave;
-    public static bool fullyLoaded;
-    public static System.Action onPlayerRespawn;
 
-    /// <summary>
-    /// Begins the main menu by loading the gameplay scene and setting the active save file.
-    /// </summary>
-    /// <param name="fileNo">The File Number. Intended to be set somewhere in the Main Menu.</param>
-    public static void BeginMainMenu(int fileNo)
+    public static double lastSaveInteractionTime;
+
+    #region Instance Fields
+
+    [SerializeField] Transform cameraTransform;
+    [SerializeField] PauseMenu pauseMenu;
+    [SerializeField] UIHUDSystem uI;
+    [SerializeField] SettingsMenu settingsMenu;
+    [SerializeField] DontDestroyMeOnLoad overlayPrefab;
+    [SerializeField] Player inputPlayer;
+    [SerializeField] UIHUDSystem inputUI;
+
+    #endregion Instance Fields
+
+    private void Awake()
     {
-        if (Gameplay.Active) return;
-
-        Overlay.OverMenus.StartCoroutine(Enum()); 
-        IEnumerator Enum()
+        if(Active)
         {
-            
-            yield return Overlay.OverMenus.BasicFadeOutWait();
-
-            GlobalState.InitializeSaveFile(fileNo);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-
-            Menu.Manager.CloseAllMenus();
-            var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE_NAME);
-
-            yield return WaitFor.Until(() => Load.isDone && fullyLoaded);
-            yield return WaitFor.SecondsRealtime(0.2f);
-            Overlay.OverMenus.BasicFadeIn();
+            if(Instance != this) Destroy(gameObject);
+            return;
         }
-    }
 
-    /// <summary>
-    /// Begins a new scene by loading the specified scene.
-    /// </summary>
-    /// <param name="sceneToLoad">The name of the Scene to Load.</param>
-    public static void BeginScene(string sceneToLoad)
-    {
-        if (Gameplay.Active) return;
-        PostMaLoad += () =>
-        {
-            if (spawnSceneName != sceneToLoad)
-            {
-                spawnSceneName = sceneToLoad;
-                spawnPointID = -1;
-            }
-        };
-        SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
-    }
+        DontDestroyOnLoad(gameObject);
 
-    /// <summary>
-    /// Begins a scene from a save point by loading the specified scene and spawn point.
-    /// </summary>
-    /// <param name="sceneToLoad">The name of the Scene to Load.</param>
-    /// <param name="spawnID">The Intended Spawn Point ID.</param>
-    public static void BeginSavePoint(string sceneToLoad, int spawnID)
-    {
-        if (Gameplay.Active) return;
-        PostMaLoad += () =>
-        {
-            spawnSceneName = sceneToLoad;
-            spawnPointID = spawnID;
-        };
-        SceneManager.LoadScene(GAMEPLAY_SCENE_NAME);
-    }
+        Instance = this;
+        Active = true;
+        GameObject = gameObject;
+        if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+        Overlay.OverHUD.SetAlpha(1);
+        DontDestroyOnLoad(gameObject);
+        inputPlayer.Awake();
+        inputUI.Awake();
+        GetComponent<Cameras>().Awake();
+        musicEmitter = GetComponent<StudioEventEmitter>();
+        
 
-    /// <summary>
-    /// Called when the Gameplay singleton is awakened. Loads the global state and initializes the zone manager.
-    /// </summary>
-    protected override void OnAwake()
-    {
+
         StartCoroutine(Enum());
         IEnumerator Enum()
         {
-            musicEmitter = GetComponent<StudioEventEmitter>();
+            yield return null;
+            yield return WaitFor.Until(Initialized);
 
-            yield return WaitFor.Until(() => PlayerHealth.Global.playerObject && PlayerRanged.Ammo.playerObject);
-            EnemyCullingGroup.Initialize(this);
+            bool Initialized() => Active
+                && Player.Active
+                && RoomManager.Active;
 
-            GlobalState.Load();
-            PostMaLoad?.Invoke();
+            //EnemyCullingGroup.Initialize(this); 
 
-            spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
-
-            if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
-
-            SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
-
-            ZoneManager.OnFirstLoad += OnFirstLoad;
+            yield return RoomManager.Transition(true);
+            UpdateGameTime();
+            Overlay.OverHUD.BasicFadeIn();
 
             Input.Pause.performed += c => { Menu.Manager.Escape(); };
         }
     }
 
-    /// <summary>
-    /// Called on the first load of the zone manager. Moves the player to the spawn point and activates the player.
-    /// </summary>
-    private void OnFirstLoad()
+
+
+
+
+    public static void BeginSaveFile(int fileNo)
     {
-        SavePoint spawn = ZoneManager.CurrentZone.GetSpawn(spawnPointID);
-        spawnPointID = spawn.GetID();
-        PlayerStateMachine.InstantMove(spawn);
-        PlayerHealth.Global.UpdateMax(GlobalState.maxHealth);
-        Player.SetActive(true);
-        fullyLoaded = true;
+        if (Active) return;
+
+        Enum().Begin(Overlay.OverMenus);
+        IEnumerator Enum()
+        {
+
+            yield return Overlay.OverMenus.BasicFadeOutWait();
+
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+            InitializeSaves(fileNo);
+            RoomManager.destination = SaveFile.Current.location;
+
+            Menu.Manager.CloseAllMenus();
+            var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE);
+
+            yield return WaitFor.Until(() => Load.isDone && Active);
+            yield return WaitFor.SecondsRealtime(0.2f);
+            Overlay.OverMenus.BasicFadeIn();
+        }
+    }
+    public static void BeginEditor()
+    {
+        if (Active) return;
+
+        InitializeSaves(0);
+
+        if (!EditorState.EditorDestination.IsValid()) 
+            EditorState.EditorDestination = CalculateEditorSpawn();
+        if (!EditorState.EditorDestination.IsValid()) EditorState.EditorDestination = Destination.StartingDefault();
+        RoomManager.destination = EditorState.EditorDestination;
+        EditorState.EditorDestination = Destination.Null;
+
+        SceneManager.LoadScene(GAMEPLAY_SCENE);
     }
 
-    public static IEnumerator SpawnPlayer()
+    public static void InitializeSaves(int fileNo)
     {
-        spawnSceneName ??= ZoneManager.Get().defaultAreaScene;
-        if (!ZoneManager.ZoneIsReady(spawnSceneName)) SceneManager.LoadScene(spawnSceneName, LoadSceneMode.Additive);
-
-        yield return new WaitUntil(() => ZoneManager.ZoneIsReady(spawnSceneName));
-
-        ZoneManager.DoTransition(spawnSceneName);
-        PlayerStateMachine.InstantMove(ZoneManager.CurrentZone.GetSpawn(spawnPointID));
-        onPlayerRespawn?.Invoke();
+        SaveFile.IO.SetFileTarget(fileNo);
+        SaveFile.IO.Load();
+        SaveFile.RevertToSaveFile();
     }
 
-    public static IEnumerator DoReloadSave()
+    private static Destination CalculateEditorSpawn()
     {
-        Player.SetActive(false);
-        yield return ZoneManager.UnloadAll();
-        GlobalState.Load();
-        yield return null;
+        Destination target = EditorState.EditorDestination;
+
+        // If target is default, use the save file location
+        if (target.IsNull()) return SaveFile.Current.location;
+
+        Destination fileDest = SaveFile.Current.location;
+
+        if(EditorState.EditorDestinationArea != null && EditorState.EditorDestinationArea != fileDest.area)
+        {
+            target.room ??= EditorState.EditorDestinationArea.rooms[0];
+            target.spawnID = 0;
+            return target;
+        }
+
+        // If area matches save file, fill in missing room/spawnID from save file
+        if (target.area == fileDest.area)
+        {
+            if (target.room == null) target.room = fileDest.room;
+            if (target.spawnID == -1) target.spawnID = fileDest.spawnID;
+        }
+        else // If area is different, fill missing room/spawnID with 0th values
+        {
+            if (target.room == null) target.room = target.area.rooms[0];
+            if (target.spawnID == -1) target.spawnID = 0;
+        }
+
+        // If room is set but spawnID is missing, fill from save file if area matches, else use 0
+        if (target.room != null && target.spawnID == -1)
+            target.spawnID = (target.room.area == fileDest.area) ? fileDest.spawnID : 0;
+
+        return target;
     }
 
-    protected override void OnDestroyed() => EnemyCullingGroup.DeInitialize();
+
+
+    public static IEnumerator Respawn()
+    {
+        yield return RoomManager.Transition(SaveFile.Current.location);
+        Player.onRespawn?.Invoke();
+    }
+
+    public static IEnumerator Death()
+    {
+        SaveFile.RevertToDeathData();
+        yield return RoomManager.Transition(SaveFile.Current.location, true);
+    }
+
+    public static IEnumerator ReloadSave()
+    {
+        SaveFile.RevertToSaveFile();
+        yield return RoomManager.Transition(SaveFile.Current.location, true);
+    }
+
+    public static double UpdateGameTime()
+    {
+        var previousSaveInteractionTime = lastSaveInteractionTime;
+        lastSaveInteractionTime = Time.timeAsDouble;
+        return Time.timeAsDouble - previousSaveInteractionTime;
+    }
+
+
+
+
+
+    //protected override void OnDeInitialize() => EnemyCullingGroup.DeInitialize();
 
 
 
@@ -187,7 +226,7 @@ public class Gameplay : Singleton<Gameplay>
     }
     public static List<BobAndTurn> bobAndTurnList = new();
 
-
+    /*
     public static class EnemyCullingGroup
     {
         static Transform camera;
@@ -269,10 +308,7 @@ public class Gameplay : Singleton<Gameplay>
         }
 
 
-    }
-
-
-
+    }*/
 
 
 
@@ -285,30 +321,20 @@ public class Gameplay : Singleton<Gameplay>
             #endif
             return;
         }
-        DestroyS();
+        Destroy(GameObject);
+        Active = false;
     }
-}
+
+    private void OnDestroy()
+    {
+        //EnemyCullingGroup.DeInitialize();
+    }
+
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(Gameplay), true)]
-public class GameplayEditor : Editor
-{
-    Gameplay This;
-
-    void OnEnable()
+    [CustomEditor(typeof(Gameplay))]
+    public class Editor : UnityEditor.Editor
     {
     }
-
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-        serializedObject.Update();
-
-        GUILayout.Label(Gameplay.spawnSceneName);
-        GUILayout.Label(Gameplay.spawnPointID.ToString());
-
-        serializedObject.ApplyModifiedProperties();
-    }
-}
 #endif
-
+}

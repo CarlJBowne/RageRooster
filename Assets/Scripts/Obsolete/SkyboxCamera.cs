@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Obsolete]
-public class SkyboxCamera : MonoBehaviour
+namespace RageRooster.Obsolete
 {
-
-
-    public Transform trueCamera;
-
-
-    private void Awake()
+    [System.Obsolete]
+    public class SkyboxCamera : MonoBehaviour
     {
-        if(trueCamera == null) trueCamera = Camera.main.transform;
-    }
 
-    private void LateUpdate() => transform.rotation = trueCamera.transform.rotation;
+
+        public Transform trueCamera;
+
+
+        private void Awake()
+        {
+            if (trueCamera == null) trueCamera = Camera.main.transform;
+        }
+
+        private void LateUpdate() => transform.rotation = trueCamera.transform.rotation;
+    }
 }

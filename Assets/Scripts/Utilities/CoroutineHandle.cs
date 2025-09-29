@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Coroutine+
 // A customized, advanced form of Coroutine that keeps track of things about how it is running and has various other features.
@@ -39,8 +40,6 @@ public class CoroutinePlus : IEnumerator
 
     /// <summary> The MonoBehavior that owns the Coroutine. Necessary for automatic running. (Get Only) </summary>
     public MonoBehaviour owner { get; private set; }
-    /// <summary> Returns the MonoBehavior that owns the Coroutine. Necessary for automatic running. </summary>
-    public MonoBehaviour GetOwner() => owner;
 
     /// <summary>The IEnumerator that dictates the code ran by this Coroutine.</summary>
     public IEnumerator enumerator { get; private set; }
@@ -173,11 +172,28 @@ public class CoroutinePlus : IEnumerator
     public static void Stop(ref CoroutinePlus slot) => slot?.StopAuto();
 }
 
-//Bonus!
-//"WaitFor" Premade Coroutines.
-//By StarLightShadows.
+public static class SceneOperationRoutine
+{
+    public static IEnumerator Load(string sceneName, UnityEngine.SceneManagement.LoadSceneMode mode = LoadSceneMode.Additive)
+    {
+        if (SceneManager.GetSceneByName(sceneName).IsValid()) yield break;
+        var operation = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName, mode);
+        while (operation != null && !operation.isDone) yield return null;
 
-public static class WaitFor
+    }
+
+    public static IEnumerator Unload(string sceneName)
+    {
+        if (!SceneManager.GetSceneByName(sceneName).IsValid()) yield break;
+        var operation = UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(sceneName);
+        if (operation != null && !operation.isDone) yield return null;
+    }
+}
+    //Bonus!
+    //"WaitFor" Premade Coroutines.
+    //By StarLightShadows.
+
+    public static class WaitFor
 {
 
     #region PreExisting

@@ -38,7 +38,7 @@ public static class PhysicsPro
         hit = rb.SweepTestAll(direction.normalized, distance + buffer, QueryTriggerInteraction.Ignore);
         rb.MovePosition(rb.position + direction * buffer);
         hit[0].distance -= buffer;
-        return hit.Length>0;
+        return hit.Length > 0;
     }
 
     /* Reference
@@ -113,3 +113,127 @@ public static class PhysicsPro
 
 
 }
+
+
+public struct AnchorPoint
+{
+    public Vector3 point;
+    public Vector3 normal;
+    public Transform transform;
+
+    public AnchorPoint(Vector3 point, Vector3 normal, Transform transform)
+    {
+        this.point = point;
+        this.normal = normal;
+        this.transform = transform;
+    }
+    public AnchorPoint(RaycastHit hit)
+    {
+        point = hit.point;
+        normal = hit.normal;
+        transform = hit.transform;
+    }
+    public AnchorPoint(ContactPoint contact)
+    {
+        point = contact.point;
+        normal = contact.normal;
+        transform = contact.otherCollider.transform;
+    }
+
+    public static implicit operator AnchorPoint(RaycastHit hit) => new(hit);
+    public static implicit operator AnchorPoint(ContactPoint contact) => new(contact);
+
+    public static AnchorPoint Null => new()
+    {
+        point = Vector3.zero,
+        normal = Vector3.up,
+        transform = null
+    };
+}
+/*
+public struct BodyAnchor
+{
+    public Vector3 point;
+    public Vector3 normal;
+    public Transform transform;
+    public IMovablePlatform Movable
+    {
+        readonly get => _movable;
+        set
+        {
+            if (value == _movable) return;
+            _movable?.RemoveBody(body);
+            _movable = value;
+            _movable?.AddBody(body);
+        }
+    }
+    private IMovablePlatform _movable;
+    public readonly CharacterMovementBody body;
+
+    public BodyAnchor(Vector3 point, Vector3 normal, Transform transform, CharacterMovementBody body = null)
+    {
+        this.point = point;
+        this.normal = normal;
+        this.transform = transform;
+
+        this.body = body;
+        _movable = null;
+        if (transform != null && body != null)
+            Movable = transform.GetComponent<IMovablePlatform>();
+    }
+    
+
+    public void Update(Vector3 point, Vector3 normal, Transform transform)
+    {
+        this.point = point;
+        this.normal = normal;
+        this.transform = transform;
+
+        if (body != null)
+            Movable = transform != null
+                ? transform.GetComponent<IMovablePlatform>()
+                : null;
+    }
+    public void Update(AnchorPoint other)
+    {
+        point = other.point;
+        normal = other.normal;
+        transform = other.transform;
+
+        if (body != null)
+            Movable = transform != null
+                ? transform.GetComponent<IMovablePlatform>()
+                : null;
+    }
+    public void Update(RaycastHit hit)
+    {
+        point = hit.point;
+        normal = hit.normal;
+        transform = hit.transform != null ? hit.transform : null;
+
+        if (body != null)
+            Movable = transform != null
+                ? transform.GetComponent<IMovablePlatform>()
+                : null;
+    }
+    public void Update(ContactPoint contact)
+    {
+        point = contact.point;
+        normal = contact.normal;
+        transform = contact.otherCollider != null ? contact.otherCollider.transform : null;
+
+        if (body != null)
+            Movable = transform != null
+                ? transform.GetComponent<IMovablePlatform>()
+                : null;
+    }
+    public void Update(object NULL)
+    {
+        point = body.Position;
+        normal = body.Get3DGravity();
+        transform = null;
+        Movable = null;
+    }
+
+}
+*/

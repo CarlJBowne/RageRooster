@@ -1,4 +1,4 @@
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +21,7 @@ public class PlayerMovementNegater : PlayerMovementEffector
     protected bool disabled;
     protected Vector3 savedVelocity;
     protected float savedHorizontalSpeed;
-    protected int savedJumpPhase;
+    protected JumpState savedJumpPhase;
 
     public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
@@ -81,7 +81,7 @@ public class PlayerMovementNegater : PlayerMovementEffector
                 break;
         }
     }
-    public override void OnEnter(State prev, bool isFinal)
+    protected override void OnEnter(State prev, bool isFinal)
     {
         base.OnEnter(prev, isFinal);
         disabled = false;
@@ -90,16 +90,16 @@ public class PlayerMovementNegater : PlayerMovementEffector
         {
             savedVelocity = playerMovementBody.velocity;
             savedHorizontalSpeed = playerMovementBody.CurrentSpeed;
-            savedJumpPhase = playerMovementBody.jumpPhase;
+            savedJumpPhase = playerMovementBody.JumpState;
         }
     }
-    public override void OnExit(State next)
+    protected override void OnExit(State next)
     {
         if (savePriorVelocity)
         {
             playerMovementBody.velocity = savedVelocity;
             playerMovementBody.CurrentSpeed = savedHorizontalSpeed;
-            playerMovementBody.jumpPhase = savedJumpPhase;
+            playerMovementBody.UnLand(savedJumpPhase);
         }
     }
 }

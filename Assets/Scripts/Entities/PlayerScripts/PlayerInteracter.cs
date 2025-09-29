@@ -1,3 +1,4 @@
+using SLS.ISingleton;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,8 @@ using static Input;
 /// <summary>
 /// Now Combined with the Dialogue Trigger
 /// </summary>
-public class PlayerInteracter : Singleton<PlayerInteracter>
+[DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
+public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
 {
     public static GameObject ThisGameObject;
 
@@ -28,7 +30,7 @@ public class PlayerInteracter : Singleton<PlayerInteracter>
     private static IGrabbable _selectedGrabbable;
 
 
-    protected override void OnAwake()
+    protected override void OnInitialize()
     {
         Gameplay.PreReloadSave += ResetSystem;
         PopupTransform = popupTransform;
@@ -130,7 +132,7 @@ public class PlayerInteracter : Singleton<PlayerInteracter>
         else return false;
     }
 
-    private void OnDestroy()
+    private void OnDeInitialize()
     {
         Gameplay.PreReloadSave -= ResetSystem;
     }

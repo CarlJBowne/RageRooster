@@ -1,3 +1,4 @@
+using SLS.ISingleton;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.InputSystem;
 using Button = UnityEngine.InputSystem.InputAction;
 using Ref = UnityEngine.InputSystem.InputActionReference;
 
-public class Input : SingletonScriptable<Input>
+public class Input : SingletonAsset<Input>
 {
 
 	[SerializeField] public InputActionAsset Asset;
@@ -39,7 +40,7 @@ public class Input : SingletonScriptable<Input>
 	public static Button Pause => Get()._Pause;
 
 
-    protected override void OnAwake()
+    protected override void OnInitialize()
 	{
         Asset.Enable();
 	}

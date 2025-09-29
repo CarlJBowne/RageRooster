@@ -1,5 +1,5 @@
 using EditorAttributes;
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using UnityEngine;
 
 [System.Obsolete]
@@ -26,7 +26,7 @@ public class PlayerAirborn : PlayerStateBehavior
     //3 = Falling
 
 
-    public override void OnFixedUpdate()
+    protected override void OnFixedUpdate()
     {
         playerMovementBody.VelocitySet(y: ApplyGravity());
 
@@ -41,12 +41,12 @@ public class PlayerAirborn : PlayerStateBehavior
         {
             if (playerMovementBody.velocity.y > 0) playerMovementBody.VelocitySet(y: 0);
             phase = 3;
-            if (fallState != null) TransitionTo(fallState.state);
+            if (fallState != null) fallState.State.Enter();
         }
         
     }
 
-    public override void OnEnter(State prev, bool isFinal)
+    protected override void OnEnter(State prev, bool isFinal)
     {
         if (jumpPower == 0) return;
         phase = 0;
@@ -69,7 +69,7 @@ public class PlayerAirborn : PlayerStateBehavior
         };
 #endif
     }
-    public override void OnExit(State next) => phase = -1;
+    protected override void OnExit(State next) => phase = -1;
 
     protected float ApplyGravity()
     {
@@ -79,7 +79,7 @@ public class PlayerAirborn : PlayerStateBehavior
             ).Min(-terminalVelocity);
     }
 
-    public void BeginJump() => state.TransitionTo();
+    protected void BeginJump() => State.Enter();
     public void BeginJump(float power, float height, float minHeight)
     {
         jumpPower = power;

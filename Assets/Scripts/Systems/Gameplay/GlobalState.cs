@@ -1,10 +1,13 @@
 using Newtonsoft.Json.Linq;
+using SLS.ISingleton;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class GlobalState : Singleton<GlobalState>, ICustomSerialized
+/*
+[System.Obsolete]
+public class GlobalState : SingletonMonoBasic<GlobalState>, ICustomSerialized
 {
 
     public ScriptableCollection worldChanges;
@@ -34,13 +37,13 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
     public static System.Action maxAmmoUpdateCallback;
     public static System.Action currencyUpdateCallback;
 
-    protected override void OnAwake()
+    protected override void OnInitialize()
     {
         useIndoorSky.Action += SetSkybox;
         useIndoorSky.deAction += SetSkybox;
     }
 
-    protected override void OnDestroyed()
+    protected override void OnDeInitialize()
     {
         useIndoorSky.Action -= SetSkybox;
         useIndoorSky.deAction -= SetSkybox;
@@ -61,10 +64,10 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
         if (File == null) InitializeSaveFile(0);
         if (File.LoadFromFile() == JsonFile.LoadResult.Success) Get().Deserialize(File.Data);
 
-        PlayerHealth.Global.UpdateMax(maxHealth);
-        PlayerRanged.Ammo.UpdateMax(maxAmmo);
-        PlayerRanged.Ammo.Update(maxAmmo);
-        UIHUDSystem.SetCurrencyText(currency.ToString());
+        //PlayerHealth.Global.UpdateMax(maxHealth);
+        //PlayerRanged.Ammo.UpdateMax(maxAmmo);
+        //PlayerRanged.Ammo.Update(maxAmmo);
+        //UIHUDSystem.SetCurrencyText(currency.ToString());
         Get().SetSkybox(); 
     }
 
@@ -114,7 +117,7 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
     {
         GlobalState.currency += currency;
         if (GlobalState.currency < 0) GlobalState.currency = 0;
-        UIHUDSystem.SetCurrencyText(GlobalState.currency > 0 ? GlobalState.currency.ToString() : "Broke.");
+        //UIHUDSystem.SetCurrencyText(GlobalState.currency > 0 ? GlobalState.currency.ToString() : "Broke.");
         currencyUpdateCallback?.Invoke();
     }
 
@@ -141,3 +144,4 @@ public class GlobalState : Singleton<GlobalState>, ICustomSerialized
     }
 
 }
+*/

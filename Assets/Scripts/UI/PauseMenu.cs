@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using System;
+using SLS.ISingleton;
 
 public class PauseMenu : MenuSingleton<PauseMenu>
 {
@@ -17,10 +18,10 @@ public class PauseMenu : MenuSingleton<PauseMenu>
     protected override void OnOpen()
     {
         base.OnOpen();
+        onPause?.Invoke();
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        onPause?.Invoke();
     }
     protected override void OnClose()
     {
@@ -41,6 +42,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
             Time.timeScale = 1f;
             Close();
             Gameplay.musicEmitter.Stop();
+            Player.StateMachine.HaveDestroyed();
             Gameplay.DESTROY(areYouSure: true);
             SceneManager.LoadScene("MainMenu");
             SceneManager.sceneLoaded += Done;
@@ -61,30 +63,24 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
     public void Respawn()
     {
-        SpawnPlayer_CR().Begin(Gameplay.Get());
+        SpawnPlayer_CR().Begin(Gameplay.Instance);
         IEnumerator SpawnPlayer_CR()
         {
             yield return Overlay.OverMenus.BasicFadeOutWait(1f);
-
-            yield return Gameplay.SpawnPlayer();
-
             TrueClose();
+            yield return Gameplay.Respawn();
             Overlay.OverMenus.BasicFadeIn(1f);
         }
     }
     public void ReloadSave()
     {
-        Enum().Begin(Gameplay.Get());
+        Enum().Begin(Gameplay.Instance);
         IEnumerator Enum()
         {
             Gameplay.PreReloadSave?.Invoke();
             yield return Overlay.OverMenus.BasicFadeOutWait(1.2f);
-
-            yield return Gameplay.DoReloadSave();
-
-            yield return Gameplay.SpawnPlayer();
-
             TrueClose();
+            yield return Gameplay.ReloadSave();
             Overlay.OverMenus.BasicFadeIn(1.2f);
         }
     }

@@ -8,7 +8,7 @@ public class PlayerProxy : MonoBehaviour
 
     private void Start()
     {
-        realPlayer = Gameplay.Player.transform;
+        realPlayer = Player.Transform;
     }
 
     private void FixedUpdate()

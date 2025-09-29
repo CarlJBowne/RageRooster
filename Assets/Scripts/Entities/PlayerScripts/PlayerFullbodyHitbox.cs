@@ -1,4 +1,4 @@
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,11 +14,11 @@ public class PlayerFullbodyHitbox : PlayerStateBehavior
 
 
 
-    public override void OnEnter(State prev, bool isFinal)
+    protected override void OnEnter(State prev, bool isFinal)
     {
         if (autoActivate) SetBoxState(true);
     }
-    public override void OnExit(State next)
+    protected override void OnExit(State next)
     {
         SetBoxState(false);
     }

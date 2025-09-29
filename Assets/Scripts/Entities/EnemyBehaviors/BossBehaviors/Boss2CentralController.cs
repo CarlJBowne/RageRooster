@@ -18,12 +18,12 @@ public class Boss2CentralController : Health
 
     void Start() => gameObject.SetActive(false);
 
-    private void OnEnable() => Gameplay.onPlayerRespawn += ResetBoss;
+    private void OnEnable() => Player.onRespawn += ResetBoss;
 
     public void ResetBoss()
     {
         ResetBossEvent?.Invoke();
-        Gameplay.onPlayerRespawn -= ResetBoss;
+        Player.onRespawn -= ResetBoss;
     }
 
     [Button]
@@ -76,7 +76,7 @@ public class Boss2CentralController : Health
 
             yield return Overlay.OverMenus.BasicFadeOutWait(2f);
 
-            yield return ZoneManager.UnloadAll();
+            //yield return ZoneManager.UnloadAll();
             yield return new WaitForSecondsRealtime(.1f);
             Gameplay.DESTROY(areYouSure: true);
 

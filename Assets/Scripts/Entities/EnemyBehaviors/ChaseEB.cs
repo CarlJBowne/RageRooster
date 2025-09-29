@@ -1,4 +1,4 @@
-﻿using SLS.StateMachineV3;
+﻿using SLS.StateMachineH;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,21 +14,21 @@ public class ChaseEB : StateBehavior
     private TrackerEB playerTracker;
     private Timer_Old destUpdateTimer;
 
-    public override void OnAwake()
+    protected override void OnAwake()
     {
         agent = GetComponentFromMachine<NavMeshAgent>();
-        playerTracker = state.parent.GetComponent<TrackerEB>();
+        playerTracker = State.Parent.GetComponent<TrackerEB>();
         destUpdateTimer = new(destUpdateRate, UpdateDestination);
     }
 
-    public override void OnEnter(State prev, bool isFinal)
+    protected override void OnEnter(State prev, bool isFinal)
     {
         agent.enabled = true;
         agent.speed = speed;
         UpdateDestination();
     }
 
-    public override void OnFixedUpdate()
+    protected override void OnFixedUpdate()
     {
         if (playerTracker.Distance(false) <= reachDistance)
         {

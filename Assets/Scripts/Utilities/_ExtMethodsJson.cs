@@ -221,6 +221,7 @@ public class JsonFile
         if (State == FileState.NoPath || !Directory.Exists(path)) return;
         if (!File.Exists(FullPath)) return;
         File.Delete(FullPath);
+        Data = null;
     }
 
 

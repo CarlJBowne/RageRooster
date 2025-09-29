@@ -21,17 +21,17 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
 
     #endregion 
 
-    public override void OnAwake()
+    protected override void OnAwake()
     {
         base.OnAwake();
-        playerMovementBody.currentDirection = transform.forward;
+        //playerMovementBody.direction = transform.forward;
     }
 
-    public override void OnFixedUpdate()
+    protected override void OnFixedUpdate()
     {
         float deltaTime = Time.fixedDeltaTime / 0.02f;
         float currentSpeed = playerMovementBody.CurrentSpeed;
-        Vector3 currentDirection = playerMovementBody.currentDirection;
+        Vector3 currentDirection = playerMovementBody.direction;
 
         Vector3 controlDirection = playerController.camAdjustedMovement.normalized;
         float controlMag = playerController.camAdjustedMovement.sqrMagnitude;
