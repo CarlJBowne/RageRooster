@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEditor;
 
 namespace RageRooster.Systems.ObjectPool
 {
@@ -37,13 +38,14 @@ namespace RageRooster.Systems.ObjectPool
             for (int i = 0; i < serializedPools.Count; i++) serializedPools[i].Update();
         }
 
+        [System.Serializable, Inspectable]
         public class Pool
         {
-            public string name { private set; get; }
-            public PoolableObject prefab { private set; get; }
-            public int initialSize { private set; get; } = 5;
-            public bool canGrow { private set; get; } = true;
-            public float autoDisableTime { private set; get; } = -1;
+            [field: SerializeField] public string name { private set; get; }
+            [field: SerializeField] public PoolableObject prefab { private set; get; }
+            [field: SerializeField] public int initialSize { private set; get; } = 5;
+            [field: SerializeField] public bool canGrow { private set; get; } = true;
+            [field: SerializeField] public float autoDisableTime { private set; get; } = -1;
 
             private readonly List<PoolableObject> poolList = new();
             private int currentActiveObjects = 0;
@@ -183,6 +185,45 @@ namespace RageRooster.Systems.ObjectPool
 
 
 
+        }
+
+
+
+        [System.Serializable, Inspectable]
+        public class Client
+        {
+            [SerializeField] PoolableObject prefab;
+            [SerializeField] Transform muzzle;
+            private bool initialized;
+            private Pool pool;
+            private Action<PoolableObject> onPump;
+
+            public void Initialize(Action<PoolableObject> action = null)
+            {
+                if (initialized) return;
+                pool = GetPool(prefab);
+                onPump = action;
+                initialized = true;
+            }
+
+            public PoolableObject Pump()
+            {
+                var res = pool.Pump();
+                if(muzzle != null) res.PlaceAtMuzzle(muzzle);
+                onPump?.Invoke(res);
+                return res;
+            }
+        }
+
+        [MenuItem("File/CreateObjectPool")]
+        private static void CREATE()
+        {
+            var instance = CreateInstance<ObjectPools>();
+            AssetDatabase.CreateAsset(instance, "Assets/ObjectPools.asset");
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+            EditorUtility.FocusProjectWindow();
+            Selection.activeObject = instance;
         }
     }
 }
