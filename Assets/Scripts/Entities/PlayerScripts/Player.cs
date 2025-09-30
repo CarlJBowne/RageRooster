@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     public static Vector3 Forward => Transform.forward;
     public static Vector3 EularAngles => Transform.eulerAngles;
 
+    public static float DistanceFrom(Vector3 pos) => Vector3.Distance(Position, pos);
+
     #region Instance Fields
 
     public float inFallDownPitTime;
