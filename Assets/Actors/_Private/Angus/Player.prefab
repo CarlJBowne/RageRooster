@@ -5112,7 +5112,7 @@ MonoBehaviour:
     - Key: Grounded
       Value: {fileID: 3758855929158950712}
     - Key: Charge
-      Value: {fileID: 4079522556486317034}
+      Value: {fileID: 4469018634794727335}
     - Key: Airborne
       Value: {fileID: 4554088299833102073}
     - Key: Fall
@@ -7619,7 +7619,7 @@ MonoBehaviour:
   maxTurnSpeed: 2.5
   outwardTurn: 1
   minSpeed: 0
-  prevPhase: {fileID: 4244649889381608096}
+  prevPhase: {fileID: 0}
   prevPhaseThreshold: 23
   nextPhase: {fileID: 0}
   nextPhaseThreshold: 25
@@ -8666,6 +8666,111 @@ Transform:
   - {fileID: 5303980009881695466}
   m_Father: {fileID: 2235979652216157829}
   m_LocalEulerAnglesHint: {x: 78.805435, y: -55.982094, z: 19.522608}
+--- !u!1 &5220790929439262842
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1245820549484834353}
+  - component: {fileID: 4469018634794727335}
+  - component: {fileID: 130535403916782458}
+  - component: {fileID: 3774664578474832837}
+  m_Layer: 6
+  m_Name: Roll
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1245820549484834353
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5220790929439262842}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 986074438047136786}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4469018634794727335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5220790929439262842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 130535403916782458}
+  - {fileID: 3774664578474832837}
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 757564897446861421}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &130535403916782458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5220790929439262842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76a63e80f5949cc45b585e78821f74ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 4469018634794727335}
+  Machine: {fileID: 8455434200384702600}
+  playerMovementBody: {fileID: 3941225653291784218}
+  playerController: {fileID: 1371118413310184343}
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 17
+  stopping: 0.15
+  maxTurnSpeed: 2.5
+  outwardTurn: 1
+  minSpeed: 0
+  prevPhase: {fileID: 528938496853295208}
+  prevPhaseThreshold: 15
+  nextPhase: {fileID: 0}
+  nextPhaseThreshold: 0
+  needs1Charge: 1
+  needs2Charge: 0
+  needsRagingUpgrade: 0
+  onEntry: 3
+  onEnterName: Land
+  onEnterTime: 0
+--- !u!114 &3774664578474832837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5220790929439262842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 4469018634794727335}
+  signals:
+    serializedList: []
+  lockOnEnter: 0
 --- !u!1 &5240960325302126777
 GameObject:
   m_ObjectHideFlags: 0
@@ -9316,7 +9421,7 @@ MonoBehaviour:
   minSpeed: 0
   prevPhase: {fileID: 5394545579396957404}
   prevPhaseThreshold: 0.05
-  nextPhase: {fileID: 0}
+  nextPhase: {fileID: 130535403916782458}
   nextPhaseThreshold: 15
   needs1Charge: 0
   needs2Charge: 0
@@ -9903,6 +10008,7 @@ Transform:
   m_Children:
   - {fileID: 4189863658179928102}
   - {fileID: 2006163882404814382}
+  - {fileID: 1245820549484834353}
   - {fileID: 949085974986424741}
   - {fileID: 8913829323247949238}
   m_Father: {fileID: 542910149066364657}
@@ -9926,9 +10032,10 @@ MonoBehaviour:
   <Children>k__BackingField:
   - {fileID: 59389784059182728}
   - {fileID: 4612571557662915037}
+  - {fileID: 4469018634794727335}
   - {fileID: 4079522556486317034}
   - {fileID: 4560762236120336607}
-  <ChildCount>k__BackingField: 4
+  <ChildCount>k__BackingField: 5
 --- !u!1 &5774795664015064404
 GameObject:
   m_ObjectHideFlags: 0
@@ -10478,9 +10585,9 @@ MonoBehaviour:
   maxTurnSpeed: 2.5
   outwardTurn: 1
   minSpeed: 0
-  prevPhase: {fileID: 528938496853295208}
+  prevPhase: {fileID: 0}
   prevPhaseThreshold: 15
-  nextPhase: {fileID: 704825921462216154}
+  nextPhase: {fileID: 0}
   nextPhaseThreshold: 23
   needs1Charge: 1
   needs2Charge: 0
