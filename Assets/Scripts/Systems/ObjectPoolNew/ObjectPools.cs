@@ -51,7 +51,7 @@ namespace RageRooster.Systems.ObjectPool
             private int currentActiveObjects = 0;
             private int currentPooledObjects = 0;
             private int currentSelection = 0;
-            private bool initialized;
+            private bool initialized = false; 
 
             public Action<PoolableObject> onCreateInstance;
             public Action<PoolableObject> onPump;
@@ -89,7 +89,11 @@ namespace RageRooster.Systems.ObjectPool
 
             public PoolableObject Pump()
             {
-                if (!initialized) Initialize();
+                if (!initialized)
+                {
+                    Initialize();
+                    return null;
+                }
                 if (!FindNextInstance())
                 {
                     onFailedPump?.Invoke();
@@ -202,6 +206,7 @@ namespace RageRooster.Systems.ObjectPool
             {
                 if (initialized) return;
                 pool = GetPool(prefab);
+                pool.Initialize();
                 onPump = action;
                 initialized = true;
             }

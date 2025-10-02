@@ -6,35 +6,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using RageRooster.Systems.ObjectPool;
 
-public class TestScript : MonoBehaviour, IInteractable
+public class TestScript : MonoBehaviour
 {
-    public AreaAsset area;
-    public RoomAsset room;
+    public ObjectPools.Client client;
 
-    Vector3 IInteractable.PopupPosition => Vector3.zero;
-    bool IInteractable.canInteract => true;
 
 
     private void Awake()
     {
-
+        client.Initialize();
     }
 
-    bool IInteractable.Interaction()
+    private void Update()
     {
-        Enum().Begin(Gameplay.Instance);
-        return true;
-        IEnumerator Enum()
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
         {
-            yield return Overlay.OverMenus.BasicFadeOutWait(1f);
-            OverlayLoading.SetVisible(true);
-            yield return RoomManager.Transition(new Destination()
+            var obj = client.Pump();
+            if (obj != null)
             {
-                room = room,
-                spawnID = 0
-            }, true);
-            yield return Overlay.OverMenus.BasicFadeInWait(1f);
+                obj.transform.position = transform.position + Vector3.up * 2;
+                obj.GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
+            }
         }
     }
 }
