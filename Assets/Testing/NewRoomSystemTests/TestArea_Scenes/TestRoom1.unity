@@ -896,7 +896,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 33998
+    surfaceParameter: 33888
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: -5110150945789371810
@@ -1389,7 +1389,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 33536
+    surfaceParameter: 33432
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: -5110150945789371810
@@ -1630,6 +1630,7 @@ Transform:
   - {fileID: 797379128}
   - {fileID: 555978581}
   - {fileID: 1936920979}
+  - {fileID: 1705567884}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1062916381
@@ -3254,6 +3255,54 @@ MonoBehaviour:
     - EdgeIndices: 07000000060000000500000004000000
       TexGenIndex: 5
     Generation: 2
+--- !u!1 &1705567883
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1705567884}
+  - component: {fileID: 1705567885}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1705567884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705567883}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.96, z: -12.54}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 841564673}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1705567885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705567883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68b9c101c5f0b5240a7aece14537daf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  client:
+    prefab: {fileID: 6543549226665677635, guid: b8f1bd1218c3ed24288b7b3aaa726042,
+      type: 3}
+    muzzle: {fileID: 1705567884}
 --- !u!1 &1835984726
 GameObject:
   m_ObjectHideFlags: 16
@@ -3330,7 +3379,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 33998
+    surfaceParameter: 33888
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: -5110150945789371810

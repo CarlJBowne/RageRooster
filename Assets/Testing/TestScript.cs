@@ -19,16 +19,14 @@ public class TestScript : MonoBehaviour
         client.Initialize();
     }
 
-    private void Update()
+    [Button]
+    public void Spawn()
     {
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Space))
+        var obj = client.Pump();
+        if (obj != null)
         {
-            var obj = client.Pump();
-            if (obj != null)
-            {
-                obj.transform.position = transform.position + Vector3.up * 2;
-                obj.GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
-            }
+            obj.transform.position = transform.position + Vector3.up * 2;
+            obj.GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
         }
     }
 }

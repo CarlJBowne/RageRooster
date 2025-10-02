@@ -11,6 +11,7 @@ namespace RageRooster.Systems.ObjectPool
     {
         public static ObjectPools Instance { private set; get; }
         public static bool initialized { private set; get; }
+        public static Transform poolParent;
 
         static Dictionary<string, Pool> dictionary_string = new();
         static Dictionary<PoolableObject, Pool> dictionary_prefab = new();
@@ -28,6 +29,7 @@ namespace RageRooster.Systems.ObjectPool
                 dictionary_prefab.Add(item.prefab, item);
             }
             Gameplay.onUpdate += Update;
+            Gameplay.onDestroy += DeInitialize;
 
             initialized = true;
         }
@@ -36,6 +38,25 @@ namespace RageRooster.Systems.ObjectPool
         void Update()
         {
             for (int i = 0; i < serializedPools.Count; i++) serializedPools[i].Update();
+        }
+
+        void DeInitialize()
+        {
+            initialized = false;
+            Instance = null;
+            Gameplay.onUpdate -= Update;
+            Gameplay.onDestroy -= DeInitialize;
+            foreach (var pool in serializedPools) pool.DeInitialize();
+        }
+
+
+        public static void UnloadAllPools()
+        {
+            if (!initialized) return;
+            foreach (var pool in Instance.serializedPools)
+            {
+                pool.UnloadAll();
+            }
         }
 
         [System.Serializable, Inspectable]
@@ -64,7 +85,7 @@ namespace RageRooster.Systems.ObjectPool
                 Enum().Begin(Gameplay.Instance);
                 IEnumerator Enum()
                 {
-                    var op = UnityEngine.Object.InstantiateAsync(prefab, initialSize);
+                    var op = UnityEngine.Object.InstantiateAsync(prefab, initialSize, poolParent);
                     while (!op.isDone) yield return null;
                     for (int i = 0; i < op.Result.Length; i++)
                     {
@@ -139,7 +160,7 @@ namespace RageRooster.Systems.ObjectPool
 
             private void NewInstance()
             {
-                var poolable = GameObject.Instantiate(prefab);
+                var poolable = GameObject.Instantiate(prefab, poolParent);
                 poolable.Initialize(this);
                 poolable.onDeactivate += OnDeActivate;
                 poolList.Add(poolable);
@@ -151,6 +172,21 @@ namespace RageRooster.Systems.ObjectPool
             {
                 currentActiveObjects--;
                 onInstanceDisable?.Invoke();
+            }
+
+            internal void DeInitialize()
+            {
+                initialized = false;
+                currentActiveObjects = 0;
+                currentPooledObjects = 0;
+                currentSelection = 0;
+            }
+
+            public void UnloadAll()
+            {
+                foreach (var item in poolList) item.Active = false;
+                currentActiveObjects = 0;
+                currentSelection = 0;
             }
         }
 

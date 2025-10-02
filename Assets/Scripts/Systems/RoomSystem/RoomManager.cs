@@ -1,3 +1,4 @@
+using RageRooster.Systems.ObjectPool;
 using RageRooster.Systems.SaveSystem;
 using SLS.ISingleton;
 using System.Collections;
@@ -36,6 +37,7 @@ namespace RageRooster.RoomSystem
                 currentArea = null;
                 currentRoom = null;
                 currentArea = destination.area;
+                ObjectPools.UnloadAllPools();
                 yield return currentArea.LoadArea();
             }
 
