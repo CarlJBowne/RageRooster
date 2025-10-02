@@ -23,13 +23,21 @@ namespace RageRooster.Systems.SaveSystem
         public static Flags.SavedFlagSet GlobalFlagDefaults => Get().globalFlagDefaults;
         public static Upgrades Upgrades => Get().upgradeDefaults;
 
-        [EditorAttributes.Button("TestSaveSystem")]
-        public void TestSaveSystem()
-        {
-            SaveFile.IO.SetFileTarget(6);
-            SaveFile S = new();
-            SaveFile.IO.Save();
-        }
+        public string flagname = "Test1";
+        public int value;
+        SaveFile.IOStream saveFile;
+
+        [EditorAttributes.Button]
+        public void Init() => saveFile = new(6);
+
+        [EditorAttributes.Button]
+        public void SetValue() => saveFile.file.globalChanges.TrySetFlag(flagname, value);
+        [EditorAttributes.Button]
+        public void GetValue() => saveFile.file.globalChanges.TryGetFlag(flagname, out value);
+        [EditorAttributes.Button]
+        public void SaveValue() => saveFile.Save();
+        [EditorAttributes.Button]
+        public void LoadValue() => saveFile.Load();
 
     }
 }

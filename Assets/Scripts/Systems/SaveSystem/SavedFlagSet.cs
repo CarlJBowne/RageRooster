@@ -15,36 +15,19 @@ namespace RageRooster.Systems.SaveSystem.Flags
     public class SavedFlagSet : ScriptableObject, ICloneable<SavedFlagSet>
     {
         [SerializeField]
-        public FlagDictionary flags = new();
+        private FlagDictionary flags = new();
 
         public void LoadFromJson(JToken json)
         {
-            foreach (var pair in new List<KeyValuePair<string, FlagBase>>(flags))
-            {
-                if (json[pair.Key] is JToken token)
-                {
-                    Enum.TryParse((string)token["type"], out FlagTypes type);
-
-                    if (type != pair.Value.type) continue;
-
-                    pair.Value.TrySetValueObj(token["value"].ToObject<object>());
-                }
-            }
+            foreach (var pair in flags)
+                pair.Value.LoadFromJson((JValue)json[pair.Key]);
         }
 
         public JToken SaveToJson()
         {
             var result = new JObject();
 
-            foreach (var pair in flags)
-            {
-                pair.Value.TryGetValueObj(out object value);
-                result[pair.Key] = new JObject()
-                {
-                    ["type"] = pair.Value.type.ToString(),
-                    ["value"] = (JToken)value
-                };
-            }
+            foreach (var pair in flags) result[pair.Key] = pair.Value.SaveToJson();
             return result;
         }
 
@@ -62,12 +45,17 @@ namespace RageRooster.Systems.SaveSystem.Flags
 
 
 
+        public bool TryGetFlag<T>(string key, out T value)
+        {
+            value = default;
+            return flags.ContainsKey(key) && flags[key].TryGetValue(out value);
+        }
 
-
+        public bool TrySetFlag<T>(string key, T value) => flags.ContainsKey(key) && flags[key].TrySetValue(value);
 
 
         [System.Serializable]
-        public class FlagDictionary : SerializedReferenceDictionary<string, FlagBase>
+        public class FlagDictionary : SerializedReferenceDictionary<string, Flag>
         {
             [CustomPropertyDrawer(typeof(FlagDictionary), true)]
             public class FlagDictionaryDrawer : SerializedDictionaryDrawer
@@ -89,19 +77,19 @@ namespace RageRooster.Systems.SaveSystem.Flags
                     EditorGUI.BeginChangeCheck();
 
                     var flagProp = item.FindPropertyRelative("Value");
-                    FlagBase flagObj = flagProp.managedReferenceValue as FlagBase;
+                    Flag flagObj = flagProp.managedReferenceValue as Flag;
 
                     Enum prevEnum = flagObj.type;
                     Enum enumOutput = EditorGUI.EnumPopup(enumRect, prevEnum);
                     if (!Equals(enumOutput, prevEnum))
                     {
-                        flagProp.managedReferenceValue = FlagBase.CreateInstanceFromEnum((FlagTypes)enumOutput);
-                        flagObj = flagProp.managedReferenceValue as FlagBase;
+                        flagProp.managedReferenceValue = Flag.CreateInstanceFromEnum((FlagTypes)enumOutput);
+                        flagObj = flagProp.managedReferenceValue as Flag;
                         flagProp.serializedObject.ApplyModifiedProperties();
                         EditorUtility.SetDirty(flagProp.serializedObject.targetObject);
                     }
 
-                    flagObj.TryGetValueObj(out object existingValue);
+                    object existingValue = flagObj.valueObject;
                     object inputValue = existingValue;
 
                     inputValue = flagObj.type switch
@@ -116,7 +104,7 @@ namespace RageRooster.Systems.SaveSystem.Flags
 
                     if (!Equals(inputValue, existingValue))
                     {
-                        flagObj.TrySetValueObj(inputValue);
+                        flagObj.TrySetValue(inputValue);
                         flagProp.managedReferenceValue = flagObj;
                     }
 
