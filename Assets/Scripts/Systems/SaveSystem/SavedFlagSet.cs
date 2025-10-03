@@ -135,7 +135,7 @@ namespace RageRooster.Systems.SaveSystem.Flags
                     elementValue.managedReferenceValue = new Flag.Boolean();
 
                     serializedListProperty.serializedObject.ApplyModifiedProperties();
-                    UpdateReorderableList();
+                    MakeReorderableList();
                 }
             }
         }
