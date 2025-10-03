@@ -7,225 +7,188 @@ using Generics = System.Collections.Generic;
 
 namespace SLS.StateMachineH.SerializedDictionary
 {
-    [CustomPropertyDrawer(typeof(SerializedDictionary<,>), true)]
+    [CustomPropertyDrawer(typeof(ISerializedDictionaryNonGeneric), true)]
     public class SerializedDictionaryDrawer : PropertyDrawer
     {
+        protected SerializedProperty property;
+        protected SerializedProperty serializedListProperty;
+        protected ISerializedDictionaryNonGeneric targetDictionary;
+        protected ReorderableList reorderableList;
 
-        static Generics.Dictionary<string, Instance> instanceDrawers;
+        protected Color redWarning = new Color(1.5f, 1, 1);
+
+        protected string noElementsDisplay => "This dictionary is empty. Click the + button to add a new item.";
+
+        protected bool IsReorderableListValid =>
+            reorderableList != null
+            && reorderableList.list != null
+            && reorderableList.drawElementCallback != null
+            && reorderableList.elementHeightCallback != null;
+
+        protected bool Expanded
+        {
+            get => serializedListProperty.isExpanded;
+            set
+            {
+                serializedListProperty.isExpanded = value;
+                reorderableList.displayAdd = value;
+                reorderableList.displayRemove = value;
+                reorderableList.draggable = value;
+                reorderableList.showDefaultBackground = value;
+            }
+        }
+
+        protected void Initialize(SerializedProperty property, Rect position, GUIContent label, FieldInfo fieldInfo)
+        {
+            if (property != null) this.property = property;
+            if (this.property != null) serializedListProperty = this.property.FindPropertyRelative("serializedList");
+            if (this.fieldInfo != null && this.property != null)
+                targetDictionary = this.fieldInfo.GetValue(this.property.serializedObject.targetObject) as ISerializedDictionaryNonGeneric;
+            if (reorderableList == null) UpdateReorderableList();
+        }
+
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            PrepareInstance(property, default, property.propertyPath, label, fieldInfo);
-            return instanceDrawers[property.propertyPath].GetPropertyHeight();
-        }
+            Initialize(property, default, label, fieldInfo);
 
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            PrepareInstance(property, position, property.propertyPath, label, fieldInfo);
-            instanceDrawers[property.propertyPath].OnGUI();
-        }
+            if(!Expanded) return EditorGUIUtility.singleLineHeight + 2;
 
-        private void PrepareInstance(SerializedProperty property, Rect position, string propertyPath, GUIContent label, FieldInfo fieldInfo)
-        {
-            if (property.serializedObject.targetObject == null)
+            if (!IsReorderableListValid) UpdateReorderableList();
+            try
             {
-                instanceDrawers?.Remove(propertyPath);
-                return;
+                return reorderableList.GetHeight();
             }
-
-            instanceDrawers ??= new Generics.Dictionary<string, Instance>();
-
-            if (!instanceDrawers.TryGetValue(propertyPath, out Instance instance))
-                instanceDrawers[propertyPath] = new Instance(position, property, label, fieldInfo, this);
-            else instance.Update(position, property, label, fieldInfo);
-        }
-
-
-        protected class Instance
-        {
-            public Instance(Rect position, SerializedProperty property, GUIContent label, FieldInfo fieldInfo, SerializedDictionaryDrawer drawer)
+            catch (System.ArgumentNullException)
             {
-                this.drawer = drawer;
-                TargetDictionary = fieldInfo.GetValue(property.serializedObject.targetObject) as ISerializedDictionaryNonGeneric;
-                Update(position, property, label, fieldInfo, true);
-            }
-
-            public void Update(Rect position = default, SerializedProperty property = null, GUIContent label = null, FieldInfo fieldInfo = null, bool updateList = false)
-            {
-                if (property == null && this.property == null && EditorUtility.DisplayDialog("Oops", "Somehow a Serialized Dictionary wasn't initialized. Reset?", "Yes!", "No!?"))
-                {
-                    ClearInstancesOnReload();
-                    return;
-                }
-
-                if (position != default) startingPosition = position;
-                if (property != null) this.property = property;
-                if (this.property != null) serializedListProperty = this.property.FindPropertyRelative("serializedList");
-                if (label != null) this.label = label;
-                if (fieldInfo != null) this.fieldInfo = fieldInfo;
-                if (updateList) UpdateReorderableList();
-            }
-
-
-
-            public Rect startingPosition;
-            public SerializedProperty property;
-            public SerializedProperty serializedListProperty;
-            public SerializedDictionaryDrawer drawer;
-            public GUIContent label;
-            public FieldInfo fieldInfo;
-            public ISerializedDictionaryNonGeneric TargetDictionary;
-            public ReorderableList reorderableList;
-
-            protected bool isReorderableListValid => reorderableList != null
-                    && reorderableList.list != null
-                    && reorderableList.drawElementCallback != null
-                    && reorderableList.elementHeightCallback != null
-                    && reorderableList.draggable;
-
-            public float GetPropertyHeight()
-            {
-                if (!isReorderableListValid)UpdateReorderableList();
                 try
                 {
+                    UpdateReorderableList();
                     return reorderableList.GetHeight();
                 }
                 catch (System.ArgumentNullException)
                 {
-                    try
-                    {
-                        UpdateReorderableList();
-                        return reorderableList.GetHeight();
-                    }
-                    catch (System.ArgumentNullException)
-                    {
-                        Debug.LogWarning("SerializedDictionaryDrawer: Could not get height for reorderable list. Returning default height.");
-                        return EditorGUIUtility.singleLineHeight * 3.5f;
-                    }
+                    Debug.LogWarning("SerializedDictionaryDrawer: Could not get height for reorderable list. Returning default height.");
+                    return EditorGUIUtility.singleLineHeight * 3.5f;
                 }
-
-            }
-            public void OnGUI()
-            {
-                EditorGUI.BeginProperty(startingPosition, label, property);
-                EditorGUI.BeginChangeCheck();
-
-                if (reorderableList == null || reorderableList.draggable == false) UpdateReorderableList();
-                try
-                {
-                    reorderableList.DoList(startingPosition);
-                }
-                catch (System.ArgumentNullException X)
-                {
-                    Update();
-                    reorderableList.DoList(startingPosition);
-                }
-                finally
-                {
-                    if(EditorGUI.EndChangeCheck())
-                    {
-                        property.serializedObject.ApplyModifiedProperties();
-                        Update(updateList: true);
-                    }
-
-                    EditorGUI.EndProperty();
-                }
-            }
-            public void UpdateReorderableList()
-            {
-                if (serializedListProperty == null) Update();
-                if (serializedListProperty == null)
-                {
-                    Debug.LogWarning("SerializedDictionaryDrawer: Could not find 'serializedList' property.");
-                    return;
-                }
-                Undo.RecordObject(property.serializedObject.targetObject, "Modify SerializedDictionary");
-
-                bool[] duplicates = TargetDictionary.DuplicateValues;
-                bool IsDupe(int id) => duplicates != null && duplicates.Length > id && duplicates[id];
-
-                reorderableList = new ReorderableList(property.serializedObject, serializedListProperty);
-                reorderableList.list = TargetDictionary.listAccess;
-
-                reorderableList.drawHeaderCallback = rect =>
-                {
-                    var newRect = new Rect(rect.x, rect.y, rect.width - 10, rect.height);
-                    serializedListProperty.isExpanded = EditorGUI.Foldout(newRect, serializedListProperty.isExpanded, property.displayName, true);
-
-                    //EditorGUI.LabelField(rect, property.displayName);
-                    if (Event.current.type == EventType.ContextClick && rect.Contains(Event.current.mousePosition))
-                    {
-                        var menu = new GenericMenu();
-                        menu.AddItem(new GUIContent("Clear"), false, () =>
-                        {
-                            serializedListProperty.ClearArray();
-                            TargetDictionary.RecalculateOccurences();
-                            serializedListProperty.serializedObject.ApplyModifiedProperties();
-                            UpdateReorderableList();
-                        });
-                        menu.AddItem(new GUIContent("Remove Duplicates"), false, () =>
-                        {
-                            TargetDictionary.RemoveDuplicates();
-                            TargetDictionary.RecalculateOccurences();
-                            serializedListProperty.serializedObject.ApplyModifiedProperties();
-                            UpdateReorderableList();
-                        });
-                        menu.ShowAsContext();
-                        Event.current.Use();
-                    }
-                };
-
-                reorderableList.drawElementCallback = (position, id, isActive, isFocused) =>
-                {
-                    if (!serializedListProperty.isExpanded) return;
-
-                    drawer.KeyValuePairDrawer(serializedListProperty.GetArrayElementAtIndex(id), this, position, id, IsDupe(id));
-                    //Look into more later.
-                    //if (Event.current.type == EventType.ContextClick && position.Contains(Event.current.mousePosition))
-                    //{
-                    //    var menu = new GenericMenu();
-                    //    menu.AddItem(new GUIContent("Copy Pair"), false, () =>
-                    //    {
-                    //        var element = serializedListProperty.GetArrayElementAtIndex(id);
-                    //        var key = element.FindPropertyRelative("Key").stringValue;
-                    //        var value = element.FindPropertyRelative("Value").stringValue;
-                    //        EditorGUIUtility.systemCopyBuffer = $"{key}:{value}";
-                    //    });
-                    //    menu.AddItem(new GUIContent("Paste Pair"), false, () =>
-                    //    {
-                    //        var clipboard = EditorGUIUtility.systemCopyBuffer;
-                    //        var parts = clipboard.Split(':');
-                    //        if (parts.Length == 2)
-                    //        {
-                    //            var element = serializedListProperty.GetArrayElementAtIndex(id);
-                    //            element.FindPropertyRelative("Key").stringValue = parts[0];
-                    //            element.FindPropertyRelative("Value").stringValue = parts[1];
-                    //            serializedListProperty.serializedObject.ApplyModifiedProperties();
-                    //        }
-                    //    });
-                    //    menu.ShowAsContext();
-                    //    Event.current.Use();
-                    //}
-                };
-
-                reorderableList.elementHeightCallback = index => serializedListProperty.isExpanded
-                                                                    ? drawer.KeyValuePairHeight(serializedListProperty, this, index)
-                                                                    : 0;
-
-                reorderableList.draggable = true;
-
-                reorderableList.onChangedCallback = list => UpdateReorderableList();
-                reorderableList.onAddCallback = list => {drawer.AddNewItem(serializedListProperty, this, list);};
-                reorderableList.onRemoveCallback = list => {drawer.RemoveItem(serializedListProperty, this, list);};
-                reorderableList.onReorderCallbackWithDetails = (list, oldID, newID) => UpdateReorderableList();
-
-
-
-                property.serializedObject.ApplyModifiedProperties();
             }
         }
 
-        protected virtual void KeyValuePairDrawer(SerializedProperty item, Instance drawerInstance, Rect position, int id, bool isDupe)
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            Initialize(property, position, label, fieldInfo);
+
+            EditorGUI.BeginProperty(position, label, property);
+            EditorGUI.BeginChangeCheck();
+
+            if (IsReorderableListValid) UpdateReorderableList();
+            try
+            {
+                reorderableList.DoList(position);
+            }
+            catch (System.ArgumentNullException)
+            {
+                UpdateReorderableList();
+                reorderableList.DoList(position);
+            }
+            finally
+            {
+                if (EditorGUI.EndChangeCheck())
+                {
+                    property.serializedObject.ApplyModifiedProperties();
+                    UpdateReorderableList();
+                }
+
+                EditorGUI.EndProperty();
+            }
+        }
+
+
+        public void UpdateReorderableList()
+        {
+            if (serializedListProperty == null)
+            {
+                if (property != null)
+                    serializedListProperty = property.FindPropertyRelative("serializedList");
+            }
+            if (serializedListProperty == null)
+            {
+                Debug.LogWarning("SerializedDictionaryDrawer: Could not find 'serializedList' property.");
+                return;
+            }
+            if (property == null || property.serializedObject == null || property.serializedObject.targetObject == null)
+                return;
+
+            Undo.RecordObject(property.serializedObject.targetObject, "Modify SerializedDictionary");
+
+            reorderableList = new ReorderableList(property.serializedObject, serializedListProperty);
+            if (targetDictionary != null)
+                reorderableList.list = targetDictionary.listAccess;
+
+            reorderableList.drawHeaderCallback = HeaderDrawer;
+
+            reorderableList.drawElementCallback = (position, id, isActive, isFocused) =>
+            {
+                if (!Expanded) return;
+
+                KeyValuePairDrawer(serializedListProperty.GetArrayElementAtIndex(id), position, id, IsDupe(id));
+            };
+
+            bool IsDupe(int id)
+            {
+                bool[] duplicates = targetDictionary?.DuplicateValues;
+                return duplicates != null && duplicates.Length > id && duplicates[id];
+            }
+
+            reorderableList.elementHeightCallback = index => Expanded
+                ? KeyValuePairHeight(serializedListProperty, index)
+                : 0;
+
+            
+
+            reorderableList.onChangedCallback = list => UpdateReorderableList();
+            reorderableList.onAddCallback = list => { AddNewItem(serializedListProperty, list); };
+            reorderableList.onRemoveCallback = list => { RemoveItem(serializedListProperty, list); };
+            reorderableList.onReorderCallbackWithDetails = (list, oldID, newID) => UpdateReorderableList();
+            reorderableList.drawNoneElementCallback = rect =>
+            {
+                if (Expanded)
+                    EditorGUI.LabelField(rect, noElementsDisplay);
+                else rect.height = 0;
+            };
+
+            property.serializedObject.ApplyModifiedProperties();
+        }
+
+
+        protected virtual void HeaderDrawer(Rect rect)
+        {
+            var newRect = new Rect(rect.x, rect.y, rect.width - 10, rect.height);
+            Expanded = EditorGUI.Foldout(newRect, Expanded, property.displayName, true);
+
+            if (Event.current.type == EventType.ContextClick && rect.Contains(Event.current.mousePosition))
+            {
+                var menu = new GenericMenu();
+                menu.AddItem(new GUIContent("Clear"), false, () =>
+                {
+                    serializedListProperty.ClearArray();
+                    targetDictionary?.RecalculateOccurences();
+                    serializedListProperty.serializedObject.ApplyModifiedProperties();
+                    UpdateReorderableList();
+                });
+                menu.AddItem(new GUIContent("Remove Duplicates"), false, () =>
+                {
+                    targetDictionary?.RemoveDuplicates();
+                    targetDictionary?.RecalculateOccurences();
+                    serializedListProperty.serializedObject.ApplyModifiedProperties();
+                    UpdateReorderableList();
+                });
+                menu.ShowAsContext();
+                Event.current.Use();
+            }
+        }
+
+        protected virtual void KeyValuePairDrawer(SerializedProperty item, Rect position, int id, bool isDupe)
         {
             SerializedProperty keyProperty = item.FindPropertyRelative("Key");
             SerializedProperty valueProperty = item.FindPropertyRelative("Value");
@@ -252,12 +215,12 @@ namespace SLS.StateMachineH.SerializedDictionary
 
             if (EditorGUI.EndChangeCheck())
             {
-                drawerInstance.property.serializedObject.ApplyModifiedProperties();
-                drawerInstance.Update(updateList: true);
+                property.serializedObject.ApplyModifiedProperties();
+                UpdateReorderableList();
             }
         }
 
-        protected virtual float KeyValuePairHeight(SerializedProperty serializedListProperty, Instance drawerInstance, int index)
+        protected virtual float KeyValuePairHeight(SerializedProperty serializedListProperty, int index)
         {
             SerializedProperty element = serializedListProperty.GetArrayElementAtIndex(index);
             SerializedProperty keyProperty = element.FindPropertyRelative("Key");
@@ -266,29 +229,27 @@ namespace SLS.StateMachineH.SerializedDictionary
                 EditorGUI.GetPropertyHeight(keyProperty, true),
                 EditorGUI.GetPropertyHeight(valueProperty, true),
                 EditorGUIUtility.singleLineHeight
-                );
+            );
         }
 
-        protected virtual void AddNewItem(SerializedProperty serializedListProperty, Instance drawerInstance, ReorderableList list)
+
+        protected virtual void AddNewItem(SerializedProperty serializedListProperty, ReorderableList list)
         {
             int place = serializedListProperty.arraySize > 0 ? serializedListProperty.arraySize - 1 : 0;
             serializedListProperty.InsertArrayElementAtIndex(place);
             serializedListProperty.serializedObject.ApplyModifiedProperties();
-            drawerInstance.UpdateReorderableList();
+            UpdateReorderableList();
         }
-        protected virtual void RemoveItem(SerializedProperty serializedListProperty, Instance drawerInstance, ReorderableList list)
+
+        protected virtual void RemoveItem(SerializedProperty serializedListProperty, ReorderableList list)
         {
             if (serializedListProperty.arraySize > 0)
             {
                 serializedListProperty.DeleteArrayElementAtIndex(list.index);
                 serializedListProperty.serializedObject.ApplyModifiedProperties();
-                drawerInstance.UpdateReorderableList();
+                UpdateReorderableList();
             }
         }
 
-        protected Color redWarning = new Color(1.5f, 1, 1);
-
-        [InitializeOnLoadMethod]
-        private static void ClearInstancesOnReload() => instanceDrawers?.Clear();
     }
 }

@@ -64,7 +64,7 @@ namespace RageRooster.Systems.SaveSystem.Flags
                 float spacing = 2f;
                 float rowHeight => EditorGUIUtility.singleLineHeight;
 
-                protected override void KeyValuePairDrawer(SerializedProperty item, Instance drawerInstance, Rect position, int id, bool isDupe)
+                protected override void KeyValuePairDrawer(SerializedProperty item, Rect position, int id, bool isDupe)
                 {
                     if (isDupe) GUI.color = redWarning;
 
@@ -116,10 +116,10 @@ namespace RageRooster.Systems.SaveSystem.Flags
 
                     if (isDupe) GUI.color = Color.white;
                 }
-                protected override float KeyValuePairHeight(SerializedProperty serializedListProperty, Instance drawerInstance, int index)
+                protected override float KeyValuePairHeight(SerializedProperty serializedListProperty, int index)
                     => EditorGUIUtility.singleLineHeight * 2 + EditorGUIUtility.standardVerticalSpacing + spacing;
 
-                protected override void AddNewItem(SerializedProperty serializedListProperty, Instance drawerInstance, ReorderableList list)
+                protected override void AddNewItem(SerializedProperty serializedListProperty, ReorderableList list)
                 {
                     int place = serializedListProperty.arraySize > 0 ? serializedListProperty.arraySize - 1 : 0;
 
@@ -135,7 +135,7 @@ namespace RageRooster.Systems.SaveSystem.Flags
                     elementValue.managedReferenceValue = new Flag.Boolean();
 
                     serializedListProperty.serializedObject.ApplyModifiedProperties();
-                    drawerInstance.UpdateReorderableList();
+                    UpdateReorderableList();
                 }
             }
         }
