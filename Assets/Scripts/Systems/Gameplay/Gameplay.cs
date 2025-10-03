@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using SLS.ISingleton;
 using RageRooster.RoomSystem;
 using RageRooster.Systems.SaveSystem;
+using RageRooster.Systems.ObjectPool;
+
 
 
 
@@ -36,6 +38,8 @@ public class Gameplay : MonoBehaviour
 
     public static StudioEventEmitter musicEmitter;
     public static System.Action PreReloadSave;
+    public static System.Action onUpdate;
+    public static System.Action onDestroy;
 
     public static double lastSaveInteractionTime;
 
@@ -71,7 +75,7 @@ public class Gameplay : MonoBehaviour
         inputUI.Awake();
         GetComponent<Cameras>().Awake();
         musicEmitter = GetComponent<StudioEventEmitter>();
-        
+        ObjectPools.poolParent = transform.Find("PooledObjects");
 
 
         StartCoroutine(Enum());
@@ -94,7 +98,10 @@ public class Gameplay : MonoBehaviour
         }
     }
 
-
+    private void Update()
+    {
+        onUpdate?.Invoke();
+    }
 
 
 
@@ -323,10 +330,12 @@ public class Gameplay : MonoBehaviour
         }
         Destroy(GameObject);
         Active = false;
+        
     }
 
     private void OnDestroy()
     {
+        onDestroy?.Invoke();
         //EnemyCullingGroup.DeInitialize();
     }
 
