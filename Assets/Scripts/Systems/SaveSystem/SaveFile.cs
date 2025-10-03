@@ -19,8 +19,8 @@ namespace RageRooster.Systems.SaveSystem
         public SavedCollectible powerEggs = new();
         public SavedCollectible wishbones = new();
         public SavedCollectible hensRescued = new();
-        public SavedFlagSet globalChanges;
-        public Dictionary<AreaAsset, SavedFlagSet> areaChanges = new();
+        public Flags.SavedFlagSet globalChanges;
+        public Dictionary<AreaAsset, Flags.SavedFlagSet> areaChanges = new();
 
         public class SavedPlayerStats
         {
@@ -90,10 +90,25 @@ namespace RageRooster.Systems.SaveSystem
             return target;
         }
 
-        public static IOSystem IO = new();
+        public static IOStream IO;
 
-        public class IOSystem
+        public class IOStream
         {
+            public IOStream(int fileID)
+            {
+                this.fileID = fileID;
+                fileRoot = Path.Combine(UnityEngine.Application.persistentDataPath, "Saves", $"File{fileID}");
+
+                playerFile = new JsonFile(fileRoot, "playerData");
+                worldChangesFile = new JsonFile(fileRoot, "worldChanges");
+                areaChangesFiles = new();
+                foreach (var area in AreaRegistry.GetAll())
+                {
+                    areaChangesFiles.Add(area, new JsonFile(fileRoot, $"flags_{area.name}"));
+                }
+            }
+
+
             public SaveFile file = new();
 
             public int fileID = -1;
@@ -107,20 +122,6 @@ namespace RageRooster.Systems.SaveSystem
             //Contains powerEggs, hensRescued, and globalChanges
 
             public Dictionary<AreaAsset, JsonFile> areaChangesFiles;
-
-            public void SetFileTarget(int fileID)
-            {
-                this.fileID = fileID;
-                fileRoot = Path.Combine(UnityEngine.Application.persistentDataPath, "Saves", $"File{fileID}");
-
-                playerFile = new JsonFile(fileRoot, "playerData");
-                worldChangesFile = new JsonFile(fileRoot, "worldChanges");
-                areaChangesFiles = new();
-                foreach (var area in AreaRegistry.GetAll())
-                {
-                    areaChangesFiles.Add(area, new JsonFile(fileRoot, $"flags_{area.name}"));
-                }
-            }
 
             public void ClearFileTarget()
             {
@@ -201,7 +202,7 @@ namespace RageRooster.Systems.SaveSystem
                     [nameof(SavedPlayerStats.currency)] = file.playerStats.currency,
                     [nameof(SavedPlayerStats.playTime)] = file.playerStats.playTime.ToString(),
                     [nameof(SavedPlayerStats.upgrades)] = JObject.FromObject(file.playerStats.upgrades)
-                }; 
+                };
 
                 worldChangesFile.Data = new JObject
                 {
@@ -220,18 +221,12 @@ namespace RageRooster.Systems.SaveSystem
                         [nameof(SavedCollectible.total)] = file.hensRescued.total,
                         [nameof(SavedCollectible.isCollected)] = new JArray(file.hensRescued.isCollected)
                     },
-                    [nameof(file.globalChanges)] = file.globalChanges.flags != null
-                                                        ? JObject.FromObject(file.globalChanges.flags)
-                                                        : new JObject()
+                    [nameof(file.globalChanges)] = file.globalChanges.SaveToJson()
                 };
 
                 // Save areaChanges to areaChangesFiles
                 foreach (var area in AreaRegistry.GetAll())
-                {
-                    areaChangesFiles[area].Data = file.areaChanges[area].flags != null
-                        ? JObject.FromObject(file.areaChanges[area].flags)
-                        : new JObject();
-                }
+                    areaChangesFiles[area].Data = file.areaChanges[area].SaveToJson();
 
                 // Save all files
                 JsonFile.FileState state = playerFile.SaveToFile();

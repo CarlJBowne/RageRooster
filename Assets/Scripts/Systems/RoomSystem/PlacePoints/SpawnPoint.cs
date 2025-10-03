@@ -7,8 +7,8 @@ using UnityEngine;
 public class SpawnPoint : MonoBehaviour
 {
     //Make private but visible later.
-    public int ID;
-    public bool rotate;
+    public int ID = -1;
+    public bool rotate = true;
     public bool snapToFloor = true;
 
     [SerializeField, HideInInspector] internal RoomRoot root;

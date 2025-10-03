@@ -6,7 +6,7 @@ namespace SLS.StateMachineH.SerializedDictionary
     [CustomPropertyDrawer(typeof(SignalSet), true)]
     public class SignalSetDrawer : SerializedDictionaryDrawer
     {
-        protected override void KeyValuePairDrawer(SerializedProperty item, Instance drawerInstance, Rect position, int id, bool isDupe)
+        protected override void KeyValuePairDrawer(SerializedProperty item, Rect position, int id, bool isDupe)
         {
             SerializedProperty keyProperty = item.FindPropertyRelative("Key");
             SerializedProperty valueProperty = item.FindPropertyRelative("Value");
@@ -17,8 +17,8 @@ namespace SLS.StateMachineH.SerializedDictionary
             float valueHeight = EditorGUI.GetPropertyHeight(valueProperty, true);
             float totalHeight = keyHeight + valueHeight + EditorGUIUtility.standardVerticalSpacing;
 
-            Rect keyRect = new Rect(position.x, position.y, position.width, keyHeight);
-            Rect valueRect = new Rect(position.x, position.y + keyHeight + EditorGUIUtility.standardVerticalSpacing, position.width, valueHeight);
+            Rect keyRect = new Rect(position.x, position.y+2, position.width, keyHeight);
+            Rect valueRect = new Rect(position.x, position.y+1 + keyHeight + EditorGUIUtility.standardVerticalSpacing, position.width+1, valueHeight);
 
             var prevColor = GUI.color;
             if (isDupe) GUI.color = new Color(1.5f, 1, 1);
@@ -34,12 +34,12 @@ namespace SLS.StateMachineH.SerializedDictionary
 
             if (EditorGUI.EndChangeCheck())
             {
-                drawerInstance.property.serializedObject.ApplyModifiedProperties();
-                drawerInstance.Update(updateList: true);
+                //drawerInstance.property.serializedObject.ApplyModifiedProperties();
+                //Update(updateList: true);
             }
         }
 
-        protected override float KeyValuePairHeight(SerializedProperty serializedListProperty, Instance drawerInstance, int index)
+        protected override float KeyValuePairHeight(SerializedProperty serializedListProperty, int index)
         {
             SerializedProperty element = serializedListProperty.GetArrayElementAtIndex(index);
             SerializedProperty keyProperty = element.FindPropertyRelative("Key");

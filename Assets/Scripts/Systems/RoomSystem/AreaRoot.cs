@@ -28,6 +28,20 @@ namespace RageRooster.RoomSystem
             asset.Connect(this);
         }
 
+#if UNITY_EDITOR
+        public class Editor : UnityEditor.Editor
+        {
+
+
+            public static void AttachAsset(AreaRoot This, AreaAsset area)
+            {
+                This.asset = area;
+                UnityEditor.EditorUtility.SetDirty(This);
+            }
+        }
+
+
+#endif
     }
 
 }

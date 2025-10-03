@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
+using UnityEditor.SceneManagement;
+using System.IO;
+
+
 
 
 #if UNITY_EDITOR
@@ -292,99 +296,173 @@ namespace RageRooster.RoomSystem
             }
         }
 
-        
-    }
+
 
 #if UNITY_EDITOR
 
-    [CustomEditor(typeof(RoomAsset))]
-    public class RoomAssetEditor : Editor
-    {
-        public override void OnInspectorGUI()
+        [CustomEditor(typeof(RoomAsset))]
+        public class Editor : UnityEditor.Editor
         {
-            RoomAsset roomAsset = (RoomAsset)target;
-
-            // Draw Area link or orphan warning
-            SerializedProperty areaProp = serializedObject.FindProperty(nameof(RoomAsset.area), backingField: true);
-            AreaAsset areaAsset = areaProp.objectReferenceValue as AreaAsset;
-
-            GUILayout.Space(8);
-
-            if (areaAsset != null)
+            public override void OnInspectorGUI()
             {
-                GUIStyle linkStyle = new GUIStyle(EditorStyles.label);
-                linkStyle.normal.textColor = new Color(0.2f, 0.5f, 1f);
-                linkStyle.fontStyle = FontStyle.Bold;
+                RoomAsset roomAsset = (RoomAsset)target;
 
-                if (GUILayout.Button($"Area: {areaAsset.displayName}", linkStyle))
+                // Draw Area link or orphan warning
+                SerializedProperty areaProp = serializedObject.FindProperty(nameof(RoomAsset.area), backingField: true);
+                AreaAsset areaAsset = areaProp.objectReferenceValue as AreaAsset;
+
+                GUILayout.Space(8);
+
+                if (areaAsset != null)
                 {
-                    Selection.activeObject = areaAsset;
-                    EditorGUIUtility.PingObject(areaAsset);
-                }
-            }
-            else
-            {
-                GUIStyle redStyle = new GUIStyle(EditorStyles.label);
-                redStyle.normal.textColor = Color.red;
-                redStyle.fontStyle = FontStyle.Bold;
-                GUILayout.Label("ORPHAN ROOM, PLEASE ADD TO AREA", redStyle);
-            }
+                    GUIStyle linkStyle = new GUIStyle(EditorStyles.label);
+                    linkStyle.normal.textColor = new Color(0.2f, 0.5f, 1f);
+                    linkStyle.fontStyle = FontStyle.Bold;
 
-            GUILayout.Space(8);
-
-            serializedObject.Update();
-            EditorGUI.BeginChangeCheck();
-            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.displayName), backingField: true));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.scene), backingField: true));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.lod), backingField: true));
-            if (EditorGUI.EndChangeCheck())
-            {
-                serializedObject.ApplyModifiedProperties();
-                Undo.RecordObject(roomAsset, "Modified Room Asset");
-                EditorUtility.SetDirty(roomAsset);
-            }
-
-            // Display foldable, uneditable list of transitions
-            SerializedProperty transitionsProp = serializedObject.FindProperty(nameof(RoomAsset.entrances), backingField: true);
-            bool transitionsFoldout = EditorPrefs.GetBool("RoomAsset_EntrancesFoldout", true);
-            transitionsFoldout = EditorGUILayout.Foldout(transitionsFoldout, "Entrances", true);
-            EditorPrefs.SetBool("RoomAsset_EntrancesFoldout", transitionsFoldout);
-
-            if (transitionsFoldout)
-            {
-                if (transitionsProp != null && transitionsProp.isArray)
-                {
-                    int count = transitionsProp.arraySize;
-                    if (count == 0)
+                    if (GUILayout.Button($"Area: {areaAsset.displayName}", linkStyle))
                     {
-                        EditorGUILayout.LabelField("No Entrances attached.");
-                    }
-                    else
-                    {
-                        EditorGUI.indentLevel++;
-                        for (int i = 0; i < count; i++)
-                        {
-                            SerializedProperty itemProp = transitionsProp.GetArrayElementAtIndex(i);
-                            EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                            EditorGUI.BeginDisabledGroup(true);
-                            EditorGUILayout.PropertyField(itemProp, new($"Entrance {i + 1}"), true);
-                            EditorGUI.EndDisabledGroup();
-                            EditorGUILayout.EndVertical();
-                        }
-                        EditorGUI.indentLevel--;
+                        Selection.activeObject = areaAsset;
+                        EditorGUIUtility.PingObject(areaAsset);
                     }
                 }
                 else
                 {
-                    EditorGUILayout.LabelField("Entrances property not found.");
+                    GUIStyle redStyle = new GUIStyle(EditorStyles.label);
+                    redStyle.normal.textColor = Color.red;
+                    redStyle.fontStyle = FontStyle.Bold;
+                    GUILayout.Label("ORPHAN ROOM, PLEASE ADD TO AREA", redStyle);
+                }
+
+                GUILayout.Space(8);
+
+                serializedObject.Update();
+                EditorGUI.BeginChangeCheck();
+                EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.displayName), backingField: true));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.scene), backingField: true));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.lod), backingField: true));
+                if (EditorGUI.EndChangeCheck())
+                {
+                    serializedObject.ApplyModifiedProperties();
+                    Undo.RecordObject(roomAsset, "Modified Room Asset");
+                    EditorUtility.SetDirty(roomAsset);
+                }
+
+                // Display foldable, uneditable list of transitions
+                SerializedProperty transitionsProp = serializedObject.FindProperty(nameof(RoomAsset.entrances), backingField: true);
+                bool transitionsFoldout = EditorPrefs.GetBool("RoomAsset_EntrancesFoldout", true);
+                transitionsFoldout = EditorGUILayout.Foldout(transitionsFoldout, "Entrances", true);
+                EditorPrefs.SetBool("RoomAsset_EntrancesFoldout", transitionsFoldout);
+
+                if (transitionsFoldout)
+                {
+                    if (transitionsProp != null && transitionsProp.isArray)
+                    {
+                        int count = transitionsProp.arraySize;
+                        if (count == 0)
+                        {
+                            EditorGUILayout.LabelField("No Entrances attached.");
+                        }
+                        else
+                        {
+                            EditorGUI.indentLevel++;
+                            for (int i = 0; i < count; i++)
+                            {
+                                SerializedProperty itemProp = transitionsProp.GetArrayElementAtIndex(i);
+                                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+                                EditorGUI.BeginDisabledGroup(true);
+                                EditorGUILayout.PropertyField(itemProp, new($"Entrance {i + 1}"), true);
+                                EditorGUI.EndDisabledGroup();
+                                EditorGUILayout.EndVertical();
+                            }
+                            EditorGUI.indentLevel--;
+                        }
+                    }
+                    else
+                    {
+                        EditorGUILayout.LabelField("Entrances property not found.");
+                    }
+                }
+            }
+            protected void OnDisable()
+            {
+                AssetDatabase.SaveAssetIfDirty(target);
+            }
+
+            [MenuItem("File/Create Room", priority = 0)]
+            public static void CREATE_BEGIN() => CreateRoomPopupWindow.Show(CREATE);
+            static void CREATE(AreaAsset area, string name)
+            {
+                string roomPath = $"Assets/World/Rooms/{area.name}/{name}.asset";
+                string scenePath = $"Assets/World/Rooms/{area.name}/{name}_Scene.unity";
+
+                //Create directory if it doesn't exist
+
+                if (!Directory.Exists(Path.GetDirectoryName(roomPath)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(roomPath));
+                    AssetDatabase.Refresh();
+                }
+
+                RoomAsset room = ScriptableObject.CreateInstance<RoomAsset>();
+                AssetDatabase.CreateAsset(room, roomPath);
+
+                if (!AssetDatabase.CopyAsset("Assets/Editor/RoomTemplate.unity", scenePath)) return;
+
+                room.displayName = name;
+                room.area = area;
+                room.scene = new(AssetDatabase.LoadAssetAtPath<Object>(scenePath));
+                EditorUtility.SetDirty(room);
+                area.rooms.Add(room);
+                EditorUtility.SetDirty(area);
+
+                AssetDatabase.SaveAssets();
+
+                // Open, attach, save, and close scene
+                var scene = EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Additive);
+                RoomRoot.Editor.AttachAsset(scene.GetRootGameObjects()[0].GetComponent<RoomRoot>(), room);
+                EditorSceneManager.MarkSceneDirty(scene);
+                EditorSceneManager.SaveScene(scene);
+                EditorSceneManager.CloseScene(scene, true);
+
+                Debug.Log($"Successfully created new Room: {name} under Area: {area.name}. Note that its Scene cannot be automatically registered in the build settings, YOU have to do that.");
+            }
+
+            private class CreateRoomPopupWindow : EditorWindow
+            {
+                private AreaAsset areaAsset;
+                private string roomName = "";
+                private System.Action<AreaAsset, string> onCreate;
+
+                public static void Show(System.Action<AreaAsset, string> onCreate)
+                {
+                    var window = ScriptableObject.CreateInstance<CreateRoomPopupWindow>();
+                    window.titleContent = new GUIContent("Create Room");
+                    window.position = new Rect(Screen.width / 2, Screen.height / 2, 350, 100);
+                    window.onCreate = onCreate;
+                    window.ShowUtility();
+                }
+
+                private void OnGUI()
+                {
+                    GUILayout.Label("Create New Room", EditorStyles.boldLabel);
+                    areaAsset = (AreaAsset)EditorGUILayout.ObjectField("Area Asset", areaAsset, typeof(AreaAsset), false);
+                    roomName = EditorGUILayout.TextField("Room Name", roomName);
+
+                    EditorGUI.BeginDisabledGroup(areaAsset == null || string.IsNullOrWhiteSpace(roomName));
+                    if (GUILayout.Button("Create"))
+                    {
+                        Close();
+                        onCreate?.Invoke(areaAsset, roomName);
+                    }
+                    EditorGUI.EndDisabledGroup();
                 }
             }
         }
-        protected void OnDisable()
-        {
-            AssetDatabase.SaveAssetIfDirty(target);
-        }
-    }
+
+        
 
 #endif
+
+
+    }
 }
