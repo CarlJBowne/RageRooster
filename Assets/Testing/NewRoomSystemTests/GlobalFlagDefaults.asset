@@ -13,12 +13,42 @@ MonoBehaviour:
   m_Name: GlobalFlagDefaults
   m_EditorClassIdentifier: 
   flags:
-    _serializedList:
-    - Key: GlobalTestVal1
-      Value: 1
-    - Key: GlobalTestVal2
-      Value: 1
-    - Key: GlobalTestValA
-      Value: 1
-    - Key: GlobalTestValB
-      Value: 1
+    serializedList:
+    - Key: B
+      Value:
+        rid: 8683684517487050753
+    - Key: I
+      Value:
+        rid: 8683684517487050762
+    - Key: F
+      Value:
+        rid: 8683684517487050759
+    - Key: V
+      Value:
+        rid: 8683684517487050758
+    - Key: S
+      Value:
+        rid: 8683684517487050757
+  references:
+    version: 2
+    RefIds:
+    - rid: 8683684517487050753
+      type: {class: Flag/Boolean, ns: RageRooster.Systems.SaveSystem.Flags, asm: Assembly-CSharp}
+      data:
+        value: 0
+    - rid: 8683684517487050757
+      type: {class: Flag/String, ns: RageRooster.Systems.SaveSystem.Flags, asm: Assembly-CSharp}
+      data:
+        value: sfrawda
+    - rid: 8683684517487050758
+      type: {class: Flag/Vector3, ns: RageRooster.Systems.SaveSystem.Flags, asm: Assembly-CSharp}
+      data:
+        value: {x: 1.81, y: -1.48, z: 1.42}
+    - rid: 8683684517487050759
+      type: {class: Flag/Float, ns: RageRooster.Systems.SaveSystem.Flags, asm: Assembly-CSharp}
+      data:
+        value: 456.4563
+    - rid: 8683684517487050762
+      type: {class: Flag/Integer, ns: RageRooster.Systems.SaveSystem.Flags, asm: Assembly-CSharp}
+      data:
+        value: 346

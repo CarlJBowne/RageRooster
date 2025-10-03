@@ -83,7 +83,7 @@ namespace RageRooster.Systems.SaveSystem.Flags
                     Enum enumOutput = EditorGUI.EnumPopup(enumRect, prevEnum);
                     if (!Equals(enumOutput, prevEnum))
                     {
-                        flagProp.managedReferenceValue = Flag.CreateInstanceFromEnum((FlagTypes)enumOutput);
+                        flagProp.managedReferenceValue = Flag.CreateInstanceFromEnum((Flag.Type)enumOutput);
                         flagObj = flagProp.managedReferenceValue as Flag;
                         flagProp.serializedObject.ApplyModifiedProperties();
                         EditorUtility.SetDirty(flagProp.serializedObject.targetObject);
@@ -94,11 +94,11 @@ namespace RageRooster.Systems.SaveSystem.Flags
 
                     inputValue = flagObj.type switch
                     {
-                        FlagTypes.Bool => EditorGUI.Toggle(valueRect, GUIContent.none, (bool)existingValue),
-                        FlagTypes.Int => EditorGUI.DelayedIntField(valueRect, GUIContent.none, (int)existingValue),
-                        FlagTypes.Float => EditorGUI.DelayedFloatField(valueRect, GUIContent.none, (float)existingValue),
-                        FlagTypes.Vector3 => EditorGUI.Vector3Field(valueRect, GUIContent.none, (Vector3)existingValue),
-                        FlagTypes.String => EditorGUI.DelayedTextField(valueRect, GUIContent.none, (string)existingValue),
+                        Flag.Type.Bool => EditorGUI.Toggle(valueRect, GUIContent.none, (bool)existingValue),
+                        Flag.Type.Int => EditorGUI.DelayedIntField(valueRect, GUIContent.none, (int)existingValue),
+                        Flag.Type.Float => EditorGUI.DelayedFloatField(valueRect, GUIContent.none, (float)existingValue),
+                        Flag.Type.Vector3 => EditorGUI.Vector3Field(valueRect, GUIContent.none, (Vector3)existingValue),
+                        Flag.Type.String => EditorGUI.DelayedTextField(valueRect, GUIContent.none, (string)existingValue),
                         _ => throw new System.Exception("Invalid Type.")
                     };
 
@@ -132,7 +132,7 @@ namespace RageRooster.Systems.SaveSystem.Flags
                         Debug.LogError("Could not find 'Value' property. Check your SerializedKeyValuePair definition and serialization attributes.");
                         return;
                     }
-                    elementValue.managedReferenceValue = new Flag_Bool();
+                    elementValue.managedReferenceValue = new Flag.Boolean();
 
                     serializedListProperty.serializedObject.ApplyModifiedProperties();
                     drawerInstance.UpdateReorderableList();
