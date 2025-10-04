@@ -3,6 +3,7 @@ using RageRooster.Systems.SaveSystem;
 using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static SLS.StateMachineH.StateAnimator;
 using static UnityEngine.EventSystems.EventTrigger;
@@ -17,18 +18,22 @@ public class PlayerGroundedMovement : PlayerMovementEffector
     [Tooltip("1 = full second turn, 50 = 1 FixedUpdate turn")]
     public float maxTurnSpeed = 25;
     public bool outwardTurn;
+    
     public float minSpeed;
+    public PlayerGroundedMovement rollState;
+    public PlayerGroundedMovement walkState;
     public PlayerGroundedMovement prevPhase;
     [ShowField(nameof(__hasPrevPhase))] public float prevPhaseThreshold;
     public PlayerGroundedMovement nextPhase;
     [ShowField(nameof(__hasNextPhase))] public float nextPhaseThreshold;
     
-    [FoldoutGroup("Conditions", nameof(needs1Charge), nameof(needs2Charge), nameof(needsRagingUpgrade))]
+    [FoldoutGroup("Conditions", nameof(needs1Charge), nameof(needs2Charge), nameof(needsRagingUpgrade), nameof(canRoll))]
     public Void lifetimeEventsHolder;
 
     [SerializeField, HideInInspector] public bool needs1Charge;
     [SerializeField, HideInInspector] public bool needs2Charge;
     [SerializeField, HideInInspector] public bool needsRagingUpgrade;
+    [SerializeField, HideInInspector] public bool canRoll;
 
     #region Editor
     private bool __hasPrevPhase => prevPhase != null;
@@ -67,7 +72,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         {
             float Dot = Vector3.Dot(controlDirection, currentDirection);
 
-            if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed); 
+            if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
 
             if (!outwardTurn) currentSpeed *= Dot;
 
@@ -86,28 +91,32 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         }
         else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
 
-        if (currentSpeed >= nextPhaseThreshold && nextCondition) 
+        if (currentSpeed >= nextPhaseThreshold && nextCondition)
             nextPhase.State.Enter();
-        else if (currentSpeed < prevPhaseThreshold && prevPhase != null) 
+        else if (currentSpeed < prevPhaseThreshold && prevPhase != null)
             prevPhase.State.Enter();
+
+        if (currentSpeed >= 12)
+            canRoll = true;
+
     }
     
     private void GetConditionals(out bool thisCondition, out bool nextCondition)
     {
         thisCondition = 
-            (!needs1Charge || Input.Charge1.IsPressed() || Input.Charge2.IsPressed()) &&      
+            //(!needs1Charge || Input.Charge1.IsPressed() || Input.Charge2.IsPressed()) &&     
             (!needs2Charge || (Input.Charge1.IsPressed() && Input.Charge2.IsPressed())) &&     
             (!needsRagingUpgrade || Upgrades.Active.ragingCharge)           
             ;
 
         nextCondition = nextPhase != null &&
-            (!nextPhase.needs1Charge || Input.Charge1.IsPressed() || Input.Charge2.IsPressed()) &&
+            //(!nextPhase.needs1Charge || Input.Charge1.IsPressed() || Input.Charge2.IsPressed()) &&
             (!nextPhase.needs2Charge || (Input.Charge1.IsPressed() && Input.Charge2.IsPressed())) &&
             (!nextPhase.needsRagingUpgrade || Upgrades.Active.ragingCharge)
             ;
     }
 
-    protected override void OnEnter(State prev, bool isFinal)
+    protected override void OnEnter(SLS.StateMachineH.State prev, bool isFinal)
     {
         base.OnEnter(prev, isFinal);
         //if (Machine.finishedSetup && !playerMovementBody.GroundCheck()) 
@@ -115,7 +124,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         if (attackCollider != null) attackCollider.enabled = true;
 
     }
-    protected override void OnExit(State next){if(attackCollider != null) attackCollider.enabled = false;}
+    protected override void OnExit(SLS.StateMachineH.State next){if(attackCollider != null) attackCollider.enabled = false;}
 
     public void LandInto()
     {
@@ -123,6 +132,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
         playerMovementBody.Land(collideResult);
         State.Enter();
+        canRoll = true;
         if (onEntry == EntryAnimAction.Play) Machine.animator.Play(onEnterName);
         if (onEntry == EntryAnimAction.CrossFade) Machine.animator.CrossFade(onEnterName, onEnterTime);
         if (onEntry == EntryAnimAction.Trigger) Machine.animator.SetTrigger(onEnterName);
@@ -133,10 +143,50 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
         playerMovementBody.Land(collideResult);
         State.Enter();
+        canRoll = true;
         if (onEntry == EntryAnimAction.Play) Machine.animator.Play(onEnterName);
         if (onEntry == EntryAnimAction.CrossFade) Machine.animator.CrossFade(onEnterName, onEnterTime);
         if (onEntry == EntryAnimAction.Trigger) Machine.animator.SetTrigger(onEnterName);
     }
+
+        public void StartRoll()
+    {
+        if (canRoll)
+        {
+            canRoll = false;
+            rollState.State.Enter();
+            Machine.SendSignal("EndRoll");
+        }
+        
+    }
+
+    public void EndRoll()
+    {
+        StartCoroutine(RollCoroutine());
+    }
+    public IEnumerator RollCoroutine()
+    {
+        yield return new WaitForSeconds(0.2f);
+        walkState.State.Enter();
+        Debug.Log("ending roll attempt!");
+        Machine.SendSignal("ResetRoll");
+    }
+
+    public void ResetRoll()
+    {
+        StartCoroutine(ResetRollTimer());
+    }
+
+        public IEnumerator ResetRollTimer()
+    {
+        yield return new WaitForSeconds(2f);
+        canRoll = true;
+        Debug.Log("Roll Ready!");
+    }
+
+
+
+
 
     public StateAnimator.EntryAnimAction onEntry;
     [SerializeField, ShowField(nameof(__showOnEnterName))] public string onEnterName;
