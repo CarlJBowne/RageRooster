@@ -610,6 +610,8 @@ MonoBehaviour:
   maxTurnSpeed: 10
   outwardTurn: 0
   minSpeed: 0
+  rollState: {fileID: 0}
+  walkState: {fileID: 0}
   prevPhase: {fileID: 0}
   prevPhaseThreshold: 0
   nextPhase: {fileID: 4999451030884928838}
@@ -617,6 +619,7 @@ MonoBehaviour:
   needs1Charge: 0
   needs2Charge: 0
   needsRagingUpgrade: 0
+  canRoll: 0
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
@@ -2507,6 +2510,8 @@ MonoBehaviour:
   maxTurnSpeed: 10
   outwardTurn: 0
   minSpeed: 0
+  rollState: {fileID: 0}
+  walkState: {fileID: 0}
   prevPhase: {fileID: 1966879644613746894}
   prevPhaseThreshold: 0.05
   nextPhase: {fileID: 442187770537930055}
@@ -2514,6 +2519,7 @@ MonoBehaviour:
   needs1Charge: 0
   needs2Charge: 0
   needsRagingUpgrade: 0
+  canRoll: 0
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
@@ -4389,10 +4395,7 @@ MonoBehaviour:
             _Object: {fileID: 1181195091599698405}
     - Key: Charge
       Value:
-        _PersistentCalls:
-        - _Target: {fileID: 7039777641560852190}
-          _MemberName: Enter
-          _PersistentArguments: []
+        _PersistentCalls: []
     - Key: AttackTap
       Value:
         _PersistentCalls:
@@ -5600,7 +5603,19 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 8455434200384702600}
   globalSignals:
-    serializedList: []
+    serializedList:
+    - Key: EndRoll
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 130535403916782458}
+          _MemberName: EndRoll
+          _PersistentArguments: []
+    - Key: ResetRoll
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 130535403916782458}
+          _MemberName: ResetRoll
+          _PersistentArguments: []
   queueSignals: 1
 --- !u!114 &1081188095233249612
 MonoBehaviour:
@@ -7441,10 +7456,7 @@ MonoBehaviour:
     serializedList:
     - Key: Charge
       Value:
-        _PersistentCalls:
-        - _Target: {fileID: 7039777641560852190}
-          _MemberName: Enter
-          _PersistentArguments: []
+        _PersistentCalls: []
     - Key: Grab
       Value:
         _PersistentCalls:
@@ -7619,6 +7631,8 @@ MonoBehaviour:
   maxTurnSpeed: 2.5
   outwardTurn: 1
   minSpeed: 0
+  rollState: {fileID: 0}
+  walkState: {fileID: 0}
   prevPhase: {fileID: 0}
   prevPhaseThreshold: 23
   nextPhase: {fileID: 0}
@@ -7626,6 +7640,7 @@ MonoBehaviour:
   needs1Charge: 1
   needs2Charge: 1
   needsRagingUpgrade: 1
+  canRoll: 0
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
@@ -8203,6 +8218,8 @@ MonoBehaviour:
   maxTurnSpeed: 2.5
   outwardTurn: 1
   minSpeed: 0
+  rollState: {fileID: 0}
+  walkState: {fileID: 0}
   prevPhase: {fileID: 4999451030884928838}
   prevPhaseThreshold: 15
   nextPhase: {fileID: 0}
@@ -8210,6 +8227,7 @@ MonoBehaviour:
   needs1Charge: 1
   needs2Charge: 0
   needsRagingUpgrade: 0
+  canRoll: 0
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
@@ -8737,20 +8755,23 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
-  acceleration: 0.35
-  decceleration: 0.5
-  maxSpeed: 17
-  stopping: 0.15
-  maxTurnSpeed: 2.5
+  acceleration: 5
+  decceleration: 10
+  maxSpeed: 20
+  stopping: 1
+  maxTurnSpeed: 0.1
   outwardTurn: 1
   minSpeed: 0
-  prevPhase: {fileID: 528938496853295208}
+  rollState: {fileID: 130535403916782458}
+  walkState: {fileID: 528938496853295208}
+  prevPhase: {fileID: 0}
   prevPhaseThreshold: 15
   nextPhase: {fileID: 0}
   nextPhaseThreshold: 0
-  needs1Charge: 1
+  needs1Charge: 0
   needs2Charge: 0
   needsRagingUpgrade: 0
+  canRoll: 0
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0
@@ -8769,7 +8790,43 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 4469018634794727335}
   signals:
-    serializedList: []
+    serializedList:
+    - Key: Jump
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 8452752302749071132}
+          _MemberName: BeginJump
+          _PersistentArguments:
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 14
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 7
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 7
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: EndRoll
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 130535403916782458}
+          _MemberName: EndRoll
+          _PersistentArguments: []
   lockOnEnter: 0
 --- !u!1 &5240960325302126777
 GameObject:
@@ -9419,13 +9476,16 @@ MonoBehaviour:
   maxTurnSpeed: 10
   outwardTurn: 0
   minSpeed: 0
+  rollState: {fileID: 130535403916782458}
+  walkState: {fileID: 528938496853295208}
   prevPhase: {fileID: 5394545579396957404}
   prevPhaseThreshold: 0.05
-  nextPhase: {fileID: 130535403916782458}
+  nextPhase: {fileID: 0}
   nextPhaseThreshold: 15
   needs1Charge: 0
   needs2Charge: 0
   needsRagingUpgrade: 0
+  canRoll: 1
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
@@ -9534,6 +9594,18 @@ MonoBehaviour:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
           _MemberName: EnterAiming
+          _PersistentArguments: []
+    - Key: Charge
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 528938496853295208}
+          _MemberName: StartRoll
+          _PersistentArguments: []
+    - Key: ResetRoll
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 528938496853295208}
+          _MemberName: ResetRoll
           _PersistentArguments: []
   lockOnEnter: 0
 --- !u!1 &5549163275917385519
@@ -10585,6 +10657,8 @@ MonoBehaviour:
   maxTurnSpeed: 2.5
   outwardTurn: 1
   minSpeed: 0
+  rollState: {fileID: 0}
+  walkState: {fileID: 0}
   prevPhase: {fileID: 0}
   prevPhaseThreshold: 15
   nextPhase: {fileID: 0}
@@ -10592,6 +10666,7 @@ MonoBehaviour:
   needs1Charge: 1
   needs2Charge: 0
   needsRagingUpgrade: 0
+  canRoll: 0
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
@@ -12217,6 +12292,8 @@ MonoBehaviour:
   maxTurnSpeed: 10
   outwardTurn: 0
   minSpeed: 0
+  rollState: {fileID: 130535403916782458}
+  walkState: {fileID: 528938496853295208}
   prevPhase: {fileID: 0}
   prevPhaseThreshold: 0
   nextPhase: {fileID: 528938496853295208}
@@ -12224,6 +12301,7 @@ MonoBehaviour:
   needs1Charge: 0
   needs2Charge: 0
   needsRagingUpgrade: 0
+  canRoll: 1
   onEntry: 3
   onEnterName: Land
   onEnterTime: 0.1
@@ -12332,6 +12410,12 @@ MonoBehaviour:
         _PersistentCalls:
         - _Target: {fileID: 2714541672873312079}
           _MemberName: EnterAiming
+          _PersistentArguments: []
+    - Key: ResetRoll
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 5394545579396957404}
+          _MemberName: ResetRoll
           _PersistentArguments: []
   lockOnEnter: 0
 --- !u!1 &6824799447565327635
