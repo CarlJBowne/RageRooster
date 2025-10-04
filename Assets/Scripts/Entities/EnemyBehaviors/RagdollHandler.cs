@@ -58,7 +58,7 @@ public class RagdollHandler : Grabbable
         if (currentState == EntityState.RagDoll && maxRagdollTime > 0)
         {
             ragDollTimer += Time.deltaTime;
-            if (ragDollTimer > minRagdollTime && (rigidBody.velocity.magnitude < minRagdollVelovity || ragDollTimer > maxRagdollTime))
+            if (ragDollTimer > minRagdollTime && (rigidBody.linearVelocity.magnitude < minRagdollVelovity || ragDollTimer > maxRagdollTime))
                 health.Destroy();
         }
         if(currentState is EntityState.Thrown or EntityState.RagDoll && advanced)
@@ -138,8 +138,8 @@ public class RagdollHandler : Grabbable
     { 
         if (advanced)
             for (int i = 0; i < ragDollRigidBodies.Length; i++)
-                ragDollRigidBodies[i].velocity = globalVelocity;
-        else nonRagdolledRigidBody.velocity = globalVelocity;
+                ragDollRigidBodies[i].linearVelocity = globalVelocity;
+        else nonRagdolledRigidBody.linearVelocity = globalVelocity;
     }
     public override void IgnoreCollisionWithThrower(bool ignore = true)
     {

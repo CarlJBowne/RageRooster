@@ -27,16 +27,16 @@ public class ConstantMovement : MonoBehaviour
         }
         else
         {
-            float preEffect = rb.velocity.y;
+            float preEffect = rb.linearVelocity.y;
             Vector3 finalVelocity = transform.TransformDirection(direction * speed * Time.fixedDeltaTime);
             finalVelocity += Vector3.down * (preEffect - finalVelocity.y);
-            rb.velocity = finalVelocity;
+            rb.linearVelocity = finalVelocity;
         }
     }
 
     private void OnEnable()
     {
-        if (rb) rb.velocity = Vector3.zero;
+        if (rb) rb.linearVelocity = Vector3.zero;
         else downwardsVelocity = 0;
     }
 

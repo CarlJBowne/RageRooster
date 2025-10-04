@@ -162,14 +162,14 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         })?.Invoke();
     }
 
-    public virtual void SetVelocity(Vector3 velocity) => rigidBody.velocity = velocity;
+    public virtual void SetVelocity(Vector3 velocity) => rigidBody.linearVelocity = velocity;
 
     public virtual void IgnoreCollisionWithThrower(bool ignore = true) => Physics.IgnoreCollision(collider, Grabber.ownerCollider, ignore);
 
     public Attack GetAttack()
     {
         Attack result = thrownAttack;
-        result.velocity = rigidBody.velocity; 
+        result.velocity = rigidBody.linearVelocity; 
         return result;
     }
 

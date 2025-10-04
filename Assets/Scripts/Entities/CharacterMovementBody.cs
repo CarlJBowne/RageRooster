@@ -250,7 +250,7 @@ public class CharacterMovementBody : MonoBehaviour
     protected virtual void FixedUpdate()
     {
         if (RBState != CharacterMovementBodyState.Enabled) return;
-        RB.velocity = Vector3.zero;
+        RB.linearVelocity = Vector3.zero;
         RB.angularVelocity = Vector3.zero;
 
         if (checkGround && velocity.y <= 0)

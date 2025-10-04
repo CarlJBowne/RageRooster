@@ -217,7 +217,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
             if(projectile != null)
             {
                 projectile.transform.position -= Direction.front;
-                projectile.rb.velocity = Direction.upBack;
+                projectile.rb.linearVelocity = Direction.upBack;
             }
         }
         else if(headID == FinalBossHead.Slasher)
