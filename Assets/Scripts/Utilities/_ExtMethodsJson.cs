@@ -369,6 +369,11 @@ public static class SerializableStructs
     };
     public static UnityEngine.Vector3 Deserialize(this UnityEngine.Vector3 v, JObject input)
     {
+        if(input == null)
+        {
+            v = UnityEngine.Vector3.zero;
+            return v;
+        }
         v.x = (float)input["x"];
         v.y = (float)input["y"];
         v.z = (float)input["z"];
@@ -379,8 +384,13 @@ public static class SerializableStructs
         ["x"] = v.x,
         ["y"] = v.y,
     };
-    public static UnityEngine.Vector3 Deserialize(this UnityEngine.Vector2 v, JObject input)
+    public static UnityEngine.Vector2 Deserialize(this UnityEngine.Vector2 v, JObject input)
     {
+        if (input == null)
+        {
+            v = UnityEngine.Vector2.zero;
+            return v;
+        }
         v.x = (float)input["x"];
         v.y = (float)input["y"];
         return v;
@@ -392,8 +402,13 @@ public static class SerializableStructs
         ["z"] = v.z,
         ["w"] = v.w,
     };
-    public static UnityEngine.Vector3 Deserialize(this UnityEngine.Vector4 v, JObject input)
+    public static UnityEngine.Vector4 Deserialize(this UnityEngine.Vector4 v, JObject input)
     {
+        if (input == null)
+        {
+            v = UnityEngine.Vector4.zero;
+            return v;
+        } 
         v.x = (float)input["x"];
         v.y = (float)input["y"];
         v.z = (float)input["z"];
