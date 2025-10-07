@@ -8,10 +8,20 @@ using UnityEngine;
 
 namespace RageRooster.Systems.SaveSystem
 {
-    public class SaveFile : ICloneable<SaveFile>
+    /// <summary>
+    /// A class tracking saved values across the game.
+    /// </summary>
+    public class SaveData : ICloneable<SaveData>
     {
-        public static SaveFile Current;
-        public static SaveFile DeathReloadData;
+        /// <summary>
+        /// The currently active Save File during Gameplay.
+        /// </summary>
+        public static SaveData Current;
+        /// <summary>
+        /// The save file used to reload data after a player's death.    
+        /// </summary>
+        /// <remarks> See <see cref="RevertToDeathData"/></remarks>
+        public static SaveData DeathReloadData;
 
         public const string targetFileVersion = "1.0.0";
         public Destination location;
@@ -57,7 +67,7 @@ namespace RageRooster.Systems.SaveSystem
         /// <summary>
         /// Default Constructor, Clones data from default files.
         /// </summary>
-        public SaveFile()
+        public SaveData()
         {
             location = Destination.StartingDefault();
             playerStats.upgrades = SavedValueManager.Upgrades.Clone();
@@ -69,9 +79,9 @@ namespace RageRooster.Systems.SaveSystem
                 areaChanges.Add(area, area.flagDefaults.Clone());
         }
 
-        public SaveFile Clone(SaveFile target = null)
+        public SaveData Clone(SaveData target = null)
         {
-            target ??= new SaveFile();
+            target ??= new SaveData();
 
             target.location = location;
 
@@ -90,8 +100,14 @@ namespace RageRooster.Systems.SaveSystem
             return target;
         }
 
+        /// <summary>
+        /// The active Input Output Stream for saving data during gameplay.
+        /// </summary>
         public static IOStream IO;
 
+        /// <summary>
+        /// An IO stream for Saving/Loading game data to/from disk. Also used to display save files in UI.
+        /// </summary>
         public class IOStream
         {
             public IOStream(int fileID)
@@ -109,7 +125,7 @@ namespace RageRooster.Systems.SaveSystem
             }
 
 
-            public SaveFile file = new();
+            public SaveData file = new();
 
             public int fileID = -1;
             public string fileRoot;
@@ -269,6 +285,10 @@ namespace RageRooster.Systems.SaveSystem
         }
 
 
+        /// <summary>
+        /// Reverts the current save data to its state at the time of the last Death Checkpoint.
+        /// </summary>
+        /// <remarks>See <see cref="DeathReloadData"/></remarks>
         public static void RevertToDeathData()
         {
             DeathReloadData.Clone(Current);
@@ -278,6 +298,10 @@ namespace RageRooster.Systems.SaveSystem
             Player.Ammo.Current = Player.Ammo.Max;
             Player.Currency.Current = Current.playerStats.currency;
         }
+        /// <summary>
+        /// Reverts the current save data to the data last saved to disk.
+        /// </summary>
+        /// <remarks>See <see cref="IO"/>.</remarks>
         public static void RevertToSaveFile()
         {
             Current = IO.file.Clone(Current);
@@ -288,13 +312,21 @@ namespace RageRooster.Systems.SaveSystem
             Player.Ammo.Current = Player.Ammo.Max;
             Player.Currency.Current = Current.playerStats.currency;
         }
+        /// <summary>
+        /// Applies the currently active Data to the Save File IO Stream.
+        /// </summary>
+        /// <remarks>This method clones the current state into the save file and reload data. It ensures
+        /// that the save file and reload data reflect the current state.</remarks>
         public static void ApplyToSaveFile()
         {
             Current.Clone(IO.file);
             Current.Clone(DeathReloadData);
         }
 
-
+        /// <summary>
+        /// Saves the current Data to disk.
+        /// </summary>
+        /// <param name="destination">The current location of the player, as will be applied to all active SaveData objects.</param>
         public static void SaveFileToDisk(Destination destination)
         {
             Current.location = destination;

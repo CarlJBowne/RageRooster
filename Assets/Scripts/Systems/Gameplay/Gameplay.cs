@@ -119,7 +119,7 @@ public class Gameplay : MonoBehaviour
             Cursor.visible = false;
 
             InitializeSaves(fileNo);
-            RoomManager.destination = SaveFile.Current.location;
+            RoomManager.destination = SaveData.Current.location;
 
             Menu.Manager.CloseAllMenus();
             var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE);
@@ -146,9 +146,9 @@ public class Gameplay : MonoBehaviour
 
     public static void InitializeSaves(int fileNo)
     {
-        SaveFile.IO = new(fileNo);
-        SaveFile.IO.Load();
-        SaveFile.RevertToSaveFile();
+        SaveData.IO = new(fileNo);
+        SaveData.IO.Load();
+        SaveData.RevertToSaveFile();
     }
 
     private static Destination CalculateEditorSpawn()
@@ -156,9 +156,9 @@ public class Gameplay : MonoBehaviour
         Destination target = EditorState.EditorDestination;
 
         // If target is default, use the save file location
-        if (target.IsNull()) return SaveFile.Current.location;
+        if (target.IsNull()) return SaveData.Current.location;
 
-        Destination fileDest = SaveFile.Current.location;
+        Destination fileDest = SaveData.Current.location;
 
         if(EditorState.EditorDestinationArea != null && EditorState.EditorDestinationArea != fileDest.area)
         {
@@ -190,20 +190,20 @@ public class Gameplay : MonoBehaviour
 
     public static IEnumerator Respawn()
     {
-        yield return RoomManager.Transition(SaveFile.Current.location);
+        yield return RoomManager.Transition(SaveData.Current.location);
         Player.onRespawn?.Invoke();
     }
 
     public static IEnumerator Death()
     {
-        SaveFile.RevertToDeathData();
-        yield return RoomManager.Transition(SaveFile.Current.location, true);
+        SaveData.RevertToDeathData();
+        yield return RoomManager.Transition(SaveData.Current.location, true);
     }
 
     public static IEnumerator ReloadSave()
     {
-        SaveFile.RevertToSaveFile();
-        yield return RoomManager.Transition(SaveFile.Current.location, true);
+        SaveData.RevertToSaveFile();
+        yield return RoomManager.Transition(SaveData.Current.location, true);
     }
 
     public static double UpdateGameTime()

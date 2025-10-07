@@ -14,7 +14,7 @@ namespace RageRooster.Entities.Collectibles
     {
         protected override List<string> targetRegistryList => SavedValueManager.HensRescued;
 
-        protected override SaveFile.SavedCollectible targetSavedCollectible => SaveFile.Current.hensRescued;
+        protected override SaveData.SavedCollectible targetSavedCollectible => SaveData.Current.hensRescued;
 
 
         private void OnTriggerEnter(Collider other)

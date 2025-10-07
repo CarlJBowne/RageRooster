@@ -50,8 +50,8 @@ namespace RageRooster.RoomSystem
 
             if (fullTransition)
             {
-                SaveFile.Current.location = destination;
-                SaveFile.DeathReloadData.location = destination;
+                SaveData.Current.location = destination;
+                SaveData.DeathReloadData.location = destination;
             }
 
             foreach (RoomAsset room in currentArea.rooms)

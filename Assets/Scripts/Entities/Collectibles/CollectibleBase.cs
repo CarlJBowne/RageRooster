@@ -15,7 +15,7 @@ namespace RageRooster.Entities.Collectibles
         [SerializeField, HideInInspector] protected string ID;
 
         protected abstract List<string> targetRegistryList { get; }
-        protected abstract SaveFile.SavedCollectible targetSavedCollectible { get; }
+        protected abstract SaveData.SavedCollectible targetSavedCollectible { get; }
 
 
         protected virtual void Awake()

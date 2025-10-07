@@ -107,7 +107,7 @@ public class Player : MonoBehaviour
         public static void Initialize()
         {
             playerObject = GameObject.GetComponent<PlayerHealth>();
-            max = SaveFile.Current.playerStats.maxHealth;
+            max = SaveData.Current.playerStats.maxHealth;
             current = max;
         }
         public static PlayerHealth playerObject;
@@ -133,7 +133,7 @@ public class Player : MonoBehaviour
                 if (max == value) return;
 
                 max = value;
-                SaveFile.Current.playerStats.maxHealth = value;
+                SaveData.Current.playerStats.maxHealth = value;
                 updateMaxHealth?.Invoke();
             }
         }
@@ -153,7 +153,7 @@ public class Player : MonoBehaviour
         public static void Initialize()
         {
             playerObject = GameObject.GetComponent<PlayerRanged>();
-            max = SaveFile.Current.playerStats.maxAmmo;
+            max = SaveData.Current.playerStats.maxAmmo;
             current = max;
         }
         public static PlayerRanged playerObject;
@@ -179,7 +179,7 @@ public class Player : MonoBehaviour
                 if (max == value) return;
 
                 max = value;
-                SaveFile.Current.playerStats.maxAmmo = value;
+                SaveData.Current.playerStats.maxAmmo = value;
                 updateMaxAmmo?.Invoke();
             }
         }
@@ -196,7 +196,7 @@ public class Player : MonoBehaviour
         private static int current;
         public static void Initialize()
         {
-            current = SaveFile.Current.playerStats.currency;
+            current = SaveData.Current.playerStats.currency;
         }
         public static int Current
         {
@@ -205,7 +205,7 @@ public class Player : MonoBehaviour
             {
                 if (current == value) return;
                 current = value;
-                SaveFile.Current.playerStats.currency = value;
+                SaveData.Current.playerStats.currency = value;
                 updateCurrency?.Invoke();
             }
         }

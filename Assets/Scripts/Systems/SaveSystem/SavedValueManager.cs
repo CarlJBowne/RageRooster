@@ -25,7 +25,7 @@ namespace RageRooster.Systems.SaveSystem
 
         public string flagname = "Test1";
         public int value;
-        SaveFile.IOStream saveFile;
+        SaveData.IOStream saveFile;
 
         [EditorAttributes.Button]
         public void Init() => saveFile = new(6);

@@ -15,7 +15,7 @@ namespace RageRooster.Entities.Collectibles
     {
         protected override List<string> targetRegistryList => SavedValueManager.PowerEggs;
 
-        protected override SaveFile.SavedCollectible targetSavedCollectible => SaveFile.Current.powerEggs;
+        protected override SaveData.SavedCollectible targetSavedCollectible => SaveData.Current.powerEggs;
 
 
         private void OnTriggerEnter(Collider other)

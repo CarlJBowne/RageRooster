@@ -23,7 +23,7 @@ namespace RageRooster.RoomSystem
             if (other != Player.Collider) return;
             RoomManager.EnterRoom(root.asset);
             if(spawnPoint != null)
-                (forDeathOnly ? SaveFile.DeathReloadData : SaveFile.Current).location = spawnPoint.GetDestination();
+                (forDeathOnly ? SaveData.DeathReloadData : SaveData.Current).location = spawnPoint.GetDestination();
         }
 
 
