@@ -7,9 +7,12 @@ using UnityEngine;
 
 namespace RageRooster.Systems.SaveSystem
 {
-
+    /// <summary>
+    /// A Globally acessible registry for all saved values in the game. <br/>
+    /// An Asset where defaults are defined and cloned from. DO NOT DELETE.
+    /// </summary>
     [CreateAssetMenu(fileName = "SavedValueManager", menuName = "ScriptableObjects/SavedValueManager")]
-    public class SavedValueManager : SingletonAsset<SavedValueManager>
+    public class SavedValueRegistry : SingletonAsset<SavedValueRegistry>
     {
         [SerializeField] private List<string> powerEggs = new();
         [SerializeField] private List<string> wishbones = new();
@@ -22,22 +25,5 @@ namespace RageRooster.Systems.SaveSystem
         public static List<string> HensRescued => Get().hensRescued;
         public static Flags.SavedFlagSet GlobalFlagDefaults => Get().globalFlagDefaults;
         public static Upgrades Upgrades => Get().upgradeDefaults;
-
-        public string flagname = "Test1";
-        public int value;
-        SaveData.IOStream saveFile;
-
-        [EditorAttributes.Button]
-        public void Init() => saveFile = new(6);
-
-        [EditorAttributes.Button]
-        public void SetValue() => saveFile.file.globalChanges.TrySetFlag(flagname, value);
-        [EditorAttributes.Button]
-        public void GetValue() => saveFile.file.globalChanges.TryGetFlag(flagname, out value);
-        [EditorAttributes.Button]
-        public void SaveValue() => saveFile.Save();
-        [EditorAttributes.Button]
-        public void LoadValue() => saveFile.Load();
-
     }
 }

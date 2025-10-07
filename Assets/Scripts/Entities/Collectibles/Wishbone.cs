@@ -12,7 +12,7 @@ namespace RageRooster.Entities.Collectibles
 {
     public class Wishbone : CollectibleBase
     {
-        protected override List<string> targetRegistryList => SavedValueManager.Wishbones;
+        protected override List<string> targetRegistryList => SavedValueRegistry.Wishbones;
 
         protected override SaveData.SavedCollectible targetSavedCollectible => SaveData.Current.wishbones;
 
