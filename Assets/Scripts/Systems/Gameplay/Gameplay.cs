@@ -21,26 +21,54 @@ using RageRooster.Systems.ObjectPool;
 using UnityEditor;
 #endif
 
+/// <summary>
+/// A Global System managing the core gameplay systems and lifecycle. A singleton that persists as long as gameplay is running. <br/>
+/// Provides static access to important gameplay-related properties and methods. <br/>
+/// To begin gameplay, use methods such as <see cref="BeginSaveFile(int)"/> or <see cref="BeginEditor()"/>.
+/// </summary>
 [DefaultExecutionOrder(ExecutionOrders.Gameplay)]
 public class Gameplay : MonoBehaviour
 {
-
+    /// <summary>
+    /// Whether Gameplay is currently active.
+    /// </summary>
     public static bool Active { get; private set; }
+    /// <summary>
+    /// The Script instance of the Gameplay system. Not truly relevant to much. Null if not active.
+    /// </summary>
     public static Gameplay Instance { get; private set; }
+    /// <summary>
+    /// The <see cref="UnityEngine.GameObject"/> that this script is attached to. Null if not active."/>
+    /// </summary>
     public static GameObject GameObject { get; private set; }
 
-
-    public static string spawnSceneName = null;
-    public static int spawnPointID = -1;
-
-
+    /// <summary>
+    /// A reference to the Scene for this system.
+    /// </summary>
     public static SceneReference GAMEPLAY_SCENE = new("GameplayScene");
 
+    /// <summary>
+    /// The Emitter that plays gameplay music. 
+    /// </summary>
     public static StudioEventEmitter musicEmitter;
+
+    /// <summary>
+    /// Callback event for when a Save is about to be reloaded.
+    /// </summary>
     public static System.Action PreReloadSave;
+    /// <summary>
+    /// A Callback event for when the Gameplay system updates, invoked in <see cref="Update"/>.
+    /// </summary>
     public static System.Action onUpdate;
+    /// <summary>
+    /// A Callbck event for when the Gameplay system is Unloaded.
+    /// </summary>
     public static System.Action onDestroy;
 
+    /// <summary>
+    /// The last written time (in seconds) since the game been started that the player interacted with a save point. <br/>
+    /// See <see cref="UpdateGameTime"/>
+    /// </summary>
     public static double lastSaveInteractionTime;
 
     #region Instance Fields
@@ -104,7 +132,10 @@ public class Gameplay : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// Begins The Gameplay Phase using the specified Save File on Disk.
+    /// </summary>
+    /// <param name="fileNo"></param>
     public static void BeginSaveFile(int fileNo)
     {
         if (Active) return;
@@ -129,6 +160,9 @@ public class Gameplay : MonoBehaviour
             Overlay.OverMenus.BasicFadeIn();
         }
     }
+    /// <summary>
+    /// Begins the Gameplay Phase in Editor Mode, using the settings in <see cref="EditorState"/> to determine spawn location. <br/>
+    /// </summary>
     public static void BeginEditor()
     {
         if (Active) return;
@@ -206,6 +240,10 @@ public class Gameplay : MonoBehaviour
         yield return RoomManager.Transition(SaveData.Current.location, true);
     }
 
+    /// <summary>
+    /// Updates the <see cref="lastSaveInteractionTime"/> to the current time, returning the time (in seconds) since the last update. <br/>
+    /// </summary>
+    /// <returns></returns>
     public static double UpdateGameTime()
     {
         var previousSaveInteractionTime = lastSaveInteractionTime;
