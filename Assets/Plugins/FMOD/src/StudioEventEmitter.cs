@@ -12,11 +12,23 @@ namespace FMODUnity
     {
         public EventReference EventReference;
 
-        [Obsolete("Use the EventReference field instead")]
+        [Obsolete("Use the EventReference field instead.")]
         public string Event = "";
 
-        public EmitterGameEvent PlayEvent = EmitterGameEvent.None;
-        public EmitterGameEvent StopEvent = EmitterGameEvent.None;
+        [FormerlySerializedAs("PlayEvent")]
+        public EmitterGameEvent EventPlayTrigger = EmitterGameEvent.None;
+        public EmitterGameEvent PlayEvent
+        {
+            get { return EventPlayTrigger; }
+            set { EventPlayTrigger = value; }
+        }
+        [FormerlySerializedAs("StopEvent")]
+        public EmitterGameEvent EventStopTrigger = EmitterGameEvent.None;
+        public EmitterGameEvent StopEvent
+        {
+            get { return EventStopTrigger; }
+            set { EventStopTrigger = value; }
+        }
         public bool AllowFadeout = true;
         public bool TriggerOnce = false;
         public bool Preload = false;
@@ -116,7 +128,7 @@ namespace FMODUnity
 
             HandleGameEvent(EmitterGameEvent.ObjectStart);
 
-            // If a Rigidbody or Rigidbody2D is present on this GameObject, turn off "nonRigidbodyVelocity"
+            // If a Rigidbody or Rigidbody2D is present on this GameObject, turn off "NonRigidbodyVelocity"
 #if UNITY_PHYSICS_EXIST
             if (NonRigidbodyVelocity && GetComponent<Rigidbody>())
             {
@@ -165,11 +177,11 @@ namespace FMODUnity
 
         protected override void HandleGameEvent(EmitterGameEvent gameEvent)
         {
-            if (PlayEvent == gameEvent)
+            if (EventPlayTrigger == gameEvent)
             {
                 Play();
             }
-            if (StopEvent == gameEvent)
+            if (EventStopTrigger == gameEvent)
             {
                 Stop();
             }
@@ -192,7 +204,6 @@ namespace FMODUnity
 
         public void Play()
         {
-
             if (TriggerOnce && hasTriggered)
             {
                 return;
@@ -206,7 +217,9 @@ namespace FMODUnity
             cachedParams.Clear();
 
             if (!eventDescription.isValid())
-            Lookup();
+            {
+                Lookup();
+            }
 
             bool isSnapshot;
             eventDescription.isSnapshot(out isSnapshot);
@@ -249,7 +262,7 @@ namespace FMODUnity
             bool is3D;
             eventDescription.is3D(out is3D);
 
-            if (!instance.isValid() || instance.Equals(default(EventInstance)))
+            if (!instance.isValid())
             {
                 eventDescription.createInstance(out instance);
 
@@ -262,7 +275,7 @@ namespace FMODUnity
                     {
                         Rigidbody rigidBody = GetComponent<Rigidbody>();
                         instance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject, rigidBody));
-                        RuntimeManager.AttachInstanceToGameObject(instance, transform, rigidBody);
+                        RuntimeManager.AttachInstanceToGameObject(instance, gameObject, rigidBody);
                     }
                     else
 #endif
@@ -271,13 +284,13 @@ namespace FMODUnity
                     {
                         var rigidBody2D = GetComponent<Rigidbody2D>();
                         instance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject, rigidBody2D));
-                        RuntimeManager.AttachInstanceToGameObject(instance, transform, rigidBody2D);
+                        RuntimeManager.AttachInstanceToGameObject(instance, gameObject, rigidBody2D);
                     }
                     else
 #endif
                     {
                         instance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
-                        RuntimeManager.AttachInstanceToGameObject(instance, transform, NonRigidbodyVelocity);
+                        RuntimeManager.AttachInstanceToGameObject(instance, gameObject, NonRigidbodyVelocity);
                     }
                 }
             }
