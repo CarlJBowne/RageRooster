@@ -12,7 +12,7 @@ namespace RageRooster.Entities.Collectibles
 {
     public class Hen : CollectibleBase
     {
-        protected override List<string> targetRegistryList => SavedValueManager.HensRescued;
+        protected override List<string> targetRegistryList => SavedValueRegistry.HensRescued;
 
         protected override SaveData.SavedCollectible targetSavedCollectible => SaveData.Current.hensRescued;
 

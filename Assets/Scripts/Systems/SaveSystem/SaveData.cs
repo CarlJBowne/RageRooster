@@ -14,24 +14,21 @@ namespace RageRooster.Systems.SaveSystem
     public class SaveData : ICloneable<SaveData>
     {
         /// <summary>
-        /// The currently active Save File during Gameplay.
+        /// The currently active Save Data during Gameplay.
         /// </summary>
         public static SaveData Current;
         /// <summary>
-        /// The save file used to reload data after a player's death.    
+        /// The Save Data used to reload data after the player experiences a death.    
         /// </summary>
         /// <remarks> See <see cref="RevertToDeathData"/></remarks>
         public static SaveData DeathReloadData;
 
+        #region Actual Data
+
         public const string targetFileVersion = "1.0.0";
         public Destination location;
-        public SavedPlayerStats playerStats = new();
-        public SavedCollectible powerEggs = new();
-        public SavedCollectible wishbones = new();
-        public SavedCollectible hensRescued = new();
-        public Flags.SavedFlagSet globalChanges;
-        public Dictionary<AreaAsset, Flags.SavedFlagSet> areaChanges = new();
 
+        public SavedPlayerStats playerStats = new();
         public class SavedPlayerStats
         {
             /// <summary>
@@ -50,9 +47,23 @@ namespace RageRooster.Systems.SaveSystem
             public Upgrades upgrades;
         }
 
+
+        public SavedCollectible powerEggs = new();
+        public SavedCollectible wishbones = new();
+        public SavedCollectible hensRescued = new();
+        /// <summary>
+        /// A Basic Saved Collectible class, tracking the amount and specific collected instances of a collectible. <br/>
+        /// Used for <see cref="powerEggs"/>, <see cref="wishbones"/>, and <see cref="hensRescued"/>.
+        /// </summary>
         public class SavedCollectible : ICloneable<SavedCollectible>
         {
+            /// <summary>
+            /// The total amount of this collectible that has been collected, only for easy access.
+            /// </summary>
             public int total = 0;
+            /// <summary>
+            /// A list of individual collectibles and whether they are collected or not.<br/>
+            /// </summary>
             public List<bool> isCollected;
 
             public SavedCollectible Clone(SavedCollectible target = null)
@@ -64,17 +75,26 @@ namespace RageRooster.Systems.SaveSystem
             }
         }
 
+
+        public Flags.SavedFlagSet globalChanges;
+        public Dictionary<AreaAsset, Flags.SavedFlagSet> areaChanges = new();
+
+        #endregion Actual Data
+
+
+
         /// <summary>
-        /// Default Constructor, Clones data from default files.
+        /// Default Constructor, Clones data from default assets.
         /// </summary>
+        /// <remarks>Remarks: For the love of god, if the <see cref="SavedValueRegistry"/> Scriptable Object is missing from the project, we have a problem.</remarks>
         public SaveData()
         {
             location = Destination.StartingDefault();
-            playerStats.upgrades = SavedValueManager.Upgrades.Clone();
-            powerEggs.isCollected = new(new bool[SavedValueManager.PowerEggs.Count]);
-            hensRescued.isCollected = new(new bool[SavedValueManager.HensRescued.Count]);
-            wishbones.isCollected = new(new bool[SavedValueManager.Wishbones.Count]);
-            globalChanges = SavedValueManager.GlobalFlagDefaults.Clone();
+            playerStats.upgrades = SavedValueRegistry.Upgrades.Clone();
+            powerEggs.isCollected = new(new bool[SavedValueRegistry.PowerEggs.Count]);
+            hensRescued.isCollected = new(new bool[SavedValueRegistry.HensRescued.Count]);
+            wishbones.isCollected = new(new bool[SavedValueRegistry.Wishbones.Count]);
+            globalChanges = SavedValueRegistry.GlobalFlagDefaults.Clone();
             foreach (var area in AreaRegistry.GetAll())
                 areaChanges.Add(area, area.flagDefaults.Clone());
         }
@@ -101,12 +121,12 @@ namespace RageRooster.Systems.SaveSystem
         }
 
         /// <summary>
-        /// The active Input Output Stream for saving data during gameplay.
+        /// The active IO Stream for saving data during gameplay.
         /// </summary>
         public static IOStream IO;
 
         /// <summary>
-        /// An IO stream for Saving/Loading game data to/from disk. Also used to display save files in UI.
+        /// An Input Output stream for Saving/Loading Save Data to/from disk. Also used to display save files in UI.
         /// </summary>
         public class IOStream
         {
@@ -272,7 +292,7 @@ namespace RageRooster.Systems.SaveSystem
             public float GetCompletionPercentage()
             {
                 if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
-                int totalCollectibles = SavedValueManager.PowerEggs.Count + SavedValueManager.Wishbones.Count + SavedValueManager.HensRescued.Count;
+                int totalCollectibles = SavedValueRegistry.PowerEggs.Count + SavedValueRegistry.Wishbones.Count + SavedValueRegistry.HensRescued.Count;
                 if (totalCollectibles == 0) return 100f;
                 int collected = 0;
                 collected += file.powerEggs.total;
@@ -286,9 +306,9 @@ namespace RageRooster.Systems.SaveSystem
 
 
         /// <summary>
-        /// Reverts the current save data to its state at the time of the last Death Checkpoint.
+        /// Reverts the current save data to its state at the time of the last Death Checkpoint. <br/>
+        /// See <see cref="DeathReloadData"/>
         /// </summary>
-        /// <remarks>See <see cref="DeathReloadData"/></remarks>
         public static void RevertToDeathData()
         {
             DeathReloadData.Clone(Current);
@@ -313,17 +333,6 @@ namespace RageRooster.Systems.SaveSystem
             Player.Currency.Current = Current.playerStats.currency;
         }
         /// <summary>
-        /// Applies the currently active Data to the Save File IO Stream.
-        /// </summary>
-        /// <remarks>This method clones the current state into the save file and reload data. It ensures
-        /// that the save file and reload data reflect the current state.</remarks>
-        public static void ApplyToSaveFile()
-        {
-            Current.Clone(IO.file);
-            Current.Clone(DeathReloadData);
-        }
-
-        /// <summary>
         /// Saves the current Data to disk.
         /// </summary>
         /// <param name="destination">The current location of the player, as will be applied to all active SaveData objects.</param>
@@ -333,7 +342,8 @@ namespace RageRooster.Systems.SaveSystem
 
             Current.playerStats.playTime += TimeSpan.FromSeconds(Gameplay.UpdateGameTime());
 
-            ApplyToSaveFile();
+            Current.Clone(IO.file);
+            Current.Clone(DeathReloadData);
             IO.Save();
         }
 

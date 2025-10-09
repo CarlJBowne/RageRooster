@@ -11,6 +11,10 @@ using UnityEngine.UIElements;
 
 namespace RageRooster.Systems.SaveSystem.Flags
 {
+    /// <summary>
+    /// A collection of <see cref="Flag"/>s that can be saved to disk to track changes in the world. <br/>
+    /// One exists for each area and one globally.
+    /// </summary>
     [CreateAssetMenu(fileName = "SerializedFlagSet", menuName = "ScriptableObjects/SerializedFlagSet")]
     public class SavedFlagSet : ScriptableObject, ICloneable<SavedFlagSet>
     {
@@ -44,13 +48,26 @@ namespace RageRooster.Systems.SaveSystem.Flags
         }
 
 
-
+        /// <summary>
+        /// Tries to get a flag value from the dictionary.
+        /// </summary>
+        /// <typeparam name="T">The type assumed to be in this slot.</typeparam>
+        /// <param name="key">The name identifier of the flag.</param>
+        /// <param name="value">The output value of the flag.</param>
+        /// <returns>Whether acquiring the flag was a success.</returns>
         public bool TryGetFlag<T>(string key, out T value)
         {
             value = default;
             return flags.ContainsKey(key) && flags[key].TryGetValue(out value);
         }
 
+        /// <summary>
+        /// Tries to set a flag value in the dictionary.
+        /// </summary>
+        /// <typeparam name="T">The type assumed to be in this slot.</typeparam>
+        /// <param name="key">The name identifier of the flag.</param>
+        /// <param name="value">The new value to set for the flag.</param>
+        /// <returns>Whether setting the flag was a success.</returns>
         public bool TrySetFlag<T>(string key, T value) => flags.ContainsKey(key) && flags[key].TrySetValue(value);
 
 

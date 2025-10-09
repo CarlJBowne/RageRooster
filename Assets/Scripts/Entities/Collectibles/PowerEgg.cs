@@ -13,7 +13,7 @@ namespace RageRooster.Entities.Collectibles
 {
     public class PowerEgg : CollectibleBase
     {
-        protected override List<string> targetRegistryList => SavedValueManager.PowerEggs;
+        protected override List<string> targetRegistryList => SavedValueRegistry.PowerEggs;
 
         protected override SaveData.SavedCollectible targetSavedCollectible => SaveData.Current.powerEggs;
 
