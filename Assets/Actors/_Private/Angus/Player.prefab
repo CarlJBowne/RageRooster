@@ -246,8 +246,8 @@ MonoBehaviour:
       Data4: -1797289622
     Path: event:/SFX/Player SFX/Combat/PlayerButtSlam
   Event: 
-  PlayEvent: 11
-  StopEvent: 12
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -303,10 +303,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 66178844183588776}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -466,10 +466,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 290288612479347808}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 2.8125
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -493,13 +493,13 @@ CharacterJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 290288612479347808}
+  serializedVersion: 3
   m_ConnectedBody: {fileID: 4590603890923668987}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0.21762124, y: -0.000000007450581, z: 0}
-  serializedVersion: 2
   m_SwingAxis: {x: 0, y: -1, z: 0}
   m_TwistLimitSpring:
     spring: 0
@@ -824,8 +824,8 @@ MonoBehaviour:
       Data4: -625969328
     Path: event:/SFX/Player SFX/Combat/Punch2
   Event: 
-  PlayEvent: 11
-  StopEvent: 12
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -1060,8 +1060,8 @@ MonoBehaviour:
       Data4: -625969328
     Path: event:/SFX/Player SFX/Combat/Punch2
   Event: 
-  PlayEvent: 11
-  StopEvent: 12
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -1261,8 +1261,8 @@ MonoBehaviour:
       Data4: -1601820662
     Path: event:/SFX/Player SFX/Combat/PlayerGrab
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -1802,8 +1802,8 @@ MonoBehaviour:
       Data4: -1900862645
     Path: event:/SFX/Player SFX/Movement/Bounce
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -2056,8 +2056,8 @@ MonoBehaviour:
       Data4: 615740914
     Path: event:/SFX/Player SFX/Combat/PlayerThrow&DropLaunch
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -2201,10 +2201,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1239383449791831169}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1.875
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -2228,13 +2228,13 @@ CharacterJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1239383449791831169}
+  serializedVersion: 3
   m_ConnectedBody: {fileID: 4462089705341857694}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: -0.46308443, y: -0.10991922, z: -0.27885613}
-  serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
     spring: 0
@@ -2676,10 +2676,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1325061555524369744}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -3310,6 +3310,11 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -3331,6 +3336,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -3557,10 +3563,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1891784507171968699}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 3.125
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -3643,10 +3649,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1904596639792479847}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1.25
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -3670,13 +3676,13 @@ CharacterJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1904596639792479847}
+  serializedVersion: 3
   m_ConnectedBody: {fileID: 4462089705341857694}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: -0.55017793, y: 0.05280485, z: 0.0018128088}
-  serializedVersion: 2
   m_SwingAxis: {x: 1, y: 0, z: 0}
   m_TwistLimitSpring:
     spring: 0
@@ -4038,8 +4044,8 @@ MonoBehaviour:
       Data4: -1631406786
     Path: event:/SFX/Player SFX/General/playerDeath
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -5018,7 +5024,6 @@ GameObject:
   - component: {fileID: 1371118413310184343}
   - component: {fileID: 2714541672873312079}
   - component: {fileID: 3941225653291784218}
-  - component: {fileID: 2783735533672575433}
   - component: {fileID: 6199145597115895703}
   - component: {fileID: 1988227033855750315}
   - component: {fileID: 8954558647869373425}
@@ -5129,7 +5134,7 @@ MonoBehaviour:
   queuedSignals: []
 --- !u!95 &8579594802138283692
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5143,6 +5148,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 1
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -5155,10 +5161,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2950555048310845610}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -5361,34 +5367,6 @@ MonoBehaviour:
   movementModifier: 1
   currentSpeed: 0
   jumpMarkers: []
---- !u!114 &2783735533672575433
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2950555048310845610}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d76f24409a39604ca3986f91ce6d28a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jiggleUpdateMode: 0
-  <blend>k__BackingField: 1
-  jiggleRigs:
-  - rootTransform: {fileID: 2886384581990183456}
-    jiggleSettings: {fileID: 11400000, guid: eeaab0763b59ba84cbcb8aa4bc8da3e2, type: 2}
-    ignoredTransforms: []
-    colliders: []
-    animated: 0
-  - rootTransform: {fileID: 4979379062830307293}
-    jiggleSettings: {fileID: 11400000, guid: 2ce12efa1a096234590369ca183175ab, type: 2}
-    ignoredTransforms: []
-    colliders:
-    - {fileID: 598530174602593461}
-    animated: 0
-  wind: {x: 0, y: 0, z: 0}
-  debugDraw: 0
 --- !u!114 &6199145597115895703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5410,7 +5388,7 @@ MonoBehaviour:
           Data2: 1096041696
           Data3: 1410180282
           Data4: -177447814
-        Path: event:/SFX/Player SFX/playerIdle
+        Path: event:/SFX/Player SFX/Movement/playerIdle
     - Key: Hover
       Value:
         Guid:
@@ -5730,6 +5708,11 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5751,6 +5734,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -6092,8 +6076,8 @@ MonoBehaviour:
       Data4: -2100517755
     Path: event:/SFX/Player SFX/Combat/Punch1
   Event: 
-  PlayEvent: 11
-  StopEvent: 12
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -7114,8 +7098,8 @@ MonoBehaviour:
       Data4: 1053033046
     Path: event:/SFX/Player SFX/Movement/HoverMove
   Event: 
-  PlayEvent: 11
-  StopEvent: 12
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -7302,6 +7286,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -7323,6 +7312,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -7537,8 +7527,8 @@ MonoBehaviour:
       Data4: -681217051
     Path: event:/SFX/Player SFX/Movement/Jump
   Event: 
-  PlayEvent: 11
-  StopEvent: 12
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -7672,10 +7662,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4366117737136798339}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -7735,8 +7725,8 @@ MonoBehaviour:
       Data4: 225330328
     Path: event:/SFX/Player SFX/Movement/RagingCharge
   Event: 
-  PlayEvent: 11
-  StopEvent: 12
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -8082,8 +8072,8 @@ MonoBehaviour:
       Data4: 311031832
     Path: event:/SFX/Player SFX/Combat/Parry
   Event: 
-  PlayEvent: 11
-  StopEvent: 12
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -8512,8 +8502,8 @@ MonoBehaviour:
       Data4: -1111850349
     Path: event:/SFX/Player SFX/Combat/Hellcopter
   Event: 
-  PlayEvent: 11
-  StopEvent: 12
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -9097,10 +9087,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5350170132851519808}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -9263,10 +9253,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5361885281466735368}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -9715,8 +9705,8 @@ MonoBehaviour:
       Data4: 615740914
     Path: event:/SFX/Player SFX/Combat/PlayerThrow&DropLaunch
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -10237,10 +10227,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5837539354396237054}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 2.8125
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -10264,13 +10254,13 @@ CharacterJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5837539354396237054}
+  serializedVersion: 3
   m_ConnectedBody: {fileID: 4661230035819907416}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0.04687708, y: -0.070264, z: -0.15932962}
-  serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
     spring: 0
@@ -10386,11 +10376,15 @@ MonoBehaviour:
   m_EndAngleFade: 30
   m_UVScale: {x: 1, y: 1}
   m_UVBias: {x: 0, y: 0}
-  m_DecalLayerMask: 1
+  m_RenderingLayerMask:
+    serializedVersion: 0
+    m_Bits: 1
   m_ScaleMode: 0
   m_Offset: {x: 0, y: 0, z: 10}
   m_Size: {x: 1, y: 1, z: 20}
   m_FadeFactor: 0.75
+  version: 1
+  m_DecalLayerMask: 1
 --- !u!114 &4740129437030020863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10914,8 +10908,8 @@ MonoBehaviour:
       Data4: -2100517755
     Path: event:/SFX/Player SFX/Combat/Punch1
   Event: 
-  PlayEvent: 11
-  StopEvent: 12
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -11307,10 +11301,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6246743017282741172}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -11443,8 +11437,8 @@ MonoBehaviour:
       Data4: -1067112179
     Path: event:/SFX/Player SFX/Movement/airDash
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -11601,10 +11595,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6330798485065663893}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -11915,10 +11909,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6574491177993153932}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -12099,6 +12093,11 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -12120,6 +12119,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -12494,8 +12494,8 @@ MonoBehaviour:
       Data4: -163910334
     Path: event:/SFX/Player SFX/Combat/Headbutt
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -12612,6 +12612,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -12633,6 +12638,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -12705,10 +12711,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6843497835583285711}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1.875
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -12732,13 +12738,13 @@ CharacterJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6843497835583285711}
+  serializedVersion: 3
   m_ConnectedBody: {fileID: 572817023511250859}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0.21816528, y: -0.0000045290217, z: 0.000001842156}
-  serializedVersion: 2
   m_SwingAxis: {x: 0, y: -1, z: 0}
   m_TwistLimitSpring:
     spring: 0
@@ -12864,10 +12870,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6890300229130045375}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -13065,10 +13071,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7071561249023136008}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 2.8125
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -13092,13 +13098,13 @@ CharacterJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7071561249023136008}
+  serializedVersion: 3
   m_ConnectedBody: {fileID: 4661230035819907416}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: 0.04687708, y: -0.070264, z: 0.15932962}
-  serializedVersion: 2
   m_SwingAxis: {x: 0, y: -1, z: 0}
   m_TwistLimitSpring:
     spring: 0
@@ -13476,6 +13482,11 @@ TrailRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -13497,6 +13508,7 @@ TrailRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -13639,10 +13651,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7202455593599374418}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1.875
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -13666,13 +13678,13 @@ CharacterJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7202455593599374418}
+  serializedVersion: 3
   m_ConnectedBody: {fileID: 2761601382368849002}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: -0.21816543, y: -0.000055626035, z: -0.000022470951}
-  serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
     spring: 0
@@ -13802,10 +13814,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7236015119662936257}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1.875
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -13829,13 +13841,13 @@ CharacterJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7236015119662936257}
+  serializedVersion: 3
   m_ConnectedBody: {fileID: 4462089705341857694}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: -0.44867814, y: -0.09994325, z: 0.2984777}
-  serializedVersion: 2
   m_SwingAxis: {x: 0, y: -1, z: 0}
   m_TwistLimitSpring:
     spring: 0
@@ -14008,8 +14020,8 @@ MonoBehaviour:
       Data4: 615740914
     Path: event:/SFX/Player SFX/Combat/PlayerThrow&DropLaunch
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -14135,6 +14147,11 @@ TrailRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -14156,6 +14173,7 @@ TrailRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -14399,8 +14417,8 @@ MonoBehaviour:
       Data4: 414513426
     Path: event:/SFX/Player SFX/Combat/PlayerAimMode
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -14535,6 +14553,11 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -14556,6 +14579,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -14714,8 +14738,8 @@ MonoBehaviour:
       Data4: -1111850349
     Path: event:/SFX/Player SFX/Combat/Hellcopter
   Event: 
-  PlayEvent: 11
-  StopEvent: 12
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -14954,10 +14978,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7687921319952885065}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 2.8125
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -14981,13 +15005,13 @@ CharacterJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7687921319952885065}
+  serializedVersion: 3
   m_ConnectedBody: {fileID: 3280829104813464403}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: -0.21762125, y: -0.000000003259629, z: -0.000000005122274}
-  serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
     spring: 0
@@ -15186,8 +15210,8 @@ MonoBehaviour:
       Data4: 183127852
     Path: event:/SFX/UI/pause
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -15419,8 +15443,8 @@ MonoBehaviour:
       Data4: -1601820662
     Path: event:/SFX/Player SFX/Combat/PlayerGrab
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -15677,8 +15701,8 @@ MonoBehaviour:
       Data4: 311031832
     Path: event:/SFX/Player SFX/Combat/Parry
   Event: 
-  PlayEvent: 11
-  StopEvent: 12
+  EventPlayTrigger: 11
+  EventStopTrigger: 12
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -15867,8 +15891,8 @@ MonoBehaviour:
       Data4: 129345817
     Path: event:/SFX/Player SFX/Combat/Uppercut
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -16021,8 +16045,8 @@ MonoBehaviour:
       Data4: -181475175
     Path: event:/SFX/Player SFX/General/playerDamaged
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -16190,8 +16214,8 @@ MonoBehaviour:
       Data4: 615740914
     Path: event:/SFX/Player SFX/Combat/PlayerThrow&DropLaunch
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -16351,8 +16375,8 @@ MonoBehaviour:
       Data4: -181475175
     Path: event:/SFX/Player SFX/General/playerDamaged
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
@@ -16603,8 +16627,8 @@ MonoBehaviour:
       Data4: 512150926
     Path: event:/SFX/Player SFX/General/playerBonk
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -16853,10 +16877,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8724644370434953412}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -17034,8 +17058,8 @@ MonoBehaviour:
       Data4: 512150926
     Path: event:/SFX/Player SFX/General/playerBonk
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -17217,8 +17241,8 @@ MonoBehaviour:
       Data4: 1414933640
     Path: event:/SFX/Player SFX/Combat/PlayerButtSlamImpact
   Event: 
-  PlayEvent: 11
-  StopEvent: 0
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
@@ -17344,10 +17368,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8959225014369038086}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 3.125
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -17371,13 +17395,13 @@ CharacterJoint:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8959225014369038086}
+  serializedVersion: 3
   m_ConnectedBody: {fileID: 4661230035819907416}
   m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: -0.18628372, y: -0.0048933327, z: 0.0010352936}
-  serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
     spring: 0

@@ -18,6 +18,7 @@ namespace RageRooster.Obsolete.Zones
         public ZoneTransition[] transitions;
         public SavePoint_Old defaultPlayerSpawn;
         public EventReference music;
+        public EventReference musi2c;
 
         public SavePoint_Old[] spawns
         {

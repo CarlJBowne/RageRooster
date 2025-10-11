@@ -1,4 +1,5 @@
-﻿using FMODUnity;
+﻿using FMOD.Studio;
+using FMODUnity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,22 +11,85 @@ namespace RageRooster.Systems
     public static class Music
     {
 
-        public static StudioEventEmitter Emitter;
-        public static StudioEventEmitter SecondaryEmitter;
-
-        public static void PlayMusic(EventReference @event) => Emitter.CrossFadeMusic(@event);
-
-        public static void BeginSecondaryMusic(EventReference @event) 
+        public class Channel
         {
-            Emitter.Stop();
-            SecondaryEmitter.ChangeEvent(@event);
-            SecondaryEmitter.Play();
+            public EventInstance instance;
+            public EventDescription description;
+            public bool playing { get; private set; }
+            public bool paused { get; private set; }
+
+            public Channel(EventReference musicEvent)
+            {
+                instance = RuntimeManager.CreateInstance(musicEvent);
+                description = RuntimeManager.GetEventDescription(musicEvent);
+                if (!instance.isValid() || !description.isValid()) throw new Exception("Invalid event.");
+                playing = false;
+            }
+
+            public void Begin()
+            {
+                if(!instance.isValid()) throw new Exception("No valid instance to play.");
+                if (playing) return;
+                instance.start();
+                playing = true;
+            }
+            public void FadeOut()
+            {
+                if (!playing) return;
+                instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                instance.release();
+                playing = false;
+            }
+            public void HardStop()
+            {
+                if (!playing) return;
+                instance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+                instance.release();
+                playing = false;
+            }
+
+            public void Pause()
+            {
+                if (!playing) return;
+                if(paused) return;
+                instance.setPaused(true);
+                paused = true;
+            }
+            public void UnPause()
+            {
+                if (!playing) return;
+                if (!paused) return;
+                instance.setPaused(false);
+                paused = false;
+            }
+        }
+
+        public static Channel Primary { get; private set; }
+        //public static Channel Secondary { get; private set; }
+
+
+        public static void BeginPrimaryMusic(EventReference newSong)
+        {
+            Primary?.FadeOut();
+            Primary = new(newSong);
+            Primary.Begin();
+        }
+
+        public static void FadeOutBothMusic()
+        {
+            Primary?.FadeOut();
+            Primary = null;
+            //Secondary?.FadeOut();
+            //Secondary = null;
         }
 
         public static void StopAllMusic() 
         {
-            Emitter?.Stop();
-            SecondaryEmitter?.Stop();
+            Primary?.HardStop();
+            Primary = null;
+            //Secondary?.HardStop();
+            //Secondary = null;
         }
     }
+
 }

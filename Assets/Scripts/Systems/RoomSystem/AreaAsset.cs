@@ -97,6 +97,7 @@ namespace RageRooster.RoomSystem
                 SerializedProperty roomsProperty = serializedObject.FindProperty("Rooms", backingField: true);
                 roomsList.DoLayoutList();
 
+                EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AreaAsset.music).BackingField()));
                 var flagSetProp = serializedObject.FindProperty(nameof(AreaAsset.flagDefaults), true);
                 EditorGUILayout.PropertyField(flagSetProp);
                 if (flagSetProp.objectReferenceValue == null && GUILayout.Button("Create and Attach FlagSet")) CreateFlagSet(areaAsset);

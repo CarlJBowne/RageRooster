@@ -106,8 +106,8 @@ public class Gameplay : MonoBehaviour
         inputPlayer.Awake();
         inputUI.Awake();
         GetComponent<Cameras>().Awake();
-        Music.Emitter = musicEmitter;
-        Music.SecondaryEmitter = musicEmitter2;
+        //Music.Emitter = musicEmitter;
+        //Music.SecondaryEmitter = musicEmitter2;
         ObjectPools.poolParent = transform.Find("PooledObjects");
 
 
@@ -123,7 +123,7 @@ public class Gameplay : MonoBehaviour
 
             //EnemyCullingGroup.Initialize(this); 
 
-            yield return RoomManager.Transition(true);
+            yield return RoomManager.Transition(forceFullTransition: true);
             UpdateGameTime();
             Overlay.OverHUD.BasicFadeIn();
 

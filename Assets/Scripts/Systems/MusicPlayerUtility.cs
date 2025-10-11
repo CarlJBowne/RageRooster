@@ -8,7 +8,7 @@ public class MusicPlayerUtility : MonoBehaviour
 {
     public EventReference musicToPlay;
 
-    public void PlayMusic() => Music.PlayMusic(musicToPlay);
+    public void PlayMusic() => Music.BeginPrimaryMusic(musicToPlay);
 
 
 }

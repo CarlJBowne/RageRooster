@@ -13,35 +13,45 @@ namespace RageRooster.RoomSystem
         public static AreaAsset currentArea { get; private set; }
         public static RoomAsset currentRoom { get; private set; }
 
-        public static Destination destination;
         public static bool loading;
 
-        public static IEnumerator Transition(Destination destination, bool forceFullTransition = false)
+        public static Destination destination;
+        public static IEnumerator preTransitionAnimation = Overlay.OverGameplay.BasicFadeOutWait();
+        public static IEnumerator postTransitionAnimation = Overlay.OverGameplay.BasicFadeInWait();
+        public static bool forceFullTransition = false;
+
+
+        public static IEnumerator Transition(Destination destination = default, bool forceFullTransition = false, IEnumerator preTransition = null, IEnumerator postTransition = null)
         {
-            RoomManager.destination = destination;
-            return Transition(forceFullTransition);
+            if(destination.IsValid()) RoomManager.destination = destination;
+            RoomManager.forceFullTransition = forceFullTransition;
+            preTransitionAnimation = preTransition;
+            postTransitionAnimation = postTransition;
+            return Transition();
         }
-        public static IEnumerator Transition(bool forceFullTransition = false)
+        public static IEnumerator Transition()
         {
             if (!destination.IsValid()) throw new System.Exception("No valid destination.");
+
+            bool fullTransition = currentArea != destination.area || forceFullTransition;
+
+            if(fullTransition) Music.FadeOutBothMusic();
+
+            yield return preTransitionAnimation;
 
             Player.SetActive(false);
             yield return null;
             loading = true;
             OverlayLoading.ShowIfLong();
 
-            bool fullTransition = currentArea != destination.area || forceFullTransition;
-
             if (fullTransition)
             {
                 if (currentArea != null) yield return currentArea.UnloadArea();
-                Music.Emitter.Stop();
                 currentArea = null;
                 currentRoom = null;
                 currentArea = destination.area;
                 ObjectPools.UnloadAllPools();
                 yield return currentArea.LoadArea();
-                Music.Emitter.CrossFadeMusic(destination.area.music);
             }
 
             yield return destination.room.PrepEnter();
@@ -63,6 +73,9 @@ namespace RageRooster.RoomSystem
             loading = false;
             OverlayLoading.SetVisible(false);
             Player.SetActive(true);
+
+            if (fullTransition) Music.BeginPrimaryMusic(currentArea.music);
+            yield return postTransitionAnimation;
 
             destination = Destination.Null;
         }

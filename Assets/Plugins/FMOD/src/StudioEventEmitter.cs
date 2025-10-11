@@ -1,5 +1,4 @@
-﻿using FMOD.Studio;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -406,34 +405,5 @@ namespace FMODUnity
             }
             return false;
         }
-
-        public void ChangeEvent(EventReference newEvent)
-        {
-            EventReference = newEvent;
-
-            Lookup();
-
-        }
-
-        public void CrossFadeMusic(EventReference nextMusic)
-        {
-            StartCoroutine(FadeEnum());
-            IEnumerator FadeEnum()
-            {
-                fadingInstace = instance;
-                instance = default;
-                fadingInstace.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-                fadingInstace.release();
-
-                yield return new WaitForSecondsRealtime(.25f);
-
-                EventReference = nextMusic;
-                Lookup();
-                PlayInstance();
-            }
-
-
-        }
-        EventInstance fadingInstace;
     }
 }

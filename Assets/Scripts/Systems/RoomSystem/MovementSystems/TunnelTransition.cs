@@ -41,8 +41,8 @@ namespace RageRooster.RoomSystem.MovementSystems
             PostEnum().Begin(Gameplay.Instance);
             IEnumerator PostEnum()
             {
-                yield return RoomManager.Transition(destination, forceFullTransition);
-                Overlay.OverGameplay.BasicFadeIn(.5f);
+                yield return RoomManager.Transition(destination, forceFullTransition, null, Overlay.OverGameplay.BasicFadeInWait(.5f));
+                
             }
         }
         private IEnumerator CancelEnum()
