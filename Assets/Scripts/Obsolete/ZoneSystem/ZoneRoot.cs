@@ -76,7 +76,7 @@ namespace RageRooster.Obsolete.Zones
 
         public void OnTransition()
         {
-            Gameplay.musicEmitter.CrossFadeMusic(music);
+            //Gameplay.musicEmitter.CrossFadeMusic(music);
         }
 
         public SerializedDictionary<WorldChange, UltEvents.UltEvent> worldChangeEvents;

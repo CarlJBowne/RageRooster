@@ -1,3 +1,4 @@
+using RageRooster.Systems;
 using RageRooster.Systems.ObjectPool;
 using RageRooster.Systems.SaveSystem;
 using SLS.ISingleton;
@@ -34,11 +35,13 @@ namespace RageRooster.RoomSystem
             if (fullTransition)
             {
                 if (currentArea != null) yield return currentArea.UnloadArea();
+                Music.Emitter.Stop();
                 currentArea = null;
                 currentRoom = null;
                 currentArea = destination.area;
                 ObjectPools.UnloadAllPools();
                 yield return currentArea.LoadArea();
+                Music.Emitter.CrossFadeMusic(destination.area.music);
             }
 
             yield return destination.room.PrepEnter();

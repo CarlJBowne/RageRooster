@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using System;
 using SLS.ISingleton;
+using RageRooster.Systems;
 
 public class PauseMenu : MenuSingleton<PauseMenu>
 {
@@ -41,7 +42,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
             Time.timeScale = 1f;
             Close();
-            Gameplay.musicEmitter.Stop();
+            Music.StopAllMusic();
             Player.StateMachine.HaveDestroyed();
             Gameplay.DESTROY(areYouSure: true);
             SceneManager.LoadScene("MainMenu");

@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System.IO;
 using RageRooster.Systems.SaveSystem.Flags;
+using FMODUnity;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,6 +22,8 @@ namespace RageRooster.RoomSystem
         [field: SerializeField] public string displayName { get; protected set; } = "INSERT_DISPLAY_NAME";
         [field: SerializeField] public SceneReference shellScene { get; protected set; }
         [field: SerializeField] public List<RoomAsset> rooms { get; protected set; } = new();
+
+        [field: SerializeField] public EventReference music { get; protected set; }
 
         [field: SerializeField] public SavedFlagSet flagDefaults { get; protected set; }
 

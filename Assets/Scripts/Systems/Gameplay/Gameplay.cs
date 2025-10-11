@@ -10,6 +10,8 @@ using SLS.ISingleton;
 using RageRooster.RoomSystem;
 using RageRooster.Systems.SaveSystem;
 using RageRooster.Systems.ObjectPool;
+using RageRooster.Systems;
+
 
 
 
@@ -50,7 +52,7 @@ public class Gameplay : MonoBehaviour
     /// <summary>
     /// The Emitter that plays gameplay music. 
     /// </summary>
-    public static StudioEventEmitter musicEmitter;
+    //public static StudioEventEmitter musicEmitter;
 
     /// <summary>
     /// Callback event for when a Save is about to be reloaded.
@@ -80,6 +82,8 @@ public class Gameplay : MonoBehaviour
     [SerializeField] DontDestroyMeOnLoad overlayPrefab;
     [SerializeField] Player inputPlayer;
     [SerializeField] UIHUDSystem inputUI;
+    [SerializeField] StudioEventEmitter musicEmitter;
+    [SerializeField] StudioEventEmitter musicEmitter2;
 
     #endregion Instance Fields
 
@@ -102,7 +106,8 @@ public class Gameplay : MonoBehaviour
         inputPlayer.Awake();
         inputUI.Awake();
         GetComponent<Cameras>().Awake();
-        musicEmitter = GetComponent<StudioEventEmitter>();
+        Music.Emitter = musicEmitter;
+        Music.SecondaryEmitter = musicEmitter2;
         ObjectPools.poolParent = transform.Find("PooledObjects");
 
 
