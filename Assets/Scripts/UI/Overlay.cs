@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -97,4 +98,36 @@ public class Overlay : MonoBehaviour
 
     public void Reset() => animator.Play("Null");
 
+
+
+    public class Transition
+    {
+        public IEnumerator OutTransition;
+        public IEnumerator InTransition;
+
+        public Action PreOutTransition;
+        public Action PostOutTransition;
+
+        public IEnumerator MidTransitionEnum;
+
+        public Action PreInTransition;
+        public Action PostInTransition;
+
+        public IEnumerator FullTransition()
+        {
+            if (OutTransition != null)
+            {
+                PreOutTransition?.Invoke();
+                yield return OutTransition;
+                PostOutTransition?.Invoke();
+            }
+            if (MidTransitionEnum != null) yield return MidTransitionEnum;
+            if (InTransition != null)
+            {
+                PreInTransition?.Invoke();
+                yield return InTransition;
+                PostInTransition?.Invoke();
+            }
+        }
+    }
 }

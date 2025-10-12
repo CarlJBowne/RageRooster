@@ -16,8 +16,8 @@ namespace RageRooster.RoomSystem
         public static bool loading;
 
         public static Destination destination;
-        public static IEnumerator preTransitionAnimation = Overlay.OverGameplay.BasicFadeOutWait();
-        public static IEnumerator postTransitionAnimation = Overlay.OverGameplay.BasicFadeInWait();
+        public static IEnumerator preTransitionAnimation;
+        public static IEnumerator postTransitionAnimation;
         public static bool forceFullTransition = false;
 
 
