@@ -6,10 +6,19 @@ using UnityEditor;
 
 namespace RageRooster.RoomSystem
 {
+    /// <summary>
+    /// The Root component for an Area. Attached to the root <see cref="GameObject"/> of a <see cref="RoomAsset.scene"/>
+    /// </summary>
     [DefaultExecutionOrder(ExecutionOrders.Room)]
     public class RoomRoot : MonoBehaviour
     {
+        /// <summary>
+        /// The <see cref="RoomAsset"/> associated with this instance.
+        /// </summary>
         [field: SerializeField] public RoomAsset asset { get; protected set; }
+        /// <summary>
+        /// The defined <see cref="SpawnPoint"/>s available in this room."/>
+        /// </summary>
         [field: SerializeField] public SpawnPoint[] spawns { get; protected set; }
 
         private void Awake()

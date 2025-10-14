@@ -5,14 +5,36 @@ using UnityEngine;
 
 namespace RageRooster.RoomSystem
 {
+    /// <summary>
+    /// An entrance to a Room. MonoBehavior that triggers entering the Room when colliding with the Player.
+    /// </summary>
     public class RoomEntrance : MonoBehaviour
     {
+        /// <summary>
+        /// The distance radius at which the room will begin loading.
+        /// </summary>
         public float loadRadius = 20f;
+        /// <summary>
+        /// The distance radius at which the room will unload.
+        /// </summary>
         public float unloadRadius = 30f;
+        /// <summary>
+        /// The distance radius at which the room's LOD will be loaded.
+        /// </summary>
         public float lodRadius = 50f;
+        /// <summary>
+        /// The direction of the entrance inward into the room. <br/>
+        /// If the player is on the near side of this transition it will not trigger loading nor entering the room.
+        /// </summary>
         public Vector3 direction = Vector3.forward;
 
+        /// <summary>
+        /// An optional <see cref="SpawnPoint"/> this entrance can set the player's respawn location to when entered.
+        /// </summary>
         public SpawnPoint spawnPoint;
+        /// <summary>
+        /// Whether the <see cref="spawnPoint"/> should only be set on death reloads, and not normal transitions."/>
+        /// </summary>
         public bool forDeathOnly = false;
 
         [SerializeField, HideInInspector] internal RoomRoot root;
@@ -40,6 +62,9 @@ namespace RageRooster.RoomSystem
             lodRadius = lodRadius
         };
 
+        /// <summary>
+        /// Packaged data about this entrance to be saved into a <see cref="RoomAsset"/>.
+        /// </summary>
         [System.Serializable]
         public struct Data
         {

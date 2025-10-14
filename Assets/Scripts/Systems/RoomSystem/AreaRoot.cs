@@ -4,9 +4,15 @@ using UnityEngine;
 
 namespace RageRooster.RoomSystem
 {
+    /// <summary>
+    /// The Root component for an Area. Attached to the root <see cref="GameObject"/> of a <see cref="AreaAsset.shellScene"/>
+    /// </summary>
     [DefaultExecutionOrder(ExecutionOrders.Area)]
     public class AreaRoot : MonoBehaviour
     {
+        /// <summary>
+        /// The <see cref="AreaAsset"/> associated with this instance.
+        /// </summary>
         [field: SerializeField] public AreaAsset asset { get; protected set; }
 
         private void Awake()
