@@ -13,20 +13,20 @@ namespace RageRooster.RoomSystem
         public static AreaAsset currentArea { get; private set; }
         public static RoomAsset currentRoom { get; private set; }
 
-        public static bool loading;
+        public static bool currentlyTransitioning;
 
         public static Destination destination;
-        public static IEnumerator preTransitionAnimation;
-        public static IEnumerator postTransitionAnimation;
         public static bool forceFullTransition = false;
 
+        public static IEnumerator FadeOutRoutine;
+        public static IEnumerator FadeInRoutine;
 
-        public static IEnumerator Transition(Destination destination = default, bool forceFullTransition = false, IEnumerator preTransition = null, IEnumerator postTransition = null)
+
+
+        public static IEnumerator Transition(Destination destination = default, bool forceFullTransition = false)
         {
             if(destination.IsValid()) RoomManager.destination = destination;
             RoomManager.forceFullTransition = forceFullTransition;
-            preTransitionAnimation = preTransition;
-            postTransitionAnimation = postTransition;
             return Transition();
         }
         public static IEnumerator Transition()
@@ -37,11 +37,9 @@ namespace RageRooster.RoomSystem
 
             if(fullTransition) Music.FadeOutBothMusic();
 
-            yield return preTransitionAnimation;
-
             Player.SetActive(false);
             yield return null;
-            loading = true;
+            currentlyTransitioning = true;
             OverlayLoading.ShowIfLong();
 
             if (fullTransition)
@@ -70,12 +68,11 @@ namespace RageRooster.RoomSystem
             foreach (RoomAsset room in currentArea.rooms)
                 yield return room.PrepSurrounding();
 
-            loading = false;
+            currentlyTransitioning = false;
             OverlayLoading.SetVisible(false);
             Player.SetActive(true);
 
             if (fullTransition) Music.BeginPrimaryMusic(currentArea.music);
-            yield return postTransitionAnimation;
 
             destination = Destination.Null;
         }
