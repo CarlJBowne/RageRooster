@@ -101,13 +101,12 @@ public class Gameplay : MonoBehaviour
         Active = true;
         GameObject = gameObject;
         if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+        RoomManager.ResetTransitionData(false);
         Overlay.OverHUD.SetAlpha(1);
         DontDestroyOnLoad(gameObject);
         inputPlayer.Awake();
         inputUI.Awake();
         GetComponent<Cameras>().Awake();
-        //Music.Emitter = musicEmitter;
-        //Music.SecondaryEmitter = musicEmitter2;
         ObjectPools.poolParent = transform.Find("PooledObjects");
 
 

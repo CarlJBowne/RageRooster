@@ -2,6 +2,7 @@ using RageRooster.Systems;
 using RageRooster.Systems.ObjectPool;
 using RageRooster.Systems.SaveSystem;
 using SLS.ISingleton;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,24 +19,37 @@ namespace RageRooster.RoomSystem
         public static Destination destination;
         public static bool forceFullTransition = false;
 
+        public static Action PreFadeOutAction;
         public static IEnumerator FadeOutRoutine;
+        public static Action PostFadeOutAction;
+        public static Action PreFadeInAction;
         public static IEnumerator FadeInRoutine;
+        public static Action PostFadeInAction;
 
+        public static void StartTransition(Destination destination = default) 
+            => Transition(destination).Begin(Overlay.OverMenus);
 
-
-        public static IEnumerator Transition(Destination destination = default, bool forceFullTransition = false)
+        public static IEnumerator Transition(Destination destination = default)
         {
-            if(destination.IsValid()) RoomManager.destination = destination;
-            RoomManager.forceFullTransition = forceFullTransition;
-            return Transition();
-        }
-        public static IEnumerator Transition()
-        {
-            if (!destination.IsValid()) throw new System.Exception("No valid destination.");
+            if (!destination.IsValid()) destination = RoomManager.destination;
+            if (!destination.IsValid()) destination = SaveData.Current.location;
+            if (!destination.IsValid()) destination = SaveData.DeathReloadData.location;
+            if (!destination.IsValid()) destination = Destination.StartingDefault();
 
             bool fullTransition = currentArea != destination.area || forceFullTransition;
 
-            if(fullTransition) Music.FadeOutBothMusic();
+            if(FadeOutRoutine == Overlay.OverGameplay.BasicFadeOutWait(0.5f) && FadeInRoutine == Overlay.OverGameplay.BasicFadeInWait(0.5f) && fullTransition)
+            {
+                FadeOutRoutine = Overlay.OverHUD.BasicFadeOutWait(0.5f);
+                FadeInRoutine = Overlay.OverHUD.BasicFadeInWait(0.5f);
+            }
+
+            if (fullTransition) Music.FadeOutBothMusic();
+
+            PreFadeOutAction?.Invoke();
+            if(FadeOutRoutine != null) yield return FadeOutRoutine;
+            PostFadeOutAction?.Invoke();
+
 
             Player.SetActive(false);
             yield return null;
@@ -72,9 +86,26 @@ namespace RageRooster.RoomSystem
             OverlayLoading.SetVisible(false);
             Player.SetActive(true);
 
+
             if (fullTransition) Music.BeginPrimaryMusic(currentArea.music);
 
-            destination = Destination.Null;
+            PreFadeInAction?.Invoke();
+            if(FadeInRoutine != null) yield return FadeInRoutine;
+            PostFadeInAction?.Invoke();
+
+            ResetTransitionData();
+        }
+
+        public static void ResetTransitionData(bool resetDestination = true)
+        {
+            if(resetDestination) destination = Destination.Null;
+            PreFadeInAction = null;
+            PostFadeInAction = null;
+            PreFadeOutAction = null;
+            PostFadeOutAction = null;
+            FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(0.5f);
+            FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(0.5f);
+            forceFullTransition = false;
         }
 
 
