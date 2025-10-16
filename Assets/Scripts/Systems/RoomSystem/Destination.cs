@@ -55,6 +55,10 @@ namespace RageRooster.RoomSystem
         };
 
 
+        /// <summary>
+        /// Easy redirection to the current <see cref="Destination"/> in the active <see cref="SaveData"/>
+        /// </summary>
+        public static Destination Current => SaveData.Current.location;
 
         //Possibly Unnecessary Constructors, real constructers will be created on a necessary case basis to ensure no willy-nilly usage of potentially malformed Destinations.
         /* 

@@ -47,7 +47,8 @@ namespace RageRooster.RoomSystem
             if (fullTransition) Music.FadeOutBothMusic();
 
             PreFadeOutAction?.Invoke();
-            if(FadeOutRoutine != null) yield return FadeOutRoutine;
+            if(FadeOutRoutine != null) 
+                yield return FadeOutRoutine;
             PostFadeOutAction?.Invoke();
 
 
@@ -90,7 +91,8 @@ namespace RageRooster.RoomSystem
             if (fullTransition) Music.BeginPrimaryMusic(currentArea.music);
 
             PreFadeInAction?.Invoke();
-            if(FadeInRoutine != null) yield return FadeInRoutine;
+            if(FadeInRoutine != null) 
+                yield return FadeInRoutine;
             PostFadeInAction?.Invoke();
 
             ResetTransitionData();

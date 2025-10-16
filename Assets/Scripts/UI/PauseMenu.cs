@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using System;
 using SLS.ISingleton;
 using RageRooster.Systems;
+using RageRooster.RoomSystem;
 
 public class PauseMenu : MenuSingleton<PauseMenu>
 {
@@ -64,25 +65,16 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
     public void Respawn()
     {
-        SpawnPlayer_CR().Begin(Gameplay.Instance);
-        IEnumerator SpawnPlayer_CR()
-        {
-            yield return Overlay.OverMenus.BasicFadeOutWait(1f);
-            TrueClose();
-            yield return Gameplay.Respawn();
-            Overlay.OverMenus.BasicFadeIn(1f);
-        }
+        RoomManager.FadeOutRoutine = Overlay.OverMenus.BasicFadeOutWait(1f);
+        RoomManager.FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(1f);
+        RoomManager.PreFadeInAction = TrueClose;
+        Gameplay.Respawn();
     }
     public void ReloadSave()
     {
-        Enum().Begin(Gameplay.Instance);
-        IEnumerator Enum()
-        {
-            Gameplay.PreReloadSave?.Invoke();
-            yield return Overlay.OverMenus.BasicFadeOutWait(1.2f);
-            TrueClose();
-            yield return Gameplay.ReloadSave();
-            Overlay.OverMenus.BasicFadeIn(1.2f);
-        }
+        RoomManager.FadeOutRoutine = Overlay.OverMenus.BasicFadeOutWait(1.2f);
+        RoomManager.FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(1.2f);
+        RoomManager.PreFadeInAction = TrueClose;
+        Gameplay.ReloadSave();
     }
 }

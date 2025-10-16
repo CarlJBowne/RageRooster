@@ -1,3 +1,4 @@
+using RageRooster.RoomSystem;
 using RageRooster.Systems.SaveSystem;
 using System;
 using System.Collections;
@@ -216,37 +217,50 @@ public class Player : MonoBehaviour
     public static float fallDownPitTime { get; protected set; }
     public static float deathTime { get; protected set; }
     static CoroutinePlus deathCoroutine;
-    public static void Death(bool justPit = false)
+
+
+    public static void Death()
     {
-        CoroutinePlus.Begin(ref deathCoroutine, Enum(justPit), Gameplay.Instance);
-        IEnumerator Enum(bool justPit)
+        DeathOrPit();
+        Enum().Begin(Gameplay.Instance);
+        static IEnumerator Enum()
         {
-            Vector3 targetVelocity = MovementBody.velocity;
-            Audio.PlayOneShot("Death");
-            StateMachine.ragDollState.Enter();
-            MovementBody.velocity = Vector3.zero;
-            RagdollHandler.SetState(EntityState.RagDoll);
-            RagdollHandler.SetVelocity(targetVelocity * 0.75f);
-            Animator.enabled = false;
+            yield return WaitFor.SecondsRealtime(fallDownPitTime + 1);
+            yield return Overlay.OverGameplay.GameOverAnim();
+            yield return WaitFor.SecondsRealtime(deathTime);
 
-            yield return WaitFor.SecondsRealtime(justPit ? fallDownPitTime : fallDownPitTime + 1);
-            float fadeTime = justPit ? 0.5f : 1f;
+            RoomManager.FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(1f);
+            RoomManager.FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(1f);
+            //RoomManager.PreFadeInAction += () => { Overlay.OverGameplay.Reset(); };
+            //Note "Overlay.OverGameplay.Reset() used to be called just after the FadeOut. Not sure why. If necessary, uncomment the above line."
 
-            if (!justPit)
-            {
-                yield return Overlay.OverGameplay.GameOverAnim();
-                yield return WaitFor.SecondsRealtime(deathTime);
-                yield return Overlay.OverMenus.BasicFadeOutWait(fadeTime);
-                Overlay.OverGameplay.Reset();
-                yield return Gameplay.Death();
-            }
-            else
-            {
-                yield return Overlay.OverMenus.BasicFadeOutWait(fadeTime);
-                Overlay.OverGameplay.Reset();
-                yield return Gameplay.Respawn();
-            }
-            Overlay.OverMenus.BasicFadeIn(fadeTime);
+            Gameplay.Death();
         }
+    }
+    public static void PitFall()
+    {
+        DeathOrPit();
+        Enum().Begin(Gameplay.Instance);
+        static IEnumerator Enum()
+        {
+            yield return WaitFor.SecondsRealtime(fallDownPitTime);
+
+            RoomManager.FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(.5f);
+            RoomManager.FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(.5f);
+            //RoomManager.PreFadeInAction += () => { Overlay.OverGameplay.Reset(); };
+            //Note "Overlay.OverGameplay.Reset() used to be called just after the FadeOut. Not sure why. If necessary, uncomment the above line."
+
+            Gameplay.Respawn();
+        }
+    }
+    public static void DeathOrPit()
+    {
+        Vector3 targetVelocity = MovementBody.velocity;
+        Audio.PlayOneShot("Death");
+        StateMachine.ragDollState.Enter();
+        MovementBody.velocity = Vector3.zero;
+        RagdollHandler.SetState(EntityState.RagDoll);
+        RagdollHandler.SetVelocity(targetVelocity * 0.75f);
+        Animator.enabled = false;
     }
 }

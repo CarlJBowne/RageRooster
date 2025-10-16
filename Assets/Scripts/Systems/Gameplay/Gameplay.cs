@@ -101,32 +101,36 @@ public class Gameplay : MonoBehaviour
         Active = true;
         GameObject = gameObject;
         if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
-        RoomManager.ResetTransitionData(false);
-        Overlay.OverHUD.SetAlpha(1);
         DontDestroyOnLoad(gameObject);
         inputPlayer.Awake();
         inputUI.Awake();
         GetComponent<Cameras>().Awake();
         ObjectPools.poolParent = transform.Find("PooledObjects");
+        Overlay.OverMenus.BasicBlackout = 1;
+        Overlay.OverGameplay.Reset();
+        Overlay.OverHUD.Reset();
 
-
-        StartCoroutine(Enum());
-        IEnumerator Enum()
+        Enum().Begin(this);
+        static IEnumerator Enum() 
         {
             yield return null;
             yield return WaitFor.Until(Initialized);
 
-            bool Initialized() => Active
+            static bool Initialized() => Active
                 && Player.Active
                 && RoomManager.Active;
 
-            //EnemyCullingGroup.Initialize(this); 
+            RoomManager.ResetTransitionData(false);
+            RoomManager.forceFullTransition = true;
+            RoomManager.FadeOutRoutine = null;
+            RoomManager.FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(0.5f);
+            RoomManager.PreFadeInAction = () =>
+            {
+                UpdateGameTime();
+                Input.Pause.performed += c => { Menu.Manager.Escape(); };
+            };
 
-            yield return RoomManager.Transition(forceFullTransition: true);
-            UpdateGameTime();
-            Overlay.OverHUD.BasicFadeIn();
-
-            Input.Pause.performed += c => { Menu.Manager.Escape(); };
+            yield return RoomManager.Transition();
         }
     }
 
@@ -161,7 +165,6 @@ public class Gameplay : MonoBehaviour
 
             yield return WaitFor.Until(() => Load.isDone && Active);
             yield return WaitFor.SecondsRealtime(0.2f);
-            Overlay.OverMenus.BasicFadeIn();
         }
     }
     /// <summary>
@@ -226,22 +229,23 @@ public class Gameplay : MonoBehaviour
 
 
 
-    public static IEnumerator Respawn()
+    public static void Respawn()
     {
-        yield return RoomManager.Transition(SaveData.Current.location);
-        Player.onRespawn?.Invoke();
+        RoomManager.PostFadeOutAction = () => { Player.onRespawn?.Invoke(); };
+        RoomManager.StartTransition(Destination.Current);
     }
 
-    public static IEnumerator Death()
+    public static void Death()
     {
         SaveData.RevertToDeathData();
-        yield return RoomManager.Transition(SaveData.Current.location, true);
+        RoomManager.StartTransition(Destination.Current);
     }
 
-    public static IEnumerator ReloadSave()
+    public static void ReloadSave()
     {
+        
         SaveData.RevertToSaveFile();
-        yield return RoomManager.Transition(SaveData.Current.location, true);
+        RoomManager.StartTransition(Destination.Current);
     }
 
     /// <summary>

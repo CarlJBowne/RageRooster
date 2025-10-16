@@ -32,8 +32,12 @@ public class Overlay : MonoBehaviour
         }
     }
 
-    private float blackoutRate = 0f;
-
+    private float blackoutRate
+    {
+        set => _blackoutRate = value;
+        get => _blackoutRate;
+    }
+    private float _blackoutRate = 0f;
 
     [SerializeField] protected Image blackout;
     [SerializeField] protected Animator animator;
@@ -72,11 +76,13 @@ public class Overlay : MonoBehaviour
 
     public IEnumerator BasicFadeOutWait(float duration = 1f)
     {
+        Debug.Log($"Overlay {intendedLayer} Triggered to Fade Out");
         blackoutRate = 1f / duration;
         yield return new WaitUntil(()=> BasicBlackout == 1);
     }
     public IEnumerator BasicFadeInWait(float duration = 1f)
     {
+        Debug.Log($"Overlay {intendedLayer} Triggered to Fade In");
         blackoutRate = -1f / duration;
         yield return new WaitUntil(() => BasicBlackout == 0);
     }
@@ -94,40 +100,11 @@ public class Overlay : MonoBehaviour
     }
 
     public void SetAnimated(bool value) => animator.enabled = value;
-    public void SetAlpha(float alpha) => blackout.color = new(blackout.color.r, blackout.color.g, blackout.color.b, alpha);
 
-    public void Reset() => animator.Play("Null");
-
-
-
-    public class Transition
+    public void Reset()
     {
-        public IEnumerator OutTransition;
-        public IEnumerator InTransition;
-
-        public Action PreOutTransition;
-        public Action PostOutTransition;
-
-        public IEnumerator MidTransitionEnum;
-
-        public Action PreInTransition;
-        public Action PostInTransition;
-
-        public IEnumerator FullTransition()
-        {
-            if (OutTransition != null)
-            {
-                PreOutTransition?.Invoke();
-                yield return OutTransition;
-                PostOutTransition?.Invoke();
-            }
-            if (MidTransitionEnum != null) yield return MidTransitionEnum;
-            if (InTransition != null)
-            {
-                PreInTransition?.Invoke();
-                yield return InTransition;
-                PostInTransition?.Invoke();
-            }
-        }
+        animator.Play("Null");
+        BasicBlackout = 0f;
+        blackoutRate = 0f;
     }
 }
