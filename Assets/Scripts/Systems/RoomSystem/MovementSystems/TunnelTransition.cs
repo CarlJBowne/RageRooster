@@ -41,10 +41,13 @@ namespace RageRooster.RoomSystem.MovementSystems
         {
             yield return Overlay.OverGameplay.BasicFadeOutWait(fadeoutTime);
 
-            RoomManager.forceFullTransition = forceFullTransition;
-            RoomManager.FadeOutRoutine = Overlay.OverHUD.BasicFadeOutWait(.1f);
-            RoomManager.FadeInRoutine = Overlay.OverHUD.BasicFadeInWait(.5f);
-            RoomManager.PostFadeOutAction = Overlay.OverGameplay.Reset;
+            RoomManager.TransitionStyle = new()
+            {
+                forceFullTransition = forceFullTransition,
+                FadeOutRoutine = Overlay.OverHUD.BasicFadeOutWait(.1f),
+                FadeInRoutine = Overlay.OverHUD.BasicFadeInWait(.5f),
+                PostFadeOutAction = Overlay.OverGameplay.Reset,
+            };
             RoomManager.StartTransition(destination);
         }
         private IEnumerator CancelEnum()

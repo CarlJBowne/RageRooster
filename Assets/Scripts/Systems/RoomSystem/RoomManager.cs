@@ -1,3 +1,4 @@
+using RageRooster.RoomSystem;
 using RageRooster.Systems;
 using RageRooster.Systems.ObjectPool;
 using RageRooster.Systems.SaveSystem;
@@ -22,11 +23,12 @@ namespace RageRooster.RoomSystem
         public static Action PreFadeOutAction;
         public static IEnumerator FadeOutRoutine;
         public static Action PostFadeOutAction;
+        public static IEnumerator MidTransitionRoutine;
         public static Action PreFadeInAction;
         public static IEnumerator FadeInRoutine;
         public static Action PostFadeInAction;
 
-        public static void StartTransition(Destination destination = default) 
+        public static void StartTransition(Destination destination = default)
             => Transition(destination).Begin(Overlay.OverMenus);
 
         public static IEnumerator Transition(Destination destination = default)
@@ -38,7 +40,7 @@ namespace RageRooster.RoomSystem
 
             bool fullTransition = currentArea != destination.area || forceFullTransition;
 
-            if(FadeOutRoutine == Overlay.OverGameplay.BasicFadeOutWait(0.5f) && FadeInRoutine == Overlay.OverGameplay.BasicFadeInWait(0.5f) && fullTransition)
+            if (FadeOutRoutine == Overlay.OverGameplay.BasicFadeOutWait(0.5f) && FadeInRoutine == Overlay.OverGameplay.BasicFadeInWait(0.5f) && fullTransition)
             {
                 FadeOutRoutine = Overlay.OverHUD.BasicFadeOutWait(0.5f);
                 FadeInRoutine = Overlay.OverHUD.BasicFadeInWait(0.5f);
@@ -47,7 +49,7 @@ namespace RageRooster.RoomSystem
             if (fullTransition) Music.FadeOutBothMusic();
 
             PreFadeOutAction?.Invoke();
-            if(FadeOutRoutine != null) 
+            if (FadeOutRoutine != null)
                 yield return FadeOutRoutine;
             PostFadeOutAction?.Invoke();
 
@@ -83,6 +85,8 @@ namespace RageRooster.RoomSystem
             foreach (RoomAsset room in currentArea.rooms)
                 yield return room.PrepSurrounding();
 
+            yield return MidTransitionRoutine;
+
             currentlyTransitioning = false;
             OverlayLoading.SetVisible(false);
             Player.SetActive(true);
@@ -91,7 +95,7 @@ namespace RageRooster.RoomSystem
             if (fullTransition) Music.BeginPrimaryMusic(currentArea.music);
 
             PreFadeInAction?.Invoke();
-            if(FadeInRoutine != null) 
+            if (FadeInRoutine != null)
                 yield return FadeInRoutine;
             PostFadeInAction?.Invoke();
 
@@ -100,7 +104,7 @@ namespace RageRooster.RoomSystem
 
         public static void ResetTransitionData(bool resetDestination = true)
         {
-            if(resetDestination) destination = Destination.Null;
+            if (resetDestination) destination = Destination.Null;
             PreFadeInAction = null;
             PostFadeInAction = null;
             PreFadeOutAction = null;
@@ -113,9 +117,41 @@ namespace RageRooster.RoomSystem
 
         public static void EnterRoom(RoomAsset nextRoom)
         {
-            if(currentRoom != null) currentRoom._Exit();
+            if (currentRoom != null) currentRoom._Exit();
             currentRoom = nextRoom;
             currentRoom._Enter();
+        }
+
+
+        public static TransitionData TransitionStyle
+        {
+            set
+            {
+                forceFullTransition = value.forceFullTransition;
+                PreFadeOutAction = value.PreFadeOutAction;
+                FadeOutRoutine = value.FadeOutRoutine;
+                PostFadeOutAction = value.PostFadeOutAction;
+                MidTransitionRoutine = value.MidTransitionRoutine;
+                PreFadeInAction = value.PreFadeInAction;
+                FadeInRoutine = value.FadeInRoutine;
+                PostFadeInAction = value.PostFadeOutAction;
+            }
+        }
+
+        /// <summary>
+        /// This class is purely for the purposes of easy-optional-assignment-via-contructor of the various fields related to how a Transition should be enacted. See <see cref="RoomManager.TransitionStyle"/>
+        /// </summary>
+        public class TransitionData
+        {
+            public bool forceFullTransition = false;
+            public Action PreFadeOutAction = null;
+            public IEnumerator FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(0.5f);
+            public Action PostFadeOutAction = null;
+            public IEnumerator MidTransitionRoutine = null;
+            public Action PreFadeInAction = null;
+            public IEnumerator FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(0.5f);
+            public Action PostFadeInAction = null;
+
         }
     }
 }

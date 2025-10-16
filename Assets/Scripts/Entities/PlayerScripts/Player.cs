@@ -229,8 +229,11 @@ public class Player : MonoBehaviour
             yield return Overlay.OverGameplay.GameOverAnim();
             yield return WaitFor.SecondsRealtime(deathTime);
 
-            RoomManager.FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(1f);
-            RoomManager.FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(1f);
+            RoomManager.TransitionStyle = new()
+            {
+                FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(1f),
+                FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(1f),
+            };
             //RoomManager.PreFadeInAction += () => { Overlay.OverGameplay.Reset(); };
             //Note "Overlay.OverGameplay.Reset() used to be called just after the FadeOut. Not sure why. If necessary, uncomment the above line."
 
@@ -245,8 +248,11 @@ public class Player : MonoBehaviour
         {
             yield return WaitFor.SecondsRealtime(fallDownPitTime);
 
-            RoomManager.FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(.5f);
-            RoomManager.FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(.5f);
+            RoomManager.TransitionStyle = new()
+            {
+                FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(1f),
+                FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(1f),
+            };            
             //RoomManager.PreFadeInAction += () => { Overlay.OverGameplay.Reset(); };
             //Note "Overlay.OverGameplay.Reset() used to be called just after the FadeOut. Not sure why. If necessary, uncomment the above line."
 

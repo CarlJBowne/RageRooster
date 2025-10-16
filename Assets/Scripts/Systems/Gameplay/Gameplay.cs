@@ -1,4 +1,4 @@
-﻿using Cinemachine;
+﻿,using Cinemachine;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -121,15 +121,18 @@ public class Gameplay : MonoBehaviour
                 && RoomManager.Active;
 
             RoomManager.ResetTransitionData(false);
-            RoomManager.forceFullTransition = true;
-            RoomManager.FadeOutRoutine = null;
-            RoomManager.FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(0.5f);
-            RoomManager.PreFadeInAction = () =>
-            {
-                UpdateGameTime();
-                Input.Pause.performed += c => { Menu.Manager.Escape(); };
-            };
 
+            RoomManager.TransitionStyle = new()
+            {
+                forceFullTransition = true,
+                FadeOutRoutine = null,
+                FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(0.5f),
+                PreFadeInAction = () =>
+                {
+                    UpdateGameTime();
+                    Input.Pause.performed += c => { Menu.Manager.Escape(); };
+                },
+            };
             yield return RoomManager.Transition();
         }
     }
@@ -243,7 +246,6 @@ public class Gameplay : MonoBehaviour
 
     public static void ReloadSave()
     {
-        
         SaveData.RevertToSaveFile();
         RoomManager.StartTransition(Destination.Current);
     }

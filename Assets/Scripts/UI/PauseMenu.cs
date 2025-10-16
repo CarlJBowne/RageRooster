@@ -65,16 +65,22 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
     public void Respawn()
     {
-        RoomManager.FadeOutRoutine = Overlay.OverMenus.BasicFadeOutWait(1f);
-        RoomManager.FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(1f);
-        RoomManager.PreFadeInAction = TrueClose;
+        RoomManager.TransitionStyle = new()
+        {
+            FadeOutRoutine = Overlay.OverMenus.BasicFadeOutWait(1f),
+            FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(1f),
+            PreFadeInAction = TrueClose,
+        };
         Gameplay.Respawn();
     }
     public void ReloadSave()
     {
-        RoomManager.FadeOutRoutine = Overlay.OverMenus.BasicFadeOutWait(1.2f);
-        RoomManager.FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(1.2f);
-        RoomManager.PreFadeInAction = TrueClose;
+        RoomManager.TransitionStyle = new()
+        {
+            FadeOutRoutine = Overlay.OverMenus.BasicFadeOutWait(1.2f),
+            FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(1.2f),
+            PreFadeInAction = TrueClose
+        };
         Gameplay.ReloadSave();
     }
 }
