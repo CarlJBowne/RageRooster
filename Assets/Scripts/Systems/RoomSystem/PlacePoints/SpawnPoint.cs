@@ -4,18 +4,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A set point in the world where the player can spawn. <br/>
+/// When activated it moves the player to the exact transform position.
+/// </summary>
 public class SpawnPoint : MonoBehaviour
 {
     //Make private but visible later.
+    /// <summary>
+    /// The ID of this SpawnPoint within the Room it belongs to.
+    /// </summary>
     public int ID = -1;
+    /// <summary>
+    /// Whether the player should rotate to the forward direction of the <see cref="SpawnPoint"/>.
+    /// </summary>
     public bool rotate = true;
+    /// <summary>
+    /// Whether the player should snap downwards to the nearest floor when spawned.
+    /// </summary>
     public bool snapToFloor = true;
 
     [SerializeField, HideInInspector] internal RoomRoot root;
 
 #if UNITY_EDITOR
     [Button("Play from here.")]
-    public void BeginFromHere()
+    private void BeginFromHere()
     {
         EditorState.EditorDestination = new() 
         {
@@ -25,6 +38,11 @@ public class SpawnPoint : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = true;
     }
 #endif
+
+
+    /// <summary>
+    /// Places the player at this <see cref="SpawnPoint"/>'s position.
+    /// </summary>
     public void SpawnPlayerAt()
     {
         //Cast downwards and get point.
@@ -35,6 +53,7 @@ public class SpawnPoint : MonoBehaviour
         //Player.MovementBody.InstantSnapToFloor();
     }
 
+    /// <returns>The <see cref="Destination"/> this <see cref="SpawnPoint"/> goes to.</returns>
     public Destination GetDestination() => new()
     {
         room = root.asset,

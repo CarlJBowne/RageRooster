@@ -3,9 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// CheckPoint that updates the player's spawn location upon contact.
+/// </summary>
 public class CheckPoint : MonoBehaviour
 {
+    /// <summary>
+    /// The target <see cref="SpawnPoint"/> to set as the player's new spawn location."/>
+    /// </summary>
     public SpawnPoint spawnPoint;
+    /// <summary>
+    /// Whether this CheckPoint only updates the spawn location for death respawns.
+    /// </summary>
     public bool forDeathOnly = false;
 
     private void Reset()
