@@ -5,29 +5,98 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A global Singleton representing the Player entity in the game. Provides static access to commonly used components and systems related to the player.
+/// </summary>
 [DefaultExecutionOrder(ExecutionOrders.Player), RequireComponent(typeof(PlayerStateMachine))]
 public class Player : MonoBehaviour
 {
+    /// <summary>
+    /// Whether the <see cref="Player"/> entity has been loaded into the world. <br/>
+    /// (Not to be confused with <see cref="Active"/>, which is denotes when the player's activity has been paused.)
+    /// </summary>
     public static bool Exists { get; private set; } = false;
+    /// <summary>
+    /// Whether the <see cref="Player"/> entity is currently active and able to interact with the game world. <br/>
+    /// (Not to be confused with <see cref="Exists"/> which is whether the <see cref="Player"/> entity has been loaded in the world.)
+    /// </summary>
     public static bool Active { get; private set; } = false;
 
+    /// <summary>
+    /// The Root <see cref="UnityEngine.GameObject"/> of the <see cref="Player"/>.
+    /// </summary>
     public static GameObject GameObject { get; private set; }
+    /// <summary>
+    /// The Root <see cref="UnityEngine.Transform"/> of the <see cref="Player"/>.
+    /// </summary>
     public static Transform Transform { get; private set; }
+    /// <summary>
+    /// The <see cref="PlayerStateMachine"/> component attached to the <see cref="Player"/>. <br/>
+    /// Handles the player's state transitions and logic.
+    /// </summary>
     public static PlayerStateMachine StateMachine { get; private set; }
+    /// <summary>
+    /// The <see cref="PlayerMovementBody"/> component attached to the <see cref="Player"/>. <br/>
+    /// Handles movement and physics interactions.
+    /// </summary>
     public static PlayerMovementBody MovementBody { get; private set; }
+    /// <summary>
+    /// The <see cref="CapsuleCollider"/> component attached to the <see cref="Player"/>. <br/>
+    /// </summary>
     public static CapsuleCollider Collider { get; private set; }
+    /// <summary>
+    /// The <see cref="PlayerController"/> component attached to the <see cref="Player"/>. <br/>
+    /// Handles player input and control.
+    /// </summary>
     public static PlayerController Controller { get; private set; }
+    /// <summary>
+    /// The <see cref="PlayerRanged"/> component attached to the <see cref="Player"/>. <br/>
+    /// Handles ranged combat mechanics.
+    /// </summary>
     public static PlayerRanged Ranged { get; private set; }
+    /// <summary>
+    /// The <see cref="PlayerInteracter"/> component attached to the <see cref="Player"/>. <br/>
+    /// Handles interact functionality.
+    /// </summary>
     public static PlayerInteracter Interacter { get; private set; }
+    /// <summary>
+    /// The <see cref="Animator"/> component attached to the <see cref="Player"/>.
+    /// </summary>
     public static Animator Animator { get; private set; }
+    /// <summary>
+    /// The <see cref="AudioCaller"/> component attached to the <see cref="Player"/>. <br/>
+    /// Handles One-Time Sound emission from the <see cref="Player"/>.
+    /// </summary>
     public static AudioCaller Audio { get; private set; }
+    /// <summary>
+    /// The <see cref="RagdollHandler"/> component attached to the <see cref="Player"/>. <br/>
+    /// </summary>
     public static RagdollHandler RagdollHandler { get; private set; }
 
+    /// <summary>
+    /// The current world position of the <see cref="Player"/>. (At Feet.)
+    /// </summary>
     public static Vector3 Position => Transform.position;
+    /// <summary>
+    /// The current world position of the center of the <see cref="Player"/>'s <br/>
+    /// See <see cref="Collider"/>.
+    /// </summary>
+    public static Vector3 Center => Transform.position + Collider.center;
+    /// <summary>
+    /// The current Rotation of the <see cref="Player"/> as a Quaternion.
+    /// </summary>
     public static Quaternion Rotation => Transform.rotation;
+    /// <summary>
+    /// The current Forward Vector of the <see cref="Player"/>.
+    /// </summary>
     public static Vector3 Forward => Transform.forward;
+    /// <summary>
+    /// The current Rotation of the <see cref="Player"/> in Euler Angles.
+    /// </summary>
     public static Vector3 EularAngles => Transform.eulerAngles;
 
+    /// <param name="pos">The position to be compared.</param>
+    /// <returns>The distance between the <see cref="Player"/> and and a given position, such as an enemy.</returns>
     public static float DistanceFrom(Vector3 pos) => Vector3.Distance(Position, pos);
 
     #region Instance Fields
@@ -41,10 +110,14 @@ public class Player : MonoBehaviour
 
     #endregion Instance Fields
 
-
+    /// <summary>
+    /// A callback invoked when the player respawns. (Possibly Obsolete?)
+    /// </summary>
     public static Action onRespawn;
 
-
+    /// <summary>
+    /// Awake stage of the <see cref="Player"/>, saving the static references and other setup.
+    /// </summary>
     public void Awake()
     {
         GameObject = gameObject;
@@ -69,6 +142,11 @@ public class Player : MonoBehaviour
         deathTime = inDeathTime;
     }
 
+    /// <summary>
+    /// Sets the active state of the <see cref="Player"/>. <br/>
+    /// (Probably should be expanded later to allow a paused-but-still-visible state and whatnot)
+    /// </summary>
+    /// <param name="active"></param>
     public static void SetActive(bool active)
     {
         if (!Exists) return;
@@ -85,6 +163,11 @@ public class Player : MonoBehaviour
         //Audio.enabled = active;
     }
 
+    /// <summary>
+    /// Instantly moves the <see cref="Player"/> to a new position, optionally setting a new Y rotation. <br/>
+    /// </summary>
+    /// <param name="newPosition">The target position.</param>
+    /// <param name="yRot">An optional parameter for setting the Y rotation.</param>
     public static void InstantMove(Vector3 newPosition, float? yRot = null)
     {
         if (!Exists) return;
@@ -214,11 +297,13 @@ public class Player : MonoBehaviour
     }
 
 
-    public static float fallDownPitTime { get; protected set; }
-    public static float deathTime { get; protected set; }
+    static float fallDownPitTime;
+    static float deathTime;
     static CoroutinePlus deathCoroutine;
 
-
+    /// <summary>
+    /// Begins the <see cref="Player"/> death sequence.
+    /// </summary>
     public static void Death()
     {
         DeathOrPit();
@@ -240,6 +325,9 @@ public class Player : MonoBehaviour
             Gameplay.Death();
         }
     }
+    /// <summary>
+    /// Begins an altered <see cref="Player"/> death sequence for when falling into a pit.
+    /// </summary>
     public static void PitFall()
     {
         DeathOrPit();
@@ -259,7 +347,7 @@ public class Player : MonoBehaviour
             Gameplay.Respawn();
         }
     }
-    public static void DeathOrPit()
+    private static void DeathOrPit()
     {
         Vector3 targetVelocity = MovementBody.velocity;
         Audio.PlayOneShot("Death");

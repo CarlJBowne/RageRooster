@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.IO;
+using RageRooster.Systems.SaveSystem;
 using RageRooster.Systems.SaveSystem.Flags;
 using FMODUnity;
 
@@ -18,24 +19,50 @@ namespace RageRooster.RoomSystem
     [CreateAssetMenu(fileName = "Area", menuName = "ScriptableObjects/Area")]
     public class AreaAsset : ScriptableObject
     {
-        //Config Fields
+        #region Config Fields
+        /// <summary>
+        /// The Display Name of this Area, Used in UI for denoting Save File location.
+        /// </summary>
         [field: SerializeField] public string displayName { get; protected set; } = "INSERT_DISPLAY_NAME";
+        /// <summary>
+        /// The Scene containing a basic shell of the area, functioning as a 0th level-of-detail for every room in the area.
+        /// </summary>
         [field: SerializeField] public SceneReference shellScene { get; protected set; }
+        /// <summary>
+        /// The <see cref="RoomAsset"/>s that make up this Area.
+        /// </summary>
         [field: SerializeField] public List<RoomAsset> rooms { get; protected set; } = new();
 
         [field: SerializeField] public EventReference music { get; protected set; }
 
+        /// <summary>
+        /// The Dev-Defined default flags for this area. These are cloned into the active <see cref="SaveData"/> when a new game is started.
+        /// </summary>
         [field: SerializeField] public SavedFlagSet flagDefaults { get; protected set; }
+        #endregion
 
-
-        //Active Data
+        #region Active Data
+        /// <summary>
+        /// The currently active <see cref="AreaRoot"/> instance for this area found in the <see cref="shellScene"/>.
+        /// </summary>
         public AreaRoot root { get; protected set; }
 
+        /// <summary>
+        /// Gets the current state of this Area's <see cref="shellScene"/>
+        /// </summary>
         public SceneState state { get; protected set; } = SceneState.Valid;
 
+        /// <summary>
+        /// Is this the currently loaded area?
+        /// </summary>
         public bool isCurrent { get; protected set; }
+        #endregion
 
 
+        /// <summary>
+        /// Loads this area's <see cref="shellScene"/> and prepares all rooms for use.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator LoadArea()
         {
             state = SceneState.Loading;
@@ -48,8 +75,15 @@ namespace RageRooster.RoomSystem
                 PlayerMovementBody.MovingUpdateAction += rooms[i].Update;
         }
 
+        /// <summary>
+        /// Establishes a connection to the specified <see cref="AreaRoot"/>.
+        /// </summary>
         public void Connect(AreaRoot root) => this.root = root;
 
+        /// <summary>
+        /// Unloads this area's <see cref="shellScene"/> and all rooms within it.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator UnloadArea()
         {
             state = SceneState.Unloading;

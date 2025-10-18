@@ -5,6 +5,8 @@ using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 using System.IO;
+using System;
+
 
 
 
@@ -15,22 +17,45 @@ using UnityEditor;
 
 namespace RageRooster.RoomSystem
 {
+    /// <summary>
+    /// A Development-Time Asset defining a Room in the game world. <br/>
+    /// </summary>
     [CreateAssetMenu(fileName = "Room", menuName = "ScriptableObjects/Room")]
     public class RoomAsset : ScriptableObject
     {
-        //Serialized Data
+        #region Serialized Data
 
+        /// <summary>
+        /// The Display name for the room. Used in UI for denoting Save File location.
+        /// </summary>
         [field: SerializeField] public string displayName { get; protected set; } = "INSERT_DISPLAY_NAME";
+        /// <summary>
+        /// The Area Asset this Room is a part of.
+        /// </summary>
         [field: SerializeField] public AreaAsset area { get; protected set; }
-        [field: SerializeField] public Vector3 globalCenter { get; protected set; }
+
+        [field: SerializeField, Obsolete("Not Necessary.")] public Vector3 globalCenter { get; protected set; }
+        /// <summary>
+        /// The Scene Asset containing the contents of this Room.
+        /// </summary>
         [field: SerializeField] public SceneReference scene { get; protected set; }
         [field: SerializeField] public RoomLOD lod { get; protected set; }
 
+        /// <summary>
+        /// The list of Entrance points into this room. The Player's position to these entrances is compared every few frames to determine when to load/unload the room.
+        /// </summary>
         [field: SerializeField] public List<RoomEntrance.Data> entrances { get; protected set; } = new();
 
+        #endregion
 
-        //Active Data
+        #region Active Data
+        /// <summary>
+        /// The Active <see cref="RoomRoot" attached to the scene./>
+        /// </summary>
         public RoomRoot root { get; protected set; }
+        /// <summary>
+        /// The possible states a room can be in.
+        /// </summary>
         public enum RoomState
         {
             Null = -1,
@@ -41,15 +66,26 @@ namespace RageRooster.RoomSystem
             Present,
             Current
         }
+        /// <summary>
+        /// The current working state of this room.
+        /// </summary>
         public RoomState state { get; protected set; } = RoomState.Null;
 
-
+        /// <summary>
+        /// The current ID of the LOD instance being shown. Currently only supports one LOD level.
+        /// </summary>
         public int currentLOD { get; protected set; } = -1;
+        #endregion
 
-
+        /// <summary>
+        /// Establishes a connection to the specified room root.
+        /// </summary>
+        /// <param name="root">The <see cref="RoomRoot"/> instance representing the room to connect to. Cannot be null.</param>
         public void Connect(RoomRoot root) => this.root = root;
 
-        
+        /// <summary>
+        /// Enters the current room.
+        /// </summary>
         public void Enter() => RoomManager.EnterRoom(this);
         internal void _Enter()
         {
@@ -60,7 +96,9 @@ namespace RageRooster.RoomSystem
             state = RoomState.Present;
         }
 
-
+        /// <summary>
+        /// Updates the state of the room based on the player's position and the current room state.
+        /// </summary>
         public void Update()
         {
             if (state is RoomState.Current or RoomState.Unloading or RoomState.Loading) return;
@@ -147,12 +185,18 @@ namespace RageRooster.RoomSystem
 
 
 
-
+        /// <summary>
+        /// Prepares this specific room as the end-destination of the current transfer.
+        /// </summary>
         public IEnumerator PrepEnter()
         {
             yield return SceneLoad();
             state = RoomState.Current;
         }
+        /// <summary>
+        /// Prepares this room as a room in the target area of the current transfer. <br/>
+        /// If the player is within load range, fully loads the room.
+        /// </summary>
         public IEnumerator PrepSurrounding()
         {
             if (this == RoomManager.currentRoom) yield break;
@@ -178,7 +222,9 @@ namespace RageRooster.RoomSystem
 
 
 
-
+        /// <summary>
+        /// Loads the full scene for this room. 
+        /// </summary>
         public IEnumerator SceneLoad()
         {
             if (state >= RoomState.Loading) yield break;
@@ -189,6 +235,9 @@ namespace RageRooster.RoomSystem
 
             state = RoomState.Present;
         }
+        /// <summary>
+        /// Unloads the full scene for this room.
+        /// </summary>
         public IEnumerator SceneUnload()
         {
             if (state <= RoomState.Unloading) yield break;
@@ -199,7 +248,10 @@ namespace RageRooster.RoomSystem
             state = RoomState.LODS;
         }
 
-
+        /// <summary>
+        /// Completely unloads this room, includin both the scene and any LOD instances.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator CompleteUnload()
         {
             if (state > RoomState.Present)
@@ -226,6 +278,9 @@ namespace RageRooster.RoomSystem
             state = RoomState.Null;
         }
 
+        /// <summary>
+        /// A Level-of-Detail instance for a room, to be loaded when the player is within a certain range of any of the room's entrances. <br/>
+        /// </summary>
         [System.Serializable]
         public class RoomLOD
         {
