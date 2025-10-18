@@ -465,7 +465,7 @@ namespace RageRooster.RoomSystem
 
                 room.displayName = name;
                 room.area = area;
-                room.scene = new(AssetDatabase.LoadAssetAtPath<Object>(scenePath));
+                room.scene = new(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(scenePath));
                 EditorUtility.SetDirty(room);
                 area.rooms.Add(room);
                 EditorUtility.SetDirty(area);
