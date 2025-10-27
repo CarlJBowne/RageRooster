@@ -11,7 +11,7 @@ public abstract class PlayerStateBehavior : StateBehavior
 
     protected override void OnSetup()
     {
-        Machine = base.Machine as PlayerStateMachine;
+        Machine = base.GetComponentFromMachine as PlayerStateMachine;
         playerMovementBody = Machine.body;
         playerController = Machine.controller;
     }

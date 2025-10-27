@@ -54,7 +54,7 @@ public class DistanceAttackChooserBB : StateBehavior
 
     public void DoAttack()
     {
-        if (Machine.SignalManager.GetCurrentNode().Locked) return;
+        if (GetComponentFromMachine.SignalManager.GetCurrentNode().Locked) return;
 
         float diceRoll = Random.Range(0f, distances[currentDistance].attacksRandLength);
 
@@ -68,6 +68,6 @@ public class DistanceAttackChooserBB : StateBehavior
             passedChances += distances[currentDistance].attacks[i].chance;
         }
 
-        Machine.SendSignal(new(distances[currentDistance].attacks[i].signalName, 0));
+        GetComponentFromMachine.SendSignal(new(distances[currentDistance].attacks[i].signalName, 0));
     }
 }

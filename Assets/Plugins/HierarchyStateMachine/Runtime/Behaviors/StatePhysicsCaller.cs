@@ -23,8 +23,8 @@ namespace SLS.StateMachineH
         /// </summary>
         protected override void OnAwake()
         {
-            collisions = Machine.StateHolder.GetComponentsInChildren<IStateBehaviorPhysicsCollision>();
-            triggers = Machine.StateHolder.GetComponentsInChildren<IStateBehaviorPhysicsTrigger>();
+            collisions = GetComponentFromMachine.StateHolder.GetComponentsInChildren<IStateBehaviorPhysicsCollision>();
+            triggers = GetComponentFromMachine.StateHolder.GetComponentsInChildren<IStateBehaviorPhysicsTrigger>();
         }
 
         /// <summary>

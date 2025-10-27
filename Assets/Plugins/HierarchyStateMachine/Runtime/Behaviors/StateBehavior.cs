@@ -16,7 +16,7 @@ namespace SLS.StateMachineH
         /// The <see cref="StateMachine"/> owning this behavior. Likely the most important field you'll be referencing a lot.  
         /// Override with the "new" keyword with an expression like "=> M as MyStateMachine" to get a custom <see cref="StateMachine"/>.  
         /// </summary>  
-        [field: SerializeField, HideInInspector] public StateMachine Machine { get; internal set; }
+        [field: SerializeField, HideInInspector] public StateMachine GetComponentFromMachine { get; internal set; }
 
         /// <summary>  
         /// The current <see cref="StateMachineH.State"/>. Useful for referencing this SubObject.  
@@ -26,12 +26,12 @@ namespace SLS.StateMachineH
         /// <summary>  
         /// An indirection to access the <see cref="StateMachine"/>'s <see cref="GameObject"/> property.  
         /// </summary>  
-        public new GameObject gameObject => Machine.gameObject;
+        public new GameObject gameObject => GetComponentFromMachine.gameObject;
 
         /// <summary>  
         /// An indirection to access the <see cref="StateMachine"/>'s <see cref="Transform"/> property.  
         /// </summary>  
-        public new Transform transform => Machine.transform;
+        public new Transform transform => GetComponentFromMachine.transform;
 
         /// <summary>  
         /// Sets up the <see cref="StateBehavior"/> and its serialized references with the specified <see cref="State"/> and marks it dirty if required.  
@@ -41,7 +41,7 @@ namespace SLS.StateMachineH
         public void Setup(State @state, bool makeDirty = false)
         {
             this.State = @state;
-            Machine = State != null
+            GetComponentFromMachine = State != null
                 ? @state.Machine
                 : GetComponent<StateMachine>();
 
@@ -62,10 +62,10 @@ namespace SLS.StateMachineH
         /// <br /> Resets the <see cref="StateBehavior"/> to its default state.  
         /// <br /> Ensures the <see cref="State"/> and <see cref="StateMachine"/> references are properly initialized.  
         /// </summary>  
-        protected void Reset()
+        protected virtual void Reset()
         {
             if (State == null) State = GetComponent<State>();
-            if (State != null) Machine = State.Machine;
+            if (State != null) GetComponentFromMachine = State.Machine;
         }
 
         /// <summary>  
@@ -106,7 +106,7 @@ namespace SLS.StateMachineH
         /// </summary>  
         /// <typeparam name="C">The type of <see cref="Component"/> to retrieve.</typeparam>  
         /// <returns>The <see cref="Component"/> of type <typeparamref name="C"/>.</returns>  
-        public C GetComponentFromMachine<C>() where C : Component => Machine.GetComponent<C>();
+        public C GetComponentFromMachine<C>() where C : Component => GetComponentFromMachine.GetComponent<C>();
 
         /// <summary>  
         /// Attempts to retrieve a <see cref="Component"/> from the associated <see cref="StateMachine"/>.  
@@ -114,7 +114,7 @@ namespace SLS.StateMachineH
         /// <typeparam name="C">The type of <see cref="Component"/> to retrieve.</typeparam>  
         /// <param name="result">The retrieved <see cref="Component"/>, if found.</param>  
         /// <returns>True if the <see cref="Component"/> was found; otherwise, false.</returns>  
-        public bool TryGetComponentFromMachine<C>(out C result) where C : Component => Machine.TryGetComponent(out result);
+        public bool TryGetComponentFromMachine<C>(out C result) where C : Component => GetComponentFromMachine.TryGetComponent(out result);
 
         /// <summary>  
         /// Gets whether the <see cref="StateMachineH.State"> is currently active. 

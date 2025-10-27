@@ -38,14 +38,14 @@ namespace SLS.StateMachineH
         /// Attempts to get a <see cref="SignalNode"/> from the active state.  
         /// </summary>  
         /// <returns>The current signal node.</returns>  
-        public SignalNode GetCurrentNode() => Machine.CurrentState.GetComponent<SignalNode>();
+        public SignalNode GetCurrentNode() => GetComponentFromMachine.CurrentState.GetComponent<SignalNode>();
 
         /// <summary>  
         /// Attempts to retrieve the current signal node from the active state.  
         /// </summary>  
         /// <param name="signalNode">The retrieved signal node, if found.</param>  
         /// <returns>True if the signal node was found; otherwise, false.</returns>  
-        public bool TryCurrentNode(out SignalNode signalNode) => Machine.CurrentState.TryGetComponent(out signalNode);
+        public bool TryCurrentNode(out SignalNode signalNode) => GetComponentFromMachine.CurrentState.TryGetComponent(out signalNode);
 
         /// <summary>  
         /// Fires a signal, invoking its associated event or queuing it if necessary.  
