@@ -12,7 +12,7 @@ namespace SLS.StateMachineH.Timelines
 {
     public class TimedEvents : StateTimeline
     {
-        public float timelineLength;
+        public float loopLength;
 
         [System.Serializable]
         public struct TimedEvent
@@ -31,7 +31,7 @@ namespace SLS.StateMachineH.Timelines
                 if (WasPointPassed(events[i].time))
                     events[i].output?.Invoke();
             }
-            if(timelineLength > 0f && elapsedTime >= timelineLength) elapsedTime %= timelineLength;
+            if(loopLength > 0f && elapsedTime >= loopLength) elapsedTime %= loopLength;
         }
     }
 }
