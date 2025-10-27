@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SLS.StateMachineH.SerializedDictionary
 {
-    [CustomPropertyDrawer(typeof(SignalSet), true)]
+    [CustomPropertyDrawer(typeof(Signals.SignalSet), true)]
     public class SignalSetDrawer : SerializedDictionaryDrawer
     {
         protected override void KeyValuePairDrawer(SerializedProperty item, Rect position, int id, bool isDupe)

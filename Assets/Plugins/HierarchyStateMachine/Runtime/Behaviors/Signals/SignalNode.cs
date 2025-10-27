@@ -7,7 +7,7 @@ using EVENT = UnityEngine.Events.UnityEvent;
 #endif
 
 
-namespace SLS.StateMachineH
+namespace SLS.StateMachineH.Signals
 {
     /// <summary>  
     /// Represents a node in the <see cref="StateMachine"/> that can recieve signals and enact events.  

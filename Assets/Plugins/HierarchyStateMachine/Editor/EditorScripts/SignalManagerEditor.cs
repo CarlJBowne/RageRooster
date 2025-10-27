@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace SLS.StateMachineH
+namespace SLS.StateMachineH.Signals
 {
     [CustomEditor(typeof(SignalManager))]
     public class SignalManagerEditor : Editor

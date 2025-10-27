@@ -17,7 +17,7 @@ public class PlayerStateAnimator : StateAnimator
     protected override void OnAwake()
     {
         base.OnAwake();
-        controller = GetComponentFromMachine.GetComponent<PlayerController>();
+        controller = Machine.GetComponent<PlayerController>();
     }
 
     protected override void OnEnter(State prev, bool isFinal)

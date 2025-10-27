@@ -11,7 +11,7 @@ using EVENT = UnityEngine.Events.UnityEvent;
 
 using SLS.StateMachineH.SerializedDictionary;
 
-namespace SLS.StateMachineH
+namespace SLS.StateMachineH.Signals
 {
     /// <summary>  
     /// Represents a dictionary of signals, where each signal is associated with a unique string key.  

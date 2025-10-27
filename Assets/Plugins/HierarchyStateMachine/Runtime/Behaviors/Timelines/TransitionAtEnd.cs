@@ -10,8 +10,7 @@ namespace SLS.StateMachineH.Timelines
 
         protected override void OnTick(float delta)
         {
-            if(WasPointPassed(endTime)) 
-                targetState.Enter();
+            if(elapsedTime >= endTime) targetState.Enter();
         }
     }
 }
