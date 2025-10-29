@@ -29,13 +29,14 @@ namespace SLS.StateMachineH.Timelines
 
         protected override void OnTick(float delta)
         {
-            if(Mathf.Approximately(influenceChange, 0))
+            if(!Mathf.Approximately(influenceChange, 0))
             {
                 influence += influenceChange * delta;
                 if(influence is >= 1f or <= 0f)
                 {
                     influence = Mathf.Clamp01(influence);
                     influenceChange = 0f;
+                    if (influence == 0) End();
                 }   
             } 
 

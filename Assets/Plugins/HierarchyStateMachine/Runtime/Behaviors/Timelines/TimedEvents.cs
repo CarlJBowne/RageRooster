@@ -12,8 +12,6 @@ namespace SLS.StateMachineH.Timelines
 {
     public class TimedEvents : StateTimeline
     {
-        public float loopLength;
-
         [System.Serializable]
         public struct TimedEvent
         {
@@ -22,7 +20,8 @@ namespace SLS.StateMachineH.Timelines
             [System.NonSerialized] public bool hasFired;
         }
         public List<TimedEvent> events;
-
+        public TimedEvent LastEvent;
+        public bool loops;
 
         protected override void OnTick(float delta)
         {
@@ -31,7 +30,11 @@ namespace SLS.StateMachineH.Timelines
                 if (WasPointPassed(events[i].time))
                     events[i].output?.Invoke();
             }
-            if(loopLength > 0f && elapsedTime >= loopLength) elapsedTime %= loopLength;
+            if (WasPointPassed(LastEvent.time))
+            {
+                LastEvent.output?.Invoke();
+                if(loops) elapsedTime %= LastEvent.time;
+            }
         }
     }
 }

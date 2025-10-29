@@ -11,7 +11,7 @@ namespace SLS.StateMachineH.Timelines
     [RequireComponent(typeof(State))]
     public class StateTimeline : StateBehavior
     {
-        protected StateTimelineManager timeline;
+        [SerializeField] protected StateTimelineManager timeline;
 
         protected override void Reset()
         {
