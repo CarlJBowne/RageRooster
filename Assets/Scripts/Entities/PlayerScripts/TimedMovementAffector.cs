@@ -9,19 +9,18 @@ namespace SLS.StateMachineH.Timelines
     public class TimedMovementAffector : StateTimeline
     {
         public float influenceFadeTime = .5f;
-        public AnimationCurve minForwardMovement = Curve(0);
-        public AnimationCurve maxForwardMovement = Curve(0);
-        public AnimationCurve speedChange = Curve(15);
-        public AnimationCurve turnability = Curve(10);
-        public AnimationCurve verticalAcceleration = Curve(0);
-        public float terminalVelocity = 98.1f;
-        public AnimationCurve setVerticalInfluence = Curve(0);
-        public AnimationCurve setVerticalVelocity = Curve(0);
-        public AnimationCurve sidewaysMovement = Curve(0);
+        public AnimationCurve minForwardMovementCurve = Curve(0);
+        public AnimationCurve maxForwardMovementCurve = Curve(0);
+        public AnimationCurve speedChangeCurve = Curve(15);
+        public AnimationCurve turnabilityCurve = Curve(10);
+        public AnimationCurve verticalAccelerationCurve = Curve(0);
+        public float terminalVelocityCurve = 98.1f;
+        public AnimationCurve setVerticalInfluenceCurve = Curve(0);
+        public AnimationCurve setVerticalVelocityCurve = Curve(0);
+        public AnimationCurve sidewaysMovementCurve = Curve(0);
         public float loopTime = 0f;
         private static AnimationCurve Curve(float input) => new(new Keyframe(0, input));
 
-        PlayerMovementBody body;
         float influence;
         float influenceChange = 0f;
 
@@ -42,28 +41,65 @@ namespace SLS.StateMachineH.Timelines
 
             if(influence <= 0f) return;
 
-            SampleCurve(minForwardMovement, out float minForwardMovementV);
-            SampleCurve(maxForwardMovement, out float maxForwardMovementV);
-            SampleCurve(speedChange, out float speedChangeV);
-            SampleCurve(turnability, out float turnabilityV);
-            SampleCurve(verticalAcceleration, out float verticalAccelerationV);
-            SampleCurve(setVerticalInfluence, out float setVerticalInfluenceV);
-            SampleCurve(setVerticalVelocity, out float setVerticalVelocityV);
-            SampleCurve(sidewaysMovement, out float sidewaysMovementV);
+            //Horizontal Movement
+
+            Vector3 output = Player.MovementBody.velocity;
+
+            SampleCurve(minForwardMovementCurve, out float minForwardMovement);
+            SampleCurve(maxForwardMovementCurve, out float maxForwardMovement);
+            SampleCurve(speedChangeCurve, out float speedChange);
+            SampleCurve(turnabilityCurve, out float turnability);
+            SampleCurve(sidewaysMovementCurve, out float sidewaysMovement);
+
+            Vector3 controlVector = Player.Controller.camAdjustedMovement;
+
+            float targetSpeed = Player.MovementBody.CurrentSpeed;
+
+            if(turnability > 0) Player.MovementBody.DirectionSet(controlVector.normalized, turnability * influence);
+
+            Vector3 forwardDirection = Player.Transform.forward;
+            Vector3 rightDirection = Player.Transform.right;
+
+            targetSpeed = controlVector.sqrMagnitude > 0
+                ? targetSpeed.MoveTowards(controlVector.magnitude * speedChange * (Time.deltaTime * 50), maxForwardMovement)
+                : targetSpeed.MoveTowards(speedChange * (Time.deltaTime * 50), minForwardMovement);
+
+            if (influence == 1)
+            {
+                Player.MovementBody.CurrentSpeed = targetSpeed;
+                output = (forwardDirection * targetSpeed) + (rightDirection * sidewaysMovement) + (Vector3.up * output.y);
+            }
+            else
+            {
+                Player.MovementBody.CurrentSpeed = Mathf.Lerp(Player.MovementBody.CurrentSpeed, targetSpeed, influence);
+
+                output = new()
+                {
+                    x = Mathf.Lerp(output.x, (forwardDirection.x * targetSpeed) + (rightDirection.x * sidewaysMovement), influence),
+                    y = output.y,
+                    z = Mathf.Lerp(output.z, (forwardDirection.z * targetSpeed) + (rightDirection.z * sidewaysMovement), influence)
+                };
+            }
 
 
-            float Y = body.velocity.y;
-            if(!Mathf.Approximately(0, verticalAccelerationV))
-                Y += verticalAccelerationV * influence * delta;
-            if(setVerticalInfluenceV > 0)
-                Y = Mathf.Lerp(Y, setVerticalVelocityV, setVerticalInfluenceV * influence * delta);
-            
-            
 
+            //Vertical Movement
+
+            SampleCurve(verticalAccelerationCurve, out float verticalAcceleration);
+            SampleCurve(setVerticalInfluenceCurve, out float setVerticalInfluence);
+            SampleCurve(setVerticalVelocityCurve, out float setVerticalVelocity);
+
+            float Y = Player.MovementBody.velocity.y;
+            if (!Mathf.Approximately(0, verticalAcceleration))
+                Y += verticalAcceleration * influence * delta;
+            if (setVerticalInfluence > 0)
+                Y = Mathf.Lerp(Y, setVerticalVelocity, setVerticalInfluence * influence * delta);
+
+
+            Player.MovementBody.VelocitySet(output.x, output.y, output.z);
 
         }
 
-        private float SampleCurve(AnimationCurve C) => C.Evaluate(loopTime <= 0 ? elapsedTime : elapsedTime % loopTime);
         private void SampleCurve(AnimationCurve C, out float res) => res = C.Evaluate(loopTime <= 0 ? elapsedTime : elapsedTime % loopTime);
 
 

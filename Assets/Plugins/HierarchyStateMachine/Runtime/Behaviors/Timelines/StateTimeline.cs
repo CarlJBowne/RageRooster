@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SLS.StateMachineH
+namespace SLS.StateMachineH.Timelines
 {
     /// <summary>
     /// A <see cref="StateBehavior"/> for Behaviors that are meant to operate differently over a set time.
