@@ -169,12 +169,7 @@ namespace RageRooster.Systems
             Routine().Begin(Gameplay.Instance);
             IEnumerator Routine()
             {
-                bool existingSameSecondary = false;
-                if(Secondary != null)
-                {
-                    Secondary.description.getID(out var ID);
-                    if (ID == input.Guid) existingSameSecondary = true;
-                }
+                bool existingSameSecondary = Secondary != null && Secondary.description == input.description;
 
                 if (!existingSameSecondary)
                 {

@@ -1296,6 +1296,27 @@ namespace FMOD.Studio
         }
 
         #endregion
+
+        public bool Matches(FMODUnity.EventReference reference)
+        {
+            var thisIDResult = getID(out GUID id);
+            if (thisIDResult is not RESULT.OK) return false;
+            return reference.Guid == id;
+        }
+
+
+        public static bool operator ==(EventDescription a, EventDescription b)
+        {
+            if(a.getID(out GUID ida) != RESULT.OK) return false;
+            if(b.getID(out GUID idb) != RESULT.OK) return false;
+            return ida == idb;
+        }
+
+        public static bool operator !=(EventDescription a, EventDescription b) => !(a == b);
+
+        public override bool Equals(object obj) => obj is EventDescription other ? this == other : false;
+
+        public override int GetHashCode() => handle.GetHashCode();
     }
 
     public struct EventInstance
@@ -1576,6 +1597,15 @@ namespace FMOD.Studio
         }
 
         #endregion
+
+        public EventDescription description
+        {
+            get
+            {
+                getDescription(out EventDescription desc);
+                return desc;
+            }
+        }
     }
 
     public struct Bus
