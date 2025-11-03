@@ -8,6 +8,7 @@ namespace RageRooster.RoomSystem
 {
     /// <summary>
     /// The Root component for an Area. Attached to the root <see cref="GameObject"/> of a <see cref="RoomAsset.scene"/>
+    /// <br/> If a Room is created via the File/CreateRoom button, this component is automatically setup.
     /// </summary>
     [DefaultExecutionOrder(ExecutionOrders.Room)]
     public class RoomRoot : MonoBehaviour
@@ -17,7 +18,8 @@ namespace RageRooster.RoomSystem
         /// </summary>
         [field: SerializeField] public RoomAsset asset { get; protected set; }
         /// <summary>
-        /// The defined <see cref="SpawnPoint"/>s available in this room."/>
+        /// The defined <see cref="SpawnPoint"/>s available in this room.
+        /// <br/> Automatically populated upon saving the scene in the editor.
         /// </summary>
         [field: SerializeField] public SpawnPoint[] spawns { get; protected set; }
 
@@ -78,13 +80,6 @@ namespace RageRooster.RoomSystem
                 This.asset = room;
                 UnityEditor.EditorUtility.SetDirty(This);
             }
-
-
-
-
-
-
-
 
             [InitializeOnLoad]
             public static class RoomRootSceneHook

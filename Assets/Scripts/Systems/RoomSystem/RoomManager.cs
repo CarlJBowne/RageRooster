@@ -10,27 +10,72 @@ using UnityEngine;
 
 namespace RageRooster.RoomSystem
 {
+    /// <summary>
+    /// Global Gameplay System for managing Room transitions, current Room/Area tracking, and related functionality.
+    /// </summary>
     public class RoomManager : SingletonMonoBasic<RoomManager>
     {
+        /// <summary>
+        /// The Currently active Area in the game world. <br/>
+        /// </summary>
         public static AreaAsset currentArea { get; private set; }
+        /// <summary>
+        /// The Room the player is currently located in. <br/>
+        /// </summary>
         public static RoomAsset currentRoom { get; private set; }
 
+        /// <summary>
+        /// If the game is currently in the process of transitioning between Rooms/Areas. <br/>
+        /// </summary>
         public static bool currentlyTransitioning;
 
+        /// <summary>
+        /// The target Destination for the next Room transition. <br/>
+        /// </summary>
         public static Destination destination;
+        /// <summary>
+        /// Manual override to force a full Deload & Load transition even if too/from the same area or room.
+        /// </summary>
         public static bool forceFullTransition = false;
 
+        /// <summary>
+        /// A callback Action invoked before the <see cref="FadeOutRoutine"/> begins.
+        /// </summary>
         public static Action PreFadeOutAction;
+        /// <summary>
+        /// The <see cref="IEnumerator"/> routine that performs the Fade Out animation.
+        /// </summary>
         public static IEnumerator FadeOutRoutine;
+        /// <summary>
+        /// A callback Action invoked after the <see cref="FadeOutRoutine"/> completes.
+        /// </summary>
         public static Action PostFadeOutAction;
+        /// <summary>
+        /// An <see cref="IEnumerator"/> routine that runs in the middle of the transition, after unloading/loading but before Fade In.
+        /// </summary>
         public static IEnumerator MidTransitionRoutine;
+        /// <summary>
+        /// A callback Action invoked before the <see cref="FadeInRoutine"/> begins and after the <see cref="MidTransitionRoutine"/>.
+        /// </summary>
         public static Action PreFadeInAction;
+        /// <summary>
+        /// The <see cref="IEnumerator"/> routine that performs the Fade In animation.
+        /// </summary>
         public static IEnumerator FadeInRoutine;
+        /// <summary>
+        /// A callback Action invoked after the <see cref="FadeInRoutine"/> completes.
+        /// </summary>
         public static Action PostFadeInAction;
 
+        /// <summary>
+        /// Begins a Room transition to the specified <see cref="Destination"/>.
+        /// </summary>
         public static void StartTransition(Destination destination = default)
             => Transition(destination).Begin(Overlay.OverMenus);
 
+        /// <summary>
+        /// The central Transition Routine run when the player transitions between Rooms/Areas.
+        /// </summary>
         public static IEnumerator Transition(Destination destination = default)
         {
             if (!destination.IsValid()) destination = RoomManager.destination;
@@ -102,6 +147,10 @@ namespace RageRooster.RoomSystem
             ResetTransitionData();
         }
 
+        /// <summary>
+        /// Resets all Transition-related data to default values.
+        /// </summary>
+        /// <param name="resetDestination"></param>
         public static void ResetTransitionData(bool resetDestination = true)
         {
             if (resetDestination) destination = Destination.Null;
@@ -114,7 +163,10 @@ namespace RageRooster.RoomSystem
             forceFullTransition = false;
         }
 
-
+        /// <summary>
+        /// Tell the system that the player has officially entered a given room. (Does not handle transitions.)
+        /// </summary>
+        /// <param name="nextRoom">The target room to enter</param>
         public static void EnterRoom(RoomAsset nextRoom)
         {
             if (currentRoom != null) currentRoom._Exit();
@@ -122,7 +174,9 @@ namespace RageRooster.RoomSystem
             currentRoom._Enter();
         }
 
-
+        /// <summary>
+        /// Set-Only property to quickly and succinctly set or not set all optional Transition-related data in one go.
+        /// </summary>
         public static TransitionData TransitionStyle
         {
             set

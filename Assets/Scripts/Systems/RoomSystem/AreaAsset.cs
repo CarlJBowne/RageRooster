@@ -16,6 +16,9 @@ using UnityEditor.SceneManagement;
 
 namespace RageRooster.RoomSystem
 {
+    /// <summary>
+    /// A Development-Time Asset defining an Area in the game world. <br/>
+    /// </summary>
     [CreateAssetMenu(fileName = "Area", menuName = "ScriptableObjects/Area")]
     public class AreaAsset : ScriptableObject
     {
@@ -33,6 +36,9 @@ namespace RageRooster.RoomSystem
         /// </summary>
         [field: SerializeField] public List<RoomAsset> rooms { get; protected set; } = new();
 
+        /// <summary>
+        /// The default music to play while in this area.
+        /// </summary>
         [field: SerializeField] public EventReference music { get; protected set; }
 
         /// <summary>

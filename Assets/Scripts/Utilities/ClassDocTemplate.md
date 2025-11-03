@@ -33,6 +33,18 @@ Type: `|Field_Type|`
 ## Protected Methods
 
 
+## Comparisons / Conversions
+
+// conversion operators and other unary operators
+### `|Source Name|` -> `|Target Name|`
+> *|Method Description|*
+---
+
+// Comparison operators and other binary operators
+### `|Left Name|` |Operator| `|Right Name|`
+**Returns:** `|Return Type|`
+> *|Method Description|*
+---
 
 
 //NOTES:
@@ -41,5 +53,7 @@ Type: `|Field_Type|`
 //Everything using <see/> should include only the name of the class and not anything preceding it, and should be surrounding by `s for code formatting.
 //Nested Types can be included at the bottom as long as they are very small in size.
 //If a parameter does not have a default value, do not include the =.
-//Don't include Protected Fields or Protected Methods if there are none.
+//Any section headed by a Heading 2 that has no content should be omitted.
 //If a Field is actually a Property, add *(readonly)* or *(protected readonly)* after the type based on its accessibility.
+//Do not put a psudeocode plan at the beginning.
+//Do not include anything denoting the parameters of Comparisons / Conversions, what the method does should be described in the method description.

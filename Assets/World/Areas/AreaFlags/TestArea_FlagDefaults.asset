@@ -13,7 +13,42 @@ MonoBehaviour:
   m_Name: TestArea_FlagDefaults
   m_EditorClassIdentifier: 
   flags:
-    serializedList: []
+    serializedList:
+    - Key: BoolFlag
+      Value:
+        rid: 8683685112063197321
+    - Key: IntFlag
+      Value:
+        rid: 8683685112063197325
+    - Key: FloatFlag
+      Value:
+        rid: 8683685112063197326
+    - Key: Vector3Flag
+      Value:
+        rid: 8683685112063197327
+    - Key: StringFlag
+      Value:
+        rid: 8683685112063197328
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 8683685112063197321
+      type: {class: Flag/Boolean, ns: RageRooster.Systems.SaveSystem.Flags, asm: Assembly-CSharp}
+      data:
+        value: 1
+    - rid: 8683685112063197325
+      type: {class: Flag/Integer, ns: RageRooster.Systems.SaveSystem.Flags, asm: Assembly-CSharp}
+      data:
+        value: 0
+    - rid: 8683685112063197326
+      type: {class: Flag/Float, ns: RageRooster.Systems.SaveSystem.Flags, asm: Assembly-CSharp}
+      data:
+        value: 123.456
+    - rid: 8683685112063197327
+      type: {class: Flag/Vector3, ns: RageRooster.Systems.SaveSystem.Flags, asm: Assembly-CSharp}
+      data:
+        value: {x: 1.1, y: 2.2, z: 3.3}
+    - rid: 8683685112063197328
+      type: {class: Flag/String, ns: RageRooster.Systems.SaveSystem.Flags, asm: Assembly-CSharp}
+      data:
+        value: Testing. . .

@@ -7,6 +7,7 @@ namespace RageRooster.RoomSystem
 {
     /// <summary>
     /// An entrance to a Room. MonoBehavior that triggers entering the Room when colliding with the Player.
+    /// <br/>A pure-data representation of this entrance, <see cref="RoomEntrance.Data"/> is stored in a <see cref="RoomAsset"/> for runtime loading.
     /// </summary>
     public class RoomEntrance : MonoBehaviour
     {

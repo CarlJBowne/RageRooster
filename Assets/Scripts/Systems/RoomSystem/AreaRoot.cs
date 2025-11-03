@@ -6,6 +6,7 @@ namespace RageRooster.RoomSystem
 {
     /// <summary>
     /// The Root component for an Area. Attached to the root <see cref="GameObject"/> of a <see cref="AreaAsset.shellScene"/>
+    /// <br/> If an Area is created via the File/CreateRoom button, this component is automatically setup.
     /// </summary>
     [DefaultExecutionOrder(ExecutionOrders.Area)]
     public class AreaRoot : MonoBehaviour
