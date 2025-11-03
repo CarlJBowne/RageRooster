@@ -7,26 +7,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using RageRooster.Systems.ObjectPool;
+using FMODUnity;
+using RageRooster.Systems;
 
 public class TestScript : MonoBehaviour
 {
-    public ObjectPools.Client client;
+    public EventReference secondMusic;
 
-
-
-    private void Awake()
+    private void OnTriggerEnter(Collider other)
     {
-        client.Initialize();
-    }
-
-    [Button]
-    public void Spawn()
-    {
-        var obj = client.Pump();
-        if (obj != null)
+        if(other == Player.Collider)
         {
-            obj.transform.position = transform.position + Vector3.up * 2;
-            obj.GetComponent<Rigidbody>().AddForce(Vector3.up * 5, ForceMode.Impulse);
+            Music.BeginSecondaryMusic(secondMusic);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if(other == Player.Collider)
+        {
+            Music.ReturnToPrimaryMusic();
         }
     }
 }

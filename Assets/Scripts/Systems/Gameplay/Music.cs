@@ -1,10 +1,12 @@
 ﻿using FMOD.Studio;
 using FMODUnity;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace RageRooster.Systems
 {
@@ -84,20 +86,42 @@ namespace RageRooster.Systems
             /// </summary>
             public void Pause()
             {
-                if (!playing) return;
-                if(paused) return;
-                instance.setPaused(true);
-                paused = true;
+                if (!playing || paused) return;
+
+                Enum().Begin(Gameplay.Instance);
+                IEnumerator Enum()
+                {
+                    float V = 1f;
+                    while (V > 0f)
+                    {
+                        instance.setVolume(V);
+                        V -= 0.1f * Time.unscaledDeltaTime;
+                        yield return null;
+                    }
+                    instance.setPaused(true);
+                    paused = true;
+                }
             }
             /// <summary>
             /// Resumes the playing of this music <see cref="Channel"/>. (Unfinished, Investigate how to achieve later.)
             /// </summary>
             public void UnPause()
             {
-                if (!playing) return;
-                if (!paused) return;
-                instance.setPaused(false);
-                paused = false;
+                if (!playing || !paused) return;
+
+                Enum().Begin(Gameplay.Instance);
+                IEnumerator Enum()
+                {
+                    float V = 0f;
+                    while (V > 1f)
+                    {
+                        instance.setVolume(V);
+                        V += 0.1f * Time.unscaledDeltaTime;
+                        yield return null;
+                    }
+                    instance.setPaused(false);
+                    paused = false;
+                }
             }
         }
 
@@ -105,7 +129,7 @@ namespace RageRooster.Systems
         /// The primary Music channel running for the current area.
         /// </summary>
         public static Channel Primary { get; private set; }
-        //public static Channel Secondary { get; private set; }
+        public static Channel Secondary { get; private set; }
 
         /// <summary>
         /// Begin / Switch a new primary music track.
@@ -125,8 +149,8 @@ namespace RageRooster.Systems
         {
             Primary?.FadeOut();
             Primary = null;
-            //Secondary?.FadeOut();
-            //Secondary = null;
+            Secondary?.FadeOut();
+            Secondary = null;
         }
 
         /// <summary>
@@ -136,9 +160,79 @@ namespace RageRooster.Systems
         {
             Primary?.HardStop();
             Primary = null;
-            //Secondary?.HardStop();
-            //Secondary = null;
+            Secondary?.HardStop();
+            Secondary = null;
         }
+
+        public static void BeginSecondaryMusic(EventReference input)
+        {
+            Routine().Begin(Gameplay.Instance);
+            IEnumerator Routine()
+            {
+                bool existingSameSecondary = false;
+                if(Secondary != null)
+                {
+                    Secondary.description.getID(out var ID);
+                    if (ID == input.Guid) existingSameSecondary = true;
+                }
+
+                if (!existingSameSecondary)
+                {
+                    float F = 1f;
+                    Secondary = new(input);
+                    Secondary.Begin();
+                    while (F > 0f)
+                    {
+                        Primary.instance.setVolume(F);
+                        F -= Time.unscaledDeltaTime;
+                        yield return null;
+                    }
+                    Primary.instance.setVolume(0f);
+                    Primary.instance.setPaused(true);
+                }
+                else
+                {
+                    Secondary.instance.setPaused(false);
+                    float F = 1f;
+                    while (F > 0f)
+                    {
+                        Primary.instance.setVolume(F);
+                        Secondary.instance.setVolume(1 - F);
+                        F -= Time.unscaledDeltaTime;
+                        yield return null;
+                    }
+                    Primary.instance.setVolume(0f);
+                    Primary.instance.setPaused(true);
+                    Secondary.instance.setVolume(1f);
+                }
+            }
+        }
+
+        public static void ReturnToPrimaryMusic()
+        {
+            Routine().Begin(Gameplay.Instance);
+            IEnumerator Routine()
+            {
+                if (Secondary == null) yield break;
+                float F = 0f;
+                Primary.instance.setPaused(false);
+                while (F < 1f)
+                {
+                    Primary.instance.setVolume(F);
+                    Secondary.instance.setVolume(1 - F);
+                    F += Time.unscaledDeltaTime;
+                    yield return null;
+                }
+                Primary.instance.setVolume(1f);
+                Secondary.instance.setVolume(0f);
+                Secondary.instance.setPaused(true);
+            }
+        }
+
+
+
+
+
     }
 
 }
