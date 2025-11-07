@@ -1,6 +1,7 @@
 using RageRooster.Systems.SaveSystem;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace RageRooster.RoomSystem
@@ -85,6 +86,25 @@ namespace RageRooster.RoomSystem
             G.transform.localPosition = Vector3.zero;
             G.transform.localRotation = Quaternion.identity;
             spawnPoint = G.AddComponent<SpawnPoint>();
+            UnityEditor.Undo.RegisterCreatedObjectUndo(spawnPoint, "Create Room Entrance");
+        }
+
+        [UnityEditor.MenuItem("GameObject/Create Room Entrance", false, 0)]
+        public static void CreateRoomEntrance()
+        {
+            GameObject newObject = new("Room Entrance");
+            UnityEditor.Undo.RegisterCreatedObjectUndo(newObject, "Create Room Entrance");
+            RoomEntrance entrance = newObject.AddComponent<RoomEntrance>();
+            var parent = UnityEditor.Selection.activeTransform;
+            if (parent != null)
+            {
+                UnityEditor.Undo.SetTransformParent(newObject.transform, parent.transform, "Create Room Entrance");
+                newObject.transform.localPosition = Vector3.zero;
+                newObject.transform.localRotation = Quaternion.identity;
+            }
+            UnityEditor.Selection.activeGameObject = newObject;
+            newObject.AddComponent<BoxCollider>().isTrigger = true;
+            entrance.AddSpawnPoint();
         }
 #endif
 
