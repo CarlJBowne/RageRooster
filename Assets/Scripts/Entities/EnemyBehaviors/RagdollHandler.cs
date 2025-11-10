@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.InputSystem.LowLevel;
 using static UnityEngine.Rendering.DebugUI;
 
 public class RagdollHandler : Grabbable
@@ -44,8 +45,8 @@ public class RagdollHandler : Grabbable
     {
         
         health = GetComponent<EnemyHealth>();
-        SetState(EntityState.Default);
-        if(proxy) proxy.SetRagdoll(false);
+        State = EntityState.Default;
+        if (proxy) proxy.SetRagdoll(false);
         if (isPlayer)
         {
             savedLocalPos = new Vector3[ragDollColliders.Length];
@@ -68,49 +69,53 @@ public class RagdollHandler : Grabbable
         }
     }
 
-    public override void SetState(EntityState newState)
+    public override EntityState State
     {
-        if (currentState == newState) return;
-        currentState = newState;
-        GrabStateEvent?.Invoke(currentState);
-
-        switch (newState)
+        get => currentState;
+        set
         {
-            case EntityState.Default:
-                SetRagdoll(false);
-                ragDollTimer = 0;
-                nonRagdolledCollider.gameObject.layer = Layers.Enemy;
-                PlayerInteracter.UpdateGrabbables();
-                break;
-            case EntityState.Grabbed:
-                SetRagdoll(true);
-                if (advanced) ragDollColliders[0].transform.Reset(scale: false);
-                if (proxy) proxy.transform.parent.Reset(scale: false);
-                rigidBody.isKinematic = true;
-                PlayerInteracter.LostGrabbable(this);
-                break;
-            case EntityState.Thrown:
-                SetRagdoll(true);
-                break;
-            case EntityState.RagDoll:
-                SetRagdoll(true);
-                ragDollTimer = 0;
-                if (isPlayer)
-                    for (int i = 0; i < savedLocalPos.Length; i++)
-                        ragDollColliders[i].transform.localPosition = savedLocalPos[i];
-                PlayerInteracter.UpdateGrabbables();
-                break;
-            default:
-                break;
-        }
+            if (currentState == value) return;
+            currentState = value;
+            GrabStateEvent?.Invoke(currentState);
 
-        (newState switch
+            switch (value)
+            {
+                case EntityState.Default:
+                    SetRagdoll(false);
+                    ragDollTimer = 0;
+                    nonRagdolledCollider.gameObject.layer = Layers.Enemy;
+                    PlayerInteracter.UpdateGrabbables();
+                    break;
+                case EntityState.Grabbed:
+                    SetRagdoll(true);
+                    if (advanced) ragDollColliders[0].transform.Reset(scale: false);
+                    if (proxy) proxy.transform.parent.Reset(scale: false);
+                    rigidBody.isKinematic = true;
+                    PlayerInteracter.LostGrabbable(this);
+                    break;
+                case EntityState.Thrown:
+                    SetRagdoll(true);
+                    break;
+                case EntityState.RagDoll:
+                    SetRagdoll(true);
+                    ragDollTimer = 0;
+                    if (isPlayer)
+                        for (int i = 0; i < savedLocalPos.Length; i++)
+                            ragDollColliders[i].transform.localPosition = savedLocalPos[i];
+                    PlayerInteracter.UpdateGrabbables();
+                    break;
+                default:
+                    break;
+            }
+
+        (value switch
         {
             EntityState.Grabbed => grabbedEvent,
             EntityState.Thrown => thrownEvent,
             EntityState.RagDoll => bounceEvent,
             _ => defaultEvent,
         })?.Invoke();
+        }
     }
 
 

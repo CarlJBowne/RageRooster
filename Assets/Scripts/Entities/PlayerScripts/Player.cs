@@ -433,7 +433,7 @@ public class Player : MonoBehaviour
         Audio.PlayOneShot("Death");
         StateMachine.ragDollState.Enter();
         MovementBody.velocity = Vector3.zero;
-        RagdollHandler.SetState(EntityState.RagDoll);
+        RagdollHandler.State = EntityState.RagDoll;
         RagdollHandler.SetVelocity(targetVelocity * 0.75f);
         Animator.enabled = false;
     }
