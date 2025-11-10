@@ -26,20 +26,6 @@ public class SpawnPoint : MonoBehaviour
 
     [SerializeField, HideInInspector] internal RoomRoot root;
 
-#if UNITY_EDITOR
-    [Button("Play from here.")]
-    private void BeginFromHere()
-    {
-        EditorState.EditorDestination = new() 
-        {
-            room = root.asset,
-            spawnID = ID
-        };
-        UnityEditor.EditorApplication.isPlaying = true;
-    }
-#endif
-
-
     /// <summary>
     /// Places the player at this <see cref="SpawnPoint"/>'s position.
     /// </summary>
@@ -59,4 +45,28 @@ public class SpawnPoint : MonoBehaviour
         room = root.asset,
         spawnID = ID
     };
+
+
+#if UNITY_EDITOR
+    [Button("Play from here.")]
+    private void BeginFromHere()
+    {
+        EditorState.EditorDestination = new()
+        {
+            room = root.asset,
+            spawnID = ID
+        };
+        UnityEditor.EditorApplication.isPlaying = true;
+    }
+
+    [UnityEditor.MenuItem("GameObject/Create Spawn Point", false, 0)]
+    public static void CreateSpawnPoint()
+    {
+        GameObject newObject = new("SpawnPoint");
+        UnityEditor.Undo.RegisterCreatedObjectUndo(newObject, "Create Spawn Point");
+        SpawnPoint spawnPoint = newObject.AddComponent<SpawnPoint>();
+        if (UnityEditor.Selection.activeTransform != null) 
+            newObject.transform.SetParent(UnityEditor.Selection.activeTransform);
+    }
+#endif
 }
