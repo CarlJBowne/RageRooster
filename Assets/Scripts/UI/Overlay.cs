@@ -76,13 +76,11 @@ public class Overlay : MonoBehaviour
 
     public IEnumerator BasicFadeOutWait(float duration = 1f)
     {
-        Debug.Log($"Overlay {intendedLayer} Triggered to Fade Out");
         blackoutRate = 1f / duration;
         yield return new WaitUntil(()=> BasicBlackout == 1);
     }
     public IEnumerator BasicFadeInWait(float duration = 1f)
     {
-        Debug.Log($"Overlay {intendedLayer} Triggered to Fade In");
         blackoutRate = -1f / duration;
         yield return new WaitUntil(() => BasicBlackout == 0);
     }

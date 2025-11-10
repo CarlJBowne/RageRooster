@@ -103,7 +103,7 @@ namespace RageRooster.RoomSystem
         {
             if (state is RoomState.Current or RoomState.Unloading or RoomState.Loading) return;
 
-            Vector3 player = PlayerMovementBody.PositionGet;
+            Vector3 player = Player.Position;
             if (state is RoomState.Present)
             {
                 if (!WithinUnloadRange(player)) 
@@ -200,7 +200,7 @@ namespace RageRooster.RoomSystem
         public IEnumerator PrepSurrounding()
         {
             if (this == RoomManager.currentRoom) yield break;
-            Vector3 player = PlayerMovementBody.PositionGet;
+            Vector3 player = Player.Position;
             if (WithinLoadRange(player))
             {
                 yield return SceneLoad();

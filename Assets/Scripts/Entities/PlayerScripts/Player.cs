@@ -11,17 +11,109 @@ using UnityEngine;
 [DefaultExecutionOrder(ExecutionOrders.Player), RequireComponent(typeof(PlayerStateMachine))]
 public class Player : MonoBehaviour
 {
-    /// <summary>
-    /// Whether the <see cref="Player"/> entity has been loaded into the world. <br/>
-    /// (Not to be confused with <see cref="Active"/>, which is denotes when the player's activity has been paused.)
-    /// </summary>
-    public static bool Exists { get; private set; } = false;
-    /// <summary>
-    /// Whether the <see cref="Player"/> entity is currently active and able to interact with the game world. <br/>
-    /// (Not to be confused with <see cref="Exists"/> which is whether the <see cref="Player"/> entity has been loaded in the world.)
-    /// </summary>
-    public static bool Active { get; private set; } = false;
+    #region GameplayState
 
+    /// <summary>
+    /// An enum representing states of activity for the Player. 
+    /// </summary>
+    public enum ActivityState
+    {
+        /// <summary> The <see cref="Player"/> has not been loaded in as <see cref="Gameplay"/> is not active. </summary>
+        Null = -1,
+        /// <summary> The <see cref="Player"/> is active and controlled by the player. </summary>
+        Active = 0,
+        /// <summary> The <see cref="Player"/> is paused in place, still visible, but not moving. </summary>
+        Paused = 1,
+        /// <summary> The player is in the dying animation. </summary>
+        Dying = 2,
+        /// <summary> The player is outside of the visibly active scene and thus unrendered.</summary>
+        Invisible = 3,
+        /// <summary> The game is in a cutscene state and all active logic on the <see cref="Player"/> has been paused. </summary>
+        Cutscene = 4,
+        /// <summary> 
+        /// The game is currently in a Minigame state where the player's default behavior is not present. 
+        /// <br/> Minigames where the player moves and acts as normal may be implemented in a different way.
+        /// </summary>
+        Minigame = 5,
+    }
+
+    /// <summary>
+    /// The current <see cref="ActivityState"/> of the <see cref="Player"/>.
+    /// <br/> Read helpers <see cref="Exists"/>, <see cref="Active"/>, <see cref="Paused"/>, and <see cref="InCutscene"/> are provided for convenience.
+    /// </summary>
+    public static ActivityState ActiveState
+    {
+        get => _activeState;
+        set
+        {
+            // Ignore redundant assignments and any outside attempts to set or come from Null.
+            if (_activeState == value
+                || value is ActivityState.Null
+                || _activeState is ActivityState.Null)
+                return;
+
+            _activeState = value;
+
+            Visible = value != ActivityState.Invisible;
+            StateMachine.enabled = value is ActivityState.Active;
+
+            MovementBody.RBState =
+                value is ActivityState.Active ? CharacterMovementBody.BodyState.Enabled
+                : value is ActivityState.Dying ? CharacterMovementBody.BodyState.Ragdoll
+                : CharacterMovementBody.BodyState.OFF;
+
+            MovementBody.enabled = value is ActivityState.Active or ActivityState.Dying;
+            Controller.enabled = value is ActivityState.Active;
+            Animator.enabled = value is ActivityState.Active or ActivityState.Cutscene;
+            Ranged.enabled = value is ActivityState.Active;
+            Interacter.enabled = value is ActivityState.Active;
+        }
+    }
+
+    private static ActivityState _activeState = ActivityState.Null;
+
+
+    /// <summary>
+    /// Whether the <see cref="Player"/> entity has been loaded into the world. 
+    /// <br/> Reads <see cref="ActiveState"/>, is true if the <see cref="ActiveState"/> is anything other than <see cref="ActivityState.Null"/>.
+    /// </summary>
+    public static bool Exists => ActiveState is not ActivityState.Null;
+    /// <summary>
+    /// Whether the <see cref="Player"/> entity is currently active and able to interact with the game world. 
+    /// <br/> Reads <see cref="ActiveState"/>, is true if the <see cref="ActiveState"/> is <see cref="ActivityState.Active"/>.
+    /// </summary>
+    public static bool Active => ActiveState is ActivityState.Active;
+    /// <summary>
+    /// Whether the <see cref="Player"/> entity is currently paused.
+    /// <br/> Reads <see cref="ActiveState"/>, is true if the <see cref="ActiveState"/> is <see cref="ActivityState.Paused"/>.
+    /// <br/> Note: Not actually specific to the Pause Menu. Also used during room transitions and other non-interactive states.
+    /// </summary>
+    public static bool Paused => ActiveState is ActivityState.Paused;
+    /// <summary>
+    /// Whether the <see cref="Player"/> entity is currently in a cutscene.
+    /// <br/> Reads <see cref="ActiveState"/>, is true if the <see cref="ActiveState"/> is <see cref="ActivityState.Cutscene"/>.
+    /// </summary>
+    public static bool InCutscene => ActiveState is ActivityState.Cutscene;
+    /// <summary>
+    /// Whether the <see cref="Player"/> entity is currently in the dying ragdoll animation.
+    /// <br/> Reads <see cref="ActiveState"/>, is true if the <see cref="ActiveState"/> is <see cref="ActivityState.Dying"/>.
+    /// </summary>
+    public static bool Dying => ActiveState is ActivityState.Dying;
+    /// <summary>
+    /// Whether the <see cref="Player"/> is currently visible in the game world.
+    /// <br/> Reads <see cref="ActiveState"/>, is false if the <see cref="ActiveState"/> is <see cref="ActivityState.Invisible"/>.
+    /// <br/> Setter also privately accessible.
+    /// </summary>
+    public static bool Visible
+    {
+        get => Exists && ActiveState is not ActivityState.Invisible;
+        protected set => GameObject.SetActive(value);
+    }
+
+
+    #endregion
+
+    #region Component References
     /// <summary>
     /// The Root <see cref="UnityEngine.GameObject"/> of the <see cref="Player"/>.
     /// </summary>
@@ -72,11 +164,13 @@ public class Player : MonoBehaviour
     /// The <see cref="RagdollHandler"/> component attached to the <see cref="Player"/>. <br/>
     /// </summary>
     public static RagdollHandler RagdollHandler { get; private set; }
+    #endregion
 
+    #region Helper Properties / Methods
     /// <summary>
     /// The current world position of the <see cref="Player"/>. (At Feet.)
     /// </summary>
-    public static Vector3 Position => Transform.position;
+    public static Vector3 Position => Exists ? Transform.position : Vector3.zero;
     /// <summary>
     /// The current world position of the center of the <see cref="Player"/>'s <br/>
     /// See <see cref="Collider"/>.
@@ -97,71 +191,7 @@ public class Player : MonoBehaviour
 
     /// <param name="pos">The position to be compared.</param>
     /// <returns>The distance between the <see cref="Player"/> and and a given position, such as an enemy.</returns>
-    public static float DistanceFrom(Vector3 pos) => Vector3.Distance(Position, pos);
-
-    #region Instance Fields
-
-    public float inFallDownPitTime;
-    public float inDeathTime;
-
-
-
-
-
-    #endregion Instance Fields
-
-    /// <summary>
-    /// A callback invoked when the player respawns. (Possibly Obsolete?)
-    /// </summary>
-    public static Action onRespawn;
-
-    /// <summary>
-    /// Awake stage of the <see cref="Player"/>, saving the static references and other setup.
-    /// </summary>
-    public void Awake()
-    {
-        GameObject = gameObject;
-        Transform = transform;
-        StateMachine = GetComponent<PlayerStateMachine>();
-        MovementBody = GetComponent<PlayerMovementBody>();
-        Collider = GetComponent<CapsuleCollider>();
-        Controller = GetComponent<PlayerController>();
-        Ranged = GetComponent<PlayerRanged>();
-        Interacter = GetComponent<PlayerInteracter>();
-        Animator = GetComponent<Animator>();
-        Audio = GetComponent<AudioCaller>();
-        RagdollHandler = GetComponent<RagdollHandler>();
-        Health.Initialize();
-        Ammo.Initialize();
-        Currency.Initialize();
-
-        Exists = true;
-        Active = true;
-
-        fallDownPitTime = inFallDownPitTime;
-        deathTime = inDeathTime;
-    }
-
-    /// <summary>
-    /// Sets the active state of the <see cref="Player"/>. <br/>
-    /// (Probably should be expanded later to allow a paused-but-still-visible state and whatnot)
-    /// </summary>
-    /// <param name="active"></param>
-    public static void SetActive(bool active)
-    {
-        if (!Exists) return;
-        Active = active;
-        GameObject.SetActive(active);
-        //StateMachine.enabled = active;
-        //MovementBody.enabled = active;
-        //Controller.enabled = active;
-        //Ranged.enabled = active;
-        //Interacter.enabled = active;
-        //Health.enabled = active;
-        //Collider.enabled = active;
-        //Animator.enabled = active;
-        //Audio.enabled = active;
-    }
+    public static float DistanceFrom(Vector3 pos) => Exists ? Vector3.Distance(Position, pos) : 999999f;
 
     /// <summary>
     /// Instantly moves the <see cref="Player"/> to a new position, optionally setting a new Y rotation. <br/>
@@ -180,6 +210,54 @@ public class Player : MonoBehaviour
         MovementBody.velocity = Vector3.zero;
     }
 
+    #endregion
+
+
+    #region Instance Fields
+    public float inFallDownPitTime;
+    public float inDeathTime;
+    #endregion Instance Fields
+
+    #region Events / Callbacks
+    /// <summary>
+    /// A callback invoked when the player respawns. (Possibly Obsolete?)
+    /// </summary>
+    public static Action onRespawn;
+
+    /// <summary>
+    /// Awake stage of the <see cref="Player"/>, saving the static references and other setup.
+    /// </summary>
+    public void Awake()
+    {
+        GameObject = gameObject;
+        Transform = transform;
+        StateMachine = GetComponent<PlayerStateMachine>();
+        MovementBody = GetComponent<PlayerMovementBody>();
+        Collider = GetComponent<CapsuleCollider>();
+        Controller = GetComponent<PlayerController>();
+        Ranged = GetComponent<PlayerRanged>();
+        Interacter = GetComponentInChildren<PlayerInteracter>();
+        Animator = GetComponent<Animator>();
+        Audio = GetComponent<AudioCaller>();
+        RagdollHandler = GetComponent<RagdollHandler>();
+        Health.Initialize();
+        Ammo.Initialize();
+        Currency.Initialize();
+
+        _activeState = ActivityState.Active;
+
+#if UNITY_EDITOR
+        Input.Get().Asset.FindAction("DebugActivate").performed += (_) =>
+        {
+            SaveData.Current.playerStats.upgrades = Upgrades.Debug();
+        };
+#endif
+        fallDownPitTime = inFallDownPitTime;
+        deathTime = inDeathTime;
+    }
+    #endregion
+
+    #region Models (Health / Ammo / Currency)
     /// <summary>
     /// The Model part of the MVC pattern for Player Health, not to be confused with <see cref="PlayerHealth"/> or <see cref="UIHUDSystem"/>.
     /// </summary>
@@ -295,8 +373,9 @@ public class Player : MonoBehaviour
         }
         public static Action updateCurrency;
     }
+    #endregion
 
-
+    #region Death / Respawn Sequence
     static float fallDownPitTime;
     static float deathTime;
     static CoroutinePlus deathCoroutine;
@@ -318,8 +397,9 @@ public class Player : MonoBehaviour
             {
                 FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(1f),
                 FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(1f),
+                //PreFadeInAction = Overlay.OverGameplay.Reset
             };
-            //RoomManager.PreFadeInAction += () => { Overlay.OverGameplay.Reset(); };
+
             //Note "Overlay.OverGameplay.Reset() used to be called just after the FadeOut. Not sure why. If necessary, uncomment the above line."
 
             Gameplay.Death();
@@ -340,8 +420,8 @@ public class Player : MonoBehaviour
             {
                 FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(1f),
                 FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(1f),
+                //PreFadeInAction = Overlay.OverGameplay.Reset
             };            
-            //RoomManager.PreFadeInAction += () => { Overlay.OverGameplay.Reset(); };
             //Note "Overlay.OverGameplay.Reset() used to be called just after the FadeOut. Not sure why. If necessary, uncomment the above line."
 
             Gameplay.Respawn();
@@ -356,5 +436,11 @@ public class Player : MonoBehaviour
         RagdollHandler.SetState(EntityState.RagDoll);
         RagdollHandler.SetVelocity(targetVelocity * 0.75f);
         Animator.enabled = false;
+    }
+    #endregion
+
+    void OnDestroy()
+    {
+        _activeState = ActivityState.Null;
     }
 }

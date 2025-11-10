@@ -57,13 +57,6 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
         //    freeLookCamera.LookAt = transform;
         //}
 
-#if UNITY_EDITOR
-        Input.Get().Asset.FindAction("DebugActivate").performed += (_) => 
-        {
-            SaveData.Current.playerStats.upgrades = Upgrades.Debug();
-        };
-#endif
-
         whenInitializedEvent?.Invoke(this);
 
         PauseMenu.onPause += Pause;

@@ -168,7 +168,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
     {
         yield return new WaitForSeconds(0.2f);
         walkState.State.Enter();
-        Debug.Log("ending roll attempt!");
+        //Debug.Log("ending roll attempt!");
         Machine.SendSignal("ResetRoll");
     }
 
@@ -181,7 +181,7 @@ public class PlayerGroundedMovement : PlayerMovementEffector
     {
         yield return new WaitForSeconds(2f);
         canRoll = true;
-        Debug.Log("Roll Ready!");
+        //Debug.Log("Roll Ready!");
     }
 
 

@@ -99,7 +99,7 @@ namespace RageRooster.RoomSystem
             PostFadeOutAction?.Invoke();
 
 
-            Player.SetActive(false);
+            Player.ActiveState = Player.ActivityState.Invisible;
             yield return null;
             currentlyTransitioning = true;
             OverlayLoading.ShowIfLong();
@@ -134,7 +134,7 @@ namespace RageRooster.RoomSystem
 
             currentlyTransitioning = false;
             OverlayLoading.SetVisible(false);
-            Player.SetActive(true);
+            Player.ActiveState = Player.ActivityState.Active;
 
 
             if (fullTransition) Music.BeginPrimaryMusic(currentArea.music);

@@ -37,6 +37,7 @@ public class Gameplay : MonoBehaviour
     public static bool Active { get; private set; }
     /// <summary>
     /// The Script instance of the Gameplay system. Not truly relevant to much. Null if not active.
+    /// <br/> Can be used as the source script for a Coroutine to ensure it runs.
     /// </summary>
     public static Gameplay Instance { get; private set; }
     /// <summary>
