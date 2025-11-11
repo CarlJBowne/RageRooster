@@ -31,10 +31,40 @@ using UnityEditor;
 [DefaultExecutionOrder(ExecutionOrders.Gameplay)]
 public class Gameplay : MonoBehaviour
 {
+    public enum GameStates
+    {
+        Null = -1,
+        Active = 0,
+        Paused = 1,
+        Processing = 2,
+    }
+    private static GameStates _gameState = GameStates.Null;
+    public static GameStates GameState
+    {
+        get => _gameState;
+        set
+        {
+            if (_gameState == value
+                || _gameState is GameStates.Null
+                || value is GameStates.Null
+                ) return;
+
+            _gameState = value;
+
+            Time.timeScale = value is GameStates.Paused ? 0 : 1;
+
+        }
+    }
+
     /// <summary>
     /// Whether Gameplay is currently active.
+    /// <br/> Reads <see cref="GameState"/>, true if not <see cref="GameStates.Null"/>.
     /// </summary>
-    public static bool Active { get; private set; }
+    public static bool Active => GameState is not GameStates.Null;
+
+
+
+
     /// <summary>
     /// The Script instance of the Gameplay system. Not truly relevant to much. Null if not active.
     /// <br/> Can be used as the source script for a Coroutine to ensure it runs.
@@ -99,7 +129,7 @@ public class Gameplay : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         Instance = this;
-        Active = true;
+        _gameState = GameStates.Active;
         GameObject = gameObject;
         if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
         DontDestroyOnLoad(gameObject);
@@ -378,8 +408,8 @@ public class Gameplay : MonoBehaviour
             return;
         }
         Destroy(GameObject);
-        Active = false;
-        
+        _gameState = GameStates.Null;
+
     }
 
     private void OnDestroy()

@@ -21,14 +21,14 @@ public class PauseMenu : MenuSingleton<PauseMenu>
     {
         base.OnOpen();
         onPause?.Invoke();
-        Time.timeScale = 0f;
+        Gameplay.GameState = Gameplay.GameStates.Paused;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
     protected override void OnClose()
     {
         base.OnClose();
-        Time.timeScale = 1f;
+        Gameplay.GameState = Gameplay.GameStates.Active;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         onUnPause?.Invoke();

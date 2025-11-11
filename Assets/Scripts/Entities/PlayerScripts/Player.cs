@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// An enum representing states of activity for the Player. 
     /// </summary>
-    public enum ActivityState
+    public enum ActivityStates
     {
         /// <summary> The <see cref="Player"/> has not been loaded in as <see cref="Gameplay"/> is not active. </summary>
         Null = -1,
@@ -38,75 +38,75 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// The current <see cref="ActivityState"/> of the <see cref="Player"/>.
+    /// The current <see cref="ActivityStates"/> of the <see cref="Player"/>.
     /// <br/> Read helpers <see cref="Exists"/>, <see cref="Active"/>, <see cref="Paused"/>, and <see cref="InCutscene"/> are provided for convenience.
     /// </summary>
-    public static ActivityState ActiveState
+    public static ActivityStates ActivityState
     {
         get => _activeState;
         set
         {
             // Ignore redundant assignments and any outside attempts to set or come from Null.
             if (_activeState == value
-                || value is ActivityState.Null
-                || _activeState is ActivityState.Null)
+                || value is ActivityStates.Null
+                || _activeState is ActivityStates.Null)
                 return;
 
             _activeState = value;
 
-            Visible = value != ActivityState.Invisible;
-            StateMachine.enabled = value is ActivityState.Active;
+            Visible = value != ActivityStates.Invisible;
+            StateMachine.enabled = value is ActivityStates.Active;
 
             MovementBody.RBState =
-                value is ActivityState.Active ? CharacterMovementBody.BodyState.Enabled
-                : value is ActivityState.Dying ? CharacterMovementBody.BodyState.Ragdoll
+                value is ActivityStates.Active ? CharacterMovementBody.BodyState.Enabled
+                : value is ActivityStates.Dying ? CharacterMovementBody.BodyState.Ragdoll
                 : CharacterMovementBody.BodyState.OFF;
 
-            MovementBody.enabled = value is ActivityState.Active or ActivityState.Dying;
-            Controller.enabled = value is ActivityState.Active;
-            Animator.enabled = value is ActivityState.Active or ActivityState.Cutscene;
-            Ranged.enabled = value is ActivityState.Active;
-            Interacter.enabled = value is ActivityState.Active;
+            MovementBody.enabled = value is ActivityStates.Active or ActivityStates.Dying;
+            Controller.enabled = value is ActivityStates.Active;
+            Animator.enabled = value is ActivityStates.Active or ActivityStates.Cutscene;
+            Ranged.enabled = value is ActivityStates.Active;
+            Interacter.enabled = value is ActivityStates.Active;
         }
     }
 
-    private static ActivityState _activeState = ActivityState.Null;
+    private static ActivityStates _activeState = ActivityStates.Null;
 
 
     /// <summary>
     /// Whether the <see cref="Player"/> entity has been loaded into the world. 
-    /// <br/> Reads <see cref="ActiveState"/>, is true if the <see cref="ActiveState"/> is anything other than <see cref="ActivityState.Null"/>.
+    /// <br/> Reads <see cref="ActivityState"/>, is true if the <see cref="ActivityState"/> is anything other than <see cref="ActivityStates.Null"/>.
     /// </summary>
-    public static bool Exists => ActiveState is not ActivityState.Null;
+    public static bool Exists => ActivityState is not ActivityStates.Null;
     /// <summary>
     /// Whether the <see cref="Player"/> entity is currently active and able to interact with the game world. 
-    /// <br/> Reads <see cref="ActiveState"/>, is true if the <see cref="ActiveState"/> is <see cref="ActivityState.Active"/>.
+    /// <br/> Reads <see cref="ActivityState"/>, is true if the <see cref="ActivityState"/> is <see cref="ActivityStates.Active"/>.
     /// </summary>
-    public static bool Active => ActiveState is ActivityState.Active;
+    public static bool Active => ActivityState is ActivityStates.Active;
     /// <summary>
     /// Whether the <see cref="Player"/> entity is currently paused.
-    /// <br/> Reads <see cref="ActiveState"/>, is true if the <see cref="ActiveState"/> is <see cref="ActivityState.Paused"/>.
+    /// <br/> Reads <see cref="ActivityState"/>, is true if the <see cref="ActivityState"/> is <see cref="ActivityStates.Paused"/>.
     /// <br/> Note: Not actually specific to the Pause Menu. Also used during room transitions and other non-interactive states.
     /// </summary>
-    public static bool Paused => ActiveState is ActivityState.Paused;
+    public static bool Paused => ActivityState is ActivityStates.Paused;
     /// <summary>
     /// Whether the <see cref="Player"/> entity is currently in a cutscene.
-    /// <br/> Reads <see cref="ActiveState"/>, is true if the <see cref="ActiveState"/> is <see cref="ActivityState.Cutscene"/>.
+    /// <br/> Reads <see cref="ActivityState"/>, is true if the <see cref="ActivityState"/> is <see cref="ActivityStates.Cutscene"/>.
     /// </summary>
-    public static bool InCutscene => ActiveState is ActivityState.Cutscene;
+    public static bool InCutscene => ActivityState is ActivityStates.Cutscene;
     /// <summary>
     /// Whether the <see cref="Player"/> entity is currently in the dying ragdoll animation.
-    /// <br/> Reads <see cref="ActiveState"/>, is true if the <see cref="ActiveState"/> is <see cref="ActivityState.Dying"/>.
+    /// <br/> Reads <see cref="ActivityState"/>, is true if the <see cref="ActivityState"/> is <see cref="ActivityStates.Dying"/>.
     /// </summary>
-    public static bool Dying => ActiveState is ActivityState.Dying;
+    public static bool Dying => ActivityState is ActivityStates.Dying;
     /// <summary>
     /// Whether the <see cref="Player"/> is currently visible in the game world.
-    /// <br/> Reads <see cref="ActiveState"/>, is false if the <see cref="ActiveState"/> is <see cref="ActivityState.Invisible"/>.
+    /// <br/> Reads <see cref="ActivityState"/>, is false if the <see cref="ActivityState"/> is <see cref="ActivityStates.Invisible"/>.
     /// <br/> Setter also privately accessible.
     /// </summary>
     public static bool Visible
     {
-        get => Exists && ActiveState is not ActivityState.Invisible;
+        get => Exists && ActivityState is not ActivityStates.Invisible;
         protected set => GameObject.SetActive(value);
     }
 
@@ -244,7 +244,7 @@ public class Player : MonoBehaviour
         Ammo.Initialize();
         Currency.Initialize();
 
-        _activeState = ActivityState.Active;
+        _activeState = ActivityStates.Active;
 
 #if UNITY_EDITOR
         Input.Get().Asset.FindAction("DebugActivate").performed += (_) =>
@@ -441,6 +441,6 @@ public class Player : MonoBehaviour
 
     void OnDestroy()
     {
-        _activeState = ActivityState.Null;
+        _activeState = ActivityStates.Null;
     }
 }
