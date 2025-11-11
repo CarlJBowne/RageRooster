@@ -57,10 +57,12 @@ namespace RageRooster.RoomSystem
                 (forDeathOnly ? SaveData.DeathReloadData : SaveData.Current).location = spawnPoint.GetDestination();
         }
 
-        object IRoomObject.OnSaveScene(RoomRoot room, params object[] args)
+        internal void OnSaveSceneSet(RoomRoot root, List<RoomEntrance> list)
         {
-            ((IRoomObject)this).root.asset.entrances.Add(GetData());
-            return null;
+            Debug.Log($"Saving {list.Count} entrances to RoomAsset {root.asset.name}.");
+            root.asset.entrances.Clear();
+            foreach (var entrance in list)
+                root.asset.entrances.Add(entrance.GetData());
         }
 
 

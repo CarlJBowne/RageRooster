@@ -51,12 +51,16 @@ public class SpawnPoint : MonoBehaviour, IRoomObject
 
     private void Reset() => IRoomObject.ConnectToRoomRoot(this);
 
-    object IRoomObject.OnSaveScene(RoomRoot room, params object[] args)
-    {
-        ID = (int)args[0];
-        return null;
+    internal void OnSaveSceneSet(RoomRoot root, List<SpawnPoint> list)
+    { 
+        Debug.Log($"Saving {list.Count} spawn points to RoomAsset {root.asset.name}.");
+        root.spawns = list.ToArray();
+        for (int i = 0; i < root.spawns.Length; i++)
+        {
+            IRoomObject.ConnectToRoomRoot(root.spawns[i]);
+            root.spawns[i].ID = i;
+        }
     }
-
 
 #if UNITY_EDITOR
     [Button("Play from here.")]

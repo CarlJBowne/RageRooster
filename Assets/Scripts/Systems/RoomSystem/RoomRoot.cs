@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using System.Linq;
+using SLS.ISingleton;
 
 namespace RageRooster.RoomSystem
 {
@@ -22,7 +23,7 @@ namespace RageRooster.RoomSystem
         /// The defined <see cref="SpawnPoint"/>s available in this room.
         /// <br/> Automatically populated upon saving the scene in the editor.
         /// </summary>
-        [field: SerializeField] public SpawnPoint[] spawns { get; protected set; }
+        [field: SerializeField] public SpawnPoint[] spawns { get; internal set; }
 
         private void Awake()
         {
@@ -77,24 +78,42 @@ namespace RageRooster.RoomSystem
 
                 List<IRoomObject> roomObjects = root.gameObject.GetComponentsInChildren<IRoomObject>().ToList();
 
-                root.asset.entrances.Clear();
-                int spawnPointID = 0;
-                List<SpawnPoint> spawns = new();
+                var types = typeof(IRoomObject).GetAllChildTypes(true);
 
-                for (int i = 0; i < roomObjects.Count; i++)
+                foreach (var type in types)
                 {
-                    if (roomObjects[i] is RoomEntrance) roomObjects[i].OnSaveScene(root);
-                    if (roomObjects[i] is SpawnPoint spawnPoint)
+                    var objsOfType = roomObjects.Where(o => o.GetType() == type).ToList();
+                    if (objsOfType.Count == 0) continue;
+
+                    // Look for the target method on the concrete type
+                    System.Reflection.MethodInfo targetMethod = type.GetMethod("OnSaveSceneSet", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    if (targetMethod == null) continue;
+
+                    // Create a List<type> at runtime: typeof(List<>).MakeGenericType(type)
+                    System.Type listType = typeof(List<>).MakeGenericType(type);
+                    object typedListInstance = System.Activator.CreateInstance(listType);
+
+                    // Use the List<T>.Add method to populate the typed list
+                    System.Reflection.MethodInfo addMethod = listType.GetMethod("Add", new System.Type[] { type });
+                    if (addMethod == null)
                     {
-                        roomObjects[i].OnSaveScene(root, spawnPointID);
-                        spawnPoint.ID = spawnPointID++;
-                        spawns.Add(spawnPoint);
-                        EditorUtility.SetDirty(spawnPoint);
+                        // Fallback to non-generic IList interface if Add method with the specific type isn't found
+                        var ilist = typedListInstance as System.Collections.IList;
+                        if (ilist != null)
+                        {
+                            foreach (var obj in objsOfType)
+                                ilist.Add(obj);
+                        }
                     }
+                    else
+                    {
+                        foreach (var obj in objsOfType)
+                            addMethod.Invoke(typedListInstance, new object[] { obj });
+                    }
+
+                    // Invoke the target method, passing RoomRoot and the strongly-typed list
+                    targetMethod.Invoke(objsOfType[0], new object[] { root, typedListInstance });
                 }
-
-                root.spawns = spawns.ToArray();
-
 
                 EditorUtility.SetDirty(root.asset);
                 EditorUtility.SetDirty(root);
@@ -103,6 +122,11 @@ namespace RageRooster.RoomSystem
 
 #endif
     }
+    /// <summary>
+    /// An interface representing objects with an important connection to the <see cref="RoomRoot"/>/<see cref="RoomAsset"/> they belong to.
+    /// <br/> Add the OnSaveSceneSet method to override what happens when the Room's scene is saved in editor.
+    /// <br/> (See script for example.)
+    /// </summary>
     public interface IRoomObject
     {
         RoomRoot root { get; set; }
@@ -115,6 +139,7 @@ namespace RageRooster.RoomSystem
                 throw new System.Exception($"The object {obj.name} is not inside a RoomRoot and cannot connect to it.");
             roomObj.root = foundRoot;
         }
-        internal virtual object OnSaveScene(RoomRoot room, params object[] args) => null;
+
+        //internal OnSaveSceneSet(RoomRoot root, List<SpawnPoint> list)
     }
 }
