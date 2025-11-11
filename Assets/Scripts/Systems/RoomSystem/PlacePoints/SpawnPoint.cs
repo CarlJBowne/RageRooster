@@ -8,7 +8,7 @@ using UnityEngine;
 /// A set point in the world where the player can spawn. <br/>
 /// When activated it moves the player to the exact transform position.
 /// </summary>
-public class SpawnPoint : MonoBehaviour
+public class SpawnPoint : MonoBehaviour, IRoomObject
 {
     //Make private but visible later.
     /// <summary>
@@ -24,7 +24,7 @@ public class SpawnPoint : MonoBehaviour
     /// </summary>
     public bool snapToFloor = true;
 
-    [SerializeField, HideInInspector] internal RoomRoot root;
+
 
     /// <summary>
     /// Places the player at this <see cref="SpawnPoint"/>'s position.
@@ -45,6 +45,17 @@ public class SpawnPoint : MonoBehaviour
         room = root.asset,
         spawnID = ID
     };
+
+    RoomRoot IRoomObject.root { get; set; }
+    RoomRoot root => ((IRoomObject)this).root;
+
+    private void Reset() => IRoomObject.ConnectToRoomRoot(this);
+
+    object IRoomObject.OnSaveScene(RoomRoot room, params object[] args)
+    {
+        ID = (int)args[0];
+        return null;
+    }
 
 
 #if UNITY_EDITOR

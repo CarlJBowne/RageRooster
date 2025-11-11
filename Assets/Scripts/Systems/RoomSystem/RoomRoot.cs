@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
+using System.Linq;
 
 namespace RageRooster.RoomSystem
 {
@@ -44,33 +45,7 @@ namespace RageRooster.RoomSystem
 
 #if UNITY_EDITOR
 
-        internal void OnSaveScene(Scene scene)
-        {
-            if (asset == null)
-            {
-                throw new System.Exception($"ERROR: The RoomRoot in scene {scene.name} does not have an associated RoomAsset. Please create a RoomAsset and assign it to the RoomRoot before saving the scene.");
-            }
 
-            RoomEntrance[] transitions = gameObject.GetComponentsInChildren<RoomEntrance>();
-
-            asset.entrances.Clear();
-            foreach (RoomEntrance transition in transitions)
-            {
-                transition.root = this;
-                asset.entrances.Add(transition.GetData());
-            }
-
-            spawns = gameObject.GetComponentsInChildren<SpawnPoint>();
-            for (int i = 0; i < spawns.Length; i++)
-            {
-                spawns[i].root = this;
-                spawns[i].ID = i;
-                EditorUtility.SetDirty(spawns[i]);
-            }
-
-            EditorUtility.SetDirty(asset);
-            EditorUtility.SetDirty(this);
-        }
 
         public class Editor : UnityEditor.Editor
         {
@@ -89,13 +64,57 @@ namespace RageRooster.RoomSystem
                 private static void OnSceneSaving(Scene scene, string path)
                 {
                     if (!scene.GetRootGameObjects()[0].TryGetComponent(out RoomRoot roomRoot)) return;
-                    roomRoot.OnSaveScene(scene);
+                    OnSaveScene(scene, roomRoot);
                 }
             }
 
+            public static void OnSaveScene(Scene scene, RoomRoot root)
+            {
+                if (root.asset == null)
+                {
+                    throw new System.Exception($"ERROR: The RoomRoot in scene {scene.name} does not have an associated RoomAsset. Please create a RoomAsset and assign it to the RoomRoot before saving the scene.");
+                }
+
+                List<IRoomObject> roomObjects = root.gameObject.GetComponentsInChildren<IRoomObject>().ToList();
+
+                root.asset.entrances.Clear();
+                int spawnPointID = 0;
+                List<SpawnPoint> spawns = new();
+
+                for (int i = 0; i < roomObjects.Count; i++)
+                {
+                    if (roomObjects[i] is RoomEntrance) roomObjects[i].OnSaveScene(root);
+                    if (roomObjects[i] is SpawnPoint spawnPoint)
+                    {
+                        roomObjects[i].OnSaveScene(root, spawnPointID);
+                        spawnPoint.ID = spawnPointID++;
+                        spawns.Add(spawnPoint);
+                        EditorUtility.SetDirty(spawnPoint);
+                    }
+                }
+
+                root.spawns = spawns.ToArray();
+
+
+                EditorUtility.SetDirty(root.asset);
+                EditorUtility.SetDirty(root);
+            }
         }
 
 #endif
     }
-
+    public interface IRoomObject
+    {
+        RoomRoot root { get; set; }
+        public RoomRoot GetRoot() => root;
+        protected static void ConnectToRoomRoot(MonoBehaviour obj)
+        {
+            if (obj is not IRoomObject roomObj || roomObj.root != null) return;
+            RoomRoot foundRoot = obj.GetComponentInParent<RoomRoot>();
+            if (foundRoot == null)
+                throw new System.Exception($"The object {obj.name} is not inside a RoomRoot and cannot connect to it.");
+            roomObj.root = foundRoot;
+        }
+        internal virtual object OnSaveScene(RoomRoot room, params object[] args) => null;
+    }
 }
