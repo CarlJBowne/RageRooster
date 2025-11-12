@@ -1,4 +1,5 @@
 using EditorAttributes;
+using JetBrains.Annotations;
 using RageRooster.RoomSystem;
 using System.Collections;
 using System.Collections.Generic;
@@ -51,9 +52,9 @@ public class SpawnPoint : MonoBehaviour, IRoomObject
 
     private void Reset() => IRoomObject.ConnectToRoomRoot(this);
 
-    internal void OnSaveSceneSet(RoomRoot root, List<SpawnPoint> list)
+    //Reflected
+    private static void OnSaveSceneSet(RoomRoot root, List<SpawnPoint> list)
     { 
-        Debug.Log($"Saving {list.Count} spawn points to RoomAsset {root.asset.name}.");
         root.spawns = list.ToArray();
         for (int i = 0; i < root.spawns.Length; i++)
         {

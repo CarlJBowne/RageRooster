@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using System.Linq;
+using System.Reflection;
 using SLS.ISingleton;
 
 namespace RageRooster.RoomSystem
@@ -85,34 +86,34 @@ namespace RageRooster.RoomSystem
                     var objsOfType = roomObjects.Where(o => o.GetType() == type).ToList();
                     if (objsOfType.Count == 0) continue;
 
-                    // Look for the target method on the concrete type
-                    System.Reflection.MethodInfo targetMethod = type.GetMethod("OnSaveSceneSet", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    if (targetMethod == null) continue;
-
-                    // Create a List<type> at runtime: typeof(List<>).MakeGenericType(type)
-                    System.Type listType = typeof(List<>).MakeGenericType(type);
-                    object typedListInstance = System.Activator.CreateInstance(listType);
-
-                    // Use the List<T>.Add method to populate the typed list
-                    System.Reflection.MethodInfo addMethod = listType.GetMethod("Add", new System.Type[] { type });
-                    if (addMethod == null)
+                    MethodInfo targetMethod = type.GetMethod("OnSaveSceneSet", BindingFlags.NonPublic | BindingFlags.Static);
+                    if (targetMethod != null)
                     {
-                        // Fallback to non-generic IList interface if Add method with the specific type isn't found
-                        var ilist = typedListInstance as System.Collections.IList;
-                        if (ilist != null)
-                        {
-                            foreach (var obj in objsOfType)
-                                ilist.Add(obj);
-                        }
-                    }
-                    else
-                    {
-                        foreach (var obj in objsOfType)
-                            addMethod.Invoke(typedListInstance, new object[] { obj });
+                        // Use LINQ Cast<T>() + ToList<T>() via reflection to produce List<type>
+                        object castedEnumerable = typeof(Enumerable)
+                            .GetMethod(nameof(Enumerable.Cast), BindingFlags.Public | BindingFlags.Static)
+                            .MakeGenericMethod(type)
+                            .Invoke(null, new object[] { objsOfType });
+
+                        // casts objsOfType (IEnumerable) to IEnumerable<type>, then ToList<type>()
+                        object typedListInstance = 
+                            typeof(Enumerable)
+                            .GetMethods(BindingFlags.Public | BindingFlags.Static)
+                            .First(m => m.Name == nameof(Enumerable.ToList) && m.GetParameters().Length == 1)
+                            .MakeGenericMethod(type)
+                            .Invoke(null, new object[] { castedEnumerable });
+
+                        targetMethod.Invoke(null, new object[] { root, typedListInstance });
+                        continue;
                     }
 
-                    // Invoke the target method, passing RoomRoot and the strongly-typed list
-                    targetMethod.Invoke(objsOfType[0], new object[] { root, typedListInstance });
+                    targetMethod = type.GetMethod("OnSaveScene", BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (targetMethod != null)
+                    {
+                        foreach (var item in objsOfType) targetMethod.Invoke(item, new object[] { root });
+                        continue;
+                    }
+
                 }
 
                 EditorUtility.SetDirty(root.asset);
@@ -140,6 +141,7 @@ namespace RageRooster.RoomSystem
             roomObj.root = foundRoot;
         }
 
-        //internal OnSaveSceneSet(RoomRoot root, List<SpawnPoint> list)
+        //private void OnSaveScene(RoomRoot root)
+        //private static void OnSaveSceneSet(RoomRoot root, List<CLASSTYPE> list)
     }
 }
