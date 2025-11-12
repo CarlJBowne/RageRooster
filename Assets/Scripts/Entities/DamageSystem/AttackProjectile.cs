@@ -63,9 +63,9 @@ public class AttackProjectile : AttackSourceSingle
 
         if (rb)
         {
-            rb.velocity = backAt 
-                ? (sourcePosition.position - rb.position).normalized * rb.velocity.magnitude 
-                : -rb.velocity;
+            rb.linearVelocity = backAt 
+                ? (sourcePosition.position - rb.position).normalized * rb.linearVelocity.magnitude 
+                : -rb.linearVelocity;
         }
         else if (cm)
         {

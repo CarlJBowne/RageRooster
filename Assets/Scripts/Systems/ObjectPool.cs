@@ -1,26 +1,27 @@
 ﻿using EditorAttributes;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-[System.Serializable]
+[System.Serializable, Unity.VisualScripting.Inspectable]
 public class ObjectPool
 {
-    [Tooltip("The prefab to pool.")]
+    [Tooltip("The prefab to pool."), Inspectable]
     public GameObject prefabObject;
-    [Tooltip("The number of prefabs to create on startup.")]
+    [Tooltip("The number of prefabs to create on startup."), Inspectable]
     public int defaultPoolDepth = 1;
-    [Tooltip("Whether or not more prefabs can be created beyond the initial Pool Depth.")]
+    [Tooltip("Whether or not more prefabs can be created beyond the initial Pool Depth."), Inspectable]
     public bool canGrow = true;
-    [Tooltip("The transform the Objects will be parented under. (Defaults to the scene.)")]
+    [Tooltip("The transform the Objects will be parented under. (Defaults to the scene.)"), Inspectable]
     public Transform parent = null;
-    [Tooltip("How long an instance will last until it is automatically disabled, set to -1 to never auto disable.")]
+    [Tooltip("How long an instance will last until it is automatically disabled, set to -1 to never auto disable."), Inspectable]
     public float autoDisableTime = -1;
-    [Tooltip("The point where the object will appear when pumped.")]
+    [Tooltip("The point where the object will appear when pumped."), Inspectable]
     public Transform spawnPoint;
-    [Tooltip("Whether the object will match the rotation of its spawnPoint.")]
+    [Tooltip("Whether the object will match the rotation of its spawnPoint."), Inspectable]
     public bool rotate;
-    [Tooltip("Whether or not and at what rate the Pool will automatically spawn its charactetrs.")]
+    [Tooltip("Whether or not and at what rate the Pool will automatically spawn its charactetrs."), Inspectable]
     public float autoSpawnRate;
 
     private readonly List<PoolableObject> poolList = new();

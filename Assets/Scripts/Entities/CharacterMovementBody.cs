@@ -46,7 +46,7 @@ public class CharacterMovementBody : MonoBehaviour
     public Rigidbody RB { get => _rb; private set => _rb = value; }
     [SerializeField] private Rigidbody _rb;
     /// <summary>
-    /// The CapsuleCollider component attached to this <see cref="CharacterMovementBody"/>.
+    /// The <see cref="CapsuleCollider"/> component attached to this <see cref="CharacterMovementBody"/>.
     /// </summary>
     [field: SerializeField, HideInInspector] public CapsuleCollider Collider { get; private set; }
 
@@ -74,7 +74,7 @@ public class CharacterMovementBody : MonoBehaviour
     /// <summary>
     /// The possible states for a <see cref="CharacterMovementBody"/>.
     /// </summary>
-    public enum CharacterMovementBodyState
+    public enum BodyState
     {
         Enabled,
         Kinematic,
@@ -84,7 +84,7 @@ public class CharacterMovementBody : MonoBehaviour
     /// <summary>
     /// The current state of this <see cref="CharacterMovementBody"/>.
     /// </summary>
-    public CharacterMovementBodyState RBState
+    public BodyState RBState
     {
         get => _rbState;
         set
@@ -92,30 +92,34 @@ public class CharacterMovementBody : MonoBehaviour
             _rbState = value;
             switch (value)
             {
-                case CharacterMovementBodyState.Enabled:
+                case BodyState.Enabled:
                     RB.isKinematic = false;
                     RB.detectCollisions = true;
                     RB.useGravity = false;
+                    Collider.enabled = true;
                     break;
-                case CharacterMovementBodyState.Kinematic:
+                case BodyState.Kinematic:
                     RB.isKinematic = true;
                     RB.detectCollisions = true;
                     RB.useGravity = false;
+                    Collider.enabled = true;
                     break;
-                case CharacterMovementBodyState.Ragdoll:
+                case BodyState.Ragdoll:
                     RB.isKinematic = false;
                     RB.detectCollisions = true;
                     RB.useGravity = true;
+                    Collider.enabled = false;
                     break;
-                case CharacterMovementBodyState.OFF:
+                case BodyState.OFF:
                     RB.isKinematic = true;
                     RB.detectCollisions = false;
                     RB.useGravity = false;
+                    Collider.enabled = false;
                     break;
             }
         }
     }
-    private CharacterMovementBodyState _rbState = CharacterMovementBodyState.Enabled;
+    private BodyState _rbState = BodyState.Enabled;
 
     /// <summary>
     /// The current jump state of this body.
@@ -148,7 +152,6 @@ public class CharacterMovementBody : MonoBehaviour
             transform.position = value;
             RB.position = value;
             RB.MovePosition(value);
-            OnSetPosition(value);
         }
     }
     /// <summary>
@@ -233,15 +236,15 @@ public class CharacterMovementBody : MonoBehaviour
     /// </summary>
     private void OnEnable()
     {
-        if (_rbState == CharacterMovementBodyState.OFF)
-            RBState = CharacterMovementBodyState.Enabled;
+        if (_rbState == BodyState.OFF)
+            RBState = BodyState.Enabled;
     }
     /// <summary>
     /// Called when the component is disabled.
     /// </summary>
     private void OnDisable()
     {
-        RBState = CharacterMovementBodyState.OFF;
+        RBState = BodyState.OFF;
     }
 
     /// <summary>
@@ -249,8 +252,8 @@ public class CharacterMovementBody : MonoBehaviour
     /// </summary>
     protected virtual void FixedUpdate()
     {
-        if (RBState != CharacterMovementBodyState.Enabled) return;
-        RB.velocity = Vector3.zero;
+        if (RBState != BodyState.Enabled) return;
+        RB.linearVelocity = Vector3.zero;
         RB.angularVelocity = Vector3.zero;
 
         if (checkGround && velocity.y <= 0)

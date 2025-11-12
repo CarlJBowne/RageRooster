@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using System;
 using UnityEngine;
 
@@ -49,5 +50,14 @@ namespace FMODUnity
             }
         }
 #endif
+
+        public readonly EventDescription description
+        {
+            get
+            {
+                FMODUnity.RuntimeManager.StudioSystem.getEventByID(Guid, out var desc);
+                return desc;
+            }
+        }
     }
 }

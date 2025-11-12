@@ -18,6 +18,7 @@ namespace RageRooster.Obsolete.Zones
         public ZoneTransition[] transitions;
         public SavePoint_Old defaultPlayerSpawn;
         public EventReference music;
+        public EventReference musi2c;
 
         public SavePoint_Old[] spawns
         {
@@ -76,7 +77,7 @@ namespace RageRooster.Obsolete.Zones
 
         public void OnTransition()
         {
-            Gameplay.musicEmitter.CrossFadeMusic(music);
+            //Gameplay.musicEmitter.CrossFadeMusic(music);
         }
 
         public SerializedDictionary<WorldChange, UltEvents.UltEvent> worldChangeEvents;

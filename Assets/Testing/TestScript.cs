@@ -6,35 +6,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using RageRooster.Systems.ObjectPool;
+using FMODUnity;
+using RageRooster.Systems;
 
-public class TestScript : MonoBehaviour, IInteractable
+public class TestScript : MonoBehaviour
 {
-    public AreaAsset area;
-    public RoomAsset room;
+    public EventReference secondMusic;
 
-    Vector3 IInteractable.PopupPosition => Vector3.zero;
-    bool IInteractable.canInteract => true;
-
-
-    private void Awake()
+    private void OnTriggerEnter(Collider other)
     {
-
-    }
-
-    bool IInteractable.Interaction()
-    {
-        Enum().Begin(Gameplay.Instance);
-        return true;
-        IEnumerator Enum()
+        if(other == Player.Collider)
         {
-            yield return Overlay.OverMenus.BasicFadeOutWait(1f);
-            OverlayLoading.SetVisible(true);
-            yield return RoomManager.Transition(new Destination()
-            {
-                room = room,
-                spawnID = 0
-            }, true);
-            yield return Overlay.OverMenus.BasicFadeInWait(1f);
+            Music.BeginSecondaryMusic(secondMusic);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if(other == Player.Collider)
+        {
+            Music.ReturnToPrimaryMusic();
         }
     }
 }

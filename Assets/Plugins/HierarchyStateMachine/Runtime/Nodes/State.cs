@@ -120,10 +120,12 @@ namespace SLS.StateMachineH {
         internal void DoAwake()
         {
             for (int i = 0; i < Behaviors.Length; i++)
-                Behaviors[i].DoAwake();
+                if (Behaviors[i] != null) 
+                    Behaviors[i].DoAwake();
 
             for (int i = 0; i < Children.Count; i++)
-                Children[i].DoAwake();
+                if(Children[i] != null)
+                    Children[i].DoAwake();
         }
 
         /// <summary>  
@@ -132,7 +134,8 @@ namespace SLS.StateMachineH {
         internal void DoUpdate()
         {
             for (int i = 0; i < Behaviors.Length; i++)
-                Behaviors[i].DoUpdate();
+                if (Behaviors[i] != null) 
+                    Behaviors[i].DoUpdate();
 
             CurrentChild?.DoUpdate();
         }
@@ -143,7 +146,8 @@ namespace SLS.StateMachineH {
         internal void DoFixedUpdate()
         {
             for (int i = 0; i < Behaviors.Length; i++)
-                Behaviors[i].DoFixedUpdate();
+                if (Behaviors[i] != null) 
+                    Behaviors[i].DoFixedUpdate();
 
             if (CurrentChild) CurrentChild.DoFixedUpdate();
         }
@@ -155,11 +159,13 @@ namespace SLS.StateMachineH {
         internal void DoEnter(State prev)
         {
             for (int i = 0; i < Behaviors.Length; i++)
-                Behaviors[i].DoEnter(null, !HasChildren);
+                if (Behaviors[i] != null) 
+                    Behaviors[i].DoEnter(null, !HasChildren);
             Active = true;
             gameObject.SetActive(true);
             for (int i = 0; i < Behaviors.Length; i++)
-                Behaviors[i].DoEnter(prev, !HasChildren);
+                if (Behaviors[i] != null) 
+                    Behaviors[i].DoEnter(prev, !HasChildren);
         }
 
         /// <summary>  
@@ -169,12 +175,14 @@ namespace SLS.StateMachineH {
         internal void DoExit(State next)
         {
             for (int i = 0; i < Behaviors.Length; i++)
-                Behaviors[i].DoExit(null);
+                if (Behaviors[i] != null) 
+                    Behaviors[i].DoExit(null);
             Active = false;
             gameObject.SetActive(false);
             CurrentChild = null;
             for (int i = 0; i < Behaviors.Length; i++)
-                Behaviors[i].DoExit(next);
+                if (Behaviors[i] != null) 
+                    Behaviors[i].DoExit(next);
         }
 
         /// <summary>  

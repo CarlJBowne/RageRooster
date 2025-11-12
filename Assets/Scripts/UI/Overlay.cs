@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,8 +32,12 @@ public class Overlay : MonoBehaviour
         }
     }
 
-    private float blackoutRate = 0f;
-
+    private float blackoutRate
+    {
+        set => _blackoutRate = value;
+        get => _blackoutRate;
+    }
+    private float _blackoutRate = 0f;
 
     [SerializeField] protected Image blackout;
     [SerializeField] protected Animator animator;
@@ -93,8 +98,11 @@ public class Overlay : MonoBehaviour
     }
 
     public void SetAnimated(bool value) => animator.enabled = value;
-    public void SetAlpha(float alpha) => blackout.color = new(blackout.color.r, blackout.color.g, blackout.color.b, alpha);
 
-    public void Reset() => animator.Play("Null");
-
+    public void Reset()
+    {
+        animator.Play("Null");
+        BasicBlackout = 0f;
+        blackoutRate = 0f;
+    }
 }

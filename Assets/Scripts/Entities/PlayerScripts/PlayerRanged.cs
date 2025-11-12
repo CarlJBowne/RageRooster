@@ -57,6 +57,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     private void FixedUpdate()
     {
+        if (!enabled) return;
         if (eggAmount < eggCapacity) eggReplenishRate.Tick(() => Player.Ammo.Current++);
 
         pointer.startH.position = body.Position + Vector3.up;
@@ -69,6 +70,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     }
     private void LateUpdate()
     {
+        if (!enabled) return;
         currentGrabbed?.transform.SetPositionAndRotation(heldItemAnchor);
     }
     private void OnDestroy()

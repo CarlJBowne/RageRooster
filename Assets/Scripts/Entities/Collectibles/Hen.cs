@@ -12,9 +12,9 @@ namespace RageRooster.Entities.Collectibles
 {
     public class Hen : CollectibleBase
     {
-        protected override List<string> targetRegistryList => SavedValueManager.HensRescued;
+        protected override List<string> targetRegistryList => SavedValueRegistry.HensRescued;
 
-        protected override SaveFile.SavedCollectible targetSavedCollectible => SaveFile.Current.hensRescued;
+        protected override SaveData.SavedCollectible targetSavedCollectible => SaveData.Current.hensRescued;
 
 
         private void OnTriggerEnter(Collider other)

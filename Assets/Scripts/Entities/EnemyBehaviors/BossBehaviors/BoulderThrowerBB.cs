@@ -44,7 +44,7 @@ public class BoulderThrowerBB : MonoBehaviour
         trueMuzzle.eulerAngles = trueMuzzle.eulerAngles - (Vector3.right * angle);
         PoolableObject boulder = projectiles.Pump();
         boulder.SetPosition(trueMuzzle.position);
-        boulder.rb.velocity = initialVelocity * trueMuzzle.forward; 
+        boulder.rb.linearVelocity = initialVelocity * trueMuzzle.forward; 
 
     }
 

@@ -8,14 +8,20 @@ using System.Collections.Generic;
 
 namespace RageRooster.Entities.Collectibles
 {
-    
+    /// <summary>
+    /// A base class for all collectible items in the game. Interfaces with <see cref="SaveData.SavedCollectible"/> and <see cref="SavedValueRegistry"/> to manage collectible state.
+    /// </summary>
     public abstract class CollectibleBase : MonoBehaviour
     {
-
+        /// <summary>
+        /// The unique identifier for this collectible, saved in the <see cref="SavedValueRegistry"/> <br/>
+        /// Should be globally unique, generally not managed manually. <br/>
+        /// Generated IDs are in the format: {AreaName}_{RoomName}_{GUID}
+        /// </summary>
         [SerializeField, HideInInspector] protected string ID;
 
         protected abstract List<string> targetRegistryList { get; }
-        protected abstract SaveFile.SavedCollectible targetSavedCollectible { get; }
+        protected abstract SaveData.SavedCollectible targetSavedCollectible { get; }
 
 
         protected virtual void Awake()
@@ -24,6 +30,9 @@ namespace RageRooster.Entities.Collectibles
                 gameObject.SetActive(false);
         }
 
+        /// <summary>
+        /// The Method to call when the player acquires this collectible.
+        /// </summary>
         protected virtual void Acquire()
         {
             targetSavedCollectible.isCollected[targetRegistryList.IndexOf(ID)] = true;
@@ -32,6 +41,10 @@ namespace RageRooster.Entities.Collectibles
 
 #if UNITY_EDITOR
 
+        /// <summary>
+        /// Sets the unique ID for this collectible into the <see cref="SavedValueRegistry"/> registry. <br/>
+        /// </summary>
+        /// <param name="input">The new ID to set.</param>
         protected void SetID(string input)
         {
             if (!string.IsNullOrEmpty(ID) && targetRegistryList.Contains(ID))
@@ -39,10 +52,13 @@ namespace RageRooster.Entities.Collectibles
             else
                 targetRegistryList.Add(input);
             ID = input;
-            EditorUtility.SetDirty(SavedValueManager.Get());
+            EditorUtility.SetDirty(SavedValueRegistry.Get());
             EditorUtility.SetDirty(this);
         }
 
+        /// <summary>
+        /// Deletes this collectible from the registry and destroys the GameObject.
+        /// </summary>
         protected void DELETE()
         {
             if (!EditorUtility.DisplayDialog("Delete Collectible",
