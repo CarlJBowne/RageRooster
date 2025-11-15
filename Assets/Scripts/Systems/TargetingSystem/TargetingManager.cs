@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using EditorAttributes;
+
 
 
 #if UNITY_EDITOR
@@ -11,33 +13,32 @@ using UnityEditor.UIElements;
 public class TargetingManager : MonoBehaviour
 {
     // Static runtime state
-    private static List<Target> ALLTARGETS = new();
-    private static bool isAimingDownSights = false;
-    private static float MaxDistance;
-    private static float MaxAngle;
-    private static Transform Aim;
-
     public static TargetingManager Instance { get; private set; }
+    public static List<Target> ALLTARGETS = new();
+    public static Target CurrentTarget { get; private set; }
+    public static TargetingAim Aim;
+
+    [System.Serializable]
+    public class TargetingAim
+    {
+        [Tooltip("Transform to source the position and forward direction from for comparisons")]
+        public Transform front;
+        [Tooltip("Maximum distance to target")]
+        public float maxDistance = 10f;
+        [Tooltip("Maximum angle difference from front to target")]
+        public float maxAngle = 35f;
+        [Tooltip("Determines the weighting between distance from the player and angle from the targeting retical. 1 = All Distance, 0 = All Angle. Allways keep between 0 and 1"), MinMaxSlider(.01f, .99f)]
+        public float distanceAngleWeighting = .5f;
+    }
+
+
 
     // Derived static properties
 
     #region Instance Fields
 
-    [Tooltip("Determines the weighting between distance from the player and angle from the targeting retical. 1 = All Distance, 0 = All Angle. Allways keep between .1 and .9")]
-    [SerializeField] float distanceAngleWeighting;
-    public static float DistanceAngleWeight;
-
-    [Tooltip("Maximum distance to target while hip firing")]
-    [SerializeField] float maxDistanceHipFire = 10f;
-    [Tooltip("Maximum distance to target while aiming down sights")]
-    [SerializeField] float maxDistanceAiming = 25f;
-    [Tooltip("Maximum angle to target while hip firing")]
-    [SerializeField] float maxAngleHipFire = 35f;
-    [Tooltip("Maximum angle to target while aiming down sights")]
-    [SerializeField] float maxAngleAiming = 10f;
-
-    [Tooltip("The Transform to source the forward direction from when aiming down sights, rather than the Player's forward.")]
-    [SerializeField] Transform aimingFocusPoint;
+    TargetingAim hipFireAim;
+    TargetingAim aimingAim;
 
     #endregion
 
@@ -54,14 +55,7 @@ public class TargetingManager : MonoBehaviour
             ALLTARGETS.Remove(target);
     }
 
-    public static void ToggleAimingDownSights(bool value)
-    {
-        if (isAimingDownSights == value) return;
-        isAimingDownSights = value;
-        MaxDistance = value ? Instance.maxDistanceAiming : Instance.maxDistanceHipFire;
-        MaxAngle = value ? Instance.maxAngleAiming : Instance.maxAngleHipFire;
-        Aim = value ? Instance.aimingFocusPoint : Player.Transform; //AddCenterTransform later.
-    }
+    public static void ToggleAimingDownSights(bool value) => Aim = value ? Instance.aimingAim : Instance.hipFireAim;
 
 
 
@@ -69,8 +63,15 @@ public class TargetingManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        DistanceAngleWeight = Mathf.Clamp(distanceAngleWeighting, .1f, .9f);
         ToggleAimingDownSights(false);
+    }
+
+
+    private void FixedUpdate()
+    {
+        if(Aim == null) return;
+        Target NewTarget = GetBestTarget();
+        if(NewTarget != CurrentTarget) CurrentTarget = NewTarget;
     }
 
     // Main selection logic
@@ -81,14 +82,17 @@ public class TargetingManager : MonoBehaviour
 
         for (int i = 0; i < ALLTARGETS.Count; i++)
         {
-            float distance = Vector3.Distance(Aim.position, ALLTARGETS[i].transform.position);
-            float angle = Vector3.Angle(Aim.forward, ALLTARGETS[i].transform.position - Aim.position);
+            if (ALLTARGETS[i] == null || ALLTARGETS[i].enabled == false) continue;
 
-            if (ALLTARGETS[i] == null || ALLTARGETS[i].enabled == false || distance > MaxDistance || angle > MaxAngle) continue;
+            float distance = Vector3.Distance(Aim.front.position, ALLTARGETS[i].transform.position);
+            float angle = Vector3.Angle(Aim.front.forward, ALLTARGETS[i].transform.position - Aim.front.position);
 
-            float distanceScore = distance / MaxDistance;
-            float angleScore = angle / MaxAngle;
-            float finalScore = (distanceScore * DistanceAngleWeight) + (angleScore * (1f - DistanceAngleWeight));
+            ALLTARGETS[i].WithinRange = distance > Aim.maxDistance || angle > Aim.maxAngle;
+            if (!ALLTARGETS[i].WithinRange) continue;
+
+            float distanceScore = distance / Aim.maxDistance;
+            float angleScore = angle / Aim.maxAngle;
+            float finalScore = (distanceScore * Aim.distanceAngleWeighting) + (angleScore * (1f - Aim.distanceAngleWeighting));
 
             if (finalScore < closestScore)
             {
@@ -371,5 +375,22 @@ public class TargetingManager : MonoBehaviour
 
 public class Target : MonoBehaviour
 {
+
+    public float GetDistance() => Vector3.Distance(TargetingManager.Aim.front.position, transform.position);
+
+    public float GetAngle() => Vector3.Angle(TargetingManager.Aim.front.forward, transform.position - TargetingManager.Aim.front.position);
+
+    protected virtual void OnEnable() => TargetingManager.AddActiveTarget(this);
+    protected virtual void OnDisable() => TargetingManager.RemoveActiveTarget(this);
+
+    public bool WithinRange { internal set; get; }
+
+    public bool IsTargeted => TargetingManager.CurrentTarget == this;
+
+
+
+
+
+
 
 }
