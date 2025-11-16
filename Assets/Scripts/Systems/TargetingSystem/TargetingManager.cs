@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using EditorAttributes;
-using Unity.VisualScripting;
 
 
 
@@ -17,28 +15,15 @@ public class TargetingManager : MonoBehaviour
     public static TargetingManager Instance { get; private set; }
     public static List<Target> ALLTARGETS = new();
     public static Target CurrentTarget { get; private set; }
-    public static TargetingRange Aim;
-
-    [System.Serializable]
-    public class TargetingRange
-    {
-        [Tooltip("Transform to source the position and forward direction from for comparisons")]
-        public Transform front;
-        [Tooltip("Maximum distance to target")]
-        public float maxDistance = 10f;
-        [Tooltip("Maximum angle difference from front to target")]
-        public float maxAngle = 35f;
-        [Tooltip("Determines the weighting between distance from the player and angle from the targeting retical. 1 = All Distance, 0 = All Angle. Allways keep between 0 and 1"), Range(.01f, .99f)]
-        public float distanceAngleWeighting = .5f;
-    }
-
-
+    public static TargetingRange RangedAttackRange;
 
 
     #region Instance Fields
 
-    [SerializeField] private TargetingRange hipFireAim = new();
-    [SerializeField] private TargetingRange aimingAim = new(); 
+    [SerializeField] private TargetingRange rangedHipFireRange = new();
+    [SerializeField] private TargetingRange rangedAimingRange = new(); 
+    [SerializeField] private TargetingRange grabbingRange = new(); 
+    [SerializeField] private TargetingRange interactionRange = new(); 
 
     #endregion
 
@@ -55,7 +40,7 @@ public class TargetingManager : MonoBehaviour
             ALLTARGETS.Remove(target);
     }
 
-    public static void ToggleAimingDownSights(bool value) => Aim = value ? Instance.aimingAim : Instance.hipFireAim;
+    public static void ToggleAimingDownSights(bool value) => RangedAttackRange = value ? Instance.rangedAimingRange : Instance.rangedHipFireRange;
 
 
 
@@ -69,7 +54,7 @@ public class TargetingManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(Aim == null) return;
+        if(RangedAttackRange == null) return;
         Target NewTarget = GetBestTarget();
         if(NewTarget != CurrentTarget) CurrentTarget = NewTarget;
     }
@@ -84,15 +69,15 @@ public class TargetingManager : MonoBehaviour
         {
             if (ALLTARGETS[i] == null || ALLTARGETS[i].enabled == false) continue;
 
-            float distance = Vector3.Distance(Aim.front.position, ALLTARGETS[i].transform.position);
-            float angle = Vector3.Angle(Aim.front.forward, ALLTARGETS[i].transform.position - Aim.front.position);
+            float distance = Vector3.Distance(RangedAttackRange.front.position, ALLTARGETS[i].transform.position);
+            float angle = Vector3.Angle(RangedAttackRange.front.forward, ALLTARGETS[i].transform.position - RangedAttackRange.front.position);
 
-            ALLTARGETS[i].WithinRange = distance > Aim.maxDistance || angle > Aim.maxAngle;
+            ALLTARGETS[i].WithinRange = distance > RangedAttackRange.maxDistance || angle > RangedAttackRange.maxAngle;
             if (!ALLTARGETS[i].WithinRange) continue;
 
-            float distanceScore = distance / Aim.maxDistance;
-            float angleScore = angle / Aim.maxAngle;
-            float finalScore = (distanceScore * Aim.distanceAngleWeighting) + (angleScore * (1f - Aim.distanceAngleWeighting));
+            float distanceScore = distance / RangedAttackRange.maxDistance;
+            float angleScore = angle / RangedAttackRange.maxAngle;
+            float finalScore = (distanceScore * RangedAttackRange.distanceAngleWeighting) + (angleScore * (1f - RangedAttackRange.distanceAngleWeighting));
 
             if (finalScore < closestScore)
             {
@@ -102,297 +87,331 @@ public class TargetingManager : MonoBehaviour
         }
         return chosenIndex != -1 ? ALLTARGETS[chosenIndex] : null;
     }
+}
+
+[System.Serializable]
+public class TargetingRange
+{
+    [Tooltip("Transform to source the position and forward direction from for comparisons")]
+    public Transform front;
+    [Tooltip("Maximum distance to target")]
+    public float maxDistance = 10f;
+    [Tooltip("Maximum angle difference from front to target")]
+    public float maxAngle = 35f;
+    [Tooltip("Determines the weighting between distance from the player and angle from the targeting retical. 1 = All Distance, 0 = All Angle. Allways keep between 0 and 1"), Range(.01f, .99f)]
+    public float distanceAngleWeighting = .5f;
+
+    [SerializeField] private Color viewColor = Color.green;
+
 
 #if UNITY_EDITOR
-    [UnityEditor.CustomEditor(typeof(TargetingManager))]
-    public class Editor : UnityEditor.Editor
+    [UnityEditor.CustomPropertyDrawer(typeof(TargetingRange))]
+    public class Editor : PropertyDrawer
     {
-        /*
-         DETAILED PSEUDOCODE / PLAN:
 
-         1) State & SerializedProperties
-            - Cache TargetingManager instance 'tm' and two SerializedProperty references:
-              p_hipFireAim -> serializedObject.FindProperty("hipFireAim")
-              p_aimingAim  -> serializedObject.FindProperty("aimingAim")
-            - Keep a local bool 'showCones' to track toggle state for SceneView drawing.
+        SerializedProperty p_transform;
+        SerializedProperty p_distance;
+        SerializedProperty p_angle;
+        SerializedProperty p_distanceAngleWeighting;
+        SerializedProperty p_viewColor;
+        bool viewAndEdit = false;
 
-         2) OnEnable / OnDisable
-            - Assign 'tm' from target.
-            - Find the two serialized properties.
-            - Register and unregister a callback to UnityEditor.SceneView.duringSceneGui.
+        // Scene callback management
+        private System.Action<UnityEditor.SceneView> sceneCallback;
+        private bool registered = false;
 
-         3) CreateInspectorGUI
-            - Create a root VisualElement.
-            - Add PropertyField for hip and aim properties (they expose nested fields automatically).
-            - Add a toggle button labeled "Show Target Cones".
-              - Toggle flips 'showCones', updates button visuals and repaints SceneView.
-            - Bind the root to serializedObject so editing supports undo/redo.
-            - Return root.
-
-         4) SceneView drawing entrypoint
-            - When SceneView requests GUI, call a single function DrawConesAndHandles().
-            - If showCones is false or tm is null -> return early.
-
-         5) DrawConesAndHandles responsibilities (combined cone + handles)
-            - Choose an origin/forward: prefer aiming front's Transform (p_aimingAim.front),
-              else hip front, else tm.transform.
-            - Project forward to horizontal plane (y=0), normalize, determine up = Vector3.up.
-            - Read floats from serialized properties (hip/aim distances and angles) using helper.
-              Use fallback defaults if properties missing.
-            - Draw both cones on the ground plane (filled sector + wire arc + radius lines).
-            - Draw interactive handles for each cone's distance and angle immediately after drawing.
-              - Use Handles.Slider for distance: slide along forward axis.
-              - Use Handles.FreeMoveHandle on the rim for angle: compute new angle from handle position.
-            - Wrap handle interactions in EditorGUI.BeginChangeCheck / EndChangeCheck.
-            - If changed, write new float values back to the appropriate SerializedProperty fields
-              and apply modified properties (supports Undo).
-            - Always call SceneView.RepaintAll when toggling or after applying props so editor updates.
-
-         6) Helpers
-            - ReadFloatFromAimProperty(SerializedProperty aimProp, string name, float fallback)
-            - WriteFloatToAimProperty(SerializedProperty aimProp, string name, float value)
-            - DrawFlatCone(...) draws filled arc and wire arcs/lines.
-            - EditDistanceHandle(...) returns new distance float.
-            - EditAngleHandle(...) returns new half-angle float.
-
-         This simplified editor consolidates drawing and interactive editing in one place,
-         keeps UIElements inspector minimal and binds to serializedObject for undo support.
-        */
-
-        // Cached runtime/serialized references
-        private static TargetingManager This;
-        private SerializedProperty p_hipFireAim;
-        private SerializedProperty p_hipFireAim_Distance;
-        private SerializedProperty p_hipFireAim_Angle;
-        private SerializedProperty p_aimingAim;
-        private SerializedProperty p_aimingAim_Distance;
-        private SerializedProperty p_aimingAim_Angle;
-
-        // UI state (editor instance)
-        private bool showCones = false;
-
-        private void OnEnable()
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
-            This = (TargetingManager)target;
-            p_hipFireAim = serializedObject.FindProperty(nameof(hipFireAim));
-            p_hipFireAim_Angle = p_hipFireAim?.FindPropertyRelative(nameof(TargetingRange.maxAngle));
-            p_hipFireAim_Distance = p_hipFireAim?.FindPropertyRelative(nameof(TargetingRange.maxDistance));
-            p_aimingAim = serializedObject.FindProperty(nameof(aimingAim));
-            p_aimingAim_Angle = p_aimingAim?.FindPropertyRelative(nameof(TargetingRange.maxAngle));
-            p_aimingAim_Distance = p_aimingAim?.FindPropertyRelative(nameof(TargetingRange.maxDistance));
-            UnityEditor.SceneView.duringSceneGui += DuringSceneGUI;
-        }
+            // Cache child properties
+            p_transform = property.FindPropertyRelative(nameof(front));
+            p_distance = property.FindPropertyRelative(nameof(maxDistance));
+            p_angle = property.FindPropertyRelative(nameof(maxAngle));
+            p_distanceAngleWeighting = property.FindPropertyRelative(nameof(distanceAngleWeighting));
+            p_viewColor = property.FindPropertyRelative("viewColor");
 
-        private void OnDisable()
-        {
-            UnityEditor.SceneView.duringSceneGui -= DuringSceneGUI;
-            This = null;
-        }
-
-        public override VisualElement CreateInspectorGUI()
-        {
             var root = new VisualElement();
-            var so = serializedObject;
-            so.Update();
 
-            if (p_hipFireAim != null)
+            // Row container: left = foldout (expands to show fields), right = column (button + color box)
+            var row = new VisualElement();
+            row.style.flexDirection = FlexDirection.Row;
+            row.style.alignItems = Align.Center;
+            row.style.justifyContent = Justify.SpaceBetween;
+            row.style.marginBottom = 4;
+            row.style.marginTop = 2;
+
+            // Foldout acts like the dropdown header + content container
+            var foldout = new Foldout
             {
-                var hipField = new PropertyField(p_hipFireAim);
-                hipField.SetEnabled(true);
-                root.Add(hipField);
+                text = property.displayName,
+                value = false // collapsed by default
+            };
+            // Make foldout grow to take available width
+            foldout.style.flexGrow = 1;
+            foldout.style.minWidth = 0; // allow shrinking in narrow inspectors
+
+            // Content inside foldout: the actual property fields
+            var content = new VisualElement();
+            content.style.flexDirection = FlexDirection.Column;
+            content.style.paddingLeft = 12;
+            content.style.paddingTop = 2;
+            content.style.paddingBottom = 2;
+
+            if (p_transform != null)
+            {
+                var transformField = new UnityEditor.UIElements.PropertyField(p_transform);
+                transformField.SetEnabled(true);
+                content.Add(transformField);
             }
 
-            if (p_aimingAim != null)
+            if (p_distance != null)
             {
-                var aimField = new UnityEditor.UIElements.PropertyField(p_aimingAim);
-                aimField.SetEnabled(true);
-                root.Add(aimField);
+                var distanceField = new UnityEditor.UIElements.PropertyField(p_distance);
+                distanceField.SetEnabled(true);
+                content.Add(distanceField);
             }
 
-            Button toggleButton = null;
-            toggleButton = new Button(ConeToggle)
-            {text = "Show Target Cones"};
+            if (p_angle != null)
+            {
+                var angleField = new UnityEditor.UIElements.PropertyField(p_angle);
+                angleField.SetEnabled(true);
+                content.Add(angleField);
+            }
 
-            SetButtonStyle(toggleButton);
-            root.Add(toggleButton);
+            if (p_distanceAngleWeighting != null)
+            {
+                var weightingField = new UnityEditor.UIElements.PropertyField(p_distanceAngleWeighting);
+                weightingField.SetEnabled(true);
+                content.Add(weightingField);
+            }
 
-            root.Bind(so);
+            // NOTE: Do NOT add the viewColor to `content`. We'll show a compact color box below the View/Edit button instead.
+
+            foldout.Add(content);
+
+            // Right side: vertical column for the button and small color box
+            var rightColumn = new VisualElement();
+            rightColumn.style.flexDirection = FlexDirection.Column;
+            rightColumn.style.alignItems = Align.FlexEnd;
+            rightColumn.style.justifyContent = Justify.FlexStart;
+
+            // View/Edit button to the right of the foldout header
+            Button viewEditButton = null;
+            viewEditButton = new Button(() => ToggleViewEdit(viewEditButton))
+            {text = "View/Edit"};
+            viewEditButton.style.marginLeft = 6;
+            viewEditButton.style.flexShrink = 0;
+            viewEditButton.style.alignSelf = Align.FlexStart;
+
+            rightColumn.Add(viewEditButton);
+
+            // Small color box (no label) under the button
+            // Show this box only when the foldout is expanded. Make it a wider square (approx 22x22).
+            if (p_viewColor != null)
+            {
+                // Use UIElements ColorField bound to the serialized property path so root.Bind will work.
+                var smallColor = new ColorField();
+                smallColor.bindingPath = p_viewColor.propertyPath;
+                smallColor.SetEnabled(true);
+                // Hide label by setting it to empty and adjust size
+                smallColor.label = string.Empty;
+                smallColor.style.width = 22;
+                smallColor.style.height = 22;
+                smallColor.style.marginTop = 6;
+                smallColor.style.marginRight = 2;
+                smallColor.style.flexShrink = 0;
+                // Initially hidden when foldout is collapsed
+                smallColor.style.display = foldout.value ? DisplayStyle.Flex : DisplayStyle.None;
+                rightColumn.Add(smallColor);
+
+                // Update visibility when foldout toggles
+                foldout.RegisterValueChangedCallback(evt =>
+                {
+                    smallColor.style.display = evt.newValue ? DisplayStyle.Flex : DisplayStyle.None;
+                });
+            }
+            else
+            {
+                // Fallback: small neutral box if property isn't present
+                var fallbackBox = new VisualElement();
+                fallbackBox.style.width = 22;
+                fallbackBox.style.height = 22;
+                fallbackBox.style.backgroundColor = new StyleColor(new Color(0.4f, 0.4f, 0.4f));
+                fallbackBox.style.marginTop = 6;
+                fallbackBox.style.marginRight = 2;
+                fallbackBox.style.flexShrink = 0;
+                fallbackBox.style.display = foldout.value ? DisplayStyle.Flex : DisplayStyle.None;
+                rightColumn.Add(fallbackBox);
+
+                foldout.RegisterValueChangedCallback(evt =>
+                {
+                    fallbackBox.style.display = evt.newValue ? DisplayStyle.Flex : DisplayStyle.None;
+                });
+            }
+
+            row.Add(foldout);
+            row.Add(rightColumn);
+
+            root.Add(row);
+
+            // Ensure binding so property fields are editable with Undo support
+            var so = property.serializedObject;
+            if (so != null)
+            {
+                root.Bind(so);
+            }
+
+            // Unregister scene callback when inspector element is detached/destroyed
+            root.RegisterCallback<DetachFromPanelEvent>(evt =>
+            {
+                // Ensure we remove any registered scene callback to avoid leaks
+                UnregisterScene();
+            });
+
             return root;
 
-            void ConeToggle()
+            void ToggleViewEdit(Button b)
             {
-                showCones = !showCones;
-                SetButtonStyle(toggleButton);
-                UnityEditor.SceneView.RepaintAll();
-            }
-
-            void SetButtonStyle(Button b)
-            {
-                if (b == null) return;
-                if (showCones)
+                viewAndEdit = !viewAndEdit;
+                // Update visuals slightly to indicate state
+                if (viewAndEdit)
                 {
                     b.style.backgroundColor = new StyleColor(new Color(0.1f, 0.45f, 0.1f));
                     b.style.color = new StyleColor(Color.white);
+                    RegisterScene();
                 }
                 else
                 {
                     b.style.backgroundColor = new StyleColor(new Color(0.32f, 0.32f, 0.32f));
                     b.style.color = new StyleColor(Color.white);
+                    UnregisterScene();
                 }
+
+                UnityEditor.SceneView.RepaintAll();
             }
         }
 
-        // SceneView hook
-        private void DuringSceneGUI(UnityEditor.SceneView sceneView)
+        private void RegisterScene()
         {
-            DrawConesAndHandles();
+            if (registered) return;
+            sceneCallback = sv =>
+            {
+                // Only draw when viewAndEdit is true (defensive)
+                if (viewAndEdit)
+                {
+                    DrawEditableFlatCone();
+                }
+            };
+            UnityEditor.SceneView.duringSceneGui += sceneCallback;
+            registered = true;
         }
 
-        // Combined drawing + handle editing for both hip and aim cones
-        private void DrawConesAndHandles()
+        private void UnregisterScene()
         {
-            if (!showCones || This == null) return;
+            if (!registered) return;
+            UnityEditor.SceneView.duringSceneGui -= sceneCallback;
+            registered = false;
+            sceneCallback = null;
+        }
 
-
-            serializedObject.Update();
-
-            Transform hipFireTransform = p_hipFireAim.FindPropertyRelative(nameof(TargetingRange.front)).objectReferenceValue as Transform;
-            Transform aimTransform = p_aimingAim.FindPropertyRelative(nameof(TargetingRange.front)).objectReferenceValue as Transform;
-
-            DrawEditableFlatCone(hipFireTransform, p_hipFireAim_Angle, p_hipFireAim_Distance, Color.darkOrchid);
-            DrawEditableFlatCone(aimTransform, p_aimingAim_Angle, p_aimingAim_Distance, Color.cyan);
-
-            // Interactive handles
-            EditorGUI.BeginChangeCheck();
-
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            // Default IMGUI fallback — leave empty to use UIElements inspector created in CreatePropertyGUI.
         }
 
 
-        /*
-         PSEUDOCODE / DETAILED PLAN:
-         
-         - Guard: if either `distance` or `angle` SerializedProperty is null, return early.
-         - Ensure the SerializedObject is up-to-date by calling `serializedObject.Update()`.
-         - Read current float values from `distance.floatValue` and `angle.floatValue`.
-         - Prepare a horizontal forward vector:
-           - Project `forward` onto the XZ plane (set y = 0).
-           - If projected magnitude is nearly zero, fallback to normalized `forward`.
-           - Normalize the forward vector.
-         - Draw the flat cone visualization (filled arc, wire arc, and radius lines) using the current values.
-         - Begin an EditorGUI change check.
-         - Distance handle:
-           - Position a slider at `origin + forward * currentDistance`.
-           - When moved, compute the projection of the slider position onto `forward`.
-           - Clamp to >= 0.
-         - Angle handle:
-           - Compute rim direction using `Quaternion.AngleAxis(halfAngle, up) * forward`.
-           - Place a free-move handle at `origin + rimDir * currentDistance`.
-           - When moved, compute the direction from origin to handle (flatten Y), normalize, compute SignedAngle between forward and this dir around `up`, take abs -> new half-angle.
-         - If any handle changed:
-           - Write modified values directly to `distance.floatValue` and `angle.floatValue` (with clamping).
-           - Call `serializedObject.ApplyModifiedProperties()` to persist and enable undo.
-           - Repaint SceneView.
-        */
-        public static void DrawEditableFlatCone(Vector3 origin, Vector3 forward, Vector3 up, SerializedProperty distance, SerializedProperty angle, Color color)
+        public void DrawEditableFlatCone()
         {
-            if (distance == null || angle == null) return;
-
-            var so = distance.serializedObject ?? angle.serializedObject;
+            var so = p_distance?.serializedObject ?? p_angle?.serializedObject;
             if (so == null) return;
             so.Update();
 
             // Read current values
-            float currentDistance = distance.floatValue;
-            float currentHalfAngle = angle.floatValue;
+            Transform transform = p_transform?.objectReferenceValue as Transform;
+            if (transform == null) return;
+
+            float currentDistance = p_distance.floatValue;
+            float currentHalfAngle = p_angle.floatValue;
+
+            Color color = Color.green;
+            try
+            {
+                if (p_viewColor != null)
+                    color = p_viewColor.colorValue;
+            }
+            catch
+            {
+                // ignore if viewColor isn't serialized/present
+            }
 
             // Prepare forward on horizontal plane
-            Vector3 f = forward;
+            Vector3 f = transform.forward;
             f.y = 0f;
             if (f.sqrMagnitude < 0.0001f)
-                f = forward.normalized;
+                f = transform.forward.normalized;
             f.Normalize();
 
             // Draw cone visuals (filled arc + wire + radius lines)
             float halfAngle = Mathf.Abs(currentHalfAngle);
-            Vector3 startDir = Quaternion.AngleAxis(-halfAngle, up) * f;
-
+            Vector3 startDir = Quaternion.AngleAxis(-halfAngle, transform.up) * f;
 
             Handles.color = color;
-            Handles.DrawWireArc(origin, up, startDir, halfAngle * 2f, currentDistance);
-            Handles.DrawLine(origin, origin + (Quaternion.AngleAxis(-halfAngle, up) * f) * currentDistance);
-            Handles.DrawLine(origin, origin + (Quaternion.AngleAxis(halfAngle, up) * f) * currentDistance);
+            Handles.DrawWireArc(transform.position, transform.up, startDir, halfAngle * 2f, currentDistance);
+            Handles.DrawLine(transform.position, transform.position + (Quaternion.AngleAxis(-halfAngle, transform.up) * f) * currentDistance);
+            Handles.DrawLine(transform.position, transform.position + (Quaternion.AngleAxis(halfAngle, transform.up) * f) * currentDistance);
 
-            Handles.color = color.SetAlpha(.12f);
-            Handles.DrawSolidArc(origin, up, startDir, halfAngle * 2f, currentDistance);
+            Handles.color = new Color(color.r, color.g, color.b, .12f);
+            Handles.DrawSolidArc(transform.position, transform.up, startDir, halfAngle * 2f, currentDistance);
 
             // Interactive handles
             EditorGUI.BeginChangeCheck();
 
             // Distance slider handle
             Handles.color = color;
-            Vector3 distHandlePos = origin + f * currentDistance;
+            Vector3 distHandlePos = transform.position + f * currentDistance;
             Vector3 newDistHandlePos = Handles.Slider(distHandlePos, f, HandleUtility.GetHandleSize(distHandlePos) * .15f, Handles.ConeHandleCap, 0f);
             float newDistance = currentDistance;
             {
-                Vector3 delta = newDistHandlePos - origin;
+                Vector3 delta = newDistHandlePos - transform.position;
                 float projected = Vector3.Dot(delta, f);
                 newDistance = Mathf.Max(0f, projected);
             }
 
             // Angle free-move handle
             float newHalfAngle = Mathf.Abs(currentHalfAngle);
-            Vector3 rimDir = Quaternion.AngleAxis(halfAngle, up) * f;
-            Vector3 angleHandlePos = origin + rimDir * currentDistance;
+            Vector3 rimDir = Quaternion.AngleAxis(halfAngle, transform.up) * f;
+            Vector3 angleHandlePos = transform.position + rimDir * currentDistance;
             Handles.color = color;
             Vector3 newAngleHandlePos = Handles.FreeMoveHandle(angleHandlePos, HandleUtility.GetHandleSize(angleHandlePos) * 0.08f, Vector3.zero, Handles.SphereHandleCap);
             {
-                Vector3 dir = newAngleHandlePos - origin;
+                Vector3 dir = newAngleHandlePos - transform.position;
                 dir.y = 0f;
                 if (dir.sqrMagnitude >= 0.0001f)
                 {
                     dir.Normalize();
-                    float angleSigned = Vector3.SignedAngle(f, dir, up);
+                    float angleSigned = Vector3.SignedAngle(f, dir, transform.up);
                     newHalfAngle = Mathf.Abs(angleSigned);
                 }
             }
 
             if (EditorGUI.EndChangeCheck())
             {
-                distance.floatValue = Mathf.Max(0f, newDistance);
-                angle.floatValue = Mathf.Clamp(newHalfAngle, 0f, 180f);
+                p_distance.floatValue = Mathf.Max(0f, newDistance);
+                p_angle.floatValue = Mathf.Clamp(newHalfAngle, 0f, 180f);
                 so.ApplyModifiedProperties();
                 UnityEditor.SceneView.RepaintAll();
             }
         }
 
-        public static void DrawEditableFlatCone(Transform reference, SerializedProperty distance, SerializedProperty angle, Color color)
-        {
-            if (reference == null) reference = This.transform;
-            DrawEditableFlatCone(reference.position, reference.forward, reference.up, distance, angle, color);
-        }
-
-
-
-        // Retain default inspector IMGUI as fallback
-        public override void OnInspectorGUI() => DrawDefaultInspector();
     }
 #endif
 }
 
-
-
-
-
-
-
-
-
 public class Target : MonoBehaviour
 {
 
-    public float GetDistance() => Vector3.Distance(TargetingManager.Aim.front.position, transform.position);
+    public float GetDistance() => Vector3.Distance(TargetingManager.RangedAttackRange.front.position, transform.position);
 
-    public float GetAngle() => Vector3.Angle(TargetingManager.Aim.front.forward, transform.position - TargetingManager.Aim.front.position);
+    public float GetAngle() => Vector3.Angle(TargetingManager.RangedAttackRange.front.forward, transform.position - TargetingManager.RangedAttackRange.front.position);
 
     protected virtual void OnEnable() => TargetingManager.AddActiveTarget(this);
     protected virtual void OnDisable() => TargetingManager.RemoveActiveTarget(this);
@@ -400,11 +419,4 @@ public class Target : MonoBehaviour
     public bool WithinRange { internal set; get; }
 
     public bool IsTargeted => TargetingManager.CurrentTarget == this;
-
-
-
-
-
-
-
 }

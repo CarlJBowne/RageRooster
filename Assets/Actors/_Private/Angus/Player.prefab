@@ -5030,6 +5030,7 @@ GameObject:
   - component: {fileID: 5436814540052560995}
   - component: {fileID: 8191279611815052833}
   - component: {fileID: 1081188095233249612}
+  - component: {fileID: 8276996308931714624}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -5627,6 +5628,42 @@ MonoBehaviour:
   worldspaceVelocity: {x: 0, y: 0, z: 0}
   locked: 0
   intendedAnimationName: 
+--- !u!114 &8276996308931714624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 949891b78cad1ac4cb05f6f17c928502, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetingManager
+  rangedHipFireRange:
+    front: {fileID: 802911248559169720}
+    maxDistance: 7.2389812
+    maxAngle: 43.0717
+    distanceAngleWeighting: 0.5
+    viewColor: {r: 1, g: 0, b: 0, a: 1}
+  rangedAimingRange:
+    front: {fileID: 802911248559169720}
+    maxDistance: 20.021955
+    maxAngle: 8.84509
+    distanceAngleWeighting: 0.5
+    viewColor: {r: 0, g: 0.63962555, b: 1, a: 1}
+  grabbingRange:
+    front: {fileID: 802911248559169720}
+    maxDistance: 1.7781098
+    maxAngle: 99.845634
+    distanceAngleWeighting: 0.5
+    viewColor: {r: 1, g: 0.4820457, b: 0, a: 1}
+  interactionRange:
+    front: {fileID: 802911248559169720}
+    maxDistance: 2.144561
+    maxAngle: 28.984898
+    distanceAngleWeighting: 0.5
+    viewColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &2975349023816060615
 GameObject:
   m_ObjectHideFlags: 0
