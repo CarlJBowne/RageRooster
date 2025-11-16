@@ -27,7 +27,7 @@ public class TargetingManager : MonoBehaviour
         public float maxDistance = 10f;
         [Tooltip("Maximum angle difference from front to target")]
         public float maxAngle = 35f;
-        [Tooltip("Determines the weighting between distance from the player and angle from the targeting retical. 1 = All Distance, 0 = All Angle. Allways keep between 0 and 1"), MinMaxSlider(.01f, .99f)]
+        [Tooltip("Determines the weighting between distance from the player and angle from the targeting retical. 1 = All Distance, 0 = All Angle. Allways keep between 0 and 1"), Range(.01f, .99f)]
         public float distanceAngleWeighting = .5f;
     }
 
@@ -37,8 +37,9 @@ public class TargetingManager : MonoBehaviour
 
     #region Instance Fields
 
-    TargetingAim hipFireAim;
-    TargetingAim aimingAim;
+    // make fields serialized so they show up in inspector and the editor code can find them
+    [SerializeField] private TargetingAim hipFireAim = new();
+    [SerializeField] private TargetingAim aimingAim = new(); 
 
     #endregion
 
@@ -107,29 +108,71 @@ public class TargetingManager : MonoBehaviour
     [UnityEditor.CustomEditor(typeof(TargetingManager))]
     public class Editor : UnityEditor.Editor
     {
-        // Cached references
-        private TargetingManager tm;
-        private SerializedProperty p_distanceAngleWeighting;
-        private SerializedProperty p_maxDistanceHipFire;
-        private SerializedProperty p_maxDistanceAiming;
-        private SerializedProperty p_maxAngleHipFire;
-        private SerializedProperty p_maxAngleAiming;
-        private SerializedProperty p_aimingFocusPoint;
+        /*
+         DETAILED PSEUDOCODE / PLAN:
 
-        // UI state (per-editor instance)
+         1) State & SerializedProperties
+            - Cache TargetingManager instance 'tm' and two SerializedProperty references:
+              p_hipFireAim -> serializedObject.FindProperty("hipFireAim")
+              p_aimingAim  -> serializedObject.FindProperty("aimingAim")
+            - Keep a local bool 'showCones' to track toggle state for SceneView drawing.
+
+         2) OnEnable / OnDisable
+            - Assign 'tm' from target.
+            - Find the two serialized properties.
+            - Register and unregister a callback to UnityEditor.SceneView.duringSceneGui.
+
+         3) CreateInspectorGUI
+            - Create a root VisualElement.
+            - Add PropertyField for hip and aim properties (they expose nested fields automatically).
+            - Add a toggle button labeled "Show Target Cones".
+              - Toggle flips 'showCones', updates button visuals and repaints SceneView.
+            - Bind the root to serializedObject so editing supports undo/redo.
+            - Return root.
+
+         4) SceneView drawing entrypoint
+            - When SceneView requests GUI, call a single function DrawConesAndHandles().
+            - If showCones is false or tm is null -> return early.
+
+         5) DrawConesAndHandles responsibilities (combined cone + handles)
+            - Choose an origin/forward: prefer aiming front's Transform (p_aimingAim.front),
+              else hip front, else tm.transform.
+            - Project forward to horizontal plane (y=0), normalize, determine up = Vector3.up.
+            - Read floats from serialized properties (hip/aim distances and angles) using helper.
+              Use fallback defaults if properties missing.
+            - Draw both cones on the ground plane (filled sector + wire arc + radius lines).
+            - Draw interactive handles for each cone's distance and angle immediately after drawing.
+              - Use Handles.Slider for distance: slide along forward axis.
+              - Use Handles.FreeMoveHandle on the rim for angle: compute new angle from handle position.
+            - Wrap handle interactions in EditorGUI.BeginChangeCheck / EndChangeCheck.
+            - If changed, write new float values back to the appropriate SerializedProperty fields
+              and apply modified properties (supports Undo).
+            - Always call SceneView.RepaintAll when toggling or after applying props so editor updates.
+
+         6) Helpers
+            - ReadFloatFromAimProperty(SerializedProperty aimProp, string name, float fallback)
+            - WriteFloatToAimProperty(SerializedProperty aimProp, string name, float value)
+            - DrawFlatCone(...) draws filled arc and wire arcs/lines.
+            - EditDistanceHandle(...) returns new distance float.
+            - EditAngleHandle(...) returns new half-angle float.
+
+         This simplified editor consolidates drawing and interactive editing in one place,
+         keeps UIElements inspector minimal and binds to serializedObject for undo support.
+        */
+
+        // Cached runtime/serialized references
+        private TargetingManager tm;
+        private SerializedProperty p_hipFireAim;
+        private SerializedProperty p_aimingAim;
+
+        // UI state (editor instance)
         private bool showCones = false;
 
         private void OnEnable()
         {
             tm = (TargetingManager)target;
-            p_distanceAngleWeighting = serializedObject.FindProperty("distanceAngleWeighting");
-            p_maxDistanceHipFire = serializedObject.FindProperty("maxDistanceHipFire");
-            p_maxDistanceAiming = serializedObject.FindProperty("maxDistanceAiming");
-            p_maxAngleHipFire = serializedObject.FindProperty("maxAngleHipFire");
-            p_maxAngleAiming = serializedObject.FindProperty("maxAngleAiming");
-            p_aimingFocusPoint = serializedObject.FindProperty("aimingFocusPoint");
-
-            // Ensure SceneView repaints when needed
+            p_hipFireAim = serializedObject.FindProperty("hipFireAim");
+            p_aimingAim = serializedObject.FindProperty("aimingAim");
             UnityEditor.SceneView.duringSceneGui += DuringSceneGUI;
         }
 
@@ -140,122 +183,89 @@ public class TargetingManager : MonoBehaviour
 
         public override UnityEngine.UIElements.VisualElement CreateInspectorGUI()
         {
-            /*
-            Pseudocode / Plan (detailed):
-            - Create a root VisualElement to host the custom inspector UI.
-            - Update the serializedObject so PropertyFields read current values.
-            - Define the list of instance property names to expose and add a PropertyField for each:
-              - For each property name: find the SerializedProperty, skip if null, create a PropertyField, enable it, and add it to the root.
-            - Create a toggle button (`toggleButton`) that:
-              - Toggles the `showCones` boolean when clicked.
-              - Does NOT change its text based on state (text remains constant).
-              - When `showCones` is true, darken the button by setting its background color to a darker color and set text color for readability.
-              - When `showCones` is false, reset the background to transparent and set text color to default dark color.
-              - Repaint the SceneView after toggling so visual changes update.
-            - After creating the button, initialize its style based on the current `showCones` value so the inspector shows correct appearance at open time.
-            - Bind the `serializedObject` to `root` so UI updates the object and supports undo/redo.
-            - Return the root element.
-            */
-
-            // Root container for the inspector UI
             var root = new UnityEngine.UIElements.VisualElement();
-
-            // Ensure serializedObject is current
             var so = serializedObject;
             so.Update();
 
-            // List of instance configuration fields to expose
-            var propNames = new[]
+            if (p_hipFireAim != null)
             {
-                "distanceAngleWeighting",
-                "maxDistanceHipFire",
-                "maxDistanceAiming",
-                "maxAngleHipFire",
-                "maxAngleAiming",
-                "aimingFocusPoint"
-            };
-
-            // Create and add a PropertyField for each available property
-            foreach (var name in propNames)
-            {
-                var prop = so.FindProperty(name);
-                if (prop == null) continue;
-
-                var field = new UnityEditor.UIElements.PropertyField(prop);
-                // Ensure fields are editable in the inspector
-                field.SetEnabled(true);
-                root.Add(field);
+                var hipField = new UnityEditor.UIElements.PropertyField(p_hipFireAim);
+                hipField.SetEnabled(true);
+                root.Add(hipField);
             }
 
-            // Button to toggle showing cones + handles
+            if (p_aimingAim != null)
+            {
+                var aimField = new UnityEditor.UIElements.PropertyField(p_aimingAim);
+                aimField.SetEnabled(true);
+                root.Add(aimField);
+            }
+
             UnityEngine.UIElements.Button toggleButton = null;
-            toggleButton = new UnityEngine.UIElements.Button(() =>
+            toggleButton = new UnityEngine.UIElements.Button(ConeToggle)
+            {text = "Show Target Cones"};
+
+            SetButtonStyle(toggleButton);
+            root.Add(toggleButton);
+
+            root.Bind(so);
+            return root;
+
+            void ConeToggle()
             {
-                // Toggle state
                 showCones = !showCones;
-
-                // Update visual style instead of changing the name
-                SetButtonColor(toggleButton);
-
-                // Ensure SceneView repaints to reflect changes
+                SetButtonStyle(toggleButton);
                 UnityEditor.SceneView.RepaintAll();
-            })
-            {
-                // Keep a constant label per the request
-                text = "Show Target Cones",
-            };
+            }
 
-            // Initialize button style to reflect current `showCones` value
-            // Initialize button style to reflect current `showCones` value
-            SetButtonColor(toggleButton);
-
-            void SetButtonColor(Button toggleButton)
+            void SetButtonStyle(UnityEngine.UIElements.Button b)
             {
+                if (b == null) return;
                 if (showCones)
                 {
-                    toggleButton.style.backgroundColor = new UnityEngine.UIElements.StyleColor(new Color(.3176471f, .3176471f, .3176471f, 1f));
-                    toggleButton.style.color = new UnityEngine.UIElements.StyleColor(Color.white);
+                    b.style.backgroundColor = new UnityEngine.UIElements.StyleColor(new Color(0.1f, 0.45f, 0.1f));
+                    b.style.color = new UnityEngine.UIElements.StyleColor(Color.white);
                 }
                 else
                 {
-                    toggleButton.style.backgroundColor = new UnityEngine.UIElements.StyleColor(Color.lightGray);
-                    toggleButton.style.color = new UnityEngine.UIElements.StyleColor(Color.black);
+                    b.style.backgroundColor = new UnityEngine.UIElements.StyleColor(new Color(0.32f, 0.32f, 0.32f));
+                    b.style.color = new UnityEngine.UIElements.StyleColor(Color.white);
                 }
             }
-
-            root.Add(toggleButton);
-
-            // Bind so that the UI updates the serializedObject and supports undo
-            root.Bind(so);
-
-            return root;
         }
 
-        // Hook for SceneView drawing
+        // SceneView hook
         private void DuringSceneGUI(UnityEditor.SceneView sceneView)
         {
-            OnSceneGUI();
+            DrawConesAndHandles();
         }
 
-        // Scene drawing and interactive handles
-        public void OnSceneGUI()
+        // Combined drawing + handle editing for both hip and aim cones
+        private void DrawConesAndHandles()
         {
             if (!showCones || tm == null) return;
 
-            // Determine origin & forward
+            // Choose transform from aiming front -> hip front -> component transform
             Transform aimTransform = null;
-            if (p_aimingFocusPoint != null && p_aimingFocusPoint.objectReferenceValue != null)
-                aimTransform = p_aimingFocusPoint.objectReferenceValue as Transform;
 
-            if (aimTransform == null)
+            serializedObject.Update();
+            if (p_aimingAim != null)
             {
-                // fallback to the component transform, or Player.Transform if available
-                aimTransform = tm.aimingFocusPoint != null ? tm.aimingFocusPoint : tm.transform;
+                var frontProp = p_aimingAim.FindPropertyRelative("front");
+                if (frontProp != null && frontProp.objectReferenceValue != null)
+                    aimTransform = frontProp.objectReferenceValue as Transform;
             }
 
+            if (aimTransform == null && p_hipFireAim != null)
+            {
+                var frontProp = p_hipFireAim.FindPropertyRelative("front");
+                if (frontProp != null && frontProp.objectReferenceValue != null)
+                    aimTransform = frontProp.objectReferenceValue as Transform;
+            }
+
+            if (aimTransform == null) aimTransform = tm.transform;
             if (aimTransform == null) return;
 
-            // Horizontal plane projection (Y-up)
             Vector3 origin = aimTransform.position;
             Vector3 forward = aimTransform.forward;
             forward.y = 0f;
@@ -263,66 +273,66 @@ public class TargetingManager : MonoBehaviour
             forward = forward.normalized;
             Vector3 up = Vector3.up;
 
-            // Read serialized values for drawing (use defaults if properties missing)
-            serializedObject.Update();
-            float hipDistance = p_maxDistanceHipFire != null ? p_maxDistanceHipFire.floatValue : tm.maxDistanceHipFire;
-            float aimDistance = p_maxDistanceAiming != null ? p_maxDistanceAiming.floatValue : tm.maxDistanceAiming;
-            float hipAngle = p_maxAngleHipFire != null ? p_maxAngleHipFire.floatValue : tm.maxAngleHipFire;
-            float aimAngle = p_maxAngleAiming != null ? p_maxAngleAiming.floatValue : tm.maxAngleAiming;
-            serializedObject.ApplyModifiedProperties();
+            // Read values
+            float hipDistance = ReadFloatFromAimProperty(p_hipFireAim, "maxDistance", 10f);
+            float aimDistance = ReadFloatFromAimProperty(p_aimingAim, "maxDistance", 10f);
+            float hipAngle = ReadFloatFromAimProperty(p_hipFireAim, "maxAngle", 35f);
+            float aimAngle = ReadFloatFromAimProperty(p_aimingAim, "maxAngle", 35f);
 
-            // Draw Hip-fire cone (red)
+            // Draw cones
             DrawFlatCone(origin, forward, up, hipDistance, hipAngle, new Color(1f, 0.2f, 0.2f, 0.12f), Color.red);
-
-            // Draw Aiming cone (green)
             DrawFlatCone(origin, forward, up, aimDistance, aimAngle, new Color(0.2f, 1f, 0.2f, 0.12f), Color.green);
 
-            // Interactive controls to change distance and angle for each mode (always shown when cones visible)
+            // Interactive handles
             EditorGUI.BeginChangeCheck();
 
-            // HIP distance handle
             float newHipDistance = EditDistanceHandle(origin, forward, hipDistance, Color.red);
-            // HIP angle handle
             float newHipAngle = EditAngleHandle(origin, forward, up, hipAngle, hipDistance, Color.red);
 
-            // AIM distance handle
             float newAimDistance = EditDistanceHandle(origin, forward, aimDistance, Color.green);
-            // AIM angle handle
             float newAimAngle = EditAngleHandle(origin, forward, up, aimAngle, aimDistance, Color.green);
 
             if (EditorGUI.EndChangeCheck())
             {
-                // Apply back to serialized properties (supports undo)
                 serializedObject.Update();
-                if (p_maxDistanceHipFire != null) p_maxDistanceHipFire.floatValue = Mathf.Max(0f, newHipDistance);
-                if (p_maxAngleHipFire != null) p_maxAngleHipFire.floatValue = Mathf.Clamp(newHipAngle, 0f, 180f);
-                if (p_maxDistanceAiming != null) p_maxDistanceAiming.floatValue = Mathf.Max(0f, newAimDistance);
-                if (p_maxAngleAiming != null) p_maxAngleAiming.floatValue = Mathf.Clamp(newAimAngle, 0f, 180f);
+                WriteFloatToAimProperty(p_hipFireAim, "maxDistance", Mathf.Max(0f, newHipDistance));
+                WriteFloatToAimProperty(p_hipFireAim, "maxAngle", Mathf.Clamp(newHipAngle, 0f, 180f));
+                WriteFloatToAimProperty(p_aimingAim, "maxDistance", Mathf.Max(0f, newAimDistance));
+                WriteFloatToAimProperty(p_aimingAim, "maxAngle", Mathf.Clamp(newAimAngle, 0f, 180f));
                 serializedObject.ApplyModifiedProperties();
+                UnityEditor.SceneView.RepaintAll();
             }
         }
 
-        // Draw a flat cone (filled + wire) on horizontal plane
+        // Helpers
+        private float ReadFloatFromAimProperty(SerializedProperty aimProp, string relativeName, float fallback)
+        {
+            if (aimProp == null) return fallback;
+            var rel = aimProp.FindPropertyRelative(relativeName);
+            return rel != null ? rel.floatValue : fallback;
+        }
+
+        private void WriteFloatToAimProperty(SerializedProperty aimProp, string relativeName, float value)
+        {
+            if (aimProp == null) return;
+            var rel = aimProp.FindPropertyRelative(relativeName);
+            if (rel != null) rel.floatValue = value;
+        }
+
         private void DrawFlatCone(Vector3 origin, Vector3 forward, Vector3 up, float distance, float halfAngleDeg, Color fillColor, Color wireColor)
         {
-            // Ensure halfAngle is positive
             float halfAngle = Mathf.Abs(halfAngleDeg);
-
-            // Compute start direction (rotated left by half angle)
             Vector3 startDir = Quaternion.AngleAxis(-halfAngle, up) * forward;
 
-            // Filled sector
             Handles.color = fillColor;
             Handles.DrawSolidArc(origin, up, startDir, halfAngle * 2f, distance);
 
-            // Wire arc + radius lines
             Handles.color = wireColor;
             Handles.DrawWireArc(origin, up, startDir, halfAngle * 2f, distance);
             Handles.DrawLine(origin, origin + (Quaternion.AngleAxis(-halfAngle, up) * forward) * distance);
             Handles.DrawLine(origin, origin + (Quaternion.AngleAxis(halfAngle, up) * forward) * distance);
         }
 
-        // Distance handle: slider along forward direction
         private float EditDistanceHandle(Vector3 origin, Vector3 forward, float currentDistance, Color color)
         {
             Handles.color = color;
@@ -338,18 +348,15 @@ public class TargetingManager : MonoBehaviour
             return currentDistance;
         }
 
-        // Angle handle: place a movable handle on the cone rim; dragging changes the angle
         private float EditAngleHandle(Vector3 origin, Vector3 forward, Vector3 up, float currentHalfAngle, float distance, Color color)
         {
             float halfAngle = Mathf.Abs(currentHalfAngle);
-
-            // Handle placed on the outer rim at +halfAngle
             Vector3 rimDir = Quaternion.AngleAxis(halfAngle, up) * forward;
             Vector3 handlePos = origin + rimDir * distance;
 
             Handles.color = color;
             EditorGUI.BeginChangeCheck();
-            var fmh_318_64_638985840470382382 = Quaternion.identity; Vector3 newPos = Handles.FreeMoveHandle(handlePos, HandleUtility.GetHandleSize(handlePos) * 0.1f, Vector3.zero, Handles.SphereHandleCap);
+            var fmh_360_64_638988340468543629 = Quaternion.identity; Vector3 newPos = Handles.FreeMoveHandle(handlePos, HandleUtility.GetHandleSize(handlePos) * 0.08f, Vector3.zero, Handles.SphereHandleCap);
             if (EditorGUI.EndChangeCheck())
             {
                 Vector3 dir = newPos - origin;
@@ -363,10 +370,9 @@ public class TargetingManager : MonoBehaviour
             return halfAngle;
         }
 
-        // Keep default inspector GUI available in case user wants it (UIElements is used above)
+        // Retain default inspector IMGUI as fallback
         public override void OnInspectorGUI()
         {
-            // Fall back to default inspector so values can still be edited via IMGUI if desired.
             DrawDefaultInspector();
         }
     }
