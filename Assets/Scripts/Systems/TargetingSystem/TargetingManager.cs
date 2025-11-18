@@ -13,9 +13,13 @@ public class TargetingManager : MonoBehaviour
 {
     // Static runtime state
     public static TargetingManager Instance { get; private set; }
-    public static List<Target> ALLTARGETS = new();
+    //public static List<Target> ALLTARGETS = new();
     public static Target CurrentTarget { get; private set; }
-    public static TargetingRange RangedAttackRange;
+
+    private static TargetingChannel<InteractionTarget> InteractionChannel;
+    private static TargetingChannel<MeleeTarget> MeleeChannel;
+    private static TargetingChannel<RangedTarget> RangedChannel;
+
 
 
     #region Instance Fields
@@ -30,17 +34,43 @@ public class TargetingManager : MonoBehaviour
     // Public API: manage active targets
     public static void AddActiveTarget(Target target)
     {
-        if (!ALLTARGETS.Contains(target))
-            ALLTARGETS.Add(target);
+        if (target is MeleeTarget meleeTarget)
+        {
+            if (!MeleeChannel.ALLTARGETS.Contains(meleeTarget)) 
+                MeleeChannel.ALLTARGETS.Add(meleeTarget);
+        }
+        else if (target is RangedTarget rangedTarget)
+        {
+            if (!RangedChannel.ALLTARGETS.Contains(rangedTarget))
+                RangedChannel.ALLTARGETS.Add(rangedTarget);
+        }
+        else if (target is InteractionTarget interactionTarget)
+        {
+            if (!InteractionChannel.ALLTARGETS.Contains(interactionTarget))
+                InteractionChannel.ALLTARGETS.Add(interactionTarget);
+        }
     }
 
     public static void RemoveActiveTarget(Target target)
     {
-        if (ALLTARGETS.Contains(target))
-            ALLTARGETS.Remove(target);
+        if (target is MeleeTarget meleeTarget)
+        {
+            if (MeleeChannel.ALLTARGETS.Contains(meleeTarget))
+                MeleeChannel.ALLTARGETS.Remove(meleeTarget);
+        }
+        else if (target is RangedTarget rangedTarget)
+        {
+            if (RangedChannel.ALLTARGETS.Contains(rangedTarget))
+                RangedChannel.ALLTARGETS.Remove(rangedTarget);
+        }
+        else if (target is InteractionTarget interactionTarget)
+        {
+            if (InteractionChannel.ALLTARGETS.Contains(interactionTarget))
+                InteractionChannel.ALLTARGETS.Remove(interactionTarget);
+        }
     }
 
-    public static void ToggleAimingDownSights(bool value) => RangedAttackRange = value ? Instance.rangedAimingRange : Instance.rangedHipFireRange;
+    public static void ToggleAimingDownSights(bool value) => RangedChannel.ChangeRange(value ? Instance.rangedAimingRange : Instance.rangedHipFireRange);
 
 
 
@@ -48,45 +78,78 @@ public class TargetingManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        ToggleAimingDownSights(false);
+
+        InteractionChannel = new(interactionRange);
+        MeleeChannel = new(grabbingRange);
+        RangedChannel = new(rangedHipFireRange);
     }
 
 
     private void FixedUpdate()
     {
-        if(RangedAttackRange == null) return;
-        Target NewTarget = GetBestTarget();
-        if(NewTarget != CurrentTarget) CurrentTarget = NewTarget;
+        InteractionChannel.CalculateTargets();
+        MeleeChannel.CalculateTargets();
+        RangedChannel.CalculateTargets();
+    }
+
+    public class TargetingChannel<T> where T : Target
+    {
+        public List<T> ALLTARGETS { get; private set; }
+        public T CurrentTarget { get; private set; }
+        public TargetingRange Range { get; private set; }
+
+        public TargetingChannel(TargetingRange range)
+        {
+            ALLTARGETS = new();
+            CurrentTarget = null;
+            Range = range;
+        }
+
+        public void CalculateTargets()
+        {
+            int chosenIndex = -1;
+            float closestScore = 5f; //Max possible score is 2 (1 distance + 1 angle)
+
+            for (int i = 0; i < ALLTARGETS.Count; i++)
+            {
+                if (ALLTARGETS[i] == null || ALLTARGETS[i].enabled == false) continue;
+
+                float distance = ALLTARGETS[i].GetDistance(Range);
+                float angle = ALLTARGETS[i].GetAngle(Range);
+
+                if (distance > Range.maxDistance || angle > Range.maxAngle)
+                {
+                    ALLTARGETS[i].TargetState = Target.TargetStates.OutOfRange;
+                    continue;
+                }
+                ALLTARGETS[i].TargetState = Target.TargetStates.WithinRange;
+
+                float distanceScore = distance / Range.maxDistance;
+                float angleScore = angle / Range.maxAngle;
+                float finalScore = (distanceScore * Range.distanceAngleWeighting) + (angleScore * (1f - Range.distanceAngleWeighting));
+
+                if (finalScore < closestScore)
+                {
+                    closestScore = finalScore;
+                    chosenIndex = i;
+                }
+            }
+            var ChosenTarget = chosenIndex != -1 ? ALLTARGETS[chosenIndex] : null;
+
+            if(ChosenTarget != CurrentTarget)
+            {
+                if(CurrentTarget != null) CurrentTarget.TargetState = Target.TargetStates.WithinRange;
+                CurrentTarget = ChosenTarget;
+                if(CurrentTarget != null) CurrentTarget.TargetState = Target.TargetStates.Targeted;
+            }
+
+        }
+
+        public void ChangeRange(TargetingRange newRange) => Range = newRange;
     }
 
     // Main selection logic
-    public static Target GetBestTarget()
-    {
-        int chosenIndex = -1;
-        float closestScore = 5f; //Max possible score is 2 (1 distance + 1 angle)
 
-        for (int i = 0; i < ALLTARGETS.Count; i++)
-        {
-            if (ALLTARGETS[i] == null || ALLTARGETS[i].enabled == false) continue;
-
-            float distance = Vector3.Distance(RangedAttackRange.front.position, ALLTARGETS[i].transform.position);
-            float angle = Vector3.Angle(RangedAttackRange.front.forward, ALLTARGETS[i].transform.position - RangedAttackRange.front.position);
-
-            ALLTARGETS[i].WithinRange = distance > RangedAttackRange.maxDistance || angle > RangedAttackRange.maxAngle;
-            if (!ALLTARGETS[i].WithinRange) continue;
-
-            float distanceScore = distance / RangedAttackRange.maxDistance;
-            float angleScore = angle / RangedAttackRange.maxAngle;
-            float finalScore = (distanceScore * RangedAttackRange.distanceAngleWeighting) + (angleScore * (1f - RangedAttackRange.distanceAngleWeighting));
-
-            if (finalScore < closestScore)
-            {
-                closestScore = finalScore;
-                chosenIndex = i;
-            }
-        }
-        return chosenIndex != -1 ? ALLTARGETS[chosenIndex] : null;
-    }
 }
 
 [System.Serializable]
@@ -404,19 +467,4 @@ public class TargetingRange
 
     }
 #endif
-}
-
-public class Target : MonoBehaviour
-{
-
-    public float GetDistance() => Vector3.Distance(TargetingManager.RangedAttackRange.front.position, transform.position);
-
-    public float GetAngle() => Vector3.Angle(TargetingManager.RangedAttackRange.front.forward, transform.position - TargetingManager.RangedAttackRange.front.position);
-
-    protected virtual void OnEnable() => TargetingManager.AddActiveTarget(this);
-    protected virtual void OnDisable() => TargetingManager.RemoveActiveTarget(this);
-
-    public bool WithinRange { internal set; get; }
-
-    public bool IsTargeted => TargetingManager.CurrentTarget == this;
 }
