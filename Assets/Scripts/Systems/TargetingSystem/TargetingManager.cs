@@ -119,10 +119,10 @@ public class TargetingManager : MonoBehaviour
 
                 if (distance > Range.maxDistance || angle > Range.maxAngle)
                 {
-                    ALLTARGETS[i].TargetState = Target.TargetStates.OutOfRange;
+                    ALLTARGETS[i].TargetState = Target.States.OutOfRange;
                     continue;
                 }
-                ALLTARGETS[i].TargetState = Target.TargetStates.WithinRange;
+                ALLTARGETS[i].TargetState = Target.States.WithinRange;
 
                 float distanceScore = distance / Range.maxDistance;
                 float angleScore = angle / Range.maxAngle;
@@ -138,9 +138,12 @@ public class TargetingManager : MonoBehaviour
 
             if(ChosenTarget != CurrentTarget)
             {
-                if(CurrentTarget != null) CurrentTarget.TargetState = Target.TargetStates.WithinRange;
+                var prevTarget = CurrentTarget;
                 CurrentTarget = ChosenTarget;
-                if(CurrentTarget != null) CurrentTarget.TargetState = Target.TargetStates.Targeted;
+                prevTarget.TargetState = Target.States.WithinRange;
+                CurrentTarget.TargetState = Target.States.Targeted;
+                if (prevTarget) prevTarget.OnDeTargeted(CurrentTarget);
+                if (CurrentTarget) CurrentTarget.OnTargeted(prevTarget);
             }
 
         }

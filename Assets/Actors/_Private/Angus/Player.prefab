@@ -5055,7 +5055,6 @@ Transform:
   - {fileID: 4873779160296736242}
   - {fileID: 2290438708623670232}
   - {fileID: 6163627308343083636}
-  - {fileID: 2317801469333080837}
   - {fileID: 7341979101928341701}
   - {fileID: 2939830601058319735}
   - {fileID: 8615251521579859624}
@@ -5279,7 +5278,7 @@ MonoBehaviour:
   airThrowState: {fileID: 1188554763052459690}
   dropLaunchState: {fileID: 4770298227795515962}
   heldItemAnchor: {fileID: 3536800914225926894}
-  interacter: {fileID: 8950658755825157513}
+  interacter: {fileID: 0}
   aimingState: {fileID: 7421260604818229875}
   shootingState: {fileID: 6511899361605723830}
   launchVelocity: 30
@@ -5664,6 +5663,7 @@ MonoBehaviour:
     maxAngle: 20.437807
     distanceAngleWeighting: 0.5
     viewColor: {r: 0, g: 1, b: 0, a: 1}
+  interactionPopup: {fileID: 0}
 --- !u!1 &2975349023816060615
 GameObject:
   m_ObjectHideFlags: 0
@@ -9607,7 +9607,7 @@ MonoBehaviour:
     - Key: Interact
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 8950658755825157513}
+        - _Target: {fileID: 0}
           _MemberName: TryInteract
           _PersistentArguments: []
     - Key: Parry
@@ -11557,101 +11557,6 @@ MonoBehaviour:
   onEnterTime: 0.2
   doWhenNotFinal: 0
   animator: {fileID: 8579594802138283692}
---- !u!1 &6330798485065663893
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2317801469333080837}
-  - component: {fileID: 8950658755825157513}
-  - component: {fileID: 5551334412560319931}
-  - component: {fileID: 3456762118593766446}
-  m_Layer: 6
-  m_Name: InteractSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2317801469333080837
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6330798485065663893}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 802911248559169720}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8950658755825157513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6330798485065663893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f637f6957bf69f4c94d18114ed17245, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  popupTransform: {fileID: 0}
---- !u!135 &5551334412560319931
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6330798485065663893}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1
-  m_Center: {x: 0, y: 1, z: 0.94}
---- !u!54 &3456762118593766446
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6330798485065663893}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 15990
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &6354224165937590527
 GameObject:
   m_ObjectHideFlags: 0
@@ -12439,7 +12344,7 @@ MonoBehaviour:
     - Key: Interact
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 8950658755825157513}
+        - _Target: {fileID: 0}
           _MemberName: TryInteract
           _PersistentArguments: []
     - Key: ShootMode

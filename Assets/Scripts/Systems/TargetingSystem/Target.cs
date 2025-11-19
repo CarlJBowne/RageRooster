@@ -12,35 +12,42 @@ public abstract class Target : MonoBehaviour
     protected virtual void OnEnable()
     {
         TargetingManager.AddActiveTarget(this);
-        currentState = TargetStates.OutOfRange;
+        currentState = States.OutOfRange;
     }
     protected virtual void OnDisable()
     {
         TargetingManager.RemoveActiveTarget(this);
-        currentState = TargetStates.Inactive;
+        currentState = States.Inactive;
     }
 
-    public enum TargetStates
+    public enum States
     {
         Inactive,
         OutOfRange,
         WithinRange,
         Targeted
     }
-    public virtual TargetStates TargetState
+    public States TargetState
     {
         get => currentState;
         set
         {
             if (currentState == value) return;
-            if (currentState == TargetStates.Inactive || value == TargetStates.Inactive) return;
+            if (currentState == States.Inactive || value == States.Inactive) return;
 
-            //Do visual effects here.
+            if(currentState == States.OutOfRange && value == States.WithinRange)
+                OnEnterRange();
+            else if(currentState == States.WithinRange && value == States.OutOfRange)
+                OnExitRange();
 
             currentState = value;
         }
     }
-    protected TargetStates currentState;
+    protected States currentState;
 
+    public virtual void OnEnterRange() { }
+    public virtual void OnExitRange() { }
 
+    public virtual void OnDeTargeted(Target nextTarget) { }
+    public virtual void OnTargeted(Target prevTarget) { }
 }

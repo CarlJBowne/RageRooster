@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
             Controller.enabled = value is ActivityStates.Active;
             Animator.enabled = value is ActivityStates.Active or ActivityStates.Cutscene;
             Ranged.enabled = value is ActivityStates.Active;
-            Interacter.enabled = value is ActivityStates.Active;
+            //Interacter.enabled = value is ActivityStates.Active;
         }
     }
 
@@ -150,7 +150,7 @@ public class Player : MonoBehaviour
     /// The <see cref="PlayerInteracter"/> component attached to the <see cref="Player"/>. <br/>
     /// Handles interact functionality.
     /// </summary>
-    public static PlayerInteracter Interacter { get; private set; }
+    //public static PlayerInteracter Interacter { get; private set; }
     /// <summary>
     /// The <see cref="Animator"/> component attached to the <see cref="Player"/>.
     /// </summary>
@@ -236,7 +236,7 @@ public class Player : MonoBehaviour
         Collider = GetComponent<CapsuleCollider>();
         Controller = GetComponent<PlayerController>();
         Ranged = GetComponent<PlayerRanged>();
-        Interacter = GetComponentInChildren<PlayerInteracter>();
+        //Interacter = GetComponentInChildren<PlayerInteracter>();
         Animator = GetComponent<Animator>();
         Audio = GetComponent<AudioCaller>();
         RagdollHandler = GetComponent<RagdollHandler>();
