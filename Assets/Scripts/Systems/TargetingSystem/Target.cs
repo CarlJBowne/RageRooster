@@ -4,10 +4,12 @@ using UnityEngine;
 
 public abstract class Target : MonoBehaviour
 {
+    [SerializeField] Vector3 RealPositionOffset;
 
-    public float GetDistance(TargetingRange range) => Vector3.Distance(range.front.position, transform.position);
+    public Vector3 position => transform.position + RealPositionOffset;
 
-    public float GetAngle(TargetingRange range) => Vector3.Angle(range.front.forward, transform.position - range.front.position);
+    public float GetDistance(TargetingRange range) => Vector3.Distance(range.front.position, position);
+    public float GetAngle(TargetingRange range) => Vector3.Angle(range.front.forward, position - range.front.position);
 
     protected virtual void OnEnable()
     {

@@ -7,6 +7,65 @@ using RageRooster.Systems.SaveSystem;
 
 public class PlayerGrabAction : PlayerStateBehavior
 {
+    public State noTargetState;
+    public State blockedState;
+    public State throwState;
+    public State dropLaunchState;
+    public State successReturnState;
+
+    private MeleeTarget grabTarget;
+
+
+
+
+
+
+
+    public void GrabThrowButton()
+    {
+        if (Player.SignalManager.Locked) return;
+        if (Player.Grabber.currentGrabbed == null)
+            BeginGrabAttempt();
+        else BeginThrow();
+    }
+
+    void BeginGrabAttempt()
+    {
+        grabTarget = TargetingManager.GetMeleeTarget();
+        if (grabTarget != null)
+        {
+            State.Enter();
+            Player.MovementBody.QuickTurnLimited(grabTarget.position - Player.MovementBody.Position, .1f);
+        }
+        else noTargetState.Enter();
+    }
+
+    public void EndGrabAttempt()
+    {
+        IGrabbable targetGrabbable = grabTarget.GetComponent<IGrabbable>();
+
+        if(targetGrabbable != null && targetGrabbable.IsGrabbable) //If object is grabbable.
+        {
+            Player.Grabber.OfficialGrab(targetGrabbable);
+            successReturnState.Enter();
+            if(dropLaunchState != null && Upgrades.Active.dropLaunch && Input.Grab.IsPressed()) BeginThrow();
+        }
+        else
+        {
+            blockedState.Enter();
+            grabTarget = null;
+        }
+    }
+
+    void BeginThrow()
+    {
+        if (dropLaunchState != null && Upgrades.Active.dropLaunch) throwState = dropLaunchState;
+        throwState.Enter();
+    }
+
+
+    #region OLD
+
     public bool air;
     public string animationName;
     
@@ -59,4 +118,5 @@ public class PlayerGrabAction : PlayerStateBehavior
         (ranged.currentGrabbed != null ? successState : failState).Enter();
         Machine.animator.CrossFade("GroundBasic", .1f);
     }
+    #endregion
 }

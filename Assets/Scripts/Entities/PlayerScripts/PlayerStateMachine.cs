@@ -110,6 +110,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 
     public void DeathIfAtZero() { if (health.GetCurrentHealth() == 0) Player.Death(); }
 
+    public State this[string stateName] => states[stateName];
 
 #if UNITY_EDITOR
     protected override void Update()

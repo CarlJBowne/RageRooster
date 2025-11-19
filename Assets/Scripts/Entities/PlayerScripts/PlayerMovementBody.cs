@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMovementBody>
 {
@@ -230,6 +231,54 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
         else 
             airNeutralState.Enter();
     }
+
+    private CoroutinePlus QuickTurnRoutine;
+    public void QuickTurnTime(Vector3 newForward, float length)
+    {
+        newForward = newForward.XZ(); //Ensure no weird rotations
+
+        if(length <= 0f)
+        {
+            direction = newForward;
+            return;
+        }
+
+        QuickTurnRoutine = Enum().Begin(Player.MovementBody);
+        IEnumerator Enum()
+        {
+            float deltaRad = Vector3.Angle(direction, newForward) * Mathf.Deg2Rad;
+            float rateRadPerSec = deltaRad / length; // radians per second
+
+            while (deltaRad > 0f)
+            {
+                direction = Vector3.RotateTowards(direction, newForward, rateRadPerSec * Time.fixedDeltaTime, 0f);
+                yield return new WaitForFixedUpdate();
+                deltaRad -= rateRadPerSec * Time.fixedDeltaTime;
+            }
+            direction = newForward;
+        }
+    }
+    public void QuickTurnLimited(Vector3 newForward, float maxDelta)
+    {
+        newForward = newForward.XZ(); //Ensure no weird rotations
+        if(maxDelta <= 0f) return;
+
+        QuickTurnRoutine = Enum().Begin(Player.MovementBody);
+        IEnumerator Enum()
+        {
+            float fullDelta = Vector3.Angle(direction, newForward) * Mathf.Deg2Rad; 
+
+            while (fullDelta > 0f)
+            {
+                direction = Vector3.RotateTowards(direction, newForward, maxDelta * Time.fixedDeltaTime, 0f);
+                yield return null;
+                fullDelta -= maxDelta * Time.fixedDeltaTime;
+            }
+
+            direction = newForward;
+        }
+    }
+
 
 #if UNITY_EDITOR
 

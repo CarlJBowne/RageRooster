@@ -164,6 +164,8 @@ public class TargetingManager : MonoBehaviour
         }
     }
 
+    public static MeleeTarget GetMeleeTarget() => MeleeChannel.CurrentTarget;
+
 }
 
 [System.Serializable]

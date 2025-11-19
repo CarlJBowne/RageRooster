@@ -29,6 +29,9 @@ public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
     private static IGrabbable _selectedGrabbable;
 
 
+    [System.Obsolete("If you're using this, you're not going to work.")]
+    public new static PlayerInteracter Instance = null;
+
     protected override void OnInitialize()
     {
         Gameplay.PreReloadSave += ResetSystem;

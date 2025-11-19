@@ -127,6 +127,8 @@ public class Player : MonoBehaviour
     /// Handles the player's state transitions and logic.
     /// </summary>
     public static PlayerStateMachine StateMachine { get; private set; }
+
+    public static SLS.StateMachineH.Signals.SignalManager SignalManager { get; private set; }
     /// <summary>
     /// The <see cref="PlayerMovementBody"/> component attached to the <see cref="Player"/>. <br/>
     /// Handles movement and physics interactions.
@@ -147,10 +149,18 @@ public class Player : MonoBehaviour
     /// </summary>
     public static PlayerRanged Ranged { get; private set; }
     /// <summary>
+    /// The <see cref="PlayerGrabber"/> component attached to the <see cref="Player"/>.
+    /// Handles the grabbing of enemies and objects.
+    /// </summary>
+    public static PlayerGrabber Grabber { get; private set; }
+    /// <summary>
+    /// The <see cref="TargetingManager"/> component attached to the <see cref="Player"/>. <br/>
+    /// </summary>
+    public static TargetingManager TargetingManager;
+    /// <summary>
     /// The <see cref="PlayerInteracter"/> component attached to the <see cref="Player"/>. <br/>
     /// Handles interact functionality.
     /// </summary>
-    //public static PlayerInteracter Interacter { get; private set; }
     /// <summary>
     /// The <see cref="Animator"/> component attached to the <see cref="Player"/>.
     /// </summary>
@@ -236,10 +246,12 @@ public class Player : MonoBehaviour
         Collider = GetComponent<CapsuleCollider>();
         Controller = GetComponent<PlayerController>();
         Ranged = GetComponent<PlayerRanged>();
-        //Interacter = GetComponentInChildren<PlayerInteracter>();
+        Grabber = GetComponent<PlayerGrabber>();
         Animator = GetComponent<Animator>();
         Audio = GetComponent<AudioCaller>();
         RagdollHandler = GetComponent<RagdollHandler>();
+        TargetingManager = GetComponent<TargetingManager>();
+        SignalManager = GetComponent<SLS.StateMachineH.Signals.SignalManager>();
         Health.Initialize();
         Ammo.Initialize();
         Currency.Initialize();
