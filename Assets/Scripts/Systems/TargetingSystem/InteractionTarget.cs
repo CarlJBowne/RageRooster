@@ -15,12 +15,12 @@ public class InteractionTarget : Target
         {
             if(currentState == TargetStates.Targeted && value != TargetStates.Targeted)
             {
-                TargetingManager.InteractionPopup.gameObject.SetActive(false);
+                TargetingManager.InteractionPopup.SetActive(false);
             }
             else if (currentState != TargetStates.Targeted && value == TargetStates.Targeted)
             {
-                TargetingManager.InteractionPopup.gameObject.SetActive(true);
-                TargetingManager.InteractionPopup.position = transform.position + PopupPosition;
+                TargetingManager.InteractionPopup.SetActive(true);
+                TargetingManager.InteractionPopup.transform.position = transform.position + PopupPosition;
             }
             base.TargetState = value;
         }

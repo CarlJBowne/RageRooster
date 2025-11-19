@@ -17,7 +17,7 @@ public class TargetingManager : MonoBehaviour
     private static TargetingChannel<MeleeTarget> MeleeChannel;
     private static TargetingChannel<RangedTarget> RangedChannel;
 
-    public static Transform InteractionPopup {  get; private set; }
+    public static GameObject InteractionPopup {  get; private set; }
 
     #region Instance Fields
 
@@ -25,7 +25,7 @@ public class TargetingManager : MonoBehaviour
     [SerializeField] private TargetingRange rangedAimingRange = new(); 
     [SerializeField] private TargetingRange grabbingRange = new(); 
     [SerializeField] private TargetingRange interactionRange = new();
-    [SerializeField] private Transform interactionPopup;
+    [SerializeField] private GameObject interactionPopup;
 
     #endregion
 
@@ -154,7 +154,11 @@ public class TargetingManager : MonoBehaviour
     public void AttemptInteract()
     {
         InteractionTarget target = InteractionChannel.CurrentTarget;
-        if (target != null) target.Interact();
+        if (target != null && target.enabled)
+        {
+            target.OnInteract?.Invoke();
+            InteractionPopup.gameObject.SetActive(false);
+        }
     }
 
 }
