@@ -13,21 +13,19 @@ public class TargetingManager : MonoBehaviour
 {
     // Static runtime state
     public static TargetingManager Instance { get; private set; }
-    //public static List<Target> ALLTARGETS = new();
-    public static Target CurrentTarget { get; private set; }
-
     private static TargetingChannel<InteractionTarget> InteractionChannel;
     private static TargetingChannel<MeleeTarget> MeleeChannel;
     private static TargetingChannel<RangedTarget> RangedChannel;
 
-
+    public static Transform InteractionPopup {  get; private set; }
 
     #region Instance Fields
 
     [SerializeField] private TargetingRange rangedHipFireRange = new();
     [SerializeField] private TargetingRange rangedAimingRange = new(); 
     [SerializeField] private TargetingRange grabbingRange = new(); 
-    [SerializeField] private TargetingRange interactionRange = new(); 
+    [SerializeField] private TargetingRange interactionRange = new();
+    [SerializeField] private Transform interactionPopup;
 
     #endregion
 
@@ -82,6 +80,8 @@ public class TargetingManager : MonoBehaviour
         InteractionChannel = new(interactionRange);
         MeleeChannel = new(grabbingRange);
         RangedChannel = new(rangedHipFireRange);
+
+        InteractionPopup = interactionPopup;
     }
 
 
@@ -149,6 +149,13 @@ public class TargetingManager : MonoBehaviour
     }
 
     // Main selection logic
+
+
+    public void AttemptInteract()
+    {
+        InteractionTarget target = InteractionChannel.CurrentTarget;
+        if (target != null) target.Interact();
+    }
 
 }
 

@@ -1,10 +1,7 @@
 using SLS.StateMachineH;
 using UnityEngine;
-using System.Linq;
 using EditorAttributes;
 using UnityEngine.InputSystem;
-using Cinemachine;
-using System.Collections.Generic;
 using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
 using RageRooster.Systems.SaveSystem;
 

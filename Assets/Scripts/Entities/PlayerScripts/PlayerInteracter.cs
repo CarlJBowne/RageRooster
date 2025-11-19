@@ -2,12 +2,11 @@ using SLS.ISingleton;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Input;
 
 /// <summary>
 /// Now Combined with the Dialogue Trigger
 /// </summary>
-[DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
+[DefaultExecutionOrder(ExecutionOrders.PlayerSystems), System.Obsolete]
 public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
 {
     public static GameObject ThisGameObject;
