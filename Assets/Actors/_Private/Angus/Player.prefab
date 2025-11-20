@@ -426,7 +426,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: 5980a01586f858f42882c3336c960511, type: 2}
 --- !u!1 &214909014890575270
 GameObject:
   m_ObjectHideFlags: 0
@@ -1214,7 +1213,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: 17d0919f00b9a294ebc19d954d722666, type: 2}
 --- !u!1 &531144083629005765
 GameObject:
   m_ObjectHideFlags: 0
@@ -1573,7 +1571,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: b1a4325bdde54494e8ed477d6b474feb, type: 2}
 --- !u!1 &624970041063503452
 GameObject:
   m_ObjectHideFlags: 0
@@ -1647,6 +1644,11 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
+  noTargetState: {fileID: 0}
+  blockedState: {fileID: 0}
+  throwState: {fileID: 0}
+  dropLaunchState: {fileID: 0}
+  successReturnState: {fileID: 0}
   air: 1
   animationName: GrabAir
   success: 0
@@ -1833,7 +1835,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: 1ca8d432bc3aa25498299319869de26a, type: 2}
 --- !u!1 &673776059400366822
 GameObject:
   m_ObjectHideFlags: 0
@@ -3521,7 +3522,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: 40db6b7a6062da84887e01b4c7791b34, type: 2}
 --- !u!1 &1349700240687973182
 GameObject:
   m_ObjectHideFlags: 0
@@ -4838,7 +4838,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: 3bea3b7da10d51340800be008e38cdd8, type: 2}
 --- !u!1 &2212145017621531694
 GameObject:
   m_ObjectHideFlags: 0
@@ -5898,6 +5897,7 @@ GameObject:
   - component: {fileID: 8191279611815052833}
   - component: {fileID: 1081188095233249612}
   - component: {fileID: 6328031082010280587}
+  - component: {fileID: 415518188991741153}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -6145,19 +6145,8 @@ MonoBehaviour:
   jumpState: {fileID: 1027073189156208793}
   airThrowState: {fileID: 1188554763052459690}
   dropLaunchState: {fileID: 4770298227795515962}
-  heldItemAnchor: {fileID: 3536800914225926894}
-  interacter: {fileID: 8950658755825157513}
   aimingState: {fileID: 7421260604818229875}
   shootingState: {fileID: 6511899361605723830}
-  launchVelocity: 30
-  checkSphereRadius: 0.66
-  checkSphereOffset: {x: 0, y: 1, z: 0.33}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 8833
-  twoHandedHand: {fileID: 6163627308343083636}
-  GrabStateEvent:
-    _PersistentCalls: []
   pointer:
     startH: {fileID: 0}
     startV: {fileID: 0}
@@ -6510,6 +6499,43 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 8455434200384702600}
   timelineSpace: 0
+--- !u!114 &415518188991741153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 949891b78cad1ac4cb05f6f17c928502, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetingManager
+  rangedHipFireRange:
+    front: {fileID: 802911248559169720}
+    maxDistance: 7.2389812
+    maxAngle: 43.0717
+    distanceAngleWeighting: 0.5
+    viewColor: {r: 1, g: 0, b: 0, a: 1}
+  rangedAimingRange:
+    front: {fileID: 802911248559169720}
+    maxDistance: 20.021955
+    maxAngle: 8.84509
+    distanceAngleWeighting: 0.5
+    viewColor: {r: 0, g: 0.63962555, b: 1, a: 1}
+  grabbingRange:
+    front: {fileID: 802911248559169720}
+    maxDistance: 1.7781098
+    maxAngle: 73.05075
+    distanceAngleWeighting: 0.5
+    viewColor: {r: 1, g: 0.4820457, b: 0, a: 1}
+  interactionRange:
+    front: {fileID: 802911248559169720}
+    maxDistance: 2.1241167
+    maxAngle: 20.437807
+    distanceAngleWeighting: 0.5
+    viewColor: {r: 0, g: 1, b: 0, a: 1}
+  interactionPopup: {fileID: 0}
 --- !u!1 &2975349023816060615
 GameObject:
   m_ObjectHideFlags: 0
@@ -7210,7 +7236,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: 1f5e0d15972adc74c9bb34be65890a01, type: 2}
 --- !u!1 &3263576733088404462
 GameObject:
   m_ObjectHideFlags: 0
@@ -9391,7 +9416,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: 0a1d4e3bb3f0f054c9aa8f484b4c1290, type: 2}
 --- !u!1 &4675571679839146216
 GameObject:
   m_ObjectHideFlags: 0
@@ -10785,7 +10809,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: c8d27cef4a5627d4381270ff46c94882, type: 2}
 --- !u!1 &5476920180933388967
 GameObject:
   m_ObjectHideFlags: 0
@@ -12704,7 +12727,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: 20cdf2e3e284be24da3d31d7fa37ff34, type: 2}
 --- !u!1 &6236790458189297513
 GameObject:
   m_ObjectHideFlags: 0
@@ -14433,7 +14455,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: fba23a1c04cdaac4ca1326abb1db4a88, type: 2}
 --- !u!1 &6840937366610314507
 GameObject:
   m_ObjectHideFlags: 0
@@ -17298,6 +17319,11 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
+  noTargetState: {fileID: 0}
+  blockedState: {fileID: 0}
+  throwState: {fileID: 0}
+  dropLaunchState: {fileID: 0}
+  successReturnState: {fileID: 0}
   air: 0
   animationName: Grab
   success: 0
@@ -17447,7 +17473,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: b127d273a77c81a4c8e26cb10d327c11, type: 2}
 --- !u!1 &7996174763766430431
 GameObject:
   m_ObjectHideFlags: 0
@@ -18056,7 +18081,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: c9c0f3e51f4a2f94f9439403dd4de425, type: 2}
 --- !u!1 &8245773314306325851
 GameObject:
   m_ObjectHideFlags: 0
@@ -18278,7 +18302,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: fba99fc2870f4914cb3605a0cdc544c2, type: 2}
 --- !u!1 &8276374663671568334
 GameObject:
   m_ObjectHideFlags: 0
@@ -18729,7 +18752,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: 80e63f230b0d2cd45bb534acdb301088, type: 2}
 --- !u!1 &8450292216223193930
 GameObject:
   m_ObjectHideFlags: 0
@@ -19153,7 +19175,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: 99d86e322de72004bb4b8baeb7ac7700, type: 2}
 --- !u!1 &8482731040741248156
 GameObject:
   m_ObjectHideFlags: 0
@@ -19836,7 +19857,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
-  referenceClip: {fileID: 7400000, guid: 30b9ff7388c708442bfc7584c1e45cb7, type: 2}
 --- !u!1 &8885662702780661556
 GameObject:
   m_ObjectHideFlags: 0
