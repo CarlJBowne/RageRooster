@@ -220,6 +220,8 @@ public class Player : MonoBehaviour
         MovementBody.velocity = Vector3.zero;
     }
 
+    public static bool IsPlayer(Component C) => Exists && C != null && C.gameObject == GameObject;
+
     #endregion
 
 

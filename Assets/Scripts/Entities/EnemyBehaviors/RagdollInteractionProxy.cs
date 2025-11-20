@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
     [SerializeField] new Collider collider;
     [SerializeField] Rigidbody rb;
     public IGrabbable This => ragDoll;
+    bool grabbed;
 
     private void Awake()
     {
@@ -34,23 +36,30 @@ public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
     }
 
     #region Interface Members
-    public IGrabber Grabber => This.Grabber;
     public float AdditionalThrowDistance => This.AdditionalThrowDistance;
     //public float AdditionalHoldHeight => This.AdditionalHoldHeight;
     public void IgnoreCollisionWithThrower(Collider thrower, bool ignore = true) => Physics.IgnoreCollision(collider, thrower, ignore);
-    public bool Grab(IGrabber grabber) => This.Grab(grabber);
-    public void Throw(Vector3 velocity) => This.Throw(velocity);
-    public void Release() => This.Release();
+    public void Release(Vector3? velocity) => This.Release(velocity);
     public void SetVelocity(Vector3 velocity) => This.SetVelocity(velocity);
+    public bool Grab() => throw new NotImplementedException();
+    public void SetIgnoreCollision(Collider grabber, bool ignore = true) => throw new NotImplementedException();
+
     public bool IsGrabbable => This.IsGrabbable;
 
-
+    GameObject IGrabbable.gameobject => gameObject;
+    Transform IGrabbable.transform => transform;
 
     public Vector3 HeldOffset => This.HeldOffset;
 
     public Rigidbody rigidBody => This.rigidBody;
 
-    public bool Selected { get => This.Selected; set => This.Selected = value; }
+    Collider IGrabbable.collider => collider;
+
+    bool IGrabbable.grabbed => grabbed;
+
+    public Action ForceRelease { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+
 
     #endregion
 }

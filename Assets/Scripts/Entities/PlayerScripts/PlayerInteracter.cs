@@ -21,9 +21,9 @@ public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
         get => _selectedGrabbable;
         set
         {
-            if(_selectedGrabbable != null) _selectedGrabbable.Selected = false;
+            //if(_selectedGrabbable != null) _selectedGrabbable.Selected = false;
             _selectedGrabbable = value;
-            if (_selectedGrabbable != null) _selectedGrabbable.Selected = true;
+            //if (_selectedGrabbable != null) _selectedGrabbable.Selected = true;
         }
     }
     private static IGrabbable _selectedGrabbable;

@@ -785,6 +785,76 @@ MonoBehaviour:
           _MemberName: EnterAiming
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!1 &386920673122166560
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2706036279435594177}
+  - component: {fileID: 4668338733014282438}
+  - component: {fileID: 5469716287634741062}
+  m_Layer: 0
+  m_Name: GrabBlocked
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2706036279435594177
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386920673122166560}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5360076520150572304}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4668338733014282438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386920673122166560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 6346063711828928810}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &5469716287634741062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386920673122166560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 4668338733014282438}
+  onEntry: 1
+  onEnterName: GrabBlocked
+  onEnterTime: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &400420858113421900
 GameObject:
   m_ObjectHideFlags: 0
@@ -862,7 +932,6 @@ GameObject:
   - component: {fileID: 4928657066015808323}
   - component: {fileID: 6164013334802910877}
   - component: {fileID: 1608307018703560638}
-  - component: {fileID: 5092132492528747721}
   - component: {fileID: 3817533481671788493}
   m_Layer: 6
   m_Name: LightPunch2
@@ -901,7 +970,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 6164013334802910877}
   - {fileID: 1608307018703560638}
-  - {fileID: 5092132492528747721}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
@@ -1037,26 +1106,6 @@ MonoBehaviour:
   onEnterTime: 0.1
   doWhenNotFinal: 0
   animator: {fileID: 8579594802138283692}
---- !u!114 &5092132492528747721
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 469540947907413664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acf0feb66e3ce714fb25f91394ad0236, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 8822842600920580472}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  check: 0
-  checkOnEnter: 1
-  animator: {fileID: 1081188095233249612}
 --- !u!114 &3817533481671788493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1585,6 +1634,7 @@ GameObject:
   - component: {fileID: 5381935237969057074}
   - component: {fileID: 2650107836693273814}
   - component: {fileID: 2950867962696386179}
+  - component: {fileID: 5821582906892756304}
   m_Layer: 6
   m_Name: AirGrab
   m_TagString: Untagged
@@ -1644,16 +1694,11 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
-  noTargetState: {fileID: 0}
-  blockedState: {fileID: 0}
-  throwState: {fileID: 0}
-  dropLaunchState: {fileID: 0}
-  successReturnState: {fileID: 0}
-  air: 1
-  animationName: GrabAir
-  success: 0
-  ranged: {fileID: 2714541672873312079}
-  movementNegator: {fileID: 1081188095233249612}
+  noTargetState: {fileID: 8968679337813068694}
+  blockedState: {fileID: 1781473861386445650}
+  throwState: {fileID: 1188554763052459690}
+  dropLaunchState: {fileID: 4770298227795515962}
+  successReturnState: {fileID: 7195138240643335963}
 --- !u!114 &5381935237969057074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1784,7 +1829,7 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 6542662269160061587}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
+  influenceFadeTime: 0.05240175
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve: []
@@ -1818,13 +1863,40 @@ MonoBehaviour:
   terminalVelocityCurve: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.05240175
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   setVerticalVelocityCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -1835,6 +1907,29 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+--- !u!114 &5821582906892756304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624970041063503452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 4130376927137963287}
+  timeline: {fileID: 6328031082010280587}
+  events:
+  - time: 0.23333333
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 1181195091599698405}
+        _MemberName: EndGrabAttempt
+        _PersistentArguments: []
+  loopAfterLastEvent: 0
 --- !u!1 &673776059400366822
 GameObject:
   m_ObjectHideFlags: 0
@@ -2346,6 +2441,8 @@ Transform:
   - {fileID: 2910622393535161883}
   - {fileID: 6014019409343752396}
   - {fileID: 6499787038979050382}
+  - {fileID: 4029320495389943955}
+  - {fileID: 2706036279435594177}
   - {fileID: 1173892547178082102}
   m_Father: {fileID: 8737383421479087939}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2372,7 +2469,9 @@ MonoBehaviour:
   - {fileID: 6899988598081522344}
   - {fileID: 4130376927137963287}
   - {fileID: 5804775204058244869}
-  <ChildCount>k__BackingField: 6
+  - {fileID: 8817027084830624986}
+  - {fileID: 4668338733014282438}
+  <ChildCount>k__BackingField: 8
 --- !u!1 &1165660441062684328
 GameObject:
   m_ObjectHideFlags: 0
@@ -2571,18 +2670,9 @@ MonoBehaviour:
     - Key: Grab
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrowAir
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 1181195091599698405}
+        - _Target: {fileID: 1181195091599698405}
+          _MemberName: GrabThrowButton
+          _PersistentArguments: []
     - Key: AttackHold
       Value:
         _PersistentCalls:
@@ -4481,7 +4571,6 @@ GameObject:
   - component: {fileID: 172757351869591046}
   - component: {fileID: 1122838218020578483}
   - component: {fileID: 3432230067973307783}
-  - component: {fileID: 5114646355297611046}
   - component: {fileID: 6962824944772942820}
   m_Layer: 6
   m_Name: AirKick
@@ -4520,7 +4609,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 1122838218020578483}
   - {fileID: 3432230067973307783}
-  - {fileID: 5114646355297611046}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
@@ -4644,26 +4733,6 @@ MonoBehaviour:
   onEnterTime: 0.1
   doWhenNotFinal: 0
   animator: {fileID: 8579594802138283692}
---- !u!114 &5114646355297611046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2124590860796095726}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acf0feb66e3ce714fb25f91394ad0236, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 172757351869591046}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  check: 0
-  checkOnEnter: 1
-  animator: {fileID: 1081188095233249612}
 --- !u!114 &6962824944772942820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5253,18 +5322,9 @@ MonoBehaviour:
     - Key: Grab
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrowAir
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 1181195091599698405}
+        - _Target: {fileID: 1181195091599698405}
+          _MemberName: GrabThrowButton
+          _PersistentArguments: []
     - Key: Charge
       Value:
         _PersistentCalls: []
@@ -5883,21 +5943,21 @@ GameObject:
   - component: {fileID: 802911248559169720}
   - component: {fileID: 5866349644222999935}
   - component: {fileID: 8455434200384702600}
-  - component: {fileID: 8579594802138283692}
+  - component: {fileID: 8191279611815052833}
+  - component: {fileID: 3941225653291784218}
   - component: {fileID: 1838944232945776554}
   - component: {fileID: 598530174602593461}
+  - component: {fileID: 8579594802138283692}
   - component: {fileID: 4810220497755855147}
   - component: {fileID: 1371118413310184343}
   - component: {fileID: 2714541672873312079}
-  - component: {fileID: 3941225653291784218}
+  - component: {fileID: 415518188991741153}
+  - component: {fileID: 5816700120086208874}
   - component: {fileID: 6199145597115895703}
   - component: {fileID: 1988227033855750315}
   - component: {fileID: 8954558647869373425}
   - component: {fileID: 5436814540052560995}
-  - component: {fileID: 8191279611815052833}
-  - component: {fileID: 1081188095233249612}
   - component: {fileID: 6328031082010280587}
-  - component: {fileID: 415518188991741153}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -5958,7 +6018,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 1371118413310184343}
   - {fileID: 8191279611815052833}
-  - {fileID: 1081188095233249612}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 8455434200384702600}
   <Layer>k__BackingField: 0
@@ -6000,28 +6060,78 @@ MonoBehaviour:
     - Key: AirChargeFall
       Value: {fileID: 1975376254761656333}
   queuedSignals: []
---- !u!95 &8579594802138283692
-Animator:
-  serializedVersion: 7
+--- !u!114 &8191279611815052833
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2950555048310845610}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b4e351fed38302946a71ad3c4daea446, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 1
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 1
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e318945a4f6224dad4dd3c599394f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 8455434200384702600}
+  globalSignals:
+    serializedList:
+    - Key: EndRoll
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 130535403916782458}
+          _MemberName: EndRoll
+          _PersistentArguments: []
+    - Key: ResetRoll
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 130535403916782458}
+          _MemberName: ResetRoll
+          _PersistentArguments: []
+  queueSignals: 1
+--- !u!114 &3941225653291784218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c3d6cd8aa43154aa3119b5010e205a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultGravity: {x: 0, y: 1, z: 0}
+  autoApplyGravity: 0
+  maxSlopeNormalAngle: 46
+  checkGround: 1
+  movementCheckBuffer: 0.1
+  groundCheckBuffer: 0.1
+  movementProjectionSteps: 3
+  _rb: {fileID: 1838944232945776554}
+  <Collider>k__BackingField: {fileID: 598530174602593461}
+  velocity: {x: 0, y: 0, z: 0}
+  direction: {x: 0, y: 0, z: 1}
+  jumpState1: {fileID: 8452752302749071132}
+  wallJumpState: {fileID: 750694679335013753}
+  airChargeState: {fileID: 1482092204021747920}
+  doubleJump: {fileID: 8452752302749071132}
+  frontCheckDefaultOffset: {x: 0, y: 0.5, z: 1}
+  frontCheckDefaultRadius: 1
+  Mario64StyleAntiVoid: 1
+  nonVoidLayerMask:
+    serializedVersion: 2
+    m_Bits: 1049
+  idleState: {fileID: 59389784059182728}
+  airNeutralState: {fileID: 3747663377877617945}
+  Machine: {fileID: 8455434200384702600}
+  playerController: {fileID: 1371118413310184343}
+  animator: {fileID: 0}
+  baseMovability: 1
+  canJump: 1
+  movementModifier: 1
+  currentSpeed: 0
+  jumpMarkers: []
 --- !u!54 &1838944232945776554
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6072,6 +6182,28 @@ CapsuleCollider:
   m_Height: 1.68
   m_Direction: 1
   m_Center: {x: 0, y: 0.84, z: 0}
+--- !u!95 &8579594802138283692
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b4e351fed38302946a71ad3c4daea446, type: 2}
+  m_CullingMode: 1
+  m_UpdateMode: 1
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 1
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4810220497755855147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6181,7 +6313,7 @@ MonoBehaviour:
   eggAmount: 10
   eggCapacity: 10
   currentTargetDistance: 10
---- !u!114 &3941225653291784218
+--- !u!114 &415518188991741153
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6190,40 +6322,53 @@ MonoBehaviour:
   m_GameObject: {fileID: 2950555048310845610}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40c3d6cd8aa43154aa3119b5010e205a, type: 3}
+  m_Script: {fileID: 11500000, guid: 949891b78cad1ac4cb05f6f17c928502, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  defaultGravity: {x: 0, y: 1, z: 0}
-  autoApplyGravity: 0
-  maxSlopeNormalAngle: 46
-  checkGround: 1
-  movementCheckBuffer: 0.1
-  groundCheckBuffer: 0.1
-  movementProjectionSteps: 3
-  _rb: {fileID: 1838944232945776554}
-  <Collider>k__BackingField: {fileID: 598530174602593461}
-  velocity: {x: 0, y: 0, z: 0}
-  direction: {x: 0, y: 0, z: 1}
-  jumpState1: {fileID: 8452752302749071132}
-  wallJumpState: {fileID: 750694679335013753}
-  airChargeState: {fileID: 1482092204021747920}
-  doubleJump: {fileID: 8452752302749071132}
-  frontCheckDefaultOffset: {x: 0, y: 0.5, z: 1}
-  frontCheckDefaultRadius: 1
-  Mario64StyleAntiVoid: 1
-  nonVoidLayerMask:
-    serializedVersion: 2
-    m_Bits: 1049
-  idleState: {fileID: 59389784059182728}
-  airNeutralState: {fileID: 3747663377877617945}
-  Machine: {fileID: 8455434200384702600}
-  playerController: {fileID: 1371118413310184343}
-  animator: {fileID: 0}
-  baseMovability: 1
-  canJump: 1
-  movementModifier: 1
-  currentSpeed: 0
-  jumpMarkers: []
+  m_EditorClassIdentifier: Assembly-CSharp::TargetingManager
+  rangedHipFireRange:
+    front: {fileID: 802911248559169720}
+    maxDistance: 7.2389812
+    maxAngle: 43.0717
+    distanceAngleWeighting: 0.5
+    viewColor: {r: 1, g: 0, b: 0, a: 1}
+  rangedAimingRange:
+    front: {fileID: 802911248559169720}
+    maxDistance: 20.021955
+    maxAngle: 8.84509
+    distanceAngleWeighting: 0.5
+    viewColor: {r: 0, g: 0.63962555, b: 1, a: 1}
+  grabbingRange:
+    front: {fileID: 802911248559169720}
+    maxDistance: 1.7781098
+    maxAngle: 73.05075
+    distanceAngleWeighting: 0.5
+    viewColor: {r: 1, g: 0.4820457, b: 0, a: 1}
+  interactionRange:
+    front: {fileID: 802911248559169720}
+    maxDistance: 2.1241167
+    maxAngle: 20.437807
+    distanceAngleWeighting: 0.5
+    viewColor: {r: 0, g: 1, b: 0, a: 1}
+  interactionPopup: {fileID: 0}
+--- !u!114 &5816700120086208874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d9b777a3ad533342abdfd451e39588e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerGrabber
+  launchVelocity: 30
+  twoHandedHand: {fileID: 6163627308343083636}
+  GrabStateEvent:
+    _PersistentCalls: []
+  heldItemAnchor: {fileID: 3536800914225926894}
+  dropLaunchState: {fileID: 4770298227795515962}
+  turnToGrabRate: 1
 --- !u!114 &6199145597115895703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6380,7 +6525,7 @@ MonoBehaviour:
     _PersistentCalls: []
   bounceEvent:
     _PersistentCalls:
-    - _Target: {fileID: 1081188095233249612}
+    - _Target: {fileID: 0}
       _MemberName: ResetActive
       _PersistentArguments: []
   thrownAttack:
@@ -6388,6 +6533,7 @@ MonoBehaviour:
     velocity: {x: 0, y: 0, z: 0}
     tags:
     - name: Thrown
+  grabbed: 0
   currentState: 0
   minRagdollTime: -1
   maxRagdollTime: -1
@@ -6423,67 +6569,6 @@ MonoBehaviour:
   proxy: {fileID: 0}
   isPlayer: 1
   materialTinter: {fileID: 0}
---- !u!114 &8191279611815052833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2950555048310845610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8e318945a4f6224dad4dd3c599394f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 8455434200384702600}
-  globalSignals:
-    serializedList:
-    - Key: EndRoll
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 130535403916782458}
-          _MemberName: EndRoll
-          _PersistentArguments: []
-    - Key: ResetRoll
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 130535403916782458}
-          _MemberName: ResetRoll
-          _PersistentArguments: []
-  queueSignals: 1
---- !u!114 &1081188095233249612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2950555048310845610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef8a8dc42aa2b794c944a784faab689d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 8455434200384702600}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  influence: 0
-  fullStop: 0
-  maxSpeed: 0
-  minSpeed: 0
-  speedChangeRate: 15
-  turnability: 10
-  verticalAddSpeed: 0
-  terminalVelocity: 98.1
-  setVerticalInfluence: 0
-  setVerticalVelocity: 0
-  defaultGravity: 0
-  worldspaceInfluence: 0
-  worldspaceVelocity: {x: 0, y: 0, z: 0}
-  locked: 0
-  intendedAnimationName: 
 --- !u!114 &6328031082010280587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6498,44 +6583,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.StateTimelineManager
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 8455434200384702600}
-  timelineSpace: 0
---- !u!114 &415518188991741153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2950555048310845610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 949891b78cad1ac4cb05f6f17c928502, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TargetingManager
-  rangedHipFireRange:
-    front: {fileID: 802911248559169720}
-    maxDistance: 7.2389812
-    maxAngle: 43.0717
-    distanceAngleWeighting: 0.5
-    viewColor: {r: 1, g: 0, b: 0, a: 1}
-  rangedAimingRange:
-    front: {fileID: 802911248559169720}
-    maxDistance: 20.021955
-    maxAngle: 8.84509
-    distanceAngleWeighting: 0.5
-    viewColor: {r: 0, g: 0.63962555, b: 1, a: 1}
-  grabbingRange:
-    front: {fileID: 802911248559169720}
-    maxDistance: 1.7781098
-    maxAngle: 73.05075
-    distanceAngleWeighting: 0.5
-    viewColor: {r: 1, g: 0.4820457, b: 0, a: 1}
-  interactionRange:
-    front: {fileID: 802911248559169720}
-    maxDistance: 2.1241167
-    maxAngle: 20.437807
-    distanceAngleWeighting: 0.5
-    viewColor: {r: 0, g: 1, b: 0, a: 1}
-  interactionPopup: {fileID: 0}
+  timelineSpace: 1
 --- !u!1 &2975349023816060615
 GameObject:
   m_ObjectHideFlags: 0
@@ -7925,6 +7973,76 @@ Transform:
   - {fileID: 7800904279591170895}
   m_Father: {fileID: 2235979652216157829}
   m_LocalEulerAnglesHint: {x: -34.3993, y: -31.115078, z: 27.066032}
+--- !u!1 &3941813642097919829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4029320495389943955}
+  - component: {fileID: 8817027084830624986}
+  - component: {fileID: 3024773603949362573}
+  m_Layer: 0
+  m_Name: GrabMiss
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &4029320495389943955
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3941813642097919829}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5360076520150572304}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8817027084830624986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3941813642097919829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 6346063711828928810}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &3024773603949362573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3941813642097919829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 8817027084830624986}
+  onEntry: 2
+  onEnterName: GrabMiss
+  onEnterTime: 0.1
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &3961416142194591544
 GameObject:
   m_ObjectHideFlags: 0
@@ -8507,18 +8625,9 @@ MonoBehaviour:
     - Key: Grab
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrowAir
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 1181195091599698405}
+        - _Target: {fileID: 1181195091599698405}
+          _MemberName: GrabThrowButton
+          _PersistentArguments: []
     - Key: AttackTap
       Value:
         _PersistentCalls:
@@ -8528,7 +8637,7 @@ MonoBehaviour:
     - Key: AttackHold
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 0}
+        - _Target: {fileID: 172757351869591046}
           _MemberName: Enter
           _PersistentArguments: []
     - Key: Parry
@@ -9560,6 +9669,76 @@ MonoBehaviour:
           _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!1 &4763372838721798270
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 242717998904382757}
+  - component: {fileID: 8968679337813068694}
+  - component: {fileID: 243591220800763544}
+  m_Layer: 0
+  m_Name: AirGrabMiss
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &242717998904382757
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4763372838721798270}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7263887910720663579}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8968679337813068694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4763372838721798270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 394877773685415042}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &243591220800763544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4763372838721798270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 8968679337813068694}
+  onEntry: 2
+  onEnterName: AirGrabMiss
+  onEnterTime: 0.1
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &4847283882173391290
 GameObject:
   m_ObjectHideFlags: 0
@@ -11055,27 +11234,9 @@ MonoBehaviour:
     - Key: Grab
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 4975428428768240672}
-          - _Type: 13
-            _Int: 0
-            _String: SLS.StateMachineH.State, SLS.StateMachineH.Runtime, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 5804775204058244869}
+        - _Target: {fileID: 4975428428768240672}
+          _MemberName: GrabThrowButton
+          _PersistentArguments: []
     - Key: WalkOff
       Value:
         _PersistentCalls:
@@ -12210,27 +12371,9 @@ MonoBehaviour:
     - Key: Grab
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 4975428428768240672}
-          - _Type: 13
-            _Int: 0
-            _String: SLS.StateMachineH.State, SLS.StateMachineH.Runtime, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 5804775204058244869}
+        - _Target: {fileID: 4975428428768240672}
+          _MemberName: GrabThrowButton
+          _PersistentArguments: []
     - Key: WalkOff
       Value:
         _PersistentCalls:
@@ -12358,7 +12501,6 @@ GameObject:
   - component: {fileID: 9181539546719163320}
   - component: {fileID: 8933449817689037972}
   - component: {fileID: 2210526272510199779}
-  - component: {fileID: 1072101426346537800}
   - component: {fileID: 3235040986468162670}
   m_Layer: 6
   m_Name: LightPunch1
@@ -12397,7 +12539,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 8933449817689037972}
   - {fileID: 2210526272510199779}
-  - {fileID: 1072101426346537800}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
@@ -12533,26 +12675,6 @@ MonoBehaviour:
   onEnterTime: 0.05
   doWhenNotFinal: 0
   animator: {fileID: 8579594802138283692}
---- !u!114 &1072101426346537800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6163583669192012189}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acf0feb66e3ce714fb25f91394ad0236, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 7761699614878043687}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  check: 0
-  checkOnEnter: 1
-  animator: {fileID: 1081188095233249612}
 --- !u!114 &3235040986468162670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12927,18 +13049,9 @@ MonoBehaviour:
     - Key: Grab
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrowAir
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 1181195091599698405}
+        - _Target: {fileID: 1181195091599698405}
+          _MemberName: GrabThrowButton
+          _PersistentArguments: []
     - Key: Land
       Value:
         _PersistentCalls:
@@ -13665,18 +13778,9 @@ MonoBehaviour:
     - Key: Grab
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrowAir
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 1181195091599698405}
+        - _Target: {fileID: 1181195091599698405}
+          _MemberName: GrabThrowButton
+          _PersistentArguments: []
     - Key: Land
       Value:
         _PersistentCalls:
@@ -14056,27 +14160,9 @@ MonoBehaviour:
     - Key: Grab
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 2714541672873312079}
-          _MemberName: TryGrabThrow
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: PlayerGrabAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-              PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 4975428428768240672}
-          - _Type: 13
-            _Int: 0
-            _String: SLS.StateMachineH.State, SLS.StateMachineH.Runtime, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 5804775204058244869}
+        - _Target: {fileID: 4975428428768240672}
+          _MemberName: GrabThrowButton
+          _PersistentArguments: []
     - Key: WalkOff
       Value:
         _PersistentCalls:
@@ -17155,6 +17241,8 @@ Transform:
   - {fileID: 4593628155627854849}
   - {fileID: 6974781987043796759}
   - {fileID: 9047614155566188650}
+  - {fileID: 242717998904382757}
+  - {fileID: 6619945723409868570}
   - {fileID: 192777301579938322}
   - {fileID: 7436032913961434174}
   m_Father: {fileID: 8737383421479087939}
@@ -17182,7 +17270,9 @@ MonoBehaviour:
   - {fileID: 6542662269160061587}
   - {fileID: 1188554763052459690}
   - {fileID: 8183052182198313434}
-  <ChildCount>k__BackingField: 6
+  - {fileID: 8968679337813068694}
+  - {fileID: 1781473861386445650}
+  <ChildCount>k__BackingField: 8
 --- !u!1 &7946590860477714497
 GameObject:
   m_ObjectHideFlags: 0
@@ -17260,6 +17350,7 @@ GameObject:
   - component: {fileID: 9096782004905187224}
   - component: {fileID: 5765613941287539037}
   - component: {fileID: 6265184894249182072}
+  - component: {fileID: 4147610601198692795}
   m_Layer: 6
   m_Name: Grab
   m_TagString: Untagged
@@ -17319,16 +17410,11 @@ MonoBehaviour:
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
   playerController: {fileID: 1371118413310184343}
-  noTargetState: {fileID: 0}
-  blockedState: {fileID: 0}
-  throwState: {fileID: 0}
+  noTargetState: {fileID: 8817027084830624986}
+  blockedState: {fileID: 4668338733014282438}
+  throwState: {fileID: 5804775204058244869}
   dropLaunchState: {fileID: 0}
-  successReturnState: {fileID: 0}
-  air: 0
-  animationName: Grab
-  success: 0
-  ranged: {fileID: 2714541672873312079}
-  movementNegator: {fileID: 1081188095233249612}
+  successReturnState: {fileID: 5498562475319856201}
 --- !u!114 &9096782004905187224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17422,7 +17508,7 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 4130376927137963287}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
+  influenceFadeTime: 0.05240175
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve: []
@@ -17473,6 +17559,29 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+--- !u!114 &4147610601198692795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986475415449474893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 4130376927137963287}
+  timeline: {fileID: 6328031082010280587}
+  events:
+  - time: 0.23333333
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 4975428428768240672}
+        _MemberName: EndGrabAttempt
+        _PersistentArguments: []
+  loopAfterLastEvent: 0
 --- !u!1 &7996174763766430431
 GameObject:
   m_ObjectHideFlags: 0
@@ -20274,6 +20383,76 @@ MonoBehaviour:
       x: 1
       y: 1
       z: 1
+--- !u!1 &9168046947468112149
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6619945723409868570}
+  - component: {fileID: 1781473861386445650}
+  - component: {fileID: 7010545456162377782}
+  m_Layer: 0
+  m_Name: AirGrabBlocked
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &6619945723409868570
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9168046947468112149}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7263887910720663579}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1781473861386445650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9168046947468112149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+  <Behaviors>k__BackingField: []
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <Parent>k__BackingField: {fileID: 394877773685415042}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &7010545456162377782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9168046947468112149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 1781473861386445650}
+  onEntry: 1
+  onEnterName: AirGrabBlocked
+  onEnterTime: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1001 &1345935898135293067
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20290,7 +20469,7 @@ PrefabInstance:
     - target: {fileID: 7081382935272620051, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}
@@ -20405,7 +20584,7 @@ PrefabInstance:
     - target: {fileID: 7081382935272620051, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}

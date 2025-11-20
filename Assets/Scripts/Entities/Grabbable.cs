@@ -32,10 +32,10 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     #endregion
     #region Data
 
-    private IGrabber _Grabber;
-    public bool grabbed => Grabber != null;
+    public bool grabbed;
 
-    private new Collider collider;
+    public new Collider collider { get; private set; }
+    
     private Rigidbody rb;
     public EnemyHealth health { get; protected set; }
 
@@ -47,8 +47,11 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     #endregion
     #region Interface Getters
     public IGrabbable This => this;
-    public IGrabber Grabber { get => _Grabber; }
-    Transform IGrabbable.transform { get => transform; }
+    Transform IGrabbable.transform => transform;
+    GameObject IGrabbable.gameobject => gameObject;
+    bool IGrabbable.grabbed => grabbed;
+
+
     public float AdditionalThrowDistance => additionalThrowDistance;
     public float AdditionalHoldHeight => additionalHoldHeight;
     public virtual bool IsGrabbable => gameObject.activeInHierarchy && UnderThreshold() && currentState != EntityState.Grabbed && currentState != EntityState.Thrown;
@@ -57,11 +60,7 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
 
     public Vector3 HeldOffset => anchorPoint != null ? -anchorPoint.localPosition : Vector3.zero;
 
-    public virtual bool Selected
-    {
-        get => (UnityEngine.Object)PlayerInteracter.SelectedGrabbable == this;
-        set { if (selectIcon != null) selectIcon.SetActive(value); }
-    }
+    public System.Action ForceRelease { get; set; }
 
     #endregion
 
@@ -74,18 +73,17 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         State = EntityState.Default;
     }
 
-    public bool Grab(IGrabber grabber)
+    public bool Grab()
     {
-        _Grabber = grabber;
+        grabbed = true;
         State = EntityState.Grabbed;
         SetVelocity(Vector3.zero);
-        IgnoreCollisionWithThrower();
 
         if (wiggleFreeTime > 0) wiggleCoroutine = new(WiggleEnum(), this);
         IEnumerator WiggleEnum()
         {
             yield return new WaitForSeconds(wiggleFreeTime);
-            Release();
+            ForceRelease?.Invoke();
         }
 
         return this;
@@ -99,13 +97,20 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     }
     public void Release()
     {
-        if (!grabbed) return; 
-        IgnoreCollisionWithThrower(false);
 
-        _Grabber = null;
+        if (!grabbed) return; 
+
         State = EntityState.Default;
         SetVelocity(Vector3.zero);
     } 
+
+    public void Release(Vector3? velocity = null)
+    {
+        if (!grabbed) return;
+        State = EntityState.Default;
+        SetVelocity(velocity ?? Vector3.zero);
+    }
+
 
     public bool UnderThreshold() => !health || maxHealthToGrab < 0 || health.GetCurrentHealth() <= maxHealthToGrab;
 
@@ -118,12 +123,9 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         {
             State = EntityState.RagDoll;
             if (thrownAttack.amount > 0 && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(this.GetAttack());
-            IgnoreCollisionWithThrower(false);
-            _Grabber = null;
         }
     }
 
-    // Replaced SetState method with virtual property State acting as a setter method
     public virtual EntityState State
     {
         get => currentState;
@@ -138,22 +140,16 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
                 case EntityState.Default:
                     rigidBody.isKinematic = false;
                     collider.enabled = true;
-                    PlayerInteracter.UpdateGrabbables();
                     break;
                 case EntityState.Grabbed:
                     rigidBody.isKinematic = true;
                     collider.enabled = false;
-                    PlayerInteracter.LostGrabbable(this);
-                    IgnoreCollisionWithThrower(true);
                     break;
                 case EntityState.Thrown:
                     rigidBody.isKinematic = false;
                     collider.enabled = true;
-                    IgnoreCollisionWithThrower(true);
                     break;
                 case EntityState.RagDoll:
-                    IgnoreCollisionWithThrower(false);
-                    PlayerInteracter.UpdateGrabbables();
                     break;
                 default:
                     break;
@@ -169,9 +165,8 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         }
     }
 
-    public virtual void SetVelocity(Vector3 velocity) => rigidBody.linearVelocity = velocity;
 
-    public virtual void IgnoreCollisionWithThrower(bool ignore = true) => Physics.IgnoreCollision(collider, Grabber.ownerCollider, ignore);
+    public virtual void SetVelocity(Vector3 velocity) => rigidBody.linearVelocity = velocity;
 
     public Attack GetAttack()
     {
@@ -180,6 +175,6 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         return result;
     }
 
-    private void OnDisable() => PlayerInteracter.LostGrabbable(this);
+    public virtual void SetIgnoreCollision(Collider grabber, bool ignore = true) => Physics.IgnoreCollision(collider, grabber, ignore);
 
 }

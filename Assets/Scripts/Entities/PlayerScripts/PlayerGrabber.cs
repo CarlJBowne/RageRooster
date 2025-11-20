@@ -18,16 +18,8 @@ public class PlayerGrabber : MonoBehaviour
 
     // Data
     public IGrabbable currentGrabbed { get; private set; }
-    public Collider ownerCollider => _collider;
-
     private CoroutinePlus layerFadeCoroutine;
-    private Collider _collider;
 
-    private void Awake()
-    {
-        TryGetComponent(out _collider);
-        // cache interacter via singleton or GetComponent if present
-    }
 
     private void OnEnable() { }
     private void OnDisable() { }
@@ -44,182 +36,62 @@ public class PlayerGrabber : MonoBehaviour
     }
 
 
-    public void OfficialGrab(IGrabbable target)
+    public void Grab(IGrabbable target)
     {
         currentGrabbed = target;
-        
+        if (heldItemAnchor != null)
+        {
+            heldItemAnchor.localPosition = target.HeldOffset;
+            target.transform.position = heldItemAnchor.position;
+            target.transform.rotation = heldItemAnchor.rotation;
+        }
+        GrabStateEvent?.Invoke(true);
+        SetGrabbingLayer(true);
+        Physics.IgnoreCollision(target.collider, Player.Collider, true);
     }
 
+    public void Release(bool thrown, Vector3 throwVelocity)
+    {
+        currentGrabbed?.Release(thrown ? throwVelocity : null);
+        currentGrabbed = null;
+        GrabStateEvent?.Invoke(false);
+        SetGrabbingLayer(false);
 
+        Enum().Begin(currentGrabbed.collider);
+        IEnumerator Enum()
+        {
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
+            yield return null;
+            Physics.IgnoreCollision(currentGrabbed.collider, Player.Collider, false);
+        }
+    }
 
 
     public void SetGrabbingLayer(bool value)
     {
-
-    }
-
-
-
-
-
-
-
-    #region OLD
-    public void TryGrabThrow(PlayerGrabAction state, State throwState)
-    {
-        if (!Player.StateMachine.SignalManager.Locked && currentGrabbed != null)
+        CoroutinePlus.Begin(ref layerFadeCoroutine, FadeLayers(value.Int(), .25f), gameObject.activeInHierarchy ? this : Gameplay.Instance);
+        IEnumerator FadeLayers(int target, float rate)
         {
-            throwState.Enter();
-            new CoroutinePlus(QuickTurn(), this);
-            IEnumerator QuickTurn()
+            float current = Player.Animator.GetLayerWeight(2);
+            while (!Mathf.Approximately(current, target))
             {
-                float time = 0f;
-                // Use pointer rotation if needed via PlayerRanged; but to avoid tight coupling use Player.MovementBody.transform.forward fallback
-                // Angle calculation uses transforms; best-effort (keeps original intent)
-                float rate = 360f / .1f; // fallback fast rate
-                while (time < 0.1f)
-                {
-                    time += Time.deltaTime;
-                    // rotate Player.MovementBody towards its forward (no-op fallback) to mimic same timing
-                    Player.MovementBody.RotationQ = Quaternion.RotateTowards(Player.MovementBody.RotationQ, Player.MovementBody.transform.rotation, rate * Time.deltaTime);
-                    yield return null;
-                }
-            }
-        }
-        else
-        {
-            // Begin grab attempt using the interacter helper (if available)
-            if (interacter != null)
-                state.BeginGrabAttempt(interacter.HasUsableGrabbable());
-            else
-                state.BeginGrabAttempt(PlayerInteracter.Instance.HasUsableGrabbable(out IGrabbable g) ? g : null);
-        }
-    }
-
-    public void TryGrabThrowAir(PlayerGrabAction state)
-    {
-        if (currentGrabbed != null)
-        {
-            // quick Player.MovementBody rotate like original
-            Player.MovementBody.transform.DOBlendableRotateBy(new Vector3(0, 0, 0), 0.1f);
-            // choose appropriate throw state, original used Upgrades.Active; preserve external dependency by checking
-            var chosen = !Upgrades.Active.dropLaunch ? Player.StateMachine.controller.ranged.airThrowState : Player.StateMachine.controller.ranged.dropLaunchState;
-            chosen.Enter();
-        }
-        else
-        {
-            if (interacter != null)
-                state.BeginGrabAttempt(interacter.HasUsableGrabbable());
-            else
-                state.BeginGrabAttempt(PlayerInteracter.Instance.HasUsableGrabbable(out IGrabbable g) ? g : null);
-        }
-    }
-
-    public void GrabPoint(IGrabbable grabbed)
-    {
-        if (!grabbed.Grab(this)) return;
-        currentGrabbed = grabbed;
-
-        CoroutinePlus.Begin(ref layerFadeCoroutine, TurnOnLayers(1f), this);
-        IEnumerator TurnOnLayers(float rate)
-        {
-            float V = 0;
-            while (V < 1)
-            {
-                V += Time.deltaTime * rate;
-                if (Player.Animator != null)
-                {
-                    Player.Animator.SetLayerWeight(2, V);
-                    Player.Animator.SetLayerWeight(3, V);
-                }
+                current = Mathf.MoveTowards(current, target, Time.deltaTime * rate);
+                SetBlend(current);
                 yield return null;
             }
+            SetBlend(target);
         }
-
-        // position grabbed object at anchor
-        if (heldItemAnchor != null)
+        void SetBlend(float V)
         {
-            heldItemAnchor.localPosition = grabbed.HeldOffset;
-            grabbed.transform.position = heldItemAnchor.position;
-            grabbed.transform.rotation = heldItemAnchor.rotation;
-        }
-
-        GrabStateEvent?.Invoke(true);
-    }
-
-    public void GrabPointSignal()
-    {
-        if (Player.StateMachine != null)
-            Player.StateMachine.SendSignal(new("FinishGrab", ignoreLock: true));
-    }
-
-    public void ThrowPoint()
-    {
-        // When throwing in-air with drop launch, the original invoked jumpState.BeginJump() - that lives on PlayerRanged.
-        // We attempt to call it via the state Player.StateMachine controller if available.
-        if (Player.StateMachine?.controller?.ranged != null)
-        {
-            var ranged = Player.StateMachine.controller.ranged;
-            if (!Player.MovementBody.Grounded && Upgrades.Active.dropLaunch)
-            {
-                ranged.jumpState.BeginJump();
-            }
-
-            Vector3 direction =
-                ranged.aimingState.State
-                ? ranged.pointer.startV.forward
-                : !Player.MovementBody.Grounded && Upgrades.Active.dropLaunch
-                    ? Vector3.down
-                    : Player.MovementBody.transform.forward;
-
-            Release(direction * launchVelocity, true);
-        }
-        else
-        {
-            // fallback: forward from Player.MovementBody
-            Release(Player.MovementBody.transform.forward * launchVelocity, true);
+            Player.Animator.SetLayerWeight(2, V);
+            Player.Animator.SetLayerWeight(3, V);
         }
     }
 
-    public void Release(Vector3 velocity, bool thrown = false)
-    {
-        if (thrown && currentGrabbed != null) currentGrabbed.Throw(velocity);
-        else if (currentGrabbed != null) currentGrabbed.Release();
-
-        CoroutinePlus.Begin(ref layerFadeCoroutine, TurnOffLayers(1f), gameObject.activeInHierarchy ? this : Gameplay.Instance);
-        IEnumerator TurnOffLayers(float rate)
-        {
-            float V = 1;
-            while (V > 0)
-            {
-                V -= Time.deltaTime * rate;
-                if (Player.Animator != null)
-                {
-                    Player.Animator.SetLayerWeight(2, V);
-                    Player.Animator.SetLayerWeight(3, V);
-                }
-                yield return null;
-            }
-        }
-
-        currentGrabbed = null;
-        GrabStateEvent?.Invoke(false);
-    }
-
-    public IGrabbable CheckForGrabbable()
-    {
-        IGrabbable.Test(Physics.OverlapSphere(transform.position + GetRealOffset(transform), checkSphereRadius, layerMask), out IGrabbable result);
-        return result;
-    }
-
-    private Vector3 GetRealOffset(Transform t) =>
-        t.forward * checkSphereOffset.z + t.up * checkSphereOffset.y + t.right * checkSphereOffset.x;
-
-    public float checkSphereRadius;
-    public Vector3 checkSphereOffset;
-    public LayerMask layerMask;
-    private PlayerInteracter interacter = null;
 
 
-    #endregion
+
 }
