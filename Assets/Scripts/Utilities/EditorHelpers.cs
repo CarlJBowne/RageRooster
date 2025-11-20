@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using SLS.StateMachineH;
+using SLS.StateMachineH.Signals;
+using SLS.StateMachineH.Timelines;
+using UltEvents;
 
 public static class EditorHelpers
 {
@@ -83,5 +86,90 @@ public static class EditorHelpers
         if (reference == null) return;
         DrawEditableFlatCone(reference.position, reference.forward, reference.up, distance, angle, color);
     }
+
+    /*
+    public static void TransferSignalsToTimelines()
+    {
+        //Get the StateMachine attached to the object selected in the editor
+
+        StateMachine machine = Selection.gameObjects[0].GetComponent<StateMachine>();
+        Animator machineAnimator = machine.GetComponent<Animator>();
+        SignalManager signalManager = machine.GetComponent<SignalManager>();
+        PlayerController playerController = machine.GetComponent<PlayerController>();
+
+        void DoStateRecursive(State thisState)
+        {
+            thisState.TryGetComponent(out StateAnimator stateAnimator);
+
+            if(stateAnimator != null)
+            {
+                //Get the animation clip associated with this state from the machineAnimator based on the stateAnimator's clip name
+
+                AnimationClip clip = null;
+
+                foreach (var clipInAnimator in machineAnimator.runtimeAnimatorController.animationClips)
+                {
+                    if (clipInAnimator.name == stateAnimator.name)
+                    {
+                        clip = clipInAnimator;
+                        break;
+                    }
+                }
+
+                AnimationEvent[] events = AnimationUtility.GetAnimationEvents(clip);
+                bool alreadyDone = false;
+                SignalNode signalNode = null;
+                TimedEvents timedEvents = null;
+
+                for (int i = 0; i < events.Length; i++)
+                {
+                    //FireSingalBasic, Lock, Unlock, FinishAction
+                    if (events[i].functionName == "FireSignalBasic")
+                    {
+                        FirstSuccess();
+                        timedEvents.events.Add(new()
+                        {
+                            time = events[i].time,
+                            output = signalNode[events[i].stringParameter]
+                        });
+                    }
+                    else if (events[i].functionName == "Lock")
+                    {
+                        FirstSuccess();
+                        UltEvent newEvent = new();
+                        newEvent.AddPersistentCall(() =>
+                        {
+                            signalManager.Lock();
+                        });
+                        timedEvents.events.Add(new()
+                        {
+                            time = events[i].time,
+                            output = newEvent
+                        });
+                    }
+                    else if (events[i].functionName == "Unlock")
+                    {
+                        FirstSuccess();
+                    }
+                    else if (events[i].functionName == "FinishAction")
+                    {
+                        FirstSuccess();
+                    }
+                }
+                void FirstSuccess()
+                {
+                    if(alreadyDone) return;
+                    alreadyDone = true;
+                    //Add a StateTimeline behavior to the state if it doesn't already have one
+                    timedEvents = thisState.GetOrAddComponent<TimedEvents>();
+                    signalNode = timedEvents.GetComponent<SignalNode>();
+                }
+            }
+
+            EditorUtility.SetDirty(thisState.gameObject);
+
+            foreach (var childState in thisState.Children) DoStateRecursive(childState);
+        }
+    }*/
 
 }

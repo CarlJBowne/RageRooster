@@ -29,12 +29,12 @@ public class PlayerTargetPursuer : StateTimeline
         if(TargetingManager.GetMeleeTarget() != null)
         {
             target = TargetingManager.GetMeleeTarget();
-            failedBackup.overrideOff = true;
+            if(failedBackup != null) failedBackup.overrideOff = true;
             Begin();
         }
         else
         {
-            failedBackup.overrideOff = false;
+            if (failedBackup != null) failedBackup.overrideOff = false;
         }
     }
 
@@ -47,7 +47,7 @@ public class PlayerTargetPursuer : StateTimeline
         SampleCurve(turningSpeedCurve, out float turningSpeed);
         SampleCurve(verticalShiftCurve, out float verticalShift);
 
-        if (turningSpeed > 0) Player.MovementBody.DirectionSet((target.position - Player.Transform.position).XZ(), turningSpeed * delta);
+        if (turningSpeed > 0) Player.MovementBody.DirectionSet((target.position - Player.Transform.position).XZ(), turningSpeed);
 
         Vector3 targetVelocity = Player.MovementBody.velocity;
         float targetForwardSpeed = Player.MovementBody.CurrentSpeed;
@@ -64,7 +64,7 @@ public class PlayerTargetPursuer : StateTimeline
         targetVelocity.z = (targetPosition - Player.Position).z * targetForwardSpeed;
 
         targetVelocity.y = verticalShift > 0f 
-            ? verticalShift * delta * (targetPosition.y - Player.Position.y).Sign() 
+            ? verticalShift * (targetPosition.y - Player.Position.y).Sign() 
             : Player.MovementBody.velocity.y;
 
         Player.MovementBody.VelocitySet(targetVelocity.x, targetVelocity.y, targetVelocity.z);
