@@ -1,3 +1,4 @@
+using EditorAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
@@ -103,7 +104,34 @@ namespace SLS.StateMachineH.Timelines
 
         private void SampleCurve(AnimationCurve C, out float res) => res = C.Evaluate(loopTime <= 0 ? elapsedTime : elapsedTime % loopTime);
 
+        /*
+        [SerializeField] AnimationClip referenceClip;
+        [Button]
+        private void RecastTiming()
+        {
+            float duration = referenceClip.length;
+
+            //stretch animation curve to match the duration.
+            void StretchCurve(ref AnimationCurve C)
+            {
+                Keyframe[] keys = C.keys;
+                for (int i = 0; i < keys.Length; i++)
+                    keys[i].time = (keys[i].time / keys[keys.Length - 1].time) * duration;
+                C.keys = keys;
+            }
+
+            StretchCurve(ref minForwardMovementCurve);
+            StretchCurve(ref maxForwardMovementCurve);
+            StretchCurve(ref speedChangeCurve);
+            StretchCurve(ref turnabilityCurve);
+            StretchCurve(ref verticalAccelerationCurve);
+            StretchCurve(ref setVerticalInfluenceCurve);
+            StretchCurve(ref setVerticalVelocityCurve);
+            StretchCurve(ref sidewaysMovementCurve);
+                        
 
 
+        }
+        */
     }
 }
