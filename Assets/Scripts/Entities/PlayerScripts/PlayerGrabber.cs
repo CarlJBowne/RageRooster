@@ -6,7 +6,7 @@ using UltEvents;
 using UnityEngine;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
-public class PlayerGrabber : MonoBehaviour, IGrabber
+public class PlayerGrabber : MonoBehaviour
 {
     // Grab-related configuration moved from PlayerRanged
     public float launchVelocity;
@@ -22,7 +22,6 @@ public class PlayerGrabber : MonoBehaviour, IGrabber
 
     private CoroutinePlus layerFadeCoroutine;
     private Collider _collider;
-    private PlayerInteracter interacter = null;
 
     private void Awake()
     {
@@ -50,6 +49,17 @@ public class PlayerGrabber : MonoBehaviour, IGrabber
         currentGrabbed = target;
         
     }
+
+
+
+
+    public void SetGrabbingLayer(bool value)
+    {
+
+    }
+
+
+
 
 
 
@@ -208,6 +218,7 @@ public class PlayerGrabber : MonoBehaviour, IGrabber
     public float checkSphereRadius;
     public Vector3 checkSphereOffset;
     public LayerMask layerMask;
+    private PlayerInteracter interacter = null;
 
 
     #endregion
