@@ -29,15 +29,6 @@ public class RagdollHandler : Grabbable
 
     public override bool IsGrabbable => base.IsGrabbable && !isPlayer;
 
-    public override bool Selected
-    {
-        get => (UnityEngine.Object)PlayerInteracter.SelectedGrabbable == this;
-        set
-        {
-            if (materialTinter != null) materialTinter.SetFresnel(value);
-            else if (selectIcon != null) selectIcon.SetActive(value);
-        }
-    }
     public ColorTintAnimation materialTinter;
 
 
@@ -84,14 +75,12 @@ public class RagdollHandler : Grabbable
                     SetRagdoll(false);
                     ragDollTimer = 0;
                     nonRagdolledCollider.gameObject.layer = Layers.Enemy;
-                    PlayerInteracter.UpdateGrabbables();
                     break;
                 case EntityState.Grabbed:
                     SetRagdoll(true);
                     if (advanced) ragDollColliders[0].transform.Reset(scale: false);
                     if (proxy) proxy.transform.parent.Reset(scale: false);
                     rigidBody.isKinematic = true;
-                    PlayerInteracter.LostGrabbable(this);
                     break;
                 case EntityState.Thrown:
                     SetRagdoll(true);
@@ -102,7 +91,6 @@ public class RagdollHandler : Grabbable
                     if (isPlayer)
                         for (int i = 0; i < savedLocalPos.Length; i++)
                             ragDollColliders[i].transform.localPosition = savedLocalPos[i];
-                    PlayerInteracter.UpdateGrabbables();
                     break;
                 default:
                     break;
@@ -146,16 +134,16 @@ public class RagdollHandler : Grabbable
                 ragDollRigidBodies[i].linearVelocity = globalVelocity;
         else nonRagdolledRigidBody.linearVelocity = globalVelocity;
     }
-    public override void IgnoreCollisionWithThrower(bool ignore = true)
+
+    public override void SetIgnoreCollision(Collider grabber, bool ignore = true)
     {
         if (advanced)
         {
             for (int i = 0; i < ragDollColliders.Length; i++)
-                Physics.IgnoreCollision(ragDollColliders[i], Grabber.ownerCollider, ignore);
-            if (proxy) proxy.IgnoreCollisionWithThrower(Grabber.ownerCollider, ignore);
+                Physics.IgnoreCollision(ragDollColliders[i], grabber, ignore);
+            if (proxy) proxy.IgnoreCollisionWithThrower(grabber, ignore);
         }
-        else Physics.IgnoreCollision(nonRagdolledCollider, Grabber.ownerCollider, ignore);
-        
+        else Physics.IgnoreCollision(nonRagdolledCollider, grabber, ignore);
     }
 
 }
