@@ -20,6 +20,7 @@ namespace SLS.StateMachineH.Timelines
         public AnimationCurve setVerticalVelocityCurve = Curve(0);
         public AnimationCurve sidewaysMovementCurve = Curve(0);
         public float loopTime = 0f;
+        public bool overrideOff;
         private static AnimationCurve Curve(float input) => new(new Keyframe(0, input));
 
         float influence;
@@ -30,7 +31,9 @@ namespace SLS.StateMachineH.Timelines
 
         protected override void OnTick(float delta)
         {
-            if(!Mathf.Approximately(influenceChange, 0))
+            if(overrideOff) return;
+
+            if (!Mathf.Approximately(influenceChange, 0))
             {
                 influence += influenceChange * delta;
                 if(influence is >= 1f or <= 0f)
