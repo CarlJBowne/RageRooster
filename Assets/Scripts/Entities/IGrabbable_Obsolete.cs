@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Animations;
 
-public interface IGrabbable
+public interface IGrabbable_Obsolete
 {
     public bool Grab();
     public void Release(Vector3? velocity = null);
@@ -9,7 +9,7 @@ public interface IGrabbable
     
 
 
-    public IGrabbable This => this;
+    public IGrabbable_Obsolete This => this;
     public Transform transform { get; }
     public GameObject gameobject { get; }
     public Rigidbody rigidBody { get; }

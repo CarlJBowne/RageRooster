@@ -836,6 +836,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
   <Behaviors>k__BackingField:
   - {fileID: 5469716287634741062}
+  - {fileID: 2436168694459786054}
+  - {fileID: 379206835711853348}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 6346063711828928810}
   <Layer>k__BackingField: 2
@@ -873,7 +875,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
   <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 8817027084830624986}
+  <State>k__BackingField: {fileID: 4668338733014282438}
   timeline: {fileID: 6328031082010280587}
   influenceFadeTime: 0.05
   minForwardMovementCurve:
@@ -1030,7 +1032,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
   <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 8817027084830624986}
+  <State>k__BackingField: {fileID: 4668338733014282438}
   timeline: {fileID: 6328031082010280587}
   events:
   - time: 0.8
@@ -1167,6 +1169,7 @@ MonoBehaviour:
   - {fileID: 1608307018703560638}
   - {fileID: 3817533481671788493}
   - {fileID: 5219037044497169478}
+  - {fileID: 428439511258778553}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
@@ -1673,6 +1676,7 @@ MonoBehaviour:
   - {fileID: 79467573303735202}
   - {fileID: 1021042645653004062}
   - {fileID: 6970877457400052654}
+  - {fileID: 2162451809730988447}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 6346063711828928810}
   <Layer>k__BackingField: 2
@@ -2121,7 +2125,6 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 1181195091599698405}
   - {fileID: 2650107836693273814}
-  - {fileID: 0}
   - {fileID: 5821582906892756304}
   - {fileID: 8679996016642171047}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -3776,6 +3779,7 @@ MonoBehaviour:
   - {fileID: 1487847476849349252}
   - {fileID: 4269038792820991052}
   - {fileID: 6732001801189588360}
+  - {fileID: 8263972356897141580}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 4554088299833102073}
   <Layer>k__BackingField: 1
@@ -5073,6 +5077,7 @@ MonoBehaviour:
   - {fileID: 3432230067973307783}
   - {fileID: 6962824944772942820}
   - {fileID: 7823473206870275758}
+  - {fileID: 6401821316902319393}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
@@ -6550,6 +6555,7 @@ GameObject:
   - component: {fileID: 8954558647869373425}
   - component: {fileID: 5436814540052560995}
   - component: {fileID: 6328031082010280587}
+  - component: {fileID: 3245344602468578142}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -7175,6 +7181,19 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 8455434200384702600}
   timelineSpace: 1
+--- !u!114 &3245344602468578142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 157b62d8004f9f14d8160afc57aae3b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
+  RealPositionOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &2975349023816060615
 GameObject:
   m_ObjectHideFlags: 0
@@ -7581,6 +7600,7 @@ MonoBehaviour:
   - {fileID: 2575273106558408250}
   - {fileID: 1167983833537691750}
   - {fileID: 2250321246033651809}
+  - {fileID: 6661747638358421952}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 6346063711828928810}
   <Layer>k__BackingField: 2
@@ -8484,6 +8504,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 4034578412657846143}
   - {fileID: 1248177351479601663}
+  - {fileID: 6371386553277691124}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 5660112243806928363}
   <Layer>k__BackingField: 1
@@ -8758,6 +8779,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
   <Behaviors>k__BackingField:
   - {fileID: 3024773603949362573}
+  - {fileID: 5021789169152714364}
+  - {fileID: 1371077328484475270}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 6346063711828928810}
   <Layer>k__BackingField: 2
@@ -8795,7 +8818,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
   <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 5281776910968683532}
+  <State>k__BackingField: {fileID: 8817027084830624986}
   timeline: {fileID: 6328031082010280587}
   influenceFadeTime: 0.05240175
   minForwardMovementCurve:
@@ -8943,7 +8966,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
   <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 5281776910968683532}
+  <State>k__BackingField: {fileID: 8817027084830624986}
   timeline: {fileID: 6328031082010280587}
   events:
   - time: 0.3
@@ -10139,6 +10162,7 @@ MonoBehaviour:
   - {fileID: 5783652258050704555}
   - {fileID: 4261638721166669242}
   - {fileID: 5490225956786661193}
+  - {fileID: 8686036933858947198}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 7315598544489480670}
   <Layer>k__BackingField: 2
@@ -10668,6 +10692,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
   <Behaviors>k__BackingField:
   - {fileID: 243591220800763544}
+  - {fileID: 8792054429220819774}
+  - {fileID: 6300627380801188497}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
@@ -10705,7 +10731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
   <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 5281776910968683532}
+  <State>k__BackingField: {fileID: 8968679337813068694}
   timeline: {fileID: 6328031082010280587}
   influenceFadeTime: 0.05240175
   minForwardMovementCurve:
@@ -10862,7 +10888,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
   <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 5281776910968683532}
+  <State>k__BackingField: {fileID: 8968679337813068694}
   timeline: {fileID: 6328031082010280587}
   events:
   - time: 0.3
@@ -12505,6 +12531,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 3809344189191021789}
   - {fileID: 2948649182578767989}
+  - {fileID: 2614534935338269821}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 5660112243806928363}
   <Layer>k__BackingField: 1
@@ -12590,7 +12617,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
   <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 5804775204058244869}
+  <State>k__BackingField: {fileID: 2396489837623806523}
   timeline: {fileID: 6328031082010280587}
   events:
   - time: 0.25
@@ -13713,6 +13740,7 @@ MonoBehaviour:
   - {fileID: 2210526272510199779}
   - {fileID: 3235040986468162670}
   - {fileID: 812519567302393548}
+  - {fileID: 972550795247959604}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
@@ -14517,6 +14545,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 5313019447591973648}
   - {fileID: 2289536928669045917}
+  - {fileID: 520392510642440354}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 5833654247008700248}
   <Layer>k__BackingField: 2
@@ -15474,6 +15503,7 @@ MonoBehaviour:
   - {fileID: 7392498410637128240}
   - {fileID: 6616059167347331249}
   - {fileID: 1338687775615346247}
+  - {fileID: 4352649588632418271}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 6346063711828928810}
   <Layer>k__BackingField: 2
@@ -17331,6 +17361,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 1351490462638976854}
   - {fileID: 6559009853959219429}
+  - {fileID: 6494033956695225773}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 6346063711828928810}
   <Layer>k__BackingField: 2
@@ -18758,7 +18789,6 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 4975428428768240672}
   - {fileID: 5765613941287539037}
-  - {fileID: 0}
   - {fileID: 4147610601198692795}
   - {fileID: 847439447519889398}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -19131,6 +19161,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 8818584219412789187}
   - {fileID: 4958404505268245693}
+  - {fileID: 636245035685760059}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 7315598544489480670}
   <Layer>k__BackingField: 2
@@ -19349,6 +19380,7 @@ MonoBehaviour:
   - {fileID: 8588546888960314174}
   - {fileID: 9091806383066921814}
   - {fileID: 8579854209785161681}
+  - {fileID: 8979778348347298358}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 6346063711828928810}
   <Layer>k__BackingField: 2
@@ -19764,6 +19796,7 @@ MonoBehaviour:
   - {fileID: 8723284775484568847}
   - {fileID: 6541457861431460057}
   - {fileID: 662861181818123581}
+  - {fileID: 6289028403102549137}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 5833654247008700248}
   <Layer>k__BackingField: 2
@@ -20042,6 +20075,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 5958159887780656694}
   - {fileID: 432829471624060657}
+  - {fileID: 5827872730310067576}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
@@ -20232,6 +20266,7 @@ MonoBehaviour:
   - {fileID: 1365885318711231209}
   - {fileID: 7470117012448968723}
   - {fileID: 7574863221810859614}
+  - {fileID: 8749612761934232274}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 5833654247008700248}
   <Layer>k__BackingField: 2
@@ -21233,6 +21268,7 @@ MonoBehaviour:
   - {fileID: 3371901436690524646}
   - {fileID: 899663667312865224}
   - {fileID: 6354440872550940740}
+  - {fileID: 4017634302662002123}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 5833654247008700248}
   <Layer>k__BackingField: 2
@@ -21663,6 +21699,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 952740506071875993}
+  - {fileID: 1148248909128094695}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 5833654247008700248}
   <Layer>k__BackingField: 2
@@ -22066,6 +22103,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
   <Behaviors>k__BackingField:
   - {fileID: 7010545456162377782}
+  - {fileID: 1842807172199699955}
+  - {fileID: 6718577106585897668}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
@@ -22103,7 +22142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
   <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 8817027084830624986}
+  <State>k__BackingField: {fileID: 1781473861386445650}
   timeline: {fileID: 6328031082010280587}
   influenceFadeTime: 0.05
   minForwardMovementCurve:
@@ -22269,7 +22308,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
   <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 8817027084830624986}
+  <State>k__BackingField: {fileID: 1781473861386445650}
   timeline: {fileID: 6328031082010280587}
   events:
   - time: 0.8

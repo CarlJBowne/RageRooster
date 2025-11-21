@@ -71,7 +71,7 @@ public class PlayerRanged : MonoBehaviour
     }
 
     // Expose currentGrabbed (forward to Player.Grabber) so external code using PlayerRanged.currentGrabbed continues to work.
-    public IGrabbable currentGrabbed => Player.Grabber != null ? Player.Grabber.currentGrabbed : null;
+    public Grabbable currentGrabbed => Player.Grabber != null ? Player.Grabber.currentGrabbed : null;
 
     #region Grabbing API Forwarders
     // Thin wrappers that forward to the new PlayerGrabber. This preserves the existing public API.
@@ -83,11 +83,11 @@ public class PlayerRanged : MonoBehaviour
 
     public void TryGrabThrow(PlayerGrabAction state, State throwState) { }
     public void TryGrabThrowAir(PlayerGrabAction state) { }
-    public void GrabPoint(IGrabbable grabbed) { }
+    public void GrabPoint(IGrabbable_Obsolete grabbed) { }
     public void GrabPointSignal() {}
     public void ThrowPoint() { }
     public void Release(Vector3 velocity, bool thrown = false) { }
-    public IGrabbable CheckForGrabbable() => null;
+    public IGrabbable_Obsolete CheckForGrabbable() => null;
     #endregion
 
     #region Ranged / Aiming (unchanged)

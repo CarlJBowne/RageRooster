@@ -173,7 +173,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// The <see cref="RagdollHandler"/> component attached to the <see cref="Player"/>. <br/>
     /// </summary>
-    public static RagdollHandler RagdollHandler { get; private set; }
+    public static RagdollHandler_Obsolete RagdollHandler { get; private set; }
     #endregion
 
     #region Helper Properties / Methods
@@ -251,7 +251,7 @@ public class Player : MonoBehaviour
         Grabber = GetComponent<PlayerGrabber>();
         Animator = GetComponent<Animator>();
         Audio = GetComponent<AudioCaller>();
-        RagdollHandler = GetComponent<RagdollHandler>();
+        RagdollHandler = GetComponent<RagdollHandler_Obsolete>();
         TargetingManager = GetComponent<TargetingManager>();
         SignalManager = GetComponent<SLS.StateMachineH.Signals.SignalManager>();
         Health.Initialize();

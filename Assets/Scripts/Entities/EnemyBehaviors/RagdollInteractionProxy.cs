@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 
-public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
+public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable_Obsolete
 {
     public EnemyHealth health;
-    public RagdollHandler ragDoll;
+    public RagdollHandler_Obsolete ragDoll;
 
     [SerializeField] new Collider collider;
     [SerializeField] Rigidbody rb;
-    public IGrabbable This => ragDoll;
+    public IGrabbable_Obsolete This => ragDoll;
     bool grabbed;
 
     private void Awake()
@@ -21,7 +21,7 @@ public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
     }
 
     public bool Damage(Attack attack) => health.Damage(attack);
-    public bool GiveGrabbable(out Grabbable result)
+    public bool GiveGrabbable(out Grabbable_Obsolete result)
     {
         result = ragDoll;
         return result != null;
@@ -46,16 +46,16 @@ public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
 
     public bool IsGrabbable => This.IsGrabbable;
 
-    GameObject IGrabbable.gameobject => gameObject;
-    Transform IGrabbable.transform => transform;
+    GameObject IGrabbable_Obsolete.gameobject => gameObject;
+    Transform IGrabbable_Obsolete.transform => transform;
 
     public Vector3 HeldOffset => This.HeldOffset;
 
     public Rigidbody rigidBody => This.rigidBody;
 
-    Collider IGrabbable.collider => collider;
+    Collider IGrabbable_Obsolete.collider => collider;
 
-    bool IGrabbable.grabbed => grabbed;
+    bool IGrabbable_Obsolete.grabbed => grabbed;
 
     public Action ForceRelease { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 

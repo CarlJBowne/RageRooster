@@ -17,7 +17,7 @@ public class EnemyHealth : Health
     public EnemyLootSpawner enemyLootSpawner;
 
     public ColorTintAnimation tintAnimator;
-    private RagdollHandler ragdoll;
+    private RagdollHandler_Obsolete ragdoll;
 
     public bool respawn;
     public float respawnTime;
@@ -27,7 +27,7 @@ public class EnemyHealth : Health
     #endregion Config
     #region Data
 
-    [HideInEditMode, DisableInPlayMode] public EntityState currentState;
+    [HideInEditMode, DisableInPlayMode] public EntityState currentState = EntityState.Default;
     private CoroutinePlus stunCO;
     private float stunTimeLeft = 0;
     private Vector3 startPosition;
@@ -192,8 +192,9 @@ public class EnemyHealth : Health
 }
 public enum EntityState
 {
-    Default,
-    Grabbed,
-    Thrown,
-    RagDoll
+    Inactive = -1,
+    Default = 0,
+    Grabbed = 1,
+    Thrown = 2,
+    RagDoll = 3
 }

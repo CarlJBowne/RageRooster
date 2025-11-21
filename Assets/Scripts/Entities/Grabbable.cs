@@ -1,180 +1,124 @@
-using EditorAttributes;
 using System.Collections;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.Events;
-using UnityEngine.InputSystem.LowLevel;
 
-public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
+[RequireComponent(typeof(Collider),typeof(MeleeTarget))]
+public class Grabbable : MonoBehaviour
 {
     #region Config
 
-    public Transform anchorPoint;
-    public float weight;
+    public int grabHealthMax;
     public float wiggleFreeTime;
-    public int maxHealthToGrab;
-    public float additionalThrowDistance;
-    public float additionalHoldHeight;
-    public GameObject selectIcon;
+    public Transform anchorPoint;
+    public float AdditionalThrowDistance;
 
-    [HideInEditMode, HideInPlayMode] public UltEvents.UltEvent<EntityState> GrabStateEvent;
+    public System.Action ForceRelease { get; set; }
 
-    [FoldoutGroup("Entity State Change Events", nameof(defaultEvent),nameof(grabbedEvent),nameof(thrownEvent),nameof(bounceEvent))]
-    public Void _EntityStateEvents;
-    [HideInInspector] public UltEvents.UltEvent defaultEvent;
-    [HideInInspector] public UltEvents.UltEvent grabbedEvent;
-    [HideInInspector] public UltEvents.UltEvent thrownEvent;
-    [HideInInspector] public UltEvents.UltEvent bounceEvent;
+    //Required Components
+    public new Collider collider;
+    public MeleeTarget meleeTarget;
 
-    public Attack thrownAttack = new(1, "Thrown");
+    //Potential Components
+    public Rigidbody rigidBody;
+    public RagdollHandler ragdollHandler;
+    public ThrownObjectAttack thrownObjectAttack;
+    public EnemyHealth health;
+    public ConstantMovement constantMovement;
 
     #endregion
     #region Data
 
-    public bool grabbed;
-
-    public new Collider collider { get; private set; }
-    
-    private Rigidbody rb;
-    public EnemyHealth health { get; protected set; }
-
-    public CoroutinePlus wiggleCoroutine;
-
-    [SerializeField, HideInEditMode, DisableInPlayMode] protected EntityState currentState;
-
-
-    #endregion
-    #region Interface Getters
-    public IGrabbable This => this;
-    Transform IGrabbable.transform => transform;
-    GameObject IGrabbable.gameobject => gameObject;
-    bool IGrabbable.grabbed => grabbed;
-
-
-    public float AdditionalThrowDistance => additionalThrowDistance;
-    public float AdditionalHoldHeight => additionalHoldHeight;
-    public virtual bool IsGrabbable => gameObject.activeInHierarchy && UnderThreshold() && currentState != EntityState.Grabbed && currentState != EntityState.Thrown;
-
-    public virtual Rigidbody rigidBody => rb;
-
-    public Vector3 HeldOffset => anchorPoint != null ? -anchorPoint.localPosition : Vector3.zero;
-
-    public System.Action ForceRelease { get; set; }
-
-    #endregion
-
-
-    protected virtual void Awake()
+    public enum State
     {
+        Inactive = -1,
+        Grabbable = 0,
+        Grabbed = 1,
+        Thrown = 2
+    }
+    public State state { get; protected set; } = State.Inactive;
+
+    #endregion
+
+    public static bool IsGrabbable(MeleeTarget target, out Grabbable result)
+    {
+        result = target == null ? null
+            : target.TryGetComponent(out Grabbable grabbable) ? grabbable
+            : target.TryGetComponent(out GrabbableIndirect indirect) ? indirect.Get()
+            : null;
+
+        return result != null && result.GetGrabbable();
+    }
+    private void Reset()
+    {
+        rigidBody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
-        rb = GetComponent<Rigidbody>();
+        meleeTarget = GetComponent<MeleeTarget>();
+        ragdollHandler = GetComponent<RagdollHandler>();
         health = GetComponent<EnemyHealth>();
-        State = EntityState.Default;
+        constantMovement = GetComponent<ConstantMovement>();
     }
 
-    public bool Grab()
+    private void OnEnable()
     {
-        grabbed = true;
-        State = EntityState.Grabbed;
-        SetVelocity(Vector3.zero);
-
-        if (wiggleFreeTime > 0) wiggleCoroutine = new(WiggleEnum(), this);
-        IEnumerator WiggleEnum()
-        {
-            yield return new WaitForSeconds(wiggleFreeTime);
-            ForceRelease?.Invoke();
-        }
-
-        return this;
+        state = State.Grabbable;
+    }
+    private void OnDisable()
+    {
+        state = State.Inactive;
     }
 
-    public void Throw(Vector3 velocity)
+    public bool GetGrabbable()
     {
-        if (!grabbed) return;
-        State = EntityState.Thrown;
-        SetVelocity(velocity);
-    }
-    public void Release()
-    {
+        bool result = enabled;
 
-        if (!grabbed) return; 
+        if (health && health.GetCurrentHealth() > grabHealthMax) result = false;
 
-        State = EntityState.Default;
-        SetVelocity(Vector3.zero);
-    } 
-
-    public void Release(Vector3? velocity = null)
-    {
-        if (!grabbed) return;
-        State = EntityState.Default;
-        SetVelocity(velocity ?? Vector3.zero);
-    }
-
-
-    public bool UnderThreshold() => !health || maxHealthToGrab < 0 || health.GetCurrentHealth() <= maxHealthToGrab;
-
-    private void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);
-    private void OnTriggerEnter(Collider other) => Contact(other.gameObject);
-
-    public virtual void Contact(GameObject target)
-    {
-        if(currentState == EntityState.Thrown && target != PlayerInteracter.ThisGameObject)
-        {
-            State = EntityState.RagDoll;
-            if (thrownAttack.amount > 0 && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(this.GetAttack());
-        }
-    }
-
-    public virtual EntityState State
-    {
-        get => currentState;
-        set
-        {
-            if (currentState == value) return;
-            currentState = value;
-            GrabStateEvent?.Invoke(currentState);
-
-            switch (currentState)
-            {
-                case EntityState.Default:
-                    rigidBody.isKinematic = false;
-                    collider.enabled = true;
-                    break;
-                case EntityState.Grabbed:
-                    rigidBody.isKinematic = true;
-                    collider.enabled = false;
-                    break;
-                case EntityState.Thrown:
-                    rigidBody.isKinematic = false;
-                    collider.enabled = true;
-                    break;
-                case EntityState.RagDoll:
-                    break;
-                default:
-                    break;
-            }
-
-            (currentState switch
-            {
-                EntityState.Grabbed => grabbedEvent,
-                EntityState.Thrown => thrownEvent,
-                EntityState.RagDoll => bounceEvent,
-                _ => defaultEvent,
-            })?.Invoke();
-        }
-    }
-
-
-    public virtual void SetVelocity(Vector3 velocity) => rigidBody.linearVelocity = velocity;
-
-    public Attack GetAttack()
-    {
-        Attack result = thrownAttack;
-        result.velocity = rigidBody.linearVelocity; 
         return result;
     }
 
-    public virtual void SetIgnoreCollision(Collider grabber, bool ignore = true) => Physics.IgnoreCollision(collider, grabber, ignore);
+    public void Grab()
+    {
+        state = State.Grabbed;
+        IgnoreCollisionWith(Player.Collider);
+    }
+
+    public void Release(Vector3? throwVelocity = null)
+    {
+        state = State.Thrown;
+        if (throwVelocity.HasValue) SetVelocity(throwVelocity.Value);
+
+        enabled = false;
+        if (thrownObjectAttack) thrownObjectAttack.onContactAction += () => { enabled = true; };
+
+        Enum().Begin(collider);
+        IEnumerator Enum()
+        {
+            yield return WaitFor.Frames(5);
+            IgnoreCollisionWith(Player.Collider, false);
+        }
+    }
+
+    public void SetVelocity(Vector3 velocity)
+    {
+        if (rigidBody != null) rigidBody.linearVelocity = velocity;
+        else if (constantMovement != null)
+        {
+            constantMovement.Set(velocity);
+            constantMovement.ResetDownwardVelocity();
+        }
+        if (ragdollHandler != null) ragdollHandler.SetVelocity(velocity);
+    }
+
+    public void IgnoreCollisionWith(Collider other, bool ignore = true)
+    {
+        if (collider != null)
+            Physics.IgnoreCollision(collider, other, ignore);
+        if (ragdollHandler != null) ragdollHandler.IgnoreCollisionWith(other, ignore);
+    }
+
+    public Vector3 HeldOffset => anchorPoint != null ? -anchorPoint.localPosition : Vector3.zero;
+
+
+
 
 }

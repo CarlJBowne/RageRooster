@@ -37,7 +37,7 @@ public class PlayerMovementAnimatorDisabler : PlayerStateBehavior
 
     public bool DamagableInFrontOf() => playerMovementBody.CheckForTypeInFront<IDamagable>() != null;
 
-    public bool GrabbableInFrontOf() => playerMovementBody.CheckForTypeInFront<Grabbable>() != null;
+    public bool GrabbableInFrontOf() => playerMovementBody.CheckForTypeInFront<Grabbable_Obsolete>() != null;
 
     protected override void OnEnter(State prev, bool isFinal)
     {

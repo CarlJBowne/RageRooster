@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,7 +7,8 @@ using UnityEngine.Animations;
 using UnityEngine.InputSystem.LowLevel;
 using static UnityEngine.Rendering.DebugUI;
 
-public class RagdollHandler : Grabbable
+[Obsolete]
+public class RagdollHandler_Obsolete : Grabbable_Obsolete
 {
     public float minRagdollTime;
     public float maxRagdollTime;
@@ -145,5 +147,28 @@ public class RagdollHandler : Grabbable
         }
         else Physics.IgnoreCollision(nonRagdolledCollider, grabber, ignore);
     }
+
+
+
+
+
+
+
+
+
+
+    protected void ReplaceWithNew2()
+    {
+        RagdollHandler newRagdoll = gameObject.AddComponent<RagdollHandler>();
+
+        newRagdoll.minRagdollTime = minRagdollTime;
+        newRagdoll.maxRagdollTime = maxRagdollTime;
+        newRagdoll.minRagdollVelocity = minRagdollVelovity;
+        newRagdoll.ragDollColliders = ragDollColliders;
+        newRagdoll.ragDollRigidBodies = ragDollRigidBodies;
+        
+        DestroyImmediate(proxy);
+    }
+
 
 }

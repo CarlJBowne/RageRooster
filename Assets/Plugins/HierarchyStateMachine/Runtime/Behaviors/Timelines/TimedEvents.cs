@@ -21,10 +21,11 @@ namespace SLS.StateMachineH.Timelines
         {
             public float time;
             public EVENT output;
-            [System.NonSerialized] public bool hasFired;
         }
         public List<TimedEvent> events = new();
         public bool loopAfterLastEvent;
+
+        int nextEventID = 0;
 
         protected override void OnSetup()
         {
@@ -35,18 +36,30 @@ namespace SLS.StateMachineH.Timelines
 #endif
         }
 
+        protected override void OnBegin()
+        {
+            elapsedTime = 0f;
+            nextEventID = 0;
+            if (events[0].time == 0)
+            {
+                events[0].output?.Invoke();
+                nextEventID++;
+            }
+        }
+
         protected override void OnTick(float delta)
         {
-            for (int i = 0; i < events.Count ; i++)
+            if(nextEventID < events.Count && WasPointPassed(events[nextEventID].time))
             {
-                if (WasPointPassed(events[i].time))
-                    events[i].output?.Invoke();
+                events[nextEventID].output?.Invoke();
+                nextEventID++;
+                if(nextEventID >= events.Count && loopAfterLastEvent)
+                {
+                    elapsedTime %= events[^1].time;
+                    nextEventID = 0;
+                }
             }
-            if (WasPointPassed(events[^1].time))
-            {
-                events[^1].output?.Invoke();
-                if(loopAfterLastEvent) elapsedTime %= events[^1].time;
-            }
+
         }
 
 #if UNITY_EDITOR

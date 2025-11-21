@@ -37,9 +37,7 @@ public class PlayerGrabAction : PlayerStateBehavior
 
     public void EndGrabAttempt()
     {
-        IGrabbable targetGrabbable = target.GetComponent<IGrabbable>();
-
-        if(targetGrabbable != null && targetGrabbable.IsGrabbable) //If object is grabbable.
+        if (Grabbable.IsGrabbable(target, out Grabbable targetGrabbable))
         {
             Player.Grabber.Grab(targetGrabbable);
             successReturnState.Enter();

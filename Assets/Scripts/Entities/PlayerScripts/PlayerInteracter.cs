@@ -15,8 +15,8 @@ public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
     public static GameObject PopupTransform;
 
     public static List<IInteractable> interactablesInFront = new();
-    public static List<IGrabbable> grabbablesInFront = new();
-    public static IGrabbable SelectedGrabbable
+    public static List<IGrabbable_Obsolete> grabbablesInFront = new();
+    public static IGrabbable_Obsolete SelectedGrabbable
     {
         get => _selectedGrabbable;
         set
@@ -26,7 +26,7 @@ public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
             //if (_selectedGrabbable != null) _selectedGrabbable.Selected = true;
         }
     }
-    private static IGrabbable _selectedGrabbable;
+    private static IGrabbable_Obsolete _selectedGrabbable;
 
 
     [System.Obsolete("If you're using this, you're not going to work.")]
@@ -42,13 +42,13 @@ public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out IInteractable foundInteractable)) FoundInteractable(foundInteractable);
-        if (other.TryGetComponent(out IGrabbable foundGrabbable)) FoundGrabbable(foundGrabbable);
+        if (other.TryGetComponent(out IGrabbable_Obsolete foundGrabbable)) FoundGrabbable(foundGrabbable);
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.TryGetComponent(out IInteractable foundInteractable)) LostInteractable(foundInteractable);
-        if (other.TryGetComponent(out IGrabbable foundGrabbable)) LostGrabbable(foundGrabbable);
+        if (other.TryGetComponent(out IGrabbable_Obsolete foundGrabbable)) LostGrabbable(foundGrabbable);
     }
 
 
@@ -75,12 +75,12 @@ public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
     }
 
 
-    public static void FoundGrabbable(IGrabbable grabbable)
+    public static void FoundGrabbable(IGrabbable_Obsolete grabbable)
     {
         grabbablesInFront.Add(grabbable.This);
         UpdateGrabbables();
     }
-    public static void LostGrabbable(IGrabbable grabbable)
+    public static void LostGrabbable(IGrabbable_Obsolete grabbable)
     {
         if (!grabbablesInFront.Contains(grabbable.This)) return;
         grabbablesInFront.Remove(grabbable.This);
@@ -98,7 +98,7 @@ public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
         SelectedGrabbable = null;
     }
 
-    public bool HasUsableGrabbable(out IGrabbable grabbable)
+    public bool HasUsableGrabbable(out IGrabbable_Obsolete grabbable)
     {
         for (int i = 0; i < grabbablesInFront.Count; i++)
             if (grabbablesInFront[i] != null && grabbablesInFront[i].transform.gameObject.activeSelf && grabbablesInFront[i].IsGrabbable)
@@ -109,7 +109,7 @@ public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
         grabbable = null;
         return false;
     }
-    public IGrabbable HasUsableGrabbable()
+    public IGrabbable_Obsolete HasUsableGrabbable()
     {
         for (int i = 0; i < grabbablesInFront.Count; i++)
             if (grabbablesInFront[i] != null && grabbablesInFront[i].transform.gameObject.activeSelf && grabbablesInFront[i].IsGrabbable)

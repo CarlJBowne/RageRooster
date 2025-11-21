@@ -17,7 +17,7 @@ public class PlayerGrabber : MonoBehaviour
     public float turnToGrabRate;
 
     // Data
-    public IGrabbable currentGrabbed { get; private set; }
+    public Grabbable currentGrabbed { get; private set; }
     private CoroutinePlus layerFadeCoroutine;
 
 
@@ -36,7 +36,7 @@ public class PlayerGrabber : MonoBehaviour
     }
 
 
-    public void Grab(IGrabbable target)
+    public void Grab(Grabbable target)
     {
         currentGrabbed = target;
         if (heldItemAnchor != null)
@@ -47,7 +47,7 @@ public class PlayerGrabber : MonoBehaviour
         }
         GrabStateEvent?.Invoke(true);
         SetGrabbingLayer(true);
-        Physics.IgnoreCollision(target.collider, Player.Collider, true);
+        currentGrabbed.Grab();
     }
 
     public void Release(bool thrown, Vector3 throwVelocity)
@@ -56,17 +56,6 @@ public class PlayerGrabber : MonoBehaviour
         currentGrabbed = null;
         GrabStateEvent?.Invoke(false);
         SetGrabbingLayer(false);
-
-        Enum().Begin(currentGrabbed.collider);
-        IEnumerator Enum()
-        {
-            yield return null;
-            yield return null;
-            yield return null;
-            yield return null;
-            yield return null;
-            Physics.IgnoreCollision(currentGrabbed.collider, Player.Collider, false);
-        }
     }
 
 
