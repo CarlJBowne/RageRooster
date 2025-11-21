@@ -183,7 +183,7 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
 
 
     [ContextMenu("Replace With New")]
-    protected void ReplaceWithNew()
+    public void ReplaceWithNew()
     {
         Grabbable grabbable = gameObject.AddComponent<Grabbable>();
         grabbable.anchorPoint = anchorPoint;

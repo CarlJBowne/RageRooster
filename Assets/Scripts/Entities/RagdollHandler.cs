@@ -51,20 +51,20 @@ public class RagdollHandler : MonoBehaviour
     public Rigidbody[] ragDollRigidBodies;
 
     //Required Components
+    [RelatedComponent(true)]
     public Collider defaultCollider;
 
     // Optional Components
+    [RelatedComponent]
     public Rigidbody defaultRigidbody;
+    [RelatedComponent]
     public Grabbable grabbable;
+    [RelatedComponent]
     public EnemyHealth enemyHealth;
 
     private RigidbodyProfile defaultRigidbodyDefaults;
 
-    private void Reset()
-    {
-        // Auto-fill common components in editor
-        if (grabbable == null) TryGetComponent(out grabbable);
-    }
+    private void Reset() => ComponentConfig.Reset(this);// Auto-fill common components in editor//if (grabbable == null) TryGetComponent(out grabbable);
 
     private void Awake()
     {

@@ -157,10 +157,10 @@ public class RagdollHandler_Obsolete : Grabbable_Obsolete
 
 
 
-    protected void ReplaceWithNew2()
+    public new void ReplaceWithNew()
     {
         RagdollHandler newRagdoll = gameObject.AddComponent<RagdollHandler>();
-
+         
         newRagdoll.minRagdollTime = minRagdollTime;
         newRagdoll.maxRagdollTime = maxRagdollTime;
         newRagdoll.minRagdollVelocity = minRagdollVelovity;
