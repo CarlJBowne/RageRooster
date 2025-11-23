@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class EndingScene : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI endingText;
-    public WorldChange[] hens;
+    public RageRooster.Obsolete.WorldChange[] hens;
     public EndingValue[] possibleEndings;
     public InputActionReference continueToTitle;
     public Animator animator;

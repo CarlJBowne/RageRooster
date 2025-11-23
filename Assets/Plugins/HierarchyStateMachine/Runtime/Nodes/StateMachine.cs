@@ -54,7 +54,7 @@ namespace SLS.StateMachineH
         /// <summary>
         /// The <see cref="StateMachineH.SignalManager"/> associated with this <see cref="StateMachine" (OPTIONAL.)/>.
         /// </summary>
-        public SignalManager SignalManager
+        public Signals.SignalManager SignalManager
         {
             get
             {
@@ -64,7 +64,7 @@ namespace SLS.StateMachineH
             }
             private set => _singalManager = value;
         }
-        [SerializeField, HideInInspector] private SignalManager _singalManager;
+        [SerializeField, HideInInspector] private Signals.SignalManager _singalManager;
 
         /// <summary>
         /// This <see cref="StateMachine"/>.
@@ -136,7 +136,7 @@ namespace SLS.StateMachineH
 
             Behaviors = GetComponents<StateBehavior>();
             for (int i = 0; i < Behaviors.Length; i++) Behaviors[i].Setup(this);
-            SignalManager = GetComponent<SignalManager>();
+            SignalManager = GetComponent<Signals.SignalManager>();
 
             StatesSetup = true;
 
@@ -288,6 +288,6 @@ namespace SLS.StateMachineH
         /// </summary>
         /// <param name="signal">The input signal. Accepts just a string.</param>
         /// <returns></returns>
-        public bool SendSignal(Signal signal) => SignalManager != null && SignalManager.FireSignal(signal);
+        public bool SendSignal(Signals.Signal signal) => SignalManager != null && SignalManager.FireSignal(signal);
     }
 }

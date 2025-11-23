@@ -25,7 +25,7 @@ public class WaveController : MonoBehaviour
 
     [Header("World & Trigger")]
     public GameObject[] wallsToDisable;
-    public WorldChange worldChange;
+    public RageRooster.Obsolete.WorldChange worldChange;
     public PlayerEnterTrigger3 trigger;
 
     private int currentWave = 0;
@@ -51,7 +51,7 @@ public class WaveController : MonoBehaviour
 
         isActive = true;
         SetWalls(true);
-        Gameplay.onPlayerRespawn += ResetArena;
+        Player.onRespawn += ResetArena;
         HandleWaves().Begin(this);
     }
 
@@ -113,7 +113,7 @@ public class WaveController : MonoBehaviour
             activeEnemies++;
 
             pooledEnemy.SetPosition(spawnPoints[i]);
-            pooledEnemy.SetRotation((Gameplay.Player.transform.position - spawnPoints[i]).DirToRot());
+            pooledEnemy.SetRotation((Player.Transform.position - spawnPoints[i]).DirToRot());
         }
     }
 
@@ -129,10 +129,10 @@ public class WaveController : MonoBehaviour
         activeEnemies = 0;
         isActive = false;
         CoroutinePlus.Stop(ref coroutine);
-        Gameplay.onPlayerRespawn -= ResetArena;
+        Player.onRespawn -= ResetArena;
     }
 
-    private void OnDestroy() => Gameplay.onPlayerRespawn -= ResetArena;
+    private void OnDestroy() => Player.onRespawn -= ResetArena;
 
     private void OnDrawGizmosSelected()
     {

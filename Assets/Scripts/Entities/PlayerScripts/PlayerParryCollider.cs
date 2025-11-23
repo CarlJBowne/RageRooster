@@ -1,3 +1,4 @@
+using RageRooster.Systems.SaveSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,6 @@ public class PlayerParryCollider : MonoBehaviour, IAttackSource
 
     public Attack baseAttack;
     public Attack hellUpgradedAttack;
-    public Upgrade hellcopterUpgrade;
     public new SphereCollider collider;
 
     private void OnTriggerEnter(Collider other) => Contact(other.gameObject);
@@ -15,7 +15,7 @@ public class PlayerParryCollider : MonoBehaviour, IAttackSource
 
     public void Contact(GameObject target)
     {
-        if (target == Gameplay.Player) return;
+        if (target == Player.GameObject) return;
         if (target.TryGetComponent(out AttackProjectile targetProjectile))
         {
             targetProjectile.Reflect(false);
@@ -26,7 +26,7 @@ public class PlayerParryCollider : MonoBehaviour, IAttackSource
     public Attack GetAttack() => throw new System.NotImplementedException();
     public Attack GetAttack(GameObject target)
     {
-        Attack result = hellcopterUpgrade ? hellUpgradedAttack : baseAttack;
+        Attack result = Upgrades.Active.hellcopter ? hellUpgradedAttack : baseAttack;
         result.velocity = (target.transform.position - (transform.position + collider.center)).normalized * result.velocity.x;
         return result;
     }

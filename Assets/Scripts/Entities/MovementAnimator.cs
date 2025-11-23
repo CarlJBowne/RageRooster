@@ -19,7 +19,7 @@ public class MovementAnimator : MonoBehaviour
     private void Awake()
     {
         TryGetComponent(out rb);
-        target = Gameplay.Player.transform;
+        target = Player.Transform;
         influence = 0;
         relativeVelocity = Vector3.zero;
         angularVelocity = 0;
@@ -30,7 +30,7 @@ public class MovementAnimator : MonoBehaviour
     {
         if (influence == 1)
         {
-            rb.velocity = transform.TransformDirection(relativeVelocity);
+            rb.linearVelocity = transform.TransformDirection(relativeVelocity);
 
             if (!Mathf.Approximately(angularVelocity, 0)) transform.eulerAngles = transform.eulerAngles + angularVelocity * transform.up;
             else if (turnToVelocity > 0)
@@ -43,7 +43,7 @@ public class MovementAnimator : MonoBehaviour
         else if (influence > 0)
         {
             Vector3 trueRelativeVelocity = transform.TransformDirection(relativeVelocity);
-            rb.velocity = Vector3.MoveTowards(rb.velocity, trueRelativeVelocity, influence * (trueRelativeVelocity - rb.velocity).magnitude);
+            rb.linearVelocity = Vector3.MoveTowards(rb.linearVelocity, trueRelativeVelocity, influence * (trueRelativeVelocity - rb.linearVelocity).magnitude);
 
             if (!Mathf.Approximately(angularVelocity, 0))
             {
@@ -61,10 +61,10 @@ public class MovementAnimator : MonoBehaviour
             if (snapToGroundDistance > 0 && Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, snapToGroundDistance, groundLayerMask))
             {
                 rb.MovePosition(hitInfo.point + Vector3.up * 0.001f);
-                rb.velocity = rb.velocity.XZ();
+                rb.linearVelocity = rb.linearVelocity.XZ();
             }
         }
-        velocityDisplay = rb.velocity;
+        velocityDisplay = rb.linearVelocity;
     }
 
     public void SetTarget(Transform newTarget) => target = newTarget;

@@ -1,5 +1,6 @@
 ﻿#define AYellowPaper
 
+using SLS.ISingleton;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,21 +9,8 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Global Prefabs", menuName = "Global Prefabs", order = 0)]
-public class GlobalPrefabs : SingletonScriptable<GlobalPrefabs>
+public class GlobalPrefabs : SingletonAsset<GlobalPrefabs>
 {
-    protected override void OnAwake()
-    {
-
-#if AYellowPaper
-#else
-        dictionary = new();
-        for (int i = 0; i < NamedPrefabs.Length; i++)
-            dictionary.Add(PrefabNames[i], NamedPrefabs[i]);
-#endif
-    }
-
-    public List<_SingletonBase> singletons;
-    public static List<_SingletonBase> Singletons => Get().singletons;
 
 #if AYellowPaper
     [SerializeField] AYellowpaper.SerializedCollections.SerializedDictionary<string, GameObject> dictionary;

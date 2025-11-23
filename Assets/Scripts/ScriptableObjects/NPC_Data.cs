@@ -18,7 +18,7 @@ public class NPC_Data : ScriptableObject
 
     [HideInEditMode, DisableInPlayMode]
     public int dialogueID = 0;
-    public List<WorldChange> worldChanges;
+    public List<RageRooster.Obsolete.WorldChange> worldChanges;
 
     private void OnEnable()
     {

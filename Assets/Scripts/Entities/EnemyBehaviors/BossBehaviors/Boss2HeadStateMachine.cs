@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using EditorAttributes;
-using SLS.StateMachineV3;
 using UnityEngine.Animations.Rigging;
 
 public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
@@ -218,7 +217,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
             if(projectile != null)
             {
                 projectile.transform.position -= Direction.front;
-                projectile.rb.velocity = Direction.upBack;
+                projectile.rb.linearVelocity = Direction.upBack;
             }
         }
         else if(headID == FinalBossHead.Slasher)

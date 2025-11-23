@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using DG.Tweening;
+using RageRooster.Systems.SaveSystem;
 using UnityEngine;
 
 public class ItemPickup : MonoBehaviour
@@ -10,18 +11,16 @@ public class ItemPickup : MonoBehaviour
         Coin,
         Health,
         Hint,
-        Upgrade,
         Wishbone,
         Hen
     }
 
     public ItemType type;
     public string upgradeName;
-    public Upgrade activateUpgrade;
     [TextArea]
     public string hintString;
     public int addAmount = 1;
-    public WorldChange oneTime;
+    public RageRooster.Obsolete.WorldChange oneTime;
 
 
     private void Awake()
@@ -43,7 +42,8 @@ public class ItemPickup : MonoBehaviour
 
         if (type == ItemType.Coin)
         {
-            GlobalState.AddCurrency(addAmount);
+            //GlobalState.AddCurrency(addAmount);
+            SaveData.Current.playerStats.currency += addAmount;
         }
         else if (type == ItemType.Health)
         {
@@ -52,23 +52,16 @@ public class ItemPickup : MonoBehaviour
         }
         else if (type == ItemType.Hint)
         {
-            UIHUDSystem.Get().ShowHint(hintString);
-        }
-        else if (type == ItemType.Upgrade)
-        {
-            activateUpgrade.value = true;
-            //if(upgradeName == "Health") health.AddMaxHealth();
-            //else FindObjectOfType<PlayerStateMachine>().SetUpgrade(upgradeName, true);
-            UIHUDSystem.Get().ShowHint(hintString);
+            UIHUDSystem.Instance.ShowHint(hintString);
         }
         else if (type == ItemType.Wishbone)
         {
-            PlayerHealth.Global.UpdateMax(PlayerHealth.Global.maxHealth + addAmount);
-            UIHUDSystem.Get().ShowHint(hintString);
+            //PlayerHealth.Global.UpdateMax(PlayerHealth.Global.maxHealth + addAmount);
+            UIHUDSystem.Instance.ShowHint(hintString);
         }
         else if(type == ItemType.Hen)
         {
-            UIHUDSystem.Get().ShowHint(hintString);
+            UIHUDSystem.Instance.ShowHint(hintString);
         }
 
         if (type != ItemType.Hint) 

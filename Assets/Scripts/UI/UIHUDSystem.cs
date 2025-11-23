@@ -5,21 +5,15 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using DG.Tweening;
+using SLS.ISingleton;
 
-public class UIHUDSystem : Singleton<UIHUDSystem>
+[DefaultExecutionOrder(ExecutionOrders.GameplaySystems)]
+public class UIHUDSystem : MonoBehaviour
 {
-    public List<Image> healthImages;
-    public Sprite healthFullTexture;
-    public Sprite healthEmptyTexture;
     public GameObject hintHolder;
     public TextMeshProUGUI hintText;
     public TextMeshProUGUI currencyText;
     public float hintTime;
-    public Timer.OneTime comboTime;
-    public TextMeshProUGUI comboCounterText;
-    public TextMeshProUGUI comboFlavorText;
-    public ComboLevel[] comboLevels;
-    public TextMeshProUGUI ammoText;
     public Image hitMarker;
     public Vector2 hitMarkerInputDistance;
     public Vector2 hitMarkerOutputScale;
@@ -27,21 +21,43 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
     Canvas canvas;
     RectTransform canvasRect;
     Camera mainCamera;
-    int activeMaxHealth = 1;
     float hintTimer;
-    int currentCombo;
 
-    Sequence healthBar;
+    public static UIHUDSystem Instance { get; private set; }
 
-    // Called when the singleton instance is awakened
-    protected override void OnAwake()
+    public void Awake()
     {
-        SetCurrencyText(GlobalState.currency.ToString());
+        if(Instance != null && Instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+        Instance = this;
+
         mainCamera = Camera.main;
         transform.parent.TryGetComponent(out canvas);
         transform.parent.TryGetComponent(out canvasRect);
-        PlayerHealth.Global.UI = this;
-        PlayerRanged.Ammo.UI = this;
+
+        health.UpdateMax();
+        health.UpdateHeath();
+        ammo.UpdateMax();
+        ammo.UpdateAmmo();
+        SetCurrencyText();
+
+        Player.Health.updateHealth += health.UpdateHeath;
+        Player.Health.updateMaxHealth += health.UpdateMax;
+        Player.Ammo.updateAmmo += ammo.UpdateAmmo;
+        Player.Ammo.updateMaxAmmo += ammo.UpdateMax;
+        Player.Currency.updateCurrency += SetCurrencyText;
+    }
+
+    protected void OnDestroy()
+    {
+        Player.Health.updateHealth -= health.UpdateHeath;
+        Player.Health.updateMaxHealth -= health.UpdateMax;
+        Player.Ammo.updateAmmo -= ammo.UpdateAmmo;
+        Player.Ammo.updateMaxAmmo -= ammo.UpdateMax;
+        Player.Currency.updateCurrency -= SetCurrencyText;
     }
 
     // Called every frame to update the HUD
@@ -55,55 +71,88 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
                 hintHolder.SetActive(false);
             }
         }
-        comboTime.Tick(EndCombo);
+        combo.comboTime.Tick(combo.EndCombo);
     }
 
-    // Updates the health bar based on current and maximum health values
-    public void UpdateHealth(int currentValue, int maxValue)
+    public Health health;
+    [Serializable]
+    public class Health
     {
-        for (int i = 0; i < activeMaxHealth || i < maxValue; i++)
+        public List<Image> healthImages;
+        public Sprite healthFullTexture;
+        public Sprite healthEmptyTexture;
+
+        int activeHealth = 1;
+        int activeMaxHealth = 1;
+
+        Sequence healthBar;
+
+        public void UpdateHeath()
         {
-            if(i < activeMaxHealth && i < maxValue) 
-                healthImages[i].sprite = currentValue > i ? healthFullTexture : healthEmptyTexture;
-            else if (i >= activeMaxHealth)
+            for (int i = 0; i < activeMaxHealth; i++)
+                healthImages[i].sprite = Player.Health.Current > i ? healthFullTexture : healthEmptyTexture;
+        }
+        public void UpdateMax()
+        {
+            for (int i = 0; i < activeMaxHealth || i < Player.Health.Max; i++)
             {
-                if (healthImages.Count <= i) 
-                    healthImages.Add(Instantiate(healthImages[0].transform.parent, healthImages[0].transform.parent.parent).GetChild(0).GetComponent<Image>());
-                healthImages[i].enabled = true;
-                healthImages[i].sprite = healthFullTexture;
+                if (i < activeMaxHealth && i < Player.Health.Max)
+                    healthImages[i].sprite = Player.Health.Current > i ? healthFullTexture : healthEmptyTexture;
+                else if (i >= activeMaxHealth)
+                {
+                    if (healthImages.Count <= i)
+                        healthImages.Add(Instantiate(healthImages[0].transform.parent, healthImages[0].transform.parent.parent).GetChild(0).GetComponent<Image>());
+                    healthImages[i].enabled = true;
+                    healthImages[i].sprite = healthFullTexture;
+
+                }
+                else if (i >= Player.Health.Max) healthImages[i].enabled = false;
+            }
+            activeMaxHealth = Player.Health.Max;
+            if (healthBar != null)
+            {
+                healthBar.Kill();
+            }
+            healthBar = DOTween.Sequence();
+            float timeDelay = 0;
+            for (int j = 0; j < healthImages.Count; j++)
+            {
+
+
+                HealthBarTween healthBarTween = healthImages[j].GetComponent<HealthBarTween>();
+
+                DOTween.Kill(healthImages[j].transform);
+                healthImages[j].transform.localPosition = healthBarTween.origin;
+                Tween tween =
+                healthImages[j].transform.DOLocalMoveY(healthBarTween.origin.y - 50, 2f)
+                    .SetEase(Ease.InOutSine)
+                    .SetLoops(2, LoopType.Yoyo);
+
+                healthBar.Insert(timeDelay, tween);
+                timeDelay += 0.25f;
+
 
             }
-            else if (i >= maxValue) healthImages[i].enabled = false;
+            healthBar.SetLoops(-1, LoopType.Restart);
         }
-        activeMaxHealth = maxValue;
-        if(healthBar != null)
-        {
-            healthBar.Kill();
-        }
-        healthBar = DOTween.Sequence();
-        float timeDelay = 0;
-        for(int j = 0; j < healthImages.Count; j++)
-        {
-
-
-            HealthBarTween healthBarTween = healthImages[j].GetComponent<HealthBarTween>();
-
-            DOTween.Kill(healthImages[j].transform);
-            healthImages[j].transform.localPosition = healthBarTween.origin;
-            Tween tween =
-            healthImages[j].transform.DOLocalMoveY(healthBarTween.origin.y-50, 2f)
-                .SetEase(Ease.InOutSine)
-                .SetLoops(2, LoopType.Yoyo);
-
-            healthBar.Insert(timeDelay, tween);
-            timeDelay += 0.25f;
-
-
-        }
-        healthBar.SetLoops(-1, LoopType.Restart);
-
-
     }
+
+    public Ammo ammo;
+    [Serializable]
+    public class Ammo
+    {
+        public TextMeshProUGUI ammoText;
+        public void UpdateAmmo()
+        {
+            ammoText.text = $"{Player.Ammo.Current}/{Player.Ammo.Max}";
+        }
+        public void UpdateMax()
+        {
+            ammoText.transform.parent.gameObject.SetActive(Player.Ammo.Max > 0);
+            ammoText.text = $"{Player.Ammo.Current}/{Player.Ammo.Max}";
+        }
+    }
+
 
     // Displays a hint on the screen
     public void ShowHint(string hintString)
@@ -144,50 +193,13 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
 
 
     // Sets the currency text on the HUD
-    public static void SetCurrencyText(string currencyText) => Get().currencyText.text = currencyText;
-
-    // Adds to the combo count
-    public static void AddCombo() => Get().AddCombo_();
-    private void AddCombo_()
+    public static void SetCurrencyText()
     {
-        currentCombo++;
-        comboTime.Begin();
-        comboCounterText.enabled = true;
-        comboCounterText.text = currentCombo.ToString();
-        if (currentCombo >= comboLevels[0].req)
-        {
-            int i = 0; //Cooler solution.
-            for (; i < comboLevels.Length && currentCombo >= comboLevels[i + 1].req; i++) ;
-            //int F = 0; //More sure solution.
-            //for (int i = 1; i < comboLevels.Length && currentCombo >= comboLevels[i].req; i++) F = i;
-            comboFlavorText.enabled = true;
-            comboFlavorText.text = comboLevels[i].flavorText;
-        }
+        //if (!TryGet(out var UI)) return;
+        //UI.currencyText.text = Player.Currency.Current.ToString();
     }
 
-    // Ends the current combo
-    private void EndCombo()
-    {
-        currentCombo = 0;
-        comboTime.running = false;
-        comboCounterText.enabled = false;
-        comboFlavorText.enabled = false;
-    }
 
-    [Serializable]
-    public struct ComboLevel
-    {
-        // Required combo count to reach this level
-        public int req;
-        // Flavor text for this combo level
-        public string flavorText;
-    }
-
-    public void UpdateAmmo(int current)
-    {
-        ammoText.transform.parent.gameObject.SetActive(GlobalState.maxAmmo > 0);
-        ammoText.text = $"{current}/{GlobalState.maxAmmo}";
-    }
 
 
     public void SetHitMarkerVisibility(bool value) => hitMarker.enabled = value;
@@ -202,5 +214,61 @@ public class UIHUDSystem : Singleton<UIHUDSystem>
                                                     distance));
         hitMarker.color = new(1, 1, 1, hitDamagable ? 1 : .5f);
     }
+
+
+
+
+
+
+    [SerializeField] private Combo combo;
+    [Serializable]
+    public class Combo
+    {
+        public Timer.OneTime comboTime;
+        public TextMeshProUGUI comboCounterText;
+        public TextMeshProUGUI comboFlavorText;
+        public ComboLevel[] comboLevels;
+
+        int currentCombo;
+
+        // Adds to the combo count
+        public static void AddCombo() => Instance.combo.AddCombo_();
+        private void AddCombo_()
+        {
+            currentCombo++;
+            comboTime.Begin();
+            comboCounterText.enabled = true;
+            comboCounterText.text = currentCombo.ToString();
+            if (currentCombo >= comboLevels[0].req)
+            {
+                int i = 0; //Cooler solution.
+                for (; i < comboLevels.Length && currentCombo >= comboLevels[i + 1].req; i++) ;
+                //int F = 0; //More sure solution.
+                //for (int i = 1; i < comboLevels.Length && currentCombo >= comboLevels[i].req; i++) F = i;
+                comboFlavorText.enabled = true;
+                comboFlavorText.text = comboLevels[i].flavorText;
+            }
+        }
+
+        // Ends the current combo
+        public void EndCombo()
+        {
+            currentCombo = 0;
+            comboTime.running = false;
+            comboCounterText.enabled = false;
+            comboFlavorText.enabled = false;
+        }
+
+        [Serializable]
+        public struct ComboLevel
+        {
+            // Required combo count to reach this level
+            public int req;
+            // Flavor text for this combo level
+            public string flavorText;
+        }
+
+    }
+
 
 }

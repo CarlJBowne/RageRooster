@@ -1,4 +1,4 @@
-﻿using SLS.StateMachineV3;
+﻿using SLS.StateMachineH;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -14,13 +14,13 @@ public class PatrolEB : StateBehavior
     int currentDestination = 0;
     private bool navMeshFailed;
 
-    public override void OnAwake()
+    protected override void OnAwake()
     {
         agent = GetComponentFromMachine<NavMeshAgent>();
         navMeshFailed = !agent.isOnNavMesh;
     }
 
-    public override void OnEnter(State prev, bool isFinal)
+    protected override void OnEnter(State prev, bool isFinal)
     {
         agent.enabled = true;
         agent.speed = speed;
@@ -32,7 +32,7 @@ public class PatrolEB : StateBehavior
         currentDestination = targetPath;
     }
 
-    public override void OnFixedUpdate()
+    protected override void OnFixedUpdate()
     {
         if (navMeshFailed) return;
         if (agent.remainingDistance < distanceToProceed)

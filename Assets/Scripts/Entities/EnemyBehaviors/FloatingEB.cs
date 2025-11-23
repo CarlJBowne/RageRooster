@@ -1,4 +1,4 @@
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using System;
 using UnityEngine;
 using UnityEngine.AI;
@@ -8,7 +8,7 @@ public class FloatingEB : StateBehavior
     public float sineSize;
     public float sineSpeed;
 
-    public override void OnFixedUpdate()
+    protected override void OnFixedUpdate()
     {
         float offset = Mathf.Sin(Time.time * sineSpeed) * sineSize;
         float revOffset = Mathf.Sin((Time.time-Time.fixedDeltaTime) * sineSpeed) * sineSize;

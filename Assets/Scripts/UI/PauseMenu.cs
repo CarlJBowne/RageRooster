@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using System;
+using SLS.ISingleton;
+using RageRooster.Systems;
+using RageRooster.RoomSystem;
 
 public class PauseMenu : MenuSingleton<PauseMenu>
 {
@@ -17,15 +20,15 @@ public class PauseMenu : MenuSingleton<PauseMenu>
     protected override void OnOpen()
     {
         base.OnOpen();
-        Time.timeScale = 0f;
+        onPause?.Invoke();
+        Gameplay.GameState = Gameplay.GameStates.Paused;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        onPause?.Invoke();
     }
     protected override void OnClose()
     {
         base.OnClose();
-        Time.timeScale = 1f;
+        Gameplay.GameState = Gameplay.GameStates.Active;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         onUnPause?.Invoke();
@@ -40,7 +43,8 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
             Time.timeScale = 1f;
             Close();
-            Gameplay.musicEmitter.Stop();
+            Music.StopAllMusic();
+            Player.StateMachine.HaveDestroyed();
             Gameplay.DESTROY(areYouSure: true);
             SceneManager.LoadScene("MainMenu");
             SceneManager.sceneLoaded += Done;
@@ -61,31 +65,22 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
     public void Respawn()
     {
-        SpawnPlayer_CR().Begin(Gameplay.Get());
-        IEnumerator SpawnPlayer_CR()
+        RoomManager.TransitionStyle = new()
         {
-            yield return Overlay.OverMenus.BasicFadeOutWait(1f);
-
-            yield return Gameplay.SpawnPlayer();
-
-            TrueClose();
-            Overlay.OverMenus.BasicFadeIn(1f);
-        }
+            FadeOutRoutine = Overlay.OverMenus.BasicFadeOutWait(1f),
+            FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(1f),
+            PreFadeInAction = TrueClose,
+        };
+        Gameplay.Respawn();
     }
     public void ReloadSave()
     {
-        Enum().Begin(Gameplay.Get());
-        IEnumerator Enum()
+        RoomManager.TransitionStyle = new()
         {
-            Gameplay.PreReloadSave?.Invoke();
-            yield return Overlay.OverMenus.BasicFadeOutWait(1.2f);
-
-            yield return Gameplay.DoReloadSave();
-
-            yield return Gameplay.SpawnPlayer();
-
-            TrueClose();
-            Overlay.OverMenus.BasicFadeIn(1.2f);
-        }
+            FadeOutRoutine = Overlay.OverMenus.BasicFadeOutWait(1.2f),
+            FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(1.2f),
+            PreFadeInAction = TrueClose
+        };
+        Gameplay.ReloadSave();
     }
 }

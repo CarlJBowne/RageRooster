@@ -1,5 +1,5 @@
 ﻿using EditorAttributes;
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,7 +39,9 @@ public class EnemyHealth : Health
     { 
         base.Awake();
         startPosition = transform.position;
-        if (TryGetComponent(out ragdoll)) ragdoll.GrabStateEvent += SetEntityState;
+        if (TryGetComponent(out ragdoll)) 
+            // subscribe the ragdoll's state event to set this enemy's state via the property
+            ragdoll.GrabStateEvent += s => State = s;
         if (TryGetComponent(out PoolableObject pool))
         {
             pool.onActivate += Respawn;
@@ -73,7 +75,7 @@ public class EnemyHealth : Health
             CoroutinePlus.Stop(ref stunCO);
             if (ragdoll)
             {
-                SetEntityState(EntityState.RagDoll);
+                State = EntityState.RagDoll;
                 ragdoll.SetVelocity(attack.velocity);
             }
             else Destroy();
@@ -116,7 +118,7 @@ public class EnemyHealth : Health
             {
                 if (ragdoll)
                 {
-                    SetEntityState(EntityState.RagDoll);
+                    State = EntityState.RagDoll;
                     ragdoll.SetVelocity(-transform.forward);
                 }
                 else Destroy();
@@ -142,27 +144,31 @@ public class EnemyHealth : Health
         else Destroy(gameObject);
     }
 
-    private void SetEntityState(EntityState newState)
+    // Refactored: expose a property `State` that encapsulates the previous SetEntityState method logic.
+    public EntityState State
     {
-        if (currentState == newState) return;
-        currentState = newState;
-        if(ragdoll) ragdoll.SetState(newState);
-        switch (newState)
+        get => currentState;
+        set
         {
-            case EntityState.Default:
-                SetCompsActive(true);
-                stunTimeLeft = 0;
-                break;
-            case EntityState.Grabbed:
-                SetCompsActive(false);
-                break;
-            case EntityState.Thrown:
-
-                break;
-            case EntityState.RagDoll:
-                SetCompsActive(false);
-                if (!ragdoll) Destroy();
-                break;
+            if (currentState == value) return;
+            currentState = value;
+            if (ragdoll) ragdoll.State = value;
+            switch (value)
+            {
+                case EntityState.Default:
+                    SetCompsActive(true);
+                    stunTimeLeft = 0;
+                    break;
+                case EntityState.Grabbed:
+                    SetCompsActive(false);
+                    break;
+                case EntityState.Thrown:
+                    break;
+                case EntityState.RagDoll:
+                    SetCompsActive(false);
+                    if (!ragdoll) Destroy();
+                    break;
+            }
         }
     }
 
@@ -177,8 +183,8 @@ public class EnemyHealth : Health
     {
         gameObject.SetActive(true);
         transform.position = startPosition;
-        if (TryGetComponent(out StateMachine machine)) machine.TransitionState(machine[0]);
-        SetEntityState(EntityState.Default);
+        if (TryGetComponent(out StateMachine machine)) machine[0].Enter();
+        State = EntityState.Default;
         transform.rotation = Quaternion.identity;
         health = maxHealth;
     }

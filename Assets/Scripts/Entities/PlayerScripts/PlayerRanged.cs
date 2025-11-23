@@ -1,25 +1,18 @@
 using DG.Tweening;
 using EditorAttributes;
-using SLS.StateMachineV3;
+using RageRooster.Systems.SaveSystem;
+using SLS.StateMachineH;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Animations;
-using UnityEngine.Animations.Rigging;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
-using UnityEngine.SocialPlatforms;
 
+[DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerRanged : MonoBehaviour, IGrabber
 {
     #region Config
     public PlayerAirborneMovement jumpState;
     public State airThrowState;
     public State dropLaunchState;
-    public Upgrade dropLaunchUpgrade;
     public Transform heldItemAnchor;
     public PlayerInteracter interacter; 
 
@@ -30,8 +23,8 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     PlayerMovementBody body;
     new AudioCaller audio;
     Animator animator;
-    [HideProperty] public PlayerAiming aimingState;
-    [HideProperty] public State shootingState;
+    public PlayerAiming aimingState;
+    public State shootingState;
     public IGrabbable currentGrabbed { get; private set; }
 
     private UIHUDSystem UI;
@@ -48,18 +41,14 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         TryGetComponent(out animator);
         TryGetComponent(out collider);
         TryGetComponent(out audio);
-        UIHUDSystem.TryGet(out UI);
-        if (aimingState == null) aimingState = FindObjectOfType<PlayerAiming>(true);
-        if (shootingState == null) shootingState = aimingState.state[0];
+        UI = UIHUDSystem.Instance;
 
         pointer.target.position = pointer.startV.position + pointer.startV.forward * pointer.distance;
 
         eggPool.Initialize();
-        //eggCapacity = GlobalState.maxAmmo;
-        //eggAmount = eggCapacity;
-        //UI.UpdateAmmo(eggAmount);
-        //GlobalState.maxAmmoUpdateCallback += UpdateMaxAmmo;
-        Ammo.playerObject = this;
+        Player.Ammo.updateAmmo += UI.ammo.UpdateAmmo;
+        Player.Ammo.updateMaxAmmo += UI.ammo.UpdateMax;
+
     }
 
     private void OnEnable() => PauseMenu.onPause += ExitAimingInstant;
@@ -68,23 +57,26 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     private void FixedUpdate()
     {
-        if (eggAmount < eggCapacity) eggReplenishRate.Tick(() => ChangeAmmoAmount(1));
+        if (!enabled) return;
+        if (eggAmount < eggCapacity) eggReplenishRate.Tick(() => Player.Ammo.Current++);
 
-        pointer.startH.position = body.position + Vector3.up;
+        pointer.startH.position = body.Position + Vector3.up;
 
         if(animator.enabled) animator.Update(0f);
 
-        if (aimingState.state) AimingFixedUpdate();
+        if (aimingState.State) AimingFixedUpdate();
         else NonAimingFixedUpdate();
 
     }
     private void LateUpdate()
     {
+        if (!enabled) return;
         currentGrabbed?.transform.SetPositionAndRotation(heldItemAnchor);
     }
     private void OnDestroy()
     {
-        //GlobalState.maxAmmoUpdateCallback -= UpdateMaxAmmo;
+        Player.Ammo.updateAmmo -= UI.ammo.UpdateAmmo;
+        Player.Ammo.updateMaxAmmo -= UI.ammo.UpdateMax;
     }
 
     #region Grabbing Throwing
@@ -100,19 +92,19 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void TryGrabThrow(PlayerGrabAction state, State throwState)
     {
-        if (machine.signalReady && currentGrabbed != null)
+        if (!machine.SignalManager.Locked && currentGrabbed != null)
         {
-            throwState.TransitionTo();
+            throwState.Enter();
             new CoroutinePlus(QuickTurn(), this);
             IEnumerator QuickTurn()
             {
                 float time = 0f;
-                float rate = Vector3.Angle(pointer.startH.eulerAngles, body.currentDirection) / .1f;
+                float rate = Vector3.Angle(pointer.startH.eulerAngles, body.direction) / .1f;
 
                 while(time < 0.1f)
                 {
                     time += Time.deltaTime;
-                    body.rotationQ = Quaternion.RotateTowards(body.rotationQ, pointer.startH.rotation, rate * Time.deltaTime);
+                    body.RotationQ = Quaternion.RotateTowards(body.RotationQ, pointer.startH.rotation, rate * Time.deltaTime);
                     yield return null;
                 }
             }
@@ -124,7 +116,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         if (currentGrabbed != null)
         {
             body.transform.DOBlendableRotateBy(new(0, pointer.startH.eulerAngles.y - body.transform.eulerAngles.y, 0), 0.1f);
-            (!dropLaunchUpgrade ? airThrowState : dropLaunchState).TransitionTo();
+            (!Upgrades.Active.dropLaunch ? airThrowState : dropLaunchState).Enter();
         }
         else state.BeginGrabAttempt(interacter.HasUsableGrabbable());
     }
@@ -162,18 +154,18 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         //animator.CrossFade(true ? "GrabAim.Hold2" : "GrabAim.Hold1", 0.2f);
     }
 
-    public void GrabPointSignal() => machine.SendSignal("FinishGrab", overrideReady: true);
+    public void GrabPointSignal() => machine.SendSignal(new("FinishGrab", ignoreLock: true));
 
     public void ThrowPoint()
     {
-        if (!body.grounded && dropLaunchUpgrade)
+        if (!body.Grounded && Upgrades.Active.dropLaunch)
         {
             jumpState.BeginJump();
         }
         Vector3 direction =
             aimingState
             ? pointer.startV.forward
-            : !body.grounded && dropLaunchUpgrade
+            : !body.Grounded && Upgrades.Active.dropLaunch
                 ? Vector3.down
                 : body.transform.forward;
         Release(direction * launchVelocity, true);
@@ -185,7 +177,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         else if(currentGrabbed != null) currentGrabbed.Release();
         //OnRelease
 
-        CoroutinePlus.Begin(ref layerFadeCoroutine, TurnOffLayers(1f), gameObject.activeInHierarchy ? this : Gameplay.Get());
+        CoroutinePlus.Begin(ref layerFadeCoroutine, TurnOffLayers(1f), gameObject.activeInHierarchy ? this : Gameplay.Instance);
         IEnumerator TurnOffLayers(float rate)
         {
             float V = 1;
@@ -241,7 +233,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     public ObjectPool eggPool;
     public float playerRotationSpeed = 10;
     public Timer.Loop eggReplenishRate = new(1f);
-    public Rig aimingRig;
+    public UnityEngine.Animations.Rigging.Rig aimingRig;
     public State aimThrowState;
 
     [HideProperty] public int eggAmount = 10;
@@ -264,9 +256,11 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     public void AimingFixedUpdate()
     {
 
-        body.currentDirection = Vector3.RotateTowards(
-            body.currentDirection, pointer.startH.forward, 
-            playerRotationSpeed * Mathf.PI * Time.fixedTime, 0);
+        body.InstantDirectionChange(
+            Vector3.RotateTowards(
+                body.direction, pointer.startH.forward,
+                playerRotationSpeed * Mathf.PI * Time.fixedTime, 0)
+            );
 
         currentTargetDistance = pointer.distance;
 
@@ -285,12 +279,12 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void NonAimingFixedUpdate()
     {
-        pointerH = machine.freeLookCamera.State.FinalOrientation.eulerAngles.y;
+        pointerH = Cameras.normalCamera.State.FinalOrientation.eulerAngles.y;
         pointer.target.position = Vector3.MoveTowards(pointer.target.position, pointer.startV.position + pointer.startV.forward * pointer.distance, .5f);
         aimingState.hAxis.Value = pointerH; 
         aimingState.vAxis.Value = Mathf.MoveTowardsAngle(aimingState.vAxis.Value, 0, 1);
         pointerV = Mathf.MoveTowardsAngle(pointerV, 0, 1);
-        if(!body.grounded && dropLaunchUpgrade)
+        if(!body.Grounded && Upgrades.Active.dropLaunch)
         {
             realMuzzle.position = pointer.startH.position - (pointer.startH.up * (1 + (currentGrabbed == null ? 0 : currentGrabbed.AdditionalThrowDistance)));
             realMuzzle.eulerAngles = Vector3.right * 90;
@@ -309,7 +303,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         if (eggCapacity == 0 && currentGrabbed != null) return;
 
         animator.CrossFade("Aim", 0.3f);
-        aimingState.state.TransitionTo();
+        aimingState.State.Enter();
         aimingRig.enabled = true;
         aimingRig.weight = 1; 
         UI.SetHitMarkerVisibility(true);
@@ -319,9 +313,10 @@ public class PlayerRanged : MonoBehaviour, IGrabber
     }
     public void ExitAiming(State normalState, State grabbingState)
     {
-        machine.freeLookCamera.m_XAxis.Value = pointerH;
+        if (!aiming) return;
+        Cameras.normalCamera.m_XAxis.Value = pointerH;
         animator.CrossFade("GroundBasic", 0.1f);
-        (currentGrabbed == null ? normalState : grabbingState).TransitionTo();
+        (currentGrabbed == null ? normalState : grabbingState).Enter();
         aimingRig.enabled = false;
         aimingRig.weight = 0;
         UI.SetHitMarkerVisibility(false);
@@ -332,19 +327,21 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void ExitAimingAux()
     {
-        machine.freeLookCamera.m_XAxis.Value = pointerH;
+        if (!aiming) return;
+        Cameras.normalCamera.m_XAxis.Value = pointerH;
         aimingRig.enabled = false;
         aimingRig.weight = 0;
         UI.SetHitMarkerVisibility(false);
         shootingVCam.Priority = 9;
         shootingVCam.gameObject.SetActive(false);
         aiming = false;
-        machine[0].TransitionTo();
+        machine.Children[0].Enter();
     }
 
     public void ExitAimingInstant()
     {
-        machine.freeLookCamera.m_XAxis.Value = pointerH;
+        if (!aiming) return;
+        Cameras.normalCamera.m_XAxis.Value = pointerH;
         aimingRig.enabled = false;
         aimingRig.weight = 0;
         UI.SetHitMarkerVisibility(false);
@@ -352,14 +349,15 @@ public class PlayerRanged : MonoBehaviour, IGrabber
         shootingVCam.gameObject.SetActive(false);
         aiming = false;
         animator.Play("GroundBasic");
-        machine[0].TransitionTo();
+        machine.Children[0].Enter();
     }
 
     public void Shoot()
     {
         if (!aiming) return;
         if (currentGrabbed != null) AimThrow();
-        else if (eggAmount >= 1 && !shootingState) shootingState.TransitionTo();
+        else if (eggAmount >= 1 && !shootingState.Active) 
+            shootingState.Enter();
     }
 
     public void ShootPoint()
@@ -372,7 +370,7 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
         audio.PlayOneShot("EggShoot");
         eggPool.Pump().GetComponent<ProjectileMovement>().Send();
-        ChangeAmmoAmount(-1);
+        Player.Ammo.Current--;
         justShot = true;
         CoroutinePlus.Begin(ref justShotCO, Enum(), this);
         IEnumerator Enum()
@@ -384,42 +382,6 @@ public class PlayerRanged : MonoBehaviour, IGrabber
 
     public void AimThrow()
     {
-        aimThrowState.TransitionTo();
+        aimThrowState.Enter();
     }
-
-    void ChangeAmmoAmount(int offset)
-    {
-        Ammo.Update(eggAmount + offset);
-        //eggAmount += offset;
-        //UI.UpdateAmmo(eggAmount);
-    }
-    //void UpdateMaxAmmo()
-    //{
-    //    eggCapacity = GlobalState.maxAmmo;
-    //    UI.UpdateAmmo(eggAmount);
-    //}
-
-    public static class Ammo
-    {
-        public static int currentAmmo;
-        public static int maxAmmo;
-
-        public static PlayerRanged playerObject;
-        public static UIHUDSystem UI;
-
-        public static void Update(int newAmount)
-        {
-            currentAmmo = newAmount;
-            playerObject.eggAmount = newAmount;
-            UI.UpdateAmmo(currentAmmo);
-        }
-        public static void UpdateMax(int newMax)
-        {
-            maxAmmo = newMax;
-            playerObject.eggCapacity = newMax;
-            GlobalState.maxAmmo = newMax;
-            UI.UpdateAmmo(currentAmmo);
-        }
-    }
-
 }

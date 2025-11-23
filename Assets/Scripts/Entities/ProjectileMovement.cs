@@ -17,10 +17,10 @@ public class ProjectileMovement : MonoBehaviour
     private void OnEnable() => Send();
     public void Send()
     {
-        rb.velocity = transform.TransformDirection(initialVelocity);
+        rb.linearVelocity = transform.TransformDirection(initialVelocity);
     }
     private void FixedUpdate()
     {
-        if (gravity > 0) rb.velocity += Vector3.down * gravity * Time.fixedDeltaTime;
+        if (gravity > 0) rb.linearVelocity += Vector3.down * gravity * Time.fixedDeltaTime;
     }
 }

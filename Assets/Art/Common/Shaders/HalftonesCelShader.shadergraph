@@ -475,9 +475,6 @@
             "m_Id": "787e665837484fe596a4783bffbea2a5"
         },
         {
-            "m_Id": "ea4e0945da904232b4e960422d2cc404"
-        },
-        {
             "m_Id": "de3cf0769a6340d982acf54fe374413f"
         },
         {
@@ -1180,20 +1177,6 @@
                     "m_Id": "8bc3073e347c46eab08a130a3d20a711"
                 },
                 "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "4596f4e3c0a94219924569862f72ad7e"
-                },
-                "m_SlotId": 0
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "ea4e0945da904232b4e960422d2cc404"
-                },
-                "m_SlotId": 1
             }
         },
         {
@@ -2389,20 +2372,6 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
-                    "m_Id": "b9f858172572481ca2fba8273ec7dc3a"
-                },
-                "m_SlotId": 0
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "ea4e0945da904232b4e960422d2cc404"
-                },
-                "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
                     "m_Id": "bc75c725440c4afb97158f8d203e4ad8"
                 },
                 "m_SlotId": 3
@@ -2697,20 +2666,6 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
-                    "m_Id": "de3cf0769a6340d982acf54fe374413f"
-                },
-                "m_SlotId": 3
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "919431578cff4faeaed4e36f84fb7511"
-                },
-                "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
                     "m_Id": "df06b8006e7844f3ae8e2019f7953eb9"
                 },
                 "m_SlotId": 2
@@ -2776,20 +2731,6 @@
                     "m_Id": "9f659a87238945508aca78b4e7dbcf92"
                 },
                 "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
-                    "m_Id": "ea4e0945da904232b4e960422d2cc404"
-                },
-                "m_SlotId": 2
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "df06b8006e7844f3ae8e2019f7953eb9"
-                },
-                "m_SlotId": 1
             }
         },
         {
@@ -3019,8 +2960,8 @@
     ],
     "m_VertexContext": {
         "m_Position": {
-            "x": 1369.0001220703125,
-            "y": 1888.000244140625
+            "x": 1369.1429443359375,
+            "y": 1893.14306640625
         },
         "m_Blocks": [
             {
@@ -3132,7 +3073,7 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
-        "m_SerializedTexture": "{\"texture\":{\"fileID\":2800000,\"guid\":\"64776826f4e5b38449bd253a7b682ab6\",\"type\":3}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "m_DefaultType": 0
@@ -3144,8 +3085,8 @@
     "m_ObjectId": "01787ab0744c458d9a6d0d9c97529163",
     "m_Title": "Applying Custom Main Light's Color onto Cel Shader",
     "m_Position": {
-        "x": -1983.0001220703125,
-        "y": 1652.0001220703125
+        "x": -1983.428466796875,
+        "y": 1650.2857666015625
     }
 }
 
@@ -3357,8 +3298,8 @@
     "m_ObjectId": "05ddd069581d4213833140f535e1a1b0",
     "m_Title": "Forming Cel Shader with Custom Main Light",
     "m_Position": {
-        "x": -4384.0,
-        "y": -1401.9998779296875
+        "x": -3774.857177734375,
+        "y": -765.7142944335938
     }
 }
 
@@ -3895,6 +3836,7 @@
     "m_SourceType": 0,
     "m_FunctionName": "AllAdditionalLights",
     "m_FunctionSource": "9c18c00f941a8b84992ee05788688f66",
+    "m_FunctionSourceUsePragmas": true,
     "m_FunctionBody": "Enter function body here..."
 }
 
@@ -4086,6 +4028,9 @@
     "m_AlphaClip": true,
     "m_CastShadows": true,
     "m_ReceiveShadows": true,
+    "m_DisableTint": false,
+    "m_AdditionalMotionVectorMode": 0,
+    "m_AlembicMotionVectors": false,
     "m_SupportsLODCrossFade": false,
     "m_CustomEditorGUI": "",
     "m_SupportVFX": false
@@ -4327,12 +4272,24 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": 1.0,
     "m_FloatType": 1,
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
-    }
+    },
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [
+        "Default"
+    ],
+    "m_EnumValues": [
+        0
+    ]
 }
 
 {
@@ -4555,7 +4512,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -4580,12 +4537,24 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": 0.0,
     "m_FloatType": 1,
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
-    }
+    },
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [
+        "Default"
+    ],
+    "m_EnumValues": [
+        0
+    ]
 }
 
 {
@@ -5216,12 +5185,15 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": {
-        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "isMainTexture": false,
     "useTilingAndOffset": false,
+    "useTexelSize": true,
     "m_Modifiable": true,
     "m_DefaultType": 0
 }
@@ -5308,8 +5280,8 @@
     "m_ObjectId": "270f7e15a1d34c04bb0aea46ffe9930b",
     "m_Title": "Rim Light System",
     "m_Position": {
-        "x": -2567.0,
-        "y": -2192.0
+        "x": -2567.4287109375,
+        "y": -2193.714111328125
     }
 }
 
@@ -6491,8 +6463,8 @@
     "m_ObjectId": "37ae55e3af4149b192e96165610db35f",
     "m_Title": "Multiplying Main Directional Light into Highlights & Shadows",
     "m_Position": {
-        "x": -3244.999755859375,
-        "y": 385.9999694824219
+        "x": -3245.71435546875,
+        "y": 384.0
     }
 }
 
@@ -6502,8 +6474,8 @@
     "m_ObjectId": "3853bbf2f8e740088cb5fd808a7feef6",
     "m_Title": "Rim Light Color Affected by Light Color",
     "m_Position": {
-        "x": -2880.999755859375,
-        "y": 2138.999755859375
+        "x": -2881.71435546875,
+        "y": 2137.14306640625
     }
 }
 
@@ -6527,6 +6499,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": {
         "x": 1.0,
         "y": 10.0,
@@ -6552,10 +6526,10 @@
         "w": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0,
+        "w": 1.0
     },
     "m_Labels": []
 }
@@ -6575,8 +6549,8 @@
         "y": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -6585,10 +6559,10 @@
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.GroupData",
     "m_ObjectId": "3ae02be955b44dd085f6ad42920e747d",
-    "m_Title": "Jiggle Physics",
+    "m_Title": "Jiggle Physics (BROKEN)",
     "m_Position": {
-        "x": 10.0,
-        "y": 10.0
+        "x": 2271.999267578125,
+        "y": 1236.5711669921875
     }
 }
 
@@ -6598,8 +6572,8 @@
     "m_ObjectId": "3aee293834314b49b253799e0c774351",
     "m_Title": "Animated Grain",
     "m_Position": {
-        "x": 10.0,
-        "y": 10.0
+        "x": -4220.5712890625,
+        "y": -1192.5714111328125
     }
 }
 
@@ -6833,8 +6807,8 @@
     "m_ObjectId": "3cb5a8ca9e754ef48fa5d3ed7d629e4d",
     "m_Title": "Applying Custom Additional Lights (Point Lights, Spot Lights, etc.) onto Cel Shader",
     "m_Position": {
-        "x": -3154.999755859375,
-        "y": -87.99996948242188
+        "x": -3155.4287109375,
+        "y": -89.71435546875
     }
 }
 
@@ -7301,8 +7275,8 @@
     "m_ObjectId": "423e0b0c174d41ab9b070814ced0fa65",
     "m_Title": "Animated Fresnel System",
     "m_Position": {
-        "x": -1929.0,
-        "y": 791.0
+        "x": -1929.7142333984375,
+        "y": 855.4285888671875
     }
 }
 
@@ -7481,10 +7455,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 941.0,
-            "y": 1442.0,
-            "width": 118.0,
-            "height": 93.9998779296875
+            "x": 2308.0,
+            "y": 1427.4288330078125,
+            "width": 118.857421875,
+            "height": 95.4283447265625
         }
     },
     "m_Slots": [
@@ -7522,12 +7496,24 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": 0.0,
     "m_FloatType": 1,
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
-    }
+    },
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [
+        "Default"
+    ],
+    "m_EnumValues": [
+        0
+    ]
 }
 
 {
@@ -8118,8 +8104,8 @@
         "y": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -8315,8 +8301,8 @@
     "m_ObjectId": "50944f5ba87f4ea79a5ebfd9736d9cac",
     "m_Title": "Applying Textures, Highlights, and Shadows",
     "m_Position": {
-        "x": -3174.0,
-        "y": 1090.0
+        "x": -3174.857177734375,
+        "y": 1088.0001220703125
     }
 }
 
@@ -8725,8 +8711,8 @@
         "y": 0.10000000149011612
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -8837,6 +8823,7 @@
     "m_SourceType": 0,
     "m_FunctionName": "MainLight",
     "m_FunctionSource": "9c18c00f941a8b84992ee05788688f66",
+    "m_FunctionSourceUsePragmas": true,
     "m_FunctionBody": "Enter function body here..."
 }
 
@@ -9239,6 +9226,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": {
         "r": 1.0,
         "g": 0.0,
@@ -9444,12 +9433,24 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": 0.49000000953674319,
     "m_FloatType": 1,
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
-    }
+    },
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [
+        "Default"
+    ],
+    "m_EnumValues": [
+        0
+    ]
 }
 
 {
@@ -9551,10 +9552,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1307.9998779296875,
-            "y": 1617.9998779296875,
-            "width": 136.0,
-            "height": 34.0
+            "x": 2674.85693359375,
+            "y": 1603.428466796875,
+            "width": 134.285888671875,
+            "height": 34.2860107421875
         }
     },
     "m_Slots": [
@@ -10059,29 +10060,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
-    "m_ObjectId": "7009c1ddbb6340a3b582a7c2fb40c0dd",
-    "m_Id": 0,
-    "m_DisplayName": "vertexPos",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "vertexPos",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1Node",
     "m_ObjectId": "700e00430242465d83d7865e722bf5f0",
     "m_Group": {
@@ -10261,8 +10239,8 @@
     "m_ObjectId": "715ee69b7b464ce4a72b87a35469de5b",
     "m_Title": "Color Node to Adjust the Model's Color After Lighting Calculations",
     "m_Position": {
-        "x": -1208.0,
-        "y": 1517.0
+        "x": -1190.857177734375,
+        "y": 1709.1427001953125
     }
 }
 
@@ -10272,8 +10250,8 @@
     "m_ObjectId": "72663ddb7783447b86186b1e729ba7aa",
     "m_Title": "Dithering Transparency System",
     "m_Position": {
-        "x": -1555.0,
-        "y": 2104.0
+        "x": -1555.428466796875,
+        "y": 2102.28564453125
     }
 }
 
@@ -10544,7 +10522,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -11712,8 +11690,8 @@
         "y": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": 1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -11826,8 +11804,8 @@
         "y": 1.0
     },
     "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0
+        "x": -1.0,
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -11874,8 +11852,8 @@
     "m_ObjectId": "86b139d2258943bd8c88d2dfcca12593",
     "m_Title": "Transitioning Highlights/Shadows into Halftones",
     "m_Position": {
-        "x": -2276.0,
-        "y": -1139.0
+        "x": -2276.571533203125,
+        "y": -1140.5714111328125
     }
 }
 
@@ -12658,7 +12636,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -13736,7 +13714,7 @@
     "m_StageCapability": 3,
     "m_BareResource": false,
     "m_Texture": {
-        "m_SerializedTexture": "{\"texture\":{\"instanceID\":0}}",
+        "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "m_DefaultType": 0
@@ -14168,21 +14146,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "ab845ee6c5a641f3b8c51fe7404bc07f",
-    "m_Id": 1,
-    "m_DisplayName": "blend",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "blend",
-    "m_StageCapability": 3,
-    "m_Value": 0.0,
-    "m_DefaultValue": 0.0,
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
     "m_ObjectId": "aba73ccd41b44782a096ffbca8f14ba4",
     "m_Id": 0,
@@ -14199,7 +14162,7 @@
     "m_DefaultValue": {
         "x": 0.0,
         "y": 0.0,
-        "z": 0.0
+        "z": 1.0
     },
     "m_Labels": []
 }
@@ -14276,10 +14239,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 930.9999389648438,
-            "y": 1541.0,
-            "width": 205.99993896484376,
-            "height": 131.0
+            "x": 2297.714111328125,
+            "y": 1526.2857666015625,
+            "width": 206.857666015625,
+            "height": 131.4285888671875
         }
     },
     "m_Slots": [
@@ -14440,6 +14403,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": false
 }
 
@@ -14985,10 +14950,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 941.0,
-            "y": 1311.0,
-            "width": 206.0,
-            "height": 131.0
+            "x": 2308.0,
+            "y": 1296.5714111328125,
+            "width": 206.85693359375,
+            "height": 131.428466796875
         }
     },
     "m_Slots": [
@@ -15797,6 +15762,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": {
         "r": 1.0,
         "g": 1.0,
@@ -15825,7 +15792,7 @@
     "m_DefaultValue": {
         "x": 0.0,
         "y": 0.0,
-        "z": 0.0
+        "z": 1.0
     },
     "m_Labels": []
 }
@@ -16290,7 +16257,7 @@
     },
     "m_DefaultValue": {
         "x": 0.0,
-        "y": 0.0
+        "y": 1.0
     },
     "m_Labels": []
 }
@@ -16315,6 +16282,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": {
         "r": 1.0,
         "g": 0.0,
@@ -17435,10 +17404,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1462.9998779296875,
-            "y": 1541.0,
-            "width": 130.0001220703125,
-            "height": 141.9998779296875
+            "x": 2829.71435546875,
+            "y": 1526.2857666015625,
+            "width": 130.285400390625,
+            "height": 143.4287109375
         }
     },
     "m_Slots": [
@@ -17489,12 +17458,24 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": 1.0,
     "m_FloatType": 2,
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
-    }
+    },
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [
+        "Default"
+    ],
+    "m_EnumValues": [
+        0
+    ]
 }
 
 {
@@ -17509,10 +17490,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1463.0,
-            "y": 1311.0,
-            "width": 130.0,
-            "height": 117.9998779296875
+            "x": 2829.71435546875,
+            "y": 1296.5714111328125,
+            "width": 130.285400390625,
+            "height": 119.4290771484375
         }
     },
     "m_Slots": [
@@ -17642,12 +17623,24 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": 1.0,
     "m_FloatType": 0,
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
-    }
+    },
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [
+        "Default"
+    ],
+    "m_EnumValues": [
+        0
+    ]
 }
 
 {
@@ -17921,29 +17914,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector3MaterialSlot",
-    "m_ObjectId": "e6dfbf973df64be49180a6499ca6cc98",
-    "m_Id": 2,
-    "m_DisplayName": "vertexOffset",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "vertexOffset",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.NormalMaterialSlot",
     "m_ObjectId": "e6e7920d99ae4854b3f009166258b52c",
     "m_Id": 0,
@@ -18082,58 +18052,24 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": 500.0,
     "m_FloatType": 0,
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
-    }
-}
-
-{
-    "m_SGVersion": 1,
-    "m_Type": "UnityEditor.ShaderGraph.CustomFunctionNode",
-    "m_ObjectId": "ea4e0945da904232b4e960422d2cc404",
-    "m_Group": {
-        "m_Id": "3ae02be955b44dd085f6ad42920e747d"
     },
-    "m_Name": "JigglePhysicsSoftbody (Custom Function)",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": 1165.0,
-            "y": 1383.0,
-            "width": 285.0,
-            "height": 117.9998779296875
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "7009c1ddbb6340a3b582a7c2fb40c0dd"
-        },
-        {
-            "m_Id": "ab845ee6c5a641f3b8c51fe7404bc07f"
-        },
-        {
-            "m_Id": "e6dfbf973df64be49180a6499ca6cc98"
-        }
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [
+        "Default"
     ],
-    "synonyms": [
-        "code",
-        "HLSL"
-    ],
-    "m_Precision": 0,
-    "m_PreviewExpanded": false,
-    "m_DismissedVersion": 0,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_SourceType": 0,
-    "m_FunctionName": "JigglePhysicsSoftbody",
-    "m_FunctionSource": "930124765981aa848b3d8cf9d11b878f",
-    "m_FunctionBody": "Enter function body here..."
+    "m_EnumValues": [
+        0
+    ]
 }
 
 {
@@ -18267,12 +18203,24 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": 0.0,
     "m_FloatType": 1,
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
-    }
+    },
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [
+        "Default"
+    ],
+    "m_EnumValues": [
+        0
+    ]
 }
 
 {
@@ -18450,12 +18398,24 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": 3.0,
     "m_FloatType": 0,
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
-    }
+    },
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [
+        "Default"
+    ],
+    "m_EnumValues": [
+        0
+    ]
 }
 
 {

@@ -1,4 +1,5 @@
-using SLS.StateMachineV3;
+using RageRooster.Systems.SaveSystem;
+using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,8 +15,6 @@ public class PlayerWallJump : PlayerMovementEffector
     public float minDistance;
     public float maxAngleDifference;
 
-    public Upgrade upgrade;
-
     public string animationName = "WallJump";
 
     protected Vector3 startPoint;
@@ -28,21 +27,21 @@ public class PlayerWallJump : PlayerMovementEffector
         resultZ = fixedDirection.z * outwardVelocity;
 
         playerMovementBody.CurrentSpeed = outwardVelocity;
-        //playerMovementBody.currentDirection = fixedDirection;
+        //playerMovementBody.direction = fixedDirection;
 
         float distance = (transform.position - startPoint).XZ().magnitude;
-        if (distance >= minDistance) sFall.TransitionTo();
+        if (distance >= minDistance) sFall.Enter();
 
     }
     public override void VerticalMovement(out float? result) => result = ApplyGravity(gravity, terminalVelocity, flatGravity);
 
     public bool WallJump(Vector3 direction)
     {
-        if(upgrade && playerMovementBody.rb.DirectionCast(playerMovementBody.currentDirection, 0.5f, playerMovementBody.checkBuffer, out RaycastHit hit))
+        if(Upgrades.Active.wallJump && playerMovementBody.DirectionCast(playerMovementBody.direction, 0.5f, playerMovementBody.movementCheckBuffer, out RaycastHit hit))
         {
             if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return false;
 
-            if (!state.active) state.TransitionTo();
+            if (!State.Active) State.Enter();
             Machine.animator.Play(animationName, -1, 0f);
             playerMovementBody.VelocitySet(y: jumpPower);
 
@@ -51,7 +50,7 @@ public class PlayerWallJump : PlayerMovementEffector
 
             playerMovementBody.InstantDirectionChange(fixedDirection);
 
-            state.TransitionTo();
+            State.Enter();
             return true;
         }
         return false;

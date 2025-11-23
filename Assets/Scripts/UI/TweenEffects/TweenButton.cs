@@ -22,9 +22,7 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("Hovering over button");
         BounceButton();
-
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -48,7 +46,7 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
 
         sequence.Join(transform.DOScale(.6f, 1f).From().SetEase(Ease.OutBounce));
-        }
+        } 
 
     }
 

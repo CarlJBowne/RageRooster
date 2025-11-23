@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,13 +15,13 @@ public class CountdownEB : StateBehavior
     public UnityEvent countdownEvent;
 
     // Begin timer when state is entered.
-    public override void OnEnter(State prev, bool isFinal)
+    protected override void OnEnter(State prev, bool isFinal)
     {
         timer.Begin();
     }
 
     // Tick timer on update, call ActivateEvent when timer is run down.
-    public override void OnUpdate()
+    protected override void OnUpdate()
     {
         timer.Tick(ActivateEvent);
     }

@@ -23,7 +23,8 @@ public class AttackSourceSingle : MonoBehaviour, IAttackSource
 
     public virtual void Contact(GameObject target)
     {
-        if (enabled && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(GetAttack());
+        if (!enabled || !target.TryGetComponent(out IDamagable targetDamagable)) return;
+        targetDamagable.Damage(GetAttack());
     }
 
 }

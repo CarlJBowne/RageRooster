@@ -1,7 +1,9 @@
 using EditorAttributes;
-using SLS.StateMachineV3;
+using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class PlayerMovementAnimator : PlayerMovementEffector
@@ -44,7 +46,7 @@ public class PlayerMovementAnimator : PlayerMovementEffector
         {
             Vector3 controlVector = playerController.camAdjustedMovement;
 
-            Vector3 targetDirection = playerMovementBody.currentDirection;
+            Vector3 targetDirection = playerMovementBody.direction;
             float targetSpeed = playerMovementBody.CurrentSpeed;
 
             if (turnability > 0) targetDirection = Vector3.RotateTowards(targetDirection, controlVector.normalized, turnability * Mathf.PI * Time.fixedDeltaTime, 0);
@@ -56,14 +58,14 @@ public class PlayerMovementAnimator : PlayerMovementEffector
             if (influence == 1)
             {
                 playerMovementBody.CurrentSpeed = targetSpeed;
-                playerMovementBody.currentDirection = targetDirection;
+                playerMovementBody.InstantDirectionChange(targetDirection);
                 resultX = targetDirection.x * targetSpeed;
                 resultZ = targetDirection.z * targetSpeed;
             }
             else
             {
                 playerMovementBody.CurrentSpeed = Mathf.Lerp(playerMovementBody.CurrentSpeed, targetSpeed, influence);
-                playerMovementBody.currentDirection = Vector3.Lerp(playerMovementBody.currentDirection, targetDirection, influence); ;
+                playerMovementBody.InstantDirectionChange(Vector3.Lerp(playerMovementBody.direction, targetDirection, influence));
                 resultX = Mathf.Lerp(resultX.Value, targetDirection.x * targetSpeed, influence);
                 resultZ = Mathf.Lerp(resultZ.Value, targetDirection.z * targetSpeed, influence);
             }
@@ -96,7 +98,7 @@ public class PlayerMovementAnimator : PlayerMovementEffector
 
         result = playerMovementBody.velocity.y;
 
-        if (!Mathf.Approximately(verticalAddSpeed, 0)) result = (result.Value + verticalAddSpeed * Time.fixedDeltaTime).Min(-terminalVelocity);
+        if (influence > 0 && !Mathf.Approximately(verticalAddSpeed, 0)) result = (result.Value + verticalAddSpeed * Time.fixedDeltaTime * influence).Min(-terminalVelocity);
         if(setVerticalInfluence > 0) 
             result = setVerticalInfluence == 1 
                 ? setVerticalVelocity 
@@ -113,7 +115,7 @@ public class PlayerMovementAnimator : PlayerMovementEffector
         }
     }
 
-    public override void OnExit(State next)
+    protected override void OnExit(State next)
     {
         locked = false;
     }
@@ -121,7 +123,17 @@ public class PlayerMovementAnimator : PlayerMovementEffector
 
 
 
+    public string intendedAnimationName;
 
+    [ContextMenu("Recast")]
+    public virtual void RunTransfer() => MiscHelperMethods.PlayerMovementAnimatorTransferToRoots.Basic(this);
+
+
+    public void ResetActive()
+    {
+        influence = 0;
+        fullStop = false;
+    }
 
 
 }
