@@ -15,15 +15,15 @@ public class Grabbable : MonoBehaviour
     public System.Action ForceRelease { get; set; }
 
     //Required Components
-    public new Collider collider;
-    public MeleeTarget meleeTarget;
+    [RelatedComponent(true)] public new Collider collider;
+    [RelatedComponent(true)] public MeleeTarget meleeTarget;
 
     //Potential Components
-    public Rigidbody rigidBody;
-    public RagdollHandler ragdollHandler;
-    public ThrownObjectAttack thrownObjectAttack;
-    public EnemyHealth health;
-    public ConstantMovement constantMovement;
+    [RelatedComponent] public Rigidbody rigidBody;
+    [RelatedComponent] public RagdollHandler ragdollHandler;
+    [RelatedComponent] public ThrownObjectAttack thrownObjectAttack;
+    [RelatedComponent] public Health health;
+    [RelatedComponent] public ConstantMovement constantMovement;
 
     #endregion
     #region Data
@@ -50,12 +50,7 @@ public class Grabbable : MonoBehaviour
     }
     private void Reset()
     {
-        rigidBody = GetComponent<Rigidbody>();
-        collider = GetComponent<Collider>();
-        meleeTarget = GetComponent<MeleeTarget>();
-        ragdollHandler = GetComponent<RagdollHandler>();
-        health = GetComponent<EnemyHealth>();
-        constantMovement = GetComponent<ConstantMovement>();
+        ComponentConfig.Reset(this);// Auto-fill common components in editor
     }
 
     private void OnEnable()

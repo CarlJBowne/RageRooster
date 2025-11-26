@@ -131,10 +131,9 @@ public class EnemyHealth : Health
     #endregion DamageOverrides
 
 
-    public void Destroy()
+    public override void Destroy()
     {
         if (poofPrefab) Instantiate(poofPrefab);
-        //if (enemyLootSpawner != null) enemyLootSpawner.SpawnLootOnDestroy(transform.position);
         if (respawn)
         {
             gameObject.SetActive(false);

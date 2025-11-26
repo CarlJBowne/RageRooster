@@ -85,6 +85,37 @@ public class RelatedComponentAttribute : PropertyAttribute
             container.style.alignItems = Align.Center;
             container.style.display = ComponentConfig.ShowConfig ? DisplayStyle.Flex : DisplayStyle.None;
 
+            // WARNING ICON: appears to the left when required and null
+            var icon = new Image();
+            icon.style.width = 16;
+            icon.style.height = 16;
+            icon.style.marginRight = 4;
+            icon.style.alignSelf = Align.Center;
+            icon.tooltip = "Required";
+            // Try to resolve a warning texture from common editor icon names
+            Texture2D warnTex = null;
+            try
+            {
+                warnTex = EditorGUIUtility.IconContent("console.erroricon")?.image as Texture2D
+                          ?? EditorGUIUtility.IconContent("console.warn")?.image as Texture2D
+                          ?? EditorGUIUtility.IconContent("console.warnicon")?.image as Texture2D
+                          ?? EditorGUIUtility.FindTexture("console.warn")
+                          ?? EditorGUIUtility.FindTexture("console.warnicon")
+                          ?? EditorGUIUtility.IconContent("Warning")?.image as Texture2D;
+            }
+            catch
+            {
+                warnTex = null;
+            }
+            icon.image = warnTex;
+            icon.scaleMode = ScaleMode.ScaleToFit;
+
+            // Determine initial visibility: only if attribute.require is true AND property is null
+            var relatedAttr = attribute as RelatedComponentAttribute;
+            bool isRequired = relatedAttr != null && relatedAttr.require;
+            bool isNull = property != null && property.propertyType == SerializedPropertyType.ObjectReference && property.objectReferenceValue == null;
+            icon.style.display = (isRequired && isNull) ? DisplayStyle.Flex : DisplayStyle.None;
+
             // Create the default property field
             var fieldElement = new PropertyField(property);
             // Ensure the field grows to take available space
@@ -99,6 +130,8 @@ public class RelatedComponentAttribute : PropertyAttribute
             button.style.flexShrink = 0;
             button.style.alignSelf = Align.Center;
 
+            // Add the icon first so it appears to the left of the slot
+            container.Add(icon);
             container.Add(fieldContainer);
             container.Add(button);
 
@@ -117,10 +150,32 @@ public class RelatedComponentAttribute : PropertyAttribute
             };
             ComponentConfig.OnShowConfigChanged += handler;
 
+            // Update icon visibility on editor updates so changes in the inspector are reflected
+            EditorApplication.CallbackFunction updateCallback = null;
+            updateCallback = () =>
+            {
+                try
+                {
+                    bool currentlyNull = property.propertyType == SerializedPropertyType.ObjectReference && property.objectReferenceValue == null;
+                    bool shouldShowIcon = (relatedAttr != null && relatedAttr.require) && currentlyNull && ComponentConfig.ShowConfig;
+                    icon.style.display = shouldShowIcon ? DisplayStyle.Flex : DisplayStyle.None;
+                }
+                catch
+                {
+                    // property can be invalid during domain reloads; ignore
+                }
+            };
+            EditorApplication.update += updateCallback;
+
             // Unsubscribe when element is detached to avoid leaking the handler
             container.RegisterCallback<DetachFromPanelEvent>(evt =>
             {
                 ComponentConfig.OnShowConfigChanged -= handler;
+                if (updateCallback != null)
+                {
+                    EditorApplication.update -= updateCallback;
+                    updateCallback = null;
+                }
             });
 
             return container;

@@ -128,5 +128,10 @@ public class PlayerHealth : Health
     public void DoAwake() => Awake();
 
 
+    public override void Destroy()
+    {
+        //No.
+    }
+
     #endregion Instance Methods
 }

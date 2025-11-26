@@ -60,7 +60,7 @@ public class RagdollHandler : MonoBehaviour
     [RelatedComponent]
     public Grabbable grabbable;
     [RelatedComponent]
-    public EnemyHealth enemyHealth;
+    public Health enemyHealth;
 
     private RigidbodyProfile defaultRigidbodyDefaults;
 
