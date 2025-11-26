@@ -134,7 +134,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3517595087963560097}
-  - component: {fileID: 8418484362380652136}
   - component: {fileID: 1592084514308769052}
   - component: {fileID: 6949676678658905622}
   m_Layer: 7
@@ -159,22 +158,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2661598807480881559}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 6.576}
---- !u!114 &8418484362380652136
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 103727316255015335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84611f589d74c394994a0cd0ba75661a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: {fileID: 4543461492338020441}
-  ragDoll: {fileID: 6846661119807183612}
-  collider: {fileID: 1592084514308769052}
-  rb: {fileID: 6949676678658905622}
 --- !u!136 &1592084514308769052
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6109,12 +6092,15 @@ GameObject:
   - component: {fileID: 3182761241942017665}
   - component: {fileID: 6738454064187818541}
   - component: {fileID: 982579509626493083}
+  - component: {fileID: 6988035877431068064}
   - component: {fileID: 4543461492338020441}
   - component: {fileID: 3133899637185726238}
-  - component: {fileID: 6846661119807183612}
   - component: {fileID: 3674508901043307227}
   - component: {fileID: 7873505903795856647}
   - component: {fileID: 2553139906093570398}
+  - component: {fileID: 1790795846713865799}
+  - component: {fileID: 9177222470484513295}
+  - component: {fileID: 8073722270089541327}
   m_Layer: 7
   m_Name: FirstEnemy
   m_TagString: Untagged
@@ -6237,6 +6223,33 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!54 &6988035877431068064
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811522196661094151}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &4543461492338020441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6310,78 +6323,6 @@ MonoBehaviour:
     dot: 45
     lineOfSight: 0
     autoRotateDelta: 1
---- !u!114 &6846661119807183612
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4811522196661094151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a842d6755cba8b49800d602c295ad3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anchorPoint: {fileID: 8731360320969202055}
-  weight: 1
-  wiggleFreeTime: 0
-  maxHealthToGrab: 16
-  additionalThrowDistance: 0
-  additionalHoldHeight: 0
-  selectIcon: {fileID: 7101999157648690213}
-  GrabStateEvent:
-    _PersistentCalls: []
-  defaultEvent:
-    _PersistentCalls: []
-  grabbedEvent:
-    _PersistentCalls: []
-  thrownEvent:
-    _PersistentCalls: []
-  bounceEvent:
-    _PersistentCalls: []
-  thrownAttack:
-    amount: 30
-    velocity: {x: 0, y: 0, z: 0}
-    tags:
-    - name: Thrown
-    - name: ThrownEnemy
-    - name: FromPlayer
-  grabbed: 0
-  currentState: 0
-  minRagdollTime: 5
-  maxRagdollTime: 20
-  minRagdollVelovity: 1
-  nonRagdolledCollider: {fileID: 982579509626493083}
-  nonRagdolledRigidBody: {fileID: 0}
-  defaultLayer: 7
-  advanced: 1
-  ragDollColliders:
-  - {fileID: 2978896160289998762}
-  - {fileID: 3672711296804714389}
-  - {fileID: 7557970041475846670}
-  - {fileID: 7586927870008673200}
-  - {fileID: 2850103877155994595}
-  - {fileID: 3144413871938338223}
-  - {fileID: 7963361115683827254}
-  - {fileID: 2231164825436582810}
-  - {fileID: 5598734931455775889}
-  - {fileID: 8815715429102326098}
-  - {fileID: 5846967886264321324}
-  ragDollRigidBodies:
-  - {fileID: 5131967544316322766}
-  - {fileID: 4753536234212773601}
-  - {fileID: 1531820001175867213}
-  - {fileID: 8694432052343000455}
-  - {fileID: 2537113928943578575}
-  - {fileID: 5651433566144543940}
-  - {fileID: 2608959592372779379}
-  - {fileID: 5281583569043635189}
-  - {fileID: 3277277254524604119}
-  - {fileID: 503915157002215423}
-  - {fileID: 744946269153696023}
-  proxy: {fileID: 8418484362380652136}
-  isPlayer: 0
-  materialTinter: {fileID: 0}
 --- !u!114 &3674508901043307227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6430,6 +6371,90 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
   RealPositionOffset: {x: 0, y: 1, z: 0}
+--- !u!114 &1790795846713865799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811522196661094151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30ca0b49fe34f03488e5746202eb7638, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Grabbable
+  grabHealthMax: 16
+  wiggleFreeTime: 0
+  anchorPoint: {fileID: 8731360320969202055}
+  AdditionalThrowDistance: 0
+  collider: {fileID: 982579509626493083}
+  meleeTarget: {fileID: 2553139906093570398}
+  rigidBody: {fileID: 6988035877431068064}
+  ragdollHandler: {fileID: 9177222470484513295}
+  thrownObjectAttack: {fileID: 8073722270089541327}
+  health: {fileID: 4543461492338020441}
+  constantMovement: {fileID: 0}
+--- !u!114 &9177222470484513295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811522196661094151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0489aa5e525cbfe459bfdb27ab7a705f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RagdollHandler
+  minRagdollTime: 5
+  maxRagdollTime: 20
+  minRagdollVelocity: 1
+  ragDollColliders:
+  - {fileID: 2978896160289998762}
+  - {fileID: 3672711296804714389}
+  - {fileID: 7557970041475846670}
+  - {fileID: 7586927870008673200}
+  - {fileID: 2850103877155994595}
+  - {fileID: 3144413871938338223}
+  - {fileID: 7963361115683827254}
+  - {fileID: 2231164825436582810}
+  - {fileID: 5598734931455775889}
+  - {fileID: 8815715429102326098}
+  - {fileID: 5846967886264321324}
+  ragDollRigidBodies:
+  - {fileID: 5131967544316322766}
+  - {fileID: 4753536234212773601}
+  - {fileID: 1531820001175867213}
+  - {fileID: 8694432052343000455}
+  - {fileID: 2537113928943578575}
+  - {fileID: 5651433566144543940}
+  - {fileID: 2608959592372779379}
+  - {fileID: 5281583569043635189}
+  - {fileID: 3277277254524604119}
+  - {fileID: 503915157002215423}
+  - {fileID: 744946269153696023}
+  defaultCollider: {fileID: 982579509626493083}
+  defaultRigidbody: {fileID: 6988035877431068064}
+  grabbable: {fileID: 1790795846713865799}
+  enemyHealth: {fileID: 4543461492338020441}
+--- !u!114 &8073722270089541327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811522196661094151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b613a2ffe0fa114eba35310ce0aa50c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ThrownObjectAttack
+  attack:
+    amount: 10
+    velocity: {x: 0, y: 0, z: 0}
+    tags: []
+  sourceEntity: {fileID: 0}
+  enabled: 0
 --- !u!1 &4858683810890698992
 GameObject:
   m_ObjectHideFlags: 0
@@ -11392,12 +11417,6 @@ PrefabInstance:
 --- !u!4 &4849020590673270714 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2072881672364969091, guid: d7ae0227bca3990498448cccbcd653b3,
-    type: 3}
-  m_PrefabInstance: {fileID: 6885850365851982649}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7101999157648690213 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4395560480213554972, guid: d7ae0227bca3990498448cccbcd653b3,
     type: 3}
   m_PrefabInstance: {fileID: 6885850365851982649}
   m_PrefabAsset: {fileID: 0}

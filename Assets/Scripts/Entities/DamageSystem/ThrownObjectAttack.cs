@@ -5,6 +5,7 @@ using UnityEngine;
 public class ThrownObjectAttack : AttackSourceSingle
 {
 
+    public UltEvents.UltEvent onContactEvent;
     public System.Action onContactAction;
 
     public override void Contact(GameObject target)
@@ -13,6 +14,7 @@ public class ThrownObjectAttack : AttackSourceSingle
         enabled = false;
         onContactAction?.Invoke();
         onContactAction = null;
+        onContactEvent?.Invoke();
     }
 
     private void Reset() => enabled = false;
