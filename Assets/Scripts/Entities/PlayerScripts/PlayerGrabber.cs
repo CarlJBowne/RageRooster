@@ -50,6 +50,15 @@ public class PlayerGrabber : MonoBehaviour
         currentGrabbed.Grab();
     }
 
+
+    public void Throw()
+    {
+        if(currentGrabbed == null) return;
+        Vector3 throwDirection = Player.Forward;
+        Vector3 throwVelocity = throwDirection * launchVelocity + Player.MovementBody.velocity;
+        Release(true, throwVelocity);
+    }
+
     public void Release(bool thrown, Vector3 throwVelocity)
     {
         currentGrabbed?.Release(thrown ? throwVelocity : null);
@@ -61,7 +70,7 @@ public class PlayerGrabber : MonoBehaviour
 
     public void SetGrabbingLayer(bool value)
     {
-        CoroutinePlus.Begin(ref layerFadeCoroutine, FadeLayers(value.Int(), .25f), gameObject.activeInHierarchy ? this : Gameplay.Instance);
+        CoroutinePlus.Begin(ref layerFadeCoroutine, FadeLayers(value.Int(), 3), gameObject.activeInHierarchy ? this : Gameplay.Instance);
         IEnumerator FadeLayers(int target, float rate)
         {
             float current = Player.Animator.GetLayerWeight(2);

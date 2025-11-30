@@ -173,7 +173,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// The <see cref="RagdollHandler"/> component attached to the <see cref="Player"/>. <br/>
     /// </summary>
-    public static RagdollHandler_Obsolete RagdollHandler { get; private set; }
+    public static RagdollHandler RagdollHandler { get; private set; }
     #endregion
 
     #region Helper Properties / Methods
@@ -198,6 +198,11 @@ public class Player : MonoBehaviour
     /// The current Rotation of the <see cref="Player"/> in Euler Angles.
     /// </summary>
     public static Vector3 EularAngles => Transform.eulerAngles;
+
+    /// <summary>
+    /// The current velocity of the <see cref="Player"/>'s <see cref="PlayerMovementBody"/>.
+    /// </summary>
+    public static Vector3 Velocity => MovementBody.velocity;
 
     /// <param name="pos">The position to be compared.</param>
     /// <returns>The distance between the <see cref="Player"/> and and a given position, such as an enemy.</returns>
@@ -251,7 +256,7 @@ public class Player : MonoBehaviour
         Grabber = GetComponent<PlayerGrabber>();
         Animator = GetComponent<Animator>();
         Audio = GetComponent<AudioCaller>();
-        RagdollHandler = GetComponent<RagdollHandler_Obsolete>();
+        RagdollHandler = GetComponent<RagdollHandler>();
         TargetingManager = GetComponent<TargetingManager>();
         SignalManager = GetComponent<SLS.StateMachineH.Signals.SignalManager>();
         Health.Initialize();
@@ -447,7 +452,7 @@ public class Player : MonoBehaviour
         Audio.PlayOneShot("Death");
         StateMachine.ragDollState.Enter();
         MovementBody.velocity = Vector3.zero;
-        RagdollHandler.State = EntityState.RagDoll;
+        RagdollHandler.enabled = true;
         RagdollHandler.SetVelocity(targetVelocity * 0.75f);
         Animator.enabled = false;
     }
