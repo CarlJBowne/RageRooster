@@ -58,7 +58,7 @@ public class EnemyHealth : Health
     {
         damageEvent?.Invoke(attack.amount);
 
-        if (ragdoll && PlayerInteracter.grabbablesInFront.Contains(ragdoll)) PlayerInteracter.UpdateGrabbables();
+        //if (ragdoll && PlayerInteracter.grabbablesInFront.Contains(ragdoll)) PlayerInteracter.UpdateGrabbables();
         if (currentState is EntityState.RagDoll) ragdoll.SetVelocity(attack.velocity);
         else if (currentState is EntityState.Default && health != 0)
         {

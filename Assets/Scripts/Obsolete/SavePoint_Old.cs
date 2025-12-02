@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace RageRooster.Obsolete
 {
+    [System.Obsolete]
     public class SavePoint_Old : MonoBehaviour, IInteractable
     {
         public Transform SpawnPoint;

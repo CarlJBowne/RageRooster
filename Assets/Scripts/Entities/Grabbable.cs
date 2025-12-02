@@ -75,6 +75,8 @@ public class Grabbable : MonoBehaviour
     {
         state = State.Grabbed;
         IgnoreCollisionWith(Player.Collider);
+
+
     }
 
     public void Release(Vector3? throwVelocity = null)

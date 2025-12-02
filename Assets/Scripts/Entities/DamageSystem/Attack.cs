@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -62,6 +63,9 @@ public struct Attack
             if (tags[i].name == tag.name) return true;
         return false;
     }
+
+    public override bool Equals(object obj) => obj is Attack attack && amount == attack.amount && velocity.Equals(attack.velocity) && EqualityComparer<Tag[]>.Default.Equals(tags, attack.tags);
+    public override int GetHashCode() => HashCode.Combine(amount, velocity, tags);
 
     /// <summary>
     /// Works the same as HasTag

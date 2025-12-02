@@ -32,7 +32,6 @@ public class PlayerController : PlayerStateBehavior
 	[HideProperty] public float jumpInput;
 	[HideProperty] public Vector3 camAdjustedMovement;
 	[HideProperty] public PlayerRanged grabber;
-    [HideProperty] public PlayerInteracter interacter;
 
     #endregion
     #region Getters
@@ -42,7 +41,6 @@ public class PlayerController : PlayerStateBehavior
     protected override void OnAwake()
 	{
 		if(!grabber) grabber = GetComponentFromMachine<PlayerRanged>();
-        if(!interacter) interacter = GetComponentFromMachine<PlayerInteracter>();
     }
 
     private void OnEnable()
