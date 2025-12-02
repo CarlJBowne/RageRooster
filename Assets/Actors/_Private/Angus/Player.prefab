@@ -226,7 +226,6 @@ MonoBehaviour:
     - name: GroundSlam
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
-  enabled: 1
 --- !u!114 &5331018696689330221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2774,7 +2773,6 @@ MonoBehaviour:
     - name: FromPlayer
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
-  enabled: 1
 --- !u!114 &8114919871140000751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6505,10 +6503,12 @@ GameObject:
   - component: {fileID: 5866349644222999935}
   - component: {fileID: 8455434200384702600}
   - component: {fileID: 8191279611815052833}
+  - component: {fileID: 6328031082010280587}
   - component: {fileID: 3941225653291784218}
   - component: {fileID: 1838944232945776554}
   - component: {fileID: 598530174602593461}
   - component: {fileID: 8579594802138283692}
+  - component: {fileID: 8954558647869373425}
   - component: {fileID: 4810220497755855147}
   - component: {fileID: 1371118413310184343}
   - component: {fileID: 2714541672873312079}
@@ -6516,10 +6516,6 @@ GameObject:
   - component: {fileID: 5816700120086208874}
   - component: {fileID: 6199145597115895703}
   - component: {fileID: 1988227033855750315}
-  - component: {fileID: 8954558647869373425}
-  - component: {fileID: 6328031082010280587}
-  - component: {fileID: 3245344602468578142}
-  - component: {fileID: 9163854033732519778}
   - component: {fileID: 3205789306894012546}
   m_Layer: 6
   m_Name: Player
@@ -6651,6 +6647,21 @@ MonoBehaviour:
           _MemberName: ResetRoll
           _PersistentArguments: []
   queueSignals: 1
+--- !u!114 &6328031082010280587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e71debd7e0bdab47aab8c5fb57ecb48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.StateTimelineManager
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 8455434200384702600}
+  timelineSpace: 1
 --- !u!114 &3941225653291784218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6766,6 +6777,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8954558647869373425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RigLayers:
+  - m_Rig: {fileID: 845158173052945889}
+    m_Active: 1
+  - m_Rig: {fileID: 412876492507889812}
+    m_Active: 1
+  m_Effectors: []
 --- !u!114 &4810220497755855147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6823,7 +6852,6 @@ MonoBehaviour:
   jumpInput: 0
   camAdjustedMovement: {x: 0, y: 0, z: 0}
   grabber: {fileID: 2714541672873312079}
-  interacter: {fileID: 0}
 --- !u!114 &2714541672873312079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7040,75 +7068,6 @@ MonoBehaviour:
         spawnPoint: {fileID: 802911248559169720}
         rotate: 0
         autoSpawnRate: 0
---- !u!114 &8954558647869373425
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2950555048310845610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RigLayers:
-  - m_Rig: {fileID: 845158173052945889}
-    m_Active: 1
-  - m_Rig: {fileID: 412876492507889812}
-    m_Active: 1
-  m_Effectors: []
---- !u!114 &6328031082010280587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2950555048310845610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e71debd7e0bdab47aab8c5fb57ecb48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.StateTimelineManager
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 8455434200384702600}
-  timelineSpace: 1
---- !u!114 &3245344602468578142
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2950555048310845610}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 157b62d8004f9f14d8160afc57aae3b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
-  RealPositionOffset: {x: 0, y: 0, z: 0}
---- !u!114 &9163854033732519778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2950555048310845610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30ca0b49fe34f03488e5746202eb7638, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Grabbable
-  grabHealthMax: 0
-  wiggleFreeTime: 0
-  anchorPoint: {fileID: 0}
-  AdditionalThrowDistance: 0
-  collider: {fileID: 598530174602593461}
-  meleeTarget: {fileID: 3245344602468578142}
-  rigidBody: {fileID: 1838944232945776554}
-  ragdollHandler: {fileID: 3205789306894012546}
-  thrownObjectAttack: {fileID: 0}
-  health: {fileID: 4810220497755855147}
-  constantMovement: {fileID: 0}
 --- !u!114 &3205789306894012546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7150,7 +7109,7 @@ MonoBehaviour:
   - {fileID: 7415926761768878448}
   defaultCollider: {fileID: 598530174602593461}
   defaultRigidbody: {fileID: 1838944232945776554}
-  grabbable: {fileID: 9163854033732519778}
+  grabbable: {fileID: 0}
   enemyHealth: {fileID: 4810220497755855147}
 --- !u!1 &2975349023816060615
 GameObject:
@@ -9774,7 +9733,6 @@ MonoBehaviour:
     - name: Wham
     - name: RagingCharge
   sourceEntity: {fileID: 8455434200384702600}
-  enabled: 1
 --- !u!114 &4225907961593503217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14405,7 +14363,6 @@ MonoBehaviour:
     - name: Charge
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
-  enabled: 1
 --- !u!114 &7692018968260677331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14937,7 +14894,6 @@ MonoBehaviour:
     - name: Charge
     - name: Wham
   sourceEntity: {fileID: 8455434200384702600}
-  enabled: 1
 --- !u!114 &8747683321289999464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21069,7 +21025,6 @@ MonoBehaviour:
     - name: Kick
     - name: Wham
   sourceEntity: {fileID: 0}
-  enabled: 1
 --- !u!1 &8733291214236233883
 GameObject:
   m_ObjectHideFlags: 0
@@ -22261,7 +22216,7 @@ PrefabInstance:
     - target: {fileID: 7081382935272620051, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}
@@ -22376,7 +22331,7 @@ PrefabInstance:
     - target: {fileID: 7081382935272620051, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}
       propertyPath: m_CastShadows
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}

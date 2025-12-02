@@ -1908,7 +1908,7 @@ MonoBehaviour:
     amount: 1
     velocity: {x: 0, y: 0, z: 0}
     tags:
-    - name: FromEnemy
+    - name: A
   attackEvent:
     _PersistentCalls:
     - _Target: {fileID: 3037715769133141849}
@@ -4845,7 +4845,6 @@ MonoBehaviour:
   speed: 3.5
   minWalkDistance: 5
   maxWalkDistance: 15
-  distanceToProceed: 0.25
 --- !u!114 &5351644097470226904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6089,14 +6088,15 @@ GameObject:
   m_Component:
   - component: {fileID: 6859429191497836494}
   - component: {fileID: 1751870638151356086}
+  - component: {fileID: 7873505903795856647}
+  - component: {fileID: 3133899637185726238}
   - component: {fileID: 3182761241942017665}
   - component: {fileID: 6738454064187818541}
   - component: {fileID: 982579509626493083}
   - component: {fileID: 6988035877431068064}
   - component: {fileID: 4543461492338020441}
-  - component: {fileID: 3133899637185726238}
+  - component: {fileID: 1015663925510759720}
   - component: {fileID: 3674508901043307227}
-  - component: {fileID: 7873505903795856647}
   - component: {fileID: 2553139906093570398}
   - component: {fileID: 1790795846713865799}
   - component: {fileID: 9177222470484513295}
@@ -6118,7 +6118,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 1.4999999, y: 1.5, z: 1.4999999}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1743930371219312829}
@@ -6156,6 +6156,58 @@ MonoBehaviour:
   <StatesSetup>k__BackingField: 1
   <StateHolder>k__BackingField: {fileID: 5621844384992680875}
   _singalManager: {fileID: 7873505903795856647}
+--- !u!114 &7873505903795856647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811522196661094151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e318945a4f6224dad4dd3c599394f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 1751870638151356086}
+  <State>k__BackingField: {fileID: 1751870638151356086}
+  globalSignals:
+    serializedList: []
+  queueSignals: 1
+--- !u!114 &3133899637185726238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811522196661094151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0452307ce3dc7f044a8c8da0714c5455, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 1751870638151356086}
+  <State>k__BackingField: {fileID: 1751870638151356086}
+  target: {fileID: 0}
+  autoCheckRate: 0.2
+  updateDistance: 1
+  updateDot: 1
+  updateLineOfSight: 0
+  LOSMask:
+    serializedVersion: 2
+    m_Bits: 0
+  phases:
+  - distance: 0
+    dot: 0
+    lineOfSight: 0
+    autoRotateDelta: 0
+  - distance: 9
+    dot: 45
+    lineOfSight: 0
+    autoRotateDelta: 0
+  - distance: 2
+    dot: 45
+    lineOfSight: 0
+    autoRotateDelta: 1
 --- !u!95 &3182761241942017665
 Animator:
   serializedVersion: 7
@@ -6246,7 +6298,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -6277,52 +6329,33 @@ MonoBehaviour:
   health: 0
   stunTime: 0.25
   poofPrefab: {fileID: 0}
-  disableComponents:
-  - {fileID: 1751870638151356086}
-  - {fileID: 6738454064187818541}
-  - {fileID: 3182761241942017665}
-  enemyLootSpawner: {fileID: 0}
+  stunComponents: []
+  enemyLootSpawner: {fileID: 3674508901043307227}
+  stun: {fileID: 1015663925510759720}
   tintAnimator: {fileID: 3292420354071468214}
+  ragdoll: {fileID: 9177222470484513295}
   respawn: 1
   respawnTime: 30
   onDamageEvent:
     _PersistentCalls: []
   currentState: 0
---- !u!114 &3133899637185726238
+--- !u!114 &1015663925510759720
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4811522196661094151}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0452307ce3dc7f044a8c8da0714c5455, type: 3}
+  m_Script: {fileID: 11500000, guid: eb3807489f29eae45b14520befce1f9b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 1751870638151356086}
-  <State>k__BackingField: {fileID: 1751870638151356086}
-  target: {fileID: 0}
-  autoCheckRate: 0.2
-  updateDistance: 1
-  updateDot: 1
-  updateLineOfSight: 0
-  LOSMask:
-    serializedVersion: 2
-    m_Bits: 0
-  phases:
-  - distance: 0
-    dot: 0
-    lineOfSight: 0
-    autoRotateDelta: 0
-  - distance: 9
-    dot: 45
-    lineOfSight: 0
-    autoRotateDelta: 0
-  - distance: 2
-    dot: 45
-    lineOfSight: 0
-    autoRotateDelta: 1
+  m_EditorClassIdentifier: Assembly-CSharp::EntityStunner
+  disableComponents:
+  - {fileID: 6738454064187818541}
+  - {fileID: 1751870638151356086}
+  - {fileID: 3182761241942017665}
+  defaultStunDuration: 0.2
 --- !u!114 &3674508901043307227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6341,23 +6374,6 @@ MonoBehaviour:
   - {fileID: 925324475207166938, guid: 8e07c4e22d1e1e544836d1ad9b0252b3, type: 3}
   spawnForce: 5
   itemChance: 0.4
---- !u!114 &7873505903795856647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4811522196661094151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8e318945a4f6224dad4dd3c599394f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 1751870638151356086}
-  <State>k__BackingField: {fileID: 1751870638151356086}
-  globalSignals:
-    serializedList: []
-  queueSignals: 1
 --- !u!114 &2553139906093570398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6394,6 +6410,7 @@ MonoBehaviour:
   thrownObjectAttack: {fileID: 8073722270089541327}
   health: {fileID: 4543461492338020441}
   constantMovement: {fileID: 0}
+  stun: {fileID: 1015663925510759720}
 --- !u!114 &9177222470484513295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6401,7 +6418,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4811522196661094151}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0489aa5e525cbfe459bfdb27ab7a705f, type: 3}
   m_Name: 
@@ -6444,7 +6461,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4811522196661094151}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b613a2ffe0fa114eba35310ce0aa50c, type: 3}
   m_Name: 
@@ -6452,9 +6469,13 @@ MonoBehaviour:
   attack:
     amount: 10
     velocity: {x: 0, y: 0, z: 0}
-    tags: []
+    tags:
+    - name: Thrown
+    - name: FromPlayer
+    - name: ThrownEnemy
   sourceEntity: {fileID: 0}
-  enabled: 0
+  onContactEvent:
+    _PersistentCalls: []
 --- !u!1 &4858683810890698992
 GameObject:
   m_ObjectHideFlags: 0

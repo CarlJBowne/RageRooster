@@ -37,6 +37,9 @@ public class EnemyHealth : Health
 
     #endregion Config
 
+
+    private void Reset() => ComponentConfig.Reset(this);
+
     protected override void Awake() 
     { 
         base.Awake();

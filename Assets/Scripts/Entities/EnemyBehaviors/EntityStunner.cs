@@ -50,4 +50,7 @@ public class EntityStunner : MonoBehaviour
         }
             
     }
+
+    public void Reset() => enabled = false;
+    public void Awake() => enabled = false;
 }

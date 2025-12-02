@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.UIElements;
+using UnityEngine.UIElements;
+using static UnityEngine.UIElements.UIHelpers;
+#endif
 
 [System.Serializable]
 public struct Attack
@@ -103,6 +109,42 @@ public struct Attack
             if (A.tags[i].name == T.name) return false;
         return true;
     }
+
+#if UNITY_EDITOR
+    [CustomPropertyDrawer(typeof(Attack))]
+    public class PropertyDrawer : UnityEditor.PropertyDrawer
+    {
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            VisualElement root = new VisualElement();
+
+            SerializedProperty amountProp = property.FindPropertyRelative(nameof(amount));
+            SerializedProperty velocityProp = property.FindPropertyRelative(nameof(velocity));
+            SerializedProperty tagsProp = property.FindPropertyRelative(nameof(tags));
+
+            Foldout foldout = new();
+            root.Add(foldout);
+            foldout.text = property.displayName;
+            foldout.value = false; // collapsed by default
+
+            var foldoutLabel = foldout.Q<VisualElement>().Q<Label>();
+
+            PropertyField amountField = new(amountProp, string.Empty);
+            ((VisualElement)foldoutLabel ?? foldout).Add(amountField);
+
+            amountField.style.left = EditorGUIUtility.labelWidth;
+
+            PropertyField velocityField = new(velocityProp);
+            foldout.contentContainer.Add(velocityField);
+            PropertyField tagsField = new(tagsProp);
+            foldout.contentContainer.Add(tagsField);
+
+            root.Bind(property.serializedObject);
+
+            return root;
+        }
+    }
+#endif
 }
 public static class _AttackTagOverrides
 {
