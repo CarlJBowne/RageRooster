@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Obsolete]
 public class PlayerMovementAnimatorConditional : PlayerMovementAnimator
 {
     public enum ConditionalCheck
@@ -43,6 +44,6 @@ public class PlayerMovementAnimatorConditional : PlayerMovementAnimator
         locked = !defaultState;
     }
 
-    public override void RunTransfer() => MiscHelperMethods.PlayerMovementAnimatorTransferToRoots.Conditional(this);
+    //public override void RunTransfer() => MiscHelperMethods.PlayerMovementAnimatorTransferToRoots.Conditional(this);
 
 }

@@ -13,11 +13,13 @@ public class EnemyHealth : Health
 
     public float stunTime;
     public GameObject poofPrefab;
-    public Behaviour[] disableComponents;
-    public EnemyLootSpawner enemyLootSpawner;
+    [System.Obsolete]
+    public Behaviour[] stunComponents;
+    [RelatedComponent(true), SerializeField] EnemyLootSpawner enemyLootSpawner;
+    [RelatedComponent(true), SerializeField] EntityStunner stun;
 
-    public ColorTintAnimation tintAnimator;
-    private RagdollHandler_Obsolete ragdoll;
+    [RelatedComponent, SerializeField] ColorTintAnimation tintAnimator;
+    [RelatedComponent, SerializeField] RagdollHandler ragdoll;
 
     public bool respawn;
     public float respawnTime;
@@ -39,9 +41,6 @@ public class EnemyHealth : Health
     { 
         base.Awake();
         startPosition = transform.position;
-        if (TryGetComponent(out ragdoll)) 
-            // subscribe the ragdoll's state event to set this enemy's state via the property
-            ragdoll.GrabStateEvent += s => State = s;
         if (TryGetComponent(out PoolableObject pool))
         {
             pool.onActivate += Respawn;
@@ -75,7 +74,7 @@ public class EnemyHealth : Health
             CoroutinePlus.Stop(ref stunCO);
             if (ragdoll)
             {
-                State = EntityState.RagDoll;
+                ragdoll.enabled = true;
                 ragdoll.SetVelocity(attack.velocity);
             }
             else Destroy();
@@ -85,46 +84,13 @@ public class EnemyHealth : Health
             Stun(attack);
             if (tintAnimator) tintAnimator.BeginAnimation();
         }
-
+         
     }
 
     void Stun(Attack attack)
     {
-        if (stunTimeLeft == 0)
-        {
-            CoroutinePlus.Begin(ref stunCO, StunEnum(), this);
-            stunTimeLeft += stunTime * (attack == Attack.Tag.Wham ? 2 : 1);
-        }
-        else
-        {
-            stunTimeLeft += stunTime * (attack == Attack.Tag.Wham ? 2 : 1);
-        }
-
-        IEnumerator StunEnum()
-        {
-            SetCompsActive(false);
-
-            yield return null;
-            float storedTimeLeft = 0;
-            while (stunTimeLeft > 0)
-            {
-                storedTimeLeft = stunTimeLeft;
-                yield return WaitFor.Seconds(storedTimeLeft);
-                stunTimeLeft -= storedTimeLeft;
-            }
-            stunTimeLeft = 0;
-
-            if (health <= 0)
-            {
-                if (ragdoll)
-                {
-                    State = EntityState.RagDoll;
-                    ragdoll.SetVelocity(-transform.forward);
-                }
-                else Destroy();
-            }
-            else SetCompsActive(true);
-        }
+        if (!stun.enabled) stun.Stun(stun.defaultStunDuration * (attack == Attack.Tag.Wham ? 2 : 1));
+        else stun.ExtendStun(stun.defaultStunDuration * (attack == Attack.Tag.Wham ? 2 : 1));        
     }
 
 
@@ -144,46 +110,46 @@ public class EnemyHealth : Health
     }
 
     // Refactored: expose a property `State` that encapsulates the previous SetEntityState method logic.
-    public EntityState State
-    {
-        get => currentState;
-        set
-        {
-            if (currentState == value) return;
-            currentState = value;
-            if (ragdoll) ragdoll.State = value;
-            switch (value)
-            {
-                case EntityState.Default:
-                    SetCompsActive(true);
-                    stunTimeLeft = 0;
-                    break;
-                case EntityState.Grabbed:
-                    SetCompsActive(false);
-                    break;
-                case EntityState.Thrown:
-                    break;
-                case EntityState.RagDoll:
-                    SetCompsActive(false);
-                    if (!ragdoll) Destroy();
-                    break;
-            }
-        }
-    }
+    //public EntityState State
+    //{
+    //    get => currentState;
+    //    set
+    //    {
+    //        if (currentState == value) return;
+    //        currentState = value;
+    //        if (ragdoll) ragdoll.State = value;
+    //        switch (value)
+    //        {
+    //            case EntityState.Default:
+    //                SetCompsActive(true);
+    //                stunTimeLeft = 0;
+    //                break;
+    //            case EntityState.Grabbed:
+    //                SetCompsActive(false);
+    //                break;
+    //            case EntityState.Thrown:
+    //                break;
+    //            case EntityState.RagDoll:
+    //                SetCompsActive(false);
+    //                if (!ragdoll) Destroy();
+    //                break;
+    //        }
+    //    }
+    //}
 
-    private void SetCompsActive(bool value)
-    {
-        if (disableComponents.Length > 0)
-            foreach (Behaviour B in disableComponents)
-                if (B != null) B.enabled = value;
-    }
+    //private void SetCompsActive(bool value)
+    //{
+    //    if (stunComponents.Length > 0)
+    //        foreach (Behaviour B in stunComponents)
+    //            if (B != null) B.enabled = value;
+    //}
 
     private void Respawn()
     {
         gameObject.SetActive(true);
         transform.position = startPosition;
         if (TryGetComponent(out StateMachine machine)) machine[0].Enter();
-        State = EntityState.Default;
+        stun.enabled = false;
         transform.rotation = Quaternion.identity;
         health = maxHealth;
     }

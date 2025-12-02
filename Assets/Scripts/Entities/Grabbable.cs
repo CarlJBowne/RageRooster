@@ -24,6 +24,7 @@ public class Grabbable : MonoBehaviour
     [RelatedComponent] public ThrownObjectAttack thrownObjectAttack;
     [RelatedComponent] public Health health;
     [RelatedComponent] public ConstantMovement constantMovement;
+    [RelatedComponent] public EntityStunner stun;
 
     #endregion
     #region Data
@@ -75,8 +76,7 @@ public class Grabbable : MonoBehaviour
     {
         state = State.Grabbed;
         IgnoreCollisionWith(Player.Collider);
-
-
+        if (stun) stun.enabled = true;
     }
 
     public void Release(Vector3? throwVelocity = null)

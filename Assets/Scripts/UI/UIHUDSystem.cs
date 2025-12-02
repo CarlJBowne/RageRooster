@@ -82,7 +82,7 @@ public class UIHUDSystem : MonoBehaviour
         public Sprite healthFullTexture;
         public Sprite healthEmptyTexture;
 
-        int activeHealth = 1;
+        //int activeHealth = 1;
         int activeMaxHealth = 1;
 
         Sequence healthBar;

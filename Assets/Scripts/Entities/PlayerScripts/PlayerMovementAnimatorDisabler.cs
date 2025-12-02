@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
 
+[System.Obsolete]
 public class PlayerMovementAnimatorDisabler : PlayerStateBehavior
 {
     public enum ConditionalCheck

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 
+[System.Obsolete("RagdollHandler_Obsolete has been deprecated. Please use the new Ragdoll system.", false)]
 public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable_Obsolete
 {
     public EnemyHealth health;
