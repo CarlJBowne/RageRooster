@@ -24,7 +24,7 @@ public class Grabbable : MonoBehaviour
     [RelatedComponent] public ThrownObjectAttack thrownObjectAttack;
     [RelatedComponent] public Health health;
     [RelatedComponent] public ConstantMovement constantMovement;
-    [RelatedComponent] public EntityStunner stun;
+    [RelatedComponent] public EntityActivity entityActivity;
 
     #endregion
     #region Data
@@ -54,14 +54,8 @@ public class Grabbable : MonoBehaviour
         ComponentConfig.Reset(this);// Auto-fill common components in editor
     }
 
-    private void OnEnable()
-    {
-        state = State.Grabbable;
-    }
-    private void OnDisable()
-    {
-        state = State.Inactive;
-    }
+    private void OnEnable() => state = State.Grabbable;
+    private void OnDisable() => state = State.Inactive;
 
     public bool GetGrabbable()
     {
@@ -76,13 +70,15 @@ public class Grabbable : MonoBehaviour
     {
         state = State.Grabbed;
         IgnoreCollisionWith(Player.Collider);
-        if (stun) stun.enabled = true;
+        if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Grabbed;
     }
 
-    public void Release(Vector3? throwVelocity = null)
+    public void Throw(Vector3 throwVelocity)
     {
         state = State.Thrown;
-        if (throwVelocity.HasValue) SetVelocity(throwVelocity.Value);
+        if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Thrown;
+
+        SetVelocity(throwVelocity);
 
         enabled = false;
         if (thrownObjectAttack) thrownObjectAttack.onContactAction += () => { enabled = true; };
@@ -93,6 +89,12 @@ public class Grabbable : MonoBehaviour
             yield return WaitFor.Frames(5);
             IgnoreCollisionWith(Player.Collider, false);
         }
+    }
+
+    public void Release()
+    {
+        state = State.Grabbable;
+        if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Default;
     }
 
     public void SetVelocity(Vector3 velocity)

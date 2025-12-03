@@ -22,7 +22,7 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
     public float additionalHoldHeight;
     public GameObject selectIcon;
 
-    [HideInEditMode, HideInPlayMode] public UltEvents.UltEvent<EntityState> GrabStateEvent;
+    [HideInEditMode, HideInPlayMode] public UltEvents.UltEvent<EntityActivity.State> GrabStateEvent;
 
     [FoldoutGroup("Entity State Change Events", nameof(defaultEvent),nameof(grabbedEvent),nameof(thrownEvent),nameof(bounceEvent))]
     public Void _EntityStateEvents;
@@ -45,7 +45,7 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
 
     public CoroutinePlus wiggleCoroutine;
 
-    [SerializeField, HideInEditMode, DisableInPlayMode] protected EntityState currentState;
+    [SerializeField, HideInEditMode, DisableInPlayMode] protected EntityActivity.State currentState;
 
 
     #endregion
@@ -58,7 +58,7 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
 
     public float AdditionalThrowDistance => additionalThrowDistance;
     public float AdditionalHoldHeight => additionalHoldHeight;
-    public virtual bool IsGrabbable => gameObject.activeInHierarchy && UnderThreshold() && currentState != EntityState.Grabbed && currentState != EntityState.Thrown;
+    public virtual bool IsGrabbable => gameObject.activeInHierarchy && UnderThreshold() && currentState != EntityActivity.State.Grabbed && currentState != EntityActivity.State.Thrown;
 
     public virtual Rigidbody rigidBody => rb;
 
@@ -74,13 +74,13 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
         collider = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
         health = GetComponent<EnemyHealth>();
-        State = EntityState.Default;
+        State = EntityActivity.State.Default;
     }
 
     public bool Grab()
     {
         grabbed = true;
-        State = EntityState.Grabbed;
+        State = EntityActivity.State.Grabbed;
         SetVelocity(Vector3.zero);
 
         if (wiggleFreeTime > 0) wiggleCoroutine = new(WiggleEnum(), this);
@@ -96,7 +96,7 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
     public void Throw(Vector3 velocity)
     {
         if (!grabbed) return;
-        State = EntityState.Thrown;
+        State = EntityActivity.State.Thrown;
         SetVelocity(velocity);
     }
     public void Release()
@@ -104,14 +104,14 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
 
         if (!grabbed) return; 
 
-        State = EntityState.Default;
+        State = EntityActivity.State.Default;
         SetVelocity(Vector3.zero);
     } 
 
     public void Release(Vector3? velocity = null)
     {
         if (!grabbed) return;
-        State = EntityState.Default;
+        State = EntityActivity.State.Default;
         SetVelocity(velocity ?? Vector3.zero);
     }
 
@@ -123,14 +123,14 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
 
     public virtual void Contact(GameObject target)
     {
-        if(currentState == EntityState.Thrown && target != PlayerInteracter.ThisGameObject)
+        if(currentState == EntityActivity.State.Thrown && target != PlayerInteracter.ThisGameObject)
         {
-            State = EntityState.RagDoll;
+            State = EntityActivity.State.RagDoll;
             if (thrownAttack.amount > 0 && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(this.GetAttack());
         }
     }
 
-    public virtual EntityState State
+    public virtual EntityActivity.State State
     {
         get => currentState;
         set
@@ -141,19 +141,19 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
 
             switch (currentState)
             {
-                case EntityState.Default:
+                case EntityActivity.State.Default:
                     rigidBody.isKinematic = false;
                     collider.enabled = true;
                     break;
-                case EntityState.Grabbed:
+                case EntityActivity.State.Grabbed:
                     rigidBody.isKinematic = true;
                     collider.enabled = false;
                     break;
-                case EntityState.Thrown:
+                case EntityActivity.State.Thrown:
                     rigidBody.isKinematic = false;
                     collider.enabled = true;
                     break;
-                case EntityState.RagDoll:
+                case EntityActivity.State.RagDoll:
                     break;
                 default:
                     break;
@@ -161,9 +161,9 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
 
             (currentState switch
             {
-                EntityState.Grabbed => grabbedEvent,
-                EntityState.Thrown => thrownEvent,
-                EntityState.RagDoll => bounceEvent,
+                EntityActivity.State.Grabbed => grabbedEvent,
+                EntityActivity.State.Thrown => thrownEvent,
+                EntityActivity.State.RagDoll => bounceEvent,
                 _ => defaultEvent,
             })?.Invoke();
         }

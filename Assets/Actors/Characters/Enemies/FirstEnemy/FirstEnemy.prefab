@@ -6330,15 +6330,14 @@ MonoBehaviour:
   stunTime: 0.25
   poofPrefab: {fileID: 0}
   stunComponents: []
+  entityActivity: {fileID: 1015663925510759720}
   enemyLootSpawner: {fileID: 3674508901043307227}
-  stun: {fileID: 1015663925510759720}
   tintAnimator: {fileID: 3292420354071468214}
   ragdoll: {fileID: 9177222470484513295}
   respawn: 1
   respawnTime: 30
   onDamageEvent:
     _PersistentCalls: []
-  currentState: 0
 --- !u!114 &1015663925510759720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6346,7 +6345,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4811522196661094151}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb3807489f29eae45b14520befce1f9b, type: 3}
   m_Name: 
@@ -6355,7 +6354,6 @@ MonoBehaviour:
   - {fileID: 6738454064187818541}
   - {fileID: 1751870638151356086}
   - {fileID: 3182761241942017665}
-  defaultStunDuration: 0.2
 --- !u!114 &3674508901043307227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6410,7 +6408,7 @@ MonoBehaviour:
   thrownObjectAttack: {fileID: 8073722270089541327}
   health: {fileID: 4543461492338020441}
   constantMovement: {fileID: 0}
-  stun: {fileID: 1015663925510759720}
+  entityActivity: {fileID: 1015663925510759720}
 --- !u!114 &9177222470484513295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6452,6 +6450,7 @@ MonoBehaviour:
   - {fileID: 744946269153696023}
   defaultCollider: {fileID: 982579509626493083}
   defaultRigidbody: {fileID: 6988035877431068064}
+  entityActivity: {fileID: 1015663925510759720}
   grabbable: {fileID: 1790795846713865799}
   enemyHealth: {fileID: 4543461492338020441}
 --- !u!114 &8073722270089541327
