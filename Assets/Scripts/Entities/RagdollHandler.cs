@@ -4,45 +4,6 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class RagdollHandler : MonoBehaviour
 {
-    /// <summary>
-    /// Whether this Entity is currently in ragdoll state.
-    /// </summary>
-    public new bool enabled
-    {
-        get => base.enabled;
-        set
-        {
-            base.enabled = value;
-
-
-            for (int i = 0; i < ragDollColliders.Length; i++)
-            {
-                if (ragDollColliders[i] != null) ragDollColliders[i].enabled = value;
-                if (i < ragDollRigidBodies.Length && ragDollRigidBodies[i] != null) ragDollRigidBodies[i].isKinematic = !value;
-            }
-
-
-            if (!value) ragDollColliders[0].transform.Reset(scale: false);
-
-            defaultCollider.isTrigger = value;
-
-            defaultRigidbody.isKinematic = value || defaultRigidbodyDefaults.isKinematic;
-
-            if(value) Enum().Begin(this);
-            IEnumerator Enum()
-            {
-                float timer = 0f;
-                while (timer < maxRagdollTime)
-                {
-                    timer += Time.deltaTime;
-                    yield return null;
-                    if (timer > minRagdollTime && ragDollRigidBodies[0].linearVelocity.magnitude < minRagdollVelocity) break;
-                }
-                Poof();
-            }
-        }
-    }
-
     public float minRagdollTime;
     public float maxRagdollTime;
     public float minRagdollVelocity;
@@ -57,14 +18,13 @@ public class RagdollHandler : MonoBehaviour
     // Optional Components
     [RelatedComponent]
     public Rigidbody defaultRigidbody;
-    [RelatedComponent]
-    public Grabbable grabbable;
-    [RelatedComponent]
-    public Health enemyHealth;
+    [SerializeField, RelatedComponent] EntityActivity entityActivity;
+    [SerializeField, RelatedComponent] Grabbable grabbable;
+    [SerializeField, RelatedComponent] Health enemyHealth;
 
     private RigidbodyProfile defaultRigidbodyDefaults;
 
-    private void Reset() => ComponentConfig.Reset(this);// Auto-fill common components in editor//if (grabbable == null) TryGetComponent(out grabbable);
+    private void Reset() => ComponentConfig.Reset(this);
 
     private void Awake()
     {
@@ -89,6 +49,45 @@ public class RagdollHandler : MonoBehaviour
         // initialize
         enabled = false;
     }
+
+    private void OnEnable() => EnabledSet(true);
+
+    private void OnDisable() => EnabledSet(false);
+
+    private void EnabledSet(bool value)
+    {
+        base.enabled = value;
+        if (entityActivity && value) entityActivity.CurrentState = EntityActivity.State.RagDoll;
+
+        for (int i = 0; i < ragDollColliders.Length; i++)
+        {
+            if (ragDollColliders[i] != null) ragDollColliders[i].enabled = value;
+            if (i < ragDollRigidBodies.Length && ragDollRigidBodies[i] != null) ragDollRigidBodies[i].isKinematic = !value;
+        }
+
+
+        if (!value) ragDollColliders[0].transform.Reset(scale: false);
+
+        defaultCollider.isTrigger = value;
+
+        defaultRigidbody.isKinematic = value || defaultRigidbodyDefaults.isKinematic;
+
+        if (value) Enum().Begin(this);
+        IEnumerator Enum()
+        {
+            float timer = 0f;
+            while (timer < maxRagdollTime)
+            {
+                timer += Time.deltaTime;
+                yield return null;
+                if (timer > minRagdollTime && ragDollRigidBodies[0].linearVelocity.magnitude < minRagdollVelocity) break;
+            }
+            Poof();
+        }
+    }
+
+
+
 
     private void FixedUpdate()
     {
