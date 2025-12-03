@@ -51,7 +51,7 @@ public class PlayerHealth : Health
             damagable = false;
             if (attack.HasTag(Attack.Tag.Pit))
             {
-                Player.Death(true);
+                Player.PitFall();
                 damagable = true;
             }
             else if (attack.HasTag(Attack.Tag.Wham)) 

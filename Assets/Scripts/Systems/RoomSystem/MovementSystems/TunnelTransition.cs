@@ -1,3 +1,4 @@
+using RageRooster.Systems;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace RageRooster.RoomSystem.MovementSystems
 
         private bool playerWithin;
         CoroutinePlus coroutine;
+        Music.Channel activeMusicChannel;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -21,6 +23,7 @@ namespace RageRooster.RoomSystem.MovementSystems
                 playerWithin = true;
                 coroutine?.StopAuto();
                 coroutine = new(TransitionEnum(), this);
+                activeMusicChannel = Music.Primary;
             }
         }
 
@@ -38,16 +41,19 @@ namespace RageRooster.RoomSystem.MovementSystems
         {
             yield return Overlay.OverGameplay.BasicFadeOutWait(fadeoutTime);
 
-            PostEnum().Begin(Gameplay.Instance);
-            IEnumerator PostEnum()
+            RoomManager.TransitionStyle = new()
             {
-                yield return RoomManager.Transition(destination, forceFullTransition);
-                Overlay.OverGameplay.BasicFadeIn(.5f);
-            }
+                forceFullTransition = forceFullTransition,
+                FadeOutRoutine = Overlay.OverHUD.BasicFadeOutWait(.1f),
+                FadeInRoutine = Overlay.OverHUD.BasicFadeInWait(.5f),
+                PostFadeOutAction = Overlay.OverGameplay.Reset,
+            };
+            RoomManager.StartTransition(destination);
         }
         private IEnumerator CancelEnum()
         {
             yield return Overlay.OverGameplay.BasicFadeInWait(fadeoutTime);
+            activeMusicChannel = null;
         }
 
 

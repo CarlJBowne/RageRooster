@@ -46,25 +46,26 @@ public class PlayerController : PlayerStateBehavior
 	{
 		if(!grabber) grabber = GetComponentFromMachine<PlayerRanged>();
         if(!interacter) interacter = GetComponentFromMachine<PlayerInteracter>();
-
-		Input.Jump.performed            += JumpPress;
-        Input.AttackTap.performed       += BeginActionEvent;
-        Input.AttackHold.performed      += BeginActionEvent;
-        Input.Grab.performed         += BeginActionEvent;
-        Input.Parry.performed           += BeginActionEvent;
-        Input.Interact.performed        += BeginActionEvent;
-
-        Input.Jump.canceled             += JumpRelease;
-        Input.Aim.performed       += ShootModeActivate;
-        Input.Aim.canceled        += ShootModeDeactivate;
-
-        Input.Charge1.performed       += ChargeButtons;
-        Input.Charge2.performed       += ChargeButtons;
     }
 
+    private void OnEnable()
+    {
+        Input.Jump.performed += JumpPress;
+        Input.AttackTap.performed += BeginActionEvent;
+        Input.AttackHold.performed += BeginActionEvent;
+        Input.Grab.performed += BeginActionEvent;
+        Input.Parry.performed += BeginActionEvent;
+        Input.Interact.performed += BeginActionEvent;
 
-	private void OnDestroy()
-	{
+        Input.Jump.canceled += JumpRelease;
+        Input.Aim.performed += ShootModeActivate;
+        Input.Aim.canceled += ShootModeDeactivate;
+
+        Input.Charge1.performed += ChargeButtons;
+        Input.Charge2.performed += ChargeButtons;
+    }
+    private void OnDisable()
+    {
         Input.Jump.performed -= JumpPress;
         Input.AttackTap.performed -= BeginActionEvent;
         Input.AttackHold.performed -= BeginActionEvent;
@@ -78,12 +79,11 @@ public class PlayerController : PlayerStateBehavior
 
         Input.Charge1.performed -= ChargeButtons;
         Input.Charge2.performed -= ChargeButtons;
-
     }
 
     protected override void OnUpdate()
 	{
-
+        if (!enabled) return;
 		if (jumpInput > 0) jumpInput -= Time.deltaTime;
 		if(!overrideMovementControl) camAdjustedMovement = Input.Movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
 		else camAdjustedMovement = overrideMovementVector.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);

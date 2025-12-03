@@ -70,7 +70,6 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
         transform.position = newPosition;
         RB.position = newPosition;
         RB.MovePosition(newPosition);
-        OnSetPosition(newPosition);
     }
 
     public void DirectionSet(Vector3 target, float maxTurnSpeed)
@@ -109,7 +108,6 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
     }
 
 
-    public static Vector3 PositionGet { get; private set; }
 
     #endregion GetSet
 
@@ -201,7 +199,6 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
     }
 
 
-    protected override void OnSetPosition(Vector3 newPos) => PositionGet = newPos;
 
     public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
     {
@@ -266,5 +263,15 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
             this.position = fromHit.point;
             this.normal = fromHit.normal;
         }
+    }
+
+
+    private void OnEnable()
+    {
+        
+    }
+    private void OnDisable()
+    {
+        
     }
 }

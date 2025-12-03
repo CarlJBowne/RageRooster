@@ -18,6 +18,6 @@ namespace RageRooster.Systems.SaveSystem
             return true;
         }
 
-        public void Save() => SaveFile.SaveFileToDisk(spawnPoint.GetDestination());
+        public void Save() => SaveData.SaveFileToDisk(spawnPoint.GetDestination());
     }
 }

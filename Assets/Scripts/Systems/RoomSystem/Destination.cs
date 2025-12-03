@@ -6,11 +6,25 @@ using static RageRooster.RoomSystem.RoomAsset;
 
 namespace RageRooster.RoomSystem
 {
+    /// <summary>
+    /// Represents a specific Destination within the game world that can be fed into the <see cref="RoomManager"/>, defined with a <see cref="RoomAsset"/> and a <see cref="SpawnPoint"/> ID. <br/>
+    /// A Serialized equivalent, <see cref="DestinationSerial"/>, is also provided for easy saving/loading of Destinations. <br/>
+    /// </summary>
     [System.Serializable]
     public struct Destination
     {
+        /// <summary>
+        /// The target Room of the destination, defined using a <see cref="RoomAsset"/>. <br/>
+        /// The appropriate <see cref="AreaAsset"/> can be accessed through <see cref="area"/>.
+        /// </summary>
         public RoomAsset room;
+        /// <summary>
+        /// The ID of the <see cref="SpawnPoint"/> within the Room to spawn at.
+        /// </summary>
         public int spawnID;
+        /// <summary>
+        /// Quick access to the <see cref="AreaAsset"/> the target Room belongs to.
+        /// </summary>
         public AreaAsset area => room.area;
 
         public static Destination Null => new()
@@ -50,11 +64,15 @@ namespace RageRooster.RoomSystem
         };
         public static implicit operator Destination(SpawnPoint spawn) => new()
         {
-            room = spawn.root.asset,
+            room = ((IRoomObject)spawn).root.asset,
             spawnID = spawn.ID
         };
 
 
+        /// <summary>
+        /// Easy redirection to the current <see cref="Destination"/> in the active <see cref="SaveData"/>
+        /// </summary>
+        public static Destination Current => SaveData.Current.location;
 
         //Possibly Unnecessary Constructors, real constructers will be created on a necessary case basis to ensure no willy-nilly usage of potentially malformed Destinations.
         /* 
@@ -117,10 +135,22 @@ namespace RageRooster.RoomSystem
         */
     }
 
+    /// <summary>
+    /// A serialized version of <see cref="Destination"/> using basic data types that can be easily saved/loaded. <br/>
+    /// </summary>
     public struct DestinationSerial
     {
+        /// <summary>
+        /// The Display name of the Area. Used to look up the <see cref="AreaAsset"/> through the <see cref="AreaRegistry"/>.
+        /// </summary>
         public string areaName;
+        /// <summary>
+        /// The ID of the Room within the Area's list. Used to look up the <see cref="RoomAsset"/> within the <see cref="AreaAsset"/>.
+        /// </summary>
         public int roomID;
+        /// <summary>
+        /// The <see cref="SpawnPoint"/> ID within the Room to spawn at.
+        /// </summary>
         public int spawnID;
 
         public static implicit operator JToken(DestinationSerial serial) => new JObject

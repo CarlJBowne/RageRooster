@@ -1,6 +1,6 @@
 /* ======================================================================================== */
 /* FMOD Studio API - C# wrapper.                                                            */
-/* Copyright (c), Firelight Technologies Pty, Ltd. 2004-2024.                               */
+/* Copyright (c), Firelight Technologies Pty, Ltd. 2004-2025.                               */
 /*                                                                                          */
 /* For more detail visit:                                                                   */
 /* https://fmod.com/docs/2.02/api/studio-api.html                                           */
@@ -395,7 +395,7 @@ namespace FMOD.Studio
         }
         public RESULT setAdvancedSettings(ADVANCEDSETTINGS settings)
         {
-            settings.cbsize = MarshalHelper.SizeOf(typeof(ADVANCEDSETTINGS));
+            settings.cbsize = Marshal.SizeOf<ADVANCEDSETTINGS>();
             return FMOD_Studio_System_SetAdvancedSettings(this.handle, ref settings);
         }
         public RESULT setAdvancedSettings(ADVANCEDSETTINGS settings, string encryptionKey)
@@ -411,7 +411,7 @@ namespace FMOD.Studio
         }
         public RESULT getAdvancedSettings(out ADVANCEDSETTINGS settings)
         {
-            settings.cbsize = MarshalHelper.SizeOf(typeof(ADVANCEDSETTINGS));
+            settings.cbsize = Marshal.SizeOf<ADVANCEDSETTINGS>();
             return FMOD_Studio_System_GetAdvancedSettings(this.handle, out settings);
         }
         public RESULT initialize(int maxchannels, INITFLAGS studioflags, FMOD.INITFLAGS flags, IntPtr extradriverdata)
@@ -679,7 +679,7 @@ namespace FMOD.Studio
         }
         public RESULT loadBankCustom(BANK_INFO info, LOAD_BANK_FLAGS flags, out Bank bank)
         {
-            info.size = MarshalHelper.SizeOf(typeof(BANK_INFO));
+            info.size = Marshal.SizeOf<BANK_INFO>();
             return FMOD_Studio_System_LoadBankCustom(this.handle, ref info, flags, out bank.handle);
         }
         public RESULT unloadAll()
@@ -1296,6 +1296,27 @@ namespace FMOD.Studio
         }
 
         #endregion
+
+        public bool Matches(FMODUnity.EventReference reference)
+        {
+            var thisIDResult = getID(out GUID id);
+            if (thisIDResult is not RESULT.OK) return false;
+            return reference.Guid == id;
+        }
+
+
+        public static bool operator ==(EventDescription a, EventDescription b)
+        {
+            if(a.getID(out GUID ida) != RESULT.OK) return false;
+            if(b.getID(out GUID idb) != RESULT.OK) return false;
+            return ida == idb;
+        }
+
+        public static bool operator !=(EventDescription a, EventDescription b) => !(a == b);
+
+        public override bool Equals(object obj) => obj is EventDescription other ? this == other : false;
+
+        public override int GetHashCode() => handle.GetHashCode();
     }
 
     public struct EventInstance
@@ -1576,6 +1597,15 @@ namespace FMOD.Studio
         }
 
         #endregion
+
+        public EventDescription description
+        {
+            get
+            {
+                getDescription(out EventDescription desc);
+                return desc;
+            }
+        }
     }
 
     public struct Bus

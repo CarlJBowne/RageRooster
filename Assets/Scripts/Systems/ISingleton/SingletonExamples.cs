@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace SLS.ISingleton
@@ -61,6 +62,21 @@ namespace SLS.ISingleton
 
         protected virtual void OnInitialize() { }
         protected virtual void OnDeInitialize() { }
+
+        [ContextMenu("Add To Preloaded Assets")]
+#if UNITY_EDITOR
+        protected void AddToPreloadedAssets()
+        {
+            var existing = UnityEditor.PlayerSettings.GetPreloadedAssets();
+            var existingList = new List<Object>(existing);
+            if (!existingList.Contains(this) || existingList.Any(I => I is SingletonAsset<T>))
+            {
+                existingList.Add(this);
+                var newExisting = existingList.ToArray();
+                UnityEditor.PlayerSettings.SetPreloadedAssets(newExisting);
+            }
+#endif
+        }
     }
     /// <summary>
     /// A basic example of a Singleton ScriptableObject that is not saved as an asset.
