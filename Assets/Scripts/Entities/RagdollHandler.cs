@@ -8,23 +8,24 @@ public class RagdollHandler : MonoBehaviour
     public float maxRagdollTime;
     public float minRagdollVelocity;
 
-    public Collider[] ragDollColliders;
-    public Rigidbody[] ragDollRigidBodies;
+    [SerializeField, Tooltip("Should have exaclty 11 for basic Humanoid Bodies")] Collider[] ragDollColliders = new Collider[11];
+    [SerializeField, Tooltip("Should have exaclty 11 for basic Humanoid Bodies")] Rigidbody[] ragDollRigidBodies = new Rigidbody[11];
 
-    //Required Components
-    [RelatedComponent(true)]
-    public Collider defaultCollider;
+    [SerializeField, RelatedComponent(true)] Collider defaultCollider;
 
-    // Optional Components
-    [RelatedComponent]
-    public Rigidbody defaultRigidbody;
+    [SerializeField, RelatedComponent] Rigidbody defaultRigidBody;
     [SerializeField, RelatedComponent] EntityActivity entityActivity;
     [SerializeField, RelatedComponent] Grabbable grabbable;
     [SerializeField, RelatedComponent] Health enemyHealth;
 
     private RigidbodyProfile defaultRigidbodyDefaults;
+    private float poofTimer = -1;
 
-    private void Reset() => ComponentConfig.Reset(this);
+    private void Reset()
+    {
+        ComponentConfig.Reset(this);
+        //rootBoneCollider = null;
+    }
 
     private void Awake()
     {
@@ -34,15 +35,14 @@ public class RagdollHandler : MonoBehaviour
             Destroy(this);
         }
 
-        if (defaultRigidbody) defaultRigidbodyDefaults = new(defaultRigidbody);
+        if (defaultRigidBody) defaultRigidbodyDefaults = new(defaultRigidBody);
 
         // Ignore collisions between the interaction collider and ragdoll colliders so the proxy doesn't self-collide.
-        if (defaultCollider != null && ragDollColliders != null)
+        for (int i = 0; i < ragDollColliders.Length; i++)
         {
-            for (int i = 0; i < ragDollColliders.Length; i++)
+            if (ragDollColliders[i] != null)
             {
-                if (ragDollColliders[i] != null)
-                    Physics.IgnoreCollision(defaultCollider, ragDollColliders[i]);
+                Physics.IgnoreCollision(defaultCollider, ragDollColliders[i]);
             }
         }
 
@@ -59,31 +59,22 @@ public class RagdollHandler : MonoBehaviour
         base.enabled = value;
         if (entityActivity && value) entityActivity.CurrentState = EntityActivity.State.RagDoll;
 
+        defaultCollider.isTrigger = value;
+        //rootBoneCollider.enabled = value;
+
+        //If true, make non-kinematic, otherwise restore default from profile.
+        defaultRigidBody.isKinematic = value || defaultRigidbodyDefaults.isKinematic; 
+        //defaultRigidBody.useGravity = value || defaultRigidbodyDefaults.useGravity;
+
         for (int i = 0; i < ragDollColliders.Length; i++)
         {
             if (ragDollColliders[i] != null) ragDollColliders[i].enabled = value;
             if (i < ragDollRigidBodies.Length && ragDollRigidBodies[i] != null) ragDollRigidBodies[i].isKinematic = !value;
         }
 
-
         if (!value) ragDollColliders[0].transform.Reset(scale: false);
 
-        defaultCollider.isTrigger = value;
-
-        defaultRigidbody.isKinematic = value || defaultRigidbodyDefaults.isKinematic;
-
-        if (value) Enum().Begin(this);
-        IEnumerator Enum()
-        {
-            float timer = 0f;
-            while (timer < maxRagdollTime)
-            {
-                timer += Time.deltaTime;
-                yield return null;
-                if (timer > minRagdollTime && ragDollRigidBodies[0].linearVelocity.magnitude < minRagdollVelocity) break;
-            }
-            Poof();
-        }
+        PoofCycle = value;
     }
 
 
@@ -93,13 +84,32 @@ public class RagdollHandler : MonoBehaviour
     {
         transform.position = ragDollRigidBodies[0].transform.position;
         ragDollRigidBodies[0].transform.localPosition = Vector3.zero;
+
+        if(poofTimer >= 0)
+        {
+            poofTimer += Time.fixedDeltaTime;
+            if((poofTimer >= minRagdollTime && ragDollRigidBodies[0].linearVelocity.magnitude < minRagdollVelocity) || poofTimer >= maxRagdollTime)
+            {
+                Poof();
+                poofTimer = -1;
+            }
+        }
     }
 
-
+    public bool PoofCycle
+    {
+        get => poofTimer > 0;
+        set
+        {
+            if (!enabled) return;
+            poofTimer = value ? 0 : -1;
+        }
+    }
 
 
     public void SetVelocity(Vector3 velocity)
     {
+        defaultRigidBody.linearVelocity = velocity;
         for (int i = 0; i < ragDollRigidBodies.Length; i++)
             if (ragDollRigidBodies[i] != null) ragDollRigidBodies[i].linearVelocity = velocity;
     }
@@ -107,8 +117,7 @@ public class RagdollHandler : MonoBehaviour
     // convenience alias for merged-proxy semantics
     public void IgnoreCollisionWith(Collider other, bool ignore = true)
     {
-        if (ragDollColliders == null) return;
-        
+        //Physics.IgnoreCollision(rootBoneCollider, other, ignore);
         for (int i = 0; i < ragDollColliders.Length; i++)
             if (ragDollColliders[i] != null) Physics.IgnoreCollision(ragDollColliders[i], other, ignore);
 
@@ -117,7 +126,9 @@ public class RagdollHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!enabled) return;
         if (grabbable && !grabbable.enabled) grabbable.enabled = true;
+        if (!PoofCycle) PoofCycle = true;
 
         if(other.TryGetComponent(out IAttackSource attack))
         {
