@@ -164,8 +164,8 @@ public class RagdollHandler_Obsolete : Grabbable_Obsolete
         newRagdoll.minRagdollTime = minRagdollTime;
         newRagdoll.maxRagdollTime = maxRagdollTime;
         newRagdoll.minRagdollVelocity = minRagdollVelovity;
-        newRagdoll.ragDollColliders = ragDollColliders;
-        newRagdoll.ragDollRigidBodies = ragDollRigidBodies;
+        //newRagdoll.ragDollColliders = ragDollColliders;
+        //newRagdoll.ragDollRigidBodies = ragDollRigidBodies;
         
         DestroyImmediate(proxy);
     }

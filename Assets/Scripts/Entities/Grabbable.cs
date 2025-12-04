@@ -20,12 +20,12 @@ public class Grabbable : MonoBehaviour
     [RelatedComponent(true)] public MeleeTarget meleeTarget;
 
     //Potential Components
-    [RelatedComponent] public Rigidbody rigidBody;
-    [RelatedComponent] public RagdollHandler ragdollHandler;
-    [RelatedComponent] public ThrownObjectAttack thrownObjectAttack;
-    [RelatedComponent] public Health health;
-    [RelatedComponent] public ConstantMovement constantMovement;
-    [RelatedComponent] public EntityActivity entityActivity;
+    [SerializeField, RelatedComponent] Rigidbody rigidBody;
+    [SerializeField, RelatedComponent] RagdollHandler ragdollHandler;
+    [SerializeField, RelatedComponent] ThrownObjectAttack thrownObjectAttack;
+    [SerializeField, RelatedComponent] Health health;
+    [SerializeField, RelatedComponent] ConstantMovement constantMovement;
+    [SerializeField, RelatedComponent] EntityActivity entityActivity;
 
     #endregion
     #region Data
@@ -38,6 +38,7 @@ public class Grabbable : MonoBehaviour
         Thrown = 2
     }
     private State _state = State.Inactive;
+    private RigidbodyProfile rigidbodyProfile;
 
     #endregion
 
@@ -50,10 +51,12 @@ public class Grabbable : MonoBehaviour
 
         return result != null && result.GetGrabbable();
     }
-    private void Reset() => ComponentConfig.Reset(this);// Auto-fill common components in editor
+    void Reset() => ComponentConfig.Reset(this);// Auto-fill common components in editor
 
-    private void OnEnable() { if (state is not State.Grabbable) state = State.Grabbable; }
-    private void OnDisable() { if(state is State.Grabbable) state = State.Inactive; }
+    void Awake() => rigidbodyProfile = rigidBody != null ? new(rigidBody) : null;
+
+    void OnEnable() { if (state is not State.Grabbable) state = State.Grabbable; }
+    void OnDisable() { if(state is State.Grabbable) state = State.Inactive; }
 
     public bool GetGrabbable()
     {
@@ -68,6 +71,12 @@ public class Grabbable : MonoBehaviour
     {
         state = State.Grabbed;
         if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Grabbed;
+        if (ragdollHandler)
+        {
+            ragdollHandler.enabled = true;
+            ragdollHandler.PoofCycle = false;
+        }
+        else if(rigidBody) rigidBody.isKinematic = true;
     }
 
     public void Throw(Vector3 throwVelocity)
@@ -92,7 +101,12 @@ public class Grabbable : MonoBehaviour
             } 
         }
 
-        if (ragdollHandler) ragdollHandler.enabled = true;
+        if (ragdollHandler)
+        {
+            ragdollHandler.enabled = true;
+            ragdollHandler.PoofCycle = true;
+        }
+        else if (rigidBody) rigidBody.isKinematic = rigidbodyProfile.isKinematic;
         SetVelocity(throwVelocity);
     }
 
@@ -100,6 +114,8 @@ public class Grabbable : MonoBehaviour
     {
         state = State.Grabbable;
         if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Default;
+        if (ragdollHandler) ragdollHandler.enabled = false;
+        else if(rigidBody) rigidBody.isKinematic = rigidbodyProfile.isKinematic;
     }
 
     public State state
