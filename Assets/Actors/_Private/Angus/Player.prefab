@@ -4985,6 +4985,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 107765510827790769}
   m_LocalEulerAnglesHint: {x: 0, y: 17.734755, z: 0}
+--- !u!1 &2061678766907397029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2494881031508191783}
+  m_Layer: 6
+  m_Name: Center
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2494881031508191783
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061678766907397029}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.733, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 802911248559169720}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2124590860796095726
 GameObject:
   m_ObjectHideFlags: 0
@@ -6540,6 +6571,7 @@ Transform:
   - {fileID: 6385669238997089540}
   - {fileID: 4873779160296736242}
   - {fileID: 2290438708623670232}
+  - {fileID: 2494881031508191783}
   - {fileID: 6163627308343083636}
   - {fileID: 7341979101928341701}
   - {fileID: 2939830601058319735}
@@ -6559,8 +6591,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f53dcb109650cd40b63bf8d437626bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inFallDownPitTime: 0
-  inDeathTime: 0
 --- !u!114 &8455434200384702600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6819,6 +6849,8 @@ MonoBehaviour:
   damageState: {fileID: 8568736502713642114}
   damageStateWham: {fileID: 6590708857773316528}
   tintAnimator: {fileID: 85003271275189209}
+  inFallDownPitTime: 1
+  inDeathTime: 2
 --- !u!114 &1371118413310184343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6916,25 +6948,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TargetingManager
   rangedHipFireRange:
-    front: {fileID: 802911248559169720}
+    front: {fileID: 2494881031508191783}
     maxDistance: 7.2389812
     maxAngle: 43.0717
     distanceAngleWeighting: 0.5
     viewColor: {r: 1, g: 0, b: 0, a: 1}
   rangedAimingRange:
-    front: {fileID: 802911248559169720}
+    front: {fileID: 2494881031508191783}
     maxDistance: 20.021955
     maxAngle: 8.84509
     distanceAngleWeighting: 0.5
     viewColor: {r: 0, g: 0.63962555, b: 1, a: 1}
   grabbingRange:
-    front: {fileID: 802911248559169720}
+    front: {fileID: 2494881031508191783}
     maxDistance: 1.7781098
     maxAngle: 73.05075
     distanceAngleWeighting: 0.5
     viewColor: {r: 1, g: 0.4820457, b: 0, a: 1}
   interactionRange:
-    front: {fileID: 802911248559169720}
+    front: {fileID: 2494881031508191783}
     maxDistance: 2.1241167
     maxAngle: 20.437807
     distanceAngleWeighting: 0.5
@@ -7109,6 +7141,7 @@ MonoBehaviour:
   - {fileID: 7415926761768878448}
   defaultCollider: {fileID: 598530174602593461}
   defaultRigidbody: {fileID: 1838944232945776554}
+  entityActivity: {fileID: 0}
   grabbable: {fileID: 0}
   enemyHealth: {fileID: 4810220497755855147}
 --- !u!1 &2975349023816060615
@@ -22222,7 +22255,7 @@ PrefabInstance:
     - target: {fileID: 7081382935272620051, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}
       propertyPath: m_CastShadows
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}
@@ -22337,7 +22370,7 @@ PrefabInstance:
     - target: {fileID: 7081382935272620051, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}
       propertyPath: m_CastShadows
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}

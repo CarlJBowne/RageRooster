@@ -229,12 +229,6 @@ public class Player : MonoBehaviour
 
     #endregion
 
-
-    #region Instance Fields
-    public float inFallDownPitTime;
-    public float inDeathTime;
-    #endregion Instance Fields
-
     #region Events / Callbacks
     /// <summary>
     /// A callback invoked when the player respawns. (Possibly Obsolete?)
@@ -271,8 +265,8 @@ public class Player : MonoBehaviour
             SaveData.Current.playerStats.upgrades = Upgrades.Debug();
         };
 #endif
-        fallDownPitTime = inFallDownPitTime;
-        deathTime = inDeathTime;
+        fallDownPitTime = Health.playerObject.inFallDownPitTime;
+        deathTime = Health.playerObject.inDeathTime;
     }
     #endregion
 

@@ -132,41 +132,6 @@ public class EnemyHealth : Health
         else Destroy(gameObject);
     }
 
-    // Refactored: expose a property `State` that encapsulates the previous SetEntityState method logic.
-    //public EntityState State
-    //{
-    //    get => currentState;
-    //    set
-    //    {
-    //        if (currentState == value) return;
-    //        currentState = value;
-    //        if (ragdoll) ragdoll.State = value;
-    //        switch (value)
-    //        {
-    //            case EntityState.Default:
-    //                SetCompsActive(true);
-    //                stunTimeLeft = 0;
-    //                break;
-    //            case EntityState.Grabbed:
-    //                SetCompsActive(false);
-    //                break;
-    //            case EntityState.Thrown:
-    //                break;
-    //            case EntityState.RagDoll:
-    //                SetCompsActive(false);
-    //                if (!ragdoll) Destroy();
-    //                break;
-    //        }
-    //    }
-    //}
-
-    //private void SetCompsActive(bool value)
-    //{
-    //    if (stunComponents.Length > 0)
-    //        foreach (Behaviour B in stunComponents)
-    //            if (B != null) B.enabled = value;
-    //}
-
     private void Respawn()
     {
         gameObject.SetActive(true);
