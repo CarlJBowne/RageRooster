@@ -10,6 +10,7 @@ public class ThrownObjectAttack : AttackSourceSingle
 
     public override void Contact(GameObject target)
     {
+        if(!enabled) return;
         base.Contact(target);
         enabled = false;
         onContactAction?.Invoke();

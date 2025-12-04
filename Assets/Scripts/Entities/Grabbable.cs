@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 [RequireComponent(typeof(Collider),typeof(MeleeTarget))]
 public class Grabbable : MonoBehaviour
@@ -36,7 +37,7 @@ public class Grabbable : MonoBehaviour
         Grabbed = 1,
         Thrown = 2
     }
-    public State state { get; protected set; } = State.Inactive;
+    private State _state = State.Inactive;
 
     #endregion
 
@@ -49,13 +50,10 @@ public class Grabbable : MonoBehaviour
 
         return result != null && result.GetGrabbable();
     }
-    private void Reset()
-    {
-        ComponentConfig.Reset(this);// Auto-fill common components in editor
-    }
+    private void Reset() => ComponentConfig.Reset(this);// Auto-fill common components in editor
 
-    private void OnEnable() => state = State.Grabbable;
-    private void OnDisable() => state = State.Inactive;
+    private void OnEnable() { if (state is not State.Grabbable) state = State.Grabbable; }
+    private void OnDisable() { if(state is State.Grabbable) state = State.Inactive; }
 
     public bool GetGrabbable()
     {
@@ -69,7 +67,6 @@ public class Grabbable : MonoBehaviour
     public void Grab()
     {
         state = State.Grabbed;
-        IgnoreCollisionWith(Player.Collider);
         if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Grabbed;
     }
 
@@ -78,17 +75,25 @@ public class Grabbable : MonoBehaviour
         state = State.Thrown;
         if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Thrown;
 
-        SetVelocity(throwVelocity);
-
-        enabled = false;
-        if (thrownObjectAttack) thrownObjectAttack.onContactAction += () => { enabled = true; };
-
-        Enum().Begin(collider);
-        IEnumerator Enum()
+        if (thrownObjectAttack)
         {
-            yield return WaitFor.Frames(5);
-            IgnoreCollisionWith(Player.Collider, false);
+            thrownObjectAttack.onContactAction += () =>
+            {
+                state = State.Grabbable;
+            };
         }
+        else
+        {
+            PostThrowStateEnum().Begin(this);
+            IEnumerator PostThrowStateEnum()
+            {
+                yield return new WaitForSeconds(1f);
+                state = State.Grabbable;
+            } 
+        }
+
+        if (ragdollHandler) ragdollHandler.enabled = true;
+        SetVelocity(throwVelocity);
     }
 
     public void Release()
@@ -97,22 +102,43 @@ public class Grabbable : MonoBehaviour
         if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Default;
     }
 
+    public State state
+    {
+        get => _state;
+        private set
+        {
+            if (value == _state) return;
+
+            State prev = _state;
+            _state = value;
+
+            enabled = value == State.Grabbable;
+            meleeTarget.enabled = value == State.Grabbable;
+
+            if (value > State.Grabbable || prev > State.Grabbable)
+            {
+                if (collider != null)
+                    Physics.IgnoreCollision(collider, Player.Collider, value > State.Grabbable);
+                if (ragdollHandler != null) ragdollHandler.IgnoreCollisionWith(Player.Collider, value > State.Grabbable);
+            }
+        }
+    }
+
     public void SetVelocity(Vector3 velocity)
     {
-        if (rigidBody != null) rigidBody.linearVelocity = velocity;
-        else if (constantMovement != null)
+        if (ragdollHandler)
+        {
+            ragdollHandler.SetVelocity(velocity);
+        }
+        else if (rigidBody)
+        {
+            rigidBody.linearVelocity = velocity;
+        }
+        else if (constantMovement)
         {
             constantMovement.Set(velocity);
             constantMovement.ResetDownwardVelocity();
         }
-        if (ragdollHandler != null) ragdollHandler.SetVelocity(velocity);
-    }
-
-    public void IgnoreCollisionWith(Collider other, bool ignore = true)
-    {
-        if (collider != null)
-            Physics.IgnoreCollision(collider, other, ignore);
-        if (ragdollHandler != null) ragdollHandler.IgnoreCollisionWith(other, ignore);
     }
 
     public Vector3 HeldOffset => anchorPoint != null ? -anchorPoint.localPosition : Vector3.zero;

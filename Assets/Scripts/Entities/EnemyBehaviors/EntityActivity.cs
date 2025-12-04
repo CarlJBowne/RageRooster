@@ -26,6 +26,9 @@ public class EntityActivity : MonoBehaviour
             for (int i = 0; i < disableComponents.Length; i++)
                 if (disableComponents[i] != null)
                     disableComponents[i].enabled = value;
+
+        if (value && currentState != State.Default) currentState = State.Default;
+        if (!value && currentState == State.Default) currentState = State.Inactive;
     }
 
     public void Enable() => enabled = true;

@@ -88,8 +88,8 @@ public class EnemyHealth : Health
 
     void Stun(Attack attack)
     {
-        CoroutinePlus.Begin(ref stunRoutine, StunEnum(), this, false);
         stunTimeLeft = stunTime * (attack == Attack.Tag.Wham ? 2 : 1);
+        CoroutinePlus.Begin(ref stunRoutine, StunEnum(), this, false);
 
         IEnumerator StunEnum()
         {

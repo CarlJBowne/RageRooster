@@ -107,17 +107,12 @@ public class RagdollHandler : MonoBehaviour
     // convenience alias for merged-proxy semantics
     public void IgnoreCollisionWith(Collider other, bool ignore = true)
     {
-        if (ragDollColliders != null)
-        {
-            for (int i = 0; i < ragDollColliders.Length; i++)
-                if (ragDollColliders[i] != null) Physics.IgnoreCollision(ragDollColliders[i], other, ignore);
+        if (ragDollColliders == null) return;
+        
+        for (int i = 0; i < ragDollColliders.Length; i++)
+            if (ragDollColliders[i] != null) Physics.IgnoreCollision(ragDollColliders[i], other, ignore);
 
-            if (defaultCollider != null) Physics.IgnoreCollision(defaultCollider, other, ignore);
-        }
-        else if (grabbable != null)
-        {
-            grabbable.IgnoreCollisionWith(other, ignore);
-        }
+        if (defaultCollider != null) Physics.IgnoreCollision(defaultCollider, other, ignore);
     }
 
     private void OnTriggerEnter(Collider other)
