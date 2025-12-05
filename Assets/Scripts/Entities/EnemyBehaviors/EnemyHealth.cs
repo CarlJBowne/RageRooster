@@ -57,7 +57,7 @@ public class EnemyHealth : Health
     {
         damageEvent?.Invoke(attack.amount);
 
-        if (ragdoll && ragdoll.enabled) ragdoll.SetVelocity(attack.velocity);
+        if (ragdoll && ragdoll.State != RagdollHandler.States.Off) ragdoll.SetVelocity(attack.velocity);
         else if (health != 0)
         {
             Stun(attack);
@@ -73,7 +73,7 @@ public class EnemyHealth : Health
             CoroutinePlus.Stop(ref stunRoutine);
             if (ragdoll)
             {
-                ragdoll.enabled = true;
+                ragdoll.State = RagdollHandler.States.On;
                 ragdoll.SetVelocity(attack.velocity);
             }
             else Destroy();
@@ -105,7 +105,7 @@ public class EnemyHealth : Health
             {
                 if (ragdoll)
                 {
-                    ragdoll.enabled = true;
+                    ragdoll.State = RagdollHandler.States.On;
                     ragdoll.SetVelocity(attack.velocity);
                 }
                 else Destroy();

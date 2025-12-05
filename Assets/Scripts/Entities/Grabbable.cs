@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,14 +31,14 @@ public class Grabbable : MonoBehaviour
     #endregion
     #region Data
 
-    public enum State
+    public enum States
     {
         Inactive = -1,
         Grabbable = 0,
         Grabbed = 1,
         Thrown = 2
     }
-    private State _state = State.Inactive;
+    private States state = States.Inactive;
     private RigidbodyProfile rigidbodyProfile;
 
     #endregion
@@ -55,8 +56,8 @@ public class Grabbable : MonoBehaviour
 
     void Awake() => rigidbodyProfile = rigidBody != null ? new(rigidBody) : null;
 
-    void OnEnable() { if (state is not State.Grabbable) state = State.Grabbable; }
-    void OnDisable() { if(state is State.Grabbable) state = State.Inactive; }
+    void OnEnable() { if (State is not States.Grabbable) State = States.Grabbable; }
+    void OnDisable() { if(State is States.Grabbable) State = States.Inactive; }
 
     public bool GetGrabbable()
     {
@@ -69,26 +70,22 @@ public class Grabbable : MonoBehaviour
 
     public void Grab()
     {
-        state = State.Grabbed;
+        State = States.Grabbed;
         if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Grabbed;
-        if (ragdollHandler)
-        {
-            ragdollHandler.enabled = true;
-            ragdollHandler.PoofCycle = false;
-        }
+        if (ragdollHandler) ragdollHandler.State = RagdollHandler.States.Grabbed;
         else if(rigidBody) rigidBody.isKinematic = true;
     }
 
     public void Throw(Vector3 throwVelocity)
     {
-        state = State.Thrown;
+        State = States.Thrown;
         if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Thrown;
 
         if (thrownObjectAttack)
         {
             thrownObjectAttack.onContactAction += () =>
             {
-                state = State.Grabbable;
+                State = States.Grabbable;
             };
         }
         else
@@ -97,45 +94,41 @@ public class Grabbable : MonoBehaviour
             IEnumerator PostThrowStateEnum()
             {
                 yield return new WaitForSeconds(1f);
-                state = State.Grabbable;
+                State = States.Grabbable;
             } 
         }
 
-        if (ragdollHandler)
-        {
-            ragdollHandler.enabled = true;
-            ragdollHandler.PoofCycle = true;
-        }
+        if (ragdollHandler) ragdollHandler.State = RagdollHandler.States.On;
         else if (rigidBody) rigidBody.isKinematic = rigidbodyProfile.isKinematic;
         SetVelocity(throwVelocity);
     }
 
     public void Release()
     {
-        state = State.Grabbable;
+        State = States.Grabbable;
         if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Default;
-        if (ragdollHandler) ragdollHandler.enabled = false;
+        if (ragdollHandler) ragdollHandler.State = RagdollHandler.States.Off;
         else if(rigidBody) rigidBody.isKinematic = rigidbodyProfile.isKinematic;
     }
 
-    public State state
+    public States State
     {
-        get => _state;
+        get => state;
         private set
         {
-            if (value == _state) return;
+            if (value == state) return;
 
-            State prev = _state;
-            _state = value;
+            States prev = state;
+            state = value;
 
-            enabled = value == State.Grabbable;
-            meleeTarget.enabled = value == State.Grabbable;
+            enabled = value == States.Grabbable;
+            meleeTarget.enabled = value == States.Grabbable;
 
-            if (value > State.Grabbable || prev > State.Grabbable)
+            if (value > States.Grabbable || prev > States.Grabbable)
             {
                 if (collider != null)
-                    Physics.IgnoreCollision(collider, Player.Collider, value > State.Grabbable);
-                if (ragdollHandler != null) ragdollHandler.IgnoreCollisionWith(Player.Collider, value > State.Grabbable);
+                    Physics.IgnoreCollision(collider, Player.Collider, value > States.Grabbable);
+                if (ragdollHandler != null) ragdollHandler.IgnoreCollisionWith(Player.Collider, value > States.Grabbable);
             }
         }
     }
