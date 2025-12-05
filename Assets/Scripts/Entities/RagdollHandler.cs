@@ -8,24 +8,22 @@ public class RagdollHandler : MonoBehaviour
     public float maxRagdollTime;
     public float minRagdollVelocity;
 
-    [SerializeField, Tooltip("Should have exaclty 11 for basic Humanoid Bodies")] Collider[] ragDollColliders = new Collider[11];
-    [SerializeField, Tooltip("Should have exaclty 11 for basic Humanoid Bodies")] Rigidbody[] ragDollRigidBodies = new Rigidbody[11];
+    [SerializeField, RelatedComponent(true)] Collider rootBoneCollider;
+    [SerializeField] Collider[] ragDollColliders = new Collider[11];
+    [SerializeField, RelatedComponent(true)] Rigidbody rootRigidBody;
+    [SerializeField] Rigidbody[] ragDollRigidBodies = new Rigidbody[11];
 
     [SerializeField, RelatedComponent(true)] Collider defaultCollider;
-
     [SerializeField, RelatedComponent] Rigidbody defaultRigidBody;
+
     [SerializeField, RelatedComponent] EntityActivity entityActivity;
     [SerializeField, RelatedComponent] Grabbable grabbable;
-    [SerializeField, RelatedComponent] Health enemyHealth;
+    [SerializeField, RelatedComponent] Health health;
 
     private RigidbodyProfile defaultRigidbodyDefaults;
     private float poofTimer = -1;
 
-    private void Reset()
-    {
-        ComponentConfig.Reset(this);
-        //rootBoneCollider = null;
-    }
+    private void Reset() => ComponentConfig.Reset(this);
 
     private void Awake()
     {
@@ -35,16 +33,13 @@ public class RagdollHandler : MonoBehaviour
             Destroy(this);
         }
 
+        Physics.IgnoreCollision(defaultCollider, rootBoneCollider);
         if (defaultRigidBody) defaultRigidbodyDefaults = new(defaultRigidBody);
 
         // Ignore collisions between the interaction collider and ragdoll colliders so the proxy doesn't self-collide.
         for (int i = 0; i < ragDollColliders.Length; i++)
-        {
             if (ragDollColliders[i] != null)
-            {
                 Physics.IgnoreCollision(defaultCollider, ragDollColliders[i]);
-            }
-        }
 
         // initialize
         enabled = false;
@@ -60,11 +55,18 @@ public class RagdollHandler : MonoBehaviour
         if (entityActivity && value) entityActivity.CurrentState = EntityActivity.State.RagDoll;
 
         defaultCollider.isTrigger = value;
-        //rootBoneCollider.enabled = value;
+        rootBoneCollider.enabled = value;
 
-        //If true, make non-kinematic, otherwise restore default from profile.
-        defaultRigidBody.isKinematic = value || defaultRigidbodyDefaults.isKinematic; 
-        //defaultRigidBody.useGravity = value || defaultRigidbodyDefaults.useGravity;
+        if (rootRigidBody == defaultRigidBody)
+        {
+            rootRigidBody.isKinematic = value ? false : defaultRigidbodyDefaults.isKinematic;
+            rootRigidBody.useGravity = value ? true : defaultRigidbodyDefaults.useGravity;
+        }
+        else
+        {
+            defaultRigidBody.isKinematic = value ? true : defaultRigidbodyDefaults.isKinematic;
+            rootRigidBody.isKinematic = !value;
+        }
 
         for (int i = 0; i < ragDollColliders.Length; i++)
         {
@@ -73,8 +75,6 @@ public class RagdollHandler : MonoBehaviour
         }
 
         if (!value) ragDollColliders[0].transform.Reset(scale: false);
-
-        PoofCycle = value;
     }
 
 
@@ -82,8 +82,11 @@ public class RagdollHandler : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position = ragDollRigidBodies[0].transform.position;
-        ragDollRigidBodies[0].transform.localPosition = Vector3.zero;
+        if(rootRigidBody != defaultRigidBody)
+        {
+            transform.position = rootBoneCollider.transform.position;
+            rootBoneCollider.transform.localPosition = Vector3.zero;
+        }
 
         if(poofTimer >= 0)
         {
@@ -138,7 +141,7 @@ public class RagdollHandler : MonoBehaviour
 
     public void Poof()
     {
-        if(enemyHealth != null) enemyHealth.Destroy();
+        if(health != null) health.Destroy();
         else gameObject.SetActive(false);
     }
 
