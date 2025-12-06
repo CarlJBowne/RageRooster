@@ -31,7 +31,11 @@ public class RagdollHandler : MonoBehaviour
     private RigidbodyProfile defaultRigidbodyDefaults;
     private float poofTimer = -1;
 
-    private void Reset() => ComponentConfig.Reset(this);
+    private void Reset()
+    {
+        ComponentConfig.Reset(this);
+        enabled = false;
+    }
 
     private void Awake()
     {
@@ -55,9 +59,9 @@ public class RagdollHandler : MonoBehaviour
         get => _state;
         set
         {
-
             _state = value;
             if (entityActivity && value != States.Off) entityActivity.CurrentState = EntityActivity.State.RagDoll;
+            enabled = value != States.Off;
 
             defaultCollider.isTrigger = value != States.Off;
             rootBoneCollider.enabled = value == States.On;
