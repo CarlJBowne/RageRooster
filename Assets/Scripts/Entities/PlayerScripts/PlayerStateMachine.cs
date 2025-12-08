@@ -120,4 +120,10 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     }
     public List<string> queuedSignals;
 #endif
+
+    protected override void FixedUpdate()
+    {
+        DebugRR.DebugTextOverlay.ClearText();
+        base.FixedUpdate();
+    }
 }

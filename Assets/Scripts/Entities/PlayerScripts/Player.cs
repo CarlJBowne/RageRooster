@@ -260,7 +260,7 @@ public class Player : MonoBehaviour
         _activeState = ActivityStates.Active;
 
 #if UNITY_EDITOR
-        Input.Get().Asset.FindAction("DebugActivate").performed += (_) =>
+        Input.Debug.GodMode.performed += (_) =>
         {
             SaveData.Current.playerStats.upgrades = Upgrades.Debug();
         };

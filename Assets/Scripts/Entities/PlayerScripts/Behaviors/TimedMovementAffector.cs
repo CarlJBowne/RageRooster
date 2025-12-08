@@ -33,6 +33,9 @@ namespace SLS.StateMachineH.Timelines
         {
             if(overrideOff) return;
 
+            DebugRR.DebugTextOverlay.AppendNewLine($"TMA : Influence: {influence}");
+            DebugRR.DebugTextOverlay.AppendNewLine($"TMA : ExistingVelocity: {Player.MovementBody.velocity}");
+
             if (!Mathf.Approximately(influenceChange, 0))
             {
                 influence += influenceChange * delta;
@@ -98,9 +101,9 @@ namespace SLS.StateMachineH.Timelines
             if (!Mathf.Approximately(0, verticalAcceleration))
                 Y += verticalAcceleration * influence * delta;
             if (setVerticalInfluence > 0)
-                Y = Mathf.Lerp(Y, setVerticalVelocity, setVerticalInfluence * influence * delta);
+                Y = Mathf.Lerp(Y, setVerticalVelocity, setVerticalInfluence * influence);
 
-
+            DebugRR.DebugTextOverlay.AppendNewLine($"TMA : Output: {output}");
             Player.MovementBody.VelocitySet(output.x, output.y, output.z);
 
         }

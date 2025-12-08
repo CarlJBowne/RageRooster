@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
 
-[System.Obsolete]
+[System.Obsolete("PlayerMovementAnimatorDisabler is deprecated along with PlayerMovementAnimator")]
 public class PlayerMovementAnimatorDisabler : PlayerStateBehavior
 {
     public enum ConditionalCheck
