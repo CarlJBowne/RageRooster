@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UIImage = UnityEngine.UI.Image;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -14,6 +15,7 @@ public class TargetingManager : MonoBehaviour
     private static TargetingChannel<RangedTarget> RangedChannel;
 
     public static GameObject InteractionPopup {  get; private set; }
+    public static bool ShowDebugReticles = false;
 
     #region Instance Fields
 
@@ -22,6 +24,9 @@ public class TargetingManager : MonoBehaviour
     [SerializeField] private TargetingRange grabbingRange = new(); 
     [SerializeField] private TargetingRange interactionRange = new();
     [SerializeField] private GameObject interactionPopup;
+    [SerializeField] private UIImage rangedDebugReticle;
+    [SerializeField] private UIImage meleeDebugReticle;
+    [SerializeField] private UIImage interactionDebugReticle;
 
     #endregion
 
@@ -77,7 +82,22 @@ public class TargetingManager : MonoBehaviour
         MeleeChannel = new(grabbingRange);
         RangedChannel = new(rangedHipFireRange);
 
+        InteractionChannel.debugDisplayReticle = interactionDebugReticle;
+        MeleeChannel.debugDisplayReticle = meleeDebugReticle;
+        RangedChannel.debugDisplayReticle = rangedDebugReticle;
+
         InteractionPopup = interactionPopup;
+
+        Input.Debug.ToggleTextOverlay.performed += _ => 
+        {
+            ShowDebugReticles = !ShowDebugReticles;
+            if (!ShowDebugReticles)
+            {
+                interactionDebugReticle.gameObject.SetActive(false);
+                meleeDebugReticle.gameObject.SetActive(false);
+                rangedDebugReticle.gameObject.SetActive(false);
+            }
+        };
     }
 
 
@@ -86,6 +106,22 @@ public class TargetingManager : MonoBehaviour
         InteractionChannel.CalculateTargets();
         MeleeChannel.CalculateTargets();
         RangedChannel.CalculateTargets();
+
+        if (ShowDebugReticles)
+        {
+            if(InteractionChannel.CurrentTarget != null)
+            {
+                interactionDebugReticle.rectTransform.position = Cameras.RealCamera.camera.WorldToScreenPoint(InteractionChannel.CurrentTarget.transform.position);
+            }
+            if (MeleeChannel.CurrentTarget != null)
+            {
+                meleeDebugReticle.rectTransform.position = Cameras.RealCamera.camera.WorldToScreenPoint(MeleeChannel.CurrentTarget.transform.position);
+            }
+            if (RangedChannel.CurrentTarget != null)
+            {
+                rangedDebugReticle.rectTransform.position = Cameras.RealCamera.camera.WorldToScreenPoint(RangedChannel.CurrentTarget.transform.position);
+            }
+        }
     }
 
     public class TargetingChannel<T> where T : Target
@@ -93,6 +129,8 @@ public class TargetingManager : MonoBehaviour
         public List<T> ALLTARGETS { get; private set; }
         public T CurrentTarget { get; private set; }
         public TargetingRange Range { get; private set; }
+
+        public UIImage debugDisplayReticle;
 
         public TargetingChannel(TargetingRange range)
         {
@@ -140,6 +178,19 @@ public class TargetingManager : MonoBehaviour
                 if (CurrentTarget) CurrentTarget.TargetState = Target.States.Targeted;
                 if (prevTarget) prevTarget.OnDeTargeted(CurrentTarget);
                 if (CurrentTarget) CurrentTarget.OnTargeted(prevTarget);
+
+                if(TargetingManager.ShowDebugReticles && debugDisplayReticle != null)
+                {
+                    if (CurrentTarget != null)
+                    {
+                        debugDisplayReticle.gameObject.SetActive(true);
+                        debugDisplayReticle.rectTransform.position = Cameras.RealCamera.camera.WorldToScreenPoint(CurrentTarget.transform.position);
+                    }
+                    else
+                    {
+                        debugDisplayReticle.gameObject.SetActive(false);
+                    }
+                }
             }
 
         }
