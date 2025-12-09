@@ -339,7 +339,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 0}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.001
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve: []
@@ -379,7 +378,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -435,6 +434,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.001
   overrideOff: 0
 --- !u!1 &214909014890575270
 GameObject:
@@ -867,7 +867,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 4668338733014282438}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.05
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve:
@@ -961,7 +960,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -1008,6 +1007,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.05
   overrideOff: 0
 --- !u!114 &379206835711853348
 MonoBehaviour:
@@ -1296,7 +1296,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 8822842600920580472}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve: []
@@ -1350,6 +1349,15 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1
       value: 8
       inSlope: 0
       outSlope: 0
@@ -1371,7 +1379,34 @@ MonoBehaviour:
     m_RotationOrder: 4
   turnabilityCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 10
+      inSlope: -63.070152
+      outSlope: -63.070152
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1585536
+      value: 0
+      inSlope: 0.69183415
+      outSlope: 0.69183415
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.07235043
+    - serializedVersion: 3
+      time: 1
+      value: 10
+      inSlope: 11.884298
+      outSlope: 11.884298
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -1390,7 +1425,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -1419,6 +1454,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.1
   overrideOff: 0
 --- !u!114 &5219037044497169478
 MonoBehaviour:
@@ -1779,7 +1815,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 5549325383090932593}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve:
@@ -1878,6 +1913,15 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1
       value: 8
       inSlope: 0
       outSlope: 0
@@ -1899,7 +1943,34 @@ MonoBehaviour:
     m_RotationOrder: 4
   turnabilityCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 10
+      inSlope: -63.070152
+      outSlope: -63.070152
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1585536
+      value: 0
+      inSlope: 0.69183415
+      outSlope: 0.69183415
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.07235043
+    - serializedVersion: 3
+      time: 1
+      value: 10
+      inSlope: 11.884298
+      outSlope: 11.884298
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -1918,7 +1989,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve: []
@@ -1938,6 +2009,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.1
   overrideOff: 0
 --- !u!114 &6970877457400052654
 MonoBehaviour:
@@ -3831,7 +3903,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 6590708857773316528}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve:
@@ -3979,7 +4050,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -4026,6 +4097,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.5
   overrideOff: 0
 --- !u!114 &8263972356897141580
 MonoBehaviour:
@@ -5194,7 +5266,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 172757351869591046}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve: []
@@ -5315,7 +5386,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -5371,6 +5442,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.1
   overrideOff: 0
 --- !u!114 &7823473206870275758
 MonoBehaviour:
@@ -7739,7 +7811,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 5281776910968683532}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve:
@@ -7838,6 +7909,15 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1
       value: 8
       inSlope: 0
       outSlope: 0
@@ -7859,7 +7939,34 @@ MonoBehaviour:
     m_RotationOrder: 4
   turnabilityCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 10
+      inSlope: -63.070152
+      outSlope: -63.070152
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1585536
+      value: 0
+      inSlope: 0.69183415
+      outSlope: 0.69183415
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.07235043
+    - serializedVersion: 3
+      time: 1
+      value: 10
+      inSlope: 11.884298
+      outSlope: 11.884298
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -7878,7 +7985,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve: []
@@ -7898,6 +8005,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.1
   overrideOff: 0
 --- !u!114 &2250321246033651809
 MonoBehaviour:
@@ -8833,7 +8941,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 8817027084830624986}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.05240175
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve:
@@ -8945,7 +9052,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve: []
@@ -8965,6 +9072,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.05240175
   overrideOff: 0
 --- !u!114 &1371077328484475270
 MonoBehaviour:
@@ -10268,7 +10376,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 1419214192395305568}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve: []
@@ -10425,7 +10532,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -10481,6 +10588,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.5
   overrideOff: 0
 --- !u!114 &8686036933858947198
 MonoBehaviour:
@@ -10727,7 +10835,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 8968679337813068694}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.05240175
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve:
@@ -10848,7 +10955,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve: []
@@ -10868,6 +10975,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.05240175
   overrideOff: 0
 --- !u!114 &6300627380801188497
 MonoBehaviour:
@@ -11943,7 +12051,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 7315598544489480670}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve: []
@@ -12100,7 +12207,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -12156,6 +12263,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.5
   overrideOff: 0
 --- !u!1 &5476920180933388967
 GameObject:
@@ -13862,7 +13970,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 7761699614878043687}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve: []
@@ -13916,6 +14023,15 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1
       value: 8
       inSlope: 0
       outSlope: 0
@@ -13937,7 +14053,34 @@ MonoBehaviour:
     m_RotationOrder: 4
   turnabilityCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 10
+      inSlope: -63.070152
+      outSlope: -63.070152
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1585536
+      value: 0
+      inSlope: 0.69183415
+      outSlope: 0.69183415
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.07235043
+    - serializedVersion: 3
+      time: 1
+      value: 10
+      inSlope: 11.884298
+      outSlope: 11.884298
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -13956,7 +14099,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -13985,6 +14128,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.1
   overrideOff: 0
 --- !u!114 &812519567302393548
 MonoBehaviour:
@@ -15538,7 +15682,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 6899988598081522344}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve:
@@ -15731,7 +15874,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve: []
@@ -15751,6 +15894,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.1
   overrideOff: 0
 --- !u!114 &1338687775615346247
 MonoBehaviour:
@@ -19445,7 +19589,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 278551599644586090}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve:
@@ -19530,7 +19673,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -19577,6 +19720,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.1
   overrideOff: 0
 --- !u!114 &8579854209785161681
 MonoBehaviour:
@@ -19852,7 +19996,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 8568736502713642114}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve: []
@@ -19883,7 +20026,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -19921,6 +20064,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.5
   overrideOff: 0
 --- !u!114 &6289028403102549137
 MonoBehaviour:
@@ -20358,7 +20502,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 4455065144974278352}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve: []
@@ -20389,7 +20532,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve: []
@@ -20409,6 +20552,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.5
   overrideOff: 0
 --- !u!114 &8749612761934232274
 MonoBehaviour:
@@ -20669,7 +20813,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 3765359621817980221}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve:
@@ -20826,7 +20969,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -20882,6 +21025,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.5
   overrideOff: 0
 --- !u!1 &8482731040741248156
 GameObject:
@@ -21323,7 +21467,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 6102194210015347356}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.5
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve:
@@ -21480,7 +21623,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -21536,6 +21679,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.5
   overrideOff: 0
 --- !u!114 &4017634302662002123
 MonoBehaviour:
@@ -22111,7 +22255,6 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 1781473861386445650}
   timeline: {fileID: 6328031082010280587}
-  influenceFadeTime: 0.05
   minForwardMovementCurve:
     serializedVersion: 2
     m_Curve:
@@ -22205,7 +22348,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  terminalVelocityCurve: 98.1
+  terminalVelocity: 98.1
   setVerticalInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -22261,6 +22404,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   loopTime: 0
+  influenceFadeTime: 0.05
   overrideOff: 0
 --- !u!114 &6718577106585897668
 MonoBehaviour:

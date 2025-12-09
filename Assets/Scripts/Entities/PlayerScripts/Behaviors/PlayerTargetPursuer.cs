@@ -16,7 +16,7 @@ public class PlayerTargetPursuer : StateTimeline
 
     private MeleeTarget target;
     private Vector3 targetPosition;
-    [SerializeField, HideInInspector] private SLS.StateMachineH.Timelines.TimedMovementAffector failedBackup;
+    [SerializeField, Hide] private SLS.StateMachineH.Timelines.TimedMovementAffector failedBackup;
 
     protected override void OnSetup()
     {
