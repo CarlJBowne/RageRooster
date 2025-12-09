@@ -15,7 +15,7 @@ namespace SLS.StateMachineH.Timelines
         public AnimationCurve speedChangeCurve = Curve(15);
         public AnimationCurve turnabilityCurve = Curve(10);
         public AnimationCurve verticalAccelerationCurve = Curve(0);
-        public float terminalVelocityCurve = 98.1f;
+        public float terminalVelocityCurve = 98.1f; // TODO: apply terminal velocity if required
         public AnimationCurve setVerticalInfluenceCurve = Curve(0);
         public AnimationCurve setVerticalVelocityCurve = Curve(0);
         public AnimationCurve sidewaysMovementCurve = Curve(0);
@@ -26,31 +26,56 @@ namespace SLS.StateMachineH.Timelines
         float influence;
         float influenceChange = 0f;
 
-        protected override void OnBegin() => influenceChange = 1f / influenceFadeTime;
-        protected override void OnExit(State next) => influenceChange = -1f / influenceFadeTime;
+        protected override void OnBegin()
+        {
+            // Guard against divide by zero (instant influence when fade time <= 0)
+            if (influenceFadeTime <= 0f)
+            {
+                influence = 1f;
+                influenceChange = 0f;
+            }
+            else
+            {
+                influenceChange = 1f / influenceFadeTime;
+            }
+        }
+
+        protected override void OnExit(State next)
+        {
+            if (influenceFadeTime <= 0f)
+            {
+                influence = 0f;
+                influenceChange = 0f;
+                // When immediately exiting, ensure End is invoked if appropriate
+                End();
+            }
+            else
+            {
+                influenceChange = -1f / influenceFadeTime;
+            }
+        }
 
         protected override void OnTick(float delta)
         {
-            if(overrideOff) return;
+            if (overrideOff) return;
 
             DebugRR.DebugTextOverlay.AppendNewLine($"TMA : Influence: {influence}");
             DebugRR.DebugTextOverlay.AppendNewLine($"TMA : ExistingVelocity: {Player.MovementBody.velocity}");
 
-            if (!Mathf.Approximately(influenceChange, 0))
+            if (!Mathf.Approximately(influenceChange, 0f))
             {
                 influence += influenceChange * delta;
-                if(influence is >= 1f or <= 0f)
+                if (influence is >= 1f or <= 0f)
                 {
                     influence = Mathf.Clamp01(influence);
                     influenceChange = 0f;
-                    if (influence == 0) End();
-                }   
-            } 
+                    if (influence == 0f) End();
+                }
+            }
 
-            if(influence <= 0f) return;
+            if (influence <= 0f) return;
 
-            //Horizontal Movement
-
+            // Horizontal Movement
             Vector3 output = Player.MovementBody.velocity;
 
             SampleCurve(minForwardMovementCurve, out float minForwardMovement);
@@ -63,16 +88,27 @@ namespace SLS.StateMachineH.Timelines
 
             float targetSpeed = Player.MovementBody.CurrentSpeed;
 
-            if(turnability > 0) Player.MovementBody.DirectionSet(controlVector.normalized, turnability * influence);
+            // Only set direction if we have meaningful input
+            if (turnability > 0f && controlVector.sqrMagnitude > 0.000001f)
+                Player.MovementBody.DirectionSet(controlVector.normalized, turnability * influence);
 
             Vector3 forwardDirection = Player.Transform.forward;
             Vector3 rightDirection = Player.Transform.right;
 
-            targetSpeed = controlVector.sqrMagnitude > 0
-                ? targetSpeed.MoveTowards(controlVector.magnitude * speedChange * (Time.deltaTime * 50), maxForwardMovement)
-                : targetSpeed.MoveTowards(speedChange * (Time.deltaTime * 50), minForwardMovement);
+            // Use passed-in delta consistently for time-based calculations
+            float timeFactor = delta * 50f;
 
-            if (influence == 1)
+            // MoveTowards helper usage preserved; assume it behaves like Mathf.MoveTowards(current, target, maxDelta)
+            if (controlVector.sqrMagnitude > 0f)
+            {
+                targetSpeed = targetSpeed.MoveTowards(controlVector.magnitude * speedChange * timeFactor, maxForwardMovement);
+            }
+            else
+            {
+                targetSpeed = targetSpeed.MoveTowards(speedChange * timeFactor, minForwardMovement);
+            }
+
+            if (influence == 1f)
             {
                 Player.MovementBody.CurrentSpeed = targetSpeed;
                 output = (forwardDirection * targetSpeed) + (rightDirection * sidewaysMovement) + (Vector3.up * output.y);
@@ -84,31 +120,31 @@ namespace SLS.StateMachineH.Timelines
                 output = new()
                 {
                     x = Mathf.Lerp(output.x, (forwardDirection.x * targetSpeed) + (rightDirection.x * sidewaysMovement), influence),
-                    y = output.y,
+                    y = output.y, // will be replaced below with vertical computation
                     z = Mathf.Lerp(output.z, (forwardDirection.z * targetSpeed) + (rightDirection.z * sidewaysMovement), influence)
                 };
             }
 
-
-
-            //Vertical Movement
-
+            // Vertical Movement
             SampleCurve(verticalAccelerationCurve, out float verticalAcceleration);
             SampleCurve(setVerticalInfluenceCurve, out float setVerticalInfluence);
             SampleCurve(setVerticalVelocityCurve, out float setVerticalVelocity);
 
             float Y = Player.MovementBody.velocity.y;
-            if (!Mathf.Approximately(0, verticalAcceleration))
+            if (!Mathf.Approximately(0f, verticalAcceleration))
                 Y += verticalAcceleration * influence * delta;
-            if (setVerticalInfluence > 0)
+
+            if (setVerticalInfluence > 0f)
                 Y = Mathf.Lerp(Y, setVerticalVelocity, setVerticalInfluence * influence);
+
+            // Assign computed vertical component to output before applying velocity
+            output.y = Y;
 
             DebugRR.DebugTextOverlay.AppendNewLine($"TMA : Output: {output}");
             Player.MovementBody.VelocitySet(output.x, output.y, output.z);
-
         }
 
-        private void SampleCurve(AnimationCurve C, out float res) => res = C.Evaluate(loopTime <= 0 ? elapsedTime : elapsedTime % loopTime);
+        private void SampleCurve(AnimationCurve C, out float res) => res = C.Evaluate(loopTime <= 0f ? elapsedTime : elapsedTime % loopTime);
 
         /*
         [SerializeField] AnimationClip referenceClip;
@@ -134,9 +170,6 @@ namespace SLS.StateMachineH.Timelines
             StretchCurve(ref setVerticalInfluenceCurve);
             StretchCurve(ref setVerticalVelocityCurve);
             StretchCurve(ref sidewaysMovementCurve);
-                        
-
-
         }
         */
     }
