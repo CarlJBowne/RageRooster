@@ -10,9 +10,9 @@ public class TargetingManager : MonoBehaviour
 {
     // Static runtime state
     public static TargetingManager Instance { get; private set; }
-    private static TargetingChannel<InteractionTarget> InteractionChannel;
-    private static TargetingChannel<MeleeTarget> MeleeChannel;
-    private static TargetingChannel<RangedTarget> RangedChannel;
+    public static TargetingChannel<InteractionTarget> InteractionChannel;
+    public static TargetingChannel<MeleeTarget> MeleeChannel;
+    public static TargetingChannel<RangedTarget> RangedChannel;
 
     public static GameObject InteractionPopup {  get; private set; }
     public static bool ShowDebugReticles = false;

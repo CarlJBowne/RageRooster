@@ -4,6 +4,7 @@ using EditorAttributes;
 using UnityEngine.InputSystem;
 using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
 using RageRooster.Systems.SaveSystem;
+using System.Collections.Generic;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerController : PlayerStateBehavior
@@ -128,5 +129,9 @@ public class PlayerController : PlayerStateBehavior
 
     private void ChargeButtons(CTX ctx) => Machine.SendSignal("Charge");
 
+
+    //NewButtonSystem.
+
+    public static PlayerButtonAction CurrentPlayerButtonAction;
 
 }
