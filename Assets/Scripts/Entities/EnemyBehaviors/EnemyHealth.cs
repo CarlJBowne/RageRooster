@@ -137,7 +137,7 @@ public class EnemyHealth : Health
         gameObject.SetActive(true);
         transform.position = startPosition;
         if (TryGetComponent(out StateMachine machine)) machine[0].Enter();
-        entityActivity.enabled = false;
+        entityActivity.enabled = true;
         transform.rotation = Quaternion.identity;
         health = maxHealth;
     }
