@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
             Controller.enabled = value is ActivityStates.Active;
             Animator.enabled = value is ActivityStates.Active or ActivityStates.Cutscene;
             Ranged.enabled = value is ActivityStates.Active;
-            Interacter.enabled = value is ActivityStates.Active;
+            //Interacter.enabled = value is ActivityStates.Active;
         }
     }
 
@@ -127,6 +127,8 @@ public class Player : MonoBehaviour
     /// Handles the player's state transitions and logic.
     /// </summary>
     public static PlayerStateMachine StateMachine { get; private set; }
+
+    public static SLS.StateMachineH.Signals.SignalManager SignalManager { get; private set; }
     /// <summary>
     /// The <see cref="PlayerMovementBody"/> component attached to the <see cref="Player"/>. <br/>
     /// Handles movement and physics interactions.
@@ -147,10 +149,18 @@ public class Player : MonoBehaviour
     /// </summary>
     public static PlayerRanged Ranged { get; private set; }
     /// <summary>
+    /// The <see cref="PlayerGrabber"/> component attached to the <see cref="Player"/>.
+    /// Handles the grabbing of enemies and objects.
+    /// </summary>
+    public static PlayerGrabber Grabber { get; private set; }
+    /// <summary>
+    /// The <see cref="TargetingManager"/> component attached to the <see cref="Player"/>. <br/>
+    /// </summary>
+    public static TargetingManager TargetingManager;
+    /// <summary>
     /// The <see cref="PlayerInteracter"/> component attached to the <see cref="Player"/>. <br/>
     /// Handles interact functionality.
     /// </summary>
-    public static PlayerInteracter Interacter { get; private set; }
     /// <summary>
     /// The <see cref="Animator"/> component attached to the <see cref="Player"/>.
     /// </summary>
@@ -189,6 +199,11 @@ public class Player : MonoBehaviour
     /// </summary>
     public static Vector3 EularAngles => Transform.eulerAngles;
 
+    /// <summary>
+    /// The current velocity of the <see cref="Player"/>'s <see cref="PlayerMovementBody"/>.
+    /// </summary>
+    public static Vector3 Velocity => MovementBody.velocity;
+
     /// <param name="pos">The position to be compared.</param>
     /// <returns>The distance between the <see cref="Player"/> and and a given position, such as an enemy.</returns>
     public static float DistanceFrom(Vector3 pos) => Exists ? Vector3.Distance(Position, pos) : 999999f;
@@ -210,13 +225,9 @@ public class Player : MonoBehaviour
         MovementBody.velocity = Vector3.zero;
     }
 
+    public static bool IsPlayer(Component C) => Exists && C != null && C.gameObject == GameObject;
+
     #endregion
-
-
-    #region Instance Fields
-    public float inFallDownPitTime;
-    public float inDeathTime;
-    #endregion Instance Fields
 
     #region Events / Callbacks
     /// <summary>
@@ -236,10 +247,12 @@ public class Player : MonoBehaviour
         Collider = GetComponent<CapsuleCollider>();
         Controller = GetComponent<PlayerController>();
         Ranged = GetComponent<PlayerRanged>();
-        Interacter = GetComponentInChildren<PlayerInteracter>();
+        Grabber = GetComponent<PlayerGrabber>();
         Animator = GetComponent<Animator>();
         Audio = GetComponent<AudioCaller>();
         RagdollHandler = GetComponent<RagdollHandler>();
+        TargetingManager = GetComponent<TargetingManager>();
+        SignalManager = GetComponent<SLS.StateMachineH.Signals.SignalManager>();
         Health.Initialize();
         Ammo.Initialize();
         Currency.Initialize();
@@ -247,13 +260,13 @@ public class Player : MonoBehaviour
         _activeState = ActivityStates.Active;
 
 #if UNITY_EDITOR
-        Input.Get().Asset.FindAction("DebugActivate").performed += (_) =>
+        Input.Debug.GodMode.performed += (_) =>
         {
             SaveData.Current.playerStats.upgrades = Upgrades.Debug();
         };
 #endif
-        fallDownPitTime = inFallDownPitTime;
-        deathTime = inDeathTime;
+        fallDownPitTime = Health.playerObject.inFallDownPitTime;
+        deathTime = Health.playerObject.inDeathTime;
     }
     #endregion
 
@@ -433,7 +446,7 @@ public class Player : MonoBehaviour
         Audio.PlayOneShot("Death");
         StateMachine.ragDollState.Enter();
         MovementBody.velocity = Vector3.zero;
-        RagdollHandler.State = EntityState.RagDoll;
+        RagdollHandler.State = RagdollHandler.States.On;
         RagdollHandler.SetVelocity(targetVelocity * 0.75f);
         Animator.enabled = false;
     }

@@ -22,6 +22,8 @@ public class Input : SingletonAsset<Input>
 	[SerializeField] Ref _Charge1;
 	[SerializeField] Ref _Charge2;
 	[SerializeField] Ref _Pause;
+	[SerializeField] Ref _Debug_GodMode;
+	[SerializeField] Ref _Debug_ToggleTextOverlay;
 
 
     public static Vector2 Movement => Get()._Movement.action.ReadValue<Vector2>();
@@ -39,9 +41,20 @@ public class Input : SingletonAsset<Input>
 	public static Button Interact => Get()._Interact;
 	public static Button Pause => Get()._Pause;
 
+	public static class Debug
+	{
+		public static Button GodMode => Get()._Debug_GodMode;
+		public static Button ToggleTextOverlay => Get()._Debug_ToggleTextOverlay;
+    }
 
     protected override void OnInitialize()
 	{
         Asset.Enable();
-	}
+        //Enable Debug Action Map only if in dev build or editor
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+		Asset.FindActionMap("Debug").Enable();
+#else
+		Asset.FindActionMap("Debug").Disable();
+#endif
+    }
 }

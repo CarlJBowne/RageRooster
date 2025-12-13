@@ -163,10 +163,10 @@ public class CoroutinePlus : IEnumerator
     public bool Uses(IEnumerator compare) => compare == wrappedEnumerator;
 
     
-    public static void Begin(ref CoroutinePlus slot, IEnumerator Enum, MonoBehaviour owner)
+    public static void Begin(ref CoroutinePlus slot, IEnumerator Enum, MonoBehaviour owner, bool replace = true)
     {
+        if (!replace && slot && slot.running) return;
         slot?.StopAuto(true);
-        slot = null;
         slot = new(Enum, owner);
     }
     public static void Stop(ref CoroutinePlus slot) => slot?.StopAuto();

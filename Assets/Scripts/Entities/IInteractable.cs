@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[System.Obsolete]
 public interface IInteractable
 {
     public bool Interact()

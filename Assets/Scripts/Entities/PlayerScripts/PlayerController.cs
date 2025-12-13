@@ -1,12 +1,10 @@
 using SLS.StateMachineH;
 using UnityEngine;
-using System.Linq;
 using EditorAttributes;
 using UnityEngine.InputSystem;
-using Cinemachine;
-using System.Collections.Generic;
 using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
 using RageRooster.Systems.SaveSystem;
+using System.Collections.Generic;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerController : PlayerStateBehavior
@@ -35,7 +33,6 @@ public class PlayerController : PlayerStateBehavior
 	[HideProperty] public float jumpInput;
 	[HideProperty] public Vector3 camAdjustedMovement;
 	[HideProperty] public PlayerRanged grabber;
-    [HideProperty] public PlayerInteracter interacter;
 
     #endregion
     #region Getters
@@ -45,7 +42,6 @@ public class PlayerController : PlayerStateBehavior
     protected override void OnAwake()
 	{
 		if(!grabber) grabber = GetComponentFromMachine<PlayerRanged>();
-        if(!interacter) interacter = GetComponentFromMachine<PlayerInteracter>();
     }
 
     private void OnEnable()
@@ -133,5 +129,9 @@ public class PlayerController : PlayerStateBehavior
 
     private void ChargeButtons(CTX ctx) => Machine.SendSignal("Charge");
 
+
+    //NewButtonSystem.
+
+    public static PlayerButtonAction CurrentPlayerButtonAction;
 
 }

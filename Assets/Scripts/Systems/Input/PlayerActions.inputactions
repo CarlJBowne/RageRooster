@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "PlayerActions",
     "maps": [
         {
@@ -96,19 +97,10 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "DebugActivate",
-                    "type": "Button",
-                    "id": "da5167ff-9329-438b-9a21-5230134c8ae6",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Jump",
                     "type": "Button",
                     "id": "cce96e8d-46e1-4776-add8-9a40a7b7fb76",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -337,28 +329,6 @@
                 },
                 {
                     "name": "",
-                    "id": "118b5a07-4824-4b1c-b189-75f422180f9a",
-                    "path": "<Keyboard>/backslash",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "DebugActivate",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "d4590807-8f59-498a-b3ab-24dcdb998ffa",
-                    "path": "<Gamepad>/dpad/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "DebugActivate",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "7d228d45-171f-40b0-9c48-28c06ed2d14a",
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",
@@ -433,7 +403,7 @@
                     "name": "PauseGame",
                     "type": "Button",
                     "id": "813063fc-4ff1-479f-b367-36dcb905a19d",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -1064,6 +1034,76 @@
                     "processors": "",
                     "groups": "Gamepad;Keyboard",
                     "action": "AnyKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Debug",
+            "id": "a2442523-3790-4a67-8ed2-2f97964bd438",
+            "actions": [
+                {
+                    "name": "GiveAllAbilities",
+                    "type": "Button",
+                    "id": "6423ea39-6f0c-445b-a2af-7c6d7b953527",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleTextOverlay",
+                    "type": "Button",
+                    "id": "c688c06d-e687-45fd-926a-41f780564ffa",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e7a5f8d9-044d-46e4-9413-5f0b1ffe1314",
+                    "path": "<Keyboard>/backslash",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "GiveAllAbilities",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8d39760c-8863-42e0-ad93-bef21027672d",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "GiveAllAbilities",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "62004119-01ec-4cc9-b43c-1da9475e3af7",
+                    "path": "<Keyboard>/period",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard",
+                    "action": "ToggleTextOverlay",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3d735346-a2e3-4b76-9e98-71697049c8e8",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "ToggleTextOverlay",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

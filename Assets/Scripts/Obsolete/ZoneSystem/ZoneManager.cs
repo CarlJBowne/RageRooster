@@ -111,20 +111,20 @@ namespace RageRooster.Obsolete.Zones
         // Updates the offset of the current zone and proxies based on the player's position.
         private void UpdateOffset()
         {
-            if (true) return; //This System brings up too much potential for problems if scenes aren't setup properly. Disabling unless we have time.
-
-            if (playerMachine.IsStableForOriginShift() &&
-               playerTransform.position.x > distanceToOriginShift || playerTransform.position.x < -distanceToOriginShift ||
-               playerTransform.position.y > distanceToOriginShift || playerTransform.position.y < -distanceToOriginShift ||
-               playerTransform.position.z > distanceToOriginShift || playerTransform.position.z < -distanceToOriginShift)
-            {
-                currentOffset -= playerTransform.position;
-                Player.InstantMove(Vector3.zero);
-
-                currentZone.transform.position = currentZone.originOffset + currentOffset;
-                foreach (ZoneProxy item in proxies.Values)
-                    if (item.loaded) item.root.transform.position = item.root.originOffset + currentOffset;
-            }
+            //if (true) return; //This System brings up too much potential for problems if scenes aren't setup properly. Disabling unless we have time.
+            //
+            //if (playerMachine.IsStableForOriginShift() &&
+            //   playerTransform.position.x > distanceToOriginShift || playerTransform.position.x < -distanceToOriginShift ||
+            //   playerTransform.position.y > distanceToOriginShift || playerTransform.position.y < -distanceToOriginShift ||
+            //   playerTransform.position.z > distanceToOriginShift || playerTransform.position.z < -distanceToOriginShift)
+            //{
+            //    currentOffset -= playerTransform.position;
+            //    Player.InstantMove(Vector3.zero);
+            //
+            //    currentZone.transform.position = currentZone.originOffset + currentOffset;
+            //    foreach (ZoneProxy item in proxies.Values)
+            //        if (item.loaded) item.root.transform.position = item.root.originOffset + currentOffset;
+            //}
         }
 
         // Checks if a zone is ready to be loaded.

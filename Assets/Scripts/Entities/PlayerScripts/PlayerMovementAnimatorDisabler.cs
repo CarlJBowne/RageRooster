@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
 
+[System.Obsolete("PlayerMovementAnimatorDisabler is deprecated along with PlayerMovementAnimator")]
 public class PlayerMovementAnimatorDisabler : PlayerStateBehavior
 {
     public enum ConditionalCheck
@@ -37,7 +38,7 @@ public class PlayerMovementAnimatorDisabler : PlayerStateBehavior
 
     public bool DamagableInFrontOf() => playerMovementBody.CheckForTypeInFront<IDamagable>() != null;
 
-    public bool GrabbableInFrontOf() => playerMovementBody.CheckForTypeInFront<Grabbable>() != null;
+    public bool GrabbableInFrontOf() => playerMovementBody.CheckForTypeInFront<Grabbable_Obsolete>() != null;
 
     protected override void OnEnter(State prev, bool isFinal)
     {

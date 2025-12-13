@@ -1,16 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 
-public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
+[System.Obsolete("RagdollHandler_Obsolete has been deprecated. Please use the new Ragdoll system.", false)]
+public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable_Obsolete
 {
     public EnemyHealth health;
-    public RagdollHandler ragDoll;
+    public RagdollHandler_Obsolete ragDoll;
 
     [SerializeField] new Collider collider;
     [SerializeField] Rigidbody rb;
-    public IGrabbable This => ragDoll;
+    public IGrabbable_Obsolete This => ragDoll;
+    bool grabbed;
 
     private void Awake()
     {
@@ -19,7 +22,7 @@ public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
     }
 
     public bool Damage(Attack attack) => health.Damage(attack);
-    public bool GiveGrabbable(out Grabbable result)
+    public bool GiveGrabbable(out Grabbable_Obsolete result)
     {
         result = ragDoll;
         return result != null;
@@ -34,23 +37,30 @@ public class RagdollInteractionProxy : MonoBehaviour, IDamagable, IGrabbable
     }
 
     #region Interface Members
-    public IGrabber Grabber => This.Grabber;
     public float AdditionalThrowDistance => This.AdditionalThrowDistance;
     //public float AdditionalHoldHeight => This.AdditionalHoldHeight;
     public void IgnoreCollisionWithThrower(Collider thrower, bool ignore = true) => Physics.IgnoreCollision(collider, thrower, ignore);
-    public bool Grab(IGrabber grabber) => This.Grab(grabber);
-    public void Throw(Vector3 velocity) => This.Throw(velocity);
-    public void Release() => This.Release();
+    public void Release(Vector3? velocity) => This.Release(velocity);
     public void SetVelocity(Vector3 velocity) => This.SetVelocity(velocity);
+    public bool Grab() => throw new NotImplementedException();
+    public void SetIgnoreCollision(Collider grabber, bool ignore = true) => throw new NotImplementedException();
+
     public bool IsGrabbable => This.IsGrabbable;
 
-
+    GameObject IGrabbable_Obsolete.gameobject => gameObject;
+    Transform IGrabbable_Obsolete.transform => transform;
 
     public Vector3 HeldOffset => This.HeldOffset;
 
     public Rigidbody rigidBody => This.rigidBody;
 
-    public bool Selected { get => This.Selected; set => This.Selected = value; }
+    Collider IGrabbable_Obsolete.collider => collider;
+
+    bool IGrabbable_Obsolete.grabbed => grabbed;
+
+    public Action ForceRelease { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+
 
     #endregion
 }

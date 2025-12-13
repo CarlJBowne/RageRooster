@@ -22,11 +22,11 @@ public class IntroManager : MonoBehaviour
 
     [Header("Timings")]
     [SerializeField] private float fadeDuration = 2f;
-    [SerializeField] private float waitBetweenFades = 1f;
+    //[SerializeField] private float waitBetweenFades = 1f;
     [SerializeField] private float titleSlideDuration = 1.2f;
     [SerializeField] private float titleSlideOffset = 300f;
     [SerializeField] private float pressKeyFadeDelay = 1f;
-    [SerializeField] private float pressKeyFadeDuration = 1f;
+    //[SerializeField] private float pressKeyFadeDuration = 1f;
     [SerializeField] private float roosterFadeDuration = 1f;
 
     [Header("Press Any Key Pulse")]
@@ -43,7 +43,7 @@ public class IntroManager : MonoBehaviour
 
 
     //private PlayerActions inputActions;
-    private bool skipRequested = false;
+    //private bool skipRequested = false;
     private bool waitingForTitleInput = false;
     private Coroutine pulseCoroutine;
     private Material pressKeyMaterialInstance;

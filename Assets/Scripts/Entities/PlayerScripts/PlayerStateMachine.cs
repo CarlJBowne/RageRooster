@@ -78,7 +78,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     {
         Children[0].Enter();
         //signalReady = true;
-        Player.RagdollHandler.State = EntityState.Default;
+        Player.RagdollHandler.State = RagdollHandler.States.Off;
         animator.enabled = true;
         animator.Play("GroundBasic");
     }
@@ -110,6 +110,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 
     public void DeathIfAtZero() { if (health.GetCurrentHealth() == 0) Player.Death(); }
 
+    public State this[string stateName] => states[stateName];
 
 #if UNITY_EDITOR
     protected override void Update()
@@ -119,4 +120,10 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     }
     public List<string> queuedSignals;
 #endif
+
+    protected override void FixedUpdate()
+    {
+        DebugRR.DebugTextOverlay.ClearText();
+        base.FixedUpdate();
+    }
 }

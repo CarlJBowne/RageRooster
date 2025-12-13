@@ -14,6 +14,8 @@ public class PlayerHealth : Health
     public State damageState;
     public State damageStateWham;
     public ColorTintAnimation tintAnimator;
+    public float inFallDownPitTime = 1;
+    public float inDeathTime = 2;
 
     private CoroutinePlus invincibility;
     private new Collider collider;
@@ -127,6 +129,11 @@ public class PlayerHealth : Health
 
     public void DoAwake() => Awake();
 
+
+    public override void Destroy()
+    {
+        //No.
+    }
 
     #endregion Instance Methods
 }
