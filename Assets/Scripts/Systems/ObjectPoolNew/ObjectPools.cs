@@ -232,23 +232,24 @@ namespace RageRooster.Systems.ObjectPool
         [System.Serializable, Inspectable]
         public class Client
         {
-            [SerializeField] PoolableObject prefab;
-            [SerializeField] Transform muzzle;
+            [SerializeField, Inspectable] PoolableObject prefab;
+            [SerializeField, Inspectable] Transform muzzle;
             private bool initialized;
             private Pool pool;
             private Action<PoolableObject> onPump;
 
-            public void Initialize(Action<PoolableObject> action = null)
+            public void Initialize(Action<PoolableObject> onPumpAction = null)
             {
                 if (initialized) return;
                 pool = GetPool(prefab);
                 pool.Initialize();
-                onPump = action;
+                onPump = onPumpAction;
                 initialized = true;
             }
 
             public PoolableObject Pump()
             {
+                if (!initialized) Initialize();
                 var res = pool.Pump();
                 if(muzzle != null) res.PlaceAtMuzzle(muzzle);
                 onPump?.Invoke(res);
