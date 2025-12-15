@@ -24,6 +24,66 @@ public class ComponentConfig
     }
     public static Action<bool> OnShowConfigChanged;
 
+    // Shared helper: centralizes logic to find a component of the given Type on the given MonoBehaviour's GameObject.
+    // Returns the found Component or null. Does not log errors about missing required components (caller handles that).
+    public static Component GetRelatedComponent(MonoBehaviour target, System.Type componentType, string subDirectory, bool addIfNotFound = false)
+    {
+        GameObject foundSubTarget = null;
+        if(subDirectory != null)
+        {
+            string[] directory = subDirectory.Split('/');
+            foundSubTarget = target.gameObject;
+
+            foreach (var d in directory)
+            {
+                Transform child = foundSubTarget.transform.Find(d);
+                if(child != null) foundSubTarget = child.gameObject;
+                else
+                {
+                    foundSubTarget = null;
+                    break;
+                }
+            }
+        }
+
+        Component result = null;
+
+        if(subDirectory != null && foundSubTarget)
+        {
+            result = foundSubTarget.GetComponent(componentType);
+            if (result) return result;
+
+            if (addIfNotFound)
+            {
+                result = foundSubTarget.AddComponent(componentType);
+                Undo.RegisterCreatedObjectUndo(result, "Add Related Component");
+                return result;
+            }
+            else
+            {
+                result = target.GetComponent(componentType);
+                return result;
+            }
+        }
+        else
+        {
+            if (addIfNotFound)
+            {
+                result = target.gameObject.AddComponent(componentType);
+                Undo.RegisterCreatedObjectUndo(result, "Add Related Component");
+                return result;
+            }
+            else
+            {
+                result = target.GetComponent(componentType);
+                return result;
+            }
+
+        }
+
+    }
+
+
     public static void Reset(MonoBehaviour target)
     {
         //Run through all fields with RelatedComponentAttribute
@@ -39,14 +99,15 @@ public class ComponentConfig
                 var fieldType = field.FieldType;
                 if (typeof(Component).IsAssignableFrom(fieldType))
                 {
-                    var comp = target.GetComponent(fieldType);
-                    if (comp != null)
+                    var GetComp = GetRelatedComponent(target, fieldType, attributeValue.subLocation, attributeValue.require);
+                    if (GetComp != null)
                     {
-                        field.SetValue(target, comp);
+                        field.SetValue(target, GetComp);
                     }
                     else if (attributeValue.require)
                     {
-                        Debug.LogError($"Required component of type {fieldType} not found on {target.gameObject.name}");
+                        var addComp = target.gameObject.AddComponent(fieldType);
+                        field.SetValue(target, addComp);
                     }
                 }
                 break;
@@ -71,7 +132,18 @@ public class ComponentConfig
 public class RelatedComponentAttribute : PropertyAttribute
 {
     public bool require;
-    public RelatedComponentAttribute(bool require = false) { this.require = require; }
+    public string subLocation;
+    public RelatedComponentAttribute(bool require = false, string subLocation = null) 
+    { 
+        this.require = require; 
+        this.subLocation = subLocation; 
+   
+    }
+    public RelatedComponentAttribute(string subLocation) 
+    { 
+        this.require = false; 
+        this.subLocation = subLocation;
+    }
 
     // Enable the drawer for child properties (array elements) too
     [CustomPropertyDrawer(typeof(RelatedComponentAttribute), true)]
@@ -185,88 +257,29 @@ public class RelatedComponentAttribute : PropertyAttribute
         {
             var targetObject = property.serializedObject.targetObject as MonoBehaviour;
             if (targetObject == null) return;
+            Type componentType = fieldInfo.FieldType;
 
-            Type componentType = null;
 
-            // Preferred: use the FieldInfo provided by the PropertyDrawer
-            if (fieldInfo != null)
-            {
-                componentType = fieldInfo.FieldType;
-            }
+            // Access the RelatedComponentAttribute instance (if present) for extra data (e.g. subLocation)
+            var relatedAttr = attribute as RelatedComponentAttribute;
+            string subLocation = relatedAttr?.subLocation;
 
-            // Fallback: try to resolve from SerializedProperty strings
-            if (componentType == null)
-            {
-                string typeName = null;
-
-                // objectReferenceTypeString exists on newer Unity versions and is cleaner when available
-#if UNITY_2020_1_OR_NEWER
-                typeName = property.type;
-#endif
-
-                // fallback to property.type (may be "PPtr<$Rigidbody>")
-                if (string.IsNullOrEmpty(typeName))
-                    typeName = property.type;
-
-                // clean names like "PPtr<$Rigidbody>" -> "Rigidbody"
-                if (!string.IsNullOrEmpty(typeName) && typeName.StartsWith("PPtr<$") && typeName.EndsWith(">"))
-                    typeName = typeName.Substring(6, typeName.Length - 7);
-
-                if (!string.IsNullOrEmpty(typeName))
-                {
-                    // search loaded assemblies for a matching type
-                    foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
-                    {
-                        try
-                        {
-                            var t = asm.GetType(typeName);
-                            if (t == null)
-                            {
-                                // some types might only match by short name
-                                foreach (var tt in asm.GetTypes())
-                                {
-                                    if (tt.Name == typeName)
-                                    {
-                                        t = tt;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (t != null)
-                            {
-                                componentType = t;
-                                break;
-                            }
-                        }
-                        catch
-                        {
-                            // ignore assemblies we can't inspect
-                        }
-                    }
-                }
-            }
-
-            if (componentType == null)
-            {
-                Debug.LogError($"Unable to resolve component type for property '{property.name}' (serialized type '{property.type}').");
-                return;
-            }
-
-            if (!typeof(Component).IsAssignableFrom(componentType))
-            {
-                Debug.LogError($"Resolved type {componentType} is not a Component.");
-                return;
-            }
-
-            var comp = targetObject.GetComponent(componentType);
+            // Use the centralized lookup with optional sub-location
+            var comp = ComponentConfig.GetRelatedComponent(targetObject, componentType, subLocation, false);
             if (comp != null)
             {
                 property.objectReferenceValue = comp;
                 property.serializedObject.ApplyModifiedProperties();
             }
-            else
+            else if(relatedAttr.require)
             {
-                Debug.LogError($"Component of type {componentType} not found on {targetObject.gameObject.name}");
+                //Show Dialouge popup to ask the user if they'd like to add the component, since it wasn't found.
+                if (EditorUtility.DisplayDialog("Component Not Found", $"The required component of type '{componentType.Name}' was not found on GameObject '{targetObject.gameObject.name}' and is required for this to work. Would you like to add it?", "Yes", "No"))
+                {
+                    var addedComp = ComponentConfig.GetRelatedComponent(targetObject, componentType, subLocation, true);
+                    property.objectReferenceValue = addedComp;
+                    property.serializedObject.ApplyModifiedProperties();
+                }
             }
         }
     }
@@ -334,6 +347,21 @@ public class HideAttribute : PropertyAttribute
 public class ComponentConfig
 {
     public static bool ShowConfig = true;
+
+    // Shared helper for runtime/non-editor builds as well.
+    public static Component GetRelatedComponent(MonoBehaviour target, System.Type componentType)
+    {
+        if (target == null || componentType == null) return null;
+        if (!typeof(Component).IsAssignableFrom(componentType)) return null;
+        try
+        {
+            return target.GetComponent(componentType);
+        }
+        catch
+        {
+            return null;
+        }
+    }
 
     public static void Reset(MonoBehaviour target)
     {}

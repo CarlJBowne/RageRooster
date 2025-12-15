@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
@@ -8,7 +8,7 @@ public class RagdollHandler : MonoBehaviour
     public float maxRagdollTime;
     public float minRagdollVelocity;
 
-    [SerializeField, RelatedComponent(true)] Collider rootBoneCollider;
+    [SerializeField, RelatedComponent(true, "DeformationSystem/root/Root_M")] Collider rootBoneCollider;
     [SerializeField] Collider[] ragDollColliders = new Collider[11];
     [SerializeField, RelatedComponent(true)] Rigidbody rootRigidBody;
     [SerializeField] Rigidbody[] ragDollRigidBodies = new Rigidbody[11];
@@ -153,8 +153,25 @@ public class RagdollHandler : MonoBehaviour
         else gameObject.SetActive(false);
     }
 
-
-    
+    [EditorAttributes.Button("Get Ragdoll Bones")]
+    private void GetRagdollBones()
+    {
+        if(rootBoneCollider == null)
+        {
+            Debug.LogWarning("Root bone collider is not assigned.");
+            return;
+        }
+        CharacterJoint[] joints = rootBoneCollider.GetComponentsInChildren<CharacterJoint>();
+        List<Collider> colliders = new();
+        List<Rigidbody> rigidbodies = new();
+        foreach (var joint in joints)
+        {
+            colliders.Add(joint.GetComponent<Collider>());
+            rigidbodies.Add(joint.GetComponent<Rigidbody>());
+        }
+        ragDollColliders = colliders.ToArray();
+        ragDollRigidBodies = rigidbodies.ToArray();
+    }
 }
 
 /// <summary>

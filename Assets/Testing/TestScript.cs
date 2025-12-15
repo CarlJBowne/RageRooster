@@ -12,20 +12,8 @@ using RageRooster.Systems;
 
 public class TestScript : MonoBehaviour
 {
-    public EventReference secondMusic;
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other == Player.Collider)
-        {
-            Music.BeginSecondaryMusic(secondMusic);
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if(other == Player.Collider)
-        {
-            Music.ReturnToPrimaryMusic();
-        }
-    }
+    [RelatedComponent] public Rigidbody noParams;
+    [RelatedComponent(true)] public Rigidbody required;
+    [RelatedComponent(subLocation = "sub/subsub")] public Rigidbody subLocation;
+    [RelatedComponent(true, "sub/subsub")] public Rigidbody both;
 }
