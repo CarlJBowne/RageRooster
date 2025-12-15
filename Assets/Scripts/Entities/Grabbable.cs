@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
+using static UnityEngine.Rendering.DebugUI;
 
 [RequireComponent(typeof(Collider),typeof(MeleeTarget))]
-public class Grabbable : MonoBehaviour
+public class Grabbable : MonoBehaviour, IEntityComponent
 {
     #region Config
 
@@ -26,7 +27,7 @@ public class Grabbable : MonoBehaviour
     [SerializeField, RelatedComponent] ThrownObjectAttack thrownObjectAttack;
     [SerializeField, RelatedComponent] Health health;
     [SerializeField, RelatedComponent] ConstantMovement constantMovement;
-    [SerializeField, RelatedComponent] EntityActivity entityActivity;
+    [field: SerializeField, RelatedComponent] public Entity Entity { get; set; }
 
     #endregion
     #region Data
@@ -56,8 +57,6 @@ public class Grabbable : MonoBehaviour
 
     void Awake() => rigidbodyProfile = rigidBody != null ? new(rigidBody) : null;
 
-    void OnEnable() { if (State is not States.Grabbable) State = States.Grabbable; }
-    void OnDisable() { if(State is States.Grabbable) State = States.Inactive; }
 
     public bool GetGrabbable()
     {
@@ -70,22 +69,20 @@ public class Grabbable : MonoBehaviour
 
     public void Grab()
     {
-        State = States.Grabbed;
-        if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Grabbed;
-        if (ragdollHandler) ragdollHandler.State = RagdollHandler.States.Grabbed;
-        else if(rigidBody) rigidBody.isKinematic = true;
+        Entity.State = Entity.States.Grabbed;
+        if(rigidBody) rigidBody.isKinematic = true;
     }
 
     public void Throw(Vector3 throwVelocity)
     {
-        State = States.Thrown;
-        if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Thrown;
+        Entity.State = Entity.States.Thrown;
+        if (Entity) Entity.State = Entity.States.Thrown;
 
         if (thrownObjectAttack)
         {
             thrownObjectAttack.onContactAction += () =>
             {
-                State = States.Grabbable;
+                Entity.State = Entity.States.RagDoll;
             };
         }
         else
@@ -94,44 +91,22 @@ public class Grabbable : MonoBehaviour
             IEnumerator PostThrowStateEnum()
             {
                 yield return new WaitForSeconds(1f);
-                State = States.Grabbable;
+                enabled = true;
             } 
         }
 
-        if (ragdollHandler) ragdollHandler.State = RagdollHandler.States.On;
-        else if (rigidBody) rigidBody.isKinematic = rigidbodyProfile.isKinematic;
+        Entity.State = Entity.States.Thrown;
+        if (rigidBody) rigidBody.isKinematic = rigidbodyProfile.isKinematic;
         SetVelocity(throwVelocity);
     }
 
     public void Release()
     {
-        State = States.Grabbable;
-        if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Default;
-        if (ragdollHandler) ragdollHandler.State = RagdollHandler.States.Off;
-        else if(rigidBody) rigidBody.isKinematic = rigidbodyProfile.isKinematic;
+        Entity.State = Entity.States.Default;
+        if(rigidBody) rigidBody.isKinematic = rigidbodyProfile.isKinematic;
     }
 
-    public States State
-    {
-        get => state;
-        private set
-        {
-            if (value == state) return;
 
-            States prev = state;
-            state = value;
-
-            enabled = value == States.Grabbable;
-            meleeTarget.enabled = value == States.Grabbable;
-
-            if (value > States.Grabbable || prev > States.Grabbable)
-            {
-                if (collider != null)
-                    Physics.IgnoreCollision(collider, Player.Collider, value > States.Grabbable);
-                if (ragdollHandler != null) ragdollHandler.IgnoreCollisionWith(Player.Collider, value > States.Grabbable);
-            }
-        }
-    }
 
     public void SetVelocity(Vector3 velocity)
     {
@@ -149,6 +124,25 @@ public class Grabbable : MonoBehaviour
             constantMovement.ResetDownwardVelocity();
         }
     }
+
+    public void StateChangeReceiver(Entity.States state)
+    {
+        
+
+        enabled = state is not Entity.States.Grabbed or Entity.States.Thrown;
+        meleeTarget.enabled = state is not Entity.States.Grabbed or Entity.States.Thrown;
+
+        if (state is Entity.States.Grabbed || activeState is Entity.States.Grabbed)
+        {
+            if (collider != null)
+                Physics.IgnoreCollision(collider, Player.Collider, state is Entity.States.Grabbed);
+            if (ragdollHandler != null) ragdollHandler.IgnoreCollisionWith(Player.Collider, state is Entity.States.Grabbed);
+        }
+
+        activeState = state;
+    }
+
+    private Entity.States activeState;
 
     public Vector3 HeldOffset => anchorPoint != null ? -anchorPoint.localPosition : Vector3.zero;
 

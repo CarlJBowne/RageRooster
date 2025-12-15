@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
-public class EnemyHealth : Health
+public class EnemyHealth : Health, IEntityComponent
 {
     #region Config
 
@@ -15,7 +15,8 @@ public class EnemyHealth : Health
     public GameObject poofPrefab;
     [System.Obsolete]
     public Behaviour[] stunComponents;
-    [SerializeField, RelatedComponent(true)] EntityActivity entityActivity;
+
+    [field: SerializeField, RelatedComponent(true)] public Entity Entity { get; set; }
     [SerializeField, RelatedComponent(true)] EnemyLootSpawner enemyLootSpawner;
 
     [RelatedComponent, SerializeField] ColorTintAnimation tintAnimator;
@@ -34,11 +35,16 @@ public class EnemyHealth : Health
     #endregion Config
 
 
-    private void Reset() => ComponentConfig.Reset(this);
+    private void Reset()
+    {
+        ComponentConfig.Reset(this);
+        IEntityComponent.Reset(this);
+    }
 
     protected override void Awake() 
     { 
         base.Awake();
+        IEntityComponent.Awake(this);
         startPosition = transform.position;
         if (TryGetComponent(out PoolableObject pool))
         {
@@ -56,7 +62,7 @@ public class EnemyHealth : Health
     {
         damageEvent?.Invoke(attack.amount);
 
-        if (ragdoll && ragdoll.State != RagdollHandler.States.Off) ragdoll.SetVelocity(attack.velocity);
+        if (ragdoll && Entity.State is Entity.States.RagDoll) ragdoll.SetVelocity(attack.velocity);
         else if (health != 0)
         {
             Stun(attack);
@@ -72,7 +78,7 @@ public class EnemyHealth : Health
             CoroutinePlus.Stop(ref stunRoutine);
             if (ragdoll)
             {
-                ragdoll.State = RagdollHandler.States.On;
+                Entity.State = Entity.States.RagDoll;
                 ragdoll.SetVelocity(attack.velocity);
             }
             else Destroy();
@@ -92,19 +98,19 @@ public class EnemyHealth : Health
 
         IEnumerator StunEnum()
         {
-            entityActivity.CurrentState = EntityActivity.State.Stunned;
+            Entity.State = Entity.States.Stunned;
 
             while(stunTimeLeft > 0)
             {
                 stunTimeLeft -= Time.deltaTime;
                 yield return null;
             }
-            entityActivity.CurrentState = EntityActivity.State.Default;
+            Entity.State = Entity.States.Default;
             if(health <= 0)
             {
                 if (ragdoll)
                 {
-                    ragdoll.State = RagdollHandler.States.On;
+                    Entity.State = Entity.States.RagDoll;
                     ragdoll.SetVelocity(attack.velocity);
                 }
                 else Destroy();
@@ -113,8 +119,6 @@ public class EnemyHealth : Health
     }
     private CoroutinePlus stunRoutine;
     private float stunTimeLeft = 0;
-
-
 
     #endregion DamageOverrides
 
@@ -136,11 +140,22 @@ public class EnemyHealth : Health
         gameObject.SetActive(true);
         transform.position = startPosition;
         if (TryGetComponent(out StateMachine machine)) machine[0].Enter();
-        //if (TryGetComponent(out Unity.VisualScripting.StateMachine visualMachine)) visualMachine.
-        entityActivity.enabled = true;
+        Entity.State = Entity.States.Default;
         transform.rotation = Quaternion.identity;
         health = maxHealth;
-        if (ragdoll) ragdoll.State = RagdollHandler.States.Off;
     }
 
+    public void StateChangeReceiver(Entity.States state)
+    {
+        enabled = state switch
+        {
+            Entity.States.Inactive => false,
+            Entity.States.Default => true,
+            Entity.States.Stunned => false,
+            Entity.States.Grabbed => false,
+            Entity.States.Thrown => false,
+            Entity.States.RagDoll => false,
+            _ => enabled,
+        };
+    }
 }

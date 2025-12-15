@@ -38,7 +38,7 @@ public class RagdollHandler_Obsolete : Grabbable_Obsolete
     {
         
         health = GetComponent<EnemyHealth>();
-        State = EntityActivity.State.Default;
+        State = Entity.States.Default;
         if (proxy) proxy.SetRagdoll(false);
         if (isPlayer)
         {
@@ -49,20 +49,20 @@ public class RagdollHandler_Obsolete : Grabbable_Obsolete
     }
     private void FixedUpdate()
     {
-        if (currentState == EntityActivity.State.RagDoll && maxRagdollTime > 0)
+        if (currentState == Entity.States.RagDoll && maxRagdollTime > 0)
         {
             ragDollTimer += Time.deltaTime;
             if (ragDollTimer > minRagdollTime && (rigidBody.linearVelocity.magnitude < minRagdollVelovity || ragDollTimer > maxRagdollTime))
                 health.Destroy();
         }
-        if(currentState is EntityActivity.State.Thrown or EntityActivity.State.RagDoll && advanced)
+        if(currentState is Entity.States.Thrown or Entity.States.RagDoll && advanced)
         {
             transform.position = ragDollRigidBodies[0].transform.position;
             ragDollRigidBodies[0].transform.localPosition = Vector3.zero;
         }
     }
 
-    public override EntityActivity.State State
+    public override Entity.States State
     {
         get => currentState;
         set
@@ -73,21 +73,21 @@ public class RagdollHandler_Obsolete : Grabbable_Obsolete
 
             switch (value)
             {
-                case EntityActivity.State.Default:
+                case Entity.States.Default:
                     SetRagdoll(false);
                     ragDollTimer = 0;
                     nonRagdolledCollider.gameObject.layer = Layers.Enemy;
                     break;
-                case EntityActivity.State.Grabbed:
+                case Entity.States.Grabbed:
                     SetRagdoll(true);
                     if (advanced) ragDollColliders[0].transform.Reset(scale: false);
                     if (proxy) proxy.transform.parent.Reset(scale: false);
                     rigidBody.isKinematic = true;
                     break;
-                case EntityActivity.State.Thrown:
+                case Entity.States.Thrown:
                     SetRagdoll(true);
                     break;
-                case EntityActivity.State.RagDoll:
+                case Entity.States.RagDoll:
                     SetRagdoll(true);
                     ragDollTimer = 0;
                     if (isPlayer)
@@ -100,9 +100,9 @@ public class RagdollHandler_Obsolete : Grabbable_Obsolete
 
         (value switch
         {
-            EntityActivity.State.Grabbed => grabbedEvent,
-            EntityActivity.State.Thrown => thrownEvent,
-            EntityActivity.State.RagDoll => bounceEvent,
+            Entity.States.Grabbed => grabbedEvent,
+            Entity.States.Thrown => thrownEvent,
+            Entity.States.RagDoll => bounceEvent,
             _ => defaultEvent,
         })?.Invoke();
         }

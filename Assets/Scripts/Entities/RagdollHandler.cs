@@ -1,8 +1,9 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 [RequireComponent(typeof(Collider))]
-public class RagdollHandler : MonoBehaviour
+public class RagdollHandler : MonoBehaviour, IEntityComponent
 {
     public float minRagdollTime;
     public float maxRagdollTime;
@@ -16,7 +17,7 @@ public class RagdollHandler : MonoBehaviour
     [SerializeField, RelatedComponent(true)] Collider defaultCollider;
     [SerializeField, RelatedComponent] Rigidbody defaultRigidBody;
 
-    [SerializeField, RelatedComponent] EntityActivity entityActivity;
+    [field: SerializeField, RelatedComponent] public Entity Entity { get; set; }
     [SerializeField, RelatedComponent] Grabbable grabbable;
     [SerializeField, RelatedComponent] Health health;
 
@@ -34,12 +35,14 @@ public class RagdollHandler : MonoBehaviour
     private void Reset()
     {
         ComponentConfig.Reset(this);
+        IEntityComponent.Reset(this);
         enabled = false;
     }
 
     private void Awake()
     {
-        if(ragDollRigidBodies == null || ragDollRigidBodies.Length == 0)
+        IEntityComponent.Awake(this);
+        if (ragDollRigidBodies == null || ragDollRigidBodies.Length == 0)
         {
             Debug.LogWarning($"RagdollHandler on {gameObject.name} has no ragdoll rigidbodies assigned. What the hell???");
             Destroy(this);
@@ -54,13 +57,43 @@ public class RagdollHandler : MonoBehaviour
                 Physics.IgnoreCollision(defaultCollider, ragDollColliders[i]);
     }
 
-    public States State
+    public void StateChangeReceiver(Entity.States state)
+    {
+        bool isRagdoll = state is Entity.States.Thrown or Entity.States.RagDoll or Entity.States.Grabbed;
+        bool ragdollCollides = state is Entity.States.Thrown or Entity.States.RagDoll;
+
+        enabled = isRagdoll;
+
+        defaultCollider.isTrigger = enabled;
+        rootBoneCollider.enabled = ragdollCollides;
+
+        if (rootRigidBody == defaultRigidBody)
+        {
+            rootRigidBody.isKinematic = isRagdoll ? false : defaultRigidbodyDefaults.isKinematic;
+            rootRigidBody.useGravity = isRagdoll ? true : defaultRigidbodyDefaults.useGravity;
+        }
+        else
+        {
+            defaultRigidBody.isKinematic = isRagdoll ? true : defaultRigidbodyDefaults.isKinematic;
+            rootRigidBody.isKinematic = !isRagdoll;
+        }
+
+        for (int i = 0; i < ragDollColliders.Length; i++)
+        {
+            if (ragDollColliders[i] != null) ragDollColliders[i].enabled = isRagdoll && ragdollCollides;
+            if (i < ragDollRigidBodies.Length && ragDollRigidBodies[i] != null) ragDollRigidBodies[i].isKinematic = !isRagdoll;
+        }
+
+        if (!isRagdoll) ragDollColliders[0].transform.Reset(scale: false);
+    }
+    /*
+    private States state
     {
         get => _state;
         set
         {
             _state = value;
-            if (entityActivity && value != States.Off) entityActivity.CurrentState = EntityActivity.State.RagDoll;
+            if (Entity && value != States.Off) Entity.State = Entity.States.RagDoll;
             enabled = value != States.Off;
 
             defaultCollider.isTrigger = value != States.Off;
@@ -86,7 +119,7 @@ public class RagdollHandler : MonoBehaviour
             if (value == States.Off) ragDollColliders[0].transform.Reset(scale: false);
         }
     }
-
+    */
 
 
     private void FixedUpdate()
@@ -113,11 +146,9 @@ public class RagdollHandler : MonoBehaviour
         get => poofTimer > 0;
         set
         {
-            if (State == States.Off) return;
             poofTimer = value ? 0 : -1;
         }
     }
-
 
     public void SetVelocity(Vector3 velocity)
     {
@@ -138,7 +169,7 @@ public class RagdollHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (State == States.Off) return;
+        if (Entity.State is Entity.States.Thrown or Entity.States.RagDoll) return;
         if (grabbable && !grabbable.enabled) grabbable.enabled = true;
         if (!PoofCycle) PoofCycle = true;
 

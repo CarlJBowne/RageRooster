@@ -78,7 +78,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     {
         Children[0].Enter();
         //signalReady = true;
-        Player.RagdollHandler.State = RagdollHandler.States.Off;
+        Player.RagdollHandler.state = RagdollHandler.States.Off;
         animator.enabled = true;
         animator.Play("GroundBasic");
     }
