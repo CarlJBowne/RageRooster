@@ -14,13 +14,13 @@ public abstract class Target : MonoBehaviour
     protected virtual void OnEnable()
     {
         if (!Gameplay.Active) return;
-        TargetingManager.AddActiveTarget(this);
+        TargetingManager.AddPresentTarget(this);
         currentState = States.OutOfRange;
     }
     protected virtual void OnDisable()
     {
         if (!Gameplay.Active) return;
-        TargetingManager.RemoveActiveTarget(this);
+        TargetingManager.RemovePresentTarget(this);
         currentState = States.Inactive;
     }
 

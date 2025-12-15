@@ -31,7 +31,7 @@ public class TargetingManager : MonoBehaviour
     #endregion
 
     // Public API: manage active targets
-    public static void AddActiveTarget(Target target)
+    public static void AddPresentTarget(Target target)
     {
         if (target is MeleeTarget meleeTarget)
         {
@@ -50,7 +50,7 @@ public class TargetingManager : MonoBehaviour
         }
     }
 
-    public static void RemoveActiveTarget(Target target)
+    public static void RemovePresentTarget(Target target)
     {
         if (target is MeleeTarget meleeTarget)
         {

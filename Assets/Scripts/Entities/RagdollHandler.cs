@@ -27,6 +27,8 @@ public class RagdollHandler : MonoBehaviour
         Grabbed
     }
     private States _state = States.Off;
+    new public bool enabled => _state is not States.Off;
+    public bool collidable => _state is States.On;
 
     private RigidbodyProfile defaultRigidbodyDefaults;
     private float poofTimer = -1;
@@ -34,7 +36,7 @@ public class RagdollHandler : MonoBehaviour
     private void Reset()
     {
         ComponentConfig.Reset(this);
-        enabled = false;
+        base.enabled = false;
     }
 
     private void Awake()
@@ -60,8 +62,8 @@ public class RagdollHandler : MonoBehaviour
         set
         {
             _state = value;
-            if (entityActivity && value != States.Off) entityActivity.CurrentState = EntityActivity.State.RagDoll;
-            enabled = value != States.Off;
+            if (value != States.Off) EntityActivity.Disable(entityActivity);
+            base.enabled = value != States.Off;
 
             defaultCollider.isTrigger = value != States.Off;
             rootBoneCollider.enabled = value == States.On;
@@ -139,7 +141,7 @@ public class RagdollHandler : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (State == States.Off) return;
-        if (grabbable && !grabbable.enabled) grabbable.enabled = true;
+        if (grabbable && grabbable.State is Grabbable.States.Thrown) grabbable.State = Grabbable.States.Grabbable;
         if (!PoofCycle) PoofCycle = true;
 
         if(other.TryGetComponent(out IAttackSource attack)) SetVelocity(attack.GetAttack().velocity);
@@ -151,6 +153,8 @@ public class RagdollHandler : MonoBehaviour
         else gameObject.SetActive(false);
     }
 
+
+    
 }
 
 /// <summary>

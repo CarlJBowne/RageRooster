@@ -38,7 +38,7 @@ public class RagdollHandler_Obsolete : Grabbable_Obsolete
     {
         
         health = GetComponent<EnemyHealth>();
-        State = EntityActivity.State.Default;
+        //State = EntityActivity.State.Default;
         if (proxy) proxy.SetRagdoll(false);
         if (isPlayer)
         {
@@ -49,6 +49,7 @@ public class RagdollHandler_Obsolete : Grabbable_Obsolete
     }
     private void FixedUpdate()
     {
+        /*
         if (currentState == EntityActivity.State.RagDoll && maxRagdollTime > 0)
         {
             ragDollTimer += Time.deltaTime;
@@ -59,9 +60,10 @@ public class RagdollHandler_Obsolete : Grabbable_Obsolete
         {
             transform.position = ragDollRigidBodies[0].transform.position;
             ragDollRigidBodies[0].transform.localPosition = Vector3.zero;
-        }
+        }*/
     }
 
+    /*
     public override EntityActivity.State State
     {
         get => currentState;
@@ -106,7 +108,7 @@ public class RagdollHandler_Obsolete : Grabbable_Obsolete
             _ => defaultEvent,
         })?.Invoke();
         }
-    }
+    }*/
 
 
     private void SetRagdoll(bool value)

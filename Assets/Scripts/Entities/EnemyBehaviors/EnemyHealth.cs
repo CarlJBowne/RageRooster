@@ -56,8 +56,7 @@ public class EnemyHealth : Health
     {
         damageEvent?.Invoke(attack.amount);
 
-        if (ragdoll && ragdoll.State != RagdollHandler.States.Off) ragdoll.SetVelocity(attack.velocity);
-        else if (health != 0)
+        if (health != 0)
         {
             Stun(attack);
             if(tintAnimator) tintAnimator.BeginAnimation(); 
@@ -87,20 +86,19 @@ public class EnemyHealth : Health
 
     void Stun(Attack attack)
     {
-        stunTimeLeft = stunTime * (attack == Attack.Tag.Wham ? 2 : 1);
+        stunTimeLeft += stunTime * (attack == Attack.Tag.Wham ? 2 : 1);
         CoroutinePlus.Begin(ref stunRoutine, StunEnum(), this, false);
 
         IEnumerator StunEnum()
         {
-            entityActivity.CurrentState = EntityActivity.State.Stunned;
-
-            while(stunTimeLeft > 0)
+            EntityActivity.Disable(entityActivity);
+            while (stunTimeLeft > 0)
             {
                 stunTimeLeft -= Time.deltaTime;
                 yield return null;
             }
-            entityActivity.CurrentState = EntityActivity.State.Default;
-            if(health <= 0)
+            EntityActivity.Enable(entityActivity);
+            if (health <= 0)
             {
                 if (ragdoll)
                 {
@@ -135,9 +133,8 @@ public class EnemyHealth : Health
     {
         gameObject.SetActive(true);
         transform.position = startPosition;
-        if (TryGetComponent(out StateMachine machine)) machine[0].Enter();
-        //if (TryGetComponent(out Unity.VisualScripting.StateMachine visualMachine)) visualMachine.
         entityActivity.enabled = true;
+        entityActivity.ResetState();
         transform.rotation = Quaternion.identity;
         health = maxHealth;
         if (ragdoll) ragdoll.State = RagdollHandler.States.Off;

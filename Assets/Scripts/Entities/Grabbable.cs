@@ -39,6 +39,7 @@ public class Grabbable : MonoBehaviour
         Thrown = 2
     }
     private States state = States.Inactive;
+    new public bool enabled => state is States.Grabbable;
     private RigidbodyProfile rigidbodyProfile;
 
     #endregion
@@ -56,12 +57,9 @@ public class Grabbable : MonoBehaviour
 
     void Awake() => rigidbodyProfile = rigidBody != null ? new(rigidBody) : null;
 
-    void OnEnable() { if (State is not States.Grabbable) State = States.Grabbable; }
-    void OnDisable() { if(State is States.Grabbable) State = States.Inactive; }
-
     public bool GetGrabbable()
     {
-        bool result = enabled;
+        bool result = State is States.Grabbable;
 
         if (health && health.GetCurrentHealth() > grabHealthMax) result = false;
 
@@ -71,7 +69,7 @@ public class Grabbable : MonoBehaviour
     public void Grab()
     {
         State = States.Grabbed;
-        if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Grabbed;
+        EntityActivity.Disable(entityActivity);
         if (ragdollHandler) ragdollHandler.State = RagdollHandler.States.Grabbed;
         else if(rigidBody) rigidBody.isKinematic = true;
     }
@@ -79,7 +77,7 @@ public class Grabbable : MonoBehaviour
     public void Throw(Vector3 throwVelocity)
     {
         State = States.Thrown;
-        if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Thrown;
+        EntityActivity.Disable(entityActivity);
 
         if (thrownObjectAttack)
         {
@@ -106,7 +104,7 @@ public class Grabbable : MonoBehaviour
     public void Release()
     {
         State = States.Grabbable;
-        if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Default;
+        EntityActivity.Enable(entityActivity);
         if (ragdollHandler) ragdollHandler.State = RagdollHandler.States.Off;
         else if(rigidBody) rigidBody.isKinematic = rigidbodyProfile.isKinematic;
     }
@@ -114,14 +112,14 @@ public class Grabbable : MonoBehaviour
     public States State
     {
         get => state;
-        private set
+        set
         {
             if (value == state) return;
 
             States prev = state;
             state = value;
 
-            enabled = value == States.Grabbable;
+            base.enabled = value == States.Grabbable;
             meleeTarget.enabled = value == States.Grabbable;
 
             if (value > States.Grabbable || prev > States.Grabbable)

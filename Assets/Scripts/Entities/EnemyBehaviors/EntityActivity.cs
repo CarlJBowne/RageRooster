@@ -5,13 +5,11 @@ using UnityEngine;
 [Tooltip("Manages behaviors meant to happen only when an entity is active.")]
 public class EntityActivity : MonoBehaviour
 {
+    public SLS.StateMachineH.StateMachine slsStateMachine;
+    //public Unity.VisualScripting.StateMachine vsStateMachine;
     public Behaviour[] disableComponents;
 
-    public void Awake()
-    {
-        enabled = base.enabled;
-        currentState = enabled ? State.Default : State.Inactive;
-    }
+    public void Awake() => enabled = base.enabled;
 
     private void OnEnable() => EnabledSet(true);
     private void OnDisable() => EnabledSet(false);
@@ -26,44 +24,31 @@ public class EntityActivity : MonoBehaviour
             for (int i = 0; i < disableComponents.Length; i++)
                 if (disableComponents[i] != null)
                     disableComponents[i].enabled = value;
-
-        if (value && currentState != State.Default) currentState = State.Default;
-        if (!value && currentState == State.Default) currentState = State.Inactive;
     }
 
     public void Enable() => enabled = true;
     public void Disable() => enabled = false;
-    public void Toggle() => enabled = !enabled;
 
-
-    public enum State
+    public void ResetState()
     {
-        Inactive = -1,
-        Default,
-        Stunned,
-        Grabbed,
-        Thrown,
-        RagDoll
+        if(slsStateMachine != null) slsStateMachine[0].Enter();
+        //if(vsStateMachine != null)
+        //{
+        //    vsStateMachine.enabled = false;
+        //    vsStateMachine.enabled = true;
+        //}
     }
 
-    private State currentState;
-
-    public State CurrentState
+    public static void Enable(EntityActivity entityActivity)
     {
-        get => base.enabled ? currentState : State.Inactive;
-        set
-        {
-            currentState = value;
-            enabled = currentState switch
-            {
-                State.Inactive => false,
-                State.Default => true,
-                State.Stunned => false,
-                State.Grabbed => false,
-                State.Thrown => false,
-                State.RagDoll => false,
-                _ => enabled,
-            };
-        }
+        if (entityActivity != null) entityActivity.enabled = true;
+    }
+    public static void Disable(EntityActivity entityActivity)
+    {
+        if (entityActivity != null) entityActivity.enabled = false;
+    }
+    public static void SetState(EntityActivity entityActivity, bool value)
+    {
+        if (entityActivity != null) entityActivity.enabled = value;
     }
 }
