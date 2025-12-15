@@ -21,8 +21,7 @@ public class EnemyHealth : Health
     [RelatedComponent, SerializeField] ColorTintAnimation tintAnimator;
     [RelatedComponent, SerializeField] RagdollHandler ragdoll;
 
-    public bool respawn;
-    public float respawnTime;
+    public float respawnTime = 0;
     public UltEvents.UltEvent onDamageEvent;
 
 
@@ -44,7 +43,7 @@ public class EnemyHealth : Health
         if (TryGetComponent(out PoolableObject pool))
         {
             pool.onActivate += Respawn;
-            respawn = false;
+            respawnTime = 0;
         }
         enemyLootSpawner = GetComponent<EnemyLootSpawner>();
     }
@@ -123,7 +122,7 @@ public class EnemyHealth : Health
     public override void Destroy()
     {
         if (poofPrefab) Instantiate(poofPrefab);
-        if (respawn)
+        if (respawnTime > 0)
         {
             gameObject.SetActive(false);
             Invoke(nameof(Respawn), respawnTime);
@@ -137,9 +136,11 @@ public class EnemyHealth : Health
         gameObject.SetActive(true);
         transform.position = startPosition;
         if (TryGetComponent(out StateMachine machine)) machine[0].Enter();
+        //if (TryGetComponent(out Unity.VisualScripting.StateMachine visualMachine)) visualMachine.
         entityActivity.enabled = true;
         transform.rotation = Quaternion.identity;
         health = maxHealth;
+        if (ragdoll) ragdoll.State = RagdollHandler.States.Off;
     }
 
 }
