@@ -14,12 +14,13 @@ using UnityEditor.UIElements;
 
 public class PlayerButtonActions : PlayerStateBehavior
 {
+    [SerializeReference]
     public PlayerButtonAction Jump;
-    public PlayerButtonAction Attack;
-    public PlayerButtonAction Grab;
-    public PlayerButtonAction Charge;
-    public PlayerButtonAction Aim;
-    public PlayerButtonAction Parry;
+    //public PlayerButtonAction Attack;
+    //public PlayerButtonAction Grab;
+    //public PlayerButtonAction Charge;
+    //public PlayerButtonAction Aim;
+    //public PlayerButtonAction Parry;
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(PlayerButtonActions))]
