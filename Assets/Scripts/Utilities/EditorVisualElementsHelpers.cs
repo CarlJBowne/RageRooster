@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 namespace UnityEngine.UIElements
@@ -97,9 +100,43 @@ namespace UnityEngine.UIElements
             return R;
         }
 
+        public static void Iterate(this SerializedProperty property, Action<SerializedProperty> action)
+        {
+            SerializedProperty iterator = property.Copy();
+            SerializedProperty end = iterator.GetEndProperty(); // one past the last child
 
+            if (!iterator.NextVisible(true)) return;
 
+            while (!SerializedProperty.EqualContents(iterator, end))
+            {
+                action(iterator);
+                if (!iterator.NextVisible(false)) break;
+            }
+        }
 
+        public static void IterateAndDraw(this SerializedProperty property, VisualElement container)
+        {
+            // Iterate visible children of the property and add a PropertyField for each.
+            SerializedProperty iterator = property.Copy();
+            SerializedProperty end = iterator.GetEndProperty(); // one past the last child
+            // Move into the first visible child
+            if (!iterator.NextVisible(true))
+                return;
+
+            while (!SerializedProperty.EqualContents(iterator, end))
+            {
+                // Make a copy for the PropertyField since iterator will advance
+                var childProp = iterator.Copy();
+                var field = new PropertyField(childProp);
+                field.Bind(property.serializedObject);
+                container.Add(field);
+
+                // Advance to next visible sibling/child
+                if (!iterator.NextVisible(false))
+                    break;
+            }
+
+        }
 
 
 

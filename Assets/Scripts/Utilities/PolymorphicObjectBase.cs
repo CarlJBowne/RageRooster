@@ -14,121 +14,6 @@ public class PolymorphicObject
     [CustomPropertyDrawer(typeof(PolymorphicObject), true)]
     public class Drawer : PropertyDrawer
     {
-        private static readonly Dictionary<string, bool> foldoutStates = new();
-
-        Label label;
-        Button TypeButtonOld;
-        VisualElement Header;
-
-        public VisualElement CreatePropertyGUIX(SerializedProperty property)
-        {
-            var root = new VisualElement();
-            //root.style.marginBottom = 4;
-
-            // Create Keys
-            string stateKey = $"{property.serializedObject.targetObject.GetInstanceID()}:{property.propertyPath}";
-            if (!foldoutStates.ContainsKey(stateKey))
-                foldoutStates[stateKey] = false;
-            bool expanded = foldoutStates[stateKey];
-
-            // Establish Base Type
-            Type baseType = property.propertyPath.Contains("Array.data")
-                    ? property.managedReferenceFieldTypename != null
-                        ? Type.GetType(property.managedReferenceFieldTypename.Split(' ')[1])
-                        : typeof(PolymorphicObject)
-                    : property.managedReferenceValue?.GetType().BaseType
-                       ?? typeof(PolymorphicObject);
-
-
-            // Header (replaces the label of a traditional dropdown)
-            Header = new VisualElement();
-            Header.style.flexDirection = FlexDirection.Row;
-            Header.style.alignItems = Align.Center;
-            Header.style.paddingTop = 2;
-            Header.style.paddingBottom = 2;
-            //header.style.cursor = new StyleCursor(SystemCursor.Arrow);
-
-            // Left: clickable area with the display name which toggles the body
-            label = new Label(property.displayName);
-            label.style.flexGrow = 1;
-            label.style.unityTextAlign = TextAnchor.MiddleLeft;
-            label.style.paddingLeft = 2;
-            //leftToggle.style.cursor = new StyleCursor(SystemCursor.Link); // indicates clickable
-
-            // Right: type chooser button (shows current type name)
-            TypeButtonOld = new Button(() =>
-            {
-                // Show menu. The callback will be invoked with either a Type or null.
-                ShowChooseTypeMenu(baseType ?? typeof(PolymorphicObject), property.managedReferenceValue != null, SetNewType);
-            });
-            UpdateTypeDisplayName();
-            TypeButtonOld.style.marginLeft = 4;
-            
-            void SetNewType(Type t)
-            {
-                property.managedReferenceValue = t == null ? null : Activator.CreateInstance(t);
-                property.serializedObject.ApplyModifiedProperties();
-                UpdateTypeDisplayName();
-            }
-            void UpdateTypeDisplayName()
-            {
-                TypeButtonOld.text = property.managedReferenceValue != null
-                    ? property.managedReferenceValue.GetType().Name
-                    : "Choose Type";
-            }
-
-            Header.Add(label);
-            Header.Add(TypeButtonOld);
-            root.Add(Header);
-
-            // Body container that will hold the property fields and is toggleable
-            var body = new VisualElement();
-            body.style.marginLeft = 12;
-            body.style.marginTop = 2;
-            body.style.marginBottom = 2;
-            body.style.flexDirection = FlexDirection.Column;
-            body.style.display = expanded ? DisplayStyle.Flex : DisplayStyle.None;
-
-            // Only add the editable fields when there's an instance
-            if (property.managedReferenceValue != null)
-            {
-                var bodyField = new PropertyField(property);
-                bodyField.Bind(property.serializedObject);
-                body.Add(bodyField);
-            }
-
-            root.Add(body);
-
-            // Toggle behavior: clicking the left label toggles the body.
-            // Ensure clicks targeted to the chooser button don't toggle.
-            label.RegisterCallback<MouseDownEvent>(evt =>
-            {
-                // Toggle state
-                foldoutStates[stateKey] = !foldoutStates[stateKey];
-                body.style.display = foldoutStates[stateKey] ? DisplayStyle.Flex : DisplayStyle.None;
-                evt.StopPropagation();
-            });
-
-            // Also allow clicking anywhere on the header except the chooser button to toggle.
-            Header.RegisterCallback<MouseDownEvent>(evt =>
-            {
-                var targetVE = evt.target as VisualElement;
-                if (targetVE != null)
-                {
-                    // If the click originated from the chooser button (or its descendants), ignore.
-                    if (TypeButtonOld == targetVE || TypeButtonOld.Contains(targetVE))
-                        return;
-
-                    // Otherwise toggle (same as clicking the left label)
-                    foldoutStates[stateKey] = !foldoutStates[stateKey];
-                    body.style.display = foldoutStates[stateKey] ? DisplayStyle.Flex : DisplayStyle.None;
-                    evt.StopPropagation();
-                }
-            });
-
-            return root;
-        }
-
         FoldoutPlus foldout;
         VisualElement body;
         Button TypeButton;
@@ -157,9 +42,9 @@ public class PolymorphicObject
 
             if (property.managedReferenceValue != null)
             {
-                var bodyField = new PropertyField(property);
-                bodyField.Bind(property.serializedObject);
-                body.Add(bodyField);
+                // Add concrete instance fields directly (no nested foldout)
+                if (property.managedReferenceValue is ICustomDrawer I) body.Add(I.Draw());
+                else property.IterateAndDraw(body);
             }
             foldout.contentContainer.Add(body);
 
@@ -192,6 +77,7 @@ public class PolymorphicObject
 
             return root;
         }
+
     }
 
 
@@ -241,4 +127,9 @@ public class PolymorphicObject
         menu.ShowAsContext();
     }
 #endif
+
+    public interface ICustomDrawer
+    {
+        public VisualElement Draw();
+    }
 }
