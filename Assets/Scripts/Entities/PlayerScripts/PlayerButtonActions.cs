@@ -22,6 +22,7 @@ public class PlayerButtonActions : PlayerStateBehavior
     //public PlayerButtonAction Aim;
     //public PlayerButtonAction Parry;
 
+    /*
 #if UNITY_EDITOR
     [CustomEditor(typeof(PlayerButtonActions))]
     public class Editor : UnityEditor.Editor
@@ -31,5 +32,5 @@ public class PlayerButtonActions : PlayerStateBehavior
             return base.CreateInspectorGUI();
         }
     }
-#endif
+#endif*/
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UIElements;
 #if UNITY_EDITOR
@@ -17,22 +18,27 @@ public class PolymorphicObject
         FoldoutPlus foldout;
         VisualElement body;
         Button TypeButton;
+        Type BaseType;
 
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
             VisualElement root = new();
 
-            // Establish Base Type
-            Type baseType = property.propertyPath.Contains("Array.data")
-                    ? property.managedReferenceFieldTypename != null
-                        ? Type.GetType(property.managedReferenceFieldTypename.Split(' ')[1])
-                        : typeof(PolymorphicObject)
-                    : property.managedReferenceValue?.GetType().BaseType
-                       ?? typeof(PolymorphicObject);
+            // Establish Base Type using the declared field type instead of the runtime instance type
+            BaseType = GetDeclaredFieldType(property) ?? typeof(PolymorphicObject);
 
             foldout = new();
             foldout.text = property.displayName;
-            foldout.value = false;
+
+            // Use the SerializedProperty's isExpanded to persist foldout state across UI rebuilds
+            foldout.value = property.isExpanded;
+
+            // keep property.isExpanded in sync when user toggles the foldout
+            foldout.RegisterValueChangedCallback(evt =>
+            {
+                property.isExpanded = evt.newValue;
+                property.serializedObject.ApplyModifiedProperties();
+            });
 
             body = new();
             body.style.marginLeft = 12;
@@ -43,7 +49,7 @@ public class PolymorphicObject
             if (property.managedReferenceValue != null)
             {
                 // Add concrete instance fields directly (no nested foldout)
-                if (property.managedReferenceValue is ICustomDrawer I) body.Add(I.Draw());
+                if (property.managedReferenceValue is ICustomDrawer I) body.Add(I.Draw(property));
                 else property.IterateAndDraw(body);
             }
             foldout.contentContainer.Add(body);
@@ -51,16 +57,26 @@ public class PolymorphicObject
 
             TypeButton = new Button(() =>
             {
-                ShowChooseTypeMenu(baseType ?? typeof(PolymorphicObject), property.managedReferenceValue != null, SetNewType);
+                ShowChooseTypeMenu(BaseType, property.managedReferenceValue != null, SetNewType);
             });
             foldout.headerSide.Add(TypeButton);
             UpdateTypeDisplayName();
 
             void SetNewType(Type t)
             {
+                // preserve current expanded state
+                bool wasExpanded = property.isExpanded;
+
                 property.managedReferenceValue = t == null ? null : Activator.CreateInstance(t);
+
+                // restore expanded state so foldout stays open if it was
+                property.isExpanded = wasExpanded;
+
                 property.serializedObject.ApplyModifiedProperties();
                 UpdateTypeDisplayName();
+
+                // Ensure UI foldout reflects the serialized flag (in case the element tree was recreated)
+                foldout.value = property.isExpanded;
             }
             void UpdateTypeDisplayName()
             {
@@ -70,36 +86,122 @@ public class PolymorphicObject
             }
 
             root.Add(foldout);
-
-            Foldout controlFoldout = new() { text = "Controls" };
-            controlFoldout.Add(new Button() { text = "TEST"});
-            root.Add(controlFoldout);
-
             return root;
         }
 
+        // Resolve the declared type of the serialized field represented by 'property'.
+        private static Type GetDeclaredFieldType(SerializedProperty property)
+        {
+            // If Unity gives a managedReferenceFieldTypename, try to parse it first.
+            if (!string.IsNullOrEmpty(property.managedReferenceFieldTypename))
+            {
+                // managedReferenceFieldTypename can contain tokens; try to resolve each token to a Type.
+                var parts = property.managedReferenceFieldTypename.Split(' ');
+                foreach (var part in parts)
+                {
+                    var t = Type.GetType(part);
+                    if (t != null) return t;
+                }
+            }
+
+            // Fall back to reflection over the target object and the propertyPath.
+            object target = property.serializedObject.targetObject;
+            if (target == null) return null;
+
+            Type currentType = target.GetType();
+            string path = property.propertyPath;
+            string[] tokens = path.Split('.');
+
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                string token = tokens[i];
+
+                if (token == "Array")
+                {
+                    // 'Array' is followed by 'data[x]' token; the element type will be handled when we hit data[...]
+                    continue;
+                }
+
+                if (token.StartsWith("data["))
+                {
+                    // The previous field was a collection; get its element type.
+                    if (currentType.IsArray)
+                    {
+                        currentType = currentType.GetElementType() ?? currentType;
+                    }
+                    else if (currentType.IsGenericType)
+                    {
+                        var genDef = currentType.GetGenericTypeDefinition();
+                        if (genDef == typeof(List<>) || currentType.GetInterfaces().Any(iFace => iFace.IsGenericType && iFace.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
+                        {
+                            currentType = currentType.GetGenericArguments()[0];
+                        }
+                        else
+                        {
+                            // Unknown collection type; abort resolution.
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        // Unknown collection shape; cannot resolve element type.
+                        return null;
+                    }
+                    continue;
+                }
+
+                FieldInfo field = GetFieldInfoRecursive(currentType, token);
+                if (field == null)
+                {
+                    // Could not find the field; abort.
+                    return null;
+                }
+
+                currentType = field.FieldType;
+            }
+
+            // If the final resolved type is a collection, return its element type.
+            if (currentType.IsArray) return currentType.GetElementType() ?? currentType;
+            if (currentType.IsGenericType && currentType.GetGenericTypeDefinition() == typeof(List<>))
+                return currentType.GetGenericArguments()[0];
+
+            return currentType;
+        }
+
+        private static FieldInfo GetFieldInfoRecursive(Type type, string fieldName)
+        {
+            while (type != null)
+            {
+                var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+                var fi = type.GetField(fieldName, flags);
+                if (fi != null) return fi;
+
+                // Unity sometimes stores auto-property fields as backing fields with this pattern.
+                string backing = $"<{fieldName}>k__BackingField";
+                fi = type.GetField(backing, flags);
+                if (fi != null) return fi;
+
+                type = type.BaseType;
+            }
+            return null;
+        }
     }
 
 
     public static Type[] GetSubtypes(Type baseType)
     {
-        try
-        {
-            var types = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a =>
-                {
-                    try { return a.GetTypes(); }
-                    catch { return Array.Empty<Type>(); }
-                })
-                .Where(t => baseType.IsAssignableFrom(t) && !t.IsAbstract && t != baseType)
-                .ToArray();
-
-            return types;
-        }
-        catch
-        {
-            return Array.Empty<Type>();
-        }
+        return AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(a =>
+            {
+                try { return a.GetTypes(); }
+                catch { return Type.EmptyTypes; }
+            })
+            .Where(t =>
+                !t.IsAbstract &&
+                // For interfaces, include implementers; for classes, include strict subclasses only.
+                t.IsSubclassOf(baseType) && (t.IsPublic || t.IsNestedPublic || t.IsNestedFamORAssem || t.IsNestedFamily)
+            )
+            .ToArray();
     }
 
     public static void ShowChooseTypeMenu(Type baseType, bool showNullOption, Action<Type> result)
@@ -130,6 +232,6 @@ public class PolymorphicObject
 
     public interface ICustomDrawer
     {
-        public VisualElement Draw();
+        public VisualElement Draw(SerializedProperty prop);
     }
 }

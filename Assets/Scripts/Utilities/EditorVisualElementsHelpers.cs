@@ -188,14 +188,6 @@ namespace UnityEngine.UIElements
         public VisualElement arrowButton { get; private set; } 
         public Label label { get; private set; }
         public VisualElement headerSide { get; private set; }
-
-
-        public void RecursiveDisplay(VisualElement V, int level = 0)
-        {
-            Debug.Log($"Element: {V}, level {level}, children {V.hierarchy.childCount}");
-            for (int i = 0; i < V.hierarchy.childCount; i++)
-                RecursiveDisplay(V.hierarchy.ElementAt(i), level + 1);
-        }
     }
 }
 
