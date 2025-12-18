@@ -122,17 +122,13 @@ public struct Attack
             SerializedProperty velocityProp = property.FindPropertyRelative(nameof(velocity));
             SerializedProperty tagsProp = property.FindPropertyRelative(nameof(tags));
 
-            Foldout foldout = new();
+            FoldoutPlus foldout = new();
             root.Add(foldout);
             foldout.text = property.displayName;
             foldout.value = false; // collapsed by default
 
-            var foldoutLabel = foldout.Q<VisualElement>().Q<Label>();
-
             PropertyField amountField = new(amountProp, string.Empty);
-            ((VisualElement)foldoutLabel ?? foldout).Add(amountField);
-
-            amountField.style.left = EditorGUIUtility.labelWidth;
+            foldout.headerSide.Add(amountField);
 
             PropertyField velocityField = new(velocityProp);
             foldout.contentContainer.Add(velocityField);
