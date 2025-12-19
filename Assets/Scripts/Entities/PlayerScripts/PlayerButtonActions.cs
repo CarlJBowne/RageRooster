@@ -14,23 +14,54 @@ using UnityEditor.UIElements;
 
 public class PlayerButtonActions : PlayerStateBehavior
 {
-    [SerializeReference]
-    public PlayerButtonAction Jump;
-    //public PlayerButtonAction Attack;
-    //public PlayerButtonAction Grab;
-    //public PlayerButtonAction Charge;
-    //public PlayerButtonAction Aim;
-    //public PlayerButtonAction Parry;
+    
+    [SerializeReference] public PlayerButtonAction Jump;
+    [SerializeReference] public PlayerButtonAction Attack;
+    [SerializeReference] public PlayerButtonAction Grab;
+    [SerializeReference] public PlayerButtonAction Charge;
+    [SerializeReference] public PlayerButtonAction Aim;
+    [SerializeReference] public PlayerButtonAction Parry;
 
-    /*
 #if UNITY_EDITOR
-    [CustomEditor(typeof(PlayerButtonActions))]
-    public class Editor : UnityEditor.Editor
+
+    [CustomEditor(typeof(PlayerButtonActions)), CanEditMultipleObjects]
+    public class PlayerButtonActionsEditor : Editor
     {
         public override VisualElement CreateInspectorGUI()
         {
-            return base.CreateInspectorGUI();
+            // Build a TabView-based inspector (same behavior as original)
+            var tabView = new TabView();
+            tabView.reorderable = false;
+
+            tabView.Add(CreateTab("Jump"));
+            tabView.Add(CreateTab("Attack"));
+            tabView.Add(CreateTab("Grab"));
+            tabView.Add(CreateTab("Charge"));
+            tabView.Add(CreateTab("Aim"));
+            tabView.Add(CreateTab("Parry"));
+
+            return tabView;
+        }
+
+        private VisualElement CreateTab(string title)
+        {
+            var tab = new Tab(title);
+
+            var prop = serializedObject.FindProperty(title);
+            if (prop != null)
+            {
+                var drawer = new PolymorphicObject.Drawer();
+                var field = drawer.CreatePropertyGUI(prop);
+                tab.contentContainer.Add(field);
+            }
+            else
+            {
+                // Provide a visible hint so it's obvious in the inspector why nothing appears.
+                tab.contentContainer.Add(new Label($"Property '{title}' not found on {serializedObject.targetObject.GetType().Name}."));
+            }
+
+            return tab;
         }
     }
-#endif*/
+#endif
 }
