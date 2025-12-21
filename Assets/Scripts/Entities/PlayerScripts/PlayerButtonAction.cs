@@ -193,6 +193,7 @@ public abstract class PlayerButtonAction : PolymorphicObject
             TabView tabView = new();
             root.Add(tabView);
             tabView.reorderable = false;
+            tabView.GetDescendent(0, 0).style.flexGrow = 1f; 
 
             Tab meleeTab = new("Melee Target");
             Tab rangedTab = new("Ranged Target");
@@ -202,9 +203,18 @@ public abstract class PlayerButtonAction : PolymorphicObject
             tabView.Add(rangedTab);
             tabView.Add(noneTab);
 
-            meleeTab.Add(new Drawer().CreatePropertyGUI(p.FindPropertyRelative(nameof(hasMeleeTarget))));
-            rangedTab.Add(new Drawer().CreatePropertyGUI(p.FindPropertyRelative(nameof(hasRangedTarget))));
-            noneTab.Add(new Drawer().CreatePropertyGUI(p.FindPropertyRelative(nameof(noTarget))));
+            SerializedProperty meleeProp = p.FindPropertyRelative(nameof(hasMeleeTarget));
+            SerializedProperty rangedProp = p.FindPropertyRelative(nameof(hasRangedTarget));
+            SerializedProperty noneProp = p.FindPropertyRelative(nameof(noTarget));
+
+            Drawer meleeDrawer = new(meleeProp, out VisualElement meleeElement);
+            Drawer rangedDrawer = new(meleeProp, out VisualElement rangedElement);
+            Drawer noneDrawer = new(meleeProp, out VisualElement noneElement);
+
+
+            meleeTab.Add(meleeElement);
+            rangedTab.Add(rangedElement);
+            noneTab.Add(noneElement);
 #endif
             return root;
         }

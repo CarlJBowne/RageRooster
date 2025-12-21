@@ -22,7 +22,7 @@ public class PlayerButtonActions : PlayerStateBehavior
     [SerializeReference] public PlayerButtonAction Aim;
     [SerializeReference] public PlayerButtonAction Parry;
 
-#if UNITY_EDITOR
+#if UNITY_EDITOR 
 
     [CustomEditor(typeof(PlayerButtonActions)), CanEditMultipleObjects]
     public class PlayerButtonActionsEditor : Editor
@@ -32,6 +32,7 @@ public class PlayerButtonActions : PlayerStateBehavior
             // Build a TabView-based inspector (same behavior as original)
             var tabView = new TabView();
             tabView.reorderable = false;
+            tabView.GetDescendent(0, 0).style.flexGrow = 1f;
 
             tabView.Add(CreateTab("Jump"));
             tabView.Add(CreateTab("Attack"));
@@ -40,25 +41,25 @@ public class PlayerButtonActions : PlayerStateBehavior
             tabView.Add(CreateTab("Aim"));
             tabView.Add(CreateTab("Parry"));
 
-            return tabView;
+            return tabView; 
         }
 
         private VisualElement CreateTab(string title)
         {
             var tab = new Tab(title);
+            tab.tabHeader.style.paddingLeft = 5;
+            tab.tabHeader.style.paddingRight = 5;
+            tab.tabHeader.style.flexGrow = 1f;
+            tab.tabHeader.style.justifyContent = Justify.Center;
 
-            var prop = serializedObject.FindProperty(title);
-            if (prop != null)
+            PlayerButtonAction.Drawer drawer = new(serializedObject.FindProperty(title), out VisualElement V);
+
+            tab.contentContainer.Add(V);
+            drawer.OnTypeChanged += (newType) =>
             {
-                var drawer = new PolymorphicObject.Drawer();
-                var field = drawer.CreatePropertyGUI(prop);
-                tab.contentContainer.Add(field);
-            }
-            else
-            {
-                // Provide a visible hint so it's obvious in the inspector why nothing appears.
-                tab.contentContainer.Add(new Label($"Property '{title}' not found on {serializedObject.targetObject.GetType().Name}."));
-            }
+                serializedObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(target);
+            };
 
             return tab;
         }

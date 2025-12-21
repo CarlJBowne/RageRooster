@@ -15,19 +15,39 @@ public class PolymorphicObject
     [CustomPropertyDrawer(typeof(PolymorphicObject), true)]
     public class Drawer : PropertyDrawer
     {
-        FoldoutPlus foldout;
-        VisualElement body;
-        Button TypeButton;
-        Type BaseType;
-
+        public Drawer(SerializedProperty property, out VisualElement V)
+        {
+            this.property = property;
+            BaseType = GetDeclaredFieldType(property) ?? typeof(PolymorphicObject);
+            V = DrawGUI();
+        }
+        //Built-in initialization for default Editor Window.
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
-            VisualElement root = new();
-
-            // Establish Base Type using the declared field type instead of the runtime instance type
+            this.property = property;
             BaseType = GetDeclaredFieldType(property) ?? typeof(PolymorphicObject);
+            return DrawGUI();
+        }
+
+        public SerializedProperty property { get; private set; }
+        public VisualElement result { get; private set; }
+        public FoldoutPlus foldout { get; private set; }
+        public VisualElement body { get; private set; }
+        public Button TypeButton { get; private set; }
+        public Type BaseType { get; private set; }
+        public Action<Type> OnTypeChanged;
+        public bool drawnSuccessfully { get; private set; } = false;
+
+
+        public VisualElement DrawGUI(bool forceRedo = false)
+        {
+            if (result != null && !forceRedo) return result;
+
+            result = new();
 
             foldout = new();
+            result.Add(foldout);
+
             foldout.text = property.displayName;
 
             // Use the SerializedProperty's isExpanded to persist foldout state across UI rebuilds
@@ -46,47 +66,25 @@ public class PolymorphicObject
             body.style.marginBottom = 2;
             body.style.flexDirection = FlexDirection.Column;
 
-            if (property.managedReferenceValue != null)
-            {
-                // Add concrete instance fields directly (no nested foldout)
-                if (property.managedReferenceValue is ICustomDrawer I) body.Add(I.Draw(property));
-                else property.IterateAndDraw(body);
-            }
             foldout.contentContainer.Add(body);
+            UpdateObjectBody(property);
 
-
-            TypeButton = new Button(() =>
-            {
-                ShowChooseTypeMenu(BaseType, property.managedReferenceValue != null, SetNewType);
-            });
+            TypeButton = new Button(ChooseAndSetType);
             foldout.headerSide.Add(TypeButton);
             UpdateTypeDisplayName();
 
-            void SetNewType(Type t)
+            drawnSuccessfully = true;
+            return result;
+        }
+
+        public void UpdateObjectBody(SerializedProperty property)
+        {
+            body.Clear();
+            if (property.managedReferenceValue != null)
             {
-                // preserve current expanded state
-                bool wasExpanded = property.isExpanded;
-
-                property.managedReferenceValue = t == null ? null : Activator.CreateInstance(t);
-
-                // restore expanded state so foldout stays open if it was
-                property.isExpanded = wasExpanded;
-
-                property.serializedObject.ApplyModifiedProperties();
-                UpdateTypeDisplayName();
-
-                // Ensure UI foldout reflects the serialized flag (in case the element tree was recreated)
-                foldout.value = property.isExpanded;
+                if (property.managedReferenceValue is ICustomDrawer I) body.Add(I.Draw(property));
+                else property.IterateAndDraw(body);
             }
-            void UpdateTypeDisplayName()
-            {
-                TypeButton.text = property.managedReferenceValue != null
-                    ? property.managedReferenceValue.GetType().Name
-                    : "Choose Type";
-            }
-
-            root.Add(foldout);
-            return root;
         }
 
         // Resolve the declared type of the serialized field represented by 'property'.
@@ -185,6 +183,35 @@ public class PolymorphicObject
             }
             return null;
         }
+
+        public void ChooseAndSetType() => ShowChooseTypeMenu(BaseType, property.managedReferenceValue != null, SetNewType);
+
+        private void SetNewType(Type t)
+        {
+            // preserve current expanded state
+            bool wasExpanded = property.isExpanded;
+
+            property.managedReferenceValue = t == null ? null : Activator.CreateInstance(t);
+
+            // restore expanded state so foldout stays open if it was
+            property.isExpanded = wasExpanded;
+
+            property.serializedObject.ApplyModifiedProperties();
+            UpdateTypeDisplayName();
+
+            // Ensure UI foldout reflects the serialized flag (in case the element tree was recreated)
+            foldout.value = property.isExpanded;
+
+            UpdateObjectBody(property);
+        }
+
+        void UpdateTypeDisplayName()
+        {
+            TypeButton.text = property.managedReferenceValue != null
+                ? property.managedReferenceValue.GetType().Name
+                : "Choose Type";
+        }
+
     }
 
 
