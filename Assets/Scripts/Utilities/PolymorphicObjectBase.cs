@@ -214,6 +214,54 @@ public class PolymorphicObject
 
     }
 
+    public class TabbedDrawer
+    {
+        public TabbedDrawer(SerializedObject serializedObject)
+        {
+            this.serializedObject = serializedObject;
+            tabView = new TabView();
+            tabView.reorderable = false;
+            tabs = new();
+            tabView.GetDescendent(0, 0).style.flexGrow = 1f;
+        }
+
+        public SerializedObject serializedObject { get; private set; }
+        public List<Tab> tabs { get; private set; }
+        public TabView tabView { get; private set; }
+
+        public void CreateTab(string displayName, SerializedProperty prop)
+        {
+            tabs.Add(new Tab(displayName, prop));
+        }
+
+
+        public class Tab : UnityEngine.UIElements.Tab
+        {
+            public Tab(string title, SerializedProperty property) : base(title)
+            {
+                displayName = title;
+                this.property = property;
+                tabHeader.style.paddingLeft = 5;
+                tabHeader.style.paddingRight = 5;
+                tabHeader.style.flexGrow = 1f;
+                tabHeader.style.justifyContent = Justify.Center;
+
+                bodyDrawer = new PolymorphicObject.Drawer(property, out VisualElement V);
+                contentContainer.Add(V);
+
+                UpdateLiteralObject(property.managedReferenceValue?.GetType());
+                bodyDrawer.OnTypeChanged += UpdateLiteralObject;
+            }
+
+            public string displayName { get; private set; }
+            public SerializedProperty property { get; private set; }
+            public PolymorphicObject.Drawer bodyDrawer { get; private set; }
+
+
+            private void UpdateLiteralObject(Type T) => tabHeader.style.color = T != null ? Color.white : Color.gray;
+        }
+    }
+
 
     public static Type[] GetSubtypes(Type baseType)
     {

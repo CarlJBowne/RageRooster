@@ -27,21 +27,20 @@ public class PlayerButtonActions : PlayerStateBehavior
     [CustomEditor(typeof(PlayerButtonActions)), CanEditMultipleObjects]
     public class PlayerButtonActionsEditor : Editor
     {
+        PolymorphicObject.TabbedDrawer drawer;
+
         public override VisualElement CreateInspectorGUI()
         {
-            // Build a TabView-based inspector (same behavior as original)
-            var tabView = new TabView();
-            tabView.reorderable = false;
-            tabView.GetDescendent(0, 0).style.flexGrow = 1f;
+            drawer = new(serializedObject);
 
-            tabView.Add(CreateTab("Jump"));
-            tabView.Add(CreateTab("Attack"));
-            tabView.Add(CreateTab("Grab"));
-            tabView.Add(CreateTab("Charge"));
-            tabView.Add(CreateTab("Aim"));
-            tabView.Add(CreateTab("Parry"));
+            drawer.CreateTab(nameof(Jump), serializedObject.FindProperty(nameof(Jump)));
+            drawer.CreateTab(nameof(Attack), serializedObject.FindProperty(nameof(Attack)));
+            drawer.CreateTab(nameof(Grab), serializedObject.FindProperty(nameof(Grab)));
+            drawer.CreateTab(nameof(Charge), serializedObject.FindProperty(nameof(Charge)));
+            drawer.CreateTab(nameof(Aim), serializedObject.FindProperty(nameof(Aim)));
+            drawer.CreateTab(nameof(Parry), serializedObject.FindProperty(nameof(Parry)));
 
-            return tabView; 
+            return drawer.tabView; 
         }
 
         private VisualElement CreateTab(string title)
