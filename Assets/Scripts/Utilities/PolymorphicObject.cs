@@ -9,7 +9,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 #endif
 
-public class PolymorphicObject
+public abstract class PolymorphicObject
 {
 #if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(PolymorphicObject), true)]
@@ -226,7 +226,7 @@ public class PolymorphicObject
         }
 
         public SerializedObject serializedObject { get; private set; }
-        public List<Tab> tabs { get; private set; }
+        public System.Collections.Generic.List<Tab> tabs { get; private set; }
 
         public void CreateTab(string displayName, SerializedProperty prop)
         {
@@ -308,5 +308,37 @@ public class PolymorphicObject
     public interface ICustomDrawer
     {
         public VisualElement Draw(SerializedProperty prop);
+    }
+
+    public class List<T> : System.Collections.Generic.List<T> where T : PolymorphicObject
+    {
+
+
+#if UNITY_EDITOR
+        [CustomPropertyDrawer(typeof(List<>))]
+        public class Editor : UnityEditor.Editor
+        {
+            private ListView listView;
+
+
+            public override VisualElement CreateInspectorGUI()
+            {
+                listView = new();
+                listView.virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight;
+                listView.showFoldoutHeader = true;
+                listView.headerTitle = "MyList";
+                listView.showAddRemoveFooter = true;
+                listView.reorderMode = ListViewReorderMode.Animated;
+
+                listView.onAdd = baselistView =>
+                {
+
+                };
+
+                return listView;
+            }
+
+        }
+#endif
     }
 }
