@@ -187,36 +187,17 @@ public abstract class PlayerButtonAction : PolymorphicObject
 
         public VisualElement Draw(SerializedProperty p)
         {
-            var root = new VisualElement();
 #if UNITY_EDITOR
+            var root = new PolymorphicObject.TabbedDrawer(p.serializedObject);
 
-            TabView tabView = new();
-            root.Add(tabView);
-            tabView.reorderable = false;
-            tabView.GetDescendent(0, 0).style.flexGrow = 1f; 
+            root.CreateTab("Melee Target", p.FindPropertyRelative(nameof(hasMeleeTarget)));
+            root.CreateTab("Ranged Target", p.FindPropertyRelative(nameof(hasRangedTarget)));
+            root.CreateTab("No Target", p.FindPropertyRelative(nameof(noTarget)));
 
-            Tab meleeTab = new("Melee Target");
-            Tab rangedTab = new("Ranged Target");
-            Tab noneTab = new("No Target");
-
-            tabView.Add(meleeTab);
-            tabView.Add(rangedTab);
-            tabView.Add(noneTab);
-
-            SerializedProperty meleeProp = p.FindPropertyRelative(nameof(hasMeleeTarget));
-            SerializedProperty rangedProp = p.FindPropertyRelative(nameof(hasRangedTarget));
-            SerializedProperty noneProp = p.FindPropertyRelative(nameof(noTarget));
-
-            Drawer meleeDrawer = new(meleeProp, out VisualElement meleeElement);
-            Drawer rangedDrawer = new(meleeProp, out VisualElement rangedElement);
-            Drawer noneDrawer = new(meleeProp, out VisualElement noneElement);
-
-
-            meleeTab.Add(meleeElement);
-            rangedTab.Add(rangedElement);
-            noneTab.Add(noneElement);
-#endif
             return root;
+#else 
+            return null;
+#endif
         }
     }
 }

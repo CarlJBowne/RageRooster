@@ -40,27 +40,7 @@ public class PlayerButtonActions : PlayerStateBehavior
             drawer.CreateTab(nameof(Aim), serializedObject.FindProperty(nameof(Aim)));
             drawer.CreateTab(nameof(Parry), serializedObject.FindProperty(nameof(Parry)));
 
-            return drawer.tabView; 
-        }
-
-        private VisualElement CreateTab(string title)
-        {
-            var tab = new Tab(title);
-            tab.tabHeader.style.paddingLeft = 5;
-            tab.tabHeader.style.paddingRight = 5;
-            tab.tabHeader.style.flexGrow = 1f;
-            tab.tabHeader.style.justifyContent = Justify.Center;
-
-            PlayerButtonAction.Drawer drawer = new(serializedObject.FindProperty(title), out VisualElement V);
-
-            tab.contentContainer.Add(V);
-            drawer.OnTypeChanged += (newType) =>
-            {
-                serializedObject.ApplyModifiedProperties();
-                EditorUtility.SetDirty(target);
-            };
-
-            return tab;
+            return drawer; 
         }
     }
 #endif

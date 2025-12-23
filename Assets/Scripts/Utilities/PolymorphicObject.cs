@@ -18,14 +18,14 @@ public class PolymorphicObject
         public Drawer(SerializedProperty property, out VisualElement V)
         {
             this.property = property;
-            BaseType = GetDeclaredFieldType(property) ?? typeof(PolymorphicObject);
+            BaseType = GetDeclaredFieldType() ?? typeof(PolymorphicObject);
             V = DrawGUI();
         }
         //Built-in initialization for default Editor Window.
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
             this.property = property;
-            BaseType = GetDeclaredFieldType(property) ?? typeof(PolymorphicObject);
+            BaseType = GetDeclaredFieldType() ?? typeof(PolymorphicObject);
             return DrawGUI();
         }
 
@@ -67,7 +67,7 @@ public class PolymorphicObject
             body.style.flexDirection = FlexDirection.Column;
 
             foldout.contentContainer.Add(body);
-            UpdateObjectBody(property);
+            UpdateObjectBody();
 
             TypeButton = new Button(ChooseAndSetType);
             foldout.headerSide.Add(TypeButton);
@@ -77,7 +77,7 @@ public class PolymorphicObject
             return result;
         }
 
-        public void UpdateObjectBody(SerializedProperty property)
+        public void UpdateObjectBody()
         {
             body.Clear();
             if (property.managedReferenceValue != null)
@@ -85,10 +85,11 @@ public class PolymorphicObject
                 if (property.managedReferenceValue is ICustomDrawer I) body.Add(I.Draw(property));
                 else property.IterateAndDraw(body);
             }
+            OnTypeChanged?.Invoke(property.managedReferenceValue?.GetType());
         }
 
         // Resolve the declared type of the serialized field represented by 'property'.
-        private static Type GetDeclaredFieldType(SerializedProperty property)
+        private Type GetDeclaredFieldType()
         {
             // If Unity gives a managedReferenceFieldTypename, try to parse it first.
             if (!string.IsNullOrEmpty(property.managedReferenceFieldTypename))
@@ -202,7 +203,7 @@ public class PolymorphicObject
             // Ensure UI foldout reflects the serialized flag (in case the element tree was recreated)
             foldout.value = property.isExpanded;
 
-            UpdateObjectBody(property);
+            UpdateObjectBody();
         }
 
         void UpdateTypeDisplayName()
@@ -214,24 +215,23 @@ public class PolymorphicObject
 
     }
 
-    public class TabbedDrawer
+    public class TabbedDrawer : TabView
     {
-        public TabbedDrawer(SerializedObject serializedObject)
+        public TabbedDrawer(SerializedObject serializedObject) : base()
         {
             this.serializedObject = serializedObject;
-            tabView = new TabView();
-            tabView.reorderable = false;
+            reorderable = false;
             tabs = new();
-            tabView.GetDescendent(0, 0).style.flexGrow = 1f;
+            this.GetDescendent(0, 0).style.flexGrow = 1f;
         }
 
         public SerializedObject serializedObject { get; private set; }
         public List<Tab> tabs { get; private set; }
-        public TabView tabView { get; private set; }
 
         public void CreateTab(string displayName, SerializedProperty prop)
         {
             tabs.Add(new Tab(displayName, prop));
+            Add(tabs[^1]);
         }
 
 
