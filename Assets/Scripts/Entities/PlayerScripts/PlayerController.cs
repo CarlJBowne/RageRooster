@@ -34,6 +34,16 @@ public class PlayerController : PlayerStateBehavior
 	[HideProperty] public Vector3 camAdjustedMovement;
 	[HideProperty] public PlayerRanged grabber;
 
+    public enum ButtonTypes
+    {
+        Jump,
+        Attack,
+        Grab,
+        Charge,
+        Aim,
+        Parry,
+    }
+
     #endregion
     #region Getters
 
@@ -132,6 +142,9 @@ public class PlayerController : PlayerStateBehavior
 
     //NewButtonSystem.
 
-    public static PlayerButtonAction CurrentPlayerButtonAction;
+    public static Dictionary<ButtonTypes, PlayerButtonAction> activeButtonActions = new();
+    public static PlayerButtonActions activeState;
+
+
 
 }

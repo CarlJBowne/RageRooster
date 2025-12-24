@@ -28,6 +28,7 @@ public abstract class PlayerButtonAction : PolymorphicObject
     public abstract void Release();
     protected abstract IEnumerator HoldRoutine();
     protected CoroutinePlus coroutine;
+    [field: NonSerialized] public bool active { get; protected set; }
 
     protected void StartRoutine() => CoroutinePlus.Begin(ref coroutine, HoldRoutine(), Player.Controller);
     protected void StopRoutine()

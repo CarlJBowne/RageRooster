@@ -14,13 +14,41 @@ using UnityEditor.UIElements;
 
 public class PlayerButtonActions : PlayerStateBehavior
 {
-    
+
     [SerializeReference] public PlayerButtonAction Jump;
     [SerializeReference] public PlayerButtonAction Attack;
     [SerializeReference] public PlayerButtonAction Grab;
     [SerializeReference] public PlayerButtonAction Charge;
     [SerializeReference] public PlayerButtonAction Aim;
     [SerializeReference] public PlayerButtonAction Parry;
+
+    public PlayerButtonAction GetButtonAction(PlayerController.ButtonTypes button)
+    {
+        return button switch
+        {
+            PlayerController.ButtonTypes.Jump => Jump,
+            PlayerController.ButtonTypes.Attack => Attack,
+            PlayerController.ButtonTypes.Grab => Grab,
+            PlayerController.ButtonTypes.Charge => Charge,
+            PlayerController.ButtonTypes.Aim => Aim,
+            PlayerController.ButtonTypes.Parry => Parry,
+            _ => throw new ArgumentOutOfRangeException(nameof(button), button, null)
+        };
+    }
+    public PlayerButtonAction[] All { get; private set; }
+
+    protected override void OnAwake()
+    {
+        All = new PlayerButtonAction[]
+        {
+            Jump,
+            Attack,
+            Grab,
+            Charge,
+            Aim,
+            Parry
+        };
+    }
 
 #if UNITY_EDITOR 
 
@@ -40,7 +68,7 @@ public class PlayerButtonActions : PlayerStateBehavior
             drawer.CreateTab(nameof(Aim), serializedObject.FindProperty(nameof(Aim)));
             drawer.CreateTab(nameof(Parry), serializedObject.FindProperty(nameof(Parry)));
 
-            return drawer; 
+            return drawer;
         }
     }
 #endif
