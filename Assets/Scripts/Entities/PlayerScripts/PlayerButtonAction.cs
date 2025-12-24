@@ -168,7 +168,7 @@ public abstract class PlayerButtonAction : PolymorphicObject
         }
     }
     [System.Serializable]
-    public class TargetDependant : PlayerButtonAction, ICustomDrawer
+    public class TargetDependant : PlayerButtonAction
     {
         [SerializeReference] public PlayerButtonAction hasMeleeTarget;
         [SerializeReference] public PlayerButtonAction hasRangedTarget;
@@ -185,7 +185,7 @@ public abstract class PlayerButtonAction : PolymorphicObject
         public override void Release() => Choose().Release();
         protected override IEnumerator HoldRoutine() => Choose().HoldRoutine();
 
-        public VisualElement Draw(SerializedProperty p)
+        public override VisualElement BodyDrawer(SerializedProperty p)
         {
 #if UNITY_EDITOR
             var root = new PolymorphicObject.TabbedDrawer(p.serializedObject);

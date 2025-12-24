@@ -12,6 +12,7 @@ using RageRooster.Systems;
 
 public class TestScript : MonoBehaviour
 {
-
+    [SerializeReference]
+    public PolymorphicObject.List<PlayerButtonAction> actions = new();
 }
 
