@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using System.Linq;
 using System.Reflection;
+using UnityEngine.InputSystem;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -14,24 +16,31 @@ using UnityEditor.UIElements;
 [System.Serializable]
 public abstract class PlayerButtonAction : PolymorphicObject
 {
-    protected virtual void Begin()
+    public bool persistAcrossStateChange = false;
+
+    public virtual void Begin(InputAction button)
     {
-        PlayerController.CurrentPlayerButtonAction = this;
+        if (active || Current != null) return;
+        Current = this;
+        active = true;
+        activeButton = button;
         StartRoutine();
     }
-    protected virtual void Finish()
+    public virtual void Finish()
     {
-        PlayerController.CurrentPlayerButtonAction = null;
+        if (!active || Current == null || Current != this) return;
+        Current = null;
+        active = false;
+        activeButton = null;
         StopRoutine();
     }
+
     public abstract void Press();
     public abstract void Release();
     protected abstract IEnumerator HoldRoutine();
-    protected CoroutinePlus coroutine;
-    [field: NonSerialized] public bool active { get; protected set; }
 
-    protected void StartRoutine() => CoroutinePlus.Begin(ref coroutine, HoldRoutine(), Player.Controller);
-    protected void StopRoutine()
+    public void StartRoutine() => CoroutinePlus.Begin(ref coroutine, HoldRoutine(), Player.Controller);
+    public void StopRoutine()
     {
         if (coroutine)
         {
@@ -40,6 +49,12 @@ public abstract class PlayerButtonAction : PolymorphicObject
         }
     }
 
+    //Non Serialized
+    public static PlayerButtonAction Current { get; protected set; } = null;
+    public bool active { get; protected set; } = false;
+    protected CoroutinePlus coroutine = null;
+    public InputAction activeButton { get; protected set; } = null;
+
     [System.Serializable]
     public class BasicPush : PlayerButtonAction
     {
@@ -47,13 +62,12 @@ public abstract class PlayerButtonAction : PolymorphicObject
         public UltEvent releaseEvent;
         public override void Press()
         {
-            Begin();
             pressEvent?.Invoke();
+            if (releaseEvent != null) Finish();
         }
         public override void Release()
         {
             releaseEvent?.Invoke();
-            Finish();
         }
         protected override IEnumerator HoldRoutine()
         { yield return null; }
@@ -71,7 +85,6 @@ public abstract class PlayerButtonAction : PolymorphicObject
         private bool pastHold = false;
         public override void Press()
         {
-            Begin();
             pressInstantEvent?.Invoke();
             pastHold = false;
         }
@@ -80,14 +93,17 @@ public abstract class PlayerButtonAction : PolymorphicObject
             releaseInstantEvent?.Invoke();
             if (pastHold) holdEvent?.Invoke();
             else tapEvent?.Invoke();
-            Finish();
         }
 
         protected override IEnumerator HoldRoutine()
         {
             yield return new WaitForSeconds(holdTime);
             pastHold = true;
-            if (autoFinishHold) Release();
+            if (autoFinishHold)
+            {
+                Release();
+                Finish();
+            }
         }
     }
     [System.Serializable]
@@ -123,7 +139,6 @@ public abstract class PlayerButtonAction : PolymorphicObject
             }
 
             // Otherwise begin locked-in hold routine.
-            Begin();
             pressEvent?.Invoke();
         }
 
@@ -131,7 +146,6 @@ public abstract class PlayerButtonAction : PolymorphicObject
         {
             releaseEvent?.Invoke();
             releaseResult?.Invoke();
-            Finish();
         }
 
         protected override IEnumerator HoldRoutine()
@@ -164,7 +178,11 @@ public abstract class PlayerButtonAction : PolymorphicObject
                 }
 
                 releaseResult = () => longHoldEvent?.Invoke();
-                if (autoFinishLongHold) Release();
+                if (autoFinishLongHold)
+                {
+                    Release();
+                    Finish();
+                }
             }
         }
     }
@@ -180,15 +198,43 @@ public abstract class PlayerButtonAction : PolymorphicObject
             : TargetingManager.RangedChannel.CurrentTarget ? hasRangedTarget
             : noTarget;
 
-        protected override void Begin() => PlayerController.CurrentPlayerButtonAction = Choose();
+        protected Target lockedTarget;
+        protected PlayerButtonAction lockedAction;
 
-        public override void Press() => Choose().Press();
-        public override void Release() => Choose().Release();
-        protected override IEnumerator HoldRoutine() => Choose().HoldRoutine();
+        public override void Begin(InputAction button)
+        {
+            if (active || Current != null) return;
 
+            lockedAction = Choose();
+            lockedTarget = TargetingManager.MeleeChannel.CurrentTarget != null
+                ? TargetingManager.MeleeChannel.CurrentTarget
+                : TargetingManager.RangedChannel.CurrentTarget != null
+                    ? TargetingManager.RangedChannel.CurrentTarget
+                    : null;
+
+            active = true;
+            activeButton = button;
+            lockedAction.Begin(button);
+        }
+        public override void Finish()
+        {
+            if (!active || Current == null || Current != lockedAction) return;
+            active = false;
+            activeButton = null;
+            lockedAction.Finish();
+            lockedAction = null;
+            lockedTarget = null;
+        }
+
+
+        public override void Press() => lockedAction.Press();
+        public override void Release() => lockedAction.Release();
+        protected override IEnumerator HoldRoutine() => throw new NotImplementedException(); //Don't.
+
+#if UNITY_EDITOR
         public override VisualElement BodyDrawer(SerializedProperty p)
         {
-#if UNITY_EDITOR
+
             var root = new PolymorphicObject.TabbedDrawer(p.serializedObject);
 
             root.CreateTab("Melee Target", p.FindPropertyRelative(nameof(hasMeleeTarget)));
@@ -196,9 +242,13 @@ public abstract class PlayerButtonAction : PolymorphicObject
             root.CreateTab("No Target", p.FindPropertyRelative(nameof(noTarget)));
 
             return root;
-#else 
-            return null;
-#endif
         }
+#endif
     }
+
+
+
+    //IMPORTANT NOTE: The way the system is currently setup would work perfectly if it weren't for the TargetDependant Action type.
+    //In order to make it work, a lot of responsibility is going to need to be shifted to the Actions themselves rather than the PlayerController.
+
 }

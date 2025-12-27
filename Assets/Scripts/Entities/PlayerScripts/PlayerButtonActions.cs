@@ -5,6 +5,8 @@ using UnityEngine;
 using SLS.StateMachineH;
 using UltEvents;
 using UnityEngine.UIElements;
+using UnityEngine.InputSystem;
+
 
 
 #if UNITY_EDITOR
@@ -22,18 +24,15 @@ public class PlayerButtonActions : PlayerStateBehavior
     [SerializeReference] public PlayerButtonAction Aim;
     [SerializeReference] public PlayerButtonAction Parry;
 
-    public PlayerButtonAction GetButtonAction(PlayerController.ButtonTypes button)
+    public PlayerButtonAction GetButtonAction(InputAction button)
     {
-        return button switch
-        {
-            PlayerController.ButtonTypes.Jump => Jump,
-            PlayerController.ButtonTypes.Attack => Attack,
-            PlayerController.ButtonTypes.Grab => Grab,
-            PlayerController.ButtonTypes.Charge => Charge,
-            PlayerController.ButtonTypes.Aim => Aim,
-            PlayerController.ButtonTypes.Parry => Parry,
-            _ => throw new ArgumentOutOfRangeException(nameof(button), button, null)
-        };
+        return button == Input.Jump ? Jump
+            : button == Input.AttackTap ? Attack
+            : button == Input.Grab ? Grab
+            : button == Input.Charge1 || button == Input.Charge2 ? Charge 
+            : button == Input.Aim ? Aim 
+            : button == Input.Parry ? Parry 
+            : null;
     }
     public PlayerButtonAction[] All { get; private set; }
 
@@ -48,6 +47,18 @@ public class PlayerButtonActions : PlayerStateBehavior
             Aim,
             Parry
         };
+    }
+
+    protected override void OnEnter(State prev, bool isFinal) => PlayerController.RegisterActionSource(this);
+    protected override void OnExit(State next)
+    {
+        PlayerController.RegisterActionSource(this, true);
+        if (!Jump.persistAcrossStateChange) Jump.Finish();
+        if (!Attack.persistAcrossStateChange) Jump.Finish();
+        if (!Grab.persistAcrossStateChange) Jump.Finish();
+        if (!Charge.persistAcrossStateChange) Jump.Finish();
+        if (!Aim.persistAcrossStateChange) Jump.Finish();
+        if (!Parry.persistAcrossStateChange) Jump.Finish();
     }
 
 #if UNITY_EDITOR 
