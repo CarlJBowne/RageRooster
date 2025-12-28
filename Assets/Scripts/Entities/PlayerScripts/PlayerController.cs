@@ -1,10 +1,10 @@
-using SLS.StateMachineH;
-using UnityEngine;
 using EditorAttributes;
+using RageRooster.Systems.SaveSystem;
+using SLS.StateMachineH;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
-using RageRooster.Systems.SaveSystem;
-using System.Collections.Generic;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerController : PlayerStateBehavior
@@ -209,4 +209,104 @@ public class PlayerController : PlayerStateBehavior
         //Technically this WILL cause issues if sources are deregistered out of order, but in practice that shouldn't be technically possible.
     }
 
+
+
+    [ContextMenu("Transfer to New Buttons")]
+    private void TransferFromSignalsToNewButtons()
+    {
+        Recurse(Machine);
+        void Recurse(State state)
+        {
+            if(state.TryGetComponent(out SLS.StateMachineH.Signals.SignalNode signalNode))
+            {
+                PlayerButtonActions actionSet = signalNode.GetOrAddComponent<PlayerButtonActions>();
+
+                if (signalNode.signals.ContainsKey("Jump"))
+                {
+                    actionSet.Jump = new PlayerButtonAction.BasicPush()
+                    {
+                        pressEvent = signalNode.signals["Jump"]
+                    };
+                    signalNode.signals.Remove("Jump");
+                }
+
+
+                if (signalNode.signals.ContainsKey("AttackTap") && signalNode.signals.ContainsKey("AttackHold"))
+                {
+                    actionSet.Attack = new PlayerButtonAction.TapOrHold()
+                    {
+                        tapEvent = signalNode.signals["AttackTap"],
+                        holdEvent = signalNode.signals["AttackHold"]
+                    };
+                    signalNode.signals.Remove("AttackTap");
+                    signalNode.signals.Remove("AttackHold");
+                }
+                else if (signalNode.signals.ContainsKey("AttackTap"))
+                {
+                    actionSet.Jump = new PlayerButtonAction.BasicPush()
+                    {
+                        pressEvent = signalNode.signals["AttackTap"]
+                    };
+                    signalNode.signals.Remove("AttackTap");
+                }
+                else if (signalNode.signals.ContainsKey("AttackHold"))
+                {
+                    actionSet.Jump = new PlayerButtonAction.TapOrHold()
+                    {
+                        holdEvent = signalNode.signals["AttackHold"],
+                        autoFinishHold = true
+                    };
+                    signalNode.signals.Remove("AttackHold");
+                }
+
+
+                if (signalNode.signals.ContainsKey("Grab"))
+                {
+                    actionSet.Grab = new PlayerButtonAction.BasicPush()
+                    {
+                        pressEvent = signalNode.signals["Grab"]
+                    };
+                    signalNode.signals.Remove("Grab");
+                }
+                if (signalNode.signals.ContainsKey("Charge"))
+                {
+                    actionSet.Charge = new PlayerButtonAction.BasicPush()
+                    {
+                        pressEvent = signalNode.signals["Charge"]
+                    };
+                    signalNode.signals.Remove("Charge");
+                }
+
+
+                if (signalNode.signals.ContainsKey("ShootMode"))
+                {
+                    actionSet.Aim = new PlayerButtonAction.CrossStatePressRelease()
+                    {
+                        actionEvent = signalNode.signals["ShootMode"]
+                    };
+                    signalNode.signals.Remove("ShootMode");
+                }
+                else if (signalNode.signals.ContainsKey("ShootModeExit"))
+                {
+                    actionSet.Aim = new PlayerButtonAction.CrossStatePressRelease()
+                    {
+                        actionEvent = signalNode.signals["ShootModeExit"]
+                    };
+                    signalNode.signals.Remove("ShootModeExit");
+                }
+
+
+                if (signalNode.signals.ContainsKey("Parry"))
+                {
+                    actionSet.Parry = new PlayerButtonAction.BasicPush()
+                    {
+                        pressEvent = signalNode.signals["Parry"]
+                    };
+                    signalNode.signals.Remove("Parry");
+                }
+
+            }
+            foreach (var child in state.Children) Recurse(child);
+        }
+    }
 }
