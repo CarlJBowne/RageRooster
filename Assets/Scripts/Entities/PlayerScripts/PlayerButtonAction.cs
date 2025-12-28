@@ -187,6 +187,27 @@ public abstract class PlayerButtonAction : PolymorphicObject
         }
     }
     [System.Serializable]
+    public class CrossStatePressRelease : PlayerButtonAction
+    {
+        public UltEvent actionEvent;
+        public PlayerButtonActions transferState;
+
+        public override void Press()
+        {
+            transferState.State.Enter();
+            actionEvent?.Invoke();
+            Finish();
+            transferState.GetButtonAction(activeButton).Begin(activeButton);
+        }
+        public override void Release()
+        {
+            actionEvent?.Invoke();
+            transferState.State.Enter();
+            Finish();
+        }
+        protected override IEnumerator HoldRoutine() { yield return null; }
+    }
+    [System.Serializable]
     public class TargetDependant : PlayerButtonAction
     {
         [SerializeReference] public PlayerButtonAction hasMeleeTarget;
@@ -248,7 +269,5 @@ public abstract class PlayerButtonAction : PolymorphicObject
 
 
 
-    //IMPORTANT NOTE: The way the system is currently setup would work perfectly if it weren't for the TargetDependant Action type.
-    //In order to make it work, a lot of responsibility is going to need to be shifted to the Actions themselves rather than the PlayerController.
 
 }
