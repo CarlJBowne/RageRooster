@@ -53,12 +53,12 @@ public class PlayerButtonActions : PlayerStateBehavior
     protected override void OnExit(State next)
     {
         PlayerController.RegisterActionSource(this, true);
-        if (!Jump.persistAcrossStateChange) Jump.Finish();
-        if (!Attack.persistAcrossStateChange) Jump.Finish();
-        if (!Grab.persistAcrossStateChange) Jump.Finish();
-        if (!Charge.persistAcrossStateChange) Jump.Finish();
-        if (!Aim.persistAcrossStateChange) Jump.Finish();
-        if (!Parry.persistAcrossStateChange) Jump.Finish();
+        if (Jump != null && !Jump.persistAcrossStateChange) Jump.Finish();
+        if (Attack != null && !Attack.persistAcrossStateChange) Attack.Finish();
+        if (Grab != null && !Grab.persistAcrossStateChange) Grab.Finish();
+        if (Charge != null && !Charge.persistAcrossStateChange) Charge.Finish();
+        if (Aim != null && !Aim.persistAcrossStateChange) Aim.Finish();
+        if (Parry != null && !Parry.persistAcrossStateChange) Parry.Finish();
     }
 
 #if UNITY_EDITOR 
