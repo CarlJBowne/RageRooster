@@ -46,13 +46,13 @@ public class PlayerController : PlayerStateBehavior
 
     private void OnEnable()
     {
-        if(true)
+        if (true)
         {
             NewSystemSubscribe(true);
             return;
         }
         Input.Jump.performed += JumpPress;
-        Input.AttackTap.performed += BeginActionEvent;
+        Input.Attack.performed += BeginActionEvent;
         Input.AttackHold.performed += BeginActionEvent;
         Input.Grab.performed += BeginActionEvent;
         Input.Parry.performed += BeginActionEvent;
@@ -73,7 +73,7 @@ public class PlayerController : PlayerStateBehavior
             return;
         }
         Input.Jump.performed -= JumpPress;
-        Input.AttackTap.performed -= BeginActionEvent;
+        Input.Attack.performed -= BeginActionEvent;
         Input.AttackHold.performed -= BeginActionEvent;
         Input.Grab.performed -= BeginActionEvent;
         Input.Parry.performed -= BeginActionEvent;
@@ -148,8 +148,8 @@ public class PlayerController : PlayerStateBehavior
         {
             Input.Jump.started += ButtonPressed;
             Input.Jump.canceled += ButtonRelease;
-            Input.AttackTap.started += ButtonPressed;
-            Input.AttackTap.canceled += ButtonRelease;
+            Input.Attack.started += ButtonPressed;
+            Input.Attack.canceled += ButtonRelease;
             Input.Grab.started += ButtonPressed;
             Input.Grab.canceled += ButtonRelease;
             Input.Charge1.started += ButtonPressed;
@@ -165,8 +165,8 @@ public class PlayerController : PlayerStateBehavior
         {
             Input.Jump.started -= ButtonPressed;
             Input.Jump.canceled -= ButtonRelease;
-            Input.AttackTap.started -= ButtonPressed;
-            Input.AttackTap.canceled -= ButtonRelease;
+            Input.Attack.started -= ButtonPressed;
+            Input.Attack.canceled -= ButtonRelease;
             Input.Grab.started -= ButtonPressed;
             Input.Grab.canceled -= ButtonRelease;
             Input.Charge1.started -= ButtonPressed;
@@ -183,7 +183,7 @@ public class PlayerController : PlayerStateBehavior
     private void ButtonPressed(CTX c)
     {
         if (!ButtonReady || PlayerButtonAction.Current != null || ActionSourceStack.Count == 0) return;
-        if (ActionSourceStack.Peek().GetButtonAction(c.action) is PlayerButtonAction action and not null)
+        if (ActionSourceStack[^1].GetButtonAction(c.action) is PlayerButtonAction action and not null)
         {
             action.Begin(c.action);
             action.Press();
@@ -194,22 +194,34 @@ public class PlayerController : PlayerStateBehavior
         if (PlayerButtonAction.Current != null && PlayerButtonAction.Current.activeButton == c.action)
         {
             if (ButtonReady) PlayerButtonAction.Current.Release();
-            PlayerButtonAction.Current.Finish();
+            PlayerButtonAction.Current?.Finish();
         }
     }
 
     public static bool ButtonReady = true;
-    private static Stack<PlayerButtonActions> ActionSourceStack = new();
-
+    private readonly static List<PlayerButtonActions> ActionSourceStack = new();
 
     public static void RegisterActionSource(PlayerButtonActions source, bool deregister = false)
     {
-        if (!deregister) ActionSourceStack.Push(source);
-        else if (ActionSourceStack.Count > 0) ActionSourceStack.Pop();
-        //Technically this WILL cause issues if sources are deregistered out of order, but in practice that shouldn't be technically possible.
+        if (!deregister)
+        {
+            if(!ActionSourceStack.Contains(source)) ActionSourceStack.Add(source);
+        }
+        else
+        {
+            if (ActionSourceStack.Count > 0 && ActionSourceStack.Contains(source))
+            {
+                if (ActionSourceStack[^1] == source)
+                {
+                    ActionSourceStack.RemoveAtLast();
+                }
+                else Debug.Log("Aw crap");
+            }
+        }
     }
 
 
+    //Note to self: For some bizarre reason the player is exiting and entering IDLE state several times on scene load for no apparent reason. Investigate later.
 
     [ContextMenu("Transfer to New Buttons")]
     private void TransferFromSignalsToNewButtons()
@@ -217,7 +229,7 @@ public class PlayerController : PlayerStateBehavior
         Recurse(Machine);
         void Recurse(State state)
         {
-            if(state.TryGetComponent(out SLS.StateMachineH.Signals.SignalNode signalNode))
+            if (state.TryGetComponent(out SLS.StateMachineH.Signals.SignalNode signalNode))
             {
                 PlayerButtonActions actionSet = signalNode.GetOrAddComponent<PlayerButtonActions>();
 

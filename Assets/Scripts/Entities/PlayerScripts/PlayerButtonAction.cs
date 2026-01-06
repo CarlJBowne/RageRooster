@@ -194,7 +194,7 @@ public abstract class PlayerButtonAction : PolymorphicObject
 
         public override void Press()
         {
-            transferState.State.Enter();
+            if(transferState != null) transferState.State.Enter();
             actionEvent?.Invoke();
             Finish();
             transferState.GetButtonAction(activeButton).Begin(activeButton);
@@ -202,7 +202,7 @@ public abstract class PlayerButtonAction : PolymorphicObject
         public override void Release()
         {
             actionEvent?.Invoke();
-            transferState.State.Enter();
+            if (transferState != null) transferState.State.Enter();
             Finish();
         }
         protected override IEnumerator HoldRoutine() { yield return null; }

@@ -27,11 +27,11 @@ public class PlayerButtonActions : PlayerStateBehavior
     public PlayerButtonAction GetButtonAction(InputAction button)
     {
         return button == Input.Jump ? Jump
-            : button == Input.AttackTap ? Attack
+            : button == Input.Attack ? Attack
             : button == Input.Grab ? Grab
-            : button == Input.Charge1 || button == Input.Charge2 ? Charge 
-            : button == Input.Aim ? Aim 
-            : button == Input.Parry ? Parry 
+            : button == Input.Charge1 || button == Input.Charge2 ? Charge
+            : button == Input.Aim ? Aim
+            : button == Input.Parry ? Parry
             : null;
     }
     public PlayerButtonAction[] All { get; private set; }
