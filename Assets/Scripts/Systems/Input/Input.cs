@@ -25,15 +25,12 @@ public class Input : SingletonAsset<Input>
 	[SerializeField] Ref _Debug_GodMode;
 	[SerializeField] Ref _Debug_ToggleTextOverlay;
 
-	[SerializeField, Obsolete] Ref _AttackHold;
-
     public static Vector2 Movement => Get()._Movement.action.ReadValue<Vector2>();
     public static Vector2 Camera => Get()._Camera.action.ReadValue<Vector2>();
 	public static Button MovementAction => Get()._Movement;
 	public static Button CameraAction => Get()._Camera;
 	public static Button Jump => Get()._Jump;
 	public static Button Attack => Get()._Attack;
-	[Obsolete] public static Button AttackHold => Get()._AttackHold;
 	public static Button Parry => Get()._Parry;
 	public static Button Grab => Get()._Grab;
 	public static Button Aim => Get()._Aim;
