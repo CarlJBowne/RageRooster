@@ -69,18 +69,12 @@ public class PlayerAiming : PlayerMovementEffector
 
     public void SetXYRotation(float X, float Y)
     {
+        aimRotationController.position = Player.MovementBody.Position + (Vector3.up * 0.915f);
         aimRotationController.localEulerAngles = new Vector3(Y, X, 0);
         hAxis.Value = X;
         vAxis.Value = Y;
 
-        //Cameras.aimingCamera.PreviousStateIsValid = false;
         Cameras.aimingCamera.CancelDamping();
-        //Cameras.aimingCamera.ForceCameraPosition(Cameras.RealCamera.transform.position, Cameras.RealCamera.transform.rotation);
-        //Cameras.aimingCamera.OnTargetObjectWarped(aimRotationController, aimRotationController.position - lastAimPos); 
+        Cameras.aimingCamera.PreviousStateIsValid = false;
     }
-
-    public void StoreLastAim() => lastAimPos = aimRotationController.position;
-
-    private static Vector3 defaultDamping = new(.1f, .5f, .3f);
-
 }

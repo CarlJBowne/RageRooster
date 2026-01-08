@@ -103,7 +103,6 @@ public class PlayerRanged : MonoBehaviour
     {
         if (!aiming) return;
         Cameras.normalCamera.m_XAxis.Value = aimingState.hAxis.Value;
-        aimingState.StoreLastAim();
         TargetingManager.ToggleAimingDownSights(false);
         Player.Animator.CrossFade("GroundBasic", 0.1f);
         (currentGrabbed == null ? normalState : grabbingState).Enter();
@@ -118,7 +117,6 @@ public class PlayerRanged : MonoBehaviour
     {
         if (!aiming) return;
         Cameras.normalCamera.m_XAxis.Value = aimingState.hAxis.Value;
-        aimingState.StoreLastAim();
         TargetingManager.ToggleAimingDownSights(false);
         aimingRig.enabled = false;
         aimingRig.weight = 0;
@@ -132,7 +130,6 @@ public class PlayerRanged : MonoBehaviour
     {
         if (!aiming) return;
         Cameras.normalCamera.m_XAxis.Value = aimingState.hAxis.Value;
-        aimingState.StoreLastAim();
         TargetingManager.ToggleAimingDownSights(false);
         aimingRig.enabled = false;
         aimingRig.weight = 0;
