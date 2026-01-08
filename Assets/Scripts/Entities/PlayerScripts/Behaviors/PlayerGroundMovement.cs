@@ -63,34 +63,40 @@ public class PlayerGroundMovement : PlayerMovementEffector
         else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
     }
     
-    public void LandInto()
+    [SerializeField] public string animationName;
+
+    private bool DoEnter()
     {
         bool groundCollide = playerMovementBody.GroundCheck(out AnchorPoint collideResult);
-        if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
+        if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return true;
         playerMovementBody.Land(collideResult);
         State.Enter();
-        if (onEntry == EntryAnimAction.Play) Machine.animator.Play(onEnterName);
-        if (onEntry == EntryAnimAction.CrossFade) Machine.animator.CrossFade(onEnterName, onEnterTime);
-        if (onEntry == EntryAnimAction.Trigger) Machine.animator.SetTrigger(onEnterName);
+        return false;
     }
-    public void LandInto(StateAnimator.EntryAnimAction onEntry, string onEnterName, float onEnterTime)
+    public void EnterFade()
     {
-        bool groundCollide = playerMovementBody.GroundCheck(out AnchorPoint collideResult);
-        if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
-        playerMovementBody.Land(collideResult);
-        State.Enter();
-        if (onEntry == EntryAnimAction.Play) Machine.animator.Play(onEnterName);
-        if (onEntry == EntryAnimAction.CrossFade) Machine.animator.CrossFade(onEnterName, onEnterTime);
-        if (onEntry == EntryAnimAction.Trigger) Machine.animator.SetTrigger(onEnterName);
+        if (DoEnter()) return;
+        Player.Animator.CrossFade(animationName, .1f);
     }
-
-    public StateAnimator.EntryAnimAction onEntry;
-    [SerializeField, ShowField(nameof(__showOnEnterName))] public string onEnterName;
-    [SerializeField, ShowField(nameof(__showOnEnterTime))] public float onEnterTime;
-
-    #region Edtior
-    private bool __showOnEnterName => onEntry != EntryAnimAction.None;
-    private bool __showOnEnterTime => onEntry == EntryAnimAction.CrossFade;
-
-    #endregion 
+    public void EnterFade(float time)
+    {
+        if (DoEnter()) return;
+        Player.Animator.CrossFade(animationName, time);
+    }
+    public void EnterTrigger()
+    {
+        if (DoEnter()) return;
+        Player.Animator.SetTrigger("Land");
+    }
+    public void EnterTrigger(string triggerName)
+    {
+        if (DoEnter()) return;
+        Player.Animator.SetTrigger(triggerName);
+    }
+    public void EnterPlay()
+    {
+        if (DoEnter()) return;
+        Player.Animator.Play(animationName);
+    }
+    public void EnterNoAnimation() => DoEnter();
 }

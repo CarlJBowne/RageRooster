@@ -4,6 +4,8 @@ using UltEvents;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
+using RageRooster.Systems.SaveSystem;
+
 
 
 #if UNITY_EDITOR
@@ -192,7 +194,7 @@ public abstract class PlayerButtonAction : PolymorphicObject
 
         public override void Press()
         {
-            if(transferState != null) transferState.State.Enter();
+            if (transferState != null) transferState.State.Enter();
             actionEvent?.Invoke();
             Finish();
             transferState.GetButtonAction(activeButton).Begin(activeButton);
@@ -204,6 +206,36 @@ public abstract class PlayerButtonAction : PolymorphicObject
             Finish();
         }
         protected override IEnumerator HoldRoutine() { yield return null; }
+    }
+    [System.Serializable]
+    public class UpgradeDependant : PlayerButtonAction
+    {
+        [SerializeReference] public PlayerButtonAction hasUpgrade;
+        [SerializeReference] public PlayerButtonAction noUpgrade;
+        [SerializeField]
+        Upgrades.Upgrade upgrade;
+        public PlayerButtonAction Choose() => Upgrades.Active.HasUpgrade(upgrade) ? hasUpgrade : noUpgrade;
+        protected PlayerButtonAction lockedAction;
+        public override void Begin(InputAction button)
+        {
+            if (active || Current != null) return;
+            lockedAction = Choose();
+            active = true;
+            activeButton = button;
+            lockedAction.Begin(button);
+        }
+        public override void Finish()
+        {
+            if (!active || Current == null || Current != lockedAction) return;
+            active = false;
+            activeButton = null;
+            lockedAction.Finish();
+            lockedAction = null;
+        }
+
+        public override void Press() => lockedAction.Press();
+        public override void Release() => lockedAction.Release();
+        protected override IEnumerator HoldRoutine() => throw new NotImplementedException(); //Don't.
     }
     [System.Serializable]
     public class TargetDependant : PlayerButtonAction
