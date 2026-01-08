@@ -56,8 +56,10 @@ public class PlayerController : PlayerStateBehavior
         Input.Charge1.canceled += ButtonRelease;
         Input.Charge2.started += ButtonPressed;
         Input.Charge2.canceled += ButtonRelease;
-        Input.Aim.started += ButtonPressed;
-        Input.Aim.canceled += ButtonRelease;
+        Input.Aim.started += AimPress;
+        Input.Aim.canceled += AimRelease;
+        //Input.Aim.started += ButtonPressed;
+        //Input.Aim.canceled += ButtonRelease;
         Input.Parry.started += ButtonPressed;
         Input.Parry.canceled += ButtonRelease;
     }
@@ -73,8 +75,10 @@ public class PlayerController : PlayerStateBehavior
         Input.Charge1.canceled -= ButtonRelease;
         Input.Charge2.started -= ButtonPressed;
         Input.Charge2.canceled -= ButtonRelease;
-        Input.Aim.started -= ButtonPressed;
-        Input.Aim.canceled -= ButtonRelease;
+        Input.Aim.started -= AimPress;
+        Input.Aim.canceled -= AimRelease;
+        //Input.Aim.started -= ButtonPressed;
+        //Input.Aim.canceled -= ButtonRelease;
         Input.Parry.started -= ButtonPressed;
         Input.Parry.canceled -= ButtonRelease;
     }
@@ -130,6 +134,10 @@ public class PlayerController : PlayerStateBehavior
     private void ShootModeActivate(CTX ctx) => Machine.SendSignal(new("ShootMode", ignoreLock: true));
     private void ShootModeDeactivate(CTX ctx) => Machine.SendSignal(new("ShootModeExit", ignoreLock: true));
 
+
+    private void AimPress(CTX cTX) => Machine.SendSignal("Aim");
+    private void AimRelease(CTX cTX) => Machine.SendSignal("AimRelease");
+
     private void ChargeButtons(CTX ctx) => Machine.SendSignal("Charge");
 
 
@@ -160,7 +168,7 @@ public class PlayerController : PlayerStateBehavior
     {
         if (!deregister)
         {
-            if(!ActionSourceStack.Contains(source)) ActionSourceStack.Add(source);
+            if (!ActionSourceStack.Contains(source)) ActionSourceStack.Add(source);
         }
         else
         {

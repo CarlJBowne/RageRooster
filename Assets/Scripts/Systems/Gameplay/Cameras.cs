@@ -12,7 +12,8 @@ public class Cameras : MonoBehaviour
 
     [SerializeField] CinemachineBrain inputBrain;
     [SerializeField] CinemachineFreeLook inputNormalCamera;
-    [SerializeField] CinemachineFreeLook inputAimingCamera;
+    [SerializeField] CinemachineVirtualCameraBase inputAimingCamera;
+    [SerializeField] CinemachineVirtualCamera inputAimingCamera2;
     [SerializeField] CinemachineVirtualCameraBase inputDialogueCamera;
     [SerializeField] CinemachineVirtualCameraBase inputCutsceneCamera;
 
@@ -32,7 +33,7 @@ public class Cameras : MonoBehaviour
         RealCamera.transform = inputBrain.transform;
 
         normalCamera = inputNormalCamera;
-        aimingCamera = inputAimingCamera;
+        aimingCamera = inputAimingCamera2;
         dialogueCamera = inputDialogueCamera;
         cutsceneCamera = inputCutsceneCamera;
 
@@ -55,12 +56,12 @@ public class Cameras : MonoBehaviour
 
     public static CinemachineVirtualCameraBase currentVirtualCamera;
     public static CinemachineFreeLook normalCamera;
-    public static CinemachineFreeLook aimingCamera;
+    public static CinemachineVirtualCamera aimingCamera;
     public static CinemachineVirtualCameraBase dialogueCamera;
     public static CinemachineVirtualCameraBase cutsceneCamera;
 
 
-    public void SetTargetVirtualCamera(CinemachineVirtualCameraBase newTarget)
+    public static void SetTargetVirtualCamera(CinemachineVirtualCameraBase newTarget)
     {
         currentVirtualCamera.Priority = 0;
         currentVirtualCamera.gameObject.SetActive(false);

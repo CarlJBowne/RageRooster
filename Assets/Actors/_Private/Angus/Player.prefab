@@ -6929,6 +6929,30 @@ MonoBehaviour:
             _Z: 0
             _W: 0
             _Object: {fileID: 6596185978329452183}
+    - Key: AimRelease
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: ExitAiming
+          _PersistentArguments:
+          - _Type: 13
+            _Int: 0
+            _String: SLS.StateMachineH.State, SLS.StateMachineH.Runtime, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 59389784059182728}
+          - _Type: 13
+            _Int: 0
+            _String: SLS.StateMachineH.State, SLS.StateMachineH.Runtime, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 5498562475319856201}
   lockOnEnter: 0
 --- !u!114 &6825830752329438417
 MonoBehaviour:
@@ -7651,19 +7675,9 @@ MonoBehaviour:
   dropLaunchState: {fileID: 4770298227795515962}
   aimingState: {fileID: 7421260604818229875}
   shootingState: {fileID: 6511899361605723830}
-  pointer:
-    startH: {fileID: 0}
-    startV: {fileID: 0}
-    target: {fileID: 0}
-    distance: 10
-    shootMuzzlePos: {fileID: 6784346919768058046}
-    layerMask:
-      serializedVersion: 2
-      m_Bits: 401
-    hitMarker: {fileID: 0}
   realMuzzle: {fileID: 0}
-  spine1: {fileID: 5788834958485409761}
-  shootingVCam: {fileID: 0}
+  shootMuzzle: {fileID: 6784346919768058046}
+  targetPos: {fileID: 0}
   idleState: {fileID: 59389784059182728}
   eggPool:
     prefabObject: {fileID: 3851737444018513926, guid: 06993a43da31d8b46b285a9b4e23262d,
@@ -7675,7 +7689,6 @@ MonoBehaviour:
     spawnPoint: {fileID: 0}
     rotate: 1
     autoSpawnRate: 0
-  playerRotationSpeed: 10
   eggReplenishRate:
     rate: 1
     current: 0
@@ -7704,7 +7717,7 @@ MonoBehaviour:
     distanceAngleWeighting: 0.5
     viewColor: {r: 1, g: 0, b: 0, a: 1}
   rangedAimingRange:
-    front: {fileID: 2494881031508191783}
+    front: {fileID: 0}
     maxDistance: 20.021955
     maxAngle: 8.84509
     distanceAngleWeighting: 0.5
@@ -9422,7 +9435,10 @@ MonoBehaviour:
   events:
   - time: 0.06666667
     output:
-      _PersistentCalls: []
+      _PersistentCalls:
+      - _Target: {fileID: 2714541672873312079}
+        _MemberName: ShootPoint
+        _PersistentArguments: []
   - time: 0.2
     output:
       _PersistentCalls:
@@ -13557,6 +13573,12 @@ MonoBehaviour:
         - _Target: {fileID: 528938496853295208}
           _MemberName: ResetRoll
           _PersistentArguments: []
+    - Key: Aim
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: EnterAiming
+          _PersistentArguments: []
   lockOnEnter: 0
 --- !u!114 &2728629423755773760
 MonoBehaviour:
@@ -13863,7 +13885,10 @@ MonoBehaviour:
   events:
   - time: 0.25
     output:
-      _PersistentCalls: []
+      _PersistentCalls:
+      - _Target: {fileID: 5816700120086208874}
+        _MemberName: Throw
+        _PersistentArguments: []
   - time: 0.3
     output:
       _PersistentCalls:
@@ -16975,6 +17000,12 @@ MonoBehaviour:
         - _Target: {fileID: 5394545579396957404}
           _MemberName: ResetRoll
           _PersistentArguments: []
+    - Key: Aim
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2714541672873312079}
+          _MemberName: EnterAiming
+          _PersistentArguments: []
   lockOnEnter: 0
 --- !u!114 &4771934725734794215
 MonoBehaviour:
@@ -19520,7 +19551,12 @@ MonoBehaviour:
   playerController: {fileID: 1371118413310184343}
   walkingSpeed: 6
   playerRanged: {fileID: 2714541672873312079}
-  shootFreeLookCamera: {fileID: 0}
+  aimRotationController: {fileID: 0}
+  targetPos: {fileID: 0}
+  hitScanLayerMask:
+    serializedVersion: 2
+    m_Bits: 401
+  playerRotationSpeed: 10
   hAxis:
     Value: 0
     m_SpeedMode: 0

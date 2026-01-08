@@ -135,7 +135,7 @@ public class Gameplay : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         inputPlayer.Awake();
         inputUI.Awake();
-        GetComponent<Cameras>().Awake();
+        GetComponentInChildren<Cameras>().Awake();
         ObjectPools.poolParent = transform.Find("PooledObjects");
         Overlay.OverMenus.BasicBlackout = 1;
         Overlay.OverGameplay.Reset();

@@ -34,6 +34,34 @@ public class TargetingRange
         // Scene callback management
         private System.Action<UnityEditor.SceneView> sceneCallback;
         private bool registered = false;
+        private SerializedObject registeredSerializedObject = null;
+
+        // Plan / Pseudocode (detailed):
+        // 1. When creating the UI for the property, cache child SerializedProperty references.
+        // 2. Build a foldout and add PropertyFields and a "View/Edit" button.
+        // 3. When the button toggles ON:
+        //    - mark viewAndEdit = true
+        //    - call RegisterScene with the current SerializedObject so we remember what we registered for
+        //    - change button visuals and request SceneView repaint
+        // 4. When the button toggles OFF or the inspector foldout is detached:
+        //    - mark viewAndEdit = false
+        //    - call UnregisterScene to remove our SceneView callback
+        // 5. RegisterScene(serializedObject) will:
+        //    - guard against duplicate registration
+        //    - store the passed SerializedObject
+        //    - create a sceneCallback that:
+        //       - catches exceptions to avoid leaking GUI state
+        //       - checks viewAndEdit and the registeredSerializedObject and cached properties for null
+        //       - if invalid, calls UnregisterScene to stop callbacks
+        //       - otherwise calls DrawEditableFlatCone()
+        //    - subscribe sceneCallback to SceneView.duringSceneGui
+        // 6. UnregisterScene will safely unsubscribe and clear stored state.
+        // 7. DrawEditableFlatCone will be defensive: it will early-unregister if required serialized data is missing
+        //    and wrap risky operations to avoid throwing during scene GUI callbacks.
+        // 8. Additionally, register a DetachFromPanelEvent on the foldout to ensure UnregisterScene is called
+        //    when the inspector UI is closed, selection changes, or domain reloads.
+        // This prevents null refs and "GUI clip" errors caused by leftover scene callbacks after the property
+        // or its serialized object has been destroyed or changed.
 
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
@@ -78,7 +106,8 @@ public class TargetingRange
                 {
                     b.style.backgroundColor = new StyleColor(new Color(0.1f, 0.45f, 0.1f));
                     b.style.color = new StyleColor(Color.white);
-                    RegisterScene();
+                    // Register the scene callback bound to this serialized object instance
+                    RegisterScene(property.serializedObject);
                 }
                 else
                 {
@@ -90,16 +119,62 @@ public class TargetingRange
                 UnityEditor.SceneView.RepaintAll();
             }
 
+            // Ensure we unregister when the UI element is detached (selection changes, inspector closed, domain reload)
+            foldout.RegisterCallback<DetachFromPanelEvent>(_ =>
+            {
+                // Turn off the view/edit flag and unregister the scene callback to avoid stale callbacks
+                viewAndEdit = false;
+                UnregisterScene();
+                UnityEditor.SceneView.RepaintAll();
+            });
 
             foldout.Bind(property.serializedObject);
             return foldout;
         }
 
-        private void RegisterScene()
+        private void RegisterScene(SerializedObject so)
         {
             if (registered) return;
+            registeredSerializedObject = so;
             sceneCallback = sv =>
-            { if (viewAndEdit) DrawEditableFlatCone(); };
+            {
+                try
+                {
+                    if (!viewAndEdit)
+                        return;
+
+                    // Defensive checks: if serialized object or properties are missing, unregister to avoid errors
+                    if (registeredSerializedObject == null)
+                    {
+                        UnregisterScene();
+                        return;
+                    }
+
+                    // If any of the cached properties are null (drawer lifecycle changed), unregister
+                    if (p_distance == null || p_angle == null || p_transform == null)
+                    {
+                        UnregisterScene();
+                        return;
+                    }
+
+                    // If the underlying target object(s) no longer exist, unregister
+                    var targets = registeredSerializedObject.targetObjects;
+                    if (targets == null || targets.Length == 0)
+                    {
+                        UnregisterScene();
+                        return;
+                    }
+
+                    // Safe call to drawing routine
+                    DrawEditableFlatCone();
+                }
+                catch (System.Exception ex)
+                {
+                    // Ensure we clean up on unexpected errors to prevent GUI state corruption
+                    Debug.LogException(ex);
+                    UnregisterScene();
+                }
+            };
             UnityEditor.SceneView.duringSceneGui += sceneCallback;
             registered = true;
         }
@@ -107,27 +182,48 @@ public class TargetingRange
         private void UnregisterScene()
         {
             if (!registered) return;
-            UnityEditor.SceneView.duringSceneGui -= sceneCallback;
+            try
+            {
+                UnityEditor.SceneView.duringSceneGui -= sceneCallback;
+            }
+            catch
+            {
+                // ignore unsubscribe errors
+            }
             registered = false;
             sceneCallback = null;
+            registeredSerializedObject = null;
         }
 
         public void DrawEditableFlatCone()
         {
+            // Guard: ensure serialized properties are still valid
             var so = p_distance?.serializedObject ?? p_angle?.serializedObject;
             if (so == null)
             {
                 UnregisterScene();
                 return;
             }
+
+            // If the serialized object has been disposed or has no targets, stop drawing
+            if (so.targetObjects == null || so.targetObjects.Length == 0)
+            {
+                UnregisterScene();
+                return;
+            }
+
             so.Update();
 
             // Read current values
             Transform transform = p_transform?.objectReferenceValue as Transform;
-            if (transform == null) return;
+            if (transform == null)
+            {
+                // Nothing to draw; bail out quietly
+                return;
+            }
 
-            float currentDistance = p_distance.floatValue;
-            float currentHalfAngle = p_angle.floatValue;
+            float currentDistance = p_distance != null ? p_distance.floatValue : 0f;
+            float currentHalfAngle = p_angle != null ? p_angle.floatValue : 0f;
 
             Color color = Color.green;
             try
@@ -192,8 +288,10 @@ public class TargetingRange
 
             if (EditorGUI.EndChangeCheck())
             {
-                p_distance.floatValue = Mathf.Max(0f, newDistance);
-                p_angle.floatValue = Mathf.Clamp(newHalfAngle, 0f, 180f);
+                if (p_distance != null)
+                    p_distance.floatValue = Mathf.Max(0f, newDistance);
+                if (p_angle != null)
+                    p_angle.floatValue = Mathf.Clamp(newHalfAngle, 0f, 180f);
                 so.ApplyModifiedProperties();
                 UnityEditor.SceneView.RepaintAll();
             }

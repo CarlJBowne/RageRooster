@@ -15,36 +15,44 @@ public class PlayerAiming : PlayerMovementEffector
     /// The Player Ranged Component managing everything.
     /// </summary>
     public PlayerRanged playerRanged;
-    public Cinemachine.CinemachineFreeLook shootFreeLookCamera;
+    public Transform aimRotationController;
+    public Transform targetPos;
+    public LayerMask hitScanLayerMask;
+    public float playerRotationSpeed = 10f;
 
     public Cinemachine.AxisState hAxis;
     public Cinemachine.AxisState vAxis;
 
-    public Vector2 dInput; 
+    [SerializeField] private Vector2 dInput;
+    private Vector3 lastAimPos;
 
     protected override void OnFixedUpdate()
     {
+        aimRotationController.position = Player.MovementBody.Position + (Vector3.up * 0.915f);
 
         dInput = Input.Camera;
 
         hAxis.m_InputAxisValue = Input.Camera.x;
         hAxis.Update(Time.deltaTime);
-        playerRanged.pointerH = hAxis.Value;
-
-        shootFreeLookCamera.m_XAxis.Value = hAxis.Value;
-
         vAxis.m_InputAxisValue = Input.Camera.y;
         vAxis.Update(Time.deltaTime);
-        playerRanged.pointerV = vAxis.Value;
+        aimRotationController.localEulerAngles = new Vector3(vAxis.Value, hAxis.Value, 0);
 
-        shootFreeLookCamera.m_YAxis.Value = vAxis.Value.Recast(vAxis.m_MinValue, vAxis.m_MaxValue, 0,1);
+        Player.MovementBody.InstantDirectionChange(
+            Vector3.RotateTowards(
+                Player.MovementBody.direction, aimRotationController.forward.XZ(),
+                playerRotationSpeed * Mathf.PI * Time.fixedTime, 0)
+            );
 
+        targetPos.position = TargetingManager.RangedChannel.CurrentTarget != null
+            ? TargetingManager.RangedChannel.CurrentTarget.position
+            : Physics.Raycast(Cameras.aimingCamera.transform.position, Cameras.aimingCamera.transform.forward, out RaycastHit hit, TargetingManager.RangedChannel.Range.maxDistance, hitScanLayerMask)
+                ? hit.point
+                : Cameras.aimingCamera.transform.position + (Cameras.RealCamera.transform.forward * TargetingManager.RangedChannel.Range.maxDistance);
 
         this.HorizontalMovement(out float? X, out float? Z);
         this.VerticalMovement(out float? Y);
         playerMovementBody.VelocitySet(X, Y, Z);
-
-        //base.OnFixedUpdate(); 
     }
 
 
@@ -59,9 +67,20 @@ public class PlayerAiming : PlayerMovementEffector
         playerMovementBody.CurrentSpeed = realDirection.magnitude;
     }
 
-    public void ResetPointerStartRotation()
+    public void SetXYRotation(float X, float Y)
     {
-        playerRanged.pointer.startV.localEulerAngles = new Vector3(0, 0, 0);
+        aimRotationController.localEulerAngles = new Vector3(Y, X, 0);
+        hAxis.Value = X;
+        vAxis.Value = Y;
+
+        //Cameras.aimingCamera.PreviousStateIsValid = false;
+        Cameras.aimingCamera.CancelDamping();
+        //Cameras.aimingCamera.ForceCameraPosition(Cameras.RealCamera.transform.position, Cameras.RealCamera.transform.rotation);
+        //Cameras.aimingCamera.OnTargetObjectWarped(aimRotationController, aimRotationController.position - lastAimPos); 
     }
+
+    public void StoreLastAim() => lastAimPos = aimRotationController.position;
+
+    private static Vector3 defaultDamping = new(.1f, .5f, .3f);
 
 }
