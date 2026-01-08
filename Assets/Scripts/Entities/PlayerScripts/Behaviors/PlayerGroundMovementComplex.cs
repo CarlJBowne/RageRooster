@@ -8,7 +8,8 @@ using UnityEngine;
 using static SLS.StateMachineH.StateAnimator;
 using static UnityEngine.EventSystems.EventTrigger;
 
-public class PlayerGroundedMovement : PlayerMovementEffector
+[System.Obsolete("This is an old script, Use PlayerGroundMovement instead.")]
+public class PlayerGroundMovementComplex : PlayerMovementEffector
 {
     [Header("Horizontal")]
     public float acceleration;
@@ -20,11 +21,11 @@ public class PlayerGroundedMovement : PlayerMovementEffector
     public bool outwardTurn;
     
     public float minSpeed;
-    public PlayerGroundedMovement rollState;
-    public PlayerGroundedMovement walkState;
-    public PlayerGroundedMovement prevPhase;
+    public PlayerGroundMovementComplex rollState;
+    public PlayerGroundMovementComplex walkState;
+    public PlayerGroundMovementComplex prevPhase;
     [ShowField(nameof(__hasPrevPhase))] public float prevPhaseThreshold;
-    public PlayerGroundedMovement nextPhase;
+    public PlayerGroundMovementComplex nextPhase;
     [ShowField(nameof(__hasNextPhase))] public float nextPhaseThreshold;
     
     [FoldoutGroup("Conditions", nameof(needs1Charge), nameof(needs2Charge), nameof(needsRagingUpgrade), nameof(canRoll))]
