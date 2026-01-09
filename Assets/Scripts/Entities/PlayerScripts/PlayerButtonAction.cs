@@ -236,6 +236,23 @@ public abstract class PlayerButtonAction : PolymorphicObject
         public override void Press() => lockedAction.Press();
         public override void Release() => lockedAction.Release();
         protected override IEnumerator HoldRoutine() => throw new NotImplementedException(); //Don't.
+
+#if UNITY_EDITOR
+        public override VisualElement BodyDrawer(SerializedProperty p)
+        {
+            VisualElement root = new VisualElement();
+
+            root.Add(new PropertyField(p.FindPropertyRelative(nameof(upgrade))));
+
+            var tabDrawer = new PolymorphicObject.TabbedDrawer(p.serializedObject);
+            root.Add(tabDrawer);
+
+            tabDrawer.CreateTab("Has Upgrade", p.FindPropertyRelative(nameof(hasUpgrade)));
+            tabDrawer.CreateTab("Lacks Upgrade", p.FindPropertyRelative(nameof(noUpgrade)));
+
+            return root;
+        }
+#endif
     }
     [System.Serializable]
     public class TargetDependant : PlayerButtonAction

@@ -21,80 +21,128 @@ public abstract class PolymorphicObject
     }
 
     [CustomPropertyDrawer(typeof(PolymorphicObject), true)]
-    public class HeaderDrawer : PropertyDrawer
+    public class Drawer : PropertyDrawer
     {
-        public HeaderDrawer(SerializedProperty property, out VisualElement V)
-        {
-            this.property = property;
-            BaseType = GetDeclaredFieldType() ?? typeof(PolymorphicObject);
-            V = DrawGUI();
-        }
-        //Built-in initialization for default Editor Window.
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
-            this.property = property;
+            bool hasChoosingHeader = false;
+
+            try
+            {
+                // Most common / recommended path: use fieldInfo provided by PropertyDrawer
+                if (fieldInfo != null) hasChoosingHeader = fieldInfo.IsDefined(typeof(ChoosingHeaderAttribute), inherit: true);
+            }
+            catch
+            {
+                // Ignore and treat as not having the attribute.
+                hasChoosingHeader = false;
+            }
+
+            if (hasChoosingHeader)
+            {
+                // Use the header-style drawer which contains the type chooser
+                return new HeaderDrawer(property);
+            }
+            else if (property.managedReferenceValue is PolymorphicObject obj and not null)
+            {
+                return obj.BodyDrawer(property);
+            }
+            VisualElement fallback = new Label("No Object present");
+            return fallback;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public class ChoosingHeaderAttribute : Attribute
+    {
+
+    }
+
+
+    public class HeaderDrawer : FoldoutPlus
+    {
+        public HeaderDrawer(SerializedProperty property)
+        {
+            this.property = property ?? throw new ArgumentNullException(nameof(property));
             BaseType = GetDeclaredFieldType() ?? typeof(PolymorphicObject);
-            return DrawGUI();
+            DrawGUI(forceRedo: true);
+
         }
 
         public SerializedProperty property { get; private set; }
-        public VisualElement result { get; private set; }
-        public FoldoutPlus foldout { get; private set; }
-        public VisualElement body { get; private set; }
         public Button TypeButton { get; private set; }
         public Type BaseType { get; private set; }
+        public Type CurrentType { get; private set; } = null;
         public Action<Type> OnTypeChanged;
         public bool drawnSuccessfully { get; private set; } = false;
 
+        //Inherited fields from FoldoutPlus:
+        //  Toggle header
+        //  VisualElement arrowButton
+        //  Label label
+        //  VisualElement headerSide
+        //  bool expanded
+        //  bool expandable
+        //  bool toggleOnLabelClick
 
         public VisualElement DrawGUI(bool forceRedo = false)
         {
-            if (result != null && !forceRedo) return result;
+            if (!forceRedo && drawnSuccessfully && this.childCount > 0) return this;
 
-            result = new();
+            this.Clear();
 
-            foldout = new();
-            result.Add(foldout);
-
-            foldout.text = property.displayName;
-
-            // Use the SerializedProperty's isExpanded to persist foldout state across UI rebuilds
-            foldout.value = property.isExpanded;
-
-            // keep property.isExpanded in sync when user toggles the foldout
-            foldout.RegisterValueChangedCallback(evt =>
+            this.text = property != null ? property.displayName : "Polymorphic Object";
+            if (property != null)
             {
-                property.isExpanded = evt.newValue;
-                property.serializedObject.ApplyModifiedProperties();
-            });
+                this.value = property.isExpanded;
+                this.RegisterValueChangedCallback(evt =>
+                {
+                    if (property == null) return;
+                    property.isExpanded = evt.newValue;
+                    property.serializedObject.ApplyModifiedProperties();
+                });
+            }
 
-            body = new();
-            body.style.marginLeft = 12;
-            body.style.marginTop = 2;
-            body.style.marginBottom = 2;
-            body.style.flexDirection = FlexDirection.Column;
+            this.contentContainer.style.marginLeft = 12;
+            this.contentContainer.style.marginTop = 2;
+            this.contentContainer.style.marginBottom = 2;
+            this.contentContainer.style.flexDirection = FlexDirection.Column;
 
-            foldout.contentContainer.Add(body);
-            UpdateObjectBody();
+            CurrentType = property?.managedReferenceValue?.GetType();
 
             TypeButton = new Button(ChooseAndSetType);
-            foldout.headerSide.Add(TypeButton);
-            UpdateTypeDisplayName();
+            try { this.headerSide.Add(TypeButton); }
+            catch { this.Add(TypeButton); }
 
-            drawnSuccessfully = true;
-            return result;
+            return this;
         }
 
-        public void UpdateObjectBody()
+        protected override void OnEstablishElements()
         {
-            body.Clear();
-            if (property.managedReferenceValue is PolymorphicObject P and not null) body.Add(P.BodyDrawer(property));
-            OnTypeChanged?.Invoke(property.managedReferenceValue?.GetType());
+            base.OnEstablishElements();
+            UpdateObject();
+            drawnSuccessfully = true;
         }
 
-        // Resolve the declared type of the serialized field represented by 'property'.
+        public void UpdateObject()
+        {
+            contentContainer.Clear();
+            if (property != null && property.managedReferenceValue is PolymorphicObject P && P != null)
+                contentContainer.Add(P.BodyDrawer(property));
+            OnTypeChanged?.Invoke(property?.managedReferenceValue?.GetType());
+
+            TypeButton.text = property?.managedReferenceValue != null
+                ? property.managedReferenceValue.GetType().Name
+                : "Choose Type";
+
+            expandable = CurrentType != null;
+            if (CurrentType == null) expanded = false;
+        }
+
         private Type GetDeclaredFieldType()
         {
+            if (property == null) return null;
+
             // If Unity gives a managedReferenceFieldTypename, try to parse it first.
             if (!string.IsNullOrEmpty(property.managedReferenceFieldTypename))
             {
@@ -189,34 +237,21 @@ public abstract class PolymorphicObject
             return null;
         }
 
-        public void ChooseAndSetType() => ShowChooseTypeMenu(BaseType, property.managedReferenceValue != null, SetNewType);
+        public void ChooseAndSetType() => ShowChooseTypeMenu(BaseType, property?.managedReferenceValue != null, ChangeType);
 
-        private void SetNewType(Type t)
+        private void ChangeType(Type t)
         {
-            // preserve current expanded state
-            bool wasExpanded = property.isExpanded;
+            if (property == null) return;
+            CurrentType = t;
 
-            property.managedReferenceValue = t == null ? null : Activator.CreateInstance(t);
+            property.managedReferenceValue = CurrentType == null ? null : Activator.CreateInstance(t);
 
-            // restore expanded state so foldout stays open if it was
-            property.isExpanded = wasExpanded;
+            UpdateObject();
 
             property.serializedObject.ApplyModifiedProperties();
-            UpdateTypeDisplayName();
 
-            // Ensure UI foldout reflects the serialized flag (in case the element tree was recreated)
-            foldout.value = property.isExpanded;
-
-            UpdateObjectBody();
+            expanded = true;
         }
-
-        void UpdateTypeDisplayName()
-        {
-            TypeButton.text = property.managedReferenceValue != null
-                ? property.managedReferenceValue.GetType().Name
-                : "Choose Type";
-        }
-
     }
 
     public class TabbedDrawer : TabView
@@ -250,8 +285,8 @@ public abstract class PolymorphicObject
                 tabHeader.style.flexGrow = 1f;
                 tabHeader.style.justifyContent = Justify.Center;
 
-                bodyDrawer = new PolymorphicObject.HeaderDrawer(property, out VisualElement V);
-                contentContainer.Add(V);
+                bodyDrawer = new PolymorphicObject.HeaderDrawer(property);
+                contentContainer.Add(bodyDrawer);
 
                 UpdateLiteralObject(property.managedReferenceValue?.GetType());
                 bodyDrawer.OnTypeChanged += UpdateLiteralObject;
@@ -300,7 +335,7 @@ public abstract class PolymorphicObject
                 if (t == baseType) continue;
                 menu.AddItem(new GUIContent(t.Name), false, () => { result?.Invoke(t); });
             }
-                
+
         }
 
         if (showNullOption) menu.AddItem(new GUIContent("Nullify"), false, () => { result?.Invoke(null); });
@@ -309,15 +344,9 @@ public abstract class PolymorphicObject
     }
 #endif
 
-    [System.Obsolete("", true)]
-    public interface ICustomDrawer
-    {
-        public VisualElement Draw(SerializedProperty prop);
-    }
-
     public class List<T> : System.Collections.Generic.List<T>, IPolymorphicListView where T : PolymorphicObject
     {
-        
+
         public System.Collections.IList GetList() => this;
     }
     private interface IPolymorphicListView : System.Collections.IList
@@ -388,7 +417,7 @@ public abstract class PolymorphicObject
 
                     return null;
                 }
-                        
+
                 BaseType = GetListElementType(property) ?? typeof(PolymorphicObject);
 
                 listView = new ListView(itemsSource);
@@ -424,7 +453,7 @@ public abstract class PolymorphicObject
                     {
                         // Fallback to trying rootProperty as array (older setups)
                         if (rootProperty != null && rootProperty.isArray && index >= 0 && index < rootProperty.arraySize)
-                                elemProp = rootProperty.GetArrayElementAtIndex(index);
+                            elemProp = rootProperty.GetArrayElementAtIndex(index);
                     }
 
                     if (elemProp != null)

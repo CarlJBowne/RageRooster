@@ -84,7 +84,7 @@ namespace UnityEngine.UIElements
             v.style.marginRight = value;
         }
 
-        public static VisualElement GetChild(this VisualElement V, int i) 
+        public static VisualElement GetChild(this VisualElement V, int i)
             => V.hierarchy.childCount > i ? V.hierarchy.ElementAt(i) : null;
 
         public static VisualElement GetDescendent(this VisualElement V, params int[] path)
@@ -163,18 +163,14 @@ namespace UnityEngine.UIElements
             headerSide.style.maxHeight = EditorGUIUtility.singleLineHeight;
             this.contentContainer.style.marginTop = 0;
 
-
-
             this.RegisterCallback<AttachToPanelEvent>(EstablishElements);
 
             void EstablishElements(AttachToPanelEvent evt)
             {
-                arrowButton = header.GetDescendent(0, 0);
-                label = header.GetDescendent(0, 1) as Label;
-
+                OnEstablishElements();
                 this.UnregisterCallback<AttachToPanelEvent>(EstablishElements);
             }
-            
+
             //label.RegisterCallback<GeometryChangedEvent>(evt =>
             //{
             //    var rect = label.layout; // layout is in UIElements coordinates
@@ -185,9 +181,31 @@ namespace UnityEngine.UIElements
             //});
         }
         public Toggle header { get; private set; }
-        public VisualElement arrowButton { get; private set; } 
+        public VisualElement arrowButton { get; private set; }
         public Label label { get; private set; }
         public VisualElement headerSide { get; private set; }
+        public bool expanded
+        {
+            get => this.value;
+            set => this.value = value;
+        }
+
+        new public bool toggleOnLabelClick = true;
+
+        public bool expandable
+        {
+            set
+            {
+                arrowButton.visible = value;
+                base.toggleOnLabelClick = value && toggleOnLabelClick;
+            }
+        }
+
+        protected virtual void OnEstablishElements()
+        {
+            arrowButton = header.GetDescendent(0, 0);
+            label = header.GetDescendent(0, 1) as Label;
+        }
     }
 }
 
