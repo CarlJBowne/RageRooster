@@ -688,7 +688,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8950459172026540696}
   - component: {fileID: 5498562475319856201}
-  - component: {fileID: 1966879644613746894}
+  - component: {fileID: 8245774465901303417}
   - component: {fileID: 4244376152006908830}
   - component: {fileID: 7199187339415316323}
   m_Layer: 6
@@ -726,7 +726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 1966879644613746894}
+  - {fileID: 8245774465901303417}
   - {fileID: 4244376152006908830}
   - {fileID: 7199187339415316323}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
@@ -734,7 +734,7 @@ MonoBehaviour:
   <Layer>k__BackingField: 1
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &1966879644613746894
+--- !u!114 &8245774465901303417
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -743,9 +743,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 348881476169311659}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76a63e80f5949cc45b585e78821f74ad, type: 3}
+  m_Script: {fileID: 11500000, guid: b72d747b5bfbe8c4cbf86c5074858e04, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerGroundMovement
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 5498562475319856201}
   Machine: {fileID: 8455434200384702600}
@@ -758,19 +758,7 @@ MonoBehaviour:
   maxTurnSpeed: 10
   outwardTurn: 0
   minSpeed: 0
-  rollState: {fileID: 0}
-  walkState: {fileID: 0}
-  prevPhase: {fileID: 0}
-  prevPhaseThreshold: 0
-  nextPhase: {fileID: 0}
-  nextPhaseThreshold: 0.05
-  needs1Charge: 0
-  needs2Charge: 0
-  needsRagingUpgrade: 0
-  canRoll: 0
-  onEntry: 3
-  onEnterName: Land
-  onEnterTime: 0.1
+  animationName: GroundBasic
 --- !u!114 &4244376152006908830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1300,9 +1288,28 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4155737031878870960}
-          _MemberName: LandInto
+        - _Target: {fileID: 5549325383090932593}
+          _MemberName: Enter
           _PersistentArguments: []
+        - _Target: {fileID: 79467573303735202}
+          _MemberName: CrossFadeAtCurrentPoint
+          _PersistentArguments:
+          - _Type: 2
+            _Int: 0
+            _String: LightPunch2
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0.2
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockOnEnter: 1
 --- !u!114 &1608307018703560638
 MonoBehaviour:
@@ -2439,26 +2446,9 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: LandInto
+        - _Target: {fileID: 4155737031878870960}
+          _MemberName: EnterFade
           _PersistentArguments:
-          - _Type: 4
-            _Int: 2
-            _String: SLS.StateMachineH.StateAnimator+EntryAnimAction, SLS.StateMachineH.Runtime,
-              Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-          - _Type: 2
-            _Int: 0
-            _String: GroundBasic
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
           - _Type: 5
             _Int: 0
             _String: 
@@ -3366,7 +3356,7 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 4155737031878870960}
-          _MemberName: LandInto
+          _MemberName: EnterTrigger
           _PersistentArguments: []
   lockOnEnter: 0
 --- !u!114 &5582145816796372926
@@ -3774,188 +3764,6 @@ Transform:
   - {fileID: 3408567397223948204}
   m_Father: {fileID: 5735276715730193203}
   m_LocalEulerAnglesHint: {x: -2.5992298, y: 0, z: 0}
---- !u!1 &1288466975036708354
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6519207066078055320}
-  - component: {fileID: 4799613922471232797}
-  - component: {fileID: 4999451030884928838}
-  - component: {fileID: 5173706459457393071}
-  - component: {fileID: 7094545394345528047}
-  m_Layer: 6
-  m_Name: GrabbedWalking
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &6519207066078055320
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1288466975036708354}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5721769436998970410}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4799613922471232797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1288466975036708354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 4999451030884928838}
-  - {fileID: 5173706459457393071}
-  - {fileID: 7094545394345528047}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 4641746869726642701}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
---- !u!114 &4999451030884928838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1288466975036708354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76a63e80f5949cc45b585e78821f74ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 4799613922471232797}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  acceleration: 0.35
-  decceleration: 0.5
-  maxSpeed: 10
-  stopping: 0.3
-  maxTurnSpeed: 10
-  outwardTurn: 0
-  minSpeed: 0
-  rollState: {fileID: 0}
-  walkState: {fileID: 0}
-  prevPhase: {fileID: 0}
-  prevPhaseThreshold: 0.05
-  nextPhase: {fileID: 0}
-  nextPhaseThreshold: 15
-  needs1Charge: 0
-  needs2Charge: 0
-  needsRagingUpgrade: 0
-  canRoll: 0
-  onEntry: 3
-  onEnterName: Land
-  onEnterTime: 0.1
---- !u!114 &5173706459457393071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1288466975036708354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 4799613922471232797}
-  signals:
-    serializedList:
-    - Key: WalkOff
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 6596185978329452183}
-          _MemberName: Enter
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &7094545394345528047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1288466975036708354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 4799613922471232797}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  Jump:
-    rid: 1950655830041821315
-  Attack:
-    rid: -2
-  Grab:
-    rid: 1950655830041821316
-  Charge:
-    rid: -2
-  Aim:
-    rid: 1950655830041821317
-  Parry:
-    rid: -2
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 1950655830041821315
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 0
-        pressEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 1454009414976028429}
-            _MemberName: BeginJump
-            _PersistentArguments: []
-        releaseEvent:
-          _PersistentCalls: []
-    - rid: 1950655830041821316
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 0
-        pressEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 5804775204058244869}
-            _MemberName: Enter
-            _PersistentArguments: []
-        releaseEvent:
-          _PersistentCalls: []
-    - rid: 1950655830041821317
-      type: {class: PlayerButtonAction/CrossStatePressRelease, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 0
-        actionEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 2714541672873312079}
-            _MemberName: EnterAiming
-            _PersistentArguments: []
-        transferState: {fileID: 0}
 --- !u!1 &1296871140194544751
 GameObject:
   m_ObjectHideFlags: 0
@@ -4809,11 +4617,8 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: Land
-          _PersistentArguments: []
-        - _Target: {fileID: 4799613922471232797}
-          _MemberName: Enter
+        - _Target: {fileID: 8245774465901303417}
+          _MemberName: EnterNoAnimation
           _PersistentArguments: []
   lockOnEnter: 0
 --- !u!114 &5320803785378627389
@@ -5585,8 +5390,16 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 4155737031878870960}
-          _MemberName: LandInto
-          _PersistentArguments: []
+          _MemberName: EnterFade
+          _PersistentArguments:
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0.2
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockOnEnter: 1
 --- !u!114 &3432230067973307783
 MonoBehaviour:
@@ -6398,7 +6211,7 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 4155737031878870960}
-          _MemberName: LandInto
+          _MemberName: EnterTrigger
           _PersistentArguments: []
   lockOnEnter: 0
 --- !u!114 &3136932766002583917
@@ -7165,11 +6978,8 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: Land
-          _PersistentArguments: []
-        - _Target: {fileID: 4612571557662915037}
-          _MemberName: Enter
+        - _Target: {fileID: 4155737031878870960}
+          _MemberName: EnterNoAnimation
           _PersistentArguments: []
   lockOnEnter: 0
 --- !u!114 &1845080116307315361
@@ -9139,7 +8949,7 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 4155737031878870960}
-          _MemberName: LandInto
+          _MemberName: EnterTrigger
           _PersistentArguments: []
     - Key: ExitVent
       Value:
@@ -10081,7 +9891,7 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 4155737031878870960}
-          _MemberName: LandInto
+          _MemberName: EnterTrigger
           _PersistentArguments: []
     - Key: EnterVent
       Value:
@@ -10442,7 +10252,7 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 4155737031878870960}
-          _MemberName: LandInto
+          _MemberName: EnterTrigger
           _PersistentArguments: []
   lockOnEnter: 0
 --- !u!114 &9149670565680682043
@@ -10662,9 +10472,7 @@ MonoBehaviour:
   maxTurnSpeed: 2.5
   outwardTurn: 1
   minSpeed: 0
-  onEntry: 1
-  onEnterName: RagingCharge
-  onEnterTime: 0
+  animationName: GroundBasic
 --- !u!114 &5148034997239824357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11422,178 +11230,6 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
---- !u!1 &4675571679839146216
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7163401617430893447}
-  - component: {fileID: 6142235946352202614}
-  - component: {fileID: 442187770537930055}
-  - component: {fileID: 762074560747674145}
-  - component: {fileID: 4513400796636596052}
-  m_Layer: 6
-  m_Name: GrabbedSprinting
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &7163401617430893447
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4675571679839146216}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5721769436998970410}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6142235946352202614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4675571679839146216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Behaviors>k__BackingField:
-  - {fileID: 442187770537930055}
-  - {fileID: 762074560747674145}
-  - {fileID: 4513400796636596052}
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <Parent>k__BackingField: {fileID: 4641746869726642701}
-  <Layer>k__BackingField: 1
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
---- !u!114 &442187770537930055
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4675571679839146216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76a63e80f5949cc45b585e78821f74ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 6142235946352202614}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  acceleration: 0.35
-  decceleration: 0.5
-  maxSpeed: 17
-  stopping: 0.15
-  maxTurnSpeed: 2.5
-  outwardTurn: 1
-  minSpeed: 0
-  rollState: {fileID: 0}
-  walkState: {fileID: 0}
-  prevPhase: {fileID: 0}
-  prevPhaseThreshold: 15
-  nextPhase: {fileID: 0}
-  nextPhaseThreshold: 23
-  needs1Charge: 1
-  needs2Charge: 0
-  needsRagingUpgrade: 0
-  canRoll: 0
-  onEntry: 3
-  onEnterName: Land
-  onEnterTime: 0.1
---- !u!114 &762074560747674145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4675571679839146216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 6142235946352202614}
-  signals:
-    serializedList:
-    - Key: WalkOff
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 7195138240643335963}
-          _MemberName: Enter
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &4513400796636596052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4675571679839146216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
-  <State>k__BackingField: {fileID: 6142235946352202614}
-  Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
-  Jump:
-    rid: 1950655830041821318
-  Attack:
-    rid: -2
-  Grab:
-    rid: 1950655830041821319
-  Charge:
-    rid: -2
-  Aim:
-    rid: -2
-  Parry:
-    rid: -2
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 1950655830041821318
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 0
-        pressEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 1454009414976028429}
-            _MemberName: BeginJump
-            _PersistentArguments: []
-        releaseEvent:
-          _PersistentCalls: []
-    - rid: 1950655830041821319
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 0
-        pressEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 5804775204058244869}
-            _MemberName: Enter
-            _PersistentArguments: []
-        releaseEvent:
-          _PersistentCalls: []
 --- !u!1 &4763372838721798270
 GameObject:
   m_ObjectHideFlags: 0
@@ -11607,6 +11243,7 @@ GameObject:
   - component: {fileID: 243591220800763544}
   - component: {fileID: 8792054429220819774}
   - component: {fileID: 6300627380801188497}
+  - component: {fileID: 5296393437112153559}
   m_Layer: 0
   m_Name: AirGrabMiss
   m_TagString: Untagged
@@ -11645,6 +11282,7 @@ MonoBehaviour:
   - {fileID: 243591220800763544}
   - {fileID: 8792054429220819774}
   - {fileID: 6300627380801188497}
+  - {fileID: 5296393437112153559}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
@@ -11863,6 +11501,29 @@ MonoBehaviour:
           _W: 0
           _Object: {fileID: 0}
   loopAfterLastEvent: 0
+--- !u!114 &5296393437112153559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4763372838721798270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 8968679337813068694}
+  signals:
+    serializedList:
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4155737031878870960}
+          _MemberName: EnterFade
+          _PersistentArguments: []
+  lockOnEnter: 0
 --- !u!1 &4847283882173391290
 GameObject:
   m_ObjectHideFlags: 0
@@ -12122,31 +11783,9 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: Land
+        - _Target: {fileID: 4155737031878870960}
+          _MemberName: EnterTrigger
           _PersistentArguments: []
-        - _Target: {fileID: 8579594802138283692}
-          _MemberName: SetTrigger
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: Land
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
   lockOnEnter: 0
 --- !u!114 &4760351905167416853
 MonoBehaviour:
@@ -13520,9 +13159,7 @@ MonoBehaviour:
   maxTurnSpeed: 10
   outwardTurn: 0
   minSpeed: 0
-  onEntry: 3
-  onEnterName: Land
-  onEnterTime: 0
+  animationName: GroundBasic
 --- !u!114 &6791581313119908250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13550,12 +13187,6 @@ MonoBehaviour:
         _PersistentCalls:
         - _Target: {fileID: 415518188991741153}
           _MemberName: AttemptInteract
-          _PersistentArguments: []
-    - Key: ResetRoll
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: ResetRoll
           _PersistentArguments: []
     - Key: Aim
       Value:
@@ -14159,8 +13790,8 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 1966879644613746894}
-          _MemberName: LandInto
+        - _Target: {fileID: 8245774465901303417}
+          _MemberName: EnterTrigger
           _PersistentArguments: []
   lockOnEnter: 0
 --- !u!114 &3924585945265410524
@@ -14691,11 +14322,8 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: Land
-          _PersistentArguments: []
-        - _Target: {fileID: 0}
-          _MemberName: Enter
+        - _Target: {fileID: 5500866486372675793}
+          _MemberName: EnterNoAnimation
           _PersistentArguments: []
   lockOnEnter: 0
 --- !u!114 &7587155912384542076
@@ -14957,9 +14585,28 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 4155737031878870960}
-          _MemberName: LandInto
+        - _Target: {fileID: 5281776910968683532}
+          _MemberName: Enter
           _PersistentArguments: []
+        - _Target: {fileID: 2575273106558408250}
+          _MemberName: CrossFadeAtCurrentPoint
+          _PersistentArguments:
+          - _Type: 2
+            _Int: 0
+            _String: LightPunch1
+            _X: 0
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0.2
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
   lockOnEnter: 1
 --- !u!114 &2210526272510199779
 MonoBehaviour:
@@ -15393,8 +15040,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8950459172026540696}
-  - {fileID: 6519207066078055320}
-  - {fileID: 7163401617430893447}
   - {fileID: 8797717583853980375}
   - {fileID: 1794207520780425292}
   - {fileID: 3841650405079008890}
@@ -15418,12 +15063,10 @@ MonoBehaviour:
   <Layer>k__BackingField: 0
   <Children>k__BackingField:
   - {fileID: 5498562475319856201}
-  - {fileID: 4799613922471232797}
-  - {fileID: 6142235946352202614}
   - {fileID: 6596185978329452183}
   - {fileID: 4226283670687877243}
   - {fileID: 7195138240643335963}
-  <ChildCount>k__BackingField: 6
+  <ChildCount>k__BackingField: 4
 --- !u!1 &6246743017282741172
 GameObject:
   m_ObjectHideFlags: 0
@@ -15559,7 +15202,7 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 4155737031878870960}
-          _MemberName: LandInto
+          _MemberName: EnterTrigger
           _PersistentArguments: []
     - Key: Bonk
       Value:
@@ -15827,7 +15470,7 @@ MonoBehaviour:
       Value:
         _PersistentCalls:
         - _Target: {fileID: 4155737031878870960}
-          _MemberName: LandInto
+          _MemberName: EnterFade
           _PersistentArguments: []
   lockOnEnter: 0
 --- !u!114 &2289536928669045917
@@ -17827,8 +17470,8 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 1966879644613746894}
-          _MemberName: LandInto
+        - _Target: {fileID: 8245774465901303417}
+          _MemberName: EnterTrigger
           _PersistentArguments: []
   lockOnEnter: 0
 --- !u!114 &517575773646568344
@@ -19336,31 +18979,9 @@ MonoBehaviour:
     - Key: Land
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: ReturnToNeutral
-          _PersistentArguments:
-          - _Type: 1
-            _Int: 0
-            _String: 
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 3941225653291784218}
-          _MemberName: Land
+        - _Target: {fileID: 4155737031878870960}
+          _MemberName: EnterTrigger
           _PersistentArguments: []
-        - _Target: {fileID: 8579594802138283692}
-          _MemberName: SetTrigger
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: Land
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
     - Key: EnterVent
       Value:
         _PersistentCalls:
@@ -21425,6 +21046,7 @@ GameObject:
   - component: {fileID: 432829471624060657}
   - component: {fileID: 5827872730310067576}
   - component: {fileID: 7613614028331830638}
+  - component: {fileID: 6900616554054325523}
   m_Layer: 6
   m_Name: AirThrow
   m_TagString: Untagged
@@ -21464,6 +21086,7 @@ MonoBehaviour:
   - {fileID: 432829471624060657}
   - {fileID: 5827872730310067576}
   - {fileID: 7613614028331830638}
+  - {fileID: 6900616554054325523}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
@@ -21515,7 +21138,13 @@ MonoBehaviour:
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 1188554763052459690}
   signals:
-    serializedList: []
+    serializedList:
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4155737031878870960}
+          _MemberName: EnterFade
+          _PersistentArguments: []
   lockOnEnter: 0
 --- !u!114 &432829471624060657
 MonoBehaviour:
@@ -21605,6 +21234,23 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+--- !u!114 &6900616554054325523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8291585736164761318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 1188554763052459690}
+  signals:
+    serializedList: []
+  lockOnEnter: 0
 --- !u!1 &8370047734673085785
 GameObject:
   m_ObjectHideFlags: 0
@@ -21889,7 +21535,7 @@ MonoBehaviour:
     output:
       _PersistentCalls:
       - _Target: {fileID: 4155737031878870960}
-        _MemberName: LandInto
+        _MemberName: EnterFade
         _PersistentArguments: []
   loopAfterLastEvent: 0
 --- !u!114 &4783967466323881696
@@ -23063,8 +22709,16 @@ MonoBehaviour:
     output:
       _PersistentCalls:
       - _Target: {fileID: 4155737031878870960}
-        _MemberName: LandInto
-        _PersistentArguments: []
+        _MemberName: EnterFade
+        _PersistentArguments:
+        - _Type: 5
+          _Int: 0
+          _String: 
+          _X: 0.1
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   loopAfterLastEvent: 0
 --- !u!114 &2528148500580296613
 MonoBehaviour:
@@ -23263,7 +22917,7 @@ MonoBehaviour:
     output:
       _PersistentCalls:
       - _Target: {fileID: 4155737031878870960}
-        _MemberName: LandInto
+        _MemberName: EnterFade
         _PersistentArguments: []
   loopAfterLastEvent: 0
 --- !u!114 &8766870587011753112
@@ -23560,6 +23214,7 @@ GameObject:
   - component: {fileID: 7010545456162377782}
   - component: {fileID: 1842807172199699955}
   - component: {fileID: 6718577106585897668}
+  - component: {fileID: 337130876926189325}
   m_Layer: 0
   m_Name: AirGrabBlocked
   m_TagString: Untagged
@@ -23598,6 +23253,7 @@ MonoBehaviour:
   - {fileID: 7010545456162377782}
   - {fileID: 1842807172199699955}
   - {fileID: 6718577106585897668}
+  - {fileID: 337130876926189325}
   <Machine>k__BackingField: {fileID: 8455434200384702600}
   <Parent>k__BackingField: {fileID: 394877773685415042}
   <Layer>k__BackingField: 2
@@ -23819,6 +23475,29 @@ MonoBehaviour:
           _W: 0
           _Object: {fileID: 0}
   loopAfterLastEvent: 0
+--- !u!114 &337130876926189325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9168046947468112149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 1781473861386445650}
+  signals:
+    serializedList:
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 4155737031878870960}
+          _MemberName: EnterFade
+          _PersistentArguments: []
+  lockOnEnter: 0
 --- !u!1001 &1345935898135293067
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23835,7 +23514,7 @@ PrefabInstance:
     - target: {fileID: 7081382935272620051, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}
       propertyPath: m_CastShadows
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}
@@ -24031,7 +23710,7 @@ PrefabInstance:
     - target: {fileID: 7081382935272620051, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}
       propertyPath: m_CastShadows
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7155809190962485376, guid: a6205be8dd92bdc44a77da0e57cf7c6c,
         type: 3}

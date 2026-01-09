@@ -99,4 +99,5 @@ public class PlayerGroundMovement : PlayerMovementEffector
         Player.Animator.Play(animationName);
     }
     public void EnterNoAnimation() => DoEnter();
+    public void EnterFadeSynced(float time) => Player.Animator.CrossFade(name, time, 0, Player.Animator.GetCurrentAnimatorStateInfo(-1).normalizedTime);
 }
