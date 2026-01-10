@@ -14,9 +14,10 @@ using UnityEditor;
 
 public class TestScript : MonoBehaviour
 {
-    List<int> testInts = new();
+    [SerializeField] List<int> testInts = new();
 
 #if UNITY_EDITOR
+    [CustomEditor(typeof(TestScript))]
     public class _Editor : UnityEditor.Editor
     {
         public override VisualElement CreateInspectorGUI()
@@ -30,30 +31,50 @@ public class TestScript : MonoBehaviour
 #endif
 }
 
+#if UNITY_EDITOR
+// Plan / Pseudocode (detailed):
+// 1. Wrap the entire SuperList<T> with #if UNITY_EDITOR so editor-only types (SerializedProperty, PropertyField, etc.)
+//    do not cause player build compile errors.
+// 2. Provide a factory delegate type `PropertyToVisualElementDelegate(SerializedProperty)` that creates a
+//    VisualElement for an element slot. Allow callers to provide this delegate via the constructor.
+// 3. Build a compact header bar UI with:
+//      - foldout arrow button (toggles expansion)
+//      - label showing the list property display name (or a default)
+//      - counter label showing element count
+//      - add button to append a new element
+//    Ensure styles and sizing are stable for Inspector layout.
+// 4. Provide a collection container (collectionBackground) which holds row Elements and can be collapsed.
+// 5. When constructing the SuperList:
+//      - store the SerializedProperty
+//      - create UI pieces
+//      - if the property exists, Update the serialized object and create Element children for each array entry
+// 6. Element creation:
+//      - each Element stores its SerializedProperty and its parent SuperList reference
+//      - Element contains a remove button wired to parent.RemoveButtonPressed(index)
+//      - Element builds its body from DrawElementBody delegate; if null or if delegate throws, fallback to
+//        creating a `UnityEditor.UIElements.PropertyField(property)` for safe binding.
+// 7. Add / Remove / Clear operations:
+//      - operate on the underlying SerializedProperty using the recommended SerializedObject pattern:
+//          * property.serializedObject.Update()
+//          * modify arraySize, InsertArrayElementAtIndex/DeleteArrayElementAtIndex as appropriate
+//          * property.serializedObject.ApplyModifiedProperties()
+//      - keep the `elements` list and the UI `collectionBackground` in sync
+//      - after mutating, call UpdateElementIndices and UpdateCounter to keep UI consistent
+// 8. Removal robustness:
+//      - Unity sometimes leaves a null placeholder when deleting object-reference array slots.
+//        After calling DeleteArrayElementAtIndex once, check the slot at the same index and if it
+//        is a null ObjectReference, call DeleteArrayElementAtIndex again to fully remove the slot.
+// 9. Expose preAddCallback / preRemoveCallback / preClearCallback for callers to override default behavior.
+// 10. Keep layout measurements consistent (set fixed/min heights) so List virtualization and inspector layout
+//     are stable.
+// 11. Keep code defensive: guard against null `property` and null `elements` lists, ensure indices are validated.
+//
+// The following implementation applies these rules and fixes two notable missing pieces:
+// - Guards the editor-only class with #if UNITY_EDITOR to avoid player compile errors.
+// - Implements robust Delete (double-delete for null object references).
+// - Sets the header label to the property display name if available.
 public class SuperList<T> : VisualElement
 {
-    // Plan / Pseudocode (detailed):
-    // 1. Expose a delegate type `PropertyToVisualElementDelegate(SerializedProperty)` that produces
-    //    a VisualElement for a given element SerializedProperty.
-    // 2. Add a public property `DrawElementBody` of that delegate type on SuperList so callers can set it
-    //    when constructing the SuperList.
-    // 3. When creating Element instances (both during InitializeElements and AddSlot) invoke DrawElementBody
-    //    with the element's SerializedProperty. If the delegate returns null, fall back to a default (a
-    //    PropertyField for that SerializedProperty).
-    // 4. Give each Element a reference to its parent SuperList and its index so the element's remove button
-    //    can call back to the parent RemoveSlot via RemoveButtonPressed(index).
-    // 5. Make AddSlot / RemoveSlot / ClearSlots update the underlying SerializedProperty properly:
-    //    - call property.serializedObject.Update() before making changes,
-    //    - modify property.arraySize or call DeleteArrayElementAtIndex,
-    //    - call property.serializedObject.ApplyModifiedProperties() after changes,
-    //    - keep the `elements` list and the visual `collectionBackground` in sync and update indices.
-    // 6. Provide a helper UpdateElementIndices to refresh Element.selfIndex after removes/clears.
-    // 7. Fix the bug in RemoveButtonPressed check (return when invalid index) so callbacks run properly.
-    //
-    // This approach allows parent code to pass any factory that turns a SerializedProperty into a
-    // VisualElement (with binding) and have the SuperList instantiate and wire those element bodies
-    // into its UI and lifecycle (add/remove/clear).
-
     public SuperList(SerializedProperty listProperty, PropertyToVisualElementDelegate drawElementBody = null)
     {
         property = listProperty;
@@ -67,87 +88,6 @@ public class SuperList<T> : VisualElement
             UpdateCounter();
             InitializeArrayElements();
         }
-    }
-
-    private void CreateVisualElements()
-    {
-        // Header bar (dark gray, ~one line high)
-        var headerBar = new VisualElement();
-        headerBar.name = "superlist-headerbar";
-        headerBar.style.flexDirection = FlexDirection.Row;
-        headerBar.style.alignItems = Align.Center;
-        headerBar.style.height = 18; // approximate single line height
-        headerBar.style.backgroundColor = new StyleColor(new Color(0.18f, 0.18f, 0.18f)); // dark gray
-        headerBar.style.paddingLeft = 4;
-        headerBar.style.paddingRight = 4;
-        headerBar.style.marginBottom = 2;
-
-        // Foldout arrow button
-        foldoutArrow = new Button(() =>
-        {
-            expanded = !expanded;
-        })
-        {
-            text = "▶"
-        };
-        foldoutArrow.name = "superlist-foldout";
-        foldoutArrow.style.width = 18;
-        foldoutArrow.style.height = 16;
-        foldoutArrow.style.unityTextAlign = TextAnchor.MiddleCenter;
-        foldoutArrow.style.marginRight = 6;
-        headerBar.Add(foldoutArrow);
-
-        // Main label (flexible)
-        label = new Label("Super List");
-        label.name = "superlist-label";
-        label.style.flexGrow = 1;
-        label.style.unityTextAlign = TextAnchor.MiddleLeft;
-        label.style.color = new StyleColor(Color.white);
-        label.style.fontSize = 11;
-        headerBar.Add(label);
-
-        // Element counter (small, right-justified)
-        elementCounter = new Label((property != null) ? property.arraySize.ToString() : "0");
-        elementCounter.name = "superlist-counter";
-        elementCounter.style.width = 36;
-        elementCounter.style.unityTextAlign = TextAnchor.MiddleRight;
-        elementCounter.style.color = new StyleColor(new Color(0.85f, 0.85f, 0.85f));
-        elementCounter.style.marginRight = 6;
-        headerBar.Add(elementCounter);
-
-        // Large plus button
-        addButton = new Button(() =>
-        {
-            AddButtonPressed();
-        })
-        {
-            text = "+"
-        };
-        addButton.name = "superlist-add";
-        addButton.style.width = 24;
-        addButton.style.height = 20;
-        addButton.style.unityTextAlign = TextAnchor.MiddleCenter;
-        addButton.style.fontSize = 14;
-        addButton.style.backgroundColor = new StyleColor(new Color(0.25f, 0.6f, 0.25f)); // greenish for visibility
-        addButton.style.color = new StyleColor(Color.white);
-        headerBar.Add(addButton);
-
-        // Collection background (lighter gray box, variable size depending on content)
-        collectionBackground = new VisualElement();
-        collectionBackground.name = "superlist-collection";
-        collectionBackground.style.flexDirection = FlexDirection.Column;
-        collectionBackground.style.backgroundColor = new StyleColor(new Color(0.92f, 0.92f, 0.92f)); // light gray
-        collectionBackground.style.paddingLeft = 4;
-        collectionBackground.style.paddingRight = 4;
-        collectionBackground.style.paddingTop = 4;
-        collectionBackground.style.paddingBottom = 4;
-        collectionBackground.style.marginTop = 0;
-        collectionBackground.style.minHeight = 0;
-        collectionBackground.visible = false; // collapsed by default
-
-        // Assemble root
-        this.Add(headerBar);
-        this.Add(collectionBackground);
     }
 
     public void InitializeArrayElements()
@@ -167,9 +107,10 @@ public class SuperList<T> : VisualElement
     }
 
     #region Visual Pieces
+    public VisualElement headerBar { get; private set; }
     public Label label { get; private set; }
     public Button addButton { get; private set; }
-    public Button foldoutArrow { get; private set; }
+    public FoldoutArrow foldoutArrow { get; private set; }
     public Label elementCounter { get; private set; }
 
     //Content Section
@@ -189,7 +130,7 @@ public class SuperList<T> : VisualElement
     public int arraySize
     {
         get => (property != null) ? property.arraySize : 0;
-        set => property.arraySize = value;
+        set { if (property != null) property.arraySize = value; }
     }
     public bool expanded
     {
@@ -197,7 +138,7 @@ public class SuperList<T> : VisualElement
         set
         {
             _expanded = value;
-            if (collectionBackground != null) collectionBackground.visible = value;
+            if (collectionBackground != null) collectionBackground.style.display = value ? DisplayStyle.Flex : DisplayStyle.None;
             if (foldoutArrow != null) foldoutArrow.text = value ? "▼" : "▶";
         }
     }
@@ -240,11 +181,14 @@ public class SuperList<T> : VisualElement
     {
         if (property == null) return;
         property.serializedObject.Update();
+        // Add a new array slot. Using arraySize++ is sufficient in many cases.
+        // If special initialization is needed caller can use preAddCallback.
+        int newIndex = property.arraySize;
         property.arraySize++;
         property.serializedObject.ApplyModifiedProperties();
 
         // Create element visual for the new slot
-        SerializedProperty newElemProp = property.GetArrayElementAtIndex(property.arraySize - 1);
+        SerializedProperty newElemProp = property.GetArrayElementAtIndex(newIndex);
         var element = new Element(newElemProp, elements != null ? elements.Count : 0, this, DrawElementBody);
 
         if (elements == null) elements = new List<Element>();
@@ -261,8 +205,21 @@ public class SuperList<T> : VisualElement
         if (elements == null || index < 0 || index >= elements.Count) return;
 
         property.serializedObject.Update();
-        // Remove serialized property element (handles null object references)
+
+        // Delete once. For object reference slots Unity may leave a null placeholder and require a second delete call.
         property.DeleteArrayElementAtIndex(index);
+
+        // If the array still has an element at this index and it's an object reference that is null,
+        // delete it again to fully remove the slot.
+        if (index < property.arraySize)
+        {
+            var maybeElem = property.GetArrayElementAtIndex(index);
+            if (maybeElem != null && maybeElem.propertyType == SerializedPropertyType.ObjectReference && maybeElem.objectReferenceValue == null)
+            {
+                property.DeleteArrayElementAtIndex(index);
+            }
+        }
+
         property.serializedObject.ApplyModifiedProperties();
 
         // Remove element visuals and list entry
@@ -312,6 +269,98 @@ public class SuperList<T> : VisualElement
     public delegate void PassListDelegate(SuperList<T> list);
     public delegate void RemoveElementDelegate(SuperList<T> list, int index);
 
+
+
+
+    private void CreateVisualElements()
+    {
+        //HeaderBar()
+        {
+            var headerBar = new VisualElement();
+            headerBar.name = "superlist-headerbar";
+            headerBar.style.flexDirection = FlexDirection.Row;
+            headerBar.style.alignItems = Align.Center;
+            headerBar.style.height = 20;
+
+            headerBar.style.Colors(null, .2078432f.Gray(), .1411765f.Gray()).BorderWidth(1).Radius(0, top: 6);
+
+            //FoldoutArrow()
+            {
+                foldoutArrow = new FoldoutArrow((value) => { expanded = value; })
+                {
+                    name = "superlist-foldout"
+                };
+                headerBar.Add(foldoutArrow);
+            }
+
+            //Label()
+            {
+                label = new Label(property != null ? property.displayName : "Super List");
+                label.name = "superlist-label";
+                label.style.flexGrow = 1;
+                label.style.Text(12, TextAnchor.MiddleLeft);
+                label.style.color = new StyleColor(.82f.Gray());
+                label.RegisterCallback<ClickEvent>((evt) =>
+                {
+                    foldoutArrow.SetExpanded(!expanded);
+                });
+                label.focusable = true;
+                //label.RegisterCallback < UnityEngine.UIElements.Focus >
+                headerBar.Add(label);
+            }
+
+            //ElementCounter()
+            {
+                elementCounter = new Label((property != null) ? property.arraySize.ToString() : "0");
+
+                elementCounter.name = "superlist-counter";
+                elementCounter.style.width = 36;
+                elementCounter.style.unityTextAlign = TextAnchor.MiddleRight;
+                elementCounter.style.color = new StyleColor(.85f.Gray());
+                elementCounter.style.marginRight = 6;
+                headerBar.Add(elementCounter);
+            }
+
+            //AddButton()
+            {
+                addButton = new Button(() => { AddButtonPressed(); })
+                {
+                    text = "+",
+                    name = "superlist-add"
+                };
+                //addButton.style.backgroundColor = new Color(0.18f, 0.18f, 0.18f);
+
+                addButton.style
+                    .FixedSize(24, 18)
+                    .Colors(null, Color.clear, Color.clear)
+                    .Text(14, TextAnchor.LowerCenter)
+                    .BorderWidth(0)
+                    .Radius(0, topRight: 6)
+                    .Margins(0)
+                    .Padding(0);
+
+                headerBar.Add(addButton);
+            }
+
+            this.headerBar = headerBar;
+            this.Add(headerBar);
+        }
+
+        //CollectionBackground()
+        {
+            collectionBackground = new();
+            collectionBackground.name = "superlist-collection";
+            collectionBackground.style.flexDirection = FlexDirection.Column;
+            collectionBackground.style.Colors(null, .254902f.Gray(), .1411765f.Gray()).Padding(4).BorderWidth(1, top: 0).Radius(0, bottom: 4);
+            collectionBackground.style.display = expanded ? DisplayStyle.Flex : DisplayStyle.None; 
+
+            this.Add(collectionBackground);
+        }
+    }
+
+
+
+
     public class Element : VisualElement
     {
         public Element(SerializedProperty elementProperty, int index, SuperList<T> parent, PropertyToVisualElementDelegate drawBody)
@@ -324,22 +373,19 @@ public class SuperList<T> : VisualElement
             background = new VisualElement();
             background.style.height = 18;
             background.style.marginBottom = 2;
-            background.style.backgroundColor = new StyleColor(new Color(1f, 1f, 1f));
+            background.style.backgroundColor = new StyleColor(Color.clear);
             content = new VisualElement();
             content.style.flexDirection = FlexDirection.Row;
             background.Add(content);
 
-            removeButton = new Button(() =>
+            removeButton = new Button(() => { parentList?.RemoveButtonPressed(selfIndex); })
             {
-                // call back to parent to remove this index
-                parentList?.RemoveButtonPressed(selfIndex);
-            })
-            {
-                text = "x"
+                text = "-"
             };
             removeButton.style.width = 18;
             removeButton.style.height = 14;
             removeButton.style.marginLeft = 4;
+            removeButton.style.BorderNull().Padding(0);
             content.Add(removeButton);
 
             // Use the provided drawBody delegate to build the body. Fallback to a PropertyField if null.
@@ -381,3 +427,4 @@ public class SuperList<T> : VisualElement
     }
 
 }
+#endif

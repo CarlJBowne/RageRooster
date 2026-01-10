@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 namespace UnityEngine.UIElements
 {
@@ -145,11 +146,286 @@ namespace UnityEngine.UIElements
             return arrayProperty.GetArrayElementAtIndex(arrayProperty.arraySize - 1);
         }
 
+    }
+
+    public static class CustomStyles
+    {
+
+
+
+
+
+
+
+
+
+
 
 
 
 
     }
+
+    public static class X_StyleBuilder
+    {
+
+        //Borders
+        public static IStyle BorderWidth(this IStyle S,
+            float? all = null,
+            float? vertical = null,
+            float? horizontal = null,
+            float? right = null,
+            float? top = null,
+            float? bottom = null,
+            float? left = null
+            )
+        {
+            if (all.HasValue)
+            {
+                S.borderRightWidth = all.Value;
+                S.borderTopWidth = all.Value;
+                S.borderBottomWidth = all.Value;
+                S.borderLeftWidth = all.Value;
+            }
+            if (vertical.HasValue)
+            {
+                S.borderTopWidth = vertical.Value;
+                S.borderBottomWidth = vertical.Value;
+            }
+            if (horizontal.HasValue)
+            {
+                S.borderRightWidth = horizontal.Value;
+                S.borderLeftWidth = horizontal.Value;
+            }
+            if(right.HasValue) S.borderRightWidth = right.Value;
+            if(top.HasValue) S.borderTopWidth = top.Value;
+            if(bottom.HasValue) S.borderBottomWidth = bottom.Value;
+            if(left.HasValue) S.borderLeftWidth = left.Value;
+            return S;
+        }
+        public static IStyle BorderColor(this IStyle S, Color color)
+        {
+            S.borderRightColor = color;
+            S.borderTopColor = color;
+            S.borderBottomColor = color;
+            S.borderLeftColor = color;
+            return S;
+        }
+        public static IStyle Radius(this IStyle S,
+            float? all = null,
+            float? top = null,
+            float? bottom = null,
+            float? left = null,
+            float? right = null,
+            float? topLeft = null,
+            float? topRight = null,
+            float? bottomLeft = null,
+            float? bottomRight = null
+            )
+        {
+            if (all.HasValue)
+            {
+                S.borderTopLeftRadius = all.Value;
+                S.borderTopRightRadius = all.Value;
+                S.borderBottomLeftRadius = all.Value;
+                S.borderBottomRightRadius = all.Value;
+            }
+
+            if (top.HasValue)
+            {
+                S.borderTopLeftRadius = top.Value;
+                S.borderTopRightRadius = top.Value;
+            }
+            if (bottom.HasValue)
+            {
+                S.borderBottomLeftRadius = bottom.Value;
+                S.borderBottomRightRadius = bottom.Value;
+            }
+            if (left.HasValue)
+            {
+                S.borderTopLeftRadius = left.Value;
+                S.borderBottomLeftRadius = left.Value;
+            }
+            if (right.HasValue)
+            {
+                S.borderTopRightRadius = right.Value;
+                S.borderBottomRightRadius = right.Value;
+            }
+            if (topLeft.HasValue) S.borderTopLeftRadius = topLeft.Value;
+            if (topRight.HasValue) S.borderTopRightRadius = topRight.Value;
+            if (bottomLeft.HasValue) S.borderBottomLeftRadius = bottomLeft.Value;
+            if (bottomRight.HasValue) S.borderBottomRightRadius = bottomRight.Value;
+
+
+            return S;
+        }
+        public static IStyle BorderNull(this IStyle S)
+        {
+            S.borderRightWidth = 0;
+            S.borderTopWidth = 0;
+            S.borderBottomWidth = 0;
+            S.borderLeftWidth = 0;
+            S.borderTopColor = Color.clear;
+            S.borderBottomColor = Color.clear;
+            S.borderLeftColor = Color.clear;
+            S.borderRightColor = Color.clear;
+            S.borderBottomLeftRadius = 0;
+            S.borderBottomRightRadius = 0;
+            S.borderTopLeftRadius = 0;
+            S.borderTopRightRadius = 0;
+            return S;
+        }
+
+
+
+        public static IStyle FixedSize(this IStyle S, 
+            float? width = null, 
+            float? height = null
+            )
+        {
+            if (width.HasValue) S.width = width.Value;
+            if (height.HasValue) S.height = height.Value;
+            return S;
+        }
+        public static IStyle MinMaxSize(this IStyle S,
+            float? minWidth = null,
+            float? minHeight = null,
+            float? maxWidth = null,
+            float? maxHeight = null
+            )
+        {
+            if (minWidth.HasValue) S.minWidth = minWidth.Value;
+            if (minHeight.HasValue) S.minHeight = minHeight.Value;
+            if (maxWidth.HasValue) S.maxWidth = maxWidth.Value;
+            if (maxHeight.HasValue) S.maxHeight = maxHeight.Value;
+            return S;
+        }
+        public static IStyle Flex(this IStyle S,
+            FlexDirection? direction = null,
+            float? grow = null,
+            float? shrink = null,
+            StyleKeyword? basis = null
+            )
+        {
+            if (direction.HasValue) S.flexDirection = direction.Value;
+            if (grow.HasValue) S.flexGrow = grow.Value;
+            if (shrink.HasValue) S.flexShrink = shrink.Value;
+            if (basis.HasValue) S.flexBasis = basis.Value;
+            return S;
+        }
+
+        public static IStyle Padding(this IStyle S,
+            float? all = null,
+            float? vertical = null,
+            float? horizontal = null,
+            float? top = null,
+            float? bottom = null,
+            float? left = null,
+            float? right = null
+            )
+        {
+            if (all.HasValue)
+            {
+                S.paddingRight = all.Value;
+                S.paddingTop = all.Value;
+                S.paddingBottom = all.Value;
+                S.paddingLeft = all.Value;
+            }
+            if (vertical.HasValue)
+            {
+                S.paddingTop = vertical.Value;
+                S.paddingBottom = vertical.Value;
+            }
+            if (horizontal.HasValue)
+            {
+                S.paddingRight = horizontal.Value;
+                S.paddingLeft = horizontal.Value;
+            }
+            if (right.HasValue) S.paddingRight = right.Value;
+            if (top.HasValue) S.paddingTop = top.Value;
+            if (bottom.HasValue) S.paddingBottom = bottom.Value;
+            if (left.HasValue) S.paddingLeft = left.Value;
+
+            return S;
+        }
+        public static IStyle Margins(this IStyle S,
+            float? all = null,
+            float? vertical = null,
+            float? horizontal = null,
+            float? top = null,
+            float? bottom = null,
+            float? left = null,
+            float? right = null
+            )
+        {
+            if (all.HasValue)
+            {
+                S.marginRight = all.Value;
+                S.marginTop = all.Value;
+                S.marginBottom = all.Value;
+                S.marginLeft = all.Value;
+            }
+            if (vertical.HasValue)
+            {
+                S.marginTop = vertical.Value;
+                S.marginBottom = vertical.Value;
+            }
+            if (horizontal.HasValue)
+            {
+                S.marginRight = horizontal.Value;
+                S.marginLeft = horizontal.Value;
+            }
+            if (right.HasValue) S.marginRight = right.Value;
+            if (top.HasValue) S.marginTop = top.Value;
+            if (bottom.HasValue) S.marginBottom = bottom.Value;
+            if (left.HasValue) S.marginLeft = left.Value;
+
+            return S;
+        }
+
+        public static IStyle Colors(this IStyle S,
+            Color? color = null,
+            Color? background = null,
+            Color? border = null
+            )
+        {
+            if (color.HasValue) S.color = color.Value;
+            if (background.HasValue) S.backgroundColor = background.Value;
+            if (border.HasValue)
+            {
+                S.borderTopColor = border.Value;
+                S.borderBottomColor = border.Value;
+                S.borderLeftColor = border.Value;
+                S.borderRightColor = border.Value;
+            }
+            return S;
+        }
+
+        public static IStyle Text(this IStyle S,
+            int? fontSize = null,
+            TextAnchor? align = null,
+            FontStyle? fontStyle = null,
+            Font font = null
+            )
+        {
+            if (fontSize.HasValue) S.fontSize = fontSize.Value;
+            if (align.HasValue) S.unityTextAlign = align.Value;
+            if (fontStyle.HasValue) S.unityFontStyleAndWeight = fontStyle.Value;
+            if (font != null) S.unityFont = font;
+            return S;
+        }
+        public static Color Gray(this float v) => new Color(v, v, v, 1);
+
+
+
+
+
+
+
+
+    }
+
+
     public class FoldoutPlus : Foldout
     {
         public FoldoutPlus()
@@ -212,6 +488,37 @@ namespace UnityEngine.UIElements
             label = header.GetDescendent(0, 1) as Label;
         }
     }
+
+    public class FoldoutArrow : Button
+    {
+        public FoldoutArrow(Action<bool> clickEvent = null) : base()
+        {
+            this.clickEvent = clickEvent;
+            SetExpanded(false);
+
+            clicked += () => { SetExpanded(!isExpanded); };
+
+            style.color = new StyleColor(Color.gray4);
+            style.width = 18;
+            style.height = 16;
+            style.unityTextAlign = TextAnchor.MiddleCenter;
+
+            style.backgroundColor = new StyleColor(Color.clear);
+            style.BorderWidth(0).BorderColor(Color.clear).Radius(0).Padding(0);
+        }
+
+        public void SetExpanded(bool expanded)
+        {
+            isExpanded = expanded;
+            base.text = expanded ? "▼" : "▶";
+            clickEvent?.Invoke(isExpanded);
+        }
+        public bool isExpanded { get; private set; }
+        private Action<bool> clickEvent;
+        new private VisualElement text = null;
+    }
+
+
 
     /// <summary>
     /// Doesn't work for my purposes. CRAP.
