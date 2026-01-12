@@ -57,13 +57,6 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
         //    freeLookCamera.LookAt = transform;
         //}
 
-#if UNITY_EDITOR
-        Input.Get().Asset.FindAction("DebugActivate").performed += (_) => 
-        {
-            SaveFile.Current.playerStats.upgrades = Upgrades.Debug();
-        };
-#endif
-
         whenInitializedEvent?.Invoke(this);
 
         PauseMenu.onPause += Pause;
@@ -85,7 +78,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     {
         Children[0].Enter();
         //signalReady = true;
-        Player.RagdollHandler.SetState(EntityState.Default);
+        Player.RagdollHandler.State = EntityState.Default;
         animator.enabled = true;
         animator.Play("GroundBasic");
     }

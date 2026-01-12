@@ -18,12 +18,11 @@ namespace RageRooster.Systems.SaveSystem
         public TMPro.TextMeshProUGUI powerEggsText;
         public TMPro.TextMeshProUGUI hensRescuedText;
 
-        SaveFile.IOSystem file;
+        SaveData.IOStream file;
 
         private void Awake()
         {
-            file = new();
-            file.SetFileTarget(ID);
+            file = new(ID);
             UpdateFile();
         }
 

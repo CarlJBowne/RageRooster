@@ -132,7 +132,7 @@ public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
         else return false;
     }
 
-    private void OnDeInitialize()
+    protected override void OnDeInitialize()
     {
         Gameplay.PreReloadSave -= ResetSystem;
     }

@@ -62,7 +62,7 @@ namespace SLS.StateMachineH
         /// <br /> Resets the <see cref="StateBehavior"/> to its default state.  
         /// <br /> Ensures the <see cref="State"/> and <see cref="StateMachine"/> references are properly initialized.  
         /// </summary>  
-        protected void Reset()
+        protected virtual void Reset()
         {
             if (State == null) State = GetComponent<State>();
             if (State != null) Machine = State.Machine;

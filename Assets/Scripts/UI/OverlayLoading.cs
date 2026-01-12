@@ -17,7 +17,7 @@ public class OverlayLoading : Overlay
         static IEnumerator Enum()
         {
             yield return new WaitForSecondsRealtime(overlay.showTime);
-            if (RoomManager.loading) SetVisible(true);
+            if (RoomManager.currentlyTransitioning) SetVisible(true);
         }
     }
 

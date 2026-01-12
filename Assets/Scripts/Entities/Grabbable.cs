@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Events;
+using UnityEngine.InputSystem.LowLevel;
 
 public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
 {
@@ -40,7 +41,7 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
 
     public CoroutinePlus wiggleCoroutine;
 
-    [HideInEditMode, DisableInPlayMode] public EntityState currentState;
+    [SerializeField, HideInEditMode, DisableInPlayMode] protected EntityState currentState;
 
 
     #endregion
@@ -70,13 +71,13 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         collider = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
         health = GetComponent<EnemyHealth>();
-        SetState(EntityState.Default);
+        State = EntityState.Default;
     }
 
     public bool Grab(IGrabber grabber)
     {
         _Grabber = grabber;
-        SetState(EntityState.Grabbed);
+        State = EntityState.Grabbed;
         SetVelocity(Vector3.zero);
         IgnoreCollisionWithThrower();
 
@@ -93,7 +94,7 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     public void Throw(Vector3 velocity)
     {
         if (!grabbed) return;
-        SetState(EntityState.Thrown);
+        State = EntityState.Thrown;
         SetVelocity(velocity);
     }
     public void Release()
@@ -102,7 +103,7 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
         IgnoreCollisionWithThrower(false);
 
         _Grabber = null;
-        SetState(EntityState.Default);
+        State = EntityState.Default;
         SetVelocity(Vector3.zero);
     } 
 
@@ -115,61 +116,67 @@ public class Grabbable : MonoBehaviour, IGrabbable, IAttackSource
     {
         if(currentState == EntityState.Thrown && target != PlayerInteracter.ThisGameObject)
         {
-            SetState(EntityState.RagDoll);
+            State = EntityState.RagDoll;
             if (thrownAttack.amount > 0 && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(this.GetAttack());
             IgnoreCollisionWithThrower(false);
             _Grabber = null;
         }
     }
 
-    public virtual void SetState(EntityState newState)
+    // Replaced SetState method with virtual property State acting as a setter method
+    public virtual EntityState State
     {
-        currentState = newState;
-        GrabStateEvent?.Invoke(currentState);
-
-        switch (newState)
+        get => currentState;
+        set
         {
-            case EntityState.Default:
-                rigidBody.isKinematic = false;
-                collider.enabled = true;
-                PlayerInteracter.UpdateGrabbables();
-                break;
-            case EntityState.Grabbed:
-                rigidBody.isKinematic = true;
-                collider.enabled = false;
-                PlayerInteracter.LostGrabbable(this);
-                IgnoreCollisionWithThrower(true);
-                break;
-            case EntityState.Thrown:
-                rigidBody.isKinematic = false;
-                collider.enabled = true;
-                IgnoreCollisionWithThrower(true);
-                break;
-            case EntityState.RagDoll:
-                IgnoreCollisionWithThrower(false);
-                PlayerInteracter.UpdateGrabbables();
-                break;
-            default:
-                break;
+            if (currentState == value) return;
+            currentState = value;
+            GrabStateEvent?.Invoke(currentState);
+
+            switch (currentState)
+            {
+                case EntityState.Default:
+                    rigidBody.isKinematic = false;
+                    collider.enabled = true;
+                    PlayerInteracter.UpdateGrabbables();
+                    break;
+                case EntityState.Grabbed:
+                    rigidBody.isKinematic = true;
+                    collider.enabled = false;
+                    PlayerInteracter.LostGrabbable(this);
+                    IgnoreCollisionWithThrower(true);
+                    break;
+                case EntityState.Thrown:
+                    rigidBody.isKinematic = false;
+                    collider.enabled = true;
+                    IgnoreCollisionWithThrower(true);
+                    break;
+                case EntityState.RagDoll:
+                    IgnoreCollisionWithThrower(false);
+                    PlayerInteracter.UpdateGrabbables();
+                    break;
+                default:
+                    break;
+            }
+
+            (currentState switch
+            {
+                EntityState.Grabbed => grabbedEvent,
+                EntityState.Thrown => thrownEvent,
+                EntityState.RagDoll => bounceEvent,
+                _ => defaultEvent,
+            })?.Invoke();
         }
-
-        (newState switch
-        {
-            EntityState.Grabbed => grabbedEvent,
-            EntityState.Thrown => thrownEvent,
-            EntityState.RagDoll => bounceEvent,
-            _ => defaultEvent,
-        })?.Invoke();
     }
 
-    public virtual void SetVelocity(Vector3 velocity) => rigidBody.velocity = velocity;
+    public virtual void SetVelocity(Vector3 velocity) => rigidBody.linearVelocity = velocity;
 
     public virtual void IgnoreCollisionWithThrower(bool ignore = true) => Physics.IgnoreCollision(collider, Grabber.ownerCollider, ignore);
 
     public Attack GetAttack()
     {
         Attack result = thrownAttack;
-        result.velocity = rigidBody.velocity; 
+        result.velocity = rigidBody.linearVelocity; 
         return result;
     }
 

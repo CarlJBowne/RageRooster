@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace RageRooster.RoomSystem
 {
-    //[CreateAssetMenu(fileName = "AreaRegistry", menuName = "RageRooster/RoomSystem/AreaRegistry", order = 1)]
+    /// <summary>
+    /// A global registry asset of all <see cref="AreaAsset"/>s in the project.
+    /// <br/> Used to access <see cref="AreaAsset"/>s at runtime by name or all at once.
+    /// </summary>
     public class AreaRegistry : SingletonAsset<AreaRegistry>
     {
         [SerializeField] private AreaAsset[] areaAssets;
@@ -28,12 +31,33 @@ namespace RageRooster.RoomSystem
             dictionarybuilt = true;
         }
 
+        /// <summary>
+        /// Get an area in the registry by name.
+        /// </summary>
         public static AreaAsset GetArea(string name)
         {
             if (!dictionarybuilt) BuildDictionary();
             return dictionary[name];
         }
+
+        /// <returns>All areas in the registry.</returns>
         public static AreaAsset[] GetAll() => Get().areaAssets;
+
+
+#if UNITY_EDITOR
+        /// <summary>
+        /// Adds an <see cref="AreaAsset"/> to the registry asset. EDITOR ONLY.
+        /// </summary>
+        /// <param name="area"></param>
+        public static void Editor_AddArea(AreaAsset area)
+        {
+            AreaRegistry This = Get();
+            var areas = new List<AreaAsset>(This.areaAssets)
+            {area};
+            This.areaAssets = areas.ToArray();
+            UnityEditor.EditorUtility.SetDirty(This);
+        }
+#endif
 
     }
 

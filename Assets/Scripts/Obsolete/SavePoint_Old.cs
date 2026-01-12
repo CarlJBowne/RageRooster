@@ -16,8 +16,8 @@ namespace RageRooster.Obsolete
 
         public void Checkpoint()
         {
-            Gameplay.spawnSceneName = gameObject.scene.name;
-            Gameplay.spawnPointID = GetID();
+            //Gameplay.spawnSceneName = gameObject.scene.name;
+            //Gameplay.spawnPointID = GetID();
         }
 
         public void Save()
