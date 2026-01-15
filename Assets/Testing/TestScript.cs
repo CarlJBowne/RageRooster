@@ -466,11 +466,14 @@ public class SuperList<T> : VisualElement
         {
             var headerBar = new VisualElement();
             headerBar.name = "superlist-headerbar";
-            headerBar.style.flexDirection = FlexDirection.Row;
-            headerBar.style.alignItems = Align.Center;
-            headerBar.style.height = 20;
 
-            headerBar.style.Colors(null, .2078432f.Gray(), .1411765f.Gray()).BorderWidth(1).Radius(0, top: 6);
+            headerBar.style
+                .Flex(FlexDirection.Row)
+                .Align(Align.Center)
+                .FixedSize(height: 20)
+                .Colors(null, .2078432f.Gray(), .1411765f.Gray())
+                .Border(1)
+                .Radius(0, top: 6);
 
             //FoldoutArrow()
             {
@@ -485,9 +488,10 @@ public class SuperList<T> : VisualElement
             {
                 label = new Label(property != null ? property.displayName : "Super List");
                 label.name = "superlist-label";
-                label.style.flexGrow = 1;
-                label.style.Text(12, TextAnchor.MiddleLeft);
-                label.style.color = new StyleColor(.82f.Gray());
+                label.style
+                    .Flex(grow: 1)
+                    .Text(12, TextAnchor.MiddleLeft)
+                    .Colors(color: .82f.Gray());
                 label.RegisterCallback<ClickEvent>((evt) =>
                 {
                     if (arraySize == 0) return;
@@ -503,10 +507,11 @@ public class SuperList<T> : VisualElement
                 elementCounter = new Label((property != null) ? property.arraySize.ToString() : "0");
 
                 elementCounter.name = "superlist-counter";
-                elementCounter.style.width = 36;
-                elementCounter.style.unityTextAlign = TextAnchor.MiddleRight;
-                elementCounter.style.color = new StyleColor(.85f.Gray());
-                elementCounter.style.marginRight = 6;
+                elementCounter.style
+                    .FixedSize(width: 36)
+                    .Text(null, TextAnchor.MiddleRight)
+                    .Colors(color: .85f.Gray())
+                    .Margins(right: 6);
                 headerBar.Add(elementCounter);
             }
 
@@ -523,7 +528,7 @@ public class SuperList<T> : VisualElement
                     .FixedSize(24, 18)
                     .Colors(null, Color.clear, Color.clear)
                     .Text(14, TextAnchor.LowerCenter)
-                    .BorderWidth(0)
+                    .Border(0)
                     .Radius(0, topRight: 6)
                     .Margins(0)
                     .Padding(0);
@@ -537,10 +542,13 @@ public class SuperList<T> : VisualElement
 
         //CollectionBackground()
         {
-            collectionBackground = new();
-            collectionBackground.name = "superlist-collection";
-            collectionBackground.style.flexDirection = FlexDirection.Column;
-            collectionBackground.style.Colors(null, .254902f.Gray(), .1411765f.Gray()).Padding(4).BorderWidth(1, top: 0).Radius(0, bottom: 4);
+            collectionBackground = new() { name = "superlist-collection" };
+            collectionBackground.style
+                .Colors(null, .254902f.Gray(), .1411765f.Gray())
+                .Padding(horizontal: 4)
+                .Border(1, top: 0)
+                .Radius(0, bottom: 4)
+                .Flex(FlexDirection.Column);
             collectionBackground.style.display = expanded ? DisplayStyle.Flex : DisplayStyle.None;
 
             this.Add(collectionBackground);
@@ -549,231 +557,173 @@ public class SuperList<T> : VisualElement
 
     public class Item : VisualElement
     {
-        /*
-         Plan / Pseudocode (detailed):
-         - Goal:
-           1) Place the remove button to the left of the element.
-           2) Allow clicking the element background (or its body) to select the item with a visual highlight.
-           3) Make the visual element stretch to fit the content's size (flexible width/height as needed).
-
-         - Strategy:
-           - Keep only lightweight references in the Item: store the owner SerializedObject and the element property path.
-           - Build a container `background` that spans/grows and receives clicks for selection.
-           - Inside `background` place a `content` row. Add `removeButton` first (left) and then the `body` (property field or drawn element).
-           - Configure flex layout:
-             - `background` and `content` get `flexGrow = 1` so they stretch.
-             - `body` (the PropertyField or returned VisualElement) gets `flexGrow = 1` and `alignSelf = Stretch` so it fills available space.
-           - Selection:
-             - Clicking `background` selects this Item.
-             - Maintain selection purely inside visual elements (no change to SerializedObject). On select:
-               - Unselect other items in the parent list (iterate `parentList.items`).
-               - Update visual state (change background color / border).
-             - Ensure `removeButton` click does not bubble and cause selection when pressed (stop propagation on its click event).
-           - Removal:
-             - Keep existing remove callback behavior (calls parentList.RemoveButtonPressed_Default).
-           - Defensive drawing:
-             - Resolve a fresh SerializedProperty for the element when building the body (via `owner.FindProperty(elementPropertyPath)`).
-             - If `drawBody` returns a VisualElement, use it; otherwise fallback to a `PropertyField`.
-             - Bind the created body to `owner` to keep UI in sync.
-
-         - Implementation details to watch:
-           - Use UIElements style properties (`flexGrow`, `alignSelf`, `minHeight`) to achieve stretching behavior.
-           - Use `ClickEvent` for selection and `evt.StopPropagation()` on the remove button's click to avoid interfering with selection.
-           - Keep all editor-only serialized property access guarded by `#if UNITY_EDITOR`.
-
-        * Move the remove control to the RIGHT side of the item.
-           * Make the remove control visually minimal: a plain "-" glyph, no background color, no border.
-           * Keep remove click from selecting the item (stop propagation).
-           * Keep selection by clicking the background or any non-interactive area of the body.
-           * Ensure the body (PropertyField or custom returned VisualElement) stretches to fill remaining space.
-         - Steps:
-           1) Store only lightweight references: owner SerializedObject, element property path, parent list.
-           2) Build `background` (row) and `content` (row) that grow.
-           3) Create `removeButton` but do NOT add it first. Configure it to:
-               - display text "-" only
-               - backgroundColor = clear, border widths = 0
-               - small fixed width and height
-               - stop event propagation on ClickEvent
-               - perform removal on click
-           4) Resolve a fresh SerializedProperty and let `drawBody` provide a body element if available.
-               - If not, create a UnityEditor.UIElements.PropertyField fallback.
-               - Style the body: flexGrow = 1, alignSelf = Stretch so it expands.
-               - Register body click to SelectSelf (so clicking body selects).
-               - Bind the body to the owner SerializedObject.
-           5) Add body to `content`, then add the `removeButton` so it appears on the right.
-           6) Add `content` to `background` and `background` to this.
-           7) Selection: when selected, change background coloring and border top/bottom; unselect siblings.
-        * Add a lightweight "grab icon" element to the LEFT of the item content to mimic Unity's list grab handle.
-          * Use a simple Label with a glyph (e.g. "≡") so no heavy event handling is required.
-          * Make it fixed-size, center-aligned, visually subtle (light gray), and stop propagation on clicks so it
-            does not select the item when interacted with.
-          * Optionally register MouseDown/MouseUp to stop propagation as well so dragging interactions won't toggle selection.
-        * Increase vertical separation between items:
-          * Increase the background element's bottom margin to create clearer separation.
-          * Add a small top margin or vertical padding if necessary for better visual spacing.
-        * Insert the grab handle into the content BEFORE the body so it appears on the left.
-        * Keep the remove button on the right as-is.
-        * Ensure body creation and binding logic is unchanged; body should flex to fill the space between grab handle and remove button.
-        * Ensure all event callbacks on interactive bits stop propagation where appropriate (grab handle and remove button).
-        */
-
-        // Store lightweight references for owner object and property path
-        private SerializedObject ownerObjectLocal;
-        private string elementPropertyPath;
-        private SuperList<T> parentList;
-
         public Item(SerializedObject owner, string elementPath, SuperList<T> parent, PropertyToVisualElementDelegate drawBody)
         {
             ownerObjectLocal = owner;
             elementPropertyPath = elementPath;
             parentList = parent;
 
-            // Root element (this) should grow if parent allows it
-            this.style.flexGrow = 1;
-            this.style.minHeight = 18;
+            // Background container is the Item root itself
+            name = "superlist-item";
 
-            // Background container
-            background = new VisualElement();
-            background.name = "superlist-item-background";
-            background.style.flexDirection = FlexDirection.Row;
-            background.style.alignItems = Align.Center;
-            background.style.justifyContent = Justify.FlexStart;
-            background.style.flexGrow = 1;
-            background.style.paddingLeft = 2;
-            background.style.paddingRight = 2;
-            // Increase vertical spacing between items for clearer separation
-            background.style.marginBottom = 8;
-            background.style.marginTop = 4;
-            background.style.backgroundColor = new StyleColor(Color.clear);
+            style.Flex(FlexDirection.Row, 1).Align(Align.Center, Justify.FlexStart)
+                .Padding(vertical: 4).Border(vertical: 1)
+                .Colors(null, Color.clear, new(0, 0, 0, .1f));
+            style.flexGrow = 1;
+            style.minHeight = 18;
 
-            // Clicking the background selects this element
-            background.RegisterCallback<ClickEvent>((evt) =>
+            //Drag Handle (container that stretches full height so clicks work anywhere in the column)
             {
-                SelectSelf();
-            });
+                // Use a Button so the handle is an accessible, clickable control, but style it to have no background or border.
+                var handleBtn = new Button() { name = "superlist-item-grab-symbol" };
 
-            // Content row holds grab handle (left), body (expandable) and remove button (fixed, right)
-            content = new VisualElement();
-            content.style.flexDirection = FlexDirection.Row;
-            content.style.alignItems = Align.Center;
-            content.style.flexGrow = 1;
-            content.style.flexShrink = 1;
+                // Fixed width column, stretched vertically to match the item's height.
+                handleBtn.style
+                    .FixedSize(width: 18)
+                    .Align(null, null, Align.Stretch)
+                    .Flex(shrink: 0)
+                    .Margins(left: 2, right: 2);
 
-            // Grab handle on the LEFT - minimal visual "≡"
-            dragHandle = new Label("≡");
-            dragHandle.name = "superlist-item-grab";
-            dragHandle.style.width = 18;
-            dragHandle.style.height = 16;
-            dragHandle.style.marginRight = 8;
-            dragHandle.style.marginLeft = 2;
-            dragHandle.style.unityTextAlign = TextAnchor.MiddleCenter;
-            dragHandle.style.color = new StyleColor(new Color(0.72f, 0.72f, 0.72f));
-            dragHandle.style.alignSelf = Align.Center;
-            // Make it clear that it's not selectable when clicked; stop propagation
-            dragHandle.RegisterCallback<ClickEvent>((evt) => evt.StopPropagation());
-            // Also prevent pointer down/up from bubbling (useful if implementing drag later)
-            dragHandle.RegisterCallback<MouseDownEvent>((evt) => evt.StopPropagation());
-            dragHandle.RegisterCallback<MouseUpEvent>((evt) => evt.StopPropagation());
+                // Make the button visually minimal: no background, no border, transparent hover/active.
+                handleBtn.style
+                    .Colors(null, Color.clear, Color.clear)
+                    .Border(0)
+                    .Padding(0);
 
-            // Prepare the remove button (right side) - minimal visual: just a "-" glyph
-            removeButton = new Button(() => { parentList?.RemoveButtonPressed_Default(this); })
+                // Center contents inside the container
+                handleBtn.style.justifyContent = Justify.Center;
+                handleBtn.style.alignItems = Align.Center;
+
+                // Ensure it sits above potential overlapping content and is positioned normally
+                handleBtn.style.position = Position.Relative;
+
+                // Make the control focusable so it reliably receives pointer/click events across editor versions.
+                handleBtn.focusable = true;
+
+                // Inner glyph label (purely visual)
+                var glyph = new Label("≡") { name = "superlist-item-grab-glyph" };
+                glyph.style
+                    .Text(null, TextAnchor.MiddleCenter)
+                    .Align(null, null, Align.Center)
+                    .FixedSize(width: 16);
+                glyph.style.flexGrow = 0;
+                glyph.style.maxWidth = 16;
+                glyph.style.marginTop = 0;
+                glyph.style.marginBottom = 0;
+
+                handleBtn.Add(glyph);
+
+                // Use PointerDownEvent for robust selection handling in the editor.
+                // Stop propagation so clicks on the handle don't select other UI or trigger other callbacks.
+                handleBtn.RegisterCallback<PointerDownEvent>((evt) =>
+                {
+                    SelectSelf();
+                    evt.StopPropagation();
+                });
+
+                // Also handle PointerUp to stop bubbling just in case (prevents accidental parent handlers).
+                handleBtn.RegisterCallback<PointerUpEvent>((evt) =>
+                {
+                    evt.StopPropagation();
+                });
+
+                // Assign to the public property (type is VisualElement) so rest of code stays unchanged.
+                dragHandle = handleBtn;
+
+                this.Add(dragHandle);
+            }
+
+            //Content
             {
-                text = "-"
-            };
-            removeButton.name = "superlist-item-remove";
-            removeButton.style.width = 18;
-            removeButton.style.height = 16;
-            removeButton.style.marginLeft = 6;
-            removeButton.style.marginRight = 0;
-            // Make it visually minimal: clear background, no border, subtle text color
-            removeButton.style.backgroundColor = new StyleColor(Color.clear);
-            removeButton.style.borderTopWidth = 0;
-            removeButton.style.borderBottomWidth = 0;
-            removeButton.style.borderLeftWidth = 0;
-            removeButton.style.borderRightWidth = 0;
-            removeButton.style.unityTextAlign = TextAnchor.MiddleCenter;
-            removeButton.style.color = new StyleColor(new Color(0.78f, 0.78f, 0.78f));
-            // Prevent clicks on the remove button from bubbling up and selecting the item
-            removeButton.RegisterCallback<ClickEvent>((evt) => evt.StopPropagation());
+                content = new VisualElement();
+                content.style.Flex(FlexDirection.Row, 1, 1).Align(Align.Center);
+                content.style.alignSelf = Align.Stretch;
+                this.Add(content);
+            }
+
+            //Remove Button
+            {
+                removeButton = new Button(() => { parentList?.RemoveButtonPressed_Default(this); })
+                {
+                    text = "-",
+                    name = "superlist-item-remove"
+                };
+                removeButton.style
+                    .FixedSize(16, 16)
+                    .Margins(left: 6)
+                    .Border(0)
+                    .Text(null, TextAnchor.MiddleCenter)
+                    .Colors(.78f.Gray());
+
+                // Prevent remove button clicks from selecting the item
+                removeButton.RegisterCallback<ClickEvent>((evt) => evt.StopPropagation());
+                this.Add(removeButton);
+            }
+
+
 
 #if UNITY_EDITOR
-            // Build the body using a fresh SerializedProperty resolved from the owner object.
-            VisualElement body = null;
+    // Build the body using a fresh SerializedProperty resolved from the owner object.
+    VisualElement body = null;
+    try
+    {
+        SerializedProperty freshProp = ownerObjectLocal.FindProperty(elementPropertyPath);
+        if (drawBody != null)
+        {
             try
             {
-                SerializedProperty freshProp = ownerObjectLocal.FindProperty(elementPropertyPath);
-                if (drawBody != null)
-                {
-                    try
-                    {
-                        body = drawBody(freshProp);
-                    }
-                    catch
-                    {
-                        body = null;
-                    }
-                }
-
-                if (body == null && freshProp != null)
-                {
-                    // fallback: a simple PropertyField bound to the property
-                    var pf = new UnityEditor.UIElements.PropertyField(freshProp);
-                    pf.style.minHeight = 16;
-                    pf.style.height = StyleKeyword.Auto;
-                    pf.style.flexGrow = 1;
-                    pf.style.flexShrink = 1;
-                    pf.style.alignSelf = Align.Stretch;
-                    body = pf;
-                }
-
-                if (body != null)
-                {
-                    // Make the body stretch to fit available space
-                    body.style.flexGrow = 1;
-                    body.style.flexShrink = 1;
-                    body.style.alignSelf = Align.Stretch;
-
-                    // Clicking anywhere in the body should select this item as well,
-                    // but we don't stop propagation so controls inside the body still work.
-                    body.RegisterCallback<ClickEvent>((evt) =>
-                    {
-                        SelectSelf();
-                    });
-
-                    // Bind the body to the owner object so it updates correctly
-                    try { body.Bind(ownerObjectLocal); } catch { }
-
-                    // Add grab handle first so it appears on the left, then the body takes remaining space
-                    content.Add(dragHandle);
-                    content.Add(body);
-                }
-                else
-                {
-                    // If no body, still add the grab handle so layout remains consistent
-                    content.Add(dragHandle);
-                }
+                body = drawBody(freshProp);
             }
             catch
             {
-                // drawing failed -> ensure grab handle exists to keep consistent spacing
-                if (!content.Contains(dragHandle)) content.Add(dragHandle);
+                body = null;
             }
-#endif
-
-            // Finally add the remove button on the RIGHT
-            content.Add(removeButton);
-
-            background.Add(content);
-            this.Add(background);
         }
 
-        // Visual pieces for the item
-        public VisualElement background { get; private set; }
+        if (body == null && freshProp != null)
+        {
+            // fallback: a simple PropertyField bound to the property
+            var pf = new UnityEditor.UIElements.PropertyField(freshProp);
+            pf.style.minHeight = 16;
+            pf.style.height = StyleKeyword.Auto;
+            pf.style.flexGrow = 1;
+            pf.style.flexShrink = 1;
+            pf.style.alignSelf = Align.Stretch;
+            body = pf;
+        }
+
+        if (body != null)
+        {
+            // Make the body stretch to fit available space
+            body.style.flexGrow = 1;
+            body.style.flexShrink = 1;
+            body.style.alignSelf = Align.Stretch;
+
+            // Do NOT register the body to select the item; selection is only via drag handle.
+
+            // Bind the body to the owner object so it updates correctly
+            try { body.Bind(ownerObjectLocal); } catch { }
+
+            content.Add(body);
+        }
+
+    }
+    catch
+    {
+
+    }
+#endif
+        }
+
+        public VisualElement dragHandle { get; private set; }
         public VisualElement content { get; private set; }
         public Button removeButton { get; private set; }
-        public VisualElement dragHandle { get; private set; }
 
-        // Selection state
+        // Data
+
+        private SerializedObject ownerObjectLocal;
+        private string elementPropertyPath;
+        private SuperList<T> parentList;
         private bool _selected = false;
         public bool selected
         {
@@ -782,22 +732,7 @@ public class SuperList<T> : VisualElement
             {
                 _selected = value;
                 // Visual feedback for selection: subtle highlight and border
-                if (_selected)
-                {
-                    background.style.backgroundColor = new StyleColor(new Color(0.14f, 0.24f, 0.42f, 0.12f));
-                    background.style.borderTopColor = new StyleColor(new Color(0.14f, 0.24f, 0.42f, 0.25f));
-                    background.style.borderBottomColor = new StyleColor(new Color(0.14f, 0.24f, 0.42f, 0.25f));
-                    background.style.borderLeftColor = new StyleColor(Color.clear);
-                    background.style.borderRightColor = new StyleColor(Color.clear);
-                    background.style.borderTopWidth = 1;
-                    background.style.borderBottomWidth = 1;
-                }
-                else
-                {
-                    background.style.backgroundColor = new StyleColor(Color.clear);
-                    background.style.borderTopWidth = 0;
-                    background.style.borderBottomWidth = 0;
-                }
+                style.backgroundColor = new StyleColor(_selected ? new Color(0.14f, 0.24f, 0.42f, 0.12f): Color.clear);
             }
         }
 
@@ -821,9 +756,6 @@ public class SuperList<T> : VisualElement
     }
 
 
-    //Suggestions for later
-
-    // Avoid keeping long-lived SerializedProperty instances across ApplyModifiedProperties()—they can become stale. Prefer calling GetArrayElementAtIndex() when you need the current element.
 }
 
 

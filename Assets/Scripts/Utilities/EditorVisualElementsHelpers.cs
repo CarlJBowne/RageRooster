@@ -45,8 +45,6 @@ namespace UnityEngine.UIElements
             v.style.right = input.right;
             v.style.top = input.top;
             v.style.cursor = input.cursor;
-            v.style.width = input.width;
-            v.style.height = input.height;
         }
 
         public static int LabelTextWidth(this Label label)
@@ -170,14 +168,15 @@ namespace UnityEngine.UIElements
     {
 
         //Borders
-        public static IStyle BorderWidth(this IStyle S,
+        public static IStyle Border(this IStyle S,
             float? all = null,
             float? vertical = null,
             float? horizontal = null,
             float? right = null,
             float? top = null,
             float? bottom = null,
-            float? left = null
+            float? left = null,
+            Color? color = null
             )
         {
             if (all.HasValue)
@@ -201,14 +200,13 @@ namespace UnityEngine.UIElements
             if(top.HasValue) S.borderTopWidth = top.Value;
             if(bottom.HasValue) S.borderBottomWidth = bottom.Value;
             if(left.HasValue) S.borderLeftWidth = left.Value;
-            return S;
-        }
-        public static IStyle BorderColor(this IStyle S, Color color)
-        {
-            S.borderRightColor = color;
-            S.borderTopColor = color;
-            S.borderBottomColor = color;
-            S.borderLeftColor = color;
+            if(color.HasValue)
+            {
+                S.borderRightColor = color.Value;
+                S.borderTopColor = color.Value;
+                S.borderBottomColor = color.Value;
+                S.borderLeftColor = color.Value;
+            }
             return S;
         }
         public static IStyle Radius(this IStyle S,
@@ -311,6 +309,17 @@ namespace UnityEngine.UIElements
             if (grow.HasValue) S.flexGrow = grow.Value;
             if (shrink.HasValue) S.flexShrink = shrink.Value;
             if (basis.HasValue) S.flexBasis = basis.Value;
+            return S;
+        }
+        public static IStyle Align(this IStyle S,
+            Align? alignItems = null,
+            Justify? justifyContent = null,
+            Align? alignSelf = null
+            )
+        {
+            if (alignItems.HasValue) S.alignItems = alignItems.Value;
+            if (justifyContent.HasValue) S.justifyContent = justifyContent.Value;
+            if (alignSelf.HasValue) S.alignSelf = alignSelf.Value;
             return S;
         }
 
@@ -504,7 +513,7 @@ namespace UnityEngine.UIElements
             style.unityTextAlign = TextAnchor.MiddleCenter;
 
             style.backgroundColor = new StyleColor(Color.clear);
-            style.BorderWidth(0).BorderColor(Color.clear).Radius(0).Padding(0);
+            style.Border(0, color: Color.clear).Radius(0).Padding(0);
         }
 
         public void SetExpanded(bool expanded)
