@@ -11,6 +11,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 #endif
 
+[System.Serializable]
 public abstract class PolymorphicObject
 {
 #if UNITY_EDITOR
@@ -59,6 +60,8 @@ public abstract class PolymorphicObject
     {
 
     }
+
+
 
 
     public class HeaderDrawer : FoldoutPlus
@@ -304,6 +307,83 @@ public abstract class PolymorphicObject
     }
 
 
+
+
+    [AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
+    public sealed class ListAttribute : PropertyAttribute
+    {
+        public Type elementType { get; }
+
+        public ListAttribute(Type elementType) => this.elementType = elementType ?? throw new ArgumentNullException(nameof(elementType));
+
+#if UNITY_EDITOR
+        [CustomPropertyDrawer(typeof(ListAttribute), true)]
+        public class PolymorphicListAttributeDrawer : PropertyDrawer
+        {
+            public override VisualElement CreatePropertyGUI(SerializedProperty property)
+            {
+                var attr = attribute as ListAttribute;
+                Type elemType = attr?.elementType ?? typeof(PolymorphicObject);
+
+                if (property == null)
+                    return new Label("Null property");
+
+                // Determine whether the property is an array/list as Unity understands it.
+                bool isArrayProperty = property.isArray;
+
+                // If Unity didn't report it as an array, try to detect via the reflected fieldInfo.
+                Type reflectedElementType = null;
+                if (!isArrayProperty && fieldInfo != null)
+                {
+                    Type fieldType = fieldInfo.FieldType;
+                    if (fieldType.IsArray)
+                    {
+                        reflectedElementType = fieldType.GetElementType();
+                        isArrayProperty = true;
+                    }
+                    else if (fieldType.IsGenericType)
+                    {
+                        var genDef = fieldType.GetGenericTypeDefinition();
+                        if (genDef == typeof(List<>))
+                        {
+                            reflectedElementType = fieldType.GetGenericArguments()[0];
+                            isArrayProperty = true;
+                        }
+                    }
+                }
+
+                if (!isArrayProperty)
+                    return new Label("PolymorphicListAttribute must be applied to a List/Array field");
+
+                // If a reflected element type was found, prefer it over the attribute-provided one.
+                if (reflectedElementType != null)
+                    elemType = reflectedElementType;
+
+                try
+                {
+                    // Construct SuperList<elemType> via reflection and pass the SerializedProperty.
+                    Type superListGeneric = typeof(SuperList<>).MakeGenericType(elemType);
+
+                    // The SuperList ctor signature expected: (SerializedProperty listProperty, PropertyToVisualElementDelegate drawElementBody = null)
+                    object instance = Activator.CreateInstance(superListGeneric, new object[] { property, null });
+
+                    if (instance is VisualElement ve) return ve;
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogException(ex);
+                }
+
+                return new Label("Failed to create SuperList for element type: " + (elemType?.Name ?? "null"));
+            }
+        }
+#endif
+    }
+
+
+
+
+
     public static Type[] GetSubtypes(Type baseType)
     {
         return AppDomain.CurrentDomain.GetAssemblies()
@@ -346,306 +426,5 @@ public abstract class PolymorphicObject
     }
 #endif
 
-    public class List<T> : object, IPolymorphicListView where T : PolymorphicObject
-    {
-        [SerializeReference]
-        public System.Collections.Generic.List<T> RealList = new();
 
-        #region List-like functionality
-        // Generic-list-like API
-        public void Add(T item) => RealList.Add(item);
-        public bool Remove(T item) => RealList.Remove(item);
-        public int IndexOf(T item) => RealList.IndexOf(item);
-        public void Insert(int index, T item) => RealList.Insert(index, item);
-        public bool Contains(T item) => RealList.Contains(item);
-        public void CopyTo(T[] array, int arrayIndex) => RealList.CopyTo(array, arrayIndex);
-        public IEnumerator<T> GetEnumerator() => RealList.GetEnumerator();
-
-        // Typed indexer for convenience (IList<T>)
-        public T this[int index]
-        {
-            get => RealList[index];
-            set => RealList[index] = value ?? throw new ArgumentNullException(nameof(value));
-        }
-
-        // Non-generic IList implementation (explicit) - preserves original behavior for inspectors etc.
-        object System.Collections.IList.this[int index]
-        {
-            get => RealList[index];
-            set
-            {
-                if (value is T t)
-                {
-                    RealList[index] = t;
-                }
-                else
-                {
-                    throw new ArgumentException($"Value must be of type {typeof(T)}");
-                }
-            }
-        }
-
-        // Original non-generic IList members preserved/adapted
-        public int Add(object value)
-        {
-            if (value is T t)
-            {
-                RealList.Add(t);
-                return RealList.Count - 1;
-            }
-            throw new ArgumentException($"Value must be of type {typeof(T)}");
-        }
-
-        public void Clear() => RealList.Clear();
-
-        public bool Contains(object value) => value is T t && RealList.Contains(t);
-
-        public int IndexOf(object value) => value is T t ? RealList.IndexOf(t) : -1;
-
-        public void Insert(int index, object value)
-        {
-            if (value is T t)
-            {
-                RealList.Insert(index, t);
-            }
-            else
-            {
-                throw new ArgumentException($"Value must be of type {typeof(T)}");
-            }
-        }
-
-        public void Remove(object value)
-        {
-            if (value is T t)
-            {
-                RealList.Remove(t);
-            }
-        }
-
-        public void RemoveAt(int index)
-        {
-            RealList.RemoveAt(index);
-        }
-
-        public bool IsFixedSize => false;
-
-        public bool IsReadOnly => false;
-
-        public void CopyTo(Array array, int index)
-        {
-            ((ICollection)RealList).CopyTo(array, index);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-        public int Count => RealList.Count;
-
-        public bool IsSynchronized => ((ICollection)RealList).IsSynchronized;
-
-        public object SyncRoot => ((ICollection)RealList).SyncRoot;
-
-        #endregion
-
-    }
-    private interface IPolymorphicListView : System.Collections.IList
-    {
-
-#if UNITY_EDITOR
-        [CustomPropertyDrawer(typeof(IPolymorphicListView), true)]
-        public class PolymorphicListDrawer : LimitedListDrawer
-        {
-            Type BaseType;
-
-            public override VisualElement CreatePropertyGUI(SerializedProperty property)
-            {
-                BaseType = GetListElementType(property) ?? typeof(PolymorphicObject);
-                return base.CreatePropertyGUI(property.FindPropertyRelative("RealList"));
-            }
-
-            protected override void BindListItem(VisualElement element, int index, IList list)
-            {
-                element.Clear();
-                SerializedProperty itemProp = rootProperty.GetArrayElementAtIndex(index);
-                if (itemProp != null)
-                    element.Add((itemProp.managedReferenceValue as PolymorphicObject).BodyDrawer(itemProp));
-            }
-
-            protected override void OnAdd(IList list)
-            {
-                PolymorphicObject.ShowChooseTypeMenu(BaseType, false, (Type t) =>
-                {
-                    if (t == null) return;
-
-                    var newProp = rootProperty.AddArrayElement();
-                    newProp.managedReferenceValue = Activator.CreateInstance(t);
-
-                    // Refresh the ListView to show the new item
-                    listView.RefreshItems();
-                    rootProperty.serializedObject.ApplyModifiedProperties();
-                });
-            }
-            protected override void OnRemove(IList list, int index)
-            {
-                list.RemoveAt(index);
-
-                listView.RefreshItems();
-                rootProperty.serializedObject.ApplyModifiedProperties();
-            }
-
-
-            private static Type GetListElementType(SerializedProperty property)
-            {
-                if (property == null) return null;
-
-                // Helper to get T from IEnumerable<T> if available
-                static Type GetIEnumerableElementType(Type type)
-                {
-                    if (type == null) return null;
-
-                    // If the type itself is generic IEnumerable<T>
-                    if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Generic.IEnumerable<>))
-                        return type.GetGenericArguments()[0];
-
-                    // Otherwise check implemented interfaces for IEnumerable<T>
-                    var iEnum = type.GetInterfaces()
-                        .FirstOrDefault(iFace => iFace.IsGenericType && iFace.GetGenericTypeDefinition() == typeof(System.Collections.Generic.IEnumerable<>));
-                    if (iEnum != null) return iEnum.GetGenericArguments()[0];
-
-                    return null;
-                }
-
-                // Try to use the managedReferenceFieldTypename if present (works for managed references)
-                if (!string.IsNullOrEmpty(property.managedReferenceFieldTypename))
-                {
-                    var parts = property.managedReferenceFieldTypename.Split(' ');
-                    foreach (var part in parts)
-                    {
-                        var t = Type.GetType(part);
-                        if (t != null)
-                        {
-                            // If this is PolymorphicObject.List<T>, return T
-                            if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(PolymorphicObject.List<>))
-                                return t.GetGenericArguments()[0];
-
-                            // If this is an array, return its element type
-                            if (t.IsArray) return t.GetElementType();
-
-                            // If this is a generic List<>, return its generic argument
-                            if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(System.Collections.Generic.List<>))
-                                return t.GetGenericArguments()[0];
-
-                            // If the type has a RealList field of List<U>, use that U
-                            var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-                            var realListField = t.GetField("RealList", flags);
-                            if (realListField != null)
-                            {
-                                var ft = realListField.FieldType;
-                                if (ft.IsGenericType && ft.GetGenericTypeDefinition() == typeof(System.Collections.Generic.List<>))
-                                    return ft.GetGenericArguments()[0];
-                            }
-
-                            // If it implements IEnumerable<T>, return that T
-                            var ielem = GetIEnumerableElementType(t);
-                            if (ielem != null) return ielem;
-
-                            // Fallback: return the resolved type itself
-                            return t;
-                        }
-                    }
-                }
-
-                object target = property.serializedObject?.targetObject;
-                if (target == null) return null;
-
-                Type currentType = target.GetType();
-                string path = property.propertyPath;
-                string[] tokens = path.Split('.');
-
-                for (int i = 0; i < tokens.Length; i++)
-                {
-                    string token = tokens[i];
-                    if (token == "Array") continue;
-                    if (token.StartsWith("data["))
-                    {
-                        // The previous field was a collection; get its element type.
-                        if (currentType.IsArray)
-                        {
-                            currentType = currentType.GetElementType() ?? currentType;
-                        }
-                        else if (currentType.IsGenericType)
-                        {
-                            var genDef = currentType.GetGenericTypeDefinition();
-                            if (genDef == typeof(System.Collections.Generic.List<>))
-                            {
-                                currentType = currentType.GetGenericArguments()[0];
-                            }
-                            else
-                            {
-                                // Try to get IEnumerable<T> element type for other generic collections
-                                var ielem = GetIEnumerableElementType(currentType);
-                                if (ielem != null) currentType = ielem;
-                                else return null;
-                            }
-                        }
-                        else
-                        {
-                            // Unknown collection shape; cannot resolve element type.
-                            return null;
-                        }
-                        continue;
-                    }
-
-                    FieldInfo field = GetFieldInfoRecursive(currentType, token);
-                    static FieldInfo GetFieldInfoRecursive(Type type, string fieldName)
-                    {
-                        while (type != null)
-                        {
-                            var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-                            var fi = type.GetField(fieldName, flags);
-                            if (fi != null) return fi;
-                            string backing = $"<{fieldName}>k__BackingField";
-                            fi = type.GetField(backing, flags);
-                            if (fi != null) return fi;
-                            type = type.BaseType;
-                        }
-                        return null;
-                    }
-
-                    if (field == null) return null;
-                    currentType = field.FieldType;
-                }
-
-                // If final resolved type is a PolymorphicObject.List<T>, return its generic argument
-                if (currentType.IsGenericType && currentType.GetGenericTypeDefinition() == typeof(PolymorphicObject.List<>))
-                    return currentType.GetGenericArguments()[0];
-
-                // If the resolved type has a RealList field of List<U>, return U
-                {
-                    var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-                    var realListField = currentType.GetField("RealList", flags);
-                    if (realListField != null)
-                    {
-                        var ft = realListField.FieldType;
-                        if (ft.IsGenericType && ft.GetGenericTypeDefinition() == typeof(System.Collections.Generic.List<>))
-                            return ft.GetGenericArguments()[0];
-                    }
-                }
-
-                // If final resolved type is a collection, return its element type
-                if (currentType.IsArray) return currentType.GetElementType() ?? currentType;
-                if (currentType.IsGenericType)
-                {
-                    if (currentType.GetGenericTypeDefinition() == typeof(System.Collections.Generic.List<>))
-                        return currentType.GetGenericArguments()[0];
-
-                    var ielem = GetIEnumerableElementType(currentType);
-                    if (ielem != null) return ielem;
-                }
-
-                return currentType;
-            }
-
-        }
-#endif
-    }
 }
