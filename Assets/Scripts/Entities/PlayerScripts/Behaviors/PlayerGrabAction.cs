@@ -19,9 +19,8 @@ public class PlayerGrabAction : PlayerStateBehavior
     public void GrabThrowButton()
     {
         if (Player.SignalManager.Locked) return;
-        if (Player.Grabber.currentGrabbed == null)
-            BeginGrabAttempt();
-        else BeginThrow();
+        //if (Player.Grabber.currentGrabbed == null)
+        BeginGrabAttempt();
     }
 
     void BeginGrabAttempt()
@@ -30,7 +29,7 @@ public class PlayerGrabAction : PlayerStateBehavior
         if (target != null)
         {
             State.Enter();
-            Player.MovementBody.QuickTurnLimited(target.position - Player.MovementBody.Position, .1f);
+            //Player.MovementBody.QuickTurnLimited(target.position - Player.MovementBody.Position, .1f);
         }
         else noTargetState.Enter();
     }
@@ -41,7 +40,11 @@ public class PlayerGrabAction : PlayerStateBehavior
         {
             Player.Grabber.Grab(targetGrabbable);
             successReturnState.Enter();
-            if(dropLaunchState != null && Upgrades.Active.dropLaunch && Input.Grab.IsPressed()) BeginThrow();
+            if(dropLaunchState != null && Upgrades.Active.dropLaunch && Input.Grab.IsPressed())
+            {
+                if (dropLaunchState != null && Upgrades.Active.dropLaunch) throwState = dropLaunchState;
+                throwState.Enter();
+            }
         }
         else blockedState.Enter();
         target = null;
@@ -49,7 +52,6 @@ public class PlayerGrabAction : PlayerStateBehavior
 
     void BeginThrow()
     {
-        if (dropLaunchState != null && Upgrades.Active.dropLaunch) throwState = dropLaunchState;
-        throwState.Enter();
+        
     }
 }

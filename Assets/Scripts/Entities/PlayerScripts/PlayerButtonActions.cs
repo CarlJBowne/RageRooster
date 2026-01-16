@@ -21,7 +21,6 @@ public class PlayerButtonActions : PlayerStateBehavior
     [SerializeReference] public PlayerButtonAction Attack;
     [SerializeReference] public PlayerButtonAction Grab;
     [SerializeReference] public PlayerButtonAction Charge;
-    [SerializeReference] public PlayerButtonAction Aim;
     [SerializeReference] public PlayerButtonAction Parry;
 
     public PlayerButtonAction GetButtonAction(InputAction button)
@@ -30,7 +29,6 @@ public class PlayerButtonActions : PlayerStateBehavior
             : button == Input.Attack ? Attack
             : button == Input.Grab ? Grab
             : button == Input.Charge1 || button == Input.Charge2 ? Charge
-            : button == Input.Aim ? Aim
             : button == Input.Parry ? Parry
             : null;
     }
@@ -44,7 +42,6 @@ public class PlayerButtonActions : PlayerStateBehavior
             Attack,
             Grab,
             Charge,
-            Aim,
             Parry
         };
     }
@@ -57,7 +54,6 @@ public class PlayerButtonActions : PlayerStateBehavior
         if (Attack != null && !Attack.persistAcrossStateChange) Attack.Finish();
         if (Grab != null && !Grab.persistAcrossStateChange) Grab.Finish();
         if (Charge != null && !Charge.persistAcrossStateChange) Charge.Finish();
-        if (Aim != null && !Aim.persistAcrossStateChange) Aim.Finish();
         if (Parry != null && !Parry.persistAcrossStateChange) Parry.Finish();
     }
 
@@ -76,7 +72,6 @@ public class PlayerButtonActions : PlayerStateBehavior
             drawer.CreateTab(nameof(Attack), serializedObject.FindProperty(nameof(Attack)));
             drawer.CreateTab(nameof(Grab), serializedObject.FindProperty(nameof(Grab)));
             drawer.CreateTab(nameof(Charge), serializedObject.FindProperty(nameof(Charge)));
-            drawer.CreateTab(nameof(Aim), serializedObject.FindProperty(nameof(Aim)));
             drawer.CreateTab(nameof(Parry), serializedObject.FindProperty(nameof(Parry)));
 
             return drawer;

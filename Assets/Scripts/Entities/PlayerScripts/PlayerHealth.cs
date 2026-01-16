@@ -48,7 +48,7 @@ public class PlayerHealth : Health
         if (tintAnimator) tintAnimator.BeginAnimation();
         if (health != 0)
         {
-            if(Player.Ranged.aimingState) Player.Ranged.ExitAimingAux();
+            if(Player.Ranged.aimingMovement) Player.Ranged.ExitAimingAux();
             CoroutinePlus.Begin(ref invincibility, InvinceEnum(invincibilityTime), this);
             damagable = false;
             if (attack.HasTag(Attack.Tag.Pit))

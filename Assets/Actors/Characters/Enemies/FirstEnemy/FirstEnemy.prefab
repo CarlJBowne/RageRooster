@@ -5972,6 +5972,7 @@ GameObject:
   - component: {fileID: 4543461492338020441}
   - component: {fileID: 3674508901043307227}
   - component: {fileID: 2553139906093570398}
+  - component: {fileID: 6414152419601664267}
   - component: {fileID: 1790795846713865799}
   - component: {fileID: 9177222470484513295}
   - component: {fileID: 8073722270089541327}
@@ -6259,6 +6260,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 157b62d8004f9f14d8160afc57aae3b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
+  RealPositionOffset: {x: 0, y: 1, z: 0}
+--- !u!114 &6414152419601664267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811522196661094151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c15eb228060da4689a9f675157e315, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RangedTarget
   RealPositionOffset: {x: 0, y: 1, z: 0}
 --- !u!114 &1790795846713865799
 MonoBehaviour:

@@ -249,22 +249,22 @@ public class PlayerController : PlayerStateBehavior
                 }
 
 
-                if (signalNode.signals.ContainsKey("ShootMode"))
-                {
-                    actionSet.Aim = new PlayerButtonAction.CrossStatePressRelease()
-                    {
-                        actionEvent = signalNode.signals["ShootMode"]
-                    };
-                    signalNode.signals.Remove("ShootMode");
-                }
-                else if (signalNode.signals.ContainsKey("ShootModeExit"))
-                {
-                    actionSet.Aim = new PlayerButtonAction.CrossStatePressRelease()
-                    {
-                        actionEvent = signalNode.signals["ShootModeExit"]
-                    };
-                    signalNode.signals.Remove("ShootModeExit");
-                }
+                //if (signalNode.signals.ContainsKey("ShootMode"))
+                //{
+                //    actionSet.Aim = new PlayerButtonAction.CrossStatePressRelease()
+                //    {
+                //        actionEvent = signalNode.signals["ShootMode"]
+                //    };
+                //    signalNode.signals.Remove("ShootMode");
+                //}
+                //else if (signalNode.signals.ContainsKey("ShootModeExit"))
+                //{
+                //    actionSet.Aim = new PlayerButtonAction.CrossStatePressRelease()
+                //    {
+                //        actionEvent = signalNode.signals["ShootModeExit"]
+                //    };
+                //    signalNode.signals.Remove("ShootModeExit");
+                //}
 
 
                 if (signalNode.signals.ContainsKey("Parry"))

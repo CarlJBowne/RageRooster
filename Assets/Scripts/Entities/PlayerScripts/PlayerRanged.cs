@@ -18,7 +18,7 @@ public class PlayerRanged : MonoBehaviour
     #region Data
     private bool aiming;
     new AudioCaller audio;
-    public PlayerAiming aimingState;
+    public PlayerAiming aimingMovement;
     public State shootingState;
     private UIHUDSystem UI;
     private bool justShot;
@@ -45,7 +45,7 @@ public class PlayerRanged : MonoBehaviour
 
         if (Player.Animator.enabled) Player.Animator.Update(0f);
 
-        if (!aimingState.State && TargetingManager.RangedChannel.CurrentTarget != null)
+        if (!aimingMovement.State && TargetingManager.RangedChannel.CurrentTarget != null)
             targetPos.position = TargetingManager.RangedChannel.CurrentTarget.position;
     }
 
@@ -85,27 +85,27 @@ public class PlayerRanged : MonoBehaviour
 
     public bool hasEggsToShoot => eggAmount > 0;
 
-    public void EnterAiming()
+    public void EnterAiming(State targetState)
     {
         if (eggCapacity == 0 && currentGrabbed != null) return;
 
-        aimingState.SetXYRotation(Cameras.normalCamera.m_XAxis.Value, Cameras.normalCamera.m_YAxis.Value);
+        aimingMovement.SetXYRotation(Cameras.normalCamera.m_XAxis.Value, Cameras.normalCamera.m_YAxis.Value);
         TargetingManager.ToggleAimingDownSights(true);
         Player.Animator.CrossFade("Aim", 0.3f);
-        aimingState.State.Enter();
+        targetState.Enter();
         aimingRig.enabled = true;
         aimingRig.weight = 1;
         UI.SetHitMarkerVisibility(true);
         Cameras.SetTargetVirtualCamera(Cameras.aimingCamera);
         aiming = true;
     }
-    public void ExitAiming(State normalState, State grabbingState)
+    public void ExitAiming(State targetState)
     {
         if (!aiming) return;
-        Cameras.normalCamera.m_XAxis.Value = aimingState.hAxis.Value;
+        Cameras.normalCamera.m_XAxis.Value = aimingMovement.hAxis.Value;
         TargetingManager.ToggleAimingDownSights(false);
         Player.Animator.CrossFade("GroundBasic", 0.1f);
-        (currentGrabbed == null ? normalState : grabbingState).Enter();
+        targetState.Enter();
         aimingRig.enabled = false;
         aimingRig.weight = 0;
         UI.SetHitMarkerVisibility(false);
@@ -116,7 +116,7 @@ public class PlayerRanged : MonoBehaviour
     public void ExitAimingAux()
     {
         if (!aiming) return;
-        Cameras.normalCamera.m_XAxis.Value = aimingState.hAxis.Value;
+        Cameras.normalCamera.m_XAxis.Value = aimingMovement.hAxis.Value;
         TargetingManager.ToggleAimingDownSights(false);
         aimingRig.enabled = false;
         aimingRig.weight = 0;
@@ -129,7 +129,7 @@ public class PlayerRanged : MonoBehaviour
     public void ExitAimingInstant()
     {
         if (!aiming) return;
-        Cameras.normalCamera.m_XAxis.Value = aimingState.hAxis.Value;
+        Cameras.normalCamera.m_XAxis.Value = aimingMovement.hAxis.Value;
         TargetingManager.ToggleAimingDownSights(false);
         aimingRig.enabled = false;
         aimingRig.weight = 0;
@@ -143,7 +143,7 @@ public class PlayerRanged : MonoBehaviour
     public void Shoot()
     {
         if (!aiming) return;
-        if (currentGrabbed != null) AimThrow();
+        if (currentGrabbed != null) aimThrowState.Enter();
         else if (eggAmount >= 1 && !shootingState.Active)
             shootingState.Enter();
     }
@@ -168,9 +168,5 @@ public class PlayerRanged : MonoBehaviour
         }
     }
 
-    public void AimThrow()
-    {
-        aimThrowState.Enter();
-    }
     #endregion
 }
