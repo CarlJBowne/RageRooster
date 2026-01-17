@@ -72,7 +72,7 @@ public class EnemyHealth : Health
             CoroutinePlus.Stop(ref stunRoutine);
             if (ragdoll)
             {
-                ragdoll.State = RagdollHandler.States.On;
+                ragdoll.State = RagdollHandler.States.Thrown;
                 ragdoll.SetVelocity(attack.velocity);
             }
             else Destroy();
@@ -104,7 +104,7 @@ public class EnemyHealth : Health
             {
                 if (ragdoll)
                 {
-                    ragdoll.State = RagdollHandler.States.On;
+                    ragdoll.State = RagdollHandler.States.Ragdoll;
                     ragdoll.SetVelocity(attack.velocity);
                 }
                 else Destroy();

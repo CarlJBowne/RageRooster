@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 
-[RequireComponent(typeof(Collider),typeof(MeleeTarget))]
+[RequireComponent(typeof(Collider), typeof(MeleeTarget))]
 public class Grabbable : MonoBehaviour
 {
     #region Config
@@ -57,7 +57,7 @@ public class Grabbable : MonoBehaviour
     void Awake() => rigidbodyProfile = rigidBody != null ? new(rigidBody) : null;
 
     void OnEnable() { if (State is not States.Grabbable) State = States.Grabbable; }
-    void OnDisable() { if(State is States.Grabbable) State = States.Inactive; }
+    void OnDisable() { if (State is States.Grabbable) State = States.Inactive; }
 
     public bool GetGrabbable()
     {
@@ -73,7 +73,11 @@ public class Grabbable : MonoBehaviour
         State = States.Grabbed;
         if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Grabbed;
         if (ragdollHandler) ragdollHandler.State = RagdollHandler.States.Grabbed;
-        else if(rigidBody) rigidBody.isKinematic = true;
+        else if (rigidBody)
+        {
+            rigidBody.isKinematic = true;
+            collider.enabled = false;
+        }
     }
 
     public void Throw(Vector3 throwVelocity)
@@ -95,11 +99,15 @@ public class Grabbable : MonoBehaviour
             {
                 yield return new WaitForSeconds(1f);
                 State = States.Grabbable;
-            } 
+            }
         }
 
-        if (ragdollHandler) ragdollHandler.State = RagdollHandler.States.On;
-        else if (rigidBody) rigidBody.isKinematic = rigidbodyProfile.isKinematic;
+        if (ragdollHandler) ragdollHandler.State = RagdollHandler.States.Thrown;
+        else if (rigidBody)
+        {
+            rigidBody.isKinematic = rigidbodyProfile.isKinematic;
+            collider.enabled = true;
+        }
         SetVelocity(throwVelocity);
     }
 
@@ -108,7 +116,11 @@ public class Grabbable : MonoBehaviour
         State = States.Grabbable;
         if (entityActivity) entityActivity.CurrentState = EntityActivity.State.Default;
         if (ragdollHandler) ragdollHandler.State = RagdollHandler.States.Off;
-        else if(rigidBody) rigidBody.isKinematic = rigidbodyProfile.isKinematic;
+        else if (rigidBody)
+        {
+            rigidBody.isKinematic = rigidbodyProfile.isKinematic;
+            collider.enabled = true;
+        } 
     }
 
     public States State

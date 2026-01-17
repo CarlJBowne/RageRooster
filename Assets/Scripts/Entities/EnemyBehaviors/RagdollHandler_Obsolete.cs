@@ -161,9 +161,9 @@ public class RagdollHandler_Obsolete : Grabbable_Obsolete
     {
         RagdollHandler newRagdoll = gameObject.AddComponent<RagdollHandler>();
          
-        newRagdoll.minRagdollTime = minRagdollTime;
-        newRagdoll.maxRagdollTime = maxRagdollTime;
-        newRagdoll.minRagdollVelocity = minRagdollVelovity;
+        //newRagdoll.minRagdollTime = minRagdollTime;
+        //newRagdoll.maxRagdollTime = maxRagdollTime;
+        //newRagdoll.minRagdollVelocity = minRagdollVelovity;
         //newRagdoll.ragDollColliders = ragDollColliders;
         //newRagdoll.ragDollRigidBodies = ragDollRigidBodies;
         

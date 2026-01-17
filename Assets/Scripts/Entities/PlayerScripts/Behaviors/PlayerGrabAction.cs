@@ -11,7 +11,7 @@ public class PlayerGrabAction : PlayerStateBehavior
     public State blockedState;
     public State throwState;
     public State dropLaunchState;
-    public State successReturnState;
+    public UltEvents.UltEvent successReturn;
 
     private MeleeTarget target;
 
@@ -39,8 +39,8 @@ public class PlayerGrabAction : PlayerStateBehavior
         if (Grabbable.IsGrabbable(target, out Grabbable targetGrabbable))
         {
             Player.Grabber.Grab(targetGrabbable);
-            successReturnState.Enter();
-            if(dropLaunchState != null && Upgrades.Active.dropLaunch && Input.Grab.IsPressed())
+            successReturn?.Invoke();
+            if (dropLaunchState != null && Upgrades.Active.dropLaunch && Input.Grab.IsPressed())
             {
                 if (dropLaunchState != null && Upgrades.Active.dropLaunch) throwState = dropLaunchState;
                 throwState.Enter();

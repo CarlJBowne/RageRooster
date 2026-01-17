@@ -5,8 +5,19 @@ using UnityEngine;
 public abstract class Target : MonoBehaviour
 {
     [SerializeField] Vector3 RealPositionOffset;
+    [SerializeField, RelatedComponent] Rigidbody rigidBody;
+    [SerializeField] bool useRigidBodyCenter;
 
-    public Vector3 position => transform.position + RealPositionOffset;
+
+    public Vector3 position
+    {
+        get
+        {
+            if (useRigidBodyCenter && rigidBody != null)
+                return rigidBody.worldCenterOfMass; // world-space center of mass
+            return transform.position + RealPositionOffset;
+        }
+    }
 
     public float GetDistance(TargetingRange range) => Vector3.Distance(range.front.position, position);
     public float GetAngle(TargetingRange range) => Vector3.Angle(range.front.forward, position - range.front.position);

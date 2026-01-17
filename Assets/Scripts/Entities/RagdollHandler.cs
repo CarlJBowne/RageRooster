@@ -4,9 +4,10 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class RagdollHandler : MonoBehaviour
 {
-    public float minRagdollTime;
-    public float maxRagdollTime;
-    public float minRagdollVelocity;
+    [SerializeField] float minCollisionTime;
+    [SerializeField] float minRagdollTime;
+    [SerializeField] float maxRagdollTime;
+    [SerializeField] float minRagdollVelocity;
 
     [SerializeField, RelatedComponent(true)] Collider rootBoneCollider;
     [SerializeField] Collider[] ragDollColliders = new Collider[11];
@@ -23,13 +24,15 @@ public class RagdollHandler : MonoBehaviour
     public enum States
     {
         Off,
-        On,
-        Grabbed
+        Grabbed,
+        Thrown,
+        Ragdoll
     }
     private States _state = States.Off;
 
     private RigidbodyProfile defaultRigidbodyDefaults;
-    private float poofTimer = -1;
+    private float timer = -1;
+
 
     private void Reset()
     {
@@ -64,7 +67,8 @@ public class RagdollHandler : MonoBehaviour
             enabled = value != States.Off;
 
             defaultCollider.isTrigger = value != States.Off;
-            rootBoneCollider.enabled = value == States.On;
+            rootBoneCollider.enabled = value > States.Grabbed;
+            timer = value > States.Grabbed ? 0 : -1;
 
             if (rootRigidBody == defaultRigidBody)
             {
@@ -79,7 +83,7 @@ public class RagdollHandler : MonoBehaviour
 
             for (int i = 0; i < ragDollColliders.Length; i++)
             {
-                if (ragDollColliders[i] != null) ragDollColliders[i].enabled = value == States.On;
+                if (ragDollColliders[i] != null) ragDollColliders[i].enabled = value > States.Grabbed;
                 if (i < ragDollRigidBodies.Length && ragDollRigidBodies[i] != null) ragDollRigidBodies[i].isKinematic = value == States.Off;
             }
 
@@ -97,26 +101,17 @@ public class RagdollHandler : MonoBehaviour
             rootBoneCollider.transform.localPosition = Vector3.zero;
         }
 
-        if(poofTimer >= 0)
+        if(timer >= 0)
         {
-            poofTimer += Time.fixedDeltaTime;
-            if((poofTimer >= minRagdollTime && ragDollRigidBodies[0].linearVelocity.magnitude < minRagdollVelocity) || poofTimer >= maxRagdollTime)
+            timer += Time.fixedDeltaTime;
+            if((timer >= minRagdollTime && ragDollRigidBodies[0].linearVelocity.magnitude < minRagdollVelocity) || timer >= maxRagdollTime)
             {
                 Poof();
-                poofTimer = -1;
+                timer = -1;
             }
         }
     }
 
-    public bool PoofCycle
-    {
-        get => poofTimer > 0;
-        set
-        {
-            if (State == States.Off) return;
-            poofTimer = value ? 0 : -1;
-        }
-    }
 
 
     public void SetVelocity(Vector3 velocity)
@@ -126,7 +121,6 @@ public class RagdollHandler : MonoBehaviour
             if (ragDollRigidBodies[i] != null) ragDollRigidBodies[i].linearVelocity = velocity;
     }
 
-    // convenience alias for merged-proxy semantics
     public void IgnoreCollisionWith(Collider other, bool ignore = true)
     {
         //Physics.IgnoreCollision(rootBoneCollider, other, ignore);
@@ -139,10 +133,12 @@ public class RagdollHandler : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (State == States.Off) return;
-        if (grabbable && !grabbable.enabled) grabbable.enabled = true;
-        if (!PoofCycle) PoofCycle = true;
-
-        if(other.TryGetComponent(out IAttackSource attack)) SetVelocity(attack.GetAttack().velocity);
+        if (State is States.Thrown && timer > minCollisionTime)
+        {
+            State = States.Ragdoll;
+            if (grabbable && !grabbable.enabled) grabbable.enabled = true;
+            if (other.TryGetComponent(out IAttackSource attack)) SetVelocity(attack.GetAttack().velocity);
+        }
     }
 
     public void Poof()

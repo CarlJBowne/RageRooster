@@ -3212,6 +3212,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
   RealPositionOffset: {x: 0, y: 0, z: 0}
+  rigidBody: {fileID: 280758275}
+  useRigidBodyCenter: 1
 --- !u!114 &280758281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8021,6 +8023,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
   RealPositionOffset: {x: 0, y: 0, z: 0}
+  rigidBody: {fileID: 961141755}
+  useRigidBodyCenter: 1
 --- !u!114 &961141761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8554,36 +8558,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FirstEnemy
-      objectReference: {fileID: 0}
-    - target: {fileID: 4811522196661094151, guid: bae59963cc72d7944868ead2202c05a2,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5281166463461159709, guid: bae59963cc72d7944868ead2202c05a2,
-        type: 3}
-      propertyPath: attack.amount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5281166463461159709, guid: bae59963cc72d7944868ead2202c05a2,
-        type: 3}
-      propertyPath: attack.tags.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5281166463461159709, guid: bae59963cc72d7944868ead2202c05a2,
-        type: 3}
-      propertyPath: attack.tags.Array.data[0].name
-      value: A
-      objectReference: {fileID: 0}
-    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.4999998
-      objectReference: {fileID: 0}
-    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.4999998
       objectReference: {fileID: 0}
     - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
         type: 3}
@@ -17076,6 +17050,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
   RealPositionOffset: {x: 0, y: 0, z: 0}
+  rigidBody: {fileID: 0}
+  useRigidBodyCenter: 0
 --- !u!114 &1891244950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17089,6 +17065,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RangedTarget
   RealPositionOffset: {x: 0, y: 0, z: 0}
+  rigidBody: {fileID: 0}
+  useRigidBodyCenter: 0
 --- !u!43 &1897610679
 Mesh:
   m_ObjectHideFlags: 0

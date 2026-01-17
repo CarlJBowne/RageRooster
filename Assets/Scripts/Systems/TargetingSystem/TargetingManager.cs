@@ -184,7 +184,7 @@ public class TargetingManager : MonoBehaviour
                     if (CurrentTarget != null)
                     {
                         debugDisplayReticle.gameObject.SetActive(true);
-                        debugDisplayReticle.rectTransform.position = Cameras.RealCamera.camera.WorldToScreenPoint(CurrentTarget.transform.position);
+                        debugDisplayReticle.rectTransform.position = Cameras.RealCamera.camera.WorldToScreenPoint(CurrentTarget.position);
                     }
                     else
                     {
