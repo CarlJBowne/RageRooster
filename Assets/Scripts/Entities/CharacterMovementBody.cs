@@ -390,8 +390,30 @@ public class CharacterMovementBody : MonoBehaviour
             if (Grounded && initVelocity.y <= 0)
             {
                 if (DirectionCast(Vector3.down, 0.5f, groundCheckBuffer, out RaycastHit groundHit))
-                    Position += Vector3.down * groundHit.distance;
-                else WalkOff();
+                {
+                    // Make sure the hit is under the character's feet (not beside it).
+                    // Compute the bottom-center point of the capsule in world space.
+                    Vector3 bottomCenter = Position + Collider.center - Vector3.up * (Collider.height * 0.5f - Collider.radius);
+                    Vector3 horizontalDelta = new Vector3(groundHit.point.x - bottomCenter.x, 0f, groundHit.point.z - bottomCenter.z);
+
+                    // Allow a small tolerance because of floating precision and scale.
+                    float allowedRadius = Collider.radius + 0.05f;
+
+                    if (horizontalDelta.sqrMagnitude <= allowedRadius * allowedRadius)
+                    {
+                        // Ground is under the feet -> snap down.
+                        Position += Vector3.down * groundHit.distance;
+                    }
+                    else
+                    {
+                        // Hit was off to the side (ledge), so walk off instead of snapping.
+                        WalkOff();
+                    }
+                }
+                else
+                {
+                    WalkOff();
+                }
             }
         }
     }
