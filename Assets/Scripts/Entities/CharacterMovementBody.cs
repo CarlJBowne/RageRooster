@@ -394,7 +394,7 @@ public class CharacterMovementBody : MonoBehaviour
                     // Make sure the hit is under the character's feet (not beside it).
                     // Compute the bottom-center point of the capsule in world space.
                     Vector3 bottomCenter = Position + Collider.center - Vector3.up * (Collider.height * 0.5f - Collider.radius);
-                    Vector3 horizontalDelta = new Vector3(groundHit.point.x - bottomCenter.x, 0f, groundHit.point.z - bottomCenter.z);
+                    Vector3 horizontalDelta = new(groundHit.point.x - bottomCenter.x, 0f, groundHit.point.z - bottomCenter.z);
 
                     // Allow a small tolerance because of floating precision and scale.
                     float allowedRadius = Collider.radius + 0.05f;
