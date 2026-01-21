@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
+using RageRooster.Obsolete.Zones;
 
 public class PlayerAirborneMovement : PlayerMovementEffector
 {
@@ -16,6 +17,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     public bool flatGravity = false;
     public bool allowMidFall = true;
     public bool allowDoubleJump = true;
+    public bool hanging; //for testing ledge grab functionality before folding into states
     //public bool allowGlide = false; //Keeping this here for now in case we decide to re-implement the gliding.
 
     public PlayerAirborneMovement fallState;
@@ -24,6 +26,11 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     protected float targetMinHeight;
     protected float targetHeight;
     public bool isUpward => defaultPhase == JumpState.Jumping;
+
+    private void Update()
+    {
+        LedgeGrab();
+    }
 
     public override void VerticalMovement(out float? result)
     {
@@ -150,4 +157,39 @@ public class PlayerAirborneMovement : PlayerMovementEffector
             allowDoubleJump = false;
         }
     }
+    public virtual void LedgeGrab()
+    {
+        if (playerMovementBody.velocity.y < 0)
+        {
+            //Debug.Log("Are we passing this?");
+            RaycastHit downHit;
+            Vector3 LineDownStart = (transform.position + Vector3.up * 1.5f) + transform.forward;
+            Vector3 LineDownEnd = (transform.position + Vector3.up * 0.7f) + transform.forward;
+            Physics.Linecast(LineDownStart, LineDownEnd, out  downHit,LayerMask.GetMask("Ledge"));
+            Debug.DrawLine(LineDownStart, LineDownEnd);
+
+            if(downHit.collider != null)
+            {
+                RaycastHit fwdHit;
+                Vector3 LineFwdStart = new Vector3(transform.position.x, downHit.point.y - 0.1f, transform.position.z);
+                Vector3 LineFwdEnd = new Vector3(transform.position.x, downHit.point.y - 0.1f, transform.position.z) + transform.forward;
+                Physics.Linecast(LineFwdStart, LineFwdEnd, out fwdHit, LayerMask.GetMask("Ledge"));
+                Debug.DrawLine(LineFwdStart, LineFwdEnd);
+
+                if(fwdHit.collider !=null)
+                {
+                    playerMovementBody.velocity = Vector3.zero;
+
+                    hanging = true;
+
+                    Vector3 hangPos = new Vector3(fwdHit.point.x, downHit.point.y, fwdHit.point.z);
+                    Vector3 offset = transform.forward * -0.1f + transform.up * -1f;
+                    hangPos += offset;
+                    transform.position = hangPos;
+                    transform.forward = -fwdHit.normal;
+                }
+            }
+        }
+    }
 }
+
