@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using RageRooster.Systems.ObjectPool;
+using RageRooster.Systems.ObjectPooling;
 using FMODUnity;
 using RageRooster.Systems;
 using UnityEngine.UIElements;

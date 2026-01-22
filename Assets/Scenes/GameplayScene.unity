@@ -538,7 +538,7 @@ GameObject:
   m_Component:
   - component: {fileID: 369243206}
   m_Layer: 6
-  m_Name: AimRotationControll
+  m_Name: AimRotationControl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2431,6 +2431,11 @@ PrefabInstance:
       objectReference: {fileID: 673734963}
     - target: {fileID: 2714541672873312079, guid: 355f3506676c06e439e5fd057490efe1,
         type: 3}
+      propertyPath: eggPool.muzzle
+      value: 
+      objectReference: {fileID: 673734963}
+    - target: {fileID: 2714541672873312079, guid: 355f3506676c06e439e5fd057490efe1,
+        type: 3}
       propertyPath: eggPool.parent
       value: 
       objectReference: {fileID: 158189929}
@@ -2439,6 +2444,11 @@ PrefabInstance:
       propertyPath: eggPool.spawnPoint
       value: 
       objectReference: {fileID: 673734963}
+    - target: {fileID: 2714541672873312079, guid: 355f3506676c06e439e5fd057490efe1,
+        type: 3}
+      propertyPath: aimRotationController
+      value: 
+      objectReference: {fileID: 369243206}
     - target: {fileID: 2950555048310845610, guid: 355f3506676c06e439e5fd057490efe1,
         type: 3}
       propertyPath: m_Name
@@ -2449,16 +2459,6 @@ PrefabInstance:
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
       value: 
       objectReference: {fileID: 10908760}
-    - target: {fileID: 7421260604818229875, guid: 355f3506676c06e439e5fd057490efe1,
-        type: 3}
-      propertyPath: targetPos
-      value: 
-      objectReference: {fileID: 10908760}
-    - target: {fileID: 7421260604818229875, guid: 355f3506676c06e439e5fd057490efe1,
-        type: 3}
-      propertyPath: aimRotationController
-      value: 
-      objectReference: {fileID: 369243206}
     - target: {fileID: 8455434200384702600, guid: 355f3506676c06e439e5fd057490efe1,
         type: 3}
       propertyPath: cameraTransform

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RageRooster.Systems.ObjectPool
+namespace RageRooster.Systems.ObjectPooling
 {
     /// <summary>
     /// A component that marks a GameObject as being poolable.
@@ -11,6 +11,7 @@ namespace RageRooster.Systems.ObjectPool
     public class PoolableObject : MonoBehaviour
     {
 
+        public ObjectPools.Client currentClient { set; get; }
         public ObjectPools.Pool pool { private set; get; }
         public bool isPrefab { private set; get; } = true;
         public bool Active
@@ -42,9 +43,19 @@ namespace RageRooster.Systems.ObjectPool
         /// </summary>
         public Action<PoolableObject> onDeactivate;
 
+        public void Enable(ObjectPools.Client client)
+        {
+            gameObject.SetActive(true);
+            currentClient = client;
+        }
+
 
         private void OnEnable() => Active = true;
-        private void OnDisable() => Active = false;
+        private void OnDisable()
+        {
+            Active = false;
+            currentClient = null;
+        }
 
 
         public void SetPosition(Vector3 position) => transform.position = position;
@@ -75,6 +86,7 @@ namespace RageRooster.Systems.ObjectPool
             result = subject.GetComponent<PoolableObject>();
             return result && result.pool != null;
         }
+
         public static bool DisableOrDestroy(GameObject subject)
         {
             if (subject.TryGetComponent(out PoolableObject poolable) && poolable.pool != null)

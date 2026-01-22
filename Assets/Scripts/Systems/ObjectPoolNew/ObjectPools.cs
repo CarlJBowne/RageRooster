@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEditor;
 
-namespace RageRooster.Systems.ObjectPool
+namespace RageRooster.Systems.ObjectPooling
 {
     public class ObjectPools : ScriptableObject
     {
@@ -232,27 +232,28 @@ namespace RageRooster.Systems.ObjectPool
         [System.Serializable, Inspectable]
         public class Client
         {
+            [SerializeField, Inspectable] MonoBehaviour owner;
             [SerializeField, Inspectable] PoolableObject prefab;
             [SerializeField, Inspectable] Transform muzzle;
             private bool initialized;
             private Pool pool;
-            private Action<PoolableObject> onPump;
+            public Action<PoolableObject> onPumpInstance;
 
-            public void Initialize(Action<PoolableObject> onPumpAction = null)
+            public void Initialize()
             {
                 if (initialized) return;
                 pool = GetPool(prefab);
                 pool.Initialize();
-                onPump = onPumpAction;
                 initialized = true;
             }
 
-            public PoolableObject Pump()
+            public PoolableObject Pump(bool autoEnable = true)
             {
                 if (!initialized) Initialize();
                 var res = pool.Pump();
                 if(muzzle != null) res.PlaceAtMuzzle(muzzle);
-                onPump?.Invoke(res);
+                onPumpInstance?.Invoke(res);
+                if(autoEnable) res.Enable(this);
                 return res;
             }
         }

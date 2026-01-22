@@ -134,7 +134,7 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
 
     protected override void FixedUpdate()
     {
-        Machine.animator.SetFloat("CurrentSpeed", currentSpeed);
+        Player.Animator.SetFloat("CurrentSpeed", currentSpeed);
         if (Upgrades.Active.d_moonJump && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
         Vector3 prePos = Position;
@@ -295,7 +295,7 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
         foreach (Vector3 item in jumpMarkers) Handles.DrawWireDisc(item, Vector3.up, 0.5f);
     }
 
-    public List<Vector3> jumpMarkers = new List<Vector3>();
+    public List<Vector3> jumpMarkers = new();
 
 #endif
 

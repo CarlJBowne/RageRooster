@@ -1,6 +1,6 @@
 using RageRooster.RoomSystem;
 using RageRooster.Systems;
-using RageRooster.Systems.ObjectPool;
+using RageRooster.Systems.ObjectPooling;
 using RageRooster.Systems.SaveSystem;
 using SLS.ISingleton;
 using System;

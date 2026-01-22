@@ -25,27 +25,33 @@ public class PlayerProjectile : AttackSourceSingle
     public bool active => isActiveAndEnabled;
 
 
-    public void Send(Vector3 initPosition, RangedTarget target, Action<Vector3> initialRotateAction)
+    public void Send(RangedTarget target, Action<Vector3> rotateAction, Transform initPosition, Transform fallBackTargetPosition)
     {
         activeTarget = target;
         lostTarget = false;
-        transform.position = initPosition;
         timeFlying = 0;
-        if(velocityPredictionFactor > 0)
+        transform.position = initPosition.position;
+        if(velocityPredictionFactor > 0 && target != null)
         {
-            Vector3 predictedPosition = target.position + Vector3.up; //(Placeholder)
+            Vector3 predictedPosition = target.position + target.PredictFuturePosition(initPosition.position, speed); //(Placeholder)
             activeVelocity = (Vector3.Lerp(target.position, predictedPosition, velocityPredictionFactor) - transform.position).normalized * speed;
+            rotateAction(predictedPosition);
         }
-        else 
+        else if (target != null)
         {
             activeVelocity = (target.position - transform.position).normalized * speed;
+            rotateAction(target.position);
         }
-
+        else
+        {
+            activeVelocity = (fallBackTargetPosition.position - transform.position).normalized * speed;
+            rotateAction(fallBackTargetPosition.position);
+        }
     }
 
     private void FixedUpdate()
     {
-        if((homingPerSecond > 0 || initialHomingPerSecond > 0) && !lostTarget)
+        if(activeTarget != null && !lostTarget && (homingPerSecond > 0 || initialHomingPerSecond > 0))
         {
             Vector3 toTarget = (activeTarget.position - transform.position).normalized;
             float angleToTarget = Vector3.Angle(activeVelocity, toTarget);
@@ -57,7 +63,7 @@ public class PlayerProjectile : AttackSourceSingle
                 if (rotateActualBody) transform.rotation = Quaternion.LookRotation(activeVelocity);
             }
         }
-        transform.position += activeVelocity * speed * Time.fixedDeltaTime;
+        transform.position += speed * Time.fixedDeltaTime * activeVelocity;
     }
 
 
