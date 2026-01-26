@@ -57,7 +57,7 @@ namespace SLS.StateMachineH.Timelines
             {
                 exitElapsed += delta;
                 exitFadeFactor = Mathf.Clamp01(1f - (exitElapsed / influenceFadeTime));
-                DebugRR.DebugTextOverlay.AppendNewLine($"TMA : ExitFadeFactor: {exitFadeFactor}");
+                //DebugRR.DebugTextOverlay.AppendNewLine($"TMA : ExitFadeFactor: {exitFadeFactor}");
                 if (exitFadeFactor <= 0f)
                 {
                     // Ensure End is invoked and do not apply any further effects.
@@ -66,7 +66,7 @@ namespace SLS.StateMachineH.Timelines
                 }
             }
 
-            DebugRR.DebugTextOverlay.AppendNewLine($"TMA : ExistingVelocity: {Player.MovementBody.velocity}");
+            //DebugRR.DebugTextOverlay.AppendNewLine($"TMA : ExistingVelocity: {Player.MovementBody.velocity}");
 
             //Read Curves
             SampleCurve(minForwardMovementCurve, out float minForwardMovement);
@@ -112,7 +112,7 @@ namespace SLS.StateMachineH.Timelines
                 Y = Mathf.Lerp(Y, setVerticalVelocity, setVerticalInfluence);
             output.y = Y;
 
-            DebugRR.DebugTextOverlay.AppendNewLine($"TMA : Output: {output}");
+            //DebugRR.DebugTextOverlay.AppendNewLine($"TMA : Output: {output}");
             Player.MovementBody.VelocitySet(output.x, output.y, output.z);
         }
 

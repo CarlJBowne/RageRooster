@@ -139,7 +139,7 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
 
         Vector3 prePos = Position;
 
-        DebugRR.DebugTextOverlay.AppendNewLine($"PMB : Velocity: {velocity}");
+        DebugRR.DebugTextOverlay.SetText($"PMB : Velocity: {velocity}");
         base.FixedUpdate();
 
         if(prePos != Position) _movingUpdateActionTimer.Tick(MovingUpdateAction);

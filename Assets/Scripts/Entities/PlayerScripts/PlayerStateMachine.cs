@@ -118,7 +118,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 
     protected override void FixedUpdate()
     {
-        DebugRR.DebugTextOverlay.ClearText();
+        //DebugRR.DebugTextOverlay.ClearText();
         base.FixedUpdate();
     }
 }
