@@ -637,9 +637,10 @@ MonoBehaviour:
   realMuzzle: {fileID: 0}
   shootMuzzle: {fileID: 6784346919768058046}
   targetPos: {fileID: 0}
+  LassoProjectile: {fileID: 0}
   eggPool:
-    owner: {fileID: 0}
-    prefab: {fileID: -2995548404157584553, guid: b39338241f1049347a2c571f4db25344,
+    owner: {fileID: 5866349644222999935}
+    prefab: {fileID: -2932187501803866208, guid: b39338241f1049347a2c571f4db25344,
       type: 3}
     muzzle: {fileID: 0}
   eggReplenishRate:
@@ -688,7 +689,7 @@ MonoBehaviour:
   hitScanLayerMask:
     serializedVersion: 2
     m_Bits: 401
-  playerRotationSpeed: 10
+  playerRotationSpeed: 4
   eggAmount: 10
   eggCapacity: 10
   currentTargetDistance: 10
@@ -3490,11 +3491,6 @@ PrefabInstance:
       propertyPath: <Machine>k__BackingField
       value: 
       objectReference: {fileID: 8455434200384702600}
-    - target: {fileID: 413802276913959304, guid: 10f8c208526e83a41baa81d4b8ab10ac,
-        type: 3}
-      propertyPath: managedReferences[1950655830041821295].pressEvent._PersistentCalls.Array.data[0]._Target
-      value: 
-      objectReference: {fileID: 1371118413310184343}
     - target: {fileID: 457143973700952210, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: timeline
@@ -3902,9 +3898,24 @@ PrefabInstance:
       objectReference: {fileID: 8455434200384702600}
     - target: {fileID: 1127374219452772562, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
-      propertyPath: managedReferences[1950656167362429027].pressEvent._PersistentCalls.Array.data[0]._Target
+      propertyPath: managedReferences[1451161898407166048].pressEvent._PersistentCalls.Array.data[0]._Target
       value: 
       objectReference: {fileID: 2714541672873312079}
+    - target: {fileID: 1127374219452772562, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: managedReferences[1451161898407166048].pressEvent._PersistentCalls.Array.data[0]._MemberName
+      value: TryShoot
+      objectReference: {fileID: 0}
+    - target: {fileID: 1127374219452772562, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: managedReferences[1451161898407166048].pressEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1127374219452772562, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: managedReferences[1451161898407166048].pressEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Object
+      value: 
+      objectReference: {fileID: 6511899361605723830}
     - target: {fileID: 1164674149542840455, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: Machine
@@ -4296,6 +4307,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3941225653291784218}
     - target: {fileID: 1990853608402000577, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: <Machine>k__BackingField
+      value: 
+      objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 1992938266987329404, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: <Machine>k__BackingField
       value: 
@@ -5135,11 +5151,6 @@ PrefabInstance:
       propertyPath: <Machine>k__BackingField
       value: 
       objectReference: {fileID: 8455434200384702600}
-    - target: {fileID: 4309169909597393797, guid: 10f8c208526e83a41baa81d4b8ab10ac,
-        type: 3}
-      propertyPath: managedReferences[1950655830041821300].pressEvent._PersistentCalls.Array.data[0]._Target
-      value: 
-      objectReference: {fileID: 1371118413310184343}
     - target: {fileID: 4318050934670463283, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: Machine
@@ -6235,11 +6246,6 @@ PrefabInstance:
       propertyPath: <Machine>k__BackingField
       value: 
       objectReference: {fileID: 8455434200384702600}
-    - target: {fileID: 7229346092289748882, guid: 10f8c208526e83a41baa81d4b8ab10ac,
-        type: 3}
-      propertyPath: managedReferences[1950655830041821306].pressEvent._PersistentCalls.Array.data[0]._Target
-      value: 
-      objectReference: {fileID: 1371118413310184343}
     - target: {fileID: 7264686984746623131, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: Machine
@@ -6306,11 +6312,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6328031082010280587}
     - target: {fileID: 7412508383572730312, guid: 10f8c208526e83a41baa81d4b8ab10ac,
-        type: 3}
-      propertyPath: <Machine>k__BackingField
-      value: 
-      objectReference: {fileID: 8455434200384702600}
-    - target: {fileID: 7413689929421341564, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: <Machine>k__BackingField
       value: 
@@ -6411,6 +6412,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3941225653291784218}
     - target: {fileID: 7544409849844556723, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: <Machine>k__BackingField
+      value: 
+      objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 7561325519274615946, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: <Machine>k__BackingField
       value: 
@@ -7135,6 +7141,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5845395268100613123}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6511899361605723830 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 811191029049377461, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+    type: 3}
+  m_PrefabInstance: {fileID: 5845395268100613123}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6590708857773316528 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 750380195168107955, guid: 10f8c208526e83a41baa81d4b8ab10ac,

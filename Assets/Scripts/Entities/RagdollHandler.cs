@@ -63,7 +63,7 @@ public class RagdollHandler : MonoBehaviour
         set
         {
             _state = value;
-            if (entityActivity && value != States.Off) entityActivity.CurrentState = EntityActivity.State.RagDoll;
+            if (entityActivity && value != States.Off) entityActivity.State = EntityActivity.States.RagDoll;
             enabled = value != States.Off;
 
             defaultCollider.isTrigger = value != States.Off;

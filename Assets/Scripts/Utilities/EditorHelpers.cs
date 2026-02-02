@@ -172,4 +172,51 @@ public static class EditorHelpers
         }
     }*/
 
+
+    [MenuItem("Assets/ApplyAllPrefabOverridesRecursive")]
+    public static void ApplyAllPrefabOverridesRecursive()
+    {
+        GameObject prefabGameObject = Selection.activeObject as GameObject;
+        var status = PrefabUtility.GetPrefabInstanceStatus(prefabGameObject);
+        if (status != PrefabInstanceStatus.NotAPrefab && status != PrefabInstanceStatus.MissingAsset)
+        {
+            var origFab = PrefabUtility.GetCorrespondingObjectFromOriginalSource(prefabGameObject);
+            if (origFab != null)
+            {
+                var assetPath = AssetDatabase.GetAssetPath(origFab);
+                ApplyAllPrefabChangesInGivenHierarchyToPrefabAtPath(assetPath, prefabGameObject);
+            }
+        }
+    }
+
+    private static void ApplyAllPrefabChangesInGivenHierarchyToPrefabAtPath(string assetPath, GameObject hierarchy)
+    {
+        var status = PrefabUtility.GetPrefabInstanceStatus(hierarchy);
+        if (status != PrefabInstanceStatus.NotAPrefab)
+        {
+            foreach (var ob in PrefabUtility.GetAddedComponents(hierarchy.gameObject))
+            {
+                ob.Apply(assetPath);
+            }
+            foreach (var ob in PrefabUtility.GetObjectOverrides(hierarchy.gameObject))
+            {
+                ob.Apply(assetPath);
+            }
+            foreach (var ob in PrefabUtility.GetAddedGameObjects(hierarchy.gameObject))
+            {
+                ob.Apply(assetPath);
+            }
+            foreach (var ob in PrefabUtility.GetRemovedComponents(hierarchy.gameObject))
+            {
+                ob.Apply(assetPath);
+            }
+        }
+        for (int i = 0; i < hierarchy.transform.childCount; i++)
+        {
+            ApplyAllPrefabChangesInGivenHierarchyToPrefabAtPath(assetPath, hierarchy.transform.GetChild(i).gameObject);
+        }
+    }
+
+
+
 }

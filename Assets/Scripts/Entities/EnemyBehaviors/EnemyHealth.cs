@@ -92,14 +92,14 @@ public class EnemyHealth : Health
 
         IEnumerator StunEnum()
         {
-            entityActivity.CurrentState = EntityActivity.State.Stunned;
+            entityActivity.State = EntityActivity.States.Stunned;
 
             while(stunTimeLeft > 0)
             {
                 stunTimeLeft -= Time.deltaTime;
                 yield return null;
             }
-            entityActivity.CurrentState = EntityActivity.State.Default;
+            entityActivity.State = EntityActivity.States.Default;
             if(health <= 0)
             {
                 if (ragdoll)

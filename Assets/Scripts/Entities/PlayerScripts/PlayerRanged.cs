@@ -14,6 +14,7 @@ public class PlayerRanged : MonoBehaviour
     public Transform realMuzzle;
     public Transform shootMuzzle;
     public Transform targetPos;
+    public PlayerLassoProjectile LassoProjectile;
     public ObjectPools.Client eggPool;
     public Timer.Loop eggReplenishRate = new(1f);
     public UnityEngine.Animations.Rigging.Rig aimingRig;
@@ -71,17 +72,11 @@ public class PlayerRanged : MonoBehaviour
 
             targetPos.position = TargetingManager.RangedChannel.CurrentTarget != null
                 ? TargetingManager.RangedChannel.CurrentTarget.position
-                : Physics.Raycast(Cameras.aimingCamera.transform.position, Cameras.aimingCamera.transform.forward, out RaycastHit hit, TargetingManager.RangedChannel.Range.maxDistance, hitScanLayerMask)
+                : Physics.Raycast(Cameras.aimingCamera.transform.position, Cameras.RealCamera.transform.forward, out RaycastHit hit, TargetingManager.RangedChannel.Range.maxDistance, hitScanLayerMask)
                     ? hit.point
                     : Cameras.aimingCamera.transform.position + (Cameras.RealCamera.transform.forward * TargetingManager.RangedChannel.Range.maxDistance);
 
-            Player.MovementBody.InstantDirectionChange(
-                Vector3.RotateTowards(
-                    Player.MovementBody.direction, Player.Ranged.aimRotationController.forward.XZ(),
-                    playerRotationSpeed * Mathf.PI * Time.fixedTime, 0)
-                );
-
-
+            Player.MovementBody.DirectionSet((targetPos.position - Player.Position).XZ(), playerRotationSpeed);
         }
         else
         {
@@ -174,19 +169,21 @@ public class PlayerRanged : MonoBehaviour
 
 
     public void TryShoot(State shootingState)
-    { if (eggAmount >= 1 && !shootingState.Active) shootingState.Enter(); }
+    { 
+        if (eggAmount >= 1 && !shootingState.Active) shootingState.Enter(); 
+    }
 
     public void ShootPoint()
     {
         Player.Audio.PlayOneShot("EggShoot");
-        eggPool.Pump().GetComponent<PlayerProjectile>().Send(TargetingManager.RangedChannel.CurrentTarget, target => {
-            realMuzzle.position = shootMuzzle.position;
-            Quaternion Q = realMuzzle.rotation;
-            Q.SetLookRotation(targetPos.position - realMuzzle.position);
-            realMuzzle.rotation = Q;
-        }, realMuzzle, targetPos);
+        realMuzzle.position = shootMuzzle.position;
+        eggPool.Pump().GetComponent<PlayerProjectile>().Send(TargetingManager.RangedChannel.CurrentTarget, realMuzzle, targetPos);
         Player.Ammo.Current--;
     }
 
+    public void ThrowLassoPoint()
+    {
+        LassoProjectile.Send(TargetingManager.RangedChannel.CurrentTarget, realMuzzle, targetPos);
+    }
 
 }

@@ -17,7 +17,7 @@ public class PlayerStrafingMovement : PlayerMovementEffector
         float deltaTime = Time.fixedDeltaTime / 0.02f;
         Vector3 controlDirection = Input.Movement.normalized.ToXZ();
 
-        Vector3 realDirection = transform.TransformDirection(controlDirection);
+        Vector3 realDirection = Cameras.RealCamera.transform.TransformDirection(controlDirection);
         resultX = realDirection.x * walkingSpeed;
         resultZ = realDirection.z * walkingSpeed;
         playerMovementBody.CurrentSpeed = realDirection.magnitude;

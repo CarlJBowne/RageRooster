@@ -141,7 +141,7 @@ MonoBehaviour:
   Jump:
     rid: -2
   Attack:
-    rid: 1950656167362429027
+    rid: 1451161898407166035
   Grab:
     rid: 1950656167362429029
   Charge:
@@ -153,7 +153,7 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 1950656167362429027
+    - rid: 1451161898407166035
       type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
       data:
         persistAcrossStateChange: 0
@@ -288,7 +288,6 @@ GameObject:
   m_Component:
   - component: {fileID: 398862211242458575}
   - component: {fileID: 6142764829233176585}
-  - component: {fileID: 4079177515250278848}
   - component: {fileID: 7266089984974833609}
   - component: {fileID: 2176363793658933056}
   - component: {fileID: 6271864699659219531}
@@ -327,7 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 4079177515250278848}
+  - {fileID: 0}
   - {fileID: 7266089984974833609}
   - {fileID: 2176363793658933056}
   - {fileID: 6271864699659219531}
@@ -336,23 +335,6 @@ MonoBehaviour:
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &4079177515250278848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4388737262304629360}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
-  <State>k__BackingField: {fileID: 6142764829233176585}
-  signals:
-    serializedList: []
-  lockOnEnter: 0
 --- !u!114 &7266089984974833609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,7 +394,7 @@ MonoBehaviour:
       - _Target: {fileID: 0}
         _MemberName: ShootPoint
         _PersistentArguments: []
-  - time: 0.2
+  - time: 0.1
     output:
       _PersistentCalls:
       - _Target: {fileID: 4750549930989173588}
@@ -767,7 +749,7 @@ MonoBehaviour:
     - rid: 1950655830041821324
       type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
       data:
-        persistAcrossStateChange: 0
+        persistAcrossStateChange: 1
         pressEvent:
           _PersistentCalls: []
         releaseEvent:
@@ -858,6 +840,7 @@ GameObject:
   - component: {fileID: 1739575009564784701}
   - component: {fileID: 5523620188965038083}
   - component: {fileID: 1495894770743417183}
+  - component: {fileID: 5032428621621614016}
   m_Layer: 0
   m_Name: LassoRetract
   m_TagString: Untagged
@@ -895,6 +878,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 5523620188965038083}
   - {fileID: 1495894770743417183}
+  - {fileID: 5032428621621614016}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 3717838527578129320}
   <Layer>k__BackingField: 2
@@ -937,6 +921,29 @@ MonoBehaviour:
   onEnterTime: 0.1
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &5032428621621614016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7208022028467738941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 5073408008435663567}
+  signals:
+    serializedList:
+    - Key: LassoReach
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7793706925814574489}
+          _MemberName: Enter
+          _PersistentArguments: []
+  lockOnEnter: 0
 --- !u!1 &7212713892605554914
 GameObject:
   m_ObjectHideFlags: 0
@@ -949,6 +956,7 @@ GameObject:
   - component: {fileID: 5073408008435663567}
   - component: {fileID: 2567021925400143366}
   - component: {fileID: 7394413076049547985}
+  - component: {fileID: 3932109354504390198}
   m_Layer: 0
   m_Name: LassoThrow
   m_TagString: Untagged
@@ -986,6 +994,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 2567021925400143366}
   - {fileID: 7394413076049547985}
+  - {fileID: 3932109354504390198}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 3717838527578129320}
   <Layer>k__BackingField: 2
@@ -1028,6 +1037,29 @@ MonoBehaviour:
   onEnterTime: 0.05
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &3932109354504390198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7212713892605554914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 5073408008435663567}
+  signals:
+    serializedList:
+    - Key: LassoPull
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 1739575009564784701}
+          _MemberName: Enter
+          _PersistentArguments: []
+  lockOnEnter: 0
 --- !u!1 &7552008454371719954
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,7 +1086,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7552008454371719954}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
