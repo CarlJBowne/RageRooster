@@ -110,7 +110,7 @@ namespace RageRooster.RoomSystem
                 currentArea = null;
                 currentRoom = null;
                 currentArea = destination.area;
-                ObjectPools.UnloadAllPools();
+                GlobalPool.UnloadAllPools();
                 yield return currentArea.LoadArea();
             }
 

@@ -40,7 +40,7 @@ public class EnemyHealth : Health
     { 
         base.Awake();
         startPosition = transform.position;
-        if (TryGetComponent(out PoolableObject pool))
+        if (TryGetComponent(out PoolableObject_OBSOLETE pool))
         {
             pool.onActivate += Respawn;
             respawnTime = 0;
@@ -127,7 +127,7 @@ public class EnemyHealth : Health
             gameObject.SetActive(false);
             Invoke(nameof(Respawn), respawnTime);
         }
-        else if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Disable();
+        else if (PoolableObject_OBSOLETE.Is(gameObject)) PoolableObject_OBSOLETE.Is(gameObject).Disable();
         else Destroy(gameObject);
     }
 

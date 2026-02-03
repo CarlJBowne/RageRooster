@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 public class StopAndShootEB : StateBehavior
 {
-    public ObjectPool bulletPool = new();
+    public ObjectPool_OBSOLETE bulletPool = new();
     public Timer.Loop fireRate;
     public float chanceOfFiringWhenBlocked; 
     private NavMeshAgent agent;

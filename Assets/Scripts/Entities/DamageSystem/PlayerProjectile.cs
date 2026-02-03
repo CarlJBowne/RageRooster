@@ -64,6 +64,6 @@ public class PlayerProjectile : AttackSourceSingle
     public override void Contact(GameObject target)
     {
         if(target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(GetAttack());
-        RageRooster.Systems.ObjectPooling.PoolableObject.DisableOrDestroy(gameObject);
+        gameObject.SetActive(false);
     }
 }

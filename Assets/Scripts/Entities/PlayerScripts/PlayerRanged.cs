@@ -15,7 +15,7 @@ public class PlayerRanged : MonoBehaviour
     public Transform shootMuzzle;
     public Transform targetPos;
     public PlayerLassoProjectile LassoProjectile;
-    public ObjectPools.Client eggPool;
+    public ObjectPool<PlayerProjectile> eggPool;
     public Timer.Loop eggReplenishRate = new(1f);
     public UnityEngine.Animations.Rigging.Rig aimingRig;
     public State aimThrowState;
@@ -55,6 +55,7 @@ public class PlayerRanged : MonoBehaviour
 
     private void FixedUpdate()
     {
+        eggPool.Update(Time.deltaTime);
         if (!enabled) return;
         if (eggAmount < eggCapacity) eggReplenishRate.Tick(() => Player.Ammo.Current++);
 
@@ -99,6 +100,7 @@ public class PlayerRanged : MonoBehaviour
     {
         Player.Ammo.updateAmmo -= UIHUDSystem.Instance.ammo.UpdateAmmo;
         Player.Ammo.updateMaxAmmo -= UIHUDSystem.Instance.ammo.UpdateMax;
+        eggPool.Cleanup();
     }
 
     public Grabbable currentGrabbed => Player.Grabber != null ? Player.Grabber.currentGrabbed : null;
@@ -173,11 +175,14 @@ public class PlayerRanged : MonoBehaviour
         if (eggAmount >= 1 && !shootingState.Active) shootingState.Enter(); 
     }
 
+    public int totalEggsShot;
+
     public void ShootPoint()
     {
+        totalEggsShot++;
         Player.Audio.PlayOneShot("EggShoot");
         realMuzzle.position = shootMuzzle.position;
-        eggPool.Pump().GetComponent<PlayerProjectile>().Send(TargetingManager.RangedChannel.CurrentTarget, realMuzzle, targetPos);
+        eggPool.Pump()?.Send(TargetingManager.RangedChannel.CurrentTarget, realMuzzle, targetPos);
         Player.Ammo.Current--;
     }
 

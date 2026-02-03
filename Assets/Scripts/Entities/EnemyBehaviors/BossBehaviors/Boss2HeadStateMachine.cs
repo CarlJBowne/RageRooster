@@ -17,7 +17,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
 
     [DisableInEditMode, DisableInPlayMode] public string currentState = "NULL";
 
-    public ObjectPool projectilePool;
+    public ObjectPool_OBSOLETE projectilePool;
     [Range(0f, 1f)] public float projectileChance = 1f/3f;
 
 
@@ -213,7 +213,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
         
         if(headID == FinalBossHead.Pecky && Random.Range(0f, 1f) <= projectileChance)
         {
-            PoolableObject projectile = projectilePool.Pump();
+            PoolableObject_OBSOLETE projectile = projectilePool.Pump();
             if(projectile != null)
             {
                 projectile.transform.position -= Direction.front;
@@ -222,7 +222,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
         }
         else if(headID == FinalBossHead.Slasher)
         {
-            PoolableObject projectile = projectilePool.Pump();
+            PoolableObject_OBSOLETE projectile = projectilePool.Pump();
             projectile.transform.localScale = .1f * Direction.one;
         }
         else if (headID == FinalBossHead.Stumpy)

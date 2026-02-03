@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ShooterEB : StateBehavior
 {
-    public ObjectPool bulletPool;
+    public ObjectPool_OBSOLETE bulletPool;
     public float rate;
     public float chanceOfFiringWhenBlocked;
 

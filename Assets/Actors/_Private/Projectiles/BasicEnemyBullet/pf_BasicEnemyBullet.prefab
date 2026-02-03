@@ -12,10 +12,9 @@ GameObject:
   - component: {fileID: 5060807804225694774}
   - component: {fileID: 4286790814183421093}
   - component: {fileID: 7179026942052467369}
+  - component: {fileID: 1229195592931882164}
   - component: {fileID: 8050318351631663853}
-  - component: {fileID: 481154117084305192}
   - component: {fileID: 120326915241346108}
-  - component: {fileID: -2772165324754770109}
   m_Layer: 9
   m_Name: pf_BasicEnemyBullet
   m_TagString: Untagged
@@ -115,6 +114,18 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1229195592931882164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536271116400417345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11dd5e2eafeaaee49be5a582c7094c6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RageRooster.Systems.ObjectPooling.PoolableObject
 --- !u!114 &8050318351631663853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130,29 +141,6 @@ MonoBehaviour:
   speed: 4
   direction: {x: 0, y: 0, z: 1}
   gravity: 0
---- !u!114 &481154117084305192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1536271116400417345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92f681152c991af4b9201548f05c7e9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pool:
-    prefabObject: {fileID: 0}
-    defaultPoolDepth: 1
-    canGrow: 1
-    parent: {fileID: 0}
-    autoDisableTime: -1
-    spawnPoint: {fileID: 0}
-    rotate: 0
-    autoSpawnRate: 0
-  Active: 0
-  timeExisting: 0
 --- !u!114 &120326915241346108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,15 +167,3 @@ MonoBehaviour:
   successfulHitEvent:
     _PersistentCalls: []
   sourcePosition: {fileID: 0}
---- !u!114 &-2772165324754770109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1536271116400417345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11dd5e2eafeaaee49be5a582c7094c6a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RageRooster.Systems.ObjectPool.PoolableObject
