@@ -140,9 +140,7 @@ namespace SLS.StateMachineH
 
             StatesSetup = true;
 
-#if UNITY_EDITOR
-            if (makeDirty) EditorUtility.SetDirty(this);
-#endif
+            if(makeDirty) ApplySetupChanges();
         }
 
         /// <summary>  

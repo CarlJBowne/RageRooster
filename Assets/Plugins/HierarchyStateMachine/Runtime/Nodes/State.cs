@@ -104,14 +104,14 @@ namespace SLS.StateMachineH {
                 Children = new();
                 for (int i = 0; i < ChildCount; i++)
                 {
-                    Children.Add(transform.GetChild(i).GetComponent<State>());
-                    Children[i].Setup(machine, this, layer + 1);
+                    GameObject childG = transform.GetChild(i).gameObject;
+                    if (childG.TryGetComponent(out State childS)) break;
+                    Children.Add(childS);
+                    childS.Setup(machine, this, layer + 1);
                 }
             }
+            if(makeDirty) ApplySetupChanges();
 
-#if UNITY_EDITOR
-            if (makeDirty) EditorUtility.SetDirty(this);
-#endif
         }
 
         /// <summary>  
@@ -221,6 +221,23 @@ namespace SLS.StateMachineH {
         /// Implicit bool operator. Returns true if the State exists and is Active.
         /// </summary>
         public static implicit operator bool(State state) => state != null && state.Active;
+
+        protected void ApplySetupChanges()
+        {
+#if UNITY_EDITOR
+            EditorUtility.SetDirty(this);
+
+            if (PrefabUtility.GetPrefabInstanceStatus(gameObject) is PrefabInstanceStatus.Connected && PrefabUtility.IsPartOfPrefabThatCanBeAppliedTo(gameObject))
+            {
+                string assetPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(gameObject);
+
+                foreach (var ob in PrefabUtility.GetAddedComponents(gameObject)) ob.Apply(assetPath);
+                foreach (var ob in PrefabUtility.GetObjectOverrides(gameObject)) ob.Apply(assetPath);
+                foreach (var ob in PrefabUtility.GetAddedGameObjects(gameObject)) ob.Apply(assetPath);
+                foreach (var ob in PrefabUtility.GetRemovedComponents(gameObject)) ob.Apply(assetPath);
+            }
+#endif
+        }
 
     }
 

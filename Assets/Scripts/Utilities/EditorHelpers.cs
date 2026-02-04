@@ -194,22 +194,10 @@ public static class EditorHelpers
         var status = PrefabUtility.GetPrefabInstanceStatus(hierarchy);
         if (status != PrefabInstanceStatus.NotAPrefab)
         {
-            foreach (var ob in PrefabUtility.GetAddedComponents(hierarchy.gameObject))
-            {
-                ob.Apply(assetPath);
-            }
-            foreach (var ob in PrefabUtility.GetObjectOverrides(hierarchy.gameObject))
-            {
-                ob.Apply(assetPath);
-            }
-            foreach (var ob in PrefabUtility.GetAddedGameObjects(hierarchy.gameObject))
-            {
-                ob.Apply(assetPath);
-            }
-            foreach (var ob in PrefabUtility.GetRemovedComponents(hierarchy.gameObject))
-            {
-                ob.Apply(assetPath);
-            }
+            foreach (var ob in PrefabUtility.GetAddedComponents(hierarchy.gameObject)) ob.Apply(assetPath);
+            foreach (var ob in PrefabUtility.GetObjectOverrides(hierarchy.gameObject)) ob.Apply(assetPath);
+            foreach (var ob in PrefabUtility.GetAddedGameObjects(hierarchy.gameObject)) ob.Apply(assetPath);
+            foreach (var ob in PrefabUtility.GetRemovedComponents(hierarchy.gameObject)) ob.Apply(assetPath);
         }
         for (int i = 0; i < hierarchy.transform.childCount; i++)
         {
