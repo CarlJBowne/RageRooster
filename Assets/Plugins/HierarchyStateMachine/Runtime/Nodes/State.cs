@@ -88,7 +88,7 @@ namespace SLS.StateMachineH {
         /// <param name="parent">The parent <see cref="State"/>.</param>  
         /// <param name="layer">The layer index of this <see cref="State"/>.</param>  
         /// <param name="makeDirty">Whether to mark the <see cref="State"/> as dirty in the editor.</param>  
-        public virtual void Setup(StateMachine machine, State parent, int layer, bool makeDirty = false)
+        public virtual void Setup(StateMachine machine, State parent, int layer, bool makeDirty)
         {
             this.Machine = machine;
             this.Parent = parent;
@@ -105,9 +105,9 @@ namespace SLS.StateMachineH {
                 for (int i = 0; i < ChildCount; i++)
                 {
                     GameObject childG = transform.GetChild(i).gameObject;
-                    if (childG.TryGetComponent(out State childS)) break;
+                    if (!childG.TryGetComponent(out State childS)) break;
                     Children.Add(childS);
-                    childS.Setup(machine, this, layer + 1);
+                    childS.Setup(machine, this, layer + 1, makeDirty);
                 }
             }
             if(makeDirty) ApplySetupChanges();
@@ -227,7 +227,10 @@ namespace SLS.StateMachineH {
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
 
-            if (PrefabUtility.GetPrefabInstanceStatus(gameObject) is PrefabInstanceStatus.Connected && PrefabUtility.IsPartOfPrefabThatCanBeAppliedTo(gameObject))
+            var prefabStatus = PrefabUtility.GetPrefabInstanceStatus(gameObject);
+            bool isPartThatCanBeAppliedTo = PrefabUtility.IsPartOfPrefabThatCanBeAppliedTo(gameObject);
+
+            if (prefabStatus is PrefabInstanceStatus.Connected && isPartThatCanBeAppliedTo)
             {
                 string assetPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(gameObject);
 
