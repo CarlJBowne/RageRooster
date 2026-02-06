@@ -15,8 +15,11 @@ using UnityEditor.UIElements;
 
 public class TestScript : MonoBehaviour
 {
-    [PolymorphicObject.List(typeof(PlayerButtonAction)), SerializeReference]
-    public List<PlayerButtonAction> buttons = new();
+    [PolymorphicObject.ChoosingHeader, SerializeReference]
+    public PlayerButtonAction testVal;
+
+    //[PolymorphicObject.List(typeof(PlayerButtonAction)), SerializeReference]
+    //public List<PlayerButtonAction> buttons = new();
 
     /*
 #if UNITY_EDITOR

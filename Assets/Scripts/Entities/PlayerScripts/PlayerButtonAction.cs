@@ -240,15 +240,17 @@ public abstract class PlayerButtonAction : PolymorphicObject
 #if UNITY_EDITOR
         public override VisualElement BodyDrawer(SerializedProperty p)
         {
-            VisualElement root = new VisualElement();
+            VisualElement root = new()
+            { name = $"UpgradeDependent-{p}" };
 
-            root.Add(new PropertyField(p.FindPropertyRelative(nameof(upgrade))));
-
-            var tabDrawer = new PolymorphicObject.TabbedDrawer(p.serializedObject);
-            root.Add(tabDrawer);
+            TabbedDrawer tabDrawer = new(p.serializedObject);
 
             tabDrawer.CreateTab("Has Upgrade", p.FindPropertyRelative(nameof(hasUpgrade)));
             tabDrawer.CreateTab("Lacks Upgrade", p.FindPropertyRelative(nameof(noUpgrade)));
+
+            root.Add(new PropertyField(p.FindPropertyRelative(nameof(persistAcrossStateChange))));
+            root.Add(new PropertyField(p.FindPropertyRelative(nameof(upgrade))));
+            root.Add(tabDrawer);
 
             return root;
         }
