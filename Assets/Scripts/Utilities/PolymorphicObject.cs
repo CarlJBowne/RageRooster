@@ -20,6 +20,7 @@ public abstract class PolymorphicObject
 
     public virtual VisualElement BodyDrawer(SerializedProperty property)
     {
+        property.serializedObject.Update();
         VisualElement result = new();
         property.IterateAndDraw(result);
         return result;
@@ -291,7 +292,7 @@ public abstract class PolymorphicObject
             try { overrideAnchor.Bind(property.serializedObject); } catch { /* defensive */ }
 
             // Build initial UI and schedule update for later layout.
-            Update();
+            //Update();
             this.DelayedBuild(Update);
         }
 
@@ -300,7 +301,13 @@ public abstract class PolymorphicObject
             // Ensure anchor still exists and is bound (insulates against inspector re-creation).
             if (overrideAnchor == null && property != null)
             {
-                overrideAnchor = new PropertyField(property) { style = { display = DisplayStyle.None } };
+                overrideAnchor = new PropertyField(property) 
+                { style = 
+                    { 
+                        display = DisplayStyle.None 
+                    },
+                    name = "headerDrawer_overrideAnchor"
+                };
                 this.hierarchy.Add(overrideAnchor);
                 try { overrideAnchor.Bind(property.serializedObject); } catch { /* ignore */ }
             }
@@ -367,7 +374,13 @@ public abstract class PolymorphicObject
 
             // Ensure content container reference points to the foldout content region if available.
             VisualElement dest = this.QCache(out contentContainer, "unity-content", "unity-foldout__content") ? contentContainer : this;
-            if (!dest.Contains(bodyDrawer)) dest.Add(bodyDrawer);
+            if (!dest.Contains(bodyDrawer))
+            {
+                dest.Clear();
+                dest.Add(bodyDrawer);
+            }
+
+            this.QCache(out foldout, className: "unity-foldout");
 
             //Handle other hasInstance specific pieces.
             if (this.QCache(out toggle, className: "unity-foldout__checkmark"))
@@ -400,11 +413,15 @@ public abstract class PolymorphicObject
             // Re-bind the hidden anchor (the only bound element) to ensure prefab behavior remains correct.
             try { overrideAnchor?.Bind(property.serializedObject); } catch { /* defensive */ }
 
+            if(foldout != null) foldout.value = CurrentType != null;
+
             // Apply the modification so the SerializedProperty reflects the new instance/type.
             property.serializedObject.ApplyModifiedProperties();
 
             // Rebuild the visible parts of the HeaderDrawer.
             Update();
+
+            if (foldout != null) foldout.value = CurrentType != null;
 
             // Notify listeners of the type change.
             OnTypeChanged?.Invoke(property?.managedReferenceValue?.GetType());
@@ -414,6 +431,8 @@ public abstract class PolymorphicObject
 
         private Toggle toggle;
         public Toggle Toggle => toggle;
+        private Foldout foldout;
+        public Foldout Foldout => foldout;
         private Label labelElement;
         public Label Label => labelElement;
 
