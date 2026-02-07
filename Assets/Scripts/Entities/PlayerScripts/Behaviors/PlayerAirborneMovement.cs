@@ -56,7 +56,6 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         if (playerMovementBody.velocity.y > fallStateThreshold) Y = fallStateThreshold;
         playerMovementBody.UnLand(JumpState.Falling);
         if (fallState != null) fallState.Enter();
-        Debug.Log("Fall Test");
     }
 
     protected override void OnEnter(State prev, bool isFinal)

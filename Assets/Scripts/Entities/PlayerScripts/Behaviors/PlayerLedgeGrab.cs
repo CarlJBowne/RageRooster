@@ -9,11 +9,7 @@ public class PlayerLedgeGrab : PlayerMovementEffector
 {
     public bool ledged;
     public State ledgeState;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+
 
     // Update is called once per frame
     void Update()
@@ -55,17 +51,8 @@ public class PlayerLedgeGrab : PlayerMovementEffector
                     hangPos += offset;
                     transform.position = hangPos;
                     transform.forward = -fwdHit.normal;
-
-                    //ledgeState.Enter();
-                    Debug.Log("Are we passing this?");
                 }
             }
         }
-    }
-
-    public void EnterLedgeState()
-    {
-        Debug.Log("Is the signal even sending bro");
-        //ledgeState.Enter();
     }
 }
