@@ -292,13 +292,20 @@ public class CharacterMovementBody : MonoBehaviour
     /// <param name="vel">Input Velocity.</param>
     /// <param name="prevNormal">The Normal of the previous Step.</param>
     /// <param name="step">The current step. Starts at 0.</param>
-    protected virtual void Move(Vector3 vel, Vector3 prevNormal, int step = 0) 
+    protected virtual void Move(Vector3 vel, Vector3 prevNormal, int step = 0, bool testString = false) 
     {
-        //moveTestString += $"Step {step}: {vel}\n";
+        if(testString) moveTestString += $"Step {step}: {vel}\n";
+
+        if(step == 0 && vel.y <= 0)
+        {
+            bool tryGround = GroundCheck(out var groundRes);
+            if (Grounded && !tryGround) UnLand();
+            else if(!Grounded && tryGround) Land(groundRes);
+        }
 
         if (DirectionCast(vel.normalized, vel.magnitude, groundCheckBuffer, out RaycastHit hit))
         {
-            //moveTestString += $"Hit: {hit.normal} at distance {hit.distance}\n";
+            if (testString) moveTestString += $"Hit: {hit.normal} at distance {hit.distance}\n";
             Vector3 snapToSurface = vel.normalized * hit.distance;
             Vector3 leftover = vel - snapToSurface;
             Vector3 nextNormal = hit.normal;
@@ -310,18 +317,18 @@ public class CharacterMovementBody : MonoBehaviour
 
             else if (Grounded)
             {
-                //moveTestString += "Is Grounded.\n";
+                if (testString) moveTestString += "Is Grounded.\n";
 
                 if (Mathf.Approximately(hit.normal.y, 0))
                 {
-                    //moveTestString += "Hit a wall.\n";
+                    if (testString) moveTestString += "Hit a wall.\n";
                     scaleByDot = true;
                     leftover.y = 0;
                     if (StopForward(ref nextNormal, hit.normal)) return;
                 }
                 else if (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
                 {
-                    //moveTestString += "Hit a steep slope.\n";
+                    if (testString) moveTestString += "Hit a steep slope.\n";
                     scaleByDot = true;
                     leftover.y = 0;
                     if (StopForward(ref nextNormal, hit.normal)) return;
@@ -339,7 +346,7 @@ public class CharacterMovementBody : MonoBehaviour
 
                 bool FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
                 {
-                    //moveTestString += "Encountered Vertical Squish.\n";
+                    if (testString) moveTestString += "Encountered Vertical Squish.\n";
                     scaleByDot = true;
                     return StopForward(ref nextNormal, floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal);
                 }
@@ -347,30 +354,30 @@ public class CharacterMovementBody : MonoBehaviour
             }
             else
             {
-                //moveTestString += "Isnt Grounded.\n";
+                if (testString) moveTestString += "Isnt Grounded.\n";
 
 
                 if (Mathf.Approximately(hit.normal.y, 0))
                 {
-                    //moveTestString += "Hit a Wall.\n";
+                    if (testString) moveTestString += "Hit a Wall.\n";
                     if (StopForward(ref nextNormal, hit.normal)) return;
                 }
                 else if(hit.normal.y > 0)
                 {
                     if(WithinSlopeAngle(hit.normal))
                     {
-                        //moveTestString += "Landed on a standable ground.\n";
+                        if (testString) moveTestString += "Landed on a standable ground.\n";
                         Land(hit);
                         leftover.y = 0;
                     }
                     else
                     {
-                        //moveTestString += "Hit a steep slope while falling.\n";
+                        if (testString) moveTestString += "Hit a steep slope while falling.\n";
                     }
                 }
                 else
                 {
-                    //moveTestString += "Hit a sloped ceiling while jumping.\n";
+                    if (testString) moveTestString += "Hit a sloped ceiling while jumping.\n";
                 }
             }
 
@@ -381,7 +388,7 @@ public class CharacterMovementBody : MonoBehaviour
         }
         else
         {
-            //moveTestString += "No Hit\n";
+            if (testString) moveTestString += "No Hit\n";
 
             if (step == movementProjectionSteps) return;
             if (!MoveForward(vel)) return;
@@ -394,7 +401,7 @@ public class CharacterMovementBody : MonoBehaviour
                     // Make sure the hit is under the character's feet (not beside it).
                     // Compute the bottom-center point of the capsule in world space.
                     Vector3 bottomCenter = Position + Collider.center - Vector3.up * (Collider.height * 0.5f - Collider.radius);
-                    Vector3 horizontalDelta = new Vector3(groundHit.point.x - bottomCenter.x, 0f, groundHit.point.z - bottomCenter.z);
+                    Vector3 horizontalDelta = new(groundHit.point.x - bottomCenter.x, 0f, groundHit.point.z - bottomCenter.z);
 
                     // Allow a small tolerance because of floating precision and scale.
                     float allowedRadius = Collider.radius + 0.05f;
@@ -449,7 +456,7 @@ public class CharacterMovementBody : MonoBehaviour
         UnLand();
     }
 
-    //public string moveTestString = "";
+    public string moveTestString = "";
 
     /// <summary>
     /// Casts the Rigidbody in a direction to check for collision using SweepTest.

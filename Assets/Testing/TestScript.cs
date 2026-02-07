@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using RageRooster.Systems.ObjectPool;
+using RageRooster.Systems.ObjectPooling;
 using FMODUnity;
 using RageRooster.Systems;
 using UnityEngine.UIElements;
@@ -15,8 +15,11 @@ using UnityEditor.UIElements;
 
 public class TestScript : MonoBehaviour
 {
-    [PolymorphicObject.List(typeof(PlayerButtonAction)), SerializeReference]
-    public List<PlayerButtonAction> buttons = new();
+    [PolymorphicObject.ChoosingHeader, SerializeReference]
+    public PlayerButtonAction testVal;
+
+    //[PolymorphicObject.List(typeof(PlayerButtonAction)), SerializeReference]
+    //public List<PlayerButtonAction> buttons = new();
 
     /*
 #if UNITY_EDITOR

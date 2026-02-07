@@ -134,9 +134,9 @@ public class PlayerGroundMovementComplex : PlayerMovementEffector
         playerMovementBody.Land(collideResult);
         State.Enter();
         canRoll = true;
-        if (onEntry == EntryAnimAction.Play) Machine.animator.Play(onEnterName);
-        if (onEntry == EntryAnimAction.CrossFade) Machine.animator.CrossFade(onEnterName, onEnterTime);
-        if (onEntry == EntryAnimAction.Trigger) Machine.animator.SetTrigger(onEnterName);
+        if (onEntry == EntryAnimAction.Play) Player.Animator.Play(onEnterName);
+        if (onEntry == EntryAnimAction.CrossFade) Player.Animator.CrossFade(onEnterName, onEnterTime);
+        if (onEntry == EntryAnimAction.Trigger) Player.Animator.SetTrigger(onEnterName);
     }
     public void LandInto(StateAnimator.EntryAnimAction onEntry, string onEnterName, float onEnterTime)
     {
@@ -145,9 +145,9 @@ public class PlayerGroundMovementComplex : PlayerMovementEffector
         playerMovementBody.Land(collideResult);
         State.Enter();
         canRoll = true;
-        if (onEntry == EntryAnimAction.Play) Machine.animator.Play(onEnterName);
-        if (onEntry == EntryAnimAction.CrossFade) Machine.animator.CrossFade(onEnterName, onEnterTime);
-        if (onEntry == EntryAnimAction.Trigger) Machine.animator.SetTrigger(onEnterName);
+        if (onEntry == EntryAnimAction.Play) Player.Animator.Play(onEnterName);
+        if (onEntry == EntryAnimAction.CrossFade) Player.Animator.CrossFade(onEnterName, onEnterTime);
+        if (onEntry == EntryAnimAction.Trigger) Player.Animator.SetTrigger(onEnterName);
     }
 
         public void StartRoll()

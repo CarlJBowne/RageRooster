@@ -7,7 +7,7 @@ using TMPro;
 public class WaveController : MonoBehaviour
 {
     [Header("Wave Settings")]
-    public ObjectPool enemyPool;
+    public ObjectPool_OBSOLETE enemyPool;
     public int waves = 3;
     public int enemiesPerWave = 5;
     public float timeBetweenWaves = 3f;
@@ -35,7 +35,7 @@ public class WaveController : MonoBehaviour
 
     private void Start()
     {
-        enemyPool.onCreateInstance += (PoolableObject newEnemy) => 
+        enemyPool.onCreateInstance += (PoolableObject_OBSOLETE newEnemy) => 
             { newEnemy.GetComponent<EnemyHealth>().depleteEvent += () => 
                 { activeEnemies--; }; };
 
@@ -109,7 +109,7 @@ public class WaveController : MonoBehaviour
 
         for (int i = 0; i < spawnPoints.Count; i++)
         {
-            PoolableObject pooledEnemy = enemyPool.Pump();
+            PoolableObject_OBSOLETE pooledEnemy = enemyPool.Pump();
             activeEnemies++;
 
             pooledEnemy.SetPosition(spawnPoints[i]);

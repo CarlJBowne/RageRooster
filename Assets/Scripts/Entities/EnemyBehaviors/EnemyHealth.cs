@@ -40,7 +40,7 @@ public class EnemyHealth : Health
     { 
         base.Awake();
         startPosition = transform.position;
-        if (TryGetComponent(out PoolableObject pool))
+        if (TryGetComponent(out PoolableObject_OBSOLETE pool))
         {
             pool.onActivate += Respawn;
             respawnTime = 0;
@@ -92,14 +92,14 @@ public class EnemyHealth : Health
 
         IEnumerator StunEnum()
         {
-            entityActivity.CurrentState = EntityActivity.State.Stunned;
+            entityActivity.State = EntityActivity.States.Stunned;
 
             while(stunTimeLeft > 0)
             {
                 stunTimeLeft -= Time.deltaTime;
                 yield return null;
             }
-            entityActivity.CurrentState = EntityActivity.State.Default;
+            entityActivity.State = EntityActivity.States.Default;
             if(health <= 0)
             {
                 if (ragdoll)
@@ -127,7 +127,7 @@ public class EnemyHealth : Health
             gameObject.SetActive(false);
             Invoke(nameof(Respawn), respawnTime);
         }
-        else if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Disable();
+        else if (PoolableObject_OBSOLETE.Is(gameObject)) PoolableObject_OBSOLETE.Is(gameObject).Disable();
         else Destroy(gameObject);
     }
 

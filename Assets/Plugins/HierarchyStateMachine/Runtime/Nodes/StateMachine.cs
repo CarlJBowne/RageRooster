@@ -93,7 +93,7 @@ namespace SLS.StateMachineH
         /// </summary>  
         private void Awake()
         {
-            if (!StatesSetup) Setup(this, this, -1);
+            if (!StatesSetup) Setup(this, this, -1, false);
             OnAwake();
             DoAwake();
 
@@ -116,7 +116,7 @@ namespace SLS.StateMachineH
         /// <param name="parent">The parent <see cref="State"/>.</param>  
         /// <param name="layer">The layer index of this <see cref="State"/>.</param>  
         /// <param name="makeDirty">Whether to mark the state machine as dirty in the editor.</param>  
-        public override void Setup(StateMachine machine, State parent, int layer, bool makeDirty = false)
+        public override void Setup(StateMachine machine, State parent, int layer, bool makeDirty)
         {
             if (StateHolder == null || Machine == null) SetupBasics();
             if (StateHolder.childCount == 0)
@@ -130,7 +130,7 @@ namespace SLS.StateMachineH
                 for (int i = 0; i < ChildCount; i++)
                 {
                     Children.Add(StateHolder.GetChild(i).GetComponent<State>());
-                    Children[i].Setup(machine, this, layer + 1);
+                    Children[i].Setup(machine, this, layer + 1, makeDirty);
                 }
             }
 
@@ -140,9 +140,7 @@ namespace SLS.StateMachineH
 
             StatesSetup = true;
 
-#if UNITY_EDITOR
-            if (makeDirty) EditorUtility.SetDirty(this);
-#endif
+            if(makeDirty) ApplySetupChanges();
         }
 
         /// <summary>  

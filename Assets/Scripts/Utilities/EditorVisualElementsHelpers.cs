@@ -144,6 +144,16 @@ namespace UnityEngine.UIElements
             return arrayProperty.GetArrayElementAtIndex(arrayProperty.arraySize - 1);
         }
 
+        public static void DelayedBuild(this VisualElement V, Action result) 
+            => V.RegisterCallbackOnce<AttachToPanelEvent>(_ => { V.schedule.Execute(result); });
+
+
+        public static bool QCache<T>(this VisualElement V, out T result, string name = null, string className = null) where T : VisualElement
+        {
+            result = V.Q<T>(name, className) ?? null;
+            return result != null;
+        }
+
     }
 
     public static class CustomStyles
@@ -196,11 +206,11 @@ namespace UnityEngine.UIElements
                 S.borderRightWidth = horizontal.Value;
                 S.borderLeftWidth = horizontal.Value;
             }
-            if(right.HasValue) S.borderRightWidth = right.Value;
-            if(top.HasValue) S.borderTopWidth = top.Value;
-            if(bottom.HasValue) S.borderBottomWidth = bottom.Value;
-            if(left.HasValue) S.borderLeftWidth = left.Value;
-            if(color.HasValue)
+            if (right.HasValue) S.borderRightWidth = right.Value;
+            if (top.HasValue) S.borderTopWidth = top.Value;
+            if (bottom.HasValue) S.borderBottomWidth = bottom.Value;
+            if (left.HasValue) S.borderLeftWidth = left.Value;
+            if (color.HasValue)
             {
                 S.borderRightColor = color.Value;
                 S.borderTopColor = color.Value;
@@ -276,8 +286,8 @@ namespace UnityEngine.UIElements
 
 
 
-        public static IStyle FixedSize(this IStyle S, 
-            float? width = null, 
+        public static IStyle FixedSize(this IStyle S,
+            float? width = null,
             float? height = null
             )
         {
@@ -1217,6 +1227,49 @@ namespace UnityEngine.UIElements
         }
 
 
+    }
+
+
+    public class CachedElement<T> : object where T : VisualElement
+    {
+        public CachedElement(VisualElement root, string name = null, string ussClassName = null, bool buildNow = false)
+        {
+            Root = root;
+            Name = name;
+            USSClassName = ussClassName;
+            if (buildNow) Build();
+        }
+        public CachedElement(VisualElement root, string name = null, string ussClassName = null, Action<T> resultEvent = null)
+        {
+            Root = root;
+            Name = name;
+            USSClassName = ussClassName;
+            if (resultEvent != null && Valid(out T e)) resultEvent?.Invoke(e);
+        }
+
+
+        public VisualElement Root { get; private set; }
+        public T E => value ?? Build();
+        public T Element => value ?? Build();
+        private T value;
+        public string Name { get; private set; }
+        public string USSClassName { get; private set; }
+
+        public T Build()
+        {
+            value = Root.Q<T>(Name, USSClassName);
+            return value;
+        }
+        public bool Valid(out T result)
+        {
+            result = E;
+            return E != null;
+        }
+
+        public void GetAndDo(Action<T> result)
+        {
+            if (Valid(out T e)) result?.Invoke(e);
+        }
     }
 
 

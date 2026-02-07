@@ -11,22 +11,14 @@ public abstract class PlayerStateBehavior : StateBehavior
 
     protected override void OnSetup()
     {
+#if UNITY_EDITOR
         Machine = base.Machine as PlayerStateMachine;
-        playerMovementBody = Machine.body;
-        playerController = Machine.controller;
+        playerMovementBody = Machine.GetComponent<PlayerMovementBody>();
+        playerController = Machine.GetComponent<PlayerController>();
+#else
+        Machine = base.Machine as PlayerStateMachine;
+        playerMovementBody = Player.MovementBody;
+        playerController = Player.Controller;
+#endif
     }
-        
-
-    #region States
-
-    public State sGrounded => Machine.states["Grounded"];
-    public State sCharge => Machine.states["Charge"];
-    public State sAirborne => Machine.states["Airborne"];
-    public State sFall => Machine.states["Fall"];
-    public State sGlide => Machine.states["Glide"];
-    public State sGroundSlam => Machine.states["GroundSlam"];
-    public State sAirChargeFall => Machine.states["AirChargeFall"];
-
-    #endregion
-
 }

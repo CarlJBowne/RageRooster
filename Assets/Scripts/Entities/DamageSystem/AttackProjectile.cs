@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using RageRooster.Systems.ObjectPooling;
 using UnityEngine;
 
 public class AttackProjectile : AttackSourceSingle
@@ -22,11 +23,11 @@ public class AttackProjectile : AttackSourceSingle
     }
     private void OnEnable()
     {
-        if(contactableTimer > 0) timeWhenContactable = Time.time + contactableTimer;
+        if (contactableTimer > 0) timeWhenContactable = Time.time + contactableTimer;
     }
 
     private void OnTriggerEnter(Collider other)
-    { 
+    {
         Contact(other.gameObject);
     }
 
@@ -40,13 +41,13 @@ public class AttackProjectile : AttackSourceSingle
     {
         if (!enabled || (Time.time < timeWhenContactable)) return;
 
-        if(target.TryGetComponent(out IDamagable targetDamagable))
+        if (target.TryGetComponent(out IDamagable targetDamagable))
         {
             bool success = targetDamagable.Damage(GetAttack());
             if (disableOnHit && (!disableOnlyIfSuccessfulHit || success)) Disable();
         }
         else
-        { 
+        {
             if (disableOnHit && !disableOnlyWithHealth) Disable();
         }
     }
@@ -63,8 +64,8 @@ public class AttackProjectile : AttackSourceSingle
 
         if (rb)
         {
-            rb.linearVelocity = backAt 
-                ? (sourcePosition.position - rb.position).normalized * rb.linearVelocity.magnitude 
+            rb.linearVelocity = backAt
+                ? (sourcePosition.position - rb.position).normalized * rb.linearVelocity.magnitude
                 : -rb.linearVelocity;
         }
         else if (cm)

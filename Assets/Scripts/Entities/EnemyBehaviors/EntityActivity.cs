@@ -10,7 +10,7 @@ public class EntityActivity : MonoBehaviour
     public void Awake()
     {
         enabled = base.enabled;
-        currentState = enabled ? State.Default : State.Inactive;
+        currentState = enabled ? States.Default : States.Inactive;
     }
 
     private void OnEnable() => EnabledSet(true);
@@ -27,8 +27,8 @@ public class EntityActivity : MonoBehaviour
                 if (disableComponents[i] != null)
                     disableComponents[i].enabled = value;
 
-        if (value && currentState != State.Default) currentState = State.Default;
-        if (!value && currentState == State.Default) currentState = State.Inactive;
+        if (value && currentState != States.Default) currentState = States.Default;
+        if (!value && currentState == States.Default) currentState = States.Inactive;
     }
 
     public void Enable() => enabled = true;
@@ -36,7 +36,7 @@ public class EntityActivity : MonoBehaviour
     public void Toggle() => enabled = !enabled;
 
 
-    public enum State
+    public enum States
     {
         Inactive = -1,
         Default,
@@ -46,22 +46,22 @@ public class EntityActivity : MonoBehaviour
         RagDoll
     }
 
-    private State currentState;
+    private States currentState;
 
-    public State CurrentState
+    public States State
     {
-        get => base.enabled ? currentState : State.Inactive;
+        get => base.enabled ? currentState : States.Inactive;
         set
         {
             currentState = value;
             enabled = currentState switch
             {
-                State.Inactive => false,
-                State.Default => true,
-                State.Stunned => false,
-                State.Grabbed => false,
-                State.Thrown => false,
-                State.RagDoll => false,
+                States.Inactive => false,
+                States.Default => true,
+                States.Stunned => false,
+                States.Grabbed => false,
+                States.Thrown => false,
+                States.RagDoll => false,
                 _ => enabled,
             };
         }

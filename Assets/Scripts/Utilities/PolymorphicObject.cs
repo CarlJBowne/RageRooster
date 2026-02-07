@@ -5,6 +5,8 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections;
+using NUnit.Framework.Internal;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -41,17 +43,11 @@ public abstract class PolymorphicObject
                 hasChoosingHeader = false;
             }
 
-            if (hasChoosingHeader)
-            {
-                // Use the header-style drawer which contains the type chooser
-                return new HeaderDrawer(property);
-            }
-            else if (property.managedReferenceValue is PolymorphicObject obj and not null)
-            {
-                return obj.BodyDrawer(property);
-            }
-            VisualElement fallback = new Label("No Object present");
-            return fallback;
+            return hasChoosingHeader && property.depth == 0
+                ? new HeaderDrawer(property)
+                : property.managedReferenceValue is PolymorphicObject obj and not null
+                    ? obj.BodyDrawer(property) ?? new PropertyField(property)
+                    : new Label("No Object present");
         }
     }
 
@@ -64,14 +60,16 @@ public abstract class PolymorphicObject
 
 
 
-    public class HeaderDrawer : FoldoutPlus
+    public class HeaderDrawerOld : FoldoutPlus
     {
-        public HeaderDrawer(SerializedProperty property)
+        public HeaderDrawerOld(SerializedProperty property)
         {
             this.property = property ?? throw new ArgumentNullException(nameof(property));
             BaseType = GetDeclaredFieldType() ?? typeof(PolymorphicObject);
-            DrawGUI(forceRedo: true);
 
+            overrideAnchor ??= OverrideAnchor(property);
+
+            DrawGUI(forceRedo: true);
         }
 
         public SerializedProperty property { get; private set; }
@@ -80,6 +78,8 @@ public abstract class PolymorphicObject
         public Type CurrentType { get; private set; } = null;
         public Action<Type> OnTypeChanged;
         public bool drawnSuccessfully { get; private set; } = false;
+
+        private PropertyField overrideAnchor;
 
         //Inherited fields from FoldoutPlus:
         //  Toggle header
@@ -132,6 +132,9 @@ public abstract class PolymorphicObject
         public void UpdateObject()
         {
             contentContainer.Clear();
+
+            overrideAnchor ??= OverrideAnchor(property);
+
             if (property != null && property.managedReferenceValue is PolymorphicObject P && P != null)
                 contentContainer.Add(P.BodyDrawer(property));
             OnTypeChanged?.Invoke(property?.managedReferenceValue?.GetType());
@@ -257,11 +260,327 @@ public abstract class PolymorphicObject
 
             expanded = true;
         }
+
+
+        private PropertyField OverrideAnchor(SerializedProperty p)
+        {
+            PropertyField result = new(p);
+            result.style.display = DisplayStyle.None;
+            this.hierarchy.Add(result);
+            return result;
+        }
     }
 
+    public class HeaderDrawer : PropertyField
+    {
+        public HeaderDrawer(SerializedProperty p) : base(p)
+        {
+            property = p;
+            BaseType = GetDeclaredFieldType() ?? typeof(PolymorphicObject);
+            CurrentType = property?.managedReferenceValue?.GetType();
+            name = $"HeaderDrawer-{BaseType.Name}-{property.name}";
+
+            // Keep a hidden anchor PropertyField bound to the SerializedObject so Unity retains
+            // prefab Apply/Revert behaviour even when the managed reference value is null.
+            overrideAnchor = new PropertyField(p)
+            {
+                style = { display = DisplayStyle.None }
+            };
+            // Add anchor to the hierarchy and bind it (only the anchor will be bound).
+            this.hierarchy.Add(overrideAnchor);
+            try { overrideAnchor.Bind(property.serializedObject); } catch { /* defensive */ }
+
+            // Build initial UI and schedule update for later layout.
+            Update();
+            this.DelayedBuild(Update);
+        }
+
+        void Update()
+        {
+            // Ensure anchor still exists and is bound (insulates against inspector re-creation).
+            if (overrideAnchor == null && property != null)
+            {
+                overrideAnchor = new PropertyField(property) { style = { display = DisplayStyle.None } };
+                this.hierarchy.Add(overrideAnchor);
+                try { overrideAnchor.Bind(property.serializedObject); } catch { /* ignore */ }
+            }
+
+            // Update label and toggle UI. Create the TypeButton once and only add it to the labelElement if not already present.
+            label = CorrectLabel;
+            if (this.QCache(out labelElement, className: "unity-label"))
+            {
+                labelElement.text = CorrectLabel;
+
+                if (TypeButton == null)
+                {
+                    TypeButton = new Button(TypeButtonClick)
+                    {
+                        name = "Type Chooser",
+                        text = "*"
+                    };
+                    TypeButton.style.alignSelf = Align.FlexEnd;
+                    TypeButton.style.maxWidth = 16;
+                    TypeButton.style.minWidth = 16;
+                    TypeButton.style.fontSize = 18;
+                    TypeButton.style.flexGrow = 1;
+                    TypeButton.style.paddingTop = 3;
+                    TypeButton.style.paddingBottom = 0;
+                    TypeButton.style.paddingLeft = 0;
+                    TypeButton.style.paddingRight = 0;
+                }
+
+                // Only add the button if it's not already a child of the label element (prevents duplicates).
+                if (TypeButton.parent != labelElement)
+                {
+                    labelElement.Add(TypeButton);
+                }
+
+                labelElement.style.right = 0;
+                labelElement.style.flexGrow = 1;
+                labelElement.style.height = EditorGUIUtility.singleLineHeight;
+            }
+
+            //Early return if Type is null.
+            if(CurrentType == null)
+            {
+                if (bodyDrawer != null)
+                {
+                    bodyDrawer.parent.Remove(bodyDrawer);
+                    bodyDrawer = null;
+                }
+                return;
+            }
+
+            //Handle Body Drawer.
+            if (bodyDrawer == null || bodyInvalidated)
+            {
+                if (bodyInvalidated)
+                {
+                    bodyDrawer?.parent.Remove(bodyDrawer);
+                    bodyDrawer = null;
+                }
+
+                if (property.managedReferenceValue is not null and PolymorphicObject O) bodyDrawer = O.BodyDrawer(property);
+                else Debug.LogError("Oh No.");
+                bodyInvalidated = false;
+            }
+
+            // Ensure content container reference points to the foldout content region if available.
+            VisualElement dest = this.QCache(out contentContainer, "unity-content", "unity-foldout__content") ? contentContainer : this;
+            if (!dest.Contains(bodyDrawer)) dest.Add(bodyDrawer);
+
+            //Handle other hasInstance specific pieces.
+            if (this.QCache(out toggle, className: "unity-foldout__checkmark"))
+            {
+                toggle.style.marginRight = 1;
+                if (CurrentType == null) toggle.value = false;
+            }
+
+            if (this.QCache(out toggleArrow, "unity-checkmark"))
+            {
+                toggleArrow.visible = CurrentType != null;
+            }
+        }
+
+        void UpdateType(Type t) => UpdateType(t, false);
+        void UpdateType(Type t, bool forceRebuild = false)
+        {
+            if (property == null || (t == CurrentType && !forceRebuild)) return;
+
+            // Create or nullify the managed reference value, then apply.
+            if (CurrentType != t)
+            {
+                if (t != null) property.managedReferenceValue = Activator.CreateInstance(t);
+                else property.managedReferenceValue = null;
+            }
+
+            CurrentType = t;
+            bodyInvalidated = true;
+
+            // Re-bind the hidden anchor (the only bound element) to ensure prefab behavior remains correct.
+            try { overrideAnchor?.Bind(property.serializedObject); } catch { /* defensive */ }
+
+            // Apply the modification so the SerializedProperty reflects the new instance/type.
+            property.serializedObject.ApplyModifiedProperties();
+
+            // Rebuild the visible parts of the HeaderDrawer.
+            Update();
+
+            // Notify listeners of the type change.
+            OnTypeChanged?.Invoke(property?.managedReferenceValue?.GetType());
+        }
+
+
+
+        private Toggle toggle;
+        public Toggle Toggle => toggle;
+        private Label labelElement;
+        public Label Label => labelElement;
+
+        private VisualElement toggleArrow;
+
+        new private VisualElement contentContainer;
+        public VisualElement ContentContainer => contentContainer;
+        public SerializedProperty property { get; private set; }
+        public Button TypeButton { get; private set; }
+        public Type BaseType { get; private set; }
+        public Type CurrentType { get; private set; } = null;
+        public Action<Type> OnTypeChanged;
+        public bool drawnSuccessfully { get; private set; } = false;
+
+        VisualElement bodyDrawer;
+        bool bodyInvalidated = true;
+
+        // Hidden bound anchor used to preserve prefab Apply/Revert behavior even when value is null.
+        private PropertyField overrideAnchor;
+        private string NAME => name;
+
+        Type GetDeclaredFieldType()
+        {
+            if (property == null) return null;
+
+            // If Unity gives a managedReferenceFieldTypename, try to parse it first.
+            if (!string.IsNullOrEmpty(property.managedReferenceFieldTypename))
+            {
+                // managedReferenceFieldTypename can contain tokens; try to resolve each token to a Type.
+                var parts = property.managedReferenceFieldTypename.Split(' ');
+                foreach (var part in parts)
+                {
+                    var t = Type.GetType(part);
+                    if (t != null) return t;
+                }
+            }
+
+            // Fall back to reflection over the target object and the propertyPath.
+            object target = property.serializedObject.targetObject;
+            if (target == null) return null;
+
+            Type currentType = target.GetType();
+            string path = property.propertyPath;
+            string[] tokens = path.Split('.');
+
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                string token = tokens[i];
+
+                if (token == "Array")
+                {
+                    // 'Array' is followed by 'data[x]' token; the element type will be handled when we hit data[...]
+                    continue;
+                }
+
+                if (token.StartsWith("data["))
+                {
+                    // The previous field was a collection; get its element type.
+                    if (currentType.IsArray)
+                    {
+                        currentType = currentType.GetElementType() ?? currentType;
+                    }
+                    else if (currentType.IsGenericType)
+                    {
+                        var genDef = currentType.GetGenericTypeDefinition();
+                        if (genDef == typeof(List<>) || currentType.GetInterfaces().Any(iFace => iFace.IsGenericType && iFace.GetGenericTypeDefinition() == typeof(IEnumerable<>)))
+                        {
+                            currentType = currentType.GetGenericArguments()[0];
+                        }
+                        else
+                        {
+                            // Unknown collection type; abort resolution.
+                            return null;
+                        }
+                    }
+                    else
+                    {
+                        // Unknown collection shape; cannot resolve element type.
+                        return null;
+                    }
+                    continue;
+                }
+
+                FieldInfo field = GetFieldInfoRecursive(currentType, token);
+                if (field == null)
+                {
+                    // Could not find the field; abort.
+                    return null;
+                }
+
+                currentType = field.FieldType;
+            }
+
+            // If the final resolved type is a collection, return its element type.
+            if (currentType.IsArray) return currentType.GetElementType() ?? currentType;
+            if (currentType.IsGenericType && currentType.GetGenericTypeDefinition() == typeof(List<>))
+                return currentType.GetGenericArguments()[0];
+
+            return currentType;
+        }
+
+        static FieldInfo GetFieldInfoRecursive(Type type, string fieldName)
+        {
+            while (type != null)
+            {
+                var flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+                var fi = type.GetField(fieldName, flags);
+                if (fi != null) return fi;
+
+                // Unity sometimes stores auto-property fields as backing fields with this pattern.
+                string backing = $"<{fieldName}>k__BackingField";
+                fi = type.GetField(backing, flags);
+                if (fi != null) return fi;
+
+                type = type.BaseType;
+            }
+            return null;
+        }
+
+        string CorrectLabel => CurrentType != null ? $"{property.displayName} ({CurrentType.Name})" : property.displayName;
+
+        void TypeButtonClick() => ShowChooseTypeMenu(BaseType, CurrentType != null, UpdateType);
+    }
     public class TabbedDrawer : TabView
     {
-        public TabbedDrawer(SerializedObject serializedObject) : base()
+        public TabbedDrawer(SerializedObject root) : base()
+        {
+            Add(new Label("Tabbed Drawer"));
+            this.root = root;
+        }
+
+        SerializedObject root;
+        List<Tab> tabs = new();
+        List<SerializedProperty> properties = new();
+        List<string> displayNames = new();
+        List<HeaderDrawer> drawers = new();
+
+        public void CreateTab(string displayName, SerializedProperty prop)
+        {
+            Tab tab = new();
+            tabs.Add(tab);
+            tab.name = displayName;
+            properties.Add(prop);
+            displayNames.Add(displayName);
+            HeaderDrawer drawer = new(prop);
+            drawers.Add(drawer);
+            tab.contentContainer.Add(new Label(tab.name));
+            tab.contentContainer.Add(drawer);
+            // IMPORTANT: Do NOT bind the contentContainer here. HeaderDrawer keeps a single hidden bound
+            // anchor (overrideAnchor). Binding the container causes UIElements to auto-generate PropertyFields
+            // and double-draw the property contents. So remove:
+            // tab.contentContainer.Bind(prop.serializedObject);
+
+            UpdateLiteralObject(tab, prop.managedReferenceValue?.GetType());
+            static void UpdateLiteralObject(Tab tab, Type T) => tab.tabHeader.style.color = T != null ? Color.white : Color.gray;
+            drawer.OnTypeChanged += type => UpdateLiteralObject(tab, type);
+
+            tab.tabHeader.style.paddingLeft = 5;
+            tab.tabHeader.style.paddingRight = 5;
+            tab.tabHeader.style.flexGrow = 1f;
+            tab.tabHeader.style.justifyContent = Justify.Center;
+        }
+    }
+
+    public class TabbedDrawer_FUCKED : TabView
+    {
+        public TabbedDrawer_FUCKED(SerializedObject serializedObject) : base()
         {
             this.serializedObject = serializedObject;
             reorderable = false;
