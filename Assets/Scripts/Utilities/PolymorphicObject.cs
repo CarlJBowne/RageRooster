@@ -20,6 +20,7 @@ public abstract class PolymorphicObject
 
     public virtual VisualElement BodyDrawer(SerializedProperty property)
     {
+        property.serializedObject.Update();
         VisualElement result = new();
         property.IterateAndDraw(result);
         return result;
@@ -288,25 +289,34 @@ public abstract class PolymorphicObject
             };
             // Add anchor to the hierarchy and bind it (only the anchor will be bound).
             this.hierarchy.Add(overrideAnchor);
-            try { overrideAnchor.Bind(property.serializedObject); } catch { /* defensive */ }
+            try { overrideAnchor.Bind(property.serializedObject);}
+            catch { /* defensive */ }
 
             // Build initial UI and schedule update for later layout.
-            Update();
+            //Update();
             this.DelayedBuild(Update);
         }
 
         void Update()
         {
+            //For some unknowable fucked up reason, every random 7th running of this method seems to run a massive error and break the whole system.
+
             // Ensure anchor still exists and is bound (insulates against inspector re-creation).
             if (overrideAnchor == null && property != null)
             {
-                overrideAnchor = new PropertyField(property) { style = { display = DisplayStyle.None } };
+                overrideAnchor = new PropertyField(property) 
+                { style = 
+                    { 
+                        display = DisplayStyle.None 
+                    },
+                    name = "headerDrawer_overrideAnchor"
+                };
                 this.hierarchy.Add(overrideAnchor);
                 try { overrideAnchor.Bind(property.serializedObject); } catch { /* ignore */ }
             }
 
             // Update label and toggle UI. Create the TypeButton once and only add it to the labelElement if not already present.
-            label = CorrectLabel;
+            //label = CorrectLabel;
             if (this.QCache(out labelElement, className: "unity-label"))
             {
                 labelElement.text = CorrectLabel;
@@ -316,17 +326,20 @@ public abstract class PolymorphicObject
                     TypeButton = new Button(TypeButtonClick)
                     {
                         name = "Type Chooser",
-                        text = "*"
+                        text = "*",
+                        style =
+                        {
+                            alignSelf = Align.FlexEnd,
+                            maxWidth = 16,
+                            minWidth = 16,
+                            fontSize = 18,
+                            flexGrow = 1,
+                            paddingTop = 3,
+                            paddingBottom = 0,
+                            paddingLeft = 0,
+                            paddingRight = 0
+                        }
                     };
-                    TypeButton.style.alignSelf = Align.FlexEnd;
-                    TypeButton.style.maxWidth = 16;
-                    TypeButton.style.minWidth = 16;
-                    TypeButton.style.fontSize = 18;
-                    TypeButton.style.flexGrow = 1;
-                    TypeButton.style.paddingTop = 3;
-                    TypeButton.style.paddingBottom = 0;
-                    TypeButton.style.paddingLeft = 0;
-                    TypeButton.style.paddingRight = 0;
                 }
 
                 // Only add the button if it's not already a child of the label element (prevents duplicates).
@@ -367,7 +380,13 @@ public abstract class PolymorphicObject
 
             // Ensure content container reference points to the foldout content region if available.
             VisualElement dest = this.QCache(out contentContainer, "unity-content", "unity-foldout__content") ? contentContainer : this;
-            if (!dest.Contains(bodyDrawer)) dest.Add(bodyDrawer);
+            if (!dest.Contains(bodyDrawer))
+            {
+                dest.Clear();
+                dest.Add(bodyDrawer);
+            }
+
+            this.QCache(out foldout, className: "unity-foldout");
 
             //Handle other hasInstance specific pieces.
             if (this.QCache(out toggle, className: "unity-foldout__checkmark"))
@@ -400,11 +419,15 @@ public abstract class PolymorphicObject
             // Re-bind the hidden anchor (the only bound element) to ensure prefab behavior remains correct.
             try { overrideAnchor?.Bind(property.serializedObject); } catch { /* defensive */ }
 
+            if(foldout != null) foldout.value = CurrentType != null;
+
             // Apply the modification so the SerializedProperty reflects the new instance/type.
             property.serializedObject.ApplyModifiedProperties();
 
             // Rebuild the visible parts of the HeaderDrawer.
             Update();
+
+            if (foldout != null) foldout.value = CurrentType != null;
 
             // Notify listeners of the type change.
             OnTypeChanged?.Invoke(property?.managedReferenceValue?.GetType());
@@ -414,6 +437,8 @@ public abstract class PolymorphicObject
 
         private Toggle toggle;
         public Toggle Toggle => toggle;
+        private Foldout foldout;
+        public Foldout Foldout => foldout;
         private Label labelElement;
         public Label Label => labelElement;
 
@@ -535,7 +560,7 @@ public abstract class PolymorphicObject
 
         string CorrectLabel => CurrentType != null ? $"{property.displayName} ({CurrentType.Name})" : property.displayName;
 
-        void TypeButtonClick() => ShowChooseTypeMenu(BaseType, CurrentType != null, UpdateType);
+        void TypeButtonClick() => ShowChooseTypeMenu(BaseType, CurrentType != null, UpdateType); 
     }
     public class TabbedDrawer : TabView
     {
