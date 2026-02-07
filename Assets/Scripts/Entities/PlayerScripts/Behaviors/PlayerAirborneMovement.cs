@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
+using RageRooster.Obsolete.Zones;
 
 public class PlayerAirborneMovement : PlayerMovementEffector
 {
@@ -24,6 +25,11 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     protected float targetMinHeight;
     protected float targetHeight;
     public bool isUpward => defaultPhase == JumpState.Jumping;
+
+    private void Update()
+    {
+        
+    }
 
     public override void VerticalMovement(out float? result)
     {
@@ -50,6 +56,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         if (playerMovementBody.velocity.y > fallStateThreshold) Y = fallStateThreshold;
         playerMovementBody.UnLand(JumpState.Falling);
         if (fallState != null) fallState.Enter();
+        Debug.Log("Fall Test");
     }
 
     protected override void OnEnter(State prev, bool isFinal)
@@ -151,3 +158,4 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         }
     }
 }
+
