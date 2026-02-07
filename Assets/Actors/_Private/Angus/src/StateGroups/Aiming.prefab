@@ -141,7 +141,7 @@ MonoBehaviour:
   Jump:
     rid: -2
   Attack:
-    rid: 1451161898407166035
+    rid: 3657502506282385492
   Grab:
     rid: 1950656167362429029
   Charge:
@@ -153,7 +153,21 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 1451161898407166035
+    - rid: 1950656167362429029
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 1
+        pressEvent:
+          _PersistentCalls:
+          - _Target: {fileID: 5784944828220155535}
+            _MemberName: Enter
+            _PersistentArguments: []
+        releaseEvent:
+          _PersistentCalls:
+          - _Target: {fileID: 5073408008435663567}
+            _MemberName: Enter
+            _PersistentArguments: []
+    - rid: 3657502506282385492
       type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
       data:
         persistAcrossStateChange: 0
@@ -173,20 +187,6 @@ MonoBehaviour:
               _Object: {fileID: 6142764829233176585}
         releaseEvent:
           _PersistentCalls: []
-    - rid: 1950656167362429029
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 1
-        pressEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 5784944828220155535}
-            _MemberName: Enter
-            _PersistentArguments: []
-        releaseEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 5073408008435663567}
-            _MemberName: Enter
-            _PersistentArguments: []
 --- !u!1 &3172651691018789909
 GameObject:
   m_ObjectHideFlags: 0
@@ -1113,8 +1113,8 @@ MonoBehaviour:
   <Parent>k__BackingField: {fileID: 0}
   <Layer>k__BackingField: 0
   <Children>k__BackingField:
-  - {fileID: 8256454112717440440}
-  - {fileID: 7793706925814574489}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 3717838527578129320}
   <ChildCount>k__BackingField: 3
 --- !u!114 &2194088104857915983

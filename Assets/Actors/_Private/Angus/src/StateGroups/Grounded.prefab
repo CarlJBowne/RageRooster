@@ -31,6 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4044458429107815652}
+  - {fileID: 21903789405733780}
   - {fileID: 3656243258274067707}
   - {fileID: 6360162830282182524}
   - {fileID: 8016053911614478484}
@@ -54,12 +55,13 @@ MonoBehaviour:
   <Parent>k__BackingField: {fileID: 0}
   <Layer>k__BackingField: 0
   <Children>k__BackingField:
-  - {fileID: 7202587913768018711}
-  - {fileID: 2157991863056936301}
-  - {fileID: 2070683833346511381}
-  - {fileID: 571940914220793852}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 592388666345993873}
-  <ChildCount>k__BackingField: 5
+  <ChildCount>k__BackingField: 6
 --- !u!1 &806735589426787925
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,6 +144,7 @@ MonoBehaviour:
   flatGravity: 0
   allowMidFall: 0
   allowDoubleJump: 1
+  ledged: 0
   fallState: {fileID: 0}
   fallStateThreshold: -9
 --- !u!114 &1553557195803044641
@@ -207,6 +210,219 @@ MonoBehaviour:
           _PersistentCalls:
           - _Target: {fileID: 0}
             _MemberName: BeginJump
+            _PersistentArguments: []
+        releaseEvent:
+          _PersistentCalls: []
+--- !u!1 &1695493184084534939
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 21903789405733780}
+  - component: {fileID: 5314189078780984797}
+  - component: {fileID: 1249639751377397145}
+  - component: {fileID: 4583152462653021694}
+  - component: {fileID: 8862013132291010902}
+  m_Layer: 6
+  m_Name: LedgeGrab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &21903789405733780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1695493184084534939}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2629912002041302075}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5314189078780984797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1695493184084534939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 1249639751377397145}
+  - {fileID: 4583152462653021694}
+  - {fileID: 8862013132291010902}
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 1719738861989955058}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &1249639751377397145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1695493184084534939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 5314189078780984797}
+  signals:
+    serializedList:
+    - Key: Jump
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 1249639751377397145}
+          _MemberName: 
+          _PersistentArguments: []
+  lockOnEnter: 0
+--- !u!114 &4583152462653021694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1695493184084534939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 5314189078780984797}
+  onEntry: 2
+  onEnterName: Fall
+  onEnterTime: 0.2
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &8862013132291010902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1695493184084534939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 5314189078780984797}
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  Jump:
+    rid: 1950655830041821296
+  Attack:
+    rid: 1950655830041821297
+  Grab:
+    rid: 1950655830041821298
+  Charge:
+    rid: 1950655830041821299
+  Parry:
+    rid: 1950655830041821300
+  references:
+    version: 2
+    RefIds:
+    - rid: 1950655830041821296
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        pressEvent:
+          _PersistentCalls:
+          - _Target: {fileID: 0}
+            _MemberName: BeginDoubleJump
+            _PersistentArguments:
+            - _Type: 5
+              _Int: 0
+              _String: 
+              _X: 10
+              _Y: 0
+              _Z: 0
+              _W: 0
+              _Object: {fileID: 0}
+            - _Type: 5
+              _Int: 0
+              _String: 
+              _X: 3
+              _Y: 0
+              _Z: 0
+              _W: 0
+              _Object: {fileID: 0}
+            - _Type: 5
+              _Int: 0
+              _String: 
+              _X: 3
+              _Y: 0
+              _Z: 0
+              _W: 0
+              _Object: {fileID: 0}
+        releaseEvent:
+          _PersistentCalls: []
+    - rid: 1950655830041821297
+      type: {class: PlayerButtonAction/TapOrHold, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        pressInstantEvent:
+          _PersistentCalls: []
+        releaseInstantEvent:
+          _PersistentCalls: []
+        tapEvent:
+          _PersistentCalls:
+          - _Target: {fileID: 0}
+            _MemberName: Enter
+            _PersistentArguments: []
+        holdTime: 0.3
+        holdEvent:
+          _PersistentCalls:
+          - _Target: {fileID: 0}
+            _MemberName: Enter
+            _PersistentArguments: []
+        autoFinishHold: 1
+    - rid: 1950655830041821298
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        pressEvent:
+          _PersistentCalls:
+          - _Target: {fileID: 0}
+            _MemberName: GrabThrowButton
+            _PersistentArguments: []
+        releaseEvent:
+          _PersistentCalls: []
+    - rid: 1950655830041821299
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        pressEvent:
+          _PersistentCalls: []
+        releaseEvent:
+          _PersistentCalls: []
+    - rid: 1950655830041821300
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        pressEvent:
+          _PersistentCalls:
+          - _Target: {fileID: 0}
+            _MemberName: ParryActionAirborne
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
@@ -1100,6 +1316,7 @@ MonoBehaviour:
   flatGravity: 0
   allowMidFall: 0
   allowDoubleJump: 1
+  ledged: 0
   fallState: {fileID: 0}
   fallStateThreshold: -9
 --- !u!114 &4277143527907892841
