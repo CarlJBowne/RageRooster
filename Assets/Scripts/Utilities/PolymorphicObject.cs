@@ -5,8 +5,6 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections;
-using NUnit.Framework.Internal;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -272,25 +270,17 @@ public abstract class PolymorphicObject
         }
     }
 
-    public class HeaderDrawer : PropertyField
+    public class HeaderDrawer : Foldout
     {
-        public HeaderDrawer(SerializedProperty p) : base(p)
+        public HeaderDrawer(SerializedProperty p) : base()
         {
             property = p;
             BaseType = GetDeclaredFieldType() ?? typeof(PolymorphicObject);
             CurrentType = property?.managedReferenceValue?.GetType();
             name = $"HeaderDrawer-{BaseType.Name}-{property.name}";
+            text = CorrectLabel;
 
-            // Keep a hidden anchor PropertyField bound to the SerializedObject so Unity retains
-            // prefab Apply/Revert behaviour even when the managed reference value is null.
-            overrideAnchor = new PropertyField(p)
-            {
-                style = { display = DisplayStyle.None }
-            };
-            // Add anchor to the hierarchy and bind it (only the anchor will be bound).
-            this.hierarchy.Add(overrideAnchor);
-            try { overrideAnchor.Bind(property.serializedObject);}
-            catch { /* defensive */ }
+            OverrideAnchor();
 
             // Build initial UI and schedule update for later layout.
             //Update();
@@ -301,33 +291,19 @@ public abstract class PolymorphicObject
         {
             //For some unknowable fucked up reason, every random 7th running of this method seems to run a massive error and break the whole system.
 
-            // Ensure anchor still exists and is bound (insulates against inspector re-creation).
-            if (overrideAnchor == null && property != null)
-            {
-                overrideAnchor = new PropertyField(property) 
-                { style = 
-                    { 
-                        display = DisplayStyle.None 
-                    },
-                    name = "headerDrawer_overrideAnchor"
-                };
-                this.hierarchy.Add(overrideAnchor);
-                try { overrideAnchor.Bind(property.serializedObject); } catch { /* ignore */ }
-            }
+            OverrideAnchor();
 
             // Update label and toggle UI. Create the TypeButton once and only add it to the labelElement if not already present.
-            //label = CorrectLabel;
+            text = CorrectLabel;
             if (this.QCache(out labelElement, className: "unity-label"))
             {
                 labelElement.text = CorrectLabel;
-
-                if (TypeButton == null)
+            
+                TypeButton ??= new Button(TypeButtonClick)
                 {
-                    TypeButton = new Button(TypeButtonClick)
-                    {
-                        name = "Type Chooser",
-                        text = "*",
-                        style =
+                    name = "Type Chooser",
+                    text = "*",
+                    style =
                         {
                             alignSelf = Align.FlexEnd,
                             maxWidth = 16,
@@ -339,22 +315,21 @@ public abstract class PolymorphicObject
                             paddingLeft = 0,
                             paddingRight = 0
                         }
-                    };
-                }
-
+                };
+            
                 // Only add the button if it's not already a child of the label element (prevents duplicates).
                 if (TypeButton.parent != labelElement)
                 {
                     labelElement.Add(TypeButton);
                 }
-
+            
                 labelElement.style.right = 0;
                 labelElement.style.flexGrow = 1;
                 labelElement.style.height = EditorGUIUtility.singleLineHeight;
             }
 
             //Early return if Type is null.
-            if(CurrentType == null)
+            if (CurrentType == null)
             {
                 if (bodyDrawer != null)
                 {
@@ -373,8 +348,19 @@ public abstract class PolymorphicObject
                     bodyDrawer = null;
                 }
 
-                if (property.managedReferenceValue is not null and PolymorphicObject O) bodyDrawer = O.BodyDrawer(property);
-                else Debug.LogError("Oh No.");
+                if (property.managedReferenceValue is null) property.managedReferenceValue = Activator.CreateInstance(CurrentType);
+                var castedValue = property.managedReferenceValue as PolymorphicObject;
+
+                bodyDrawer = castedValue.BodyDrawer(property);
+                bodyDrawer.name = $"HeaderDrawer-Body__{CurrentType.Name}";
+
+                if (bodyDrawer != null)
+                {
+                    // IMPORTANT: bind the custom body to the same SerializedObject so nested PropertyFields show
+                    try { bodyDrawer.Bind(property.serializedObject); }
+                    catch { /* defensive: bind can fail in some editor re-entrancy cases */ }
+                }
+
                 bodyInvalidated = false;
             }
 
@@ -395,10 +381,7 @@ public abstract class PolymorphicObject
                 if (CurrentType == null) toggle.value = false;
             }
 
-            if (this.QCache(out toggleArrow, "unity-checkmark"))
-            {
-                toggleArrow.visible = CurrentType != null;
-            }
+            if (this.QCache(out toggleArrow, "unity-checkmark")) toggleArrow.visible = CurrentType != null;
         }
 
         void UpdateType(Type t) => UpdateType(t, false);
@@ -419,7 +402,7 @@ public abstract class PolymorphicObject
             // Re-bind the hidden anchor (the only bound element) to ensure prefab behavior remains correct.
             try { overrideAnchor?.Bind(property.serializedObject); } catch { /* defensive */ }
 
-            if(foldout != null) foldout.value = CurrentType != null;
+            if (foldout != null) foldout.value = CurrentType != null;
 
             // Apply the modification so the SerializedProperty reflects the new instance/type.
             property.serializedObject.ApplyModifiedProperties();
@@ -436,11 +419,8 @@ public abstract class PolymorphicObject
 
 
         private Toggle toggle;
-        public Toggle Toggle => toggle;
         private Foldout foldout;
-        public Foldout Foldout => foldout;
         private Label labelElement;
-        public Label Label => labelElement;
 
         private VisualElement toggleArrow;
 
@@ -560,68 +540,48 @@ public abstract class PolymorphicObject
 
         string CorrectLabel => CurrentType != null ? $"{property.displayName} ({CurrentType.Name})" : property.displayName;
 
-        void TypeButtonClick() => ShowChooseTypeMenu(BaseType, CurrentType != null, UpdateType); 
-    }
-    public class TabbedDrawer : TabView
-    {
-        public TabbedDrawer(SerializedObject root) : base()
+        void TypeButtonClick() => ShowChooseTypeMenu(BaseType, CurrentType != null, UpdateType);
+
+        PropertyField OverrideAnchor()
         {
-            Add(new Label("Tabbed Drawer"));
-            this.root = root;
-        }
-
-        SerializedObject root;
-        List<Tab> tabs = new();
-        List<SerializedProperty> properties = new();
-        List<string> displayNames = new();
-        List<HeaderDrawer> drawers = new();
-
-        public void CreateTab(string displayName, SerializedProperty prop)
-        {
-            Tab tab = new();
-            tabs.Add(tab);
-            tab.name = displayName;
-            properties.Add(prop);
-            displayNames.Add(displayName);
-            HeaderDrawer drawer = new(prop);
-            drawers.Add(drawer);
-            tab.contentContainer.Add(new Label(tab.name));
-            tab.contentContainer.Add(drawer);
-            // IMPORTANT: Do NOT bind the contentContainer here. HeaderDrawer keeps a single hidden bound
-            // anchor (overrideAnchor). Binding the container causes UIElements to auto-generate PropertyFields
-            // and double-draw the property contents. So remove:
-            // tab.contentContainer.Bind(prop.serializedObject);
-
-            UpdateLiteralObject(tab, prop.managedReferenceValue?.GetType());
-            static void UpdateLiteralObject(Tab tab, Type T) => tab.tabHeader.style.color = T != null ? Color.white : Color.gray;
-            drawer.OnTypeChanged += type => UpdateLiteralObject(tab, type);
-
-            tab.tabHeader.style.paddingLeft = 5;
-            tab.tabHeader.style.paddingRight = 5;
-            tab.tabHeader.style.flexGrow = 1f;
-            tab.tabHeader.style.justifyContent = Justify.Center;
+            // Ensure anchor still exists and is bound (insulates against inspector re-creation).
+            if (overrideAnchor == null && property != null)
+            {
+                overrideAnchor = new PropertyField(property);
+                overrideAnchor.name = "headerDrawer_overrideAnchor";
+                overrideAnchor.style.display = DisplayStyle.None;
+                this.hierarchy.Add(overrideAnchor);
+                try { overrideAnchor.Bind(property.serializedObject); } catch { /* ignore */ }
+            }
+            return overrideAnchor;
         }
     }
-
-    public class TabbedDrawer_FUCKED : TabView
+    public class TabbedDrawer : VisualElement
     {
-        public TabbedDrawer_FUCKED(SerializedObject serializedObject) : base()
+        public TabbedDrawer() : base()
         {
-            this.serializedObject = serializedObject;
-            reorderable = false;
+            name = "TabbedDrawer";
+            tabView = new TabView();
+            this.Add(tabView);
+            tabView.Q<VisualElement>("unity-tab-view__header-container").style.flexGrow = 1;
             tabs = new();
-            this.GetDescendent(0, 0).style.flexGrow = 1f;
+            //this.DelayedBuild(() =>
+            //{
+            //    for (int i = 0; i < tabs.Count; i++)
+            //    {
+            //        tabView.Add(tabs[i]);
+            //    }
+            //});
         }
 
-        public SerializedObject serializedObject { get; private set; }
-        public System.Collections.Generic.List<Tab> tabs { get; private set; }
+        TabView tabView;
+        List<Tab> tabs;
 
-        public void CreateTab(string displayName, SerializedProperty prop)
+        public void Add(string displayName, SerializedProperty prop)
         {
-            tabs.Add(new Tab(displayName, prop));
-            Add(tabs[^1]);
+            Tab newTab = new(displayName, prop);
+            tabView.Add(newTab);
         }
-
 
         public class Tab : UnityEngine.UIElements.Tab
         {
@@ -633,6 +593,8 @@ public abstract class PolymorphicObject
                 tabHeader.style.paddingRight = 5;
                 tabHeader.style.flexGrow = 1f;
                 tabHeader.style.justifyContent = Justify.Center;
+
+                contentContainer.Add(new Label($"Content for {displayName}"));
 
                 bodyDrawer = new PolymorphicObject.HeaderDrawer(property);
                 contentContainer.Add(bodyDrawer);
@@ -649,7 +611,6 @@ public abstract class PolymorphicObject
             private void UpdateLiteralObject(Type T) => tabHeader.style.color = T != null ? Color.white : Color.gray;
         }
     }
-
 
 
 

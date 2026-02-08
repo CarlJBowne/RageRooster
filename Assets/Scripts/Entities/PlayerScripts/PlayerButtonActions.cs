@@ -66,13 +66,13 @@ public class PlayerButtonActions : PlayerStateBehavior
 
         public override VisualElement CreateInspectorGUI()
         {
-            drawer = new(serializedObject);
+            drawer = new();
 
-            drawer.CreateTab(nameof(Jump), serializedObject.FindProperty(nameof(Jump)));
-            drawer.CreateTab(nameof(Attack), serializedObject.FindProperty(nameof(Attack)));
-            drawer.CreateTab(nameof(Grab), serializedObject.FindProperty(nameof(Grab)));
-            drawer.CreateTab(nameof(Charge), serializedObject.FindProperty(nameof(Charge)));
-            drawer.CreateTab(nameof(Parry), serializedObject.FindProperty(nameof(Parry)));
+            drawer.Add(nameof(Jump), serializedObject.FindProperty(nameof(Jump)));
+            drawer.Add(nameof(Attack), serializedObject.FindProperty(nameof(Attack)));
+            drawer.Add(nameof(Grab), serializedObject.FindProperty(nameof(Grab)));
+            drawer.Add(nameof(Charge), serializedObject.FindProperty(nameof(Charge)));
+            drawer.Add(nameof(Parry), serializedObject.FindProperty(nameof(Parry)));
 
             return drawer;
         }

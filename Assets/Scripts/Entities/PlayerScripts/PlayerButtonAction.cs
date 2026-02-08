@@ -243,13 +243,14 @@ public abstract class PlayerButtonAction : PolymorphicObject
             VisualElement root = new()
             { name = $"UpgradeDependent-{p}" };
 
-            TabbedDrawer tabDrawer = new(p.serializedObject);
-
-            tabDrawer.CreateTab("Has Upgrade", p.FindPropertyRelative(nameof(hasUpgrade)));
-            tabDrawer.CreateTab("Lacks Upgrade", p.FindPropertyRelative(nameof(noUpgrade)));
-
             root.Add(new PropertyField(p.FindPropertyRelative(nameof(persistAcrossStateChange))));
             root.Add(new PropertyField(p.FindPropertyRelative(nameof(upgrade))));
+
+            var tabDrawer = new TabbedDrawer();
+
+            tabDrawer.Add("Has Upgrade", p.FindPropertyRelative(nameof(hasUpgrade)));
+            tabDrawer.Add("Lacks Upgrade", p.FindPropertyRelative(nameof(noUpgrade)));
+
             root.Add(tabDrawer);
 
             return root;
@@ -305,11 +306,11 @@ public abstract class PlayerButtonAction : PolymorphicObject
         public override VisualElement BodyDrawer(SerializedProperty p)
         {
 
-            var root = new PolymorphicObject.TabbedDrawer(p.serializedObject);
+            var root = new PolymorphicObject.TabbedDrawer();
 
-            root.CreateTab("Melee Target", p.FindPropertyRelative(nameof(hasMeleeTarget)));
-            root.CreateTab("Ranged Target", p.FindPropertyRelative(nameof(hasRangedTarget)));
-            root.CreateTab("No Target", p.FindPropertyRelative(nameof(noTarget)));
+            root.Add("Melee Target", p.FindPropertyRelative(nameof(hasMeleeTarget)));
+            root.Add("Ranged Target", p.FindPropertyRelative(nameof(hasRangedTarget)));
+            root.Add("No Target", p.FindPropertyRelative(nameof(noTarget)));
 
             return root;
         }
