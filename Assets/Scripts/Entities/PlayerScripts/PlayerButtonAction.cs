@@ -238,22 +238,23 @@ public abstract class PlayerButtonAction : PolymorphicObject
         protected override IEnumerator HoldRoutine() => throw new NotImplementedException(); //Don't.
 
 #if UNITY_EDITOR
-        public override VisualElement BodyDrawer(SerializedProperty p)
+        public override bool OverrideBody(VisualElement.Hierarchy container, SerializedProperty property)
         {
-            VisualElement root = new()
-            { name = $"UpgradeDependent-{p}" };
+            container.Clear();
 
-            root.Add(new PropertyField(p.FindPropertyRelative(nameof(persistAcrossStateChange))));
-            root.Add(new PropertyField(p.FindPropertyRelative(nameof(upgrade))));
+            PropertyField persistField = new(property.FindPropertyRelative(nameof(persistAcrossStateChange)));
+            PropertyField upgradeField = new(property.FindPropertyRelative(nameof(upgrade)));
+
+            container.Add(persistField);
+            container.Add(upgradeField);
 
             var tabDrawer = new TabbedDrawer();
+            container.Add(tabDrawer);
 
-            tabDrawer.Add("Has Upgrade", p.FindPropertyRelative(nameof(hasUpgrade)));
-            tabDrawer.Add("Lacks Upgrade", p.FindPropertyRelative(nameof(noUpgrade)));
+            tabDrawer.Add("Has Upgrade", property.FindPropertyRelative(nameof(hasUpgrade)));
+            tabDrawer.Add("Lacks Upgrade", property.FindPropertyRelative(nameof(noUpgrade)));
 
-            root.Add(tabDrawer);
-
-            return root;
+            return true;
         }
 #endif
     }
@@ -303,16 +304,18 @@ public abstract class PlayerButtonAction : PolymorphicObject
         protected override IEnumerator HoldRoutine() => throw new NotImplementedException(); //Don't.
 
 #if UNITY_EDITOR
-        public override VisualElement BodyDrawer(SerializedProperty p)
+        public override bool OverrideBody(VisualElement.Hierarchy container, SerializedProperty property)
         {
+            container.Clear();
 
             var root = new PolymorphicObject.TabbedDrawer();
+            container.Add(root);
 
-            root.Add("Melee Target", p.FindPropertyRelative(nameof(hasMeleeTarget)));
-            root.Add("Ranged Target", p.FindPropertyRelative(nameof(hasRangedTarget)));
-            root.Add("No Target", p.FindPropertyRelative(nameof(noTarget)));
+            root.Add("Melee Target", property.FindPropertyRelative(nameof(hasMeleeTarget)));
+            root.Add("Ranged Target", property.FindPropertyRelative(nameof(hasRangedTarget)));
+            root.Add("No Target", property.FindPropertyRelative(nameof(noTarget)));
 
-            return root;
+            return true;
         }
 #endif
     }

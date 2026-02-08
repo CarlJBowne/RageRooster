@@ -15,32 +15,8 @@ using UnityEditor.UIElements;
 
 public class TestScript : MonoBehaviour
 {
-    [PolymorphicObject.ChoosingHeader, SerializeReference]
+    [SerializeReference]
     public PlayerButtonAction testVal;
 
-    //[PolymorphicObject.List(typeof(PlayerButtonAction)), SerializeReference]
-    //public List<PlayerButtonAction> buttons = new();
 
-    /*
-#if UNITY_EDITOR
-    [CustomEditor(typeof(TestScript))]
-    public class _Editor : UnityEditor.Editor
-    {
-        public override VisualElement CreateInspectorGUI()
-        {
-            return new SuperList<PlayerButtonAction>(serializedObject.FindProperty("buttons"))
-            {
-                preAddCallback = (list) =>
-                {
-                    PlayerButtonAction.ShowChooseTypeMenu(typeof(PlayerButtonAction), false, (type) =>
-                    {
-                        list.CreatePropertySlot(out int newID);
-                        list.SetOrCreateItemValue(newID, Activator.CreateInstance(type));
-                        list.CreateItemElement(newID);
-                    });
-                },
-            };
-        }
-    }
-#endif*/
 }
