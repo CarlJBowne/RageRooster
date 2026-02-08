@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
+using RageRooster.Obsolete.Zones;
 
 public class PlayerAirborneMovement : PlayerMovementEffector
 {
@@ -24,6 +25,11 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     protected float targetMinHeight;
     protected float targetHeight;
     public bool isUpward => defaultPhase == JumpState.Jumping;
+
+    private void Update()
+    {
+        
+    }
 
     public override void VerticalMovement(out float? result)
     {
@@ -151,3 +157,4 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         }
     }
 }
+
