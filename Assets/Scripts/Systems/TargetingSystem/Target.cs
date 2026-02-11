@@ -7,19 +7,24 @@ public abstract class Target : MonoBehaviour
 {
     [SerializeField] Vector3 RealPositionOffset;
     [SerializeField, RelatedComponent] Rigidbody rigidBody;
+    [SerializeField, RelatedComponent] new Collider collider;
     [SerializeField, RelatedComponent] NavMeshAgent navMeshAgent;
-    [SerializeField] bool useRigidBodyCenter;
+    [SerializeField] CenterComputationType centerComputationType;
 
-
-    public Vector3 position
+    public enum CenterComputationType
     {
-        get
-        {
-            if (useRigidBodyCenter && rigidBody != null)
-                return rigidBody.worldCenterOfMass; // world-space center of mass
-            return transform.position + RealPositionOffset;
-        }
+        Collider,
+        Rigidbody,
+        SetOffset
     }
+
+    public Vector3 position => centerComputationType switch
+    {
+        CenterComputationType.Collider => collider.bounds.center,
+        CenterComputationType.SetOffset => transform.position + transform.TransformVector(RealPositionOffset),
+        CenterComputationType.Rigidbody => rigidBody.worldCenterOfMass,
+        _ => transform.position
+    };
 
     public float GetDistance(TargetingRange range) => Vector3.Distance(range.front.position, position);
     public float GetAngle(TargetingRange range) => Vector3.Angle(range.front.forward, position - range.front.position);
@@ -85,4 +90,6 @@ public abstract class Target : MonoBehaviour
             return navMeshAgent.velocity;
         return Vector3.zero;
     }
+
+
 }

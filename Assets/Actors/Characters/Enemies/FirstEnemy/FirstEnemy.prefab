@@ -6262,7 +6262,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
   RealPositionOffset: {x: 0, y: 1, z: 0}
   rigidBody: {fileID: 6988035877431068064}
-  useRigidBodyCenter: 1
+  collider: {fileID: 982579509626493083}
+  navMeshAgent: {fileID: 6738454064187818541}
+  centerComputationType: 0
+  grabbable: {fileID: 1790795846713865799}
 --- !u!114 &6414152419601664267
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6277,7 +6280,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RangedTarget
   RealPositionOffset: {x: 0, y: 1, z: 0}
   rigidBody: {fileID: 6988035877431068064}
-  useRigidBodyCenter: 1
+  collider: {fileID: 982579509626493083}
+  navMeshAgent: {fileID: 6738454064187818541}
+  centerComputationType: 0
 --- !u!114 &1790795846713865799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6290,6 +6295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30ca0b49fe34f03488e5746202eb7638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
+  grabbablePublic: 1
   grabHealthMax: 16
   wiggleFreeTime: 0
   anchorPoint: {fileID: 8731360320969202055}

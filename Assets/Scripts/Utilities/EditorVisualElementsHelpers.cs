@@ -209,6 +209,13 @@ namespace UnityEngine.UIElements
             void Hover(MouseOverEvent E) => V.style.color = new Color(initialColor.r + factor, initialColor.g + factor, initialColor.b + factor);
             void UnHover(MouseLeaveEvent E) => V.style.color = initialColor;
         }
+
+        public static void RegisterHoverEvents(this VisualElement V, Action<bool> hovered)
+        {
+            V.RegisterCallback<MouseOverEvent>(Do);
+            V.RegisterCallback<MouseLeaveEvent>(Do);
+            void Do(UIElements.EventBase E) => hovered?.Invoke(E is MouseOverEvent);
+        }
     }
 
     public static class CustomStyles
@@ -488,7 +495,7 @@ namespace UnityEngine.UIElements
             if (font != null) S.unityFont = font;
             return S;
         }
-        public static Color Gray(this float v) => new Color(v, v, v, 1);
+        public static Color Gray(this float v) => new(v, v, v, 1);
 
 
 
