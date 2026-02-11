@@ -441,7 +441,7 @@ public abstract class PolymorphicObject
         Type[] types = GetSubtypes(baseType);
         if (types.Length == 0)
         {
-            menu.AddDisabledItem(new GUIContent("No subtypes available"));
+            menu.AddItem(new GUIContent("Add"), false, () => { result?.Invoke(baseType); });
         }
         else
         {
