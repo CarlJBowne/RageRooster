@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-[System.Serializable, Unity.VisualScripting.Inspectable]
-public class ObjectPool
+[System.Serializable, Unity.VisualScripting.Inspectable, System.Obsolete]
+public class ObjectPool_OBSOLETE
 {
     [Tooltip("The prefab to pool."), Inspectable]
     public GameObject prefabObject;
@@ -24,15 +24,15 @@ public class ObjectPool
     [Tooltip("Whether or not and at what rate the Pool will automatically spawn its charactetrs."), Inspectable]
     public float autoSpawnRate;
 
-    private readonly List<PoolableObject> poolList = new();
+    private readonly List<PoolableObject_OBSOLETE> poolList = new();
     private int currentActiveObjects = 0;
     private int currentPooledObjects = 0;
     private int currentSelection = 0;
     private bool initialized;
     private float autoSpawnTimer;
 
-    public Action<PoolableObject> onCreateInstance;
-    public Action<PoolableObject> onPump;
+    public Action<PoolableObject_OBSOLETE> onCreateInstance;
+    public Action<PoolableObject_OBSOLETE> onPump;
     public Action onFailedPump;
 
     public int ActiveObjects() => currentActiveObjects;
@@ -63,7 +63,7 @@ public class ObjectPool
     }
 
 
-    public PoolableObject Pump()
+    public PoolableObject_OBSOLETE Pump()
     {
         if (!initialized) Initialize();
         if (!FindNextInstance())
@@ -71,7 +71,7 @@ public class ObjectPool
             onFailedPump?.Invoke();
             return null;
         }
-        PoolableObject instance = ActivateInstance(poolList[currentSelection]);
+        PoolableObject_OBSOLETE instance = ActivateInstance(poolList[currentSelection]);
         IncrementSelection();
         onPump?.Invoke(instance);
         return instance;
@@ -80,7 +80,7 @@ public class ObjectPool
     private void NewInstance()
     {
         var pooledObject = GameObject.Instantiate(prefabObject);
-        PoolableObject poolable = pooledObject.GetOrAddComponent<PoolableObject>();
+        PoolableObject_OBSOLETE poolable = pooledObject.GetOrAddComponent<PoolableObject_OBSOLETE>();
         poolable.transform.parent = parent;
         poolable.pool = this;
         poolable.onDeactivate += OnDeActivate;
@@ -113,7 +113,7 @@ public class ObjectPool
 
     private void IncrementSelection() => currentSelection = (currentSelection == currentPooledObjects - 1) ? 0 : currentSelection + 1;
 
-    private PoolableObject ActivateInstance(PoolableObject instance)
+    private PoolableObject_OBSOLETE ActivateInstance(PoolableObject_OBSOLETE instance)
     {
         instance.gameObject.SetActive(true);
         instance.Active = true;
@@ -134,7 +134,7 @@ public class ObjectPool
         return instance;
     }
 
-    private void OnDeActivate(PoolableObject instance)
+    private void OnDeActivate(PoolableObject_OBSOLETE instance)
     {
         currentActiveObjects--;
         instance.Active = false;

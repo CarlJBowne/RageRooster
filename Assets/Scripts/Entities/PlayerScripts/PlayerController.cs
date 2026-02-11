@@ -1,38 +1,38 @@
-using SLS.StateMachineH;
-using UnityEngine;
 using EditorAttributes;
+using RageRooster.Systems.SaveSystem;
+using SLS.StateMachineH;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
-using RageRooster.Systems.SaveSystem;
-using System.Collections.Generic;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerController : PlayerStateBehavior
 {
-	#region Config
+    #region Config
 
-	public float jumpBuffer = 0.3f;
+    public float jumpBuffer = 0.3f;
 
     public PlayerAirborneMovement airChargeState;
     public PlayerAirborneMovement airChargeFallState;
     public PlayerAirborneMovement glideCheck; //Keeping this here for now in case we decide to re-implement the gliding.
-	public PlayerWallJump wallJumpState;
+    public PlayerWallJump wallJumpState;
     public PlayerRanged ranged;
-    public PlayerAiming aimingState;
+    public PlayerStrafingMovement aimingState;
     public State groundedSpin;
     public State airSpin;
     public PlayerHellcopterMovement airUpwardTornado;
-    public State ventGlideState; 
+    public State ventGlideState;
 
     public bool overrideMovementControl;
     public Vector2 overrideMovementVector;
 
-	#endregion
-	#region Data
+    #endregion
+    #region Data
 
-	[HideProperty] public float jumpInput;
-	[HideProperty] public Vector3 camAdjustedMovement;
-	[HideProperty] public PlayerRanged grabber;
+    [HideProperty] public float jumpInput;
+    [HideProperty] public Vector3 camAdjustedMovement;
+    [HideProperty] public PlayerRanged grabber;
 
     #endregion
     #region Getters
@@ -40,49 +40,56 @@ public class PlayerController : PlayerStateBehavior
     #endregion
 
     protected override void OnAwake()
-	{
-		if(!grabber) grabber = GetComponentFromMachine<PlayerRanged>();
+    {
+        if (!grabber) grabber = GetComponentFromMachine<PlayerRanged>();
     }
 
     private void OnEnable()
     {
-        Input.Jump.performed += JumpPress;
-        Input.AttackTap.performed += BeginActionEvent;
-        Input.AttackHold.performed += BeginActionEvent;
-        Input.Grab.performed += BeginActionEvent;
-        Input.Parry.performed += BeginActionEvent;
-        Input.Interact.performed += BeginActionEvent;
-
-        Input.Jump.canceled += JumpRelease;
-        Input.Aim.performed += ShootModeActivate;
-        Input.Aim.canceled += ShootModeDeactivate;
-
-        Input.Charge1.performed += ChargeButtons;
-        Input.Charge2.performed += ChargeButtons;
+        Input.Jump.started += ButtonPressed;
+        Input.Jump.canceled += ButtonRelease;
+        Input.Attack.started += ButtonPressed;
+        Input.Attack.canceled += ButtonRelease;
+        Input.Grab.started += ButtonPressed;
+        Input.Grab.canceled += ButtonRelease;
+        Input.Charge1.started += ButtonPressed;
+        Input.Charge1.canceled += ButtonRelease;
+        Input.Charge2.started += ButtonPressed;
+        Input.Charge2.canceled += ButtonRelease;
+        Input.Aim.started += AimPress;
+        Input.Aim.canceled += AimRelease;
+        //Input.Aim.started += ButtonPressed;
+        //Input.Aim.canceled += ButtonRelease;
+        Input.Parry.started += ButtonPressed;
+        Input.Parry.canceled += ButtonRelease;
     }
     private void OnDisable()
     {
-        Input.Jump.performed -= JumpPress;
-        Input.AttackTap.performed -= BeginActionEvent;
-        Input.AttackHold.performed -= BeginActionEvent;
-        Input.Grab.performed -= BeginActionEvent;
-        Input.Parry.performed -= BeginActionEvent;
-        Input.Interact.performed -= BeginActionEvent;
-
-        Input.Jump.canceled -= JumpRelease;
-        Input.Aim.performed -= ShootModeActivate;
-        Input.Aim.canceled -= ShootModeDeactivate;
-
-        Input.Charge1.performed -= ChargeButtons;
-        Input.Charge2.performed -= ChargeButtons;
+        Input.Jump.started -= ButtonPressed;
+        Input.Jump.canceled -= ButtonRelease;
+        Input.Attack.started -= ButtonPressed;
+        Input.Attack.canceled -= ButtonRelease;
+        Input.Grab.started -= ButtonPressed;
+        Input.Grab.canceled -= ButtonRelease;
+        Input.Charge1.started -= ButtonPressed;
+        Input.Charge1.canceled -= ButtonRelease;
+        Input.Charge2.started -= ButtonPressed;
+        Input.Charge2.canceled -= ButtonRelease;
+        Input.Aim.started -= AimPress;
+        Input.Aim.canceled -= AimRelease;
+        //Input.Aim.started -= ButtonPressed;
+        //Input.Aim.canceled -= ButtonRelease;
+        Input.Parry.started -= ButtonPressed;
+        Input.Parry.canceled -= ButtonRelease;
     }
 
     protected override void OnUpdate()
-	{
+    {
         if (!enabled) return;
-		if (jumpInput > 0) jumpInput -= Time.deltaTime;
-		if(!overrideMovementControl) camAdjustedMovement = Input.Movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
-		else camAdjustedMovement = overrideMovementVector.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
+        if (jumpInput > 0) jumpInput -= Time.deltaTime;
+        camAdjustedMovement = !overrideMovementControl
+            ? Input.Movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up)
+            : overrideMovementVector.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
     }
 
     public bool CheckJumpBuffer()
@@ -105,7 +112,7 @@ public class PlayerController : PlayerStateBehavior
 
     public void ParryActionAirborne()
     {
-        if(Upgrades.Active.hellcopter)
+        if (Upgrades.Active.hellcopter)
         {
             airSpin.Enter();
             if (playerMovementBody.isOverVent) Machine.SendSignal(new("EnterVent", 0, true));
@@ -116,7 +123,7 @@ public class PlayerController : PlayerStateBehavior
     {
         if (!wallJumpState.WallJump(transform.forward))
         {
-            (!playerMovementBody.isOverVent ? sGlide : ventGlideState).Enter();
+            (!playerMovementBody.isOverVent ? Player.StateMachine.Gliding : ventGlideState).Enter();
         }
     }
     public void MidWallJumpJumpAction() => wallJumpState.WallJump(transform.forward);
@@ -124,14 +131,153 @@ public class PlayerController : PlayerStateBehavior
     //Other events.
     private void JumpPress(CTX ctx) => jumpInput = Machine.SendSignal(ctx.action.name) ? 0 : jumpBuffer;
     private void JumpRelease(CTX ctx) => Machine.SendSignal(new("JumpRelease", 0, true));
-    private void ShootModeActivate(CTX ctx) => Machine.SendSignal(new("ShootMode", ignoreLock:true));
+    private void ShootModeActivate(CTX ctx) => Machine.SendSignal(new("ShootMode", ignoreLock: true));
     private void ShootModeDeactivate(CTX ctx) => Machine.SendSignal(new("ShootModeExit", ignoreLock: true));
+
+
+    private void AimPress(CTX cTX) => Machine.SendSignal("Aim");
+    private void AimRelease(CTX cTX) => Machine.SendSignal("AimRelease");
 
     private void ChargeButtons(CTX ctx) => Machine.SendSignal("Charge");
 
 
     //NewButtonSystem.
 
-    public static PlayerButtonAction CurrentPlayerButtonAction;
+    private void ButtonPressed(CTX c)
+    {
+        if (!ButtonReady || PlayerButtonAction.Current != null || ActionSourceStack.Count == 0) return;
+        if (ActionSourceStack[^1].GetButtonAction(c.action) is PlayerButtonAction action and not null)
+        {
+            action.Begin(c.action);
+            action.Press();
+        }
+    }
+    private void ButtonRelease(CTX c)
+    {
+        if (PlayerButtonAction.Current != null && PlayerButtonAction.Current.activeButton == c.action)
+        {
+            if (ButtonReady) PlayerButtonAction.Current.Release();
+            PlayerButtonAction.Current?.Finish();
+        }
+    }
 
+    public static bool ButtonReady = true;
+    private readonly static List<PlayerButtonActions> ActionSourceStack = new();
+
+    public static void RegisterActionSource(PlayerButtonActions source, bool deregister = false)
+    {
+        if (!deregister)
+        {
+            if (!ActionSourceStack.Contains(source)) ActionSourceStack.Add(source);
+        }
+        else
+        {
+            if (ActionSourceStack.Count > 0 && ActionSourceStack.Contains(source))
+            {
+                if (ActionSourceStack[^1] == source) ActionSourceStack.RemoveAtLast();
+            }
+        }
+    }
+
+
+    //Note to self: For some bizarre reason the player is exiting and entering IDLE state several times on scene load for no apparent reason. Investigate later.
+
+    [ContextMenu("Transfer to New Buttons")]
+    private void TransferFromSignalsToNewButtons()
+    {
+        Recurse(Machine);
+        void Recurse(State state)
+        {
+            if (state.TryGetComponent(out SLS.StateMachineH.Signals.SignalNode signalNode))
+            {
+                PlayerButtonActions actionSet = signalNode.GetOrAddComponent<PlayerButtonActions>();
+
+                if (signalNode.signals.ContainsKey("Jump"))
+                {
+                    actionSet.Jump = new PlayerButtonAction.BasicPush()
+                    {
+                        pressEvent = signalNode.signals["Jump"]
+                    };
+                    signalNode.signals.Remove("Jump");
+                }
+
+
+                if (signalNode.signals.ContainsKey("AttackTap") && signalNode.signals.ContainsKey("AttackHold"))
+                {
+                    actionSet.Attack = new PlayerButtonAction.TapOrHold()
+                    {
+                        tapEvent = signalNode.signals["AttackTap"],
+                        holdEvent = signalNode.signals["AttackHold"]
+                    };
+                    signalNode.signals.Remove("AttackTap");
+                    signalNode.signals.Remove("AttackHold");
+                }
+                else if (signalNode.signals.ContainsKey("AttackTap"))
+                {
+                    actionSet.Jump = new PlayerButtonAction.BasicPush()
+                    {
+                        pressEvent = signalNode.signals["AttackTap"]
+                    };
+                    signalNode.signals.Remove("AttackTap");
+                }
+                else if (signalNode.signals.ContainsKey("AttackHold"))
+                {
+                    actionSet.Jump = new PlayerButtonAction.TapOrHold()
+                    {
+                        holdEvent = signalNode.signals["AttackHold"],
+                        autoFinishHold = true
+                    };
+                    signalNode.signals.Remove("AttackHold");
+                }
+
+
+                if (signalNode.signals.ContainsKey("Grab"))
+                {
+                    actionSet.Grab = new PlayerButtonAction.BasicPush()
+                    {
+                        pressEvent = signalNode.signals["Grab"]
+                    };
+                    signalNode.signals.Remove("Grab");
+                }
+                if (signalNode.signals.ContainsKey("Charge"))
+                {
+                    actionSet.Charge = new PlayerButtonAction.BasicPush()
+                    {
+                        pressEvent = signalNode.signals["Charge"]
+                    };
+                    signalNode.signals.Remove("Charge");
+                }
+
+
+                //if (signalNode.signals.ContainsKey("ShootMode"))
+                //{
+                //    actionSet.Aim = new PlayerButtonAction.CrossStatePressRelease()
+                //    {
+                //        actionEvent = signalNode.signals["ShootMode"]
+                //    };
+                //    signalNode.signals.Remove("ShootMode");
+                //}
+                //else if (signalNode.signals.ContainsKey("ShootModeExit"))
+                //{
+                //    actionSet.Aim = new PlayerButtonAction.CrossStatePressRelease()
+                //    {
+                //        actionEvent = signalNode.signals["ShootModeExit"]
+                //    };
+                //    signalNode.signals.Remove("ShootModeExit");
+                //}
+
+
+                if (signalNode.signals.ContainsKey("Parry"))
+                {
+                    actionSet.Parry = new PlayerButtonAction.BasicPush()
+                    {
+                        pressEvent = signalNode.signals["Parry"]
+                    };
+                    signalNode.signals.Remove("Parry");
+                }
+
+            }
+            foreach (var child in state.Children) Recurse(child);
+        }
+    }
 }

@@ -40,7 +40,7 @@ public class EnemyHealth : Health
     { 
         base.Awake();
         startPosition = transform.position;
-        if (TryGetComponent(out PoolableObject pool))
+        if (TryGetComponent(out PoolableObject_OBSOLETE pool))
         {
             pool.onActivate += Respawn;
             respawnTime = 0;
@@ -56,7 +56,8 @@ public class EnemyHealth : Health
     {
         damageEvent?.Invoke(attack.amount);
 
-        if (health != 0)
+        if (ragdoll && ragdoll.State != RagdollHandler.States.Off) ragdoll.SetVelocity(attack.velocity);
+        else if (health != 0)
         {
             Stun(attack);
             if(tintAnimator) tintAnimator.BeginAnimation(); 
@@ -71,7 +72,7 @@ public class EnemyHealth : Health
             CoroutinePlus.Stop(ref stunRoutine);
             if (ragdoll)
             {
-                ragdoll.State = RagdollHandler.States.On;
+                ragdoll.State = RagdollHandler.States.Thrown;
                 ragdoll.SetVelocity(attack.velocity);
             }
             else Destroy();
@@ -86,23 +87,24 @@ public class EnemyHealth : Health
 
     void Stun(Attack attack)
     {
-        stunTimeLeft += stunTime * (attack == Attack.Tag.Wham ? 2 : 1);
+        stunTimeLeft = stunTime * (attack == Attack.Tag.Wham ? 2 : 1);
         CoroutinePlus.Begin(ref stunRoutine, StunEnum(), this, false);
 
         IEnumerator StunEnum()
         {
-            EntityActivity.Disable(entityActivity);
-            while (stunTimeLeft > 0)
+            entityActivity.State = EntityActivity.States.Stunned;
+
+            while(stunTimeLeft > 0)
             {
                 stunTimeLeft -= Time.deltaTime;
                 yield return null;
             }
-            EntityActivity.Enable(entityActivity);
-            if (health <= 0)
+            entityActivity.State = EntityActivity.States.Default;
+            if(health <= 0)
             {
                 if (ragdoll)
                 {
-                    ragdoll.State = RagdollHandler.States.On;
+                    ragdoll.State = RagdollHandler.States.Ragdoll;
                     ragdoll.SetVelocity(attack.velocity);
                 }
                 else Destroy();
@@ -125,7 +127,7 @@ public class EnemyHealth : Health
             gameObject.SetActive(false);
             Invoke(nameof(Respawn), respawnTime);
         }
-        else if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Disable();
+        else if (PoolableObject_OBSOLETE.Is(gameObject)) PoolableObject_OBSOLETE.Is(gameObject).Disable();
         else Destroy(gameObject);
     }
 
@@ -133,8 +135,9 @@ public class EnemyHealth : Health
     {
         gameObject.SetActive(true);
         transform.position = startPosition;
+        if (TryGetComponent(out StateMachine machine)) machine[0].Enter();
+        //if (TryGetComponent(out Unity.VisualScripting.StateMachine visualMachine)) visualMachine.
         entityActivity.enabled = true;
-        entityActivity.ResetState();
         transform.rotation = Quaternion.identity;
         health = maxHealth;
         if (ragdoll) ragdoll.State = RagdollHandler.States.Off;

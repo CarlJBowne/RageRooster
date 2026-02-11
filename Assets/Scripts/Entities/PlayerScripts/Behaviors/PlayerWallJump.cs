@@ -30,7 +30,7 @@ public class PlayerWallJump : PlayerMovementEffector
         //playerMovementBody.direction = fixedDirection;
 
         float distance = (transform.position - startPoint).XZ().magnitude;
-        if (distance >= minDistance) sFall.Enter();
+        if (distance >= minDistance) Player.StateMachine.Falling.Enter();
 
     }
     public override void VerticalMovement(out float? result) => result = ApplyGravity(gravity, terminalVelocity, flatGravity);
@@ -42,7 +42,7 @@ public class PlayerWallJump : PlayerMovementEffector
             if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return false;
 
             if (!State.Active) State.Enter();
-            Machine.animator.Play(animationName, -1, 0f);
+            Player.Animator.Play(animationName, -1, 0f);
             playerMovementBody.VelocitySet(y: jumpPower);
 
             startPoint = transform.position;

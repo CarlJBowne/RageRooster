@@ -6,6 +6,10 @@ using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 using System.IO;
 using System;
+using System.Linq;
+using UnityEngine.UIElements;
+using UnityEditor.VersionControl;
+
 
 
 
@@ -106,7 +110,7 @@ namespace RageRooster.RoomSystem
             Vector3 player = Player.Position;
             if (state is RoomState.Present)
             {
-                if (!WithinUnloadRange(player)) 
+                if (!WithinUnloadRange(player))
                     SceneUnload().Begin(area.root);
             }
             else
@@ -116,7 +120,7 @@ namespace RageRooster.RoomSystem
                     SceneLoad().Begin(area.root);
                     return;
                 }
-                else if(state is RoomState.Lowest && WithinLodRange(player))
+                else if (state is RoomState.Lowest && WithinLodRange(player))
                 {
                     state = RoomState.LODS;
                     lod.TurnOn();
@@ -318,7 +322,7 @@ namespace RageRooster.RoomSystem
 
             public IEnumerator Load()
             {
-                if(prefab.readOnlyObject == null) yield break;
+                if (prefab.readOnlyObject == null) yield break;
 
                 if (loaded == true) yield break;
                 currentOP = prefab.InstantiateAsync(RoomManager.currentArea.root.transform);
@@ -332,7 +336,7 @@ namespace RageRooster.RoomSystem
             }
             public void CancelLoad()
             {
-                if(currentOP == null || currentCoroutine == null) return;
+                if (currentOP == null || currentCoroutine == null) return;
                 currentOP.Cancel();
                 currentCoroutine.StopAuto();
             }
@@ -490,7 +494,7 @@ namespace RageRooster.RoomSystem
 
                 public static void Show(System.Action<AreaAsset, string> onCreate)
                 {
-                    var window = ScriptableObject.CreateInstance<CreateRoomPopupWindow>();
+                    CreateRoomPopupWindow window = ScriptableObject.CreateInstance<CreateRoomPopupWindow>();
                     window.titleContent = new GUIContent("Create Room");
                     window.position = new Rect(Screen.width / 2, Screen.height / 2, 350, 100);
                     window.onCreate = onCreate;
@@ -512,9 +516,58 @@ namespace RageRooster.RoomSystem
                     EditorGUI.EndDisabledGroup();
                 }
             }
+
+            private class OpenRoomPopupWindow : EditorWindow
+            {
+                [MenuItem("File/Open Rooms", priority = -1)]
+                public static new void Show()
+                {
+                    OpenRoomPopupWindow w = ScriptableObject.CreateInstance<OpenRoomPopupWindow>();
+                    w.titleContent = new("Choose Room to Open");
+                    w.ShowModalUtility();
+                }
+
+                private void OnEnable()
+                {
+                    foreach (AreaAsset area in AreaRegistry.GetAll().ToList())
+                    {
+                        Label areaLabel = new(area.displayName);
+                        rootVisualElement.Add(areaLabel);
+                        areaLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+
+                        foreach (var room in area.rooms)
+                        {
+                            Button roomLabel = new(OpenRoom)
+                            {
+                                text = room.displayName,
+                                style =
+                                {
+                                    backgroundColor = Color.clear,
+                                    borderBottomWidth = 0,
+                                    borderRightWidth = 0,
+                                    borderLeftWidth = 0,
+                                    borderTopWidth = 0,
+                                    color = Color.cornflowerBlue,
+                                    unityTextAlign = TextAnchor.MiddleLeft
+                                }
+                            };
+                            roomLabel.Highlighter(.1f);
+                            rootVisualElement.Add(roomLabel);
+                            void OpenRoom()
+                            {
+                                EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(room.scene.asset));
+                                Close();
+                            }
+                        }
+                    }
+                }
+
+            }
+
+
         }
 
-        
+
 
 #endif
 

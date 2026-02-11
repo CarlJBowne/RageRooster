@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 
-public class PoolableObject : MonoBehaviour
+[System.Obsolete]
+public class PoolableObject_OBSOLETE : MonoBehaviour
 {
 
-    [HideInInspector] public ObjectPool pool;
+    [HideInInspector] public ObjectPool_OBSOLETE pool;
     [HideInInspector] public bool Active;
     [HideInInspector] public float timeExisting;
 
@@ -13,7 +14,7 @@ public class PoolableObject : MonoBehaviour
     /// <summary>
     /// If nothing calls this action when this object instance is done the object will never be available for reuse. (Extremely unintuitive, fix in V3.)
     /// </summary>
-    public Action<PoolableObject> onDeactivate;
+    public Action<PoolableObject_OBSOLETE> onDeactivate;
 
     /// <summary>
     /// This method is used for Setup of the Pooled Object Instance after it is Activated. In the default base of this script this method does nothing, if not overridden Setup is the responsibility of the script calling Pump();
@@ -50,21 +51,21 @@ public class PoolableObject : MonoBehaviour
     private void OnDisable() { if (Active) Disable(); }
     public Rigidbody rb => GetComponent<Rigidbody>();
 
-    public static PoolableObject Is(GameObject subject)
+    public static PoolableObject_OBSOLETE Is(GameObject subject)
     {
-        PoolableObject poolable = subject.GetComponent<PoolableObject>(); 
+        PoolableObject_OBSOLETE poolable = subject.GetComponent<PoolableObject_OBSOLETE>(); 
         if (!poolable) return null;
         if (poolable.pool == null) return null;
         return poolable;
     }
-    public static bool Is(GameObject subject, out PoolableObject result)
+    public static bool Is(GameObject subject, out PoolableObject_OBSOLETE result)
     {
-        result = subject.GetComponent<PoolableObject>();
+        result = subject.GetComponent<PoolableObject_OBSOLETE>();
         return result && result.pool != null;
     }
     public static bool DisableOrDestroy(GameObject subject)
     {
-        if (subject.TryGetComponent(out PoolableObject poolable) && poolable.pool != null)
+        if (subject.TryGetComponent(out PoolableObject_OBSOLETE poolable) && poolable.pool != null)
         {
             poolable.Disable();
             return true;

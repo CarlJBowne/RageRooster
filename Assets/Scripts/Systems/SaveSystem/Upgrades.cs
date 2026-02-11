@@ -51,5 +51,24 @@ namespace RageRooster.Systems.SaveSystem
             target.d_moonJump = d_moonJump;
             return target;
         }
+
+        public enum Upgrade
+        {
+            DropLaunch,
+            WallJump,
+            Hellcopter,
+            RagingCharge,
+        }
+        public bool HasUpgrade(Upgrade upgrade)
+        {
+            return upgrade switch
+            {
+                Upgrade.DropLaunch => dropLaunch,
+                Upgrade.WallJump => wallJump,
+                Upgrade.Hellcopter => hellcopter,
+                Upgrade.RagingCharge => ragingCharge,
+                _ => false,
+            };
+        }
     }
 }

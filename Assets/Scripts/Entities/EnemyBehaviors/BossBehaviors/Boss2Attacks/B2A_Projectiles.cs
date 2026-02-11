@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class B2A_Projectiles : MonoBehaviour
 {
-    public ObjectPool pool;
+    public ObjectPool_OBSOLETE pool;
 
     public FinalBossHead bossID;
 

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class MeleeTarget : Target
 {
-    
+    [SerializeField, RelatedComponent] Grabbable grabbable;
 }

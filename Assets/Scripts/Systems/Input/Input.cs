@@ -1,4 +1,5 @@
 using SLS.ISingleton;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,8 +14,7 @@ public class Input : SingletonAsset<Input>
     [SerializeField] Ref _Movement;
 	[SerializeField] Ref _Camera;
 	[SerializeField] Ref _Jump;
-	[SerializeField] Ref _AttackTap;
-	[SerializeField] Ref _AttackHold;
+	[SerializeField] Ref _Attack;
 	[SerializeField] Ref _Parry;
 	[SerializeField] Ref _Interact;
 	[SerializeField] Ref _Aim;
@@ -25,14 +25,12 @@ public class Input : SingletonAsset<Input>
 	[SerializeField] Ref _Debug_GodMode;
 	[SerializeField] Ref _Debug_ToggleTextOverlay;
 
-
     public static Vector2 Movement => Get()._Movement.action.ReadValue<Vector2>();
     public static Vector2 Camera => Get()._Camera.action.ReadValue<Vector2>();
 	public static Button MovementAction => Get()._Movement;
 	public static Button CameraAction => Get()._Camera;
 	public static Button Jump => Get()._Jump;
-	public static Button AttackTap => Get()._AttackTap;
-	public static Button AttackHold => Get()._AttackHold;
+	public static Button Attack => Get()._Attack;
 	public static Button Parry => Get()._Parry;
 	public static Button Grab => Get()._Grab;
 	public static Button Aim => Get()._Aim;

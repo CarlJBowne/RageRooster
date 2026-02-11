@@ -10,12 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6021a3010b2361b4494bc42ea6cfbc33, type: 3}
-  m_Name: ObjectPools
+  m_Name: GlobalObjectPools
   m_EditorClassIdentifier: 
-  serializedPools:
-  - <name>k__BackingField: Basic Bullet
-    <prefab>k__BackingField: {fileID: -2772165324754770109, guid: ecd0681902479df4182d2aa655d7ff14,
+  serializedPools: []
+  basicEnemyBullet:
+    <name>k__BackingField: Basic Bullet
+    <prefab>k__BackingField: {fileID: 1229195592931882164, guid: ecd0681902479df4182d2aa655d7ff14,
       type: 3}
-    <initialSize>k__BackingField: 3
+    <initialSize>k__BackingField: 12
     <canGrow>k__BackingField: 1
-    <autoDisableTime>k__BackingField: 50
+    <autoEnable>k__BackingField: 1
+    <autoDisableTime>k__BackingField: 10
+    <poolParent>k__BackingField: {fileID: 0}
+    <orphanOnDestroy>k__BackingField: 0
