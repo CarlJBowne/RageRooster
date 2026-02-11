@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Rendering;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -144,7 +145,7 @@ namespace UnityEngine.UIElements
             return arrayProperty.GetArrayElementAtIndex(arrayProperty.arraySize - 1);
         }
 
-        public static void DelayedBuild(this VisualElement V, Action result) 
+        public static void DelayedBuild(this VisualElement V, Action result)
             => V.RegisterCallbackOnce<AttachToPanelEvent>(_ => { V.schedule.Execute(result); });
 
 
@@ -154,6 +155,60 @@ namespace UnityEngine.UIElements
             return result != null;
         }
 
+        public static void Highlighter(this VisualElement V, Color highlightColor)
+        {
+            Color initialColor = V.style.color.value;
+
+            V.RegisterCallback<MouseOverEvent>(Hover);
+            V.RegisterCallback<MouseLeaveEvent>(UnHover);
+
+            void Hover(MouseOverEvent E) => V.style.color = highlightColor;
+            void UnHover(MouseLeaveEvent E) => V.style.color = initialColor;
+        }
+        public static void Highlighter(this VisualElement V, Color highlightColor, Color? backgroundHighlightColor = null, Color? borderHighlightColor = null)
+        {
+            Color initialColor = V.style.color.value;
+            Color initialColorBack = V.style.backgroundColor.value;
+            Color initialColorBorder = V.style.borderTopColor.value;
+
+            V.RegisterCallback<MouseOverEvent>(Hover);
+            V.RegisterCallback<MouseLeaveEvent>(UnHover);
+
+            void Hover(MouseOverEvent E)
+            {
+                V.style.color = highlightColor;
+                if (backgroundHighlightColor != null) V.style.backgroundColor = backgroundHighlightColor.Value;
+                if (borderHighlightColor != null)
+                {
+                    V.style.borderTopColor = borderHighlightColor.Value;
+                    V.style.borderBottomColor = borderHighlightColor.Value;
+                    V.style.borderLeftColor = borderHighlightColor.Value;
+                    V.style.borderRightColor = borderHighlightColor.Value;
+                }
+            }
+            void UnHover(MouseLeaveEvent E)
+            {
+                V.style.color = initialColor;
+                if (backgroundHighlightColor != null) V.style.backgroundColor = initialColorBack;
+                if (borderHighlightColor != null)
+                {
+                    V.style.borderTopColor = initialColorBorder;
+                    V.style.borderBottomColor = initialColorBorder;
+                    V.style.borderLeftColor = initialColorBorder;
+                    V.style.borderRightColor = initialColorBorder;
+                }
+            }
+        }
+        public static void Highlighter(this VisualElement V, float factor)
+        {
+            Color initialColor = V.style.color.value;
+
+            V.RegisterCallback<MouseOverEvent>(Hover);
+            V.RegisterCallback<MouseLeaveEvent>(UnHover);
+
+            void Hover(MouseOverEvent E) => V.style.color = new Color(initialColor.r + factor, initialColor.g + factor, initialColor.b + factor);
+            void UnHover(MouseLeaveEvent E) => V.style.color = initialColor;
+        }
     }
 
     public static class CustomStyles
