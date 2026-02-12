@@ -194,6 +194,7 @@ public abstract class PlayerButtonAction : PolymorphicObject
 
         public override void Press()
         {
+            var activeButton = this.activeButton;
             if (transferState != null) transferState.State.Enter();
             actionEvent?.Invoke();
             Finish();

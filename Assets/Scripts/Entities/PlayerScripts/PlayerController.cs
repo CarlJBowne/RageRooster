@@ -128,17 +128,11 @@ public class PlayerController : PlayerStateBehavior
     }
     public void MidWallJumpJumpAction() => wallJumpState.WallJump(transform.forward);
 
-    //Other events.
-    private void JumpPress(CTX ctx) => jumpInput = Machine.SendSignal(ctx.action.name) ? 0 : jumpBuffer;
-    private void JumpRelease(CTX ctx) => Machine.SendSignal(new("JumpRelease", 0, true));
-    private void ShootModeActivate(CTX ctx) => Machine.SendSignal(new("ShootMode", ignoreLock: true));
-    private void ShootModeDeactivate(CTX ctx) => Machine.SendSignal(new("ShootModeExit", ignoreLock: true));
 
 
     private void AimPress(CTX cTX) => Machine.SendSignal("Aim");
     private void AimRelease(CTX cTX) => Machine.SendSignal("AimRelease");
 
-    private void ChargeButtons(CTX ctx) => Machine.SendSignal("Charge");
 
 
     //NewButtonSystem.

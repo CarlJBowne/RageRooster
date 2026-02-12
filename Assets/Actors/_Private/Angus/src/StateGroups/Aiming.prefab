@@ -143,7 +143,7 @@ MonoBehaviour:
   Attack:
     rid: 3657502506282385492
   Grab:
-    rid: 1950656167362429029
+    rid: 1676068309935587425
   Charge:
     rid: -2
   Parry:
@@ -153,20 +153,23 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 1950656167362429029
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+    - rid: 1676068309935587425
+      type: {class: PlayerButtonAction/TargetDependant, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        hasMeleeTarget:
+          rid: -2
+        hasRangedTarget:
+          rid: 1676068309935587426
+        noTarget:
+          rid: -2
+    - rid: 1676068309935587426
+      type: {class: PlayerButtonAction/CrossStatePressRelease, ns: , asm: Assembly-CSharp}
       data:
         persistAcrossStateChange: 1
-        pressEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 5784944828220155535}
-            _MemberName: Enter
-            _PersistentArguments: []
-        releaseEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 5073408008435663567}
-            _MemberName: Enter
-            _PersistentArguments: []
+        actionEvent:
+          _PersistentCalls: []
+        transferState: {fileID: 6282605067651037026}
     - rid: 3657502506282385492
       type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
       data:
@@ -199,6 +202,7 @@ GameObject:
   - component: {fileID: 5784944828220155535}
   - component: {fileID: 5556855166763114838}
   - component: {fileID: 8172011373576296772}
+  - component: {fileID: 6282605067651037026}
   m_Layer: 0
   m_Name: LassoReady
   m_TagString: Untagged
@@ -278,6 +282,48 @@ MonoBehaviour:
   onEnterTime: 0.1
   doWhenNotFinal: 0
   animator: {fileID: 0}
+--- !u!114 &6282605067651037026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3172651691018789909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 5784944828220155535}
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  Jump:
+    rid: -2
+  Attack:
+    rid: -2
+  Grab:
+    rid: 1676068309935587422
+  Charge:
+    rid: -2
+  Parry:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 1676068309935587422
+      type: {class: PlayerButtonAction/CrossStatePressRelease, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        actionEvent:
+          _PersistentCalls:
+          - _Target: {fileID: 5073408008435663567}
+            _MemberName: Enter
+            _PersistentArguments: []
+        transferState: {fileID: 0}
 --- !u!1 &4388737262304629360
 GameObject:
   m_ObjectHideFlags: 0
@@ -1113,8 +1159,8 @@ MonoBehaviour:
   <Parent>k__BackingField: {fileID: 0}
   <Layer>k__BackingField: 0
   <Children>k__BackingField:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8256454112717440440}
+  - {fileID: 7793706925814574489}
   - {fileID: 3717838527578129320}
   <ChildCount>k__BackingField: 3
 --- !u!114 &2194088104857915983
