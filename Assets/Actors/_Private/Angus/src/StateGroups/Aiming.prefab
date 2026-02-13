@@ -240,6 +240,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 5556855166763114838}
   - {fileID: 8172011373576296772}
+  - {fileID: 6282605067651037026}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 3717838527578129320}
   <Layer>k__BackingField: 2
@@ -652,6 +653,7 @@ GameObject:
   - component: {fileID: 1027996428243919941}
   - component: {fileID: 1086743864861374508}
   - component: {fileID: 7863535507170721229}
+  - component: {fileID: 3646564861802563187}
   m_Layer: 6
   m_Name: AimingGrab
   m_TagString: Untagged
@@ -814,6 +816,25 @@ MonoBehaviour:
           - _Target: {fileID: 3324675951119846532}
             _MemberName: Enter
             _PersistentArguments: []
+--- !u!114 &3646564861802563187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5663185729574709965}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 7793706925814574489}
+  onEntry: 2
+  onEnterName: Aim
+  onEnterTime: 0.1
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &6924212560968213148
 GameObject:
   m_ObjectHideFlags: 0
@@ -1003,6 +1024,7 @@ GameObject:
   - component: {fileID: 2567021925400143366}
   - component: {fileID: 7394413076049547985}
   - component: {fileID: 3932109354504390198}
+  - component: {fileID: 2193479881383728799}
   m_Layer: 0
   m_Name: LassoThrow
   m_TagString: Untagged
@@ -1041,6 +1063,7 @@ MonoBehaviour:
   - {fileID: 2567021925400143366}
   - {fileID: 7394413076049547985}
   - {fileID: 3932109354504390198}
+  - {fileID: 2193479881383728799}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 3717838527578129320}
   <Layer>k__BackingField: 2
@@ -1106,6 +1129,29 @@ MonoBehaviour:
           _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
+--- !u!114 &2193479881383728799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7212713892605554914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 5073408008435663567}
+  timeline: {fileID: 0}
+  events:
+  - time: 0.05
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: ThrowLassoPoint
+        _PersistentArguments: []
+  loopAfterLastEvent: 0
 --- !u!1 &7552008454371719954
 GameObject:
   m_ObjectHideFlags: 0
@@ -1160,6 +1206,8 @@ MonoBehaviour:
   <Layer>k__BackingField: 0
   <Children>k__BackingField:
   - {fileID: 8256454112717440440}
+  - {fileID: 7793706925814574489}
+  - {fileID: 3717838527578129320}
   - {fileID: 7793706925814574489}
   - {fileID: 3717838527578129320}
   <ChildCount>k__BackingField: 3

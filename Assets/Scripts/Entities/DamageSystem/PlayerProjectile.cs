@@ -40,6 +40,8 @@ public class PlayerProjectile : AttackSourceSingle
         activeVelocity = (trueTargetPos - transform.position).normalized;
 
         if (rotateActualBody) transform.rotation = Quaternion.LookRotation(activeVelocity);
+
+        gameObject.SetActive(true);
     }
 
     protected virtual void FixedUpdate() => ProjectileUpdate();
@@ -63,6 +65,7 @@ public class PlayerProjectile : AttackSourceSingle
 
     public override void Contact(GameObject target)
     {
+        if (target == Player.GameObject) return;
         if(target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(GetAttack());
         gameObject.SetActive(false);
     }

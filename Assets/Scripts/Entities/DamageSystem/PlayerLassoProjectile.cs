@@ -26,24 +26,25 @@ public class PlayerLassoProjectile : PlayerProjectile
 
         if (grabbable != null) grabbable.transform.position = this.transform.position;
 
-        if (Vector3.Distance(transform.position, Player.Position) <= reachplayerDistance)
-        {
-            grabbable = null;
-            pullingPhase = false;
-            gameObject.SetActive(false);
-            Player.SignalManager.FireSignalBasic("LassoReach");
-            if (grabbable != null) Player.Grabber.Grab(grabbable);
-
-        }
+        if (Vector3.Distance(transform.position, Player.Position) <= reachplayerDistance) ReachPlayer();
     }
 
     public override void Contact(GameObject target)
     {
-        if (pullingPhase) return;
+        if (target == Player.GameObject || pullingPhase) return;
         pullingPhase = true;
 
         Grabbable.Attempt(target, success => { grabbable = success; grabbable.Grab(); }, null, null);
 
         Player.SignalManager.FireSignalBasic("LassoPull");
+    }
+
+    private void ReachPlayer()
+    {
+        grabbable = null;
+        pullingPhase = false;
+        gameObject.SetActive(false);
+        Player.SignalManager.FireSignalBasic("LassoReach");
+        if (grabbable != null) Player.Grabber.Grab(grabbable);
     }
 }

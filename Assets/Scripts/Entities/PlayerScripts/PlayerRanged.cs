@@ -188,6 +188,7 @@ public class PlayerRanged : MonoBehaviour
 
     public void ThrowLassoPoint()
     {
+        realMuzzle.position = shootMuzzle.position;
         LassoProjectile.Send(TargetingManager.RangedChannel.CurrentTarget, realMuzzle, targetPos);
     }
 

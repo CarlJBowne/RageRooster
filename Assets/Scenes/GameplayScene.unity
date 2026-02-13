@@ -291,7 +291,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &214004748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,11 +305,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLassoProjectile
   attack:
-    amount: 10
+    amount: 0
     velocity: {x: 0, y: 0, z: 0}
     tags: []
   sourceEntity: {fileID: 2906842210355217753}
-  speed: 2.3
+  speed: 10
   velocityPredictionFactor: 1
   homingPerSecond: 20.2
   loseTargetAngle: 66.1
@@ -317,7 +317,7 @@ MonoBehaviour:
   initialHomingPerSecond: 90
   applyActualAttack: 0
   rotateActualBody: 0
-  pullSpeed: 4
+  pullSpeed: 15
   reachplayerDistance: 1
 --- !u!135 &214004749
 SphereCollider:
@@ -334,7 +334,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
