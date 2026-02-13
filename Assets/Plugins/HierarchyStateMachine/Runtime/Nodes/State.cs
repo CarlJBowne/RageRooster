@@ -234,10 +234,15 @@ namespace SLS.StateMachineH {
             {
                 string assetPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(gameObject);
 
-                foreach (var ob in PrefabUtility.GetAddedComponents(gameObject)) ob.Apply(assetPath);
-                foreach (var ob in PrefabUtility.GetObjectOverrides(gameObject)) ob.Apply(assetPath);
-                foreach (var ob in PrefabUtility.GetAddedGameObjects(gameObject)) ob.Apply(assetPath);
-                foreach (var ob in PrefabUtility.GetRemovedComponents(gameObject)) ob.Apply(assetPath);
+                var addedComps = PrefabUtility.GetAddedComponents(gameObject);
+                var removedComps = PrefabUtility.GetRemovedComponents(gameObject);
+                var overrides = PrefabUtility.GetObjectOverrides(gameObject);
+                var addedGOs = PrefabUtility.GetAddedGameObjects(gameObject);
+
+                for (int i = 0; i < addedComps.Count; i++) addedComps[i].Apply();
+                for (int i = 0; i < removedComps.Count; i++) removedComps[i].Apply();
+                for (int i = 0; i < overrides.Count; i++) overrides[i].Apply();
+                for (int i = 0; i < addedGOs.Count; i++) addedGOs[i].Apply();
             }
 #endif
         }

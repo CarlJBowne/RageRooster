@@ -141,7 +141,7 @@ MonoBehaviour:
   Jump:
     rid: -2
   Attack:
-    rid: 3657502506282385492
+    rid: 1451162131572981853
   Grab:
     rid: 1676068309935587425
   Charge:
@@ -153,24 +153,7 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 1676068309935587425
-      type: {class: PlayerButtonAction/TargetDependant, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 0
-        hasMeleeTarget:
-          rid: -2
-        hasRangedTarget:
-          rid: 1676068309935587426
-        noTarget:
-          rid: -2
-    - rid: 1676068309935587426
-      type: {class: PlayerButtonAction/CrossStatePressRelease, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 1
-        actionEvent:
-          _PersistentCalls: []
-        transferState: {fileID: 6282605067651037026}
-    - rid: 3657502506282385492
+    - rid: 1451162131572981853
       type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
       data:
         persistAcrossStateChange: 0
@@ -190,6 +173,23 @@ MonoBehaviour:
               _Object: {fileID: 6142764829233176585}
         releaseEvent:
           _PersistentCalls: []
+    - rid: 1676068309935587425
+      type: {class: PlayerButtonAction/TargetDependant, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        hasMeleeTarget:
+          rid: -2
+        hasRangedTarget:
+          rid: 1676068309935587426
+        noTarget:
+          rid: -2
+    - rid: 1676068309935587426
+      type: {class: PlayerButtonAction/CrossStatePressRelease, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 1
+        actionEvent:
+          _PersistentCalls: []
+        transferState: {fileID: 6282605067651037026}
 --- !u!1 &3172651691018789909
 GameObject:
   m_ObjectHideFlags: 0

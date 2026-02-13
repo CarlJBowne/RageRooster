@@ -41,10 +41,10 @@ public class PlayerLassoProjectile : PlayerProjectile
 
     private void ReachPlayer()
     {
-        grabbable = null;
         pullingPhase = false;
         gameObject.SetActive(false);
         Player.SignalManager.FireSignalBasic("LassoReach");
         if (grabbable != null) Player.Grabber.Grab(grabbable);
+        grabbable = null;
     }
 }

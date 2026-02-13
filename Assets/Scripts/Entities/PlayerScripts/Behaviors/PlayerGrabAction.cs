@@ -21,12 +21,18 @@ public class PlayerGrabAction : PlayerStateBehavior
     public void EndGrabAttempt()
     {
         MeleeTarget systemTarget = TargetingManager.MeleeChannel.CurrentTarget;
-        if (systemTarget) Grabbable.Attempt(systemTarget.gameObject, Player.Grabber.Grab, failMissedReturn.Invoke, failBlockedReturn.Invoke);
+        if (systemTarget) Grabbable.Attempt(systemTarget.gameObject, Succeed, failMissedReturn.Invoke, failBlockedReturn.Invoke);
         else
         {
             GameObject targetObject = null; //(Placeholder, get via Physics check later.)
 
-            Grabbable.Attempt(targetObject, Player.Grabber.Grab, failMissedReturn.Invoke, failBlockedReturn.Invoke);
+            //Grabbable.Attempt(targetObject, Player.Grabber.Grab, failMissedReturn.Invoke, failBlockedReturn.Invoke);
         }
+    }
+
+    void Succeed(Grabbable G)
+    {
+        Player.Grabber.Grab(G);
+        successReturn?.Invoke();
     }
 }
