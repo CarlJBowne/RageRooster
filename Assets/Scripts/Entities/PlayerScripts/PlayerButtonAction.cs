@@ -301,8 +301,8 @@ public abstract class PlayerButtonAction : PolymorphicObject
         }
 
 
-        public override void Press() => lockedAction.Press();
-        public override void Release() => lockedAction.Release();
+        public override void Press() => lockedAction?.Press();
+        public override void Release() => lockedAction?.Release();
         protected override IEnumerator HoldRoutine() => throw new NotImplementedException(); //Don't.
 
 #if UNITY_EDITOR

@@ -1445,7 +1445,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 46758
+    surfaceParameter: 67406
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
@@ -3251,6 +3251,7 @@ GameObject:
   - component: {fileID: 280758275}
   - component: {fileID: 280758280}
   - component: {fileID: 280758281}
+  - component: {fileID: 280758282}
   m_Layer: 3
   m_Name: Grabb2
   m_TagString: Untagged
@@ -3420,6 +3421,23 @@ MonoBehaviour:
   health: {fileID: 0}
   constantMovement: {fileID: 0}
   entityActivity: {fileID: 0}
+--- !u!114 &280758282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280758273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c15eb228060da4689a9f675157e315, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RangedTarget
+  RealPositionOffset: {x: 0, y: 0, z: 0}
+  rigidBody: {fileID: 280758275}
+  collider: {fileID: 280758276}
+  navMeshAgent: {fileID: 0}
+  centerComputationType: 2
 --- !u!1 &284672209
 GameObject:
   m_ObjectHideFlags: 0
@@ -8213,7 +8231,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 46828
+    surfaceParameter: 67996
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
@@ -17065,7 +17083,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 46828
+    surfaceParameter: 67996
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
