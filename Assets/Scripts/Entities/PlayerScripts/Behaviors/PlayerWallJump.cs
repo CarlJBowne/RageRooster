@@ -37,7 +37,7 @@ public class PlayerWallJump : PlayerMovementEffector
 
     public bool WallJump(Vector3 direction)
     {
-        if(Upgrades.Active.wallJump && playerMovementBody.DirectionCast(playerMovementBody.direction, 0.5f, playerMovementBody.movementCheckBuffer, out RaycastHit hit))
+        if(Upgrades.Active.wallJump && playerMovementBody.RB.DirectionCast(playerMovementBody.direction, 0.5f, playerMovementBody.movementCheckBuffer, out RaycastHit hit))
         {
             if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return false;
 
