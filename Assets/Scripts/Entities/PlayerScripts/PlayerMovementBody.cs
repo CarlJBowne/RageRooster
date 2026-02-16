@@ -40,6 +40,10 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// The number of steps used in the Collide & Slide Algorithm.
     /// </summary>
     public int movementProjectionSteps = 5;
+    /// <summary>
+    /// Angle threshold for Bonking.
+    /// </summary>
+    public float bonkThreshold = 15;
 
     /// <summary>
     /// Whether the player can currnetly do a double jump.
@@ -53,12 +57,17 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// the default radius for a Front-ways collision Check.
     /// </summary>
     public float frontCheckDefaultRadius;
-    [Tooltip("An unconventional means of hopefully avoiding falling through the floor. If true, the player will check if there is any ground below them before moving, and if not, their velocity will be set to 0 to prevent them from moving further. This is jank, but it might help with some edge cases and it doesn't require any extra components or setup.")]
-    public bool mario64StyleAntiVoid;
+
+    //public PlatformDetectionMethod platformDetection;
+    //[Tooltip("An unconventional means of hopefully avoiding falling through the floor. If true, the player will check if there is any ground below them before moving, and if not, their velocity will be set to 0 to prevent them from moving further. This is jank, but it might help with some edge cases and it doesn't require any extra components or setup.")]
+    //public PlatformDetectionMethod mario64StyleAntiVoid;
     /// <summary>
-    /// The LayerMask used for the Mario64StyleAntiVoid check. Should be set to anything that can be stood on.
+    /// The LayerMask used for ground checks. Should be set to anything that can be stood on.
     /// </summary>
-    public LayerMask nonVoidLayerMask;
+    public LayerMask validGroundMask;
+
+    public bool cantWalkOff;
+
 
     #endregion
 
@@ -133,206 +142,178 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         Vector3 prePos = Position;
 
         DebugRR.DebugTextOverlay.SetText($"PMB : Velocity: {velocity}");
+
+        if (RBState != BodyState.Enabled) return;
+        RB.linearVelocity = Vector3.zero;
+        RB.angularVelocity = Vector3.zero;
+
+        stepZeroVelocity = velocity * Time.fixedDeltaTime;
+        stepZeroAnchor = anchorPoint;
+
+        if (checkGround && velocity.y <= 0)
         {
-            if (RBState != BodyState.Enabled) return;
-            RB.linearVelocity = Vector3.zero;
-            RB.angularVelocity = Vector3.zero;
-
-            if (checkGround && velocity.y <= 0)
+            if (GroundCheck(out AnchorPoint groundHit))
             {
-                if (GroundCheck(out AnchorPoint groundHit))
-                {
-                    Land(groundHit);
-                    velocity.y = 0;
-                    initVelocity.y = 0;
-                    initVelocity = initVelocity.ProjectAndScale(groundHit.normal);
-                }
-                else UnLand();
+                Land(groundHit);
+                velocity.y = 0;
+                stepZeroVelocity.y = 0;
+                stepZeroVelocity = stepZeroVelocity.ProjectAndScale(groundHit.normal);
             }
-
-            initVelocity = velocity * Time.fixedDeltaTime;
-            initNormal = anchorPoint.normal;
-
-            //moveTestString = "";
-            Move(initVelocity, initNormal);
-
-            if (autoApplyGravity && !Grounded) ApplyGravity();
+            else UnLand();
         }
+
+        moveTestString = "";
+        Move(stepZeroVelocity);
+
+        if (autoApplyGravity && !Grounded) ApplyGravity();
 
         if (prePos != Position) _movingUpdateActionTimer.Tick(MovingUpdateAction);
     }
 
-    /// <summary>
-    /// The initial velocity used in the current physics step.
-    /// </summary>
-    Vector3 initVelocity;
-    /// <summary>
-    /// The initial normal used in the current physics step.
-    /// </summary>
-    Vector3 initNormal;
 
-    /// <summary>
-    /// The Collide and Slide Algorithm.
-    /// </summary>
-    /// <param name="vel">Input Velocity.</param>
-    /// <param name="prevNormal">The Normal of the previous Step.</param>
-    /// <param name="step">The current step. Starts at 0.</param>
-    void Move(Vector3 vel, Vector3 prevNormal, int step = 0, bool testString = false)
+    void Move(Vector3 velocity, int step = 0)
     {
-        if (testString) moveTestString += $"Step {step}: {vel}\n";
+        moveTestString += $"Step {step}: {velocity}\n";
 
-        if (step == 0 && vel.y <= 0)
+        if (Grounded) velocity = velocity.ProjectAndScale(anchorPoint.normal);
+
+        float stopDistance = -1;
+        Vector3 nextNormal = Vector3.zero;
+        bool scaleByDot = false;
+        bool deleteVerticalLeftover = false;
+
+        if (SweepBody(velocity, out RaycastHit hit, groundCheckBuffer))
         {
-            bool tryGround = GroundCheck(out var groundRes);
-            if (Grounded && !tryGround) UnLand();
-            else if (!Grounded && tryGround) Land(groundRes);
-        }
+            stopDistance = hit.distance;
+            nextNormal = hit.normal;
+            moveTestString += "Hit: " + hit.normal + " at distance " + hit.distance + "\n";
 
-        if (RB.DirectionCast(vel.normalized, vel.magnitude, groundCheckBuffer, out RaycastHit hit))
-        {
-            if (testString) moveTestString += $"Hit: {hit.normal} at distance {hit.distance}\n";
-            Vector3 snapToSurface = vel.normalized * hit.distance;
-            Vector3 leftover = vel - snapToSurface;
-            Vector3 nextNormal = hit.normal;
-            bool scaleByDot = false;
-
-            if (step == movementProjectionSteps) return;
-
-            if (!MoveForward(snapToSurface)) return;
-
-            else if (Grounded)
+            if (Grounded)
             {
-                if (testString) moveTestString += "Is Grounded.\n";
+                moveTestString += "Is Grounded.\n";
 
                 if (Mathf.Approximately(hit.normal.y, 0))
                 {
-                    if (testString) moveTestString += "Hit a wall.\n";
+                    moveTestString += "Hit a wall.\n";
                     scaleByDot = true;
-                    leftover.y = 0;
-                    if (StopForward(ref nextNormal, hit.normal)) return;
+                    deleteVerticalLeftover = true;
+                    nextNormal = nextNormal.XZ().normalized;
                 }
                 else if (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
                 {
-                    if (testString) moveTestString += "Hit a steep slope.\n";
+                    moveTestString += "Hit a steep slope.\n";
                     scaleByDot = true;
-                    leftover.y = 0;
-                    if (StopForward(ref nextNormal, hit.normal)) return;
+                    deleteVerticalLeftover = true;
+                    nextNormal = nextNormal.XZ().normalized;
                 }
 
+                if (Grounded && anchorPoint.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchorPoint.normal, hit.normal);
+                //Floor to Cieling
+                else if (Grounded && anchorPoint.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchorPoint.normal);
+                //Ceiling to Floor
 
-                if (Grounded && prevNormal.y > 0 && hit.normal.y < 0) //Floor to Cieling
+                void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
                 {
-                    if (FloorCeilingLock(prevNormal, hit.normal)) return;
-                }
-                else if (Grounded && prevNormal.y < 0 && hit.normal.y > 0) //Ceiling to Floor
-                {
-                    if (FloorCeilingLock(hit.normal, prevNormal)) return;
-                }
-
-                bool FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
-                {
-                    if (testString) moveTestString += "Encountered Vertical Squish.\n";
+                    moveTestString += "Encountered Vertical Squish.\n";
                     scaleByDot = true;
-                    return StopForward(ref nextNormal, floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal);
+                    nextNormal = floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal;
                 }
-
             }
             else
             {
-                if (testString) moveTestString += "Isnt Grounded.\n";
-
+                moveTestString += "Isnt Grounded.\n";
 
                 if (Mathf.Approximately(hit.normal.y, 0))
                 {
-                    if (testString) moveTestString += "Hit a Wall.\n";
-                    if (StopForward(ref nextNormal, hit.normal)) return;
+                    moveTestString += "Hit a Wall mid-air.\n";
+                    nextNormal = hit.normal;
                 }
                 else if (hit.normal.y > 0)
                 {
                     if (WithinSlopeAngle(hit.normal))
                     {
-                        if (testString) moveTestString += "Landed on a standable ground.\n";
+                        moveTestString += "Landed on a standable ground.\n";
                         Land(hit);
-                        leftover.y = 0;
+                        deleteVerticalLeftover = true;
                     }
-                    else
-                    {
-                        if (testString) moveTestString += "Hit a steep slope while falling.\n";
-                    }
+                    else moveTestString += "Hit a steep slope while falling.\n";
                 }
-                else
-                {
-                    if (testString) moveTestString += "Hit a sloped ceiling while jumping.\n";
-                }
+                else moveTestString += "Hit a sloped ceiling while jumping.\n";
             }
 
-
-            Vector3 newDir = leftover.ProjectAndScale(nextNormal);
-            if (scaleByDot) newDir *= Vector3.Dot(leftover.normalized, nextNormal) + 1;
-            Move(newDir, nextNormal, step + 1);
+            if (hit.normal.y > 0 && WithinSlopeAngle(hit.normal) && velocity.y <= 0) anchorPoint = hit;
         }
         else
         {
-            if (testString) moveTestString += "No Hit\n";
 
-            if (step == movementProjectionSteps) return;
-            if (!MoveForward(vel)) return;
-
-            //Snap to ground when walking on a downward slope.
-            if (Grounded && initVelocity.y <= 0)
+            if (Grounded)
             {
-                if (RB.DirectionCast(Vector3.down, 0.5f, groundCheckBuffer, out RaycastHit groundHit))
+                if (!SweepBody(Vector3.down * groundCheckBuffer, out RaycastHit platformCheckHit, groundCheckBuffer, Position + velocity) || WithinSlopeAngle(platformCheckHit.normal))
                 {
-                    // Make sure the hit is under the character's feet (not beside it).
-                    // Compute the bottom-center point of the capsule in world space.
-                    Vector3 bottomCenter = Position + Collider.center - Vector3.up * (Collider.height * 0.5f - Collider.radius);
-                    Vector3 horizontalDelta = new(groundHit.point.x - bottomCenter.x, 0f, groundHit.point.z - bottomCenter.z);
-
-                    // Allow a small tolerance because of floating precision and scale.
-                    float allowedRadius = Collider.radius + 0.05f;
-
-                    if (horizontalDelta.sqrMagnitude <= allowedRadius * allowedRadius)
+                    moveTestString += "Walking off platform detected.\n";
+                    if (cantWalkOff || !SweepBody(Vector3.down * 5000, out _, 0, Position + velocity))
                     {
-                        // Ground is under the feet -> snap down.
-                        Position += Vector3.down * groundHit.distance;
+                        moveTestString += cantWalkOff ? "Player is not allowed to walk off.\n" : "Hit the void while walking.\n";
+                        if (SweepBody(-velocity, out RaycastHit reachAroundResult, 0, Position + velocity - (Vector3.up * Collider.height / 2)))
+                        {// Assume able to reach Platform from below.
+                            stopDistance = velocity.magnitude - reachAroundResult.distance - .1f;
+                            nextNormal = -reachAroundResult.normal.XZ();
+                        }
                     }
-                    else
-                    {
-                        // Hit was off to the side (ledge), so walk off instead of snapping.
-                        WalkOff();
-                    }
+                    else Machine.SendSignal("WalkOff"); //Send Signal for Walk Off. (PLEASE WORK THIS TIME.)
                 }
                 else
-                {
-                    WalkOff();
+                {//Did hit something, now if close enough to snap too but large enough to bother, snap.
+                    if (platformCheckHit.distance <= groundCheckBuffer && platformCheckHit.distance >= 0.001f)
+                    {
+                        moveTestString += "Snapping to lowerGround.\n";
+                        Position += Vector3.down * platformCheckHit.distance;
+                        anchorPoint = platformCheckHit;
+                    }
+                }
+            }
+            else
+            { //If not Grounded, skip straight to Checking for void.
+                if (!SweepBody(Vector3.down * 5000, out _, 0, Position + velocity))
+                {//Since not necessarily anywhere near a platform, just stop the player in their tracks for now.
+                    moveTestString += "Hit the void while falling.\n";
+                    stopDistance = 0;
+                    nextNormal = -velocity.XZ();
                 }
             }
         }
+
+        Vector3 snapToSurface = stopDistance != -1 ? velocity.normalized * stopDistance : velocity;
+        Position += snapToSurface;
+
+        if (stopDistance == -1 || step + 1 >= movementProjectionSteps) return;
+        else if (Vector3.Angle(velocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Machine.SendSignal(new("Bonk", 0, true)))
+        {
+            this.velocity = Vector3.zero;
+            return;
+        }
+
+        Vector3 leftover = velocity - snapToSurface;
+        if (deleteVerticalLeftover) leftover.y = 0;
+        Vector3 newDir = leftover.ProjectAndScale(nextNormal);
+        if (scaleByDot) newDir *= Vector3.Dot(leftover.normalized, nextNormal) + 1;
+        Move(newDir, step + 1);
     }
+
+    /// <summary>
+    /// The initial (Unprojected) velocity prior to the current physics step. Used for reference in the Collide and Slide algorithm.
+    /// </summary>
+    Vector3 baseVelocity;
+    /// <summary>
+    /// The (Projected) velocity used in the very first physics step, kept for reference during later steps of Collide and Slide.
+    /// </summary>
+    Vector3 stepZeroVelocity;
+    /// <summary>
+    /// The AnchorPoint used in the very first physics step, kept for reference during later steps of Collide and Slide.
+    /// </summary>
+    AnchorPoint stepZeroAnchor;
 
     public string moveTestString = "";
-
-    bool StopForward(ref Vector3 nextNormal, Vector3 newNormal)
-    {
-        nextNormal = newNormal.XZ().normalized;
-        return Machine.SendSignal(new("Bonk", 0, true));
-    }
-    bool MoveForward(Vector3 offset)
-    {
-        if (!Mario64StyleAntiVoidCheck(offset))
-        {
-            Position += offset;
-            return false;
-        }
-        else
-        {
-            velocity = Vector3.zero;
-            return true;
-        }
-    }
-
-    bool Mario64StyleAntiVoidCheck(Vector3 offset) => mario64StyleAntiVoid &&
-        !Physics.Raycast(transform.position + Vector3.up + offset, Vector3.down, 5000, nonVoidLayerMask, QueryTriggerInteraction.Collide);
 
     #endregion Move Cycle
 
@@ -553,6 +534,50 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     #endregion Gravity
 
 
+    #region Checks
+
+    /// <summary>
+    /// Casts the Rigidbody in a direction to check for collision using SweepTest. (Includes optional buffer)
+    /// </summary>
+    /// <param name="offset"></param>
+    /// <param name="hit">The resulting Hit.</param>
+    /// <param name="buffer">A buffer that the Rigidbody is temporarily moved backwards by before the Sweep Test.</param>
+    /// <param name="tempOrigin">An optional temporary origin to move the Rigidbody to before the Sweep Test.</param>
+    /// <param name="queryTriggerInteraction">Override to include trigger colliders in the Sweep Test.</param>
+    /// <returns>Whether anything was Hit.</returns>
+    public bool SweepBody(Vector3 offset, out RaycastHit hit,
+        float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
+    {
+        Vector3 originalPos = RB.position;
+        if (tempOrigin.HasValue) RB.MovePosition(tempOrigin.Value);
+        if (buffer > 0) RB.MovePosition(RB.position - (offset.normalized * buffer));
+        bool result = RB.SweepTest(offset.normalized, out hit, offset.magnitude + buffer, queryTriggerInteraction);
+        RB.MovePosition(originalPos);
+        hit.distance -= buffer;
+        return result;
+    }
+
+
+    /// <summary>
+    /// Checks if the character is grounded and outputs the ground hit information.
+    /// </summary>
+    /// <param name="groundHit">The anchor point of the ground hit.</param>
+    /// <returns>True if grounded, false otherwise.</returns>
+    public bool GroundCheck(out AnchorPoint groundHit, bool dontApply = false)
+    {
+        bool result = SweepBody(Vector3.down * groundCheckBuffer, out RaycastHit raycast, groundCheckBuffer) && WithinSlopeAngle(raycast.normal);
+        groundHit = default;
+        if (!dontApply) groundHit = raycast;
+        return result;
+    }
+
+    public bool OverVoidCheck(Vector3 offset) => !SweepBody(Vector3.down * 5000, out _, 0, offset, QueryTriggerInteraction.Collide);
+
+    #endregion
+
+    #region Ground
+
+
     /// <summary>
     /// Handles collision events with other objects.
     /// </summary>
@@ -565,9 +590,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             Land(collision.GetContact(0));
 
     }
-
-
-    #region Ground
 
     public void Land(AnchorPoint groundHit)
     {
@@ -625,18 +647,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         }
     }
 
-    /// <summary>
-    /// Checks if the character is grounded and outputs the ground hit information.
-    /// </summary>
-    /// <param name="groundHit">The anchor point of the ground hit.</param>
-    /// <returns>True if grounded, false otherwise.</returns>
-    public bool GroundCheck(out AnchorPoint groundHit)
-    {
-        bool result = RB.DirectionCast(Vector3.down, groundCheckBuffer, groundCheckBuffer, out RaycastHit raycast) && WithinSlopeAngle(raycast.normal);
-        groundHit = raycast;
-        return result;
-    }
-
     void WalkOff()
     {
         UnLand();
@@ -649,7 +659,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// <returns>True if snapped to floor, false otherwise.</returns>
     public bool InstantSnapToFloor()
     {
-        if (RB.DirectionCast(Vector3.down, 1000, .5f, out RaycastHit hit))
+        if (SweepBody(Vector3.down * 1000, out RaycastHit hit, .5f))
         {
             Position += Vector3.down * hit.distance;
             return true;
@@ -663,7 +673,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// <returns>True if snapped to floor, false otherwise.</returns>
     public bool InstantSnapToFloor(out RaycastHit hit)
     {
-        if (RB.DirectionCast(Vector3.down, 1000, .5f, out hit))
+        if (SweepBody(Vector3.down * 1000, out hit, .5f))
         {
             Position += Vector3.down * hit.distance;
             return true;
@@ -856,3 +866,15 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     #endregion Debug
 
 }
+
+/*
+ PLAN FOR FIXING PROBLEM.
+ 
+ Re-consolidate all functionality called by Move() to be within Move().
+ (WHILE: making comment notes to denote each step for later organization.)
+ 
+ !!!!! Consider making "CollideAndSlide" CLASS! With Methods for each step that could be overridden.
+ 
+ Locate the Grounded "Move Forward" step and create a check that acts as if the Player is at the destination, and checks for ground below.
+
+ */
