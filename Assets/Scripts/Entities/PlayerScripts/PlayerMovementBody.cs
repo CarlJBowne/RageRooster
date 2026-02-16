@@ -164,6 +164,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
         moveTestString = "";
         Move(stepZeroVelocity);
+        DebugRR.DebugTextOverlay.SetText(moveTestString);
 
         if (autoApplyGravity && !Grounded) ApplyGravity();
 
@@ -174,6 +175,8 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     void Move(Vector3 velocity, int step = 0)
     {
         moveTestString += $"Step {step}: {velocity}\n";
+
+        if (velocity == Vector3.zero) return;
 
         if (Grounded) velocity = velocity.ProjectAndScale(anchorPoint.normal);
 
@@ -223,11 +226,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             {
                 moveTestString += "Isnt Grounded.\n";
 
-                if (Mathf.Approximately(hit.normal.y, 0))
-                {
-                    moveTestString += "Hit a Wall mid-air.\n";
-                    nextNormal = hit.normal;
-                }
+                if (Mathf.Approximately(hit.normal.y, 0)) moveTestString += "Hit a Wall mid-air.\n";
                 else if (hit.normal.y > 0)
                 {
                     if (WithinSlopeAngle(hit.normal))
@@ -248,23 +247,25 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
             if (Grounded)
             {
-                if (!SweepBody(Vector3.down * groundCheckBuffer, out RaycastHit platformCheckHit, groundCheckBuffer, Position + velocity) || WithinSlopeAngle(platformCheckHit.normal))
+                if (!SweepBody(Vector3.down * (groundCheckBuffer + 0.001f), out RaycastHit platformCheckHit, groundCheckBuffer, Position + velocity) || !WithinSlopeAngle(platformCheckHit.normal))
                 {
                     moveTestString += "Walking off platform detected.\n";
                     if (cantWalkOff || !SweepBody(Vector3.down * 5000, out _, 0, Position + velocity))
                     {
                         moveTestString += cantWalkOff ? "Player is not allowed to walk off.\n" : "Hit the void while walking.\n";
-                        if (SweepBody(-velocity, out RaycastHit reachAroundResult, 0, Position + velocity - (Vector3.up * Collider.height / 2)))
+                        Vector3 reachAroundPos = Position + velocity - (Vector3.up * Collider.height / 2);
+                        if (SweepBody(-velocity * 1.05f, out RaycastHit reachAroundResult, 0, reachAroundPos))
                         {// Assume able to reach Platform from below.
                             stopDistance = velocity.magnitude - reachAroundResult.distance - .1f;
                             nextNormal = -reachAroundResult.normal.XZ();
                         }
+                        else Machine.SendSignal("WalkOff");
                     }
-                    else Machine.SendSignal("WalkOff"); //Send Signal for Walk Off. (PLEASE WORK THIS TIME.)
+                    else Machine.SendSignal("WalkOff");
                 }
                 else
                 {//Did hit something, now if close enough to snap too but large enough to bother, snap.
-                    if (platformCheckHit.distance <= groundCheckBuffer && platformCheckHit.distance >= 0.001f)
+                    if (platformCheckHit.distance <= groundCheckBuffer && platformCheckHit.distance >= 0.0001f)
                     {
                         moveTestString += "Snapping to lowerGround.\n";
                         Position += Vector3.down * platformCheckHit.distance;
