@@ -67,9 +67,8 @@ public class PlayerGroundMovement : PlayerMovementEffector
 
     private bool DoEnter()
     {
-        bool groundCollide = playerMovementBody.GroundCheck(out AnchorPoint collideResult);
-        if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return true;
-        playerMovementBody.Land(collideResult);
+        //bool groundCollide = playerMovementBody.GroundCheck(out AnchorPoint collideResult, true);
+        //if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return true;
         State.Enter();
         return false;
     }

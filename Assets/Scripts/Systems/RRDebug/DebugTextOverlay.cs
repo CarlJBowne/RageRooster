@@ -11,6 +11,8 @@ namespace DebugRR
         //public bool clearAtBeginningOfUpdate = true;
         public static TMPro.TMP_Text Text;
 
+        public static bool Visible { get; private set; }
+
         //CoroutinePlus coroutine;
 
         private void Awake()
@@ -46,6 +48,7 @@ namespace DebugRR
         {
             if (Text == null) return;
             Text.gameObject.SetActive(value);
+            Visible = value;
         }
 
         public static void SetText(string value)

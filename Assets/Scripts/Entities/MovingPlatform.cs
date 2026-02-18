@@ -9,6 +9,7 @@ public class MovingPlatform : MonoBehaviour, IMovablePlatform
 
     private Vector3 target;
     public List<CharacterMovementBody> bodies { get; } = new();
+    public bool MovePlayer { get; set; } = false;
 
     void Start()
     {
