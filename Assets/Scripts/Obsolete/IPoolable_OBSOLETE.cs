@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPoolable
+[System.Obsolete]
+public interface IPoolable_OBSOLETE
 {
-    public PoolableObject poolableObject { get; }
+    public PoolableObject_OBSOLETE poolableObject { get; }
 
     public void OnPool();
     public void OnPump();

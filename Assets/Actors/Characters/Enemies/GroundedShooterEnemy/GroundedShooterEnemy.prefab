@@ -4964,6 +4964,7 @@ GameObject:
   - component: {fileID: 5231858220885111202}
   - component: {fileID: 8999987942707735413}
   - component: {fileID: 8895559702137851200}
+  - component: {fileID: -2347159966343118322}
   - component: {fileID: 226772296267759708}
   - component: {fileID: 4339660178794021585}
   - component: {fileID: 838323740284995032}
@@ -5028,11 +5029,9 @@ MonoBehaviour:
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"Player","value":null,"typeHandle":{"Identification":"UnityEngine.Transform,
       UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"AttackCooldown","value":{"$content":2.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"AttackReady","value":{"$content":true,"$type":"System.Boolean"},"typeHandle":{"Identification":"System.Boolean,
-      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"BulletPool","value":{"prefab":0,"muzzle":1,"$type":"RageRooster.Systems.ObjectPool.ObjectPools+Client"},"typeHandle":{"Identification":"RageRooster.Systems.ObjectPool.ObjectPools+Client,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"BulletPool","value":{"$type":"Unity.VisualScripting.Unknown"},"typeHandle":{"Identification":"RageRooster.Systems.ObjectPool.ObjectPools+Client,
       Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
-    _objectReferences:
-    - {fileID: -2772165324754770109, guid: ecd0681902479df4182d2aa655d7ff14, type: 3}
-    - {fileID: 4646624316971525324}
+    _objectReferences: []
 --- !u!95 &1628104581712334922
 Animator:
   serializedVersion: 7
@@ -5202,6 +5201,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
   RealPositionOffset: {x: 0, y: 0.5, z: 0}
+  rigidBody: {fileID: 4955049059810562381}
+  collider: {fileID: 5120672082714371255}
+  navMeshAgent: {fileID: 0}
+  centerComputationType: 0
+  grabbable: {fileID: 226772296267759708}
+--- !u!114 &-2347159966343118322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4906831177318307996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c15eb228060da4689a9f675157e315, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RangedTarget
+  RealPositionOffset: {x: 0, y: 0, z: 0}
+  rigidBody: {fileID: 4955049059810562381}
+  collider: {fileID: 5120672082714371255}
+  navMeshAgent: {fileID: 8532330221387340354}
+  centerComputationType: 0
 --- !u!114 &226772296267759708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5214,6 +5235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30ca0b49fe34f03488e5746202eb7638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
+  grabbablePublic: 1
   grabHealthMax: 15
   wiggleFreeTime: 0
   anchorPoint: {fileID: 5012654195610859544}
@@ -5238,6 +5260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0489aa5e525cbfe459bfdb27ab7a705f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RagdollHandler
+  minCollisionTime: 0
   minRagdollTime: 5
   maxRagdollTime: 20
   minRagdollVelocity: 1

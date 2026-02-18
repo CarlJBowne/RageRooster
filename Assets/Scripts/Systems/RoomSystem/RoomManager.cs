@@ -1,6 +1,6 @@
 using RageRooster.RoomSystem;
 using RageRooster.Systems;
-using RageRooster.Systems.ObjectPool;
+using RageRooster.Systems.ObjectPooling;
 using RageRooster.Systems.SaveSystem;
 using SLS.ISingleton;
 using System;
@@ -110,7 +110,7 @@ namespace RageRooster.RoomSystem
                 currentArea = null;
                 currentRoom = null;
                 currentArea = destination.area;
-                ObjectPools.UnloadAllPools();
+                GlobalPool.UnloadAllPools();
                 yield return currentArea.LoadArea();
             }
 

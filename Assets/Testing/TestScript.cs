@@ -1,4 +1,4 @@
-using EditorAttributes;
+﻿using EditorAttributes;
 using FMOD.Studio;
 using RageRooster.RoomSystem;
 using System;
@@ -6,26 +6,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using RageRooster.Systems.ObjectPool;
+using RageRooster.Systems.ObjectPooling;
 using FMODUnity;
 using RageRooster.Systems;
+using UnityEngine.UIElements;
+using UnityEditor;
+using UnityEditor.UIElements;
 
 public class TestScript : MonoBehaviour
 {
-    public EventReference secondMusic;
+    [SerializeReference]
+    public PlayerButtonAction testVal;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other == Player.Collider)
-        {
-            Music.BeginSecondaryMusic(secondMusic);
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if(other == Player.Collider)
-        {
-            Music.ReturnToPrimaryMusic();
-        }
-    }
+
 }

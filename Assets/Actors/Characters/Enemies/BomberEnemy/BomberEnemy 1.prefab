@@ -7355,17 +7355,14 @@ MonoBehaviour:
   health: 0
   stunTime: 0
   poofPrefab: {fileID: 0}
-  disableComponents:
-  - {fileID: 987003636535614580}
-  - {fileID: 255690769701385632}
-  - {fileID: 3473136968267292163}
+  stunComponents: []
+  entityActivity: {fileID: 0}
   enemyLootSpawner: {fileID: 0}
   tintAnimator: {fileID: 7237475419804263782}
-  respawn: 0
+  ragdoll: {fileID: 0}
   respawnTime: 5
   onDamageEvent:
     _PersistentCalls: []
-  currentState: 0
 --- !u!114 &3042019609250107629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7441,6 +7438,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
   RealPositionOffset: {x: 0, y: 0, z: 0}
+  rigidBody: {fileID: 3526101412809164778}
+  collider: {fileID: 287593057092732791}
+  navMeshAgent: {fileID: 0}
+  centerComputationType: 0
+  grabbable: {fileID: 2302346554342993742}
 --- !u!114 &2302346554342993742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7453,6 +7455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30ca0b49fe34f03488e5746202eb7638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
+  grabbablePublic: 1
   grabHealthMax: -1
   wiggleFreeTime: 0
   anchorPoint: {fileID: 0}
@@ -7464,6 +7467,7 @@ MonoBehaviour:
   thrownObjectAttack: {fileID: 5909932016510006484}
   health: {fileID: 8286889519437266281}
   constantMovement: {fileID: 0}
+  entityActivity: {fileID: 0}
 --- !u!114 &4164844196294852286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7476,9 +7480,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0489aa5e525cbfe459bfdb27ab7a705f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RagdollHandler
+  minCollisionTime: 0
   minRagdollTime: 2
   maxRagdollTime: 5
   minRagdollVelocity: 0.2
+  rootBoneCollider: {fileID: 0}
   ragDollColliders:
   - {fileID: 6201673363928838393}
   - {fileID: 6301219794483224875}
@@ -7491,6 +7497,7 @@ MonoBehaviour:
   - {fileID: 3281941724138083745}
   - {fileID: 6987695458602436386}
   - {fileID: 5760920975354125583}
+  rootRigidBody: {fileID: 0}
   ragDollRigidBodies:
   - {fileID: 3615573198686002107}
   - {fileID: 6298170253662193390}
@@ -7504,9 +7511,10 @@ MonoBehaviour:
   - {fileID: 8481048428969517530}
   - {fileID: 436478931466699469}
   defaultCollider: {fileID: 287593057092732791}
-  defaultRigidbody: {fileID: 3526101412809164778}
+  defaultRigidBody: {fileID: 0}
+  entityActivity: {fileID: 0}
   grabbable: {fileID: 2302346554342993742}
-  enemyHealth: {fileID: 8286889519437266281}
+  health: {fileID: 0}
 --- !u!114 &5909932016510006484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7524,7 +7532,6 @@ MonoBehaviour:
     velocity: {x: 0, y: 0, z: 0}
     tags: []
   sourceEntity: {fileID: 0}
-  enabled: 0
   onContactEvent:
     _PersistentCalls:
     - _Target: {fileID: 3335057551916077419}

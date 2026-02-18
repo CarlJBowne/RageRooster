@@ -48,6 +48,8 @@ public class PlayerGrabber : MonoBehaviour
         GrabStateEvent?.Invoke(true);
         SetGrabbingLayer(true);
         currentGrabbed.Grab();
+
+        if (Player.StateMachine.Airborne && Upgrades.Active.dropLaunch && Input.Grab.IsPressed()) dropLaunchState.Enter();
     }
 
 

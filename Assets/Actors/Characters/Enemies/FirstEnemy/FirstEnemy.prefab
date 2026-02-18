@@ -5719,6 +5719,7 @@ GameObject:
   - component: {fileID: 4543461492338020441}
   - component: {fileID: 3674508901043307227}
   - component: {fileID: 2553139906093570398}
+  - component: {fileID: 6414152419601664267}
   - component: {fileID: 1790795846713865799}
   - component: {fileID: 9177222470484513295}
   - component: {fileID: 8073722270089541327}
@@ -5739,7 +5740,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.4999999, y: 1.5, z: 1.4999999}
+  m_LocalScale: {x: 1.4999998, y: 1.5, z: 1.4999998}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1743930371219312829}
@@ -5973,6 +5974,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
   RealPositionOffset: {x: 0, y: 1, z: 0}
+  rigidBody: {fileID: 6988035877431068064}
+  collider: {fileID: 982579509626493083}
+  navMeshAgent: {fileID: 6738454064187818541}
+  centerComputationType: 0
+  grabbable: {fileID: 1790795846713865799}
+--- !u!114 &6414152419601664267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811522196661094151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58c15eb228060da4689a9f675157e315, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RangedTarget
+  RealPositionOffset: {x: 0, y: 1, z: 0}
+  rigidBody: {fileID: 6988035877431068064}
+  collider: {fileID: 982579509626493083}
+  navMeshAgent: {fileID: 6738454064187818541}
+  centerComputationType: 0
 --- !u!114 &1790795846713865799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5985,6 +6008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30ca0b49fe34f03488e5746202eb7638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
+  grabbablePublic: 1
   grabHealthMax: 16
   wiggleFreeTime: 0
   anchorPoint: {fileID: 8731360320969202055}
@@ -6009,6 +6033,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0489aa5e525cbfe459bfdb27ab7a705f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RagdollHandler
+  minCollisionTime: 0.03
   minRagdollTime: 5
   maxRagdollTime: 20
   minRagdollVelocity: 1

@@ -7,49 +7,32 @@ using RageRooster.Systems.SaveSystem;
 
 public class PlayerGrabAction : PlayerStateBehavior
 {
-    public State noTargetState;
-    public State blockedState;
-    public State throwState;
-    public State dropLaunchState;
-    public State successReturnState;
-
-    private MeleeTarget target;
-
+    public UltEvents.UltEvent successReturn;
+    public UltEvents.UltEvent failMissedReturn;
+    public UltEvents.UltEvent failBlockedReturn;
+    public UltEvents.UltEvent altSwitchReturn;
 
     public void GrabThrowButton()
     {
         if (Player.SignalManager.Locked) return;
-        if (Player.Grabber.currentGrabbed == null)
-            BeginGrabAttempt();
-        else BeginThrow();
-    }
-
-    void BeginGrabAttempt()
-    {
-        target = TargetingManager.GetMeleeTarget();
-        if (target != null)
-        {
-            State.Enter();
-            Player.MovementBody.QuickTurnLimited(target.position - Player.MovementBody.Position, .1f);
-        }
-        else noTargetState.Enter();
+        State.Enter();
     }
 
     public void EndGrabAttempt()
     {
-        if (Grabbable.IsGrabbable(target, out Grabbable targetGrabbable))
+        MeleeTarget systemTarget = TargetingManager.MeleeChannel.CurrentTarget;
+        if (systemTarget) Grabbable.Attempt(systemTarget.gameObject, Succeed, failMissedReturn.Invoke, failBlockedReturn.Invoke);
+        else
         {
-            Player.Grabber.Grab(targetGrabbable);
-            successReturnState.Enter();
-            if(dropLaunchState != null && Upgrades.Active.dropLaunch && Input.Grab.IsPressed()) BeginThrow();
+            GameObject targetObject = null; //(Placeholder, get via Physics check later.)
+
+            //Grabbable.Attempt(targetObject, Player.Grabber.Grab, failMissedReturn.Invoke, failBlockedReturn.Invoke);
         }
-        else blockedState.Enter();
-        target = null;
     }
 
-    void BeginThrow()
+    void Succeed(Grabbable G)
     {
-        if (dropLaunchState != null && Upgrades.Active.dropLaunch) throwState = dropLaunchState;
-        throwState.Enter();
+        Player.Grabber.Grab(G);
+        successReturn?.Invoke();
     }
 }

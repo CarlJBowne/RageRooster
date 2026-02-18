@@ -1,5 +1,6 @@
 using DG.Tweening;
 using EditorAttributes;
+using RageRooster.Systems.ObjectPooling;
 using RageRooster.Systems.SaveSystem;
 using SLS.StateMachineH;
 using System;
@@ -10,31 +11,43 @@ using UnityEngine;
 public class PlayerRanged : MonoBehaviour
 {
     #region Config
-    public PlayerAirborneMovement jumpState;
-    public State airThrowState;
-    public State dropLaunchState;
+    public Transform realMuzzle;
+    public Transform shootMuzzle;
+    public Transform targetPos;
+    public PlayerLassoProjectile LassoProjectile;
+    public ObjectPool<PlayerProjectile> eggPool;
+    public Timer.Loop eggReplenishRate = new(1f);
+    public UnityEngine.Animations.Rigging.Rig aimingRig;
+    public State aimThrowState;
+    public Cinemachine.AxisState hAxis;
+    public Cinemachine.AxisState vAxis;
+    public Transform aimRotationController;
+    public LayerMask hitScanLayerMask;
+    public float playerRotationSpeed = 10f;
+
+
     #endregion
 
     #region Data
-    private bool aiming;
-    new AudioCaller audio;
-    public PlayerAiming aimingState;
-    public State shootingState;
-    private UIHUDSystem UI;
-    private bool justShot;
-    private CoroutinePlus justShotCO;
+    [HideProperty] public int eggAmount = 10;
+    [HideProperty] public int eggCapacity = 10;
+    [HideProperty] public float currentTargetDistance = 10f;
+
+    public bool hasEggsToShoot => eggAmount > 0;
+
     #endregion
+
+
+
+
+
+
 
     private void Awake()
     {
-        TryGetComponent(out audio);
-        UI = UIHUDSystem.Instance;
-
-        pointer.target.position = pointer.startV.position + pointer.startV.forward * pointer.distance;
-
         eggPool.Initialize();
-        Player.Ammo.updateAmmo += UI.ammo.UpdateAmmo;
-        Player.Ammo.updateMaxAmmo += UI.ammo.UpdateMax;
+        Player.Ammo.updateAmmo += UIHUDSystem.Instance.ammo.UpdateAmmo;
+        Player.Ammo.updateMaxAmmo += UIHUDSystem.Instance.ammo.UpdateMax;
     }
 
     private void OnEnable() => PauseMenu.onPause += ExitAimingInstant;
@@ -42,21 +55,40 @@ public class PlayerRanged : MonoBehaviour
 
     private void FixedUpdate()
     {
+        eggPool.Update(Time.deltaTime);
         if (!enabled) return;
         if (eggAmount < eggCapacity) eggReplenishRate.Tick(() => Player.Ammo.Current++);
 
-        pointer.startH.position = Player.MovementBody.Position + Vector3.up;
-
         if (Player.Animator.enabled) Player.Animator.Update(0f);
 
-        if (aimingState.State) AimingFixedUpdate();
-        else NonAimingFixedUpdate();
+        if (Player.StateMachine.Aiming)
+        {
+            aimRotationController.position = Player.MovementBody.Position + (Vector3.up * 0.915f);
+
+            hAxis.m_InputAxisValue = Input.Camera.x;
+            hAxis.Update(Time.deltaTime);
+            vAxis.m_InputAxisValue = Input.Camera.y;
+            vAxis.Update(Time.deltaTime);
+            aimRotationController.localEulerAngles = new Vector3(vAxis.Value, hAxis.Value, 0);
+
+            targetPos.position = TargetingManager.RangedChannel.CurrentTarget != null
+                ? TargetingManager.RangedChannel.CurrentTarget.position
+                : Physics.Raycast(Cameras.aimingCamera.transform.position, Cameras.RealCamera.transform.forward, out RaycastHit hit, TargetingManager.RangedChannel.Range.maxDistance, hitScanLayerMask)
+                    ? hit.point
+                    : Cameras.aimingCamera.transform.position + (Cameras.RealCamera.transform.forward * TargetingManager.RangedChannel.Range.maxDistance);
+
+            Player.MovementBody.DirectionSet((targetPos.position - Player.Position).XZ(), playerRotationSpeed);
+        }
+        else
+        {
+            if (TargetingManager.RangedChannel.CurrentTarget != null)
+                targetPos.position = TargetingManager.RangedChannel.CurrentTarget.position;
+        }
     }
 
     private void LateUpdate()
     {
         if (!enabled) return;
-        // delegate grabbed-object follow to Player.Grabber; keep safety checks
         if (Player.Grabber != null && Player.Grabber.currentGrabbed != null && Player.Grabber.heldItemAnchor != null)
         {
             var t = Player.Grabber.currentGrabbed.transform;
@@ -66,197 +98,98 @@ public class PlayerRanged : MonoBehaviour
 
     private void OnDestroy()
     {
-        Player.Ammo.updateAmmo -= UI.ammo.UpdateAmmo;
-        Player.Ammo.updateMaxAmmo -= UI.ammo.UpdateMax;
+        Player.Ammo.updateAmmo -= UIHUDSystem.Instance.ammo.UpdateAmmo;
+        Player.Ammo.updateMaxAmmo -= UIHUDSystem.Instance.ammo.UpdateMax;
+        eggPool.Cleanup();
     }
 
-    // Expose currentGrabbed (forward to Player.Grabber) so external code using PlayerRanged.currentGrabbed continues to work.
     public Grabbable currentGrabbed => Player.Grabber != null ? Player.Grabber.currentGrabbed : null;
 
-    #region Grabbing API Forwarders
-    // Thin wrappers that forward to the new PlayerGrabber. This preserves the existing public API.
-    public float launchVelocity
-    {
-        get => Player.Grabber.launchVelocity;
-        set { Player.Grabber.launchVelocity = value; }
-    }
 
-    public void TryGrabThrow(PlayerGrabAction state, State throwState) { }
-    public void TryGrabThrowAir(PlayerGrabAction state) { }
-    public void GrabPoint(IGrabbable_Obsolete grabbed) { }
-    public void GrabPointSignal() {}
-    public void ThrowPoint() { }
-    public void Release(Vector3 velocity, bool thrown = false) { }
-    public IGrabbable_Obsolete CheckForGrabbable() => null;
-    #endregion
 
-    #region Ranged / Aiming (unchanged)
-    public Pointer pointer;
-    [Serializable] public class Pointer
-    {
-        public Transform startH;
-        public Transform startV;
-        public Transform target;
-        public float distance;
-        public Transform shootMuzzlePos;
-        public LayerMask layerMask;
-        public Transform hitMarker;
-    }
 
-    public Transform realMuzzle;
-    public Transform spine1;
-    public Cinemachine.CinemachineVirtualCameraBase shootingVCam;
-    public State idleState;
-    public ObjectPool eggPool;
-    public float playerRotationSpeed = 10;
-    public Timer.Loop eggReplenishRate = new(1f);
-    public UnityEngine.Animations.Rigging.Rig aimingRig;
-    public State aimThrowState;
-
-    [HideProperty] public int eggAmount = 10;
-    [HideProperty] public int eggCapacity = 10;
-    [HideProperty] public float currentTargetDistance = 10f;
-
-    public float pointerH
-    {
-        get => pointer.startH.localEulerAngles.y;
-        set => pointer.startH.localEulerAngles = new(0, value, 0);
-    }
-    public float pointerV
-    {
-        get => pointer.startV.localEulerAngles.x;
-        set => pointer.startV.localEulerAngles = new(value, 0, 0);
-    }
-
-    public bool hasEggsToShoot => eggAmount > 0;
-
-    public void AimingFixedUpdate()
-    {
-        Player.MovementBody.InstantDirectionChange(
-            Vector3.RotateTowards(
-                Player.MovementBody.direction, pointer.startH.forward,
-                playerRotationSpeed * Mathf.PI * Time.fixedTime, 0)
-            );
-
-        currentTargetDistance = pointer.distance;
-
-        if (Physics.Raycast(pointer.startV.position + pointer.startV.forward, pointer.startV.forward, out RaycastHit hit, pointer.distance, pointer.layerMask))
-        {
-            UI.UpdateHitMarker(hit.point, hit.distance, hit.collider.TryGetComponent(out IDamagable _));
-            pointer.hitMarker.transform.position = hit.point;
-            currentTargetDistance = hit.distance;
-        }
-        else
-        {
-            UI.UpdateHitMarker(pointer.target.position, pointer.distance, false);
-            pointer.hitMarker.transform.position = pointer.target.position;
-        }
-    }
-
-    public void NonAimingFixedUpdate()
-    {
-        pointerH = Cameras.normalCamera.State.FinalOrientation.eulerAngles.y;
-        pointer.target.position = Vector3.MoveTowards(pointer.target.position, pointer.startV.position + pointer.startV.forward * pointer.distance, .5f);
-        aimingState.hAxis.Value = pointerH;
-        aimingState.vAxis.Value = Mathf.MoveTowardsAngle(aimingState.vAxis.Value, 0, 1);
-        pointerV = Mathf.MoveTowardsAngle(pointerV, 0, 1);
-        if (!Player.MovementBody.Grounded && Upgrades.Active.dropLaunch)
-        {
-            realMuzzle.position = pointer.startH.position - (pointer.startH.up * (1 + (currentGrabbed == null ? 0 : currentGrabbed.AdditionalThrowDistance)));
-            realMuzzle.eulerAngles = Vector3.right * 90;
-        }
-        else
-        {
-            realMuzzle.position = pointer.startH.position + (pointer.startH.forward * (1 + (currentGrabbed == null ? 0 : currentGrabbed.AdditionalThrowDistance)));
-            realMuzzle.rotation = pointer.startH.rotation;
-        }
-    }
-
-    public void EnterAiming()
+    public void EnterAiming(State targetState)
     {
         if (eggCapacity == 0 && currentGrabbed != null) return;
 
+        SetAimDirection(Cameras.normalCamera.m_XAxis.Value, Cameras.normalCamera.m_YAxis.Value);
+        Cameras.aimingCamera.CancelDamping();
+        Cameras.aimingCamera.PreviousStateIsValid = false;
+        TargetingManager.ToggleAimingDownSights(true);
         Player.Animator.CrossFade("Aim", 0.3f);
-        aimingState.State.Enter();
+        targetState.Enter();
         aimingRig.enabled = true;
         aimingRig.weight = 1;
-        UI.SetHitMarkerVisibility(true);
-        shootingVCam.Priority = 11;
-        shootingVCam.gameObject.SetActive(true);
-        aiming = true;
+        UIHUDSystem.Instance.SetHitMarkerVisibility(true);
+        Cameras.SetTargetVirtualCamera(Cameras.aimingCamera);
     }
-    public void ExitAiming(State normalState, State grabbingState)
+    public void ExitAiming(State targetState)
     {
-        if (!aiming) return;
-        Cameras.normalCamera.m_XAxis.Value = pointerH;
+        if (!Player.StateMachine.Aiming) return;
+        Cameras.normalCamera.m_XAxis.Value = hAxis.Value;
+        TargetingManager.ToggleAimingDownSights(false);
         Player.Animator.CrossFade("GroundBasic", 0.1f);
-        (currentGrabbed == null ? normalState : grabbingState).Enter();
+        targetState.Enter();
         aimingRig.enabled = false;
         aimingRig.weight = 0;
-        UI.SetHitMarkerVisibility(false);
-        shootingVCam.Priority = 9;
-        shootingVCam.gameObject.SetActive(false);
-        aiming = false;
+        UIHUDSystem.Instance.SetHitMarkerVisibility(false);
+        Cameras.SetTargetVirtualCamera(Cameras.normalCamera);
     }
 
     public void ExitAimingAux()
     {
-        if (!aiming) return;
-        Cameras.normalCamera.m_XAxis.Value = pointerH;
+        if (!Player.StateMachine.Aiming) return;
+        Cameras.normalCamera.m_XAxis.Value = hAxis.Value;
+        TargetingManager.ToggleAimingDownSights(false);
         aimingRig.enabled = false;
         aimingRig.weight = 0;
-        UI.SetHitMarkerVisibility(false);
-        shootingVCam.Priority = 9;
-        shootingVCam.gameObject.SetActive(false);
-        aiming = false;
-        Player.StateMachine.Children[0].Enter();
+        UIHUDSystem.Instance.SetHitMarkerVisibility(false);
+        Cameras.SetTargetVirtualCamera(Cameras.normalCamera);
+        Player.StateMachine.IdleWalk.Enter();
     }
 
     public void ExitAimingInstant()
     {
-        if (!aiming) return;
-        Cameras.normalCamera.m_XAxis.Value = pointerH;
+        if (!Player.StateMachine.Aiming) return;
+        Cameras.normalCamera.m_XAxis.Value = hAxis.Value;
+        TargetingManager.ToggleAimingDownSights(false);
         aimingRig.enabled = false;
         aimingRig.weight = 0;
-        UI.SetHitMarkerVisibility(false);
-        shootingVCam.Priority = 9;
-        shootingVCam.gameObject.SetActive(false);
-        aiming = false;
+        UIHUDSystem.Instance.SetHitMarkerVisibility(false);
+        Cameras.SetTargetVirtualCamera(Cameras.normalCamera);
         Player.Animator.Play("GroundBasic");
-        Player.StateMachine.Children[0].Enter();
+        Player.StateMachine.IdleWalk.Enter();
     }
 
-    public void Shoot()
+    public void SetAimDirection(float X, float Y)
     {
-        if (!aiming) return;
-        if (currentGrabbed != null) AimThrow();
-        else if (eggAmount >= 1 && !shootingState.Active)
-            shootingState.Enter();
+        aimRotationController.position = Player.MovementBody.Position + (Vector3.up * 0.915f);
+        aimRotationController.localEulerAngles = new Vector3(Y, X, 0);
+        hAxis.Value = X;
+        vAxis.Value = Y;
     }
+
+
+    public void TryShoot(State shootingState)
+    { 
+        if (eggAmount >= 1 && !shootingState.Active) shootingState.Enter(); 
+    }
+
+    public int totalEggsShot;
 
     public void ShootPoint()
     {
-        if (justShot) return;
-        realMuzzle.position = pointer.shootMuzzlePos.position;
-        Quaternion Q = realMuzzle.rotation;
-        Q.SetLookRotation(pointer.hitMarker.position - realMuzzle.position);
-        realMuzzle.rotation = Q;
-
-        audio.PlayOneShot("EggShoot");
-        eggPool.Pump().GetComponent<ProjectileMovement>().Send();
+        totalEggsShot++;
+        Player.Audio.PlayOneShot("EggShoot");
+        realMuzzle.position = shootMuzzle.position;
+        eggPool.Pump()?.Send(TargetingManager.RangedChannel.CurrentTarget, realMuzzle, targetPos);
         Player.Ammo.Current--;
-        justShot = true;
-        CoroutinePlus.Begin(ref justShotCO, Enum(), this);
-        IEnumerator Enum()
-        {
-            yield return null;
-            justShot = false;
-        }
     }
 
-    public void AimThrow()
+    public void ThrowLassoPoint()
     {
-        aimThrowState.Enter();
+        realMuzzle.position = shootMuzzle.position;
+        LassoProjectile.Send(TargetingManager.RangedChannel.CurrentTarget, realMuzzle, targetPos);
     }
-    #endregion
+
 }

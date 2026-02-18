@@ -8,7 +8,8 @@ using UnityEngine;
 using static SLS.StateMachineH.StateAnimator;
 using static UnityEngine.EventSystems.EventTrigger;
 
-public class PlayerGroundedMovement : PlayerMovementEffector
+[System.Obsolete("This is an old script, Use PlayerGroundMovement instead.")]
+public class PlayerGroundMovementComplex : PlayerMovementEffector
 {
     [Header("Horizontal")]
     public float acceleration;
@@ -20,11 +21,11 @@ public class PlayerGroundedMovement : PlayerMovementEffector
     public bool outwardTurn;
     
     public float minSpeed;
-    public PlayerGroundedMovement rollState;
-    public PlayerGroundedMovement walkState;
-    public PlayerGroundedMovement prevPhase;
+    public PlayerGroundMovementComplex rollState;
+    public PlayerGroundMovementComplex walkState;
+    public PlayerGroundMovementComplex prevPhase;
     [ShowField(nameof(__hasPrevPhase))] public float prevPhaseThreshold;
-    public PlayerGroundedMovement nextPhase;
+    public PlayerGroundMovementComplex nextPhase;
     [ShowField(nameof(__hasNextPhase))] public float nextPhaseThreshold;
     
     [FoldoutGroup("Conditions", nameof(needs1Charge), nameof(needs2Charge), nameof(needsRagingUpgrade), nameof(canRoll))]
@@ -133,9 +134,9 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         playerMovementBody.Land(collideResult);
         State.Enter();
         canRoll = true;
-        if (onEntry == EntryAnimAction.Play) Machine.animator.Play(onEnterName);
-        if (onEntry == EntryAnimAction.CrossFade) Machine.animator.CrossFade(onEnterName, onEnterTime);
-        if (onEntry == EntryAnimAction.Trigger) Machine.animator.SetTrigger(onEnterName);
+        if (onEntry == EntryAnimAction.Play) Player.Animator.Play(onEnterName);
+        if (onEntry == EntryAnimAction.CrossFade) Player.Animator.CrossFade(onEnterName, onEnterTime);
+        if (onEntry == EntryAnimAction.Trigger) Player.Animator.SetTrigger(onEnterName);
     }
     public void LandInto(StateAnimator.EntryAnimAction onEntry, string onEnterName, float onEnterTime)
     {
@@ -144,9 +145,9 @@ public class PlayerGroundedMovement : PlayerMovementEffector
         playerMovementBody.Land(collideResult);
         State.Enter();
         canRoll = true;
-        if (onEntry == EntryAnimAction.Play) Machine.animator.Play(onEnterName);
-        if (onEntry == EntryAnimAction.CrossFade) Machine.animator.CrossFade(onEnterName, onEnterTime);
-        if (onEntry == EntryAnimAction.Trigger) Machine.animator.SetTrigger(onEnterName);
+        if (onEntry == EntryAnimAction.Play) Player.Animator.Play(onEnterName);
+        if (onEntry == EntryAnimAction.CrossFade) Player.Animator.CrossFade(onEnterName, onEnterTime);
+        if (onEntry == EntryAnimAction.Trigger) Player.Animator.SetTrigger(onEnterName);
     }
 
         public void StartRoll()

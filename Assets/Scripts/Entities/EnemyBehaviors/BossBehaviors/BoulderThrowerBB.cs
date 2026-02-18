@@ -9,8 +9,8 @@ public class BoulderThrowerBB : MonoBehaviour
     public float throwTime;
     public float minVelocity;
 
-    public ObjectPool projectiles;
-    public ObjectPool warnings;
+    public ObjectPool_OBSOLETE projectiles;
+    public ObjectPool_OBSOLETE warnings;
     public Transform fakeMuzzle;
     public Transform trueMuzzle;
 
@@ -42,7 +42,7 @@ public class BoulderThrowerBB : MonoBehaviour
         PhysicsPro.ThrowAt.WithTimeAndMinVelocity(targetDistanceXY, throwTime, -Physics.gravity.y, minVelocity, out float initialVelocity, out float angle);
 
         trueMuzzle.eulerAngles = trueMuzzle.eulerAngles - (Vector3.right * angle);
-        PoolableObject boulder = projectiles.Pump();
+        PoolableObject_OBSOLETE boulder = projectiles.Pump();
         boulder.SetPosition(trueMuzzle.position);
         boulder.rb.linearVelocity = initialVelocity * trueMuzzle.forward; 
 
