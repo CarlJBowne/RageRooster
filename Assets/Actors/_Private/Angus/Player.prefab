@@ -450,30 +450,27 @@ MonoBehaviour:
   movementCheckBuffer: 0.1
   groundCheckBuffer: 0.1
   movementProjectionSteps: 3
-  _rb: {fileID: 1838944232945776554}
-  <Collider>k__BackingField: {fileID: 598530174602593461}
-  velocity: {x: 0, y: 0, z: 0}
-  direction: {x: 0, y: 0, z: 1}
-  moveTestString: 
-  jumpState1: {fileID: 8452752302749071132}
-  wallJumpState: {fileID: 750694679335013753}
-  airChargeState: {fileID: 1482092204021747920}
+  bonkThreshold: 15
   doubleJump: {fileID: 8452752302749071132}
   frontCheckDefaultOffset: {x: 0, y: 0.5, z: 1}
   frontCheckDefaultRadius: 1
-  Mario64StyleAntiVoid: 1
-  nonVoidLayerMask:
+  validGroundMask:
     serializedVersion: 2
-    m_Bits: 1049
-  idleState: {fileID: 4612571557662915037}
-  airNeutralState: {fileID: 3747663377877617945}
+    m_Bits: 0
+  cantWalkOff: 0
+  platformDetectionFactor: 1
+  <RB>k__BackingField: {fileID: 0}
+  <Collider>k__BackingField: {fileID: 598530174602593461}
   Machine: {fileID: 8455434200384702600}
   playerController: {fileID: 1371118413310184343}
   animator: {fileID: 0}
+  moveTestString: 
+  _direction: {x: 0, y: 0, z: 1}
+  velocity: {x: 0, y: 0, z: 0}
+  currentSpeed: 0
+  movementModifier: 1
   baseMovability: 1
   canJump: 1
-  movementModifier: 1
-  currentSpeed: 0
   jumpMarkers: []
 --- !u!54 &1838944232945776554
 Rigidbody:
@@ -5888,6 +5885,16 @@ PrefabInstance:
       propertyPath: <Machine>k__BackingField
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 5638501120671067454, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: _EnableEvent._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 3941225653291784218}
+    - target: {fileID: 5638501120671067454, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: _DisableEvent._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 3941225653291784218}
     - target: {fileID: 5681596260958072990, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: animator
@@ -7357,18 +7364,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1482092204021747920 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5012074309405209811, guid: 10f8c208526e83a41baa81d4b8ab10ac,
-    type: 3}
-  m_PrefabInstance: {fileID: 5845395268100613123}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89a8416e01b52494193d14c59b41a835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &2396489837623806523 stripped
