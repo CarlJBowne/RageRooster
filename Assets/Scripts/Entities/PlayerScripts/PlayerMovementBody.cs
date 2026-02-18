@@ -179,20 +179,20 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     }
 
 
-    void Move(Vector3 velocity, int step = 0)
+    void Move(Vector3 stepVelocity, int step = 0)
     {
-        moveTestString += $"Step {step}: {velocity}\n";
+        moveTestString += $"Step {step}: {stepVelocity}\n";
 
-        if (velocity == Vector3.zero) return;
+        if (stepVelocity == Vector3.zero) return;
 
-        if (Grounded) velocity = velocity.ProjectAndScale(anchorPoint.normal);
+        if (Grounded) stepVelocity = stepVelocity.ProjectAndScale(anchorPoint.normal);
 
         float stopDistance = -1;
         Vector3 nextNormal = Vector3.zero;
         bool scaleByDot = false;
         bool deleteVerticalLeftover = false;
 
-        if (SweepBody(velocity, out RaycastHit hit, groundCheckBuffer) && !(velocity.y == 0 && hit.normal == Vector3.up))
+        if (SweepBody(stepVelocity, out RaycastHit hit, groundCheckBuffer) && !(stepVelocity.y == 0 && hit.normal == Vector3.up))
         {
             stopDistance = hit.distance;
             nextNormal = hit.normal;
@@ -244,10 +244,20 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                     }
                     else moveTestString += "Hit a steep slope while falling.\n";
                 }
-                else moveTestString += "Hit a sloped ceiling while jumping.\n";
+                else if (!WithinSlopeAngle(-hit.normal))
+                {
+                    moveTestString += "Hit a sloped ceiling while jumping.\n";
+                } 
+                else
+                {
+                    moveTestString += "Hit a ceiling while jumping.\n";
+                    deleteVerticalLeftover = true;
+                    velocity.y = -0.1f;
+                    UnLand(JumpState.Falling);
+                }
             }
 
-            if (hit.normal.y > 0 && WithinSlopeAngle(hit.normal) && velocity.y <= 0) anchorPoint = hit;
+            if (hit.normal.y > 0 && WithinSlopeAngle(hit.normal) && stepVelocity.y <= 0) anchorPoint = hit;
         }
         else
         {
@@ -256,7 +266,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                 {
                     //Alternative Stop Checks
 
-                    Vector3 platformCheckDistance = velocity * platformDetectionFactor;
+                    Vector3 platformCheckDistance = stepVelocity * platformDetectionFactor;
                     bool forwardCheckOp = SweepBody(Vector3.down * 5000, out RaycastHit platformCheckHit, groundCheckBuffer, Position + platformCheckDistance);
 
                     if (forwardCheckOp && platformCheckHit.distance <= groundCheckBuffer + .001f && WithinSlopeAngle(platformCheckHit.normal)) { }
@@ -268,7 +278,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                         Vector3 reachAroundPos = Position + platformCheckDistance - (Vector3.up * Collider.height / 2);
                         if (SweepBody(platformCheckDistance.XZ() * -2f, out RaycastHit reachAroundResult, 0, reachAroundPos))
                         {// Assume able to reach Platform from below.
-                            stopDistance = velocity.magnitude - reachAroundResult.distance - .1f;
+                            stopDistance = stepVelocity.magnitude - reachAroundResult.distance - .1f;
                             nextNormal = -reachAroundResult.normal.XZ();
                             scaleByDot = true;
                             moveTestString += $"Found Platform to Lock at, nextNormal: {nextNormal}\n";
@@ -279,15 +289,15 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                     }
                 }
 
-                
+
                 if (stopDistance == -1)
-                { 
-                    if(GroundCheck(out _, out RaycastHit groundCast, true) && groundCast.normal != anchorPoint.normal)
-                    { 
+                {
+                    if (GroundCheck(out _, out RaycastHit groundCast, true) && groundCast.normal != anchorPoint.normal)
+                    {
                         Ray cornerCheckRay = new(groundCast.barycentricCoordinate + new Vector3(0, .1f, 0), Vector3.down);
                         bool different = groundCast.collider.Raycast(cornerCheckRay, out RaycastHit baryHit, .11f)
                             && baryHit.normal != groundCast.normal;
-                         
+
                         if (groundCast.distance >= float.Epsilon && groundCast.distance <= groundCheckBuffer && !different)
                         {
                             moveTestString += "Snapping to lowerGround.\n";
@@ -301,28 +311,28 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             }
             else
             { //If not Grounded, skip straight to Checking for void.
-                if (!SweepBody(Vector3.down * 5000, out _, 0, Position + velocity))
+                if (!SweepBody(Vector3.down * 5000, out _, 0, Position + stepVelocity))
                 {//Since not necessarily anywhere near a platform, just stop the player in their tracks for now.
                     moveTestString += "Hit the void while falling.\n";
                     stopDistance = 0;
-                    nextNormal = -velocity.XZ();
+                    nextNormal = -stepVelocity.XZ();
                 }
             }
 
 
         }
 
-        Vector3 snapToSurface = stopDistance != -1 ? velocity.normalized * stopDistance : velocity;
+        Vector3 snapToSurface = stopDistance != -1 ? stepVelocity.normalized * stopDistance : stepVelocity;
         Position += snapToSurface;
 
         if (stopDistance == -1 || step + 1 >= movementProjectionSteps) return;
-        else if (Vector3.Angle(velocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Machine.SendSignal(new("Bonk", 0, true)))
+        else if (Vector3.Angle(stepVelocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Machine.SendSignal(new("Bonk", 0, true)))
         {
             this.velocity = Vector3.zero;
             return;
         }
 
-        Vector3 leftover = velocity - snapToSurface;
+        Vector3 leftover = stepVelocity - snapToSurface;
         if (deleteVerticalLeftover) leftover.y = 0;
         Vector3 newDir = leftover.ProjectAndScale(nextNormal);
         if (scaleByDot) newDir *= Vector3.Dot(leftover.normalized, nextNormal) + 1;
