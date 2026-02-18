@@ -8,7 +8,7 @@ public class WanderEB : StateBehavior
     [SerializeField] float speed;
     [SerializeField] float minWalkDistance = 3f;
     [SerializeField] float maxWalkDistance = 5f;
-    [SerializeField] float distanceToProceed = 0.5f;
+    //[SerializeField] float distanceToProceed = 0.5f;
 
     private NavMeshAgent agent;
     private bool navMeshFailed;

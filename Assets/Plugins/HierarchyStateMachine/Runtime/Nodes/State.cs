@@ -88,7 +88,7 @@ namespace SLS.StateMachineH {
         /// <param name="parent">The parent <see cref="State"/>.</param>  
         /// <param name="layer">The layer index of this <see cref="State"/>.</param>  
         /// <param name="makeDirty">Whether to mark the <see cref="State"/> as dirty in the editor.</param>  
-        public virtual void Setup(StateMachine machine, State parent, int layer, bool makeDirty = false)
+        public virtual void Setup(StateMachine machine, State parent, int layer, bool makeDirty)
         {
             this.Machine = machine;
             this.Parent = parent;
@@ -104,14 +104,14 @@ namespace SLS.StateMachineH {
                 Children = new();
                 for (int i = 0; i < ChildCount; i++)
                 {
-                    Children.Add(transform.GetChild(i).GetComponent<State>());
-                    Children[i].Setup(machine, this, layer + 1);
+                    GameObject childG = transform.GetChild(i).gameObject;
+                    if (!childG.TryGetComponent(out State childS)) break;
+                    Children.Add(childS);
+                    childS.Setup(machine, this, layer + 1, makeDirty);
                 }
             }
+            if(makeDirty) ApplySetupChanges();
 
-#if UNITY_EDITOR
-            if (makeDirty) EditorUtility.SetDirty(this);
-#endif
         }
 
         /// <summary>  
@@ -221,6 +221,31 @@ namespace SLS.StateMachineH {
         /// Implicit bool operator. Returns true if the State exists and is Active.
         /// </summary>
         public static implicit operator bool(State state) => state != null && state.Active;
+
+        protected void ApplySetupChanges()
+        {
+#if UNITY_EDITOR
+            EditorUtility.SetDirty(this);
+
+            var prefabStatus = PrefabUtility.GetPrefabInstanceStatus(gameObject);
+            bool isPartThatCanBeAppliedTo = PrefabUtility.IsPartOfPrefabThatCanBeAppliedTo(gameObject);
+
+            if (prefabStatus is PrefabInstanceStatus.Connected && isPartThatCanBeAppliedTo)
+            {
+                string assetPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(gameObject);
+
+                var addedComps = PrefabUtility.GetAddedComponents(gameObject);
+                var removedComps = PrefabUtility.GetRemovedComponents(gameObject);
+                var overrides = PrefabUtility.GetObjectOverrides(gameObject);
+                var addedGOs = PrefabUtility.GetAddedGameObjects(gameObject);
+
+                for (int i = 0; i < addedComps.Count; i++) addedComps[i].Apply();
+                for (int i = 0; i < removedComps.Count; i++) removedComps[i].Apply();
+                for (int i = 0; i < overrides.Count; i++) overrides[i].Apply();
+                for (int i = 0; i < addedGOs.Count; i++) addedGOs[i].Apply();
+            }
+#endif
+        }
 
     }
 

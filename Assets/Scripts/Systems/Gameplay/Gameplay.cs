@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using SLS.ISingleton;
 using RageRooster.RoomSystem;
 using RageRooster.Systems.SaveSystem;
-using RageRooster.Systems.ObjectPool;
+using RageRooster.Systems.ObjectPooling;
 using RageRooster.Systems;
 
 
@@ -135,8 +135,9 @@ public class Gameplay : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         inputPlayer.Awake();
         inputUI.Awake();
-        GetComponent<Cameras>().Awake();
-        ObjectPools.poolParent = transform.Find("PooledObjects");
+        GetComponentInChildren<Cameras>().Awake();
+        GlobalPool.poolParent = transform.Find("PooledObjects");
+        GlobalPool.Instance.Initialize();
         Overlay.OverMenus.BasicBlackout = 1;
         Overlay.OverGameplay.Reset();
         Overlay.OverHUD.Reset();

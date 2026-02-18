@@ -14,22 +14,24 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 {
     #region Config
 
+    [field: SerializeField] public State Grounded { get; private set; }
+    [field: SerializeField] public State IdleWalk { get; private set; }
+    [field: SerializeField] public State Airborne { get; private set; }
+    [field: SerializeField] public State Jump { get; private set; }
+    [field: SerializeField] public State Falling { get; private set; }
+    [field: SerializeField] public State Gliding { get; private set; }
+    [field: SerializeField] public State GrabbedMovement { get; private set; }
+    [field: SerializeField] public State Aiming { get; private set; }
+    [field: SerializeField] public State Animations { get; private set; }
+    [field: SerializeField] public State Paused { get; private set; }
+    [field: SerializeField] public State Ragdoll { get; private set; }
+
+
     #endregion
 
     #region Data
-    [HideInInspector] public Animator animator;
-    [HideInInspector] public PlayerMovementBody body;
-    [HideInInspector] public PlayerController controller;
-    [HideInInspector] public PlayerHealth health;
-    [HideInInspector] public PlayerRanged ranged;
     [HideInInspector] public new AudioCaller audio;
     public Transform cameraTransform;
-    //public CinemachineFreeLook freeLookCamera;
-    public State pauseState;
-    public State ragDollState;
-
-    public SerializedDictionary<string, State> states = new SerializedDictionary<string, State>();
-
     #endregion
 
 
@@ -39,12 +41,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 
     protected override void PreSetup()
     {
-        animator = GetComponent<Animator>();
-        body = GetComponent<PlayerMovementBody>();
-        controller = GetComponent<PlayerController>();
-        health = GetComponent<PlayerHealth>();
         audio = GetComponent<AudioCaller>();
-        ranged = GetComponent<PlayerRanged>();
     }
 
     protected override void OnAwake()
@@ -72,44 +69,43 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 
     public static Action<PlayerStateMachine> whenInitializedEvent;
 
-    public bool IsStableForOriginShift() => states["Grounded"].enabled || CurrentState == states["Fall"] || states["Glide"];
+    public bool IsStableForOriginShift() => Grounded.enabled || CurrentState == Falling.enabled || Gliding.enabled;
 
     public void ResetState()
     {
         Children[0].Enter();
         //signalReady = true;
-        Player.RagdollHandler.State = EntityState.Default;
-        animator.enabled = true;
-        animator.Play("GroundBasic");
+        Player.RagdollHandler.State = RagdollHandler.States.Off;
+        Player.Animator.enabled = true;
+        Player.Animator.Play("GroundBasic");
     }
 
     public void Pause()
     {
         this.enabled = false;
-        body.enabled = false;
+        Player.MovementBody.enabled = false;
     }
     public void UnPause()
     {
         this.enabled = true;
-        body.enabled = true;
+        Player.MovementBody.enabled = true;
     }
 
     private State prevState;
     public void CutsceneState()
     {
         prevState = CurrentState;
-        pauseState.Enter();
-        body.velocity = Vector3.zero;
-        body.CurrentSpeed = 0;
-        animator.CrossFade("GroundBasic", .2f);
+        Paused.Enter();
+        Player.MovementBody.velocity = Vector3.zero;
+        Player.MovementBody.CurrentSpeed = 0;
+        Player.Animator.CrossFade("GroundBasic", .2f);
     }
     public void UnCutsceneState()
     {
         prevState.Enter();
     }
 
-    public void DeathIfAtZero() { if (health.GetCurrentHealth() == 0) Player.Death(); }
-
+    public void DeathIfAtZero() { if (Player.Health.playerObject.GetCurrentHealth() == 0) Player.Death(); }
 
 #if UNITY_EDITOR
     protected override void Update()
@@ -119,4 +115,10 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     }
     public List<string> queuedSignals;
 #endif
+
+    protected override void FixedUpdate()
+    {
+        //DebugRR.DebugTextOverlay.ClearText();
+        base.FixedUpdate();
+    }
 }

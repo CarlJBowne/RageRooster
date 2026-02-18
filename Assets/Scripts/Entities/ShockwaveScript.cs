@@ -26,7 +26,7 @@ public class ShockwaveScript : MonoBehaviour
         if(time > maxTime)
         {
             time = 0;
-            PoolableObject.DisableOrDestroy(gameObject);
+            PoolableObject_OBSOLETE.DisableOrDestroy(gameObject);
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 
 [System.Serializable]
-public class IRef<T> : ISerializationCallbackReceiver where T : class
+public class IRef<T> : ISerializationCallbackReceiver, IEquatable<IRef<T>> where T : class
 {
     public UnityEngine.Object obj;
     public T I => obj as T;
@@ -34,8 +34,24 @@ public class IRef<T> : ISerializationCallbackReceiver where T : class
     void ISerializationCallbackReceiver.OnBeforeSerialize() => this.OnValidate();
     void ISerializationCallbackReceiver.OnAfterDeserialize() { }
 
-    //public override bool Equals(object obj) => obj is IRef<T> @ref && EqualityComparer<UnityEngine.Object>.Default.Equals(this.obj, @ref.obj);
-    //public override int GetHashCode() => HashCode.Combine(obj);
+    public bool Equals(IRef<T> other)
+    {
+        if (ReferenceEquals(this, other)) return true;
+        if (other is null) return false;
+        // Use Unity's overloaded == to respect Unity's "fake null" semantics
+        return this.obj == other.obj;
+    }
+
+    public override bool Equals(object obj) =>
+        obj is IRef<T> otherRef ? Equals(otherRef)
+            : obj is T t ? (this.obj as T) == t
+                : obj is UnityEngine.Object uo ? this.obj == uo 
+                    : false;
+
+    public override int GetHashCode() =>
+        // Use Unity instance id which is stable for the object's lifetime and avoids
+        // relying on System.HashCode (not available on .NET Framework 4.7.1).
+        obj != null ? obj.GetInstanceID() : 0;
 
     public static implicit operator bool(IRef<T> ir) => ir.obj != null;
     public static bool operator ==(IRef<T> L, T R) => L.obj as T == R;

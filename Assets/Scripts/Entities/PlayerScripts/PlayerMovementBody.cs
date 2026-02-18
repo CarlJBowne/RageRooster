@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMovementBody>
 {
@@ -133,11 +134,12 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
 
     protected override void FixedUpdate()
     {
-        Machine.animator.SetFloat("CurrentSpeed", currentSpeed);
+        Player.Animator.SetFloat("CurrentSpeed", currentSpeed);
         if (Upgrades.Active.d_moonJump && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
         Vector3 prePos = Position;
 
+        DebugRR.DebugTextOverlay.SetText($"PMB : Velocity: {velocity}");
         base.FixedUpdate();
 
         if(prePos != Position) _movingUpdateActionTimer.Tick(MovingUpdateAction);
@@ -231,6 +233,54 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
             airNeutralState.Enter();
     }
 
+    private CoroutinePlus QuickTurnRoutine;
+    public void QuickTurnTime(Vector3 newForward, float length)
+    {
+        newForward = newForward.XZ(); //Ensure no weird rotations
+
+        if(length <= 0f)
+        {
+            direction = newForward;
+            return;
+        }
+
+        QuickTurnRoutine = Enum().Begin(Player.MovementBody);
+        IEnumerator Enum()
+        {
+            float deltaRad = Vector3.Angle(direction, newForward) * Mathf.Deg2Rad;
+            float rateRadPerSec = deltaRad / length; // radians per second
+
+            while (deltaRad > 0f)
+            {
+                direction = Vector3.RotateTowards(direction, newForward, rateRadPerSec * Time.fixedDeltaTime, 0f);
+                yield return new WaitForFixedUpdate();
+                deltaRad -= rateRadPerSec * Time.fixedDeltaTime;
+            }
+            direction = newForward;
+        }
+    }
+    public void QuickTurnLimited(Vector3 newForward, float maxDelta)
+    {
+        newForward = newForward.XZ(); //Ensure no weird rotations
+        if(maxDelta <= 0f) return;
+
+        QuickTurnRoutine = Enum().Begin(Player.MovementBody);
+        IEnumerator Enum()
+        {
+            float fullDelta = Vector3.Angle(direction, newForward) * Mathf.Deg2Rad; 
+
+            while (fullDelta > 0f)
+            {
+                direction = Vector3.RotateTowards(direction, newForward, maxDelta * Time.fixedDeltaTime, 0f);
+                yield return null;
+                fullDelta -= maxDelta * Time.fixedDeltaTime;
+            }
+
+            direction = newForward;
+        }
+    }
+
+
 #if UNITY_EDITOR
 
     private List<HitNormalDisplay> queuedHits = new();
@@ -245,7 +295,7 @@ public class PlayerMovementBody : CharacterMovementBody, ISingleton<PlayerMoveme
         foreach (Vector3 item in jumpMarkers) Handles.DrawWireDisc(item, Vector3.up, 0.5f);
     }
 
-    public List<Vector3> jumpMarkers = new List<Vector3>();
+    public List<Vector3> jumpMarkers = new();
 
 #endif
 

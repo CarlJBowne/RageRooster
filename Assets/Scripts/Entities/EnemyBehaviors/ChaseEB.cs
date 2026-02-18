@@ -12,13 +12,13 @@ public class ChaseEB : StateBehavior
 
     private NavMeshAgent agent;
     private TrackerEB playerTracker;
-    private Timer_Old destUpdateTimer;
+    private Timer.Loop destUpdateTimer;
 
     protected override void OnAwake()
     {
         agent = GetComponentFromMachine<NavMeshAgent>();
         playerTracker = State.Parent.GetComponent<TrackerEB>();
-        destUpdateTimer = new(destUpdateRate, UpdateDestination);
+        destUpdateTimer = new(destUpdateRate);
     }
 
     protected override void OnEnter(State prev, bool isFinal)
@@ -38,7 +38,7 @@ public class ChaseEB : StateBehavior
             return;
         }
 
-        destUpdateTimer += Time.fixedDeltaTime;
+        destUpdateTimer.Tick(UpdateDestination);
     }
 
     void UpdateDestination() => agent.SetDestination(playerTracker.target.transform.position);

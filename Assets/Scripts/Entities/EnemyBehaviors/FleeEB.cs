@@ -14,13 +14,13 @@ public class FleeEB : StateBehavior
 
     private NavMeshAgent agent;
     private TrackerEB playerTracker;
-    private Timer_Old destUpdateTimer;
+    private Timer.Loop destUpdateTimer;
 
     protected override void OnAwake()
     {
         agent = GetComponentFromMachine<NavMeshAgent>();
         playerTracker = State.Parent.GetComponent<TrackerEB>();
-        destUpdateTimer = new(destUpdateRate, UpdateDestination);
+        destUpdateTimer = new(destUpdateRate);
     }
 
     protected override void OnEnter(State prev, bool isFinal)
@@ -41,7 +41,7 @@ public class FleeEB : StateBehavior
             return;
         }
 
-        destUpdateTimer += Time.fixedDeltaTime;
+        destUpdateTimer.Tick(UpdateDestination);
     }
 
     // Here, a flee point is calculated by adding the difference between the player's position and the enemy's position to the enemy's position.

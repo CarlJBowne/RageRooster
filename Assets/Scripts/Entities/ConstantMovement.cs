@@ -17,7 +17,7 @@ public class ConstantMovement : MonoBehaviour
     {
         if (!rb)
         {
-            Vector3 finalPosition = transform.position + transform.TransformDirection(direction * speed * Time.fixedDeltaTime);
+            Vector3 finalPosition = transform.position + (transform.TransformDirection(direction) * speed * Time.fixedDeltaTime);
             if(gravity > 0)
             {
                 finalPosition += Vector3.down * downwardsVelocity;

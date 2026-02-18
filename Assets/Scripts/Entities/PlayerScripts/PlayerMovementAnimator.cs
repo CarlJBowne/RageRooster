@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
 
+[System.Obsolete("PlayerMovementAnimator is deprecated, please use TimedMovementAffector instead.")]
 public class PlayerMovementAnimator : PlayerMovementEffector
 {
     [Tooltip("Generally recommended to keep at 0 and have set to 1 in animation so that the CrossFade can automatically smoothly blend the effect."), Range(0,1)]

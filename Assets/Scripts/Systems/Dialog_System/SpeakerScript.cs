@@ -13,10 +13,10 @@ using TMPro;
 using DG.Tweening;
 using Cinemachine;
 using System;
-using static Input;
+
 [RequireComponent(typeof(DialogueAudio))]
 [RequireComponent(typeof(Animator))]
-public class SpeakerScript : MonoBehaviour, IInteractable
+public class SpeakerScript : MonoBehaviour
 {
     public NPC_Data data;
     public DialogueData dialogue;
@@ -28,8 +28,6 @@ public class SpeakerScript : MonoBehaviour, IInteractable
     private Animator animator;
 
     public Transform particlesParent;
-
-    bool IInteractable.canInteract => true;
 
     public event Action onSpeakerActivate;
     public CinemachineTargetGroup targetGroup;
@@ -95,7 +93,7 @@ public class SpeakerScript : MonoBehaviour, IInteractable
         return dir > 0f;
     }
 
-    bool IInteractable.Interaction()
+    public bool Interact()
     {
         //Debug.Log("Speaker is activated");
 

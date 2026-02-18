@@ -9,7 +9,6 @@ public class AttackSourceSingle : MonoBehaviour, IAttackSource
 {
     public Attack attack;
     public MonoBehaviour sourceEntity;
-    public new bool enabled = true;
 
     private void OnTriggerEnter(Collider other) => Contact(other.gameObject);
     private void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);

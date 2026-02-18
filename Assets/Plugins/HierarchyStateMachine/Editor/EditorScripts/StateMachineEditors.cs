@@ -208,7 +208,7 @@ namespace SLS.StateMachineH
                         if (!answer) return;
                     }
 
-                    stateMachine.Setup(stateMachine, stateMachine, -1);
+                    stateMachine.Setup(stateMachine, stateMachine, -1, true);
 
                     UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(stateMachine.gameObject.scene);
 

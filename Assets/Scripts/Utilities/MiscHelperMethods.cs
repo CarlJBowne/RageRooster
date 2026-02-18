@@ -75,6 +75,7 @@ public static class MiscHelperMethods
             }
         }
 
+        /*
         public static void Conditional(PlayerMovementAnimatorConditional THIS)
         {
             THIS.Machine.TryGetComponent(out Animator animator);
@@ -137,6 +138,7 @@ public static class MiscHelperMethods
                 EditorUtility.SetDirty(clip);
             }
         }
+        */
 
         private struct AnimationCurveTransferer
         {
