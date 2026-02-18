@@ -63,7 +63,7 @@ public abstract class PlayerButtonAction : PolymorphicObject
         public override void Press()
         {
             pressEvent?.Invoke();
-            if (releaseEvent != null) Finish();
+            if (!releaseEvent.HasCalls) Finish();
         }
         public override void Release()
         {
@@ -194,6 +194,7 @@ public abstract class PlayerButtonAction : PolymorphicObject
 
         public override void Press()
         {
+            var activeButton = this.activeButton;
             if (transferState != null) transferState.State.Enter();
             actionEvent?.Invoke();
             Finish();
@@ -283,6 +284,7 @@ public abstract class PlayerButtonAction : PolymorphicObject
                 : TargetingManager.RangedChannel.CurrentTarget != null
                     ? TargetingManager.RangedChannel.CurrentTarget
                     : null;
+            if (lockedAction == null) return;
 
             active = true;
             activeButton = button;
@@ -299,8 +301,8 @@ public abstract class PlayerButtonAction : PolymorphicObject
         }
 
 
-        public override void Press() => lockedAction.Press();
-        public override void Release() => lockedAction.Release();
+        public override void Press() => lockedAction?.Press();
+        public override void Release() => lockedAction?.Release();
         protected override IEnumerator HoldRoutine() => throw new NotImplementedException(); //Don't.
 
 #if UNITY_EDITOR

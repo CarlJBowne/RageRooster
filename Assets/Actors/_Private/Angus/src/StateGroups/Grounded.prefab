@@ -55,12 +55,7 @@ MonoBehaviour:
   <Parent>k__BackingField: {fileID: 0}
   <Layer>k__BackingField: 0
   <Children>k__BackingField:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 592388666345993873}
+  - {fileID: 7202587913768018711}
   <ChildCount>k__BackingField: 6
 --- !u!1 &806735589426787925
 GameObject:
@@ -144,7 +139,6 @@ MonoBehaviour:
   flatGravity: 0
   allowMidFall: 0
   allowDoubleJump: 1
-  ledged: 0
   fallState: {fileID: 0}
   fallStateThreshold: -9
 --- !u!114 &1553557195803044641
@@ -288,8 +282,8 @@ MonoBehaviour:
     - Key: Jump
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 1249639751377397145}
-          _MemberName: 
+        - _Target: {fileID: 0}
+          _MemberName: BeginJump
           _PersistentArguments: []
   lockOnEnter: 0
 --- !u!114 &4583152462653021694
@@ -329,7 +323,7 @@ MonoBehaviour:
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   Jump:
-    rid: 1950655830041821296
+    rid: 1676068309935587427
   Attack:
     rid: 1950655830041821297
   Grab:
@@ -341,14 +335,14 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1950655830041821296
+    - rid: 1676068309935587427
       type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
       data:
         persistAcrossStateChange: 0
         pressEvent:
           _PersistentCalls:
           - _Target: {fileID: 0}
-            _MemberName: BeginDoubleJump
+            _MemberName: BeginJump
             _PersistentArguments:
             - _Type: 5
               _Int: 0
@@ -1316,7 +1310,6 @@ MonoBehaviour:
   flatGravity: 0
   allowMidFall: 0
   allowDoubleJump: 1
-  ledged: 0
   fallState: {fileID: 0}
   fallStateThreshold: -9
 --- !u!114 &4277143527907892841
