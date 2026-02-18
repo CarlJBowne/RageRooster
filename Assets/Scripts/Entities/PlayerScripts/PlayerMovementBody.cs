@@ -25,10 +25,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     [SerializeField] float maxSlopeNormalAngle = 45f;
     /// <summary>
-    /// Whether this body should automatically check the grounded status before movement.
-    /// </summary>
-    public bool checkGround = true;
-    /// <summary>
     /// The buffer used to check for ground.
     /// </summary>
     public float movementCheckBuffer = 0.1f;
@@ -67,6 +63,8 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     public LayerMask validGroundMask;
 
     public bool cantWalkOff;
+    public float platformDetectionFactor = 3;
+    public float platformLockRadius = .25f;
 
 
     #endregion
@@ -136,6 +134,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
     void FixedUpdate()
     {
+        sweepsThisPhysUpdate.Clear();
         Player.Animator.SetFloat("CurrentSpeed", currentSpeed);
         if (Upgrades.Active.d_moonJump && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
@@ -150,20 +149,28 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         stepZeroVelocity = velocity * Time.fixedDeltaTime;
         stepZeroAnchor = anchorPoint;
 
-        if (checkGround && velocity.y <= 0)
+        moveTestString = "";
+
+        if (velocity != Vector3.zero) Move(stepZeroVelocity);
+
+        if (velocity.y <= 0)
         {
             if (GroundCheck(out AnchorPoint groundHit))
             {
-                Land(groundHit);
-                velocity.y = 0;
-                stepZeroVelocity.y = 0;
-                stepZeroVelocity = stepZeroVelocity.ProjectAndScale(groundHit.normal);
+                if (!Grounded)
+                {
+                    Land(groundHit);
+                    velocity.y = 0;
+                }
             }
-            else UnLand();
+            else if (Grounded)
+            {
+                moveTestString += "Walk Off.\n";
+                Machine.SendSignal("WalkOff");
+                UnLand(JumpState.Hangtime);
+            }
         }
 
-        moveTestString = "";
-        Move(stepZeroVelocity);
         DebugRR.DebugTextOverlay.SetText(moveTestString);
 
         if (autoApplyGravity && !Grounded) ApplyGravity();
@@ -185,7 +192,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         bool scaleByDot = false;
         bool deleteVerticalLeftover = false;
 
-        if (SweepBody(velocity, out RaycastHit hit, groundCheckBuffer))
+        if (SweepBody(velocity, out RaycastHit hit, groundCheckBuffer) && !(velocity.y == 0 && hit.normal == Vector3.up))
         {
             stopDistance = hit.distance;
             nextNormal = hit.normal;
@@ -244,33 +251,52 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         }
         else
         {
-
             if (Grounded)
             {
-                if (!SweepBody(Vector3.down * (groundCheckBuffer + 0.001f), out RaycastHit platformCheckHit, groundCheckBuffer, Position + velocity) || !WithinSlopeAngle(platformCheckHit.normal))
                 {
-                    moveTestString += "Walking off platform detected.\n";
-                    if (cantWalkOff || !SweepBody(Vector3.down * 5000, out _, 0, Position + velocity))
+                    //Alternative Stop Checks
+
+                    Vector3 platformCheckDistance = velocity * platformDetectionFactor;
+                    bool forwardCheckOp = SweepBody(Vector3.down * 5000, out RaycastHit platformCheckHit, groundCheckBuffer, Position + platformCheckDistance);
+
+                    if (forwardCheckOp && platformCheckHit.distance <= groundCheckBuffer + .001f && WithinSlopeAngle(platformCheckHit.normal)) { }
+                    else if (cantWalkOff || !forwardCheckOp)
                     {
+                        //Either didn't hit anything, meaning the player has reached the void,
+                        //or cantWalkOff is currently enabled and the distance the check got was larger than platform detection.
                         moveTestString += cantWalkOff ? "Player is not allowed to walk off.\n" : "Hit the void while walking.\n";
-                        Vector3 reachAroundPos = Position + velocity - (Vector3.up * Collider.height / 2);
-                        if (SweepBody(-velocity * 1.05f, out RaycastHit reachAroundResult, 0, reachAroundPos))
+                        Vector3 reachAroundPos = Position + platformCheckDistance - (Vector3.up * Collider.height / 2);
+                        if (SweepBody(platformCheckDistance.XZ() * -2f, out RaycastHit reachAroundResult, 0, reachAroundPos))
                         {// Assume able to reach Platform from below.
                             stopDistance = velocity.magnitude - reachAroundResult.distance - .1f;
                             nextNormal = -reachAroundResult.normal.XZ();
+                            scaleByDot = true;
+                            moveTestString += $"Found Platform to Lock at, nextNormal: {nextNormal}\n";
+                            //if (reachAroundResult.distance > platformDetectionFactor) 
+                            //    Position -= reachAroundResult.normal;
                         }
-                        else Machine.SendSignal("WalkOff");
+                        else moveTestString += "Walking off platform when not allowed but reach around check failed. Failsafe situation, report to CJ.\n";
                     }
-                    else Machine.SendSignal("WalkOff");
                 }
-                else
-                {//Did hit something, now if close enough to snap too but large enough to bother, snap.
-                    if (platformCheckHit.distance <= groundCheckBuffer && platformCheckHit.distance >= 0.0001f)
-                    {
-                        moveTestString += "Snapping to lowerGround.\n";
-                        Position += Vector3.down * platformCheckHit.distance;
-                        anchorPoint = platformCheckHit;
+
+                
+                if (stopDistance == -1)
+                { 
+                    if(GroundCheck(out _, out RaycastHit groundCast, true) && groundCast.normal != anchorPoint.normal)
+                    { 
+                        Ray cornerCheckRay = new(groundCast.barycentricCoordinate + new Vector3(0, .1f, 0), Vector3.down);
+                        bool different = groundCast.collider.Raycast(cornerCheckRay, out RaycastHit baryHit, .11f)
+                            && baryHit.normal != groundCast.normal;
+                         
+                        if (groundCast.distance >= float.Epsilon && groundCast.distance <= groundCheckBuffer && !different)
+                        {
+                            moveTestString += "Snapping to lowerGround.\n";
+                            Position += Vector3.down * groundCast.distance;
+                            anchorPoint = groundCast;
+                        }
                     }
+
+
                 }
             }
             else
@@ -282,6 +308,8 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                     nextNormal = -velocity.XZ();
                 }
             }
+
+
         }
 
         Vector3 snapToSurface = stopDistance != -1 ? velocity.normalized * stopDistance : velocity;
@@ -314,7 +342,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     AnchorPoint stepZeroAnchor;
 
-    public string moveTestString = "";
+    string moveTestString = "";
 
     #endregion Move Cycle
 
@@ -554,7 +582,15 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         if (buffer > 0) RB.MovePosition(RB.position - (offset.normalized * buffer));
         bool result = RB.SweepTest(offset.normalized, out hit, offset.magnitude + buffer, queryTriggerInteraction);
         RB.MovePosition(originalPos);
-        hit.distance -= buffer;
+        hit.distance = (hit.distance - buffer).Min(0);
+        sweepsThisPhysUpdate.Add(new()
+        {
+            origin = tempOrigin.GetValueOrDefault(),
+            direction = offset,
+            hit = result,
+            hitDistance = hit.distance,
+            hitNormal = hit.normal
+        });
         return result;
     }
 
@@ -571,8 +607,39 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         if (!dontApply) groundHit = raycast;
         return result;
     }
+    /// <summary>
+    /// Checks if the character is grounded and outputs the ground hit information.
+    /// </summary>
+    /// <param name="groundHit">The anchor point of the ground hit.</param>
+    /// <returns>True if grounded, false otherwise.</returns>
+    public bool GroundCheck(out AnchorPoint groundHit, out RaycastHit raycast, bool dontApply = false)
+    {
+        bool result = SweepBody(Vector3.down * groundCheckBuffer, out raycast, groundCheckBuffer) && WithinSlopeAngle(raycast.normal);
+        groundHit = default;
+        if (!dontApply) groundHit = raycast;
+        return result;
+    }
 
     public bool OverVoidCheck(Vector3 offset) => !SweepBody(Vector3.down * 5000, out _, 0, offset, QueryTriggerInteraction.Collide);
+
+    public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
+    {
+        Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(sphereOffset),
+                                                   checkSphereRadius);
+        foreach (Collider r in results)
+            if (r.TryGetComponent(out T result))
+                return result;
+        return default;
+    }
+    public T CheckForTypeInFront<T>()
+    {
+        Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(frontCheckDefaultOffset),
+                                                   frontCheckDefaultRadius);
+        foreach (Collider r in results)
+            if (r.gameObject != gameObject && r.TryGetComponent(out T result))
+                return result;
+        return default;
+    }
 
     #endregion
 
@@ -595,7 +662,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     public void Land(AnchorPoint groundHit)
     {
         bool wasntGrounded = jumpState != JumpState.Grounded;
-        bool objectChange = anchorPoint.transform != groundHit.transform;
+        bool objectChange = anchorPoint.collider != groundHit.collider;
         doubleJump.allowDoubleJump = true;
 
         if (!wasntGrounded && !objectChange) return;
@@ -607,7 +674,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         if (objectChange)
         {
             movingAnchor?.SetPlayerInfluence(false);
-            movingAnchor = anchorPoint.transform.GetComponent<IMovablePlatform>();
+            movingAnchor = anchorPoint.collider.GetComponent<IMovablePlatform>();
             movingAnchor?.SetPlayerInfluence(true);
         }
 
@@ -780,30 +847,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
     #endregion States
 
-    #region Proximity Checks
-
-    public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
-    {
-        Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(sphereOffset),
-                                                   checkSphereRadius);
-        foreach (Collider r in results)
-            if (r.TryGetComponent(out T result))
-                return result;
-        return default;
-    }
-    public T CheckForTypeInFront<T>()
-    {
-        Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(frontCheckDefaultOffset),
-                                                   frontCheckDefaultRadius);
-        foreach (Collider r in results)
-            if (r.gameObject != gameObject && r.TryGetComponent(out T result))
-                return result;
-        return default;
-    }
-
-
-    #endregion Proximity Checks
-
 
     #region Other
 
@@ -827,10 +870,33 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
     #endregion Other
 
-    #region Debug
 
-
+    //DEBUG
 #if UNITY_EDITOR
+
+    private void OnDrawGizmos()
+    {
+        if (!DebugRR.DebugTextOverlay.Visible) return;
+
+        foreach (HitNormalDisplay item in queuedHits) Debug.DrawRay(item.position, item.normal / 10);
+        foreach (Vector3 item in jumpMarkers) Handles.DrawWireDisc(item, Vector3.up, 0.5f);
+        foreach (var sweep in sweepsThisPhysUpdate)
+        {
+            Color color = sweep.hit ? Color.green : Color.red;
+            Color colorE = color.SetAlpha(.5f);
+            Vector3 height = Vector3.up * Collider.height / 2;
+
+            DrawWireCapsule(sweep.origin + height, Quaternion.identity, Collider.radius, Collider.height, color);
+            DrawWireCapsule(sweep.origin + height + (sweep.hit ? sweep.direction.normalized * sweep.hitDistance : sweep.direction),
+                Quaternion.identity, Collider.radius, Collider.height, colorE);
+            if (sweep.hit)
+            {
+                Vector3 start = sweep.origin + (sweep.direction.normalized * sweep.hitDistance);
+                Vector3 end = start + sweep.hitNormal;
+                Gizmos.DrawLine(start, end);
+            }
+        }
+    }
 
     private List<HitNormalDisplay> queuedHits = new();
     private void AddToQueuedHits(HitNormalDisplay hit)
@@ -838,17 +904,10 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         queuedHits.Add(hit);
         if (queuedHits.Count > 100) queuedHits.RemoveAt(0);
     }
-    private void OnDrawGizmos()
-    {
-        foreach (HitNormalDisplay item in queuedHits) Debug.DrawRay(item.position, item.normal / 10);
-        foreach (Vector3 item in jumpMarkers) Handles.DrawWireDisc(item, Vector3.up, 0.5f);
-    }
 
     public List<Vector3> jumpMarkers = new();
 
-#endif
-
-    public struct HitNormalDisplay
+    private struct HitNormalDisplay
     {
         public Vector3 position;
         public Vector3 normal;
@@ -863,8 +922,46 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             this.normal = fromHit.normal;
         }
     }
+    private struct SweepTestDisplay
+    {
+        public Vector3 origin;
+        public Vector3 direction;
+        public bool hit;
+        public float hitDistance;
+        public Vector3 hitNormal;
+    }
+    private List<SweepTestDisplay> sweepsThisPhysUpdate = new();
 
-    #endregion Debug
+    public static void DrawWireCapsule(Vector3 _pos, Quaternion _rot, float _radius, float _height, Color _color = default(Color))
+    {
+        if (_color != default(Color))
+            Handles.color = _color;
+        Matrix4x4 angleMatrix = Matrix4x4.TRS(_pos, _rot, Handles.matrix.lossyScale);
+        using (new Handles.DrawingScope(angleMatrix))
+        {
+            var pointOffset = (_height - (_radius * 2)) / 2;
+
+            //draw sideways
+            Handles.DrawWireArc(Vector3.up * pointOffset, Vector3.left, Vector3.back, -180, _radius);
+            Handles.DrawLine(new Vector3(0, pointOffset, -_radius), new Vector3(0, -pointOffset, -_radius));
+            Handles.DrawLine(new Vector3(0, pointOffset, _radius), new Vector3(0, -pointOffset, _radius));
+            Handles.DrawWireArc(Vector3.down * pointOffset, Vector3.left, Vector3.back, 180, _radius);
+            //draw frontways
+            Handles.DrawWireArc(Vector3.up * pointOffset, Vector3.back, Vector3.left, 180, _radius);
+            Handles.DrawLine(new Vector3(-_radius, pointOffset, 0), new Vector3(-_radius, -pointOffset, 0));
+            Handles.DrawLine(new Vector3(_radius, pointOffset, 0), new Vector3(_radius, -pointOffset, 0));
+            Handles.DrawWireArc(Vector3.down * pointOffset, Vector3.back, Vector3.left, -180, _radius);
+            //draw center
+            Handles.DrawWireDisc(Vector3.up * pointOffset, Vector3.up, _radius);
+            Handles.DrawWireDisc(Vector3.down * pointOffset, Vector3.up, _radius);
+
+        }
+    }
+
+
+
+
+#endif
 
 }
 

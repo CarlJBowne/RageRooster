@@ -510,7 +510,7 @@ public class CharacterMovementBody : MonoBehaviour
     public virtual void Land(AnchorPoint groundHit)
     {
         bool wasntGrounded = jumpState != JumpState.Grounded;
-        bool objectChange = anchorPoint.transform != groundHit.transform;
+        bool objectChange = anchorPoint.collider != groundHit.collider;
 
         if (wasntGrounded && objectChange) return;
 
@@ -520,7 +520,7 @@ public class CharacterMovementBody : MonoBehaviour
         if (objectChange)
         {
             movingAnchor?.RemoveBody(this);
-            movingAnchor = anchorPoint.transform.GetComponent<IMovablePlatform>();
+            movingAnchor = anchorPoint.collider.GetComponent<IMovablePlatform>();
             movingAnchor?.AddBody(this);
         }
 
