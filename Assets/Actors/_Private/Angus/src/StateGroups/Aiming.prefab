@@ -1169,6 +1169,7 @@ GameObject:
   - component: {fileID: 3605316037643603326}
   - component: {fileID: 4750549930989173588}
   - component: {fileID: 2194088104857915983}
+  - component: {fileID: 1171335048410009474}
   m_Layer: 6
   m_Name: Aiming
   m_TagString: Untagged
@@ -1248,3 +1249,47 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &1171335048410009474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7552008454371719954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 003c25630808c7243847bd9149749434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Kybernetik.UltEvents::UltEvents.LifeCycleEvents
+  _AwakeEvent:
+    _PersistentCalls: []
+  _StartEvent:
+    _PersistentCalls: []
+  _EnableEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 0}
+      _MemberName: cantWalkOff=
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 1
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  _DisableEvent:
+    _PersistentCalls:
+    - _Target: {fileID: 0}
+      _MemberName: cantWalkOff=
+      _PersistentArguments:
+      - _Type: 1
+        _Int: 0
+        _String: 
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  _DestroyEvent:
+    _PersistentCalls: []
