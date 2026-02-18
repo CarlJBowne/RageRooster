@@ -58,9 +58,9 @@ public class Player : MonoBehaviour
             StateMachine.enabled = value is ActivityStates.Active;
 
             MovementBody.RBState =
-                value is ActivityStates.Active ? CharacterMovementBody.BodyState.Enabled
-                : value is ActivityStates.Dying ? CharacterMovementBody.BodyState.Ragdoll
-                : CharacterMovementBody.BodyState.OFF;
+                value is ActivityStates.Active ? PlayerMovementBody.BodyState.Enabled
+                : value is ActivityStates.Dying ? PlayerMovementBody.BodyState.Ragdoll
+                : PlayerMovementBody.BodyState.OFF;
 
             MovementBody.enabled = value is ActivityStates.Active or ActivityStates.Dying;
             Controller.enabled = value is ActivityStates.Active;
