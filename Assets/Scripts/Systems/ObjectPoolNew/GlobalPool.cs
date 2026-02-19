@@ -20,8 +20,8 @@ namespace RageRooster.Systems.ObjectPooling
 
         public List<ObjectPool> serializedPools = new();
 
-        public ObjectPool<ProjectileMovement> basicEnemyBullet;
-        public static ObjectPool<ProjectileMovement> BasicEnemyBullet;
+        public ObjectPool<AttackProjectile> basicEnemyBullet;
+        public static ObjectPool<AttackProjectile> BasicEnemyBullet;
 
         private void OnEnable()
         {
