@@ -58,7 +58,6 @@ public class Health : MonoBehaviour, IDamagable
     protected virtual void OnDeplete(Attack attack)
     {
         depleteEvent?.Invoke();
-        Unity.VisualScripting.CustomEvent.Trigger(gameObject, "Death");
     }
 
     /// <summary>
