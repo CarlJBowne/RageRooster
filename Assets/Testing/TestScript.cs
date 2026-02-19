@@ -15,8 +15,5 @@ using UnityEditor.UIElements;
 
 public class TestScript : MonoBehaviour
 {
-    [SerializeReference]
-    public PlayerButtonAction testVal;
-
-
+    public GlobalPool.Client client;
 }
