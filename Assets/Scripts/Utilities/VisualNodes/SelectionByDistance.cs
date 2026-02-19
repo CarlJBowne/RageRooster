@@ -10,9 +10,10 @@ public class SelectionByDistance : Unit
     {
         Begin = ControlInput("Begin", ACT);
         After = ControlOutput("After");
-        InputDistance = ValueInput<float>("InputDistance", 0);
-        PreviousValue = ValueInput<float>("PreviousValue", 0);
-        OutputValue = ValueOutput<float>("OutputValue");
+        Changed = ControlOutput("Changed");
+        InputDistance = ValueInput("InputDistance", 0f);
+        PreviousValue = ValueInput("PreviousValue", 0);
+        OutputValue = ValueOutput<int>("OutputValue");  
 
         for (int i = 0; i < rangeCount; i++) rangePorts.Add(ValueInput<float>($"Range {i}"));
     }
@@ -23,6 +24,7 @@ public class SelectionByDistance : Unit
     [DoNotSerialize] public List<ValueInput> rangePorts = new();
 
     [PortLabelHidden, DoNotSerialize] public ControlOutput After;
+    [PortLabelHidden, DoNotSerialize] public ControlOutput Changed;
     [DoNotSerialize] public ValueOutput OutputValue;
 
     [DoNotSerialize, Inspectable, UnitHeaderInspectable("Ranges")]
@@ -41,9 +43,9 @@ public class SelectionByDistance : Unit
 
         int i = rangePorts.Count;
 
-        while (i > 0 && flow.GetValue<float>(rangePorts[i - 1]) < flow.GetValue<float>(InputDistance)) i--;
+        while (i > 0 && flow.GetValue<float>(rangePorts[i - 1]) > flow.GetValue<float>(InputDistance)) i--;
 
         flow.SetValue(OutputValue, i);
-        return prevValue != i ? After : null;
+        return prevValue != i ? Changed : After;
     }
 }
