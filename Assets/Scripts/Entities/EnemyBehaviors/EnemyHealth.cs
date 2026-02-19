@@ -66,7 +66,7 @@ public class EnemyHealth : Health
 
     protected override void OnDeplete(Attack attack)
     {
-        depleteEvent?.Invoke();
+        base.OnDeplete(attack);
         if (attack == Attack.Tag.Wham)
         {
             CoroutinePlus.Stop(ref stunRoutine);
@@ -141,6 +141,7 @@ public class EnemyHealth : Health
         transform.rotation = Quaternion.identity;
         health = maxHealth;
         if (ragdoll) ragdoll.State = RagdollHandler.States.Off;
+        Unity.VisualScripting.CustomEvent.Trigger(gameObject, "Respawn");
     }
 
 }
