@@ -192,124 +192,126 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         bool scaleByDot = false;
         bool deleteVerticalLeftover = false;
 
-        if (SweepBody(stepVelocity, out RaycastHit hit, groundCheckBuffer) && !(stepVelocity.y == 0 && hit.normal == Vector3.up))
+        bool sweepHit = SweepBody(stepVelocity, out RaycastHit hit, groundCheckBuffer) && !(stepVelocity.y == 0 && hit.normal == Vector3.up);
+
+
+        if (Grounded && !sweepHit)
         {
+            moveTestString += $"Grounded, Hit Nothing.\n";
+
+            {
+                //Alternative Stop Checks
+
+                Vector3 platformCheckDistance = stepVelocity * platformDetectionFactor;
+                bool forwardCheckOp = SweepBody(Vector3.down * 5000, out RaycastHit platformCheckHit, groundCheckBuffer, Position + platformCheckDistance);
+
+                if (forwardCheckOp && platformCheckHit.distance <= groundCheckBuffer + .001f && WithinSlopeAngle(platformCheckHit.normal)) { }
+                else if (cantWalkOff || !forwardCheckOp)
+                {
+                    //Either didn't hit anything, meaning the player has reached the void,
+                    //or cantWalkOff is currently enabled and the distance the check got was larger than platform detection.
+                    moveTestString += cantWalkOff ? "Player is not allowed to walk off.\n" : "Hit the void while walking.\n";
+                    Vector3 reachAroundPos = Position + platformCheckDistance - (Vector3.up * Collider.height / 2);
+                    if (SweepBody(platformCheckDistance.XZ() * -2f, out RaycastHit reachAroundResult, 0, reachAroundPos))
+                    {// Assume able to reach Platform from below.
+                        stopDistance = stepVelocity.magnitude - reachAroundResult.distance - .1f;
+                        nextNormal = -reachAroundResult.normal.XZ();
+                        scaleByDot = true;
+                        moveTestString += $"Found Platform to Lock at, nextNormal: {nextNormal}\n";
+                        //if (reachAroundResult.distance > platformDetectionFactor) 
+                        //    Position -= reachAroundResult.normal;
+                    }
+                    else moveTestString += "Walking off platform when not allowed but reach around check failed. Failsafe situation, report to CJ.\n";
+                }
+            }
+
+            if (stopDistance == -1)
+            {
+                if (GroundCheck(out _, out RaycastHit groundCast, true) && groundCast.normal != anchorPoint.normal)
+                {
+                    Ray cornerCheckRay = new(groundCast.barycentricCoordinate + new Vector3(0, .1f, 0), Vector3.down);
+                    bool different = groundCast.collider.Raycast(cornerCheckRay, out RaycastHit baryHit, .11f)
+                        && baryHit.normal != groundCast.normal;
+
+                    if (groundCast.distance >= float.Epsilon && groundCast.distance <= groundCheckBuffer && !different)
+                    {
+                        moveTestString += "Snapping to lowerGround.\n";
+                        Position += Vector3.down * groundCast.distance;
+                        anchorPoint = groundCast;
+                    }
+                }
+            }
+        }
+        else if (Grounded && sweepHit)
+        {
+            moveTestString += $"Grounded, Hit: {hit.normal} at distance {hit.distance} \n";
             stopDistance = hit.distance;
             nextNormal = hit.normal;
-            moveTestString += "Hit: " + hit.normal + " at distance " + hit.distance + "\n";
 
-            if (Grounded)
+            if (Mathf.Approximately(hit.normal.y, 0))
             {
-                moveTestString += "Is Grounded.\n";
+                moveTestString += "Hit a wall.\n";
+                scaleByDot = true;
+                deleteVerticalLeftover = true;
+                nextNormal = nextNormal.XZ().normalized;
+            }
+            else if (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
+            {
+                moveTestString += "Hit a steep slope.\n";
+                scaleByDot = true;
+                deleteVerticalLeftover = true;
+                nextNormal = nextNormal.XZ().normalized;
+            }
 
-                if (Mathf.Approximately(hit.normal.y, 0))
+            if (Grounded && anchorPoint.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchorPoint.normal, hit.normal);
+            //Floor to Cieling
+            else if (Grounded && anchorPoint.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchorPoint.normal);
+            //Ceiling to Floor
+
+            void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
+            {
+                moveTestString += "Encountered Vertical Squish.\n";
+                scaleByDot = true;
+                nextNormal = floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal;
+            }
+
+            if (hit.normal.y > 0 && WithinSlopeAngle(hit.normal) && stepVelocity.y <= 0) anchorPoint = hit;
+        }
+        else if (!Grounded && sweepHit)
+        {
+            moveTestString += $"Airborne, Hit: {hit.normal} at distance {hit.distance} \n";
+            stopDistance = hit.distance;
+            nextNormal = hit.normal;
+
+            if (Mathf.Approximately(hit.normal.y, 0)) moveTestString += "Hit a Wall mid-air.\n";
+            else if (hit.normal.y > 0)
+            {
+                if (WithinSlopeAngle(hit.normal))
                 {
-                    moveTestString += "Hit a wall.\n";
-                    scaleByDot = true;
+                    moveTestString += "Landed on a standable ground.\n";
+                    Land(hit);
                     deleteVerticalLeftover = true;
-                    nextNormal = nextNormal.XZ().normalized;
                 }
-                else if (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
-                {
-                    moveTestString += "Hit a steep slope.\n";
-                    scaleByDot = true;
-                    deleteVerticalLeftover = true;
-                    nextNormal = nextNormal.XZ().normalized;
-                }
-
-                if (Grounded && anchorPoint.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchorPoint.normal, hit.normal);
-                //Floor to Cieling
-                else if (Grounded && anchorPoint.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchorPoint.normal);
-                //Ceiling to Floor
-
-                void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
-                {
-                    moveTestString += "Encountered Vertical Squish.\n";
-                    scaleByDot = true;
-                    nextNormal = floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal;
-                }
+                else moveTestString += "Hit a steep slope while falling.\n";
+            }
+            else if (!WithinSlopeAngle(-hit.normal))
+            {
+                moveTestString += "Hit a sloped ceiling while jumping.\n";
             }
             else
             {
-                moveTestString += "Isnt Grounded.\n";
-
-                if (Mathf.Approximately(hit.normal.y, 0)) moveTestString += "Hit a Wall mid-air.\n";
-                else if (hit.normal.y > 0)
-                {
-                    if (WithinSlopeAngle(hit.normal))
-                    {
-                        moveTestString += "Landed on a standable ground.\n";
-                        Land(hit);
-                        deleteVerticalLeftover = true;
-                    }
-                    else moveTestString += "Hit a steep slope while falling.\n";
-                }
-                else if (!WithinSlopeAngle(-hit.normal))
-                {
-                    moveTestString += "Hit a sloped ceiling while jumping.\n";
-                } 
-                else
-                {
-                    moveTestString += "Hit a ceiling while jumping.\n";
-                    deleteVerticalLeftover = true;
-                    velocity.y = -0.1f;
-                    UnLand(JumpState.Falling);
-                }
+                moveTestString += "Hit a ceiling while jumping.\n";
+                deleteVerticalLeftover = true;
+                velocity.y = -0.1f;
+                UnLand(JumpState.Falling);
             }
 
             if (hit.normal.y > 0 && WithinSlopeAngle(hit.normal) && stepVelocity.y <= 0) anchorPoint = hit;
         }
         else
         {
-            if (Grounded)
-            {
-                {
-                    //Alternative Stop Checks
+            moveTestString += $"Airborne, Hit Nothing.\n";
 
-                    Vector3 platformCheckDistance = stepVelocity * platformDetectionFactor;
-                    bool forwardCheckOp = SweepBody(Vector3.down * 5000, out RaycastHit platformCheckHit, groundCheckBuffer, Position + platformCheckDistance);
-
-                    if (forwardCheckOp && platformCheckHit.distance <= groundCheckBuffer + .001f && WithinSlopeAngle(platformCheckHit.normal)) { }
-                    else if (cantWalkOff || !forwardCheckOp)
-                    {
-                        //Either didn't hit anything, meaning the player has reached the void,
-                        //or cantWalkOff is currently enabled and the distance the check got was larger than platform detection.
-                        moveTestString += cantWalkOff ? "Player is not allowed to walk off.\n" : "Hit the void while walking.\n";
-                        Vector3 reachAroundPos = Position + platformCheckDistance - (Vector3.up * Collider.height / 2);
-                        if (SweepBody(platformCheckDistance.XZ() * -2f, out RaycastHit reachAroundResult, 0, reachAroundPos))
-                        {// Assume able to reach Platform from below.
-                            stopDistance = stepVelocity.magnitude - reachAroundResult.distance - .1f;
-                            nextNormal = -reachAroundResult.normal.XZ();
-                            scaleByDot = true;
-                            moveTestString += $"Found Platform to Lock at, nextNormal: {nextNormal}\n";
-                            //if (reachAroundResult.distance > platformDetectionFactor) 
-                            //    Position -= reachAroundResult.normal;
-                        }
-                        else moveTestString += "Walking off platform when not allowed but reach around check failed. Failsafe situation, report to CJ.\n";
-                    }
-                }
-
-
-                if (stopDistance == -1)
-                {
-                    if (GroundCheck(out _, out RaycastHit groundCast, true) && groundCast.normal != anchorPoint.normal)
-                    {
-                        Ray cornerCheckRay = new(groundCast.barycentricCoordinate + new Vector3(0, .1f, 0), Vector3.down);
-                        bool different = groundCast.collider.Raycast(cornerCheckRay, out RaycastHit baryHit, .11f)
-                            && baryHit.normal != groundCast.normal;
-
-                        if (groundCast.distance >= float.Epsilon && groundCast.distance <= groundCheckBuffer && !different)
-                        {
-                            moveTestString += "Snapping to lowerGround.\n";
-                            Position += Vector3.down * groundCast.distance;
-                            anchorPoint = groundCast;
-                        }
-                    }
-
-
-                }
-            }
-            else
             { //If not Grounded, skip straight to Checking for void.
                 if (!SweepBody(Vector3.down * 5000, out _, 0, Position + stepVelocity))
                 {//Since not necessarily anywhere near a platform, just stop the player in their tracks for now.
@@ -318,9 +320,8 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                     nextNormal = -stepVelocity.XZ();
                 }
             }
-
-
         }
+
 
         Vector3 snapToSurface = stopDistance != -1 ? stepVelocity.normalized * stopDistance : stepVelocity;
         Position += snapToSurface;
