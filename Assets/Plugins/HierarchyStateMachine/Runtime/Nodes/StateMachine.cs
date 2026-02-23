@@ -129,8 +129,10 @@ namespace SLS.StateMachineH
                 Children = new();
                 for (int i = 0; i < ChildCount; i++)
                 {
-                    Children.Add(StateHolder.GetChild(i).GetComponent<State>());
-                    Children[i].Setup(machine, this, layer + 1, makeDirty);
+                    GameObject childG = StateHolder.GetChild(i).gameObject;
+                    if (!childG.TryGetComponent(out State childS)) break;
+                    Children.Add(childS);
+                    childS.Setup(machine, this, layer + 1, makeDirty);
                 }
             }
 

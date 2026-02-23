@@ -100,15 +100,21 @@ namespace SLS.StateMachineH {
                 Behaviors[i].Setup(this, makeDirty);
 
             {
-                ChildCount = transform.childCount;
-                Children = new();
-                for (int i = 0; i < ChildCount; i++)
+                int childCount = transform.childCount;
+                List<State> children = new();
+                for (int i = 0; i < childCount; i++)
                 {
                     GameObject childG = transform.GetChild(i).gameObject;
-                    if (!childG.TryGetComponent(out State childS)) break;
-                    Children.Add(childS);
+                    if (!childG.TryGetComponent(out State childS))
+                    {
+                        childCount--;
+                        break;
+                    }
+                    children.Add(childS);
                     childS.Setup(machine, this, layer + 1, makeDirty);
                 }
+                ChildCount = childCount;
+                Children = children;
             }
             if(makeDirty) ApplySetupChanges();
 
