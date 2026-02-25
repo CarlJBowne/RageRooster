@@ -202,7 +202,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             {
                 //Alternative Stop Checks
 
-                Vector3 platformCheckDistance = stepVelocity * platformDetectionFactor;
+                Vector3 platformCheckDistance = stepVelocity.normalized * platformDetectionFactor;
                 bool forwardCheckOp = SweepBody(Vector3.down * 5000, out RaycastHit platformCheckHit, groundCheckBuffer, Position + platformCheckDistance);
 
                 if (forwardCheckOp && platformCheckHit.distance <= groundCheckBuffer + .001f && WithinSlopeAngle(platformCheckHit.normal)) { }
@@ -211,15 +211,16 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                     //Either didn't hit anything, meaning the player has reached the void,
                     //or cantWalkOff is currently enabled and the distance the check got was larger than platform detection.
                     moveTestString += cantWalkOff ? "Player is not allowed to walk off.\n" : "Hit the void while walking.\n";
-                    Vector3 reachAroundPos = Position + platformCheckDistance - (Vector3.up * Collider.height / 2);
+                    Vector3 reachAroundPos = Position + (platformCheckDistance * 1.01f) - (Vector3.up * Collider.height / 2);
                     if (SweepBody(platformCheckDistance.XZ() * -2f, out RaycastHit reachAroundResult, 0, reachAroundPos))
                     {// Assume able to reach Platform from below.
-                        stopDistance = stepVelocity.magnitude - reachAroundResult.distance - .1f;
+
                         nextNormal = -reachAroundResult.normal.XZ();
+                        Plane P = new(nextNormal, reachAroundResult.point + (nextNormal * .6f));
+                        P.Raycast(new(Position, stepVelocity), out stopDistance);
+
                         scaleByDot = true;
                         moveTestString += $"Found Platform to Lock at, nextNormal: {nextNormal}\n";
-                        //if (reachAroundResult.distance > platformDetectionFactor) 
-                        //    Position -= reachAroundResult.normal;
                     }
                     else moveTestString += "Walking off platform when not allowed but reach around check failed. Failsafe situation, report to CJ.\n";
                 }
