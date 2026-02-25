@@ -4968,6 +4968,7 @@ GameObject:
   - component: {fileID: 226772296267759708}
   - component: {fileID: 4339660178794021585}
   - component: {fileID: 838323740284995032}
+  - component: {fileID: 2813074546204450206}
   m_Layer: 7
   m_Name: GroundedShooterEnemy
   m_TagString: Untagged
@@ -5029,8 +5030,7 @@ MonoBehaviour:
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"Player","value":null,"typeHandle":{"Identification":"UnityEngine.Transform,
       UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"AttackCooldown","value":{"$content":2.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"AttackReady","value":{"$content":true,"$type":"System.Boolean"},"typeHandle":{"Identification":"System.Boolean,
-      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"BulletPool","value":{"$type":"Unity.VisualScripting.Unknown"},"typeHandle":{"Identification":"RageRooster.Systems.ObjectPool.ObjectPools+Client,
-      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
     _objectReferences: []
 --- !u!95 &1628104581712334922
 Animator:
@@ -5149,6 +5149,8 @@ MonoBehaviour:
   poofPrefab: {fileID: 0}
   stunComponents: []
   entityActivity: {fileID: 5231858220885111202}
+  hierarchicalMachine: {fileID: 0}
+  visualMachine: {fileID: 8747536511018221165}
   enemyLootSpawner: {fileID: 8999987942707735413}
   tintAnimator: {fileID: 0}
   ragdoll: {fileID: 4339660178794021585}
@@ -5167,7 +5169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb3807489f29eae45b14520befce1f9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EntityActivity
-  slsStateMachine: {fileID: 0}
   disableComponents:
   - {fileID: 8747536511018221165}
   - {fileID: 1628104581712334922}
@@ -5315,6 +5316,19 @@ MonoBehaviour:
   sourceEntity: {fileID: 0}
   onContactEvent:
     _PersistentCalls: []
+--- !u!114 &2813074546204450206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4906831177318307996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb4f69544667513488d96f55fb2f2113, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyBasicBulletSource
+  muzzle: {fileID: 4646624316971525324}
 --- !u!1 &4909045370384413027
 GameObject:
   m_ObjectHideFlags: 0

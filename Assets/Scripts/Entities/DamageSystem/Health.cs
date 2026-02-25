@@ -2,9 +2,11 @@ using EditorAttributes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -53,7 +55,10 @@ public class Health : MonoBehaviour, IDamagable
     protected virtual void OnHeal(int amount) {
 
      }
-    protected virtual void OnDeplete(Attack attack) => depleteEvent?.Invoke();
+    protected virtual void OnDeplete(Attack attack)
+    {
+        depleteEvent?.Invoke();
+    }
 
     /// <summary>
     /// Overrides whether this thing can be damaged under certain conditions

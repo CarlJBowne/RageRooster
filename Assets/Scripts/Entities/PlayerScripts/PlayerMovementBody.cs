@@ -7,6 +7,7 @@ using SLS.ISingleton;
 using SLS.StateMachineH;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider), typeof(StateMachine))]
 public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovementBody>
@@ -79,10 +80,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// The <see cref="CapsuleCollider"/> component attached to this <see cref="CharacterMovementBody"/>.
     /// </summary>
     [field: SerializeField, HideInInspector] public CapsuleCollider Collider { get; private set; }
-
-    [HideInInspector] public PlayerStateMachine Machine;
-    [HideInInspector] public PlayerController playerController;
-    [HideInInspector] public Animator animator;
+    //[RelatedComponent(true)] public NavMeshAgent NavAgent;
 
     #endregion
 
@@ -96,9 +94,12 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
         if (InstantSnapToFloor(out RaycastHit hit)) Land(hit);
 
-        TryGetComponent(out animator);
         direction = Vector3.forward;
         Interface.Initialize(ref Instance);
+
+        //NavAgent.updatePosition = false;
+        //NavAgent.updateRotation = false;
+        //NavAgent.updateUpAxis = false;
     }
 
     /// <summary>
@@ -138,6 +139,8 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         Player.Animator.SetFloat("CurrentSpeed", currentSpeed);
         if (Upgrades.Active.d_moonJump && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
+        //NavAgent.nextPosition = Position;
+
         Vector3 prePos = Position;
 
         DebugRR.DebugTextOverlay.SetText($"PMB : Velocity: {velocity}");
@@ -166,7 +169,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             else if (Grounded)
             {
                 moveTestString += "Walk Off.\n";
-                Machine.SendSignal("WalkOff");
+                Player.StateMachine.SendSignal("WalkOff");
                 UnLand(JumpState.Hangtime);
             }
         }
@@ -192,124 +195,145 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         bool scaleByDot = false;
         bool deleteVerticalLeftover = false;
 
-        if (SweepBody(stepVelocity, out RaycastHit hit, groundCheckBuffer) && !(stepVelocity.y == 0 && hit.normal == Vector3.up))
+        bool sweepHit = SweepBody(stepVelocity, out RaycastHit hit, groundCheckBuffer) && !(stepVelocity.y == 0 && hit.normal == Vector3.up);
+
+
+        if (Grounded && !sweepHit)
         {
+            moveTestString += $"Grounded, Hit Nothing.\n";
+
+            if (cantWalkOff)
+            {
+                Vector3 platformCheckDistance = stepVelocity.normalized * platformDetectionFactor;
+
+                if (NavMesh.SamplePosition(Position, out _, .1f, NavMesh.AllAreas) &&
+                    NavMesh.FindClosestEdge(Position, out NavMeshHit navHit, NavMesh.AllAreas))
+                {
+                    if (Vector3.Dot(navHit.normal, stepVelocity.normalized) < -0.1f)
+                    {
+                        if(navHit.position.XZ() == Position.XZ())
+                        {
+                            nextNormal = navHit.normal.XZ();
+                            stopDistance = 0;
+                        }
+                        else
+                        {
+                            Plane P = new(navHit.normal.XZ(), navHit.position);
+                            if (P.Raycast(new(Position, stepVelocity), out float hitDistance) && hitDistance <= stepVelocity.magnitude)
+                            {
+                                nextNormal = P.normal;
+                                stopDistance = hitDistance;
+                                //scaleByDot = true;
+                                moveTestString += $"Platform Locked onto NavMesh Platform, nextNormal: {nextNormal}\n";
+                            }
+                        }
+                    }
+                }
+                else if (!SweepBody(Vector3.down * groundCheckBuffer, out RaycastHit platformCheckHit,
+                    groundCheckBuffer, Position + platformCheckDistance))
+                {
+                    Vector3 reachAroundPos = Position + (platformCheckDistance * 1.01f) - (Vector3.up * Collider.height / 2);
+                    if (SweepBody(platformCheckDistance.XZ() * -2f, out RaycastHit reachAroundResult, 0, reachAroundPos))
+                    {
+                        nextNormal = -reachAroundResult.normal.XZ();
+                        Plane P = new(nextNormal, reachAroundResult.point + (nextNormal * .6f));
+                        P.Raycast(new(Position, stepVelocity), out float hitDistance);
+                        if (hitDistance <= stepVelocity.magnitude) stopDistance = hitDistance;
+
+
+                        scaleByDot = true;
+                        moveTestString += $"Platform Locked onto non-NavMesh Platform, nextNormal: {nextNormal}\n";
+                    }
+                    else moveTestString += "Walking off platform when not allowed but reach around check failed. Failsafe situation, report to CJ.\n";
+                }
+            }
+            if (stopDistance == -1)
+            {
+                if (GroundCheck(out _, out RaycastHit groundCast, true) && groundCast.normal != anchorPoint.normal)
+                {
+                    Ray cornerCheckRay = new(groundCast.barycentricCoordinate + new Vector3(0, .1f, 0), Vector3.down);
+                    bool different = groundCast.collider.Raycast(cornerCheckRay, out RaycastHit baryHit, .11f)
+                        && baryHit.normal != groundCast.normal;
+
+                    if (groundCast.distance >= float.Epsilon && groundCast.distance <= groundCheckBuffer && !different)
+                    {
+                        moveTestString += "Snapping to lowerGround.\n";
+                        Position += Vector3.down * groundCast.distance;
+                        anchorPoint = groundCast;
+                    }
+                }
+            }
+        }
+        else if (Grounded && sweepHit)
+        {
+            moveTestString += $"Grounded, Hit: {hit.normal} at distance {hit.distance} \n";
             stopDistance = hit.distance;
             nextNormal = hit.normal;
-            moveTestString += "Hit: " + hit.normal + " at distance " + hit.distance + "\n";
 
-            if (Grounded)
+            if (Mathf.Approximately(hit.normal.y, 0))
             {
-                moveTestString += "Is Grounded.\n";
+                moveTestString += "Hit a wall.\n";
+                scaleByDot = true;
+                deleteVerticalLeftover = true;
+                nextNormal = nextNormal.XZ().normalized;
+            }
+            else if (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
+            {
+                moveTestString += "Hit a steep slope.\n";
+                scaleByDot = true;
+                deleteVerticalLeftover = true;
+                nextNormal = nextNormal.XZ().normalized;
+            }
 
-                if (Mathf.Approximately(hit.normal.y, 0))
+            if (Grounded && anchorPoint.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchorPoint.normal, hit.normal);
+            //Floor to Cieling
+            else if (Grounded && anchorPoint.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchorPoint.normal);
+            //Ceiling to Floor
+
+            void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
+            {
+                moveTestString += "Encountered Vertical Squish.\n";
+                scaleByDot = true;
+                nextNormal = floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal;
+            }
+
+            if (hit.normal.y > 0 && WithinSlopeAngle(hit.normal) && stepVelocity.y <= 0) anchorPoint = hit;
+        }
+        else if (!Grounded && sweepHit)
+        {
+            moveTestString += $"Airborne, Hit: {hit.normal} at distance {hit.distance} \n";
+            stopDistance = hit.distance;
+            nextNormal = hit.normal;
+
+            if (Mathf.Approximately(hit.normal.y, 0)) moveTestString += "Hit a Wall mid-air.\n";
+            else if (hit.normal.y > 0)
+            {
+                if (WithinSlopeAngle(hit.normal))
                 {
-                    moveTestString += "Hit a wall.\n";
-                    scaleByDot = true;
+                    moveTestString += "Landed on a standable ground.\n";
+                    Land(hit);
                     deleteVerticalLeftover = true;
-                    nextNormal = nextNormal.XZ().normalized;
                 }
-                else if (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
-                {
-                    moveTestString += "Hit a steep slope.\n";
-                    scaleByDot = true;
-                    deleteVerticalLeftover = true;
-                    nextNormal = nextNormal.XZ().normalized;
-                }
-
-                if (Grounded && anchorPoint.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchorPoint.normal, hit.normal);
-                //Floor to Cieling
-                else if (Grounded && anchorPoint.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchorPoint.normal);
-                //Ceiling to Floor
-
-                void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
-                {
-                    moveTestString += "Encountered Vertical Squish.\n";
-                    scaleByDot = true;
-                    nextNormal = floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal;
-                }
+                else moveTestString += "Hit a steep slope while falling.\n";
+            }
+            else if (!WithinSlopeAngle(-hit.normal))
+            {
+                moveTestString += "Hit a sloped ceiling while jumping.\n";
             }
             else
             {
-                moveTestString += "Isnt Grounded.\n";
-
-                if (Mathf.Approximately(hit.normal.y, 0)) moveTestString += "Hit a Wall mid-air.\n";
-                else if (hit.normal.y > 0)
-                {
-                    if (WithinSlopeAngle(hit.normal))
-                    {
-                        moveTestString += "Landed on a standable ground.\n";
-                        Land(hit);
-                        deleteVerticalLeftover = true;
-                    }
-                    else moveTestString += "Hit a steep slope while falling.\n";
-                }
-                else if (!WithinSlopeAngle(-hit.normal))
-                {
-                    moveTestString += "Hit a sloped ceiling while jumping.\n";
-                } 
-                else
-                {
-                    moveTestString += "Hit a ceiling while jumping.\n";
-                    deleteVerticalLeftover = true;
-                    velocity.y = -0.1f;
-                    UnLand(JumpState.Falling);
-                }
+                moveTestString += "Hit a ceiling while jumping.\n";
+                deleteVerticalLeftover = true;
+                velocity.y = -0.1f;
+                UnLand(JumpState.Falling);
             }
 
             if (hit.normal.y > 0 && WithinSlopeAngle(hit.normal) && stepVelocity.y <= 0) anchorPoint = hit;
         }
         else
         {
-            if (Grounded)
-            {
-                {
-                    //Alternative Stop Checks
+            moveTestString += $"Airborne, Hit Nothing.\n";
 
-                    Vector3 platformCheckDistance = stepVelocity * platformDetectionFactor;
-                    bool forwardCheckOp = SweepBody(Vector3.down * 5000, out RaycastHit platformCheckHit, groundCheckBuffer, Position + platformCheckDistance);
-
-                    if (forwardCheckOp && platformCheckHit.distance <= groundCheckBuffer + .001f && WithinSlopeAngle(platformCheckHit.normal)) { }
-                    else if (cantWalkOff || !forwardCheckOp)
-                    {
-                        //Either didn't hit anything, meaning the player has reached the void,
-                        //or cantWalkOff is currently enabled and the distance the check got was larger than platform detection.
-                        moveTestString += cantWalkOff ? "Player is not allowed to walk off.\n" : "Hit the void while walking.\n";
-                        Vector3 reachAroundPos = Position + platformCheckDistance - (Vector3.up * Collider.height / 2);
-                        if (SweepBody(platformCheckDistance.XZ() * -2f, out RaycastHit reachAroundResult, 0, reachAroundPos))
-                        {// Assume able to reach Platform from below.
-                            stopDistance = stepVelocity.magnitude - reachAroundResult.distance - .1f;
-                            nextNormal = -reachAroundResult.normal.XZ();
-                            scaleByDot = true;
-                            moveTestString += $"Found Platform to Lock at, nextNormal: {nextNormal}\n";
-                            //if (reachAroundResult.distance > platformDetectionFactor) 
-                            //    Position -= reachAroundResult.normal;
-                        }
-                        else moveTestString += "Walking off platform when not allowed but reach around check failed. Failsafe situation, report to CJ.\n";
-                    }
-                }
-
-
-                if (stopDistance == -1)
-                {
-                    if (GroundCheck(out _, out RaycastHit groundCast, true) && groundCast.normal != anchorPoint.normal)
-                    {
-                        Ray cornerCheckRay = new(groundCast.barycentricCoordinate + new Vector3(0, .1f, 0), Vector3.down);
-                        bool different = groundCast.collider.Raycast(cornerCheckRay, out RaycastHit baryHit, .11f)
-                            && baryHit.normal != groundCast.normal;
-
-                        if (groundCast.distance >= float.Epsilon && groundCast.distance <= groundCheckBuffer && !different)
-                        {
-                            moveTestString += "Snapping to lowerGround.\n";
-                            Position += Vector3.down * groundCast.distance;
-                            anchorPoint = groundCast;
-                        }
-                    }
-
-
-                }
-            }
-            else
             { //If not Grounded, skip straight to Checking for void.
                 if (!SweepBody(Vector3.down * 5000, out _, 0, Position + stepVelocity))
                 {//Since not necessarily anywhere near a platform, just stop the player in their tracks for now.
@@ -318,15 +342,18 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                     nextNormal = -stepVelocity.XZ();
                 }
             }
-
-
         }
 
+
         Vector3 snapToSurface = stopDistance != -1 ? stepVelocity.normalized * stopDistance : stepVelocity;
+
+        //Void Check. (Moved here cause making it work with the Platform detector is both not helpful and confusing.)
+        if (!SweepBody(Vector3.down * 5000, out _, groundCheckBuffer, snapToSurface)) return;
+
         Position += snapToSurface;
 
-        if (stopDistance == -1 || step + 1 >= movementProjectionSteps) return;
-        else if (Vector3.Angle(stepVelocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Machine.SendSignal(new("Bonk", 0, true)))
+        if (stopDistance < 0 || step + 1 >= movementProjectionSteps) return;
+        else if (Vector3.Angle(stepVelocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Player.StateMachine.SendSignal(new("Bonk", 0, true)))
         {
             this.velocity = Vector3.zero;
             return;
@@ -420,7 +447,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         if (target == Vector3.zero) return;
         direction = Vector3.RotateTowards(direction, target.normalized, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
     }
-    public void DirectionSet(float maxTurnSpeed) => DirectionSet(playerController.camAdjustedMovement, maxTurnSpeed);
+    public void DirectionSet(float maxTurnSpeed) => DirectionSet(Player.Controller.camAdjustedMovement, maxTurnSpeed);
     public void InstantDirectionChange(Vector3 target)
     {
         if (target.sqrMagnitude == 0) return;
@@ -691,8 +718,8 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         if (wasntGrounded)
         {
             LandEvent?.Invoke();
-            Machine.SendSignal(new("Land", ignoreLock: true));
-            if (playerController.CheckJumpBuffer()) Machine.SendSignal("Jump");
+            Player.StateMachine.SendSignal(new("Land", ignoreLock: true));
+            if (Player.Controller.CheckJumpBuffer()) Player.StateMachine.SendSignal("Jump");
         }
     }
     /// <summary>
@@ -728,7 +755,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     void WalkOff()
     {
         UnLand();
-        Machine.SendSignal(new("WalkOff", ignoreLock: true));
+        Player.StateMachine.SendSignal(new("WalkOff", ignoreLock: true));
     }
 
     /// <summary>
@@ -849,7 +876,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         if (GroundCheck(out _))
         {
             Player.StateMachine.IdleWalk.Enter();
-            if (doCrossFade) animator.CrossFade("GroundBasic", .1f);
+            if (doCrossFade) Player.Animator.CrossFade("GroundBasic", .1f);
         }
         else Player.StateMachine.Airborne.Enter();
     }
@@ -872,7 +899,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         set
         {
             _currentVent = value;
-            Machine.SendSignal(new(value != null ? "EnterVent" : "ExitVent", 0, true));
+            Player.StateMachine.SendSignal(new(value != null ? "EnterVent" : "ExitVent", 0, true));
         }
     }
     public bool isOverVent => _currentVent != null;
@@ -906,6 +933,9 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                 Gizmos.DrawLine(start, end);
             }
         }
+
+        if (NavMesh.FindClosestEdge(Position, out var hit, NavMesh.AllAreas))
+            Debug.DrawRay(hit.position, hit.normal, Color.yellow);
     }
 
     private List<HitNormalDisplay> queuedHits = new();

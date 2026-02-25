@@ -16,6 +16,8 @@ public class EnemyHealth : Health
     [System.Obsolete]
     public Behaviour[] stunComponents;
     [SerializeField, RelatedComponent(true)] EntityActivity entityActivity;
+    [SerializeField, RelatedComponent()] SLS.StateMachineH.StateMachine hierarchicalMachine;
+    [SerializeField, RelatedComponent()] Unity.VisualScripting.StateMachine visualMachine;
     [SerializeField, RelatedComponent(true)] EnemyLootSpawner enemyLootSpawner;
 
     [RelatedComponent, SerializeField] ColorTintAnimation tintAnimator;
@@ -36,8 +38,8 @@ public class EnemyHealth : Health
 
     private void Reset() => ComponentConfig.Reset(this);
 
-    protected override void Awake() 
-    { 
+    protected override void Awake()
+    {
         base.Awake();
         startPosition = transform.position;
         if (TryGetComponent(out PoolableObject_OBSOLETE pool))
@@ -60,13 +62,14 @@ public class EnemyHealth : Health
         else if (health != 0)
         {
             Stun(attack);
-            if(tintAnimator) tintAnimator.BeginAnimation(); 
+            if (tintAnimator) tintAnimator.BeginAnimation();
         }
     }
 
     protected override void OnDeplete(Attack attack)
     {
-        depleteEvent?.Invoke();
+        base.OnDeplete(attack);
+        if (visualMachine) visualMachine.enabled = false;
         if (attack == Attack.Tag.Wham)
         {
             CoroutinePlus.Stop(ref stunRoutine);
@@ -82,7 +85,7 @@ public class EnemyHealth : Health
             Stun(attack);
             if (tintAnimator) tintAnimator.BeginAnimation();
         }
-         
+
     }
 
     void Stun(Attack attack)
@@ -94,13 +97,13 @@ public class EnemyHealth : Health
         {
             entityActivity.State = EntityActivity.States.Stunned;
 
-            while(stunTimeLeft > 0)
+            while (stunTimeLeft > 0)
             {
                 stunTimeLeft -= Time.deltaTime;
                 yield return null;
             }
             entityActivity.State = EntityActivity.States.Default;
-            if(health <= 0)
+            if (health <= 0)
             {
                 if (ragdoll)
                 {
@@ -135,8 +138,8 @@ public class EnemyHealth : Health
     {
         gameObject.SetActive(true);
         transform.position = startPosition;
-        if (TryGetComponent(out StateMachine machine)) machine[0].Enter();
-        //if (TryGetComponent(out Unity.VisualScripting.StateMachine visualMachine)) visualMachine.
+        if (hierarchicalMachine) hierarchicalMachine[0].Enter();
+        if (visualMachine) visualMachine.enabled = true;
         entityActivity.enabled = true;
         transform.rotation = Quaternion.identity;
         health = maxHealth;

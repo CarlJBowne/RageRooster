@@ -5,6 +5,7 @@ using UnityEngine;
 [Tooltip("Manages behaviors meant to happen only when an entity is active.")]
 public class EntityActivity : MonoBehaviour
 {
+
     public Behaviour[] disableComponents;
 
     public void Awake()

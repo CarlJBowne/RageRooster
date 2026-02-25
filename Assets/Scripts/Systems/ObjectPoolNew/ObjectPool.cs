@@ -18,16 +18,17 @@ namespace RageRooster.Systems.ObjectPooling
         [field: SerializeField] public bool canGrow { private set; get; } = true;
         [field: SerializeField] public bool autoEnable { private set; get; } = true;
         [field: SerializeField] public float autoDisableTime { private set; get; } = -1;
-        [field: SerializeField] public Transform poolParent { private set; get; }
+        [field: SerializeField] public Transform poolParentOverride { private set; get; }
         [field: SerializeField] public bool orphanOnDestroy { private set; get; } = false;
 
-        public readonly List<PoolableObject> poolList = new();
-        public int activeObjects { get; protected set; } = 0;
+        //Data
+        [field: NonSerialized] public readonly List<PoolableObject> poolList = new();
+        [field: NonSerialized] public int activeObjects { get; protected set; } = 0;
+        [field: NonSerialized] public int currentIndex { get; protected set; } = 0;
+        [field: NonSerialized] public bool initialized { get; protected set; } = false;
+        [field: NonSerialized] public bool initializing { get; protected set; } = false;
         public int pooledObjects => poolList.Count;
-        public int currentIndex { get; protected set; } = 0;
-        public bool initialized { get; protected set; } = false;
-        public bool initializing { get; protected set; } = false;
-        public MonoBehaviour owner { get; protected set; }
+        public Transform poolParent => poolParentOverride != null ? poolParentOverride : GlobalPool.poolParent;
 
         //Customizable Callbacks
         public Action<ObjectPool> onInitialize;
@@ -45,7 +46,6 @@ namespace RageRooster.Systems.ObjectPooling
 
         protected virtual IEnumerator InitializeEnum()
         {
-            if (poolParent == null) poolParent = GlobalPool.poolParent;
             yield return NewInstanceEnum(initialSize);
             initialized = true;
             initializing = false;
@@ -236,12 +236,12 @@ namespace RageRooster.Systems.ObjectPooling
     [System.Serializable, Inspectable]
     public class ObjectPool<T> : ObjectPool where T : MonoBehaviour
     {
-        private List<T> componentList = new();
+        [NonSerialized] private List<T> componentList = new();
 
         protected override void AfterNewInstance(PoolableObject newInstance)
         {
             base.AfterNewInstance(newInstance);
-            componentList.Add(newInstance.GetComponent<T>());
+            if (newInstance.TryGetComponent(out T comp)) componentList.Add(comp);
         }
 
         public new T Pump() => base.Pump() ? componentList[currentIndex] : null;
@@ -260,8 +260,21 @@ namespace RageRooster.Systems.ObjectPooling
                 return false;
             }
         }
+        public bool Pump(out PoolableObject resultP, out T resultT)
+        {
+            if (Pump(out resultP))
+            {
+                resultT = componentList[currentIndex];
+                return true;
+            }
+            else
+            {
+                resultT = null;
+                return false;
+            }
+        }
 
-        public void Pump(Action<T> result) => base.Pump(_ => { result?.Invoke(componentList[currentIndex]); });
+        public void Pump(Action<PoolableObject, T> result) => base.Pump(P => { result?.Invoke(P, componentList[currentIndex]); });
 
         public T GetCurrentIndexComponent() => componentList[currentIndex];
     }
@@ -275,15 +288,15 @@ namespace RageRooster.Systems.ObjectPooling
     [System.Serializable, Inspectable]
     public class ObjectPool<T1, T2> : ObjectPool where T1 : MonoBehaviour where T2 : MonoBehaviour
     {
-        private List<T1> componentList1 = new();
-        private List<T2> componentList2 = new();
+        [NonSerialized] private List<T1> componentList1 = new();
+        [NonSerialized] private List<T2> componentList2 = new();
 
 
         protected override void AfterNewInstance(PoolableObject newInstance)
         {
             base.AfterNewInstance(newInstance);
-            componentList1.Add(newInstance.GetComponent<T1>());
-            componentList2.Add(newInstance.GetComponent<T2>());
+            if (newInstance.TryGetComponent(out T1 comp1)) componentList1.Add(comp1);
+            if (newInstance.TryGetComponent(out T2 comp2)) componentList2.Add(comp2);
         }
 
         public T1 Pump1() => base.Pump() ? componentList1[currentIndex] : null;
@@ -331,8 +344,23 @@ namespace RageRooster.Systems.ObjectPooling
                 return false;
             }
         }
+        public bool Pump(out PoolableObject resultP, out T1 result1, out T2 result2)
+        {
+            if (Pump(out resultP))
+            {
+                result1 = componentList1[currentIndex];
+                result2 = componentList2[currentIndex];
+                return true;
+            }
+            else
+            {
+                result1 = null;
+                result2 = null;
+                return false;
+            }
+        }
 
-        public void Pump(Action<T1, T2> result) => base.Pump(_ => { result?.Invoke(componentList1[currentIndex], componentList2[currentIndex]); });
+        public void Pump(Action<PoolableObject, T1, T2> result) => base.Pump(P => { result?.Invoke(P, componentList1[currentIndex], componentList2[currentIndex]); });
 
         public T1 GetCurrentIndexComponent1() => componentList1[currentIndex];
         public T2 GetCurrentIndexComponent2() => componentList2[currentIndex];
