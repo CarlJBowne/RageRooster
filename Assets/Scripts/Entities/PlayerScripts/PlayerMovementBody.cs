@@ -7,6 +7,7 @@ using SLS.ISingleton;
 using SLS.StateMachineH;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider), typeof(StateMachine))]
 public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovementBody>
@@ -79,10 +80,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// The <see cref="CapsuleCollider"/> component attached to this <see cref="CharacterMovementBody"/>.
     /// </summary>
     [field: SerializeField, HideInInspector] public CapsuleCollider Collider { get; private set; }
-
-    [HideInInspector] public PlayerStateMachine Machine;
-    [HideInInspector] public PlayerController playerController;
-    [HideInInspector] public Animator animator;
+    //[RelatedComponent(true)] public NavMeshAgent NavAgent;
 
     #endregion
 
@@ -96,9 +94,12 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
         if (InstantSnapToFloor(out RaycastHit hit)) Land(hit);
 
-        TryGetComponent(out animator);
         direction = Vector3.forward;
         Interface.Initialize(ref Instance);
+
+        //NavAgent.updatePosition = false;
+        //NavAgent.updateRotation = false;
+        //NavAgent.updateUpAxis = false;
     }
 
     /// <summary>
@@ -138,6 +139,8 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         Player.Animator.SetFloat("CurrentSpeed", currentSpeed);
         if (Upgrades.Active.d_moonJump && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
+        //NavAgent.nextPosition = Position;
+
         Vector3 prePos = Position;
 
         DebugRR.DebugTextOverlay.SetText($"PMB : Velocity: {velocity}");
@@ -166,7 +169,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             else if (Grounded)
             {
                 moveTestString += "Walk Off.\n";
-                Machine.SendSignal("WalkOff");
+                Player.StateMachine.SendSignal("WalkOff");
                 UnLand(JumpState.Hangtime);
             }
         }
@@ -200,7 +203,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             moveTestString += $"Grounded, Hit Nothing.\n";
 
             {
-                //Alternative Stop Checks
+                moveTestString += $"Doing Alt-Stop checks without any NavMesh connection. \n";
 
                 Vector3 platformCheckDistance = stepVelocity.normalized * platformDetectionFactor;
                 bool forwardCheckOp = SweepBody(Vector3.down * 5000, out RaycastHit platformCheckHit, groundCheckBuffer, Position + platformCheckDistance);
@@ -328,7 +331,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         Position += snapToSurface;
 
         if (stopDistance == -1 || step + 1 >= movementProjectionSteps) return;
-        else if (Vector3.Angle(stepVelocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Machine.SendSignal(new("Bonk", 0, true)))
+        else if (Vector3.Angle(stepVelocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Player.StateMachine.SendSignal(new("Bonk", 0, true)))
         {
             this.velocity = Vector3.zero;
             return;
@@ -422,7 +425,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         if (target == Vector3.zero) return;
         direction = Vector3.RotateTowards(direction, target.normalized, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
     }
-    public void DirectionSet(float maxTurnSpeed) => DirectionSet(playerController.camAdjustedMovement, maxTurnSpeed);
+    public void DirectionSet(float maxTurnSpeed) => DirectionSet(Player.Controller.camAdjustedMovement, maxTurnSpeed);
     public void InstantDirectionChange(Vector3 target)
     {
         if (target.sqrMagnitude == 0) return;
@@ -693,8 +696,8 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         if (wasntGrounded)
         {
             LandEvent?.Invoke();
-            Machine.SendSignal(new("Land", ignoreLock: true));
-            if (playerController.CheckJumpBuffer()) Machine.SendSignal("Jump");
+            Player.StateMachine.SendSignal(new("Land", ignoreLock: true));
+            if (Player.Controller.CheckJumpBuffer()) Player.StateMachine.SendSignal("Jump");
         }
     }
     /// <summary>
@@ -730,7 +733,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     void WalkOff()
     {
         UnLand();
-        Machine.SendSignal(new("WalkOff", ignoreLock: true));
+        Player.StateMachine.SendSignal(new("WalkOff", ignoreLock: true));
     }
 
     /// <summary>
@@ -851,7 +854,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         if (GroundCheck(out _))
         {
             Player.StateMachine.IdleWalk.Enter();
-            if (doCrossFade) animator.CrossFade("GroundBasic", .1f);
+            if (doCrossFade) Player.Animator.CrossFade("GroundBasic", .1f);
         }
         else Player.StateMachine.Airborne.Enter();
     }
@@ -874,7 +877,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         set
         {
             _currentVent = value;
-            Machine.SendSignal(new(value != null ? "EnterVent" : "ExitVent", 0, true));
+            Player.StateMachine.SendSignal(new(value != null ? "EnterVent" : "ExitVent", 0, true));
         }
     }
     public bool isOverVent => _currentVent != null;
