@@ -202,33 +202,51 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         {
             moveTestString += $"Grounded, Hit Nothing.\n";
 
+            if (cantWalkOff)
             {
-                moveTestString += $"Doing Alt-Stop checks without any NavMesh connection. \n";
-
                 Vector3 platformCheckDistance = stepVelocity.normalized * platformDetectionFactor;
-                bool forwardCheckOp = SweepBody(Vector3.down * 5000, out RaycastHit platformCheckHit, groundCheckBuffer, Position + platformCheckDistance);
 
-                if (forwardCheckOp && platformCheckHit.distance <= groundCheckBuffer + .001f && WithinSlopeAngle(platformCheckHit.normal)) { }
-                else if (cantWalkOff || !forwardCheckOp)
+                if (NavMesh.SamplePosition(Position, out _, .1f, NavMesh.AllAreas) &&
+                    NavMesh.FindClosestEdge(Position, out NavMeshHit navHit, NavMesh.AllAreas))
                 {
-                    //Either didn't hit anything, meaning the player has reached the void,
-                    //or cantWalkOff is currently enabled and the distance the check got was larger than platform detection.
-                    moveTestString += cantWalkOff ? "Player is not allowed to walk off.\n" : "Hit the void while walking.\n";
+                    if (Vector3.Dot(navHit.normal, stepVelocity.normalized) < -0.1f)
+                    {
+                        if(navHit.position.XZ() == Position.XZ())
+                        {
+                            nextNormal = navHit.normal.XZ();
+                            stopDistance = 0;
+                        }
+                        else
+                        {
+                            Plane P = new(navHit.normal.XZ(), navHit.position);
+                            if (P.Raycast(new(Position, stepVelocity), out float hitDistance) && hitDistance <= stepVelocity.magnitude)
+                            {
+                                nextNormal = P.normal;
+                                stopDistance = hitDistance;
+                                //scaleByDot = true;
+                                moveTestString += $"Platform Locked onto NavMesh Platform, nextNormal: {nextNormal}\n";
+                            }
+                        }
+                    }
+                }
+                else if (!SweepBody(Vector3.down * groundCheckBuffer, out RaycastHit platformCheckHit,
+                    groundCheckBuffer, Position + platformCheckDistance))
+                {
                     Vector3 reachAroundPos = Position + (platformCheckDistance * 1.01f) - (Vector3.up * Collider.height / 2);
                     if (SweepBody(platformCheckDistance.XZ() * -2f, out RaycastHit reachAroundResult, 0, reachAroundPos))
-                    {// Assume able to reach Platform from below.
-
+                    {
                         nextNormal = -reachAroundResult.normal.XZ();
                         Plane P = new(nextNormal, reachAroundResult.point + (nextNormal * .6f));
-                        P.Raycast(new(Position, stepVelocity), out stopDistance);
+                        P.Raycast(new(Position, stepVelocity), out float hitDistance);
+                        if (hitDistance <= stepVelocity.magnitude) stopDistance = hitDistance;
+
 
                         scaleByDot = true;
-                        moveTestString += $"Found Platform to Lock at, nextNormal: {nextNormal}\n";
+                        moveTestString += $"Platform Locked onto non-NavMesh Platform, nextNormal: {nextNormal}\n";
                     }
                     else moveTestString += "Walking off platform when not allowed but reach around check failed. Failsafe situation, report to CJ.\n";
                 }
             }
-
             if (stopDistance == -1)
             {
                 if (GroundCheck(out _, out RaycastHit groundCast, true) && groundCast.normal != anchorPoint.normal)
@@ -328,9 +346,13 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
 
         Vector3 snapToSurface = stopDistance != -1 ? stepVelocity.normalized * stopDistance : stepVelocity;
+
+        //Void Check. (Moved here cause making it work with the Platform detector is both not helpful and confusing.)
+        if (!SweepBody(Vector3.down * 5000, out _, groundCheckBuffer, snapToSurface)) return;
+
         Position += snapToSurface;
 
-        if (stopDistance == -1 || step + 1 >= movementProjectionSteps) return;
+        if (stopDistance < 0 || step + 1 >= movementProjectionSteps) return;
         else if (Vector3.Angle(stepVelocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Player.StateMachine.SendSignal(new("Bonk", 0, true)))
         {
             this.velocity = Vector3.zero;
@@ -911,6 +933,9 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                 Gizmos.DrawLine(start, end);
             }
         }
+
+        if (NavMesh.FindClosestEdge(Position, out var hit, NavMesh.AllAreas))
+            Debug.DrawRay(hit.position, hit.normal, Color.yellow);
     }
 
     private List<HitNormalDisplay> queuedHits = new();
