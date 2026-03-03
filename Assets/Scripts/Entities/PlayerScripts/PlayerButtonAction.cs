@@ -14,7 +14,7 @@ using UnityEditor.UIElements;
 #endif
 
 [System.Serializable]
-public abstract class PlayerButtonAction : PolymorphicObject
+public abstract class PlayerButtonAction : Polymorph
 {
     public bool persistAcrossStateChange = false;
 
@@ -310,7 +310,7 @@ public abstract class PlayerButtonAction : PolymorphicObject
         {
             container.Clear();
 
-            var root = new PolymorphicObject.TabbedDrawer();
+            var root = new Polymorph.TabbedDrawer();
             container.Add(root);
 
             root.Add("Melee Target", property.FindPropertyRelative(nameof(hasMeleeTarget)));
