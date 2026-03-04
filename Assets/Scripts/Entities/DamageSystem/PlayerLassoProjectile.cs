@@ -16,7 +16,7 @@ public class PlayerLassoProjectile : PlayerProjectile
     private float currentYVelocity;
     private Vector3 currentHDirection;
 
-    public override void Send(RangedTarget target, Transform initPosition, Transform fallBackTargetPosition)
+    public override void Send(Target target, Transform initPosition, Transform fallBackTargetPosition)
     {
         activeTarget = target;
         lostTarget = false;

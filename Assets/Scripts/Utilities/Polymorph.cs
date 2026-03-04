@@ -45,7 +45,7 @@ public abstract class Polymorph
     }
 
     [System.Serializable]
-    public class UniqueList<T> : IList<T> where T : Polymorph
+    public class UniqueList<T> : IList<T>, ISerializationCallbackReceiver where T : Polymorph
     {
         [SerializeField, SerializeReference]
         public List<T> items = new();
@@ -102,6 +102,8 @@ public abstract class Polymorph
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => ((System.Collections.IEnumerable)items).GetEnumerator();
         #endregion
 
+        [SerializeField] private List<Type> typeKey = new();
+
         // Additional dictionary-like and utility methods:
 
         /// <summary>
@@ -109,7 +111,7 @@ public abstract class Polymorph
         /// </summary>
         /// <param name="I">The type whose associated value to get.</param>
         /// <returns>The value associated with the specified type.</returns>
-        public T this[Type I] => GetByType(I);
+        public T this[Type I] => typeKey.Contains(I) ? items[typeKey.IndexOf(I)] : null;
 
         /// <summary>
         /// Returns the first stored element whose runtime Type equals the provided Type, or null if none.
@@ -184,11 +186,20 @@ public abstract class Polymorph
             if (idx >= 0) items[idx] = item;
             else Add(item);
         }
+
+        public void OnBeforeSerialize()
+        {
+            typeKey.Clear();
+            for (int i = 0; i < items.Count; i++) 
+                if (items[i] != null) 
+                    typeKey.Add(items[i].GetType());
+        }
+        public void OnAfterDeserialize() { }
     }
 
 #if UNITY_EDITOR
 
-    public virtual bool OverrideBody(VisualElement.Hierarchy container, SerializedProperty property) => false;
+    public virtual bool OverrideBody(VisualElement container, SerializedProperty property) => false;
 
     public static Type[] GetSubtypes(Type baseType)
     {
@@ -315,7 +326,7 @@ public abstract class Polymorph
             if (property.managedReferenceValue is not null and Polymorph O && bodyInvalid)
             {
                 if (contentContainer == null) return;
-                if (O.OverrideBody(contentContainer.hierarchy, property))
+                if (O.OverrideBody(contentContainer, property))
                     contentContainer.Bind(property.serializedObject);
 
                 HeaderDrawer dupe;

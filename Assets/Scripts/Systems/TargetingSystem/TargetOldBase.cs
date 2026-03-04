@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class Target : MonoBehaviour
+public abstract class TargetOldBase : MonoBehaviour
 {
     [SerializeField] Vector3 RealPositionOffset;
     [SerializeField, RelatedComponent] Rigidbody rigidBody;
@@ -32,13 +32,13 @@ public abstract class Target : MonoBehaviour
     protected virtual void OnEnable()
     {
         if (!Gameplay.Active) return;
-        TargetingManager.AddPresentTarget(this);
+        //TargetingManager.AddPresentTarget(this);
         currentState = States.OutOfRange;
     }
     protected virtual void OnDisable()
     {
         if (!Gameplay.Active) return;
-        TargetingManager.RemovePresentTarget(this);
+        //TargetingManager.RemovePresentTarget(this);
         currentState = States.Inactive;
     }
 
@@ -70,8 +70,8 @@ public abstract class Target : MonoBehaviour
     public virtual void OnEnterRange() { }
     public virtual void OnExitRange() { }
 
-    public virtual void OnDeTargeted(Target nextTarget) { }
-    public virtual void OnTargeted(Target prevTarget) { }
+    public virtual void OnDeTargeted(TargetOldBase nextTarget) { }
+    public virtual void OnTargeted(TargetOldBase prevTarget) { }
 
     public virtual Vector3 PredictFuturePosition(Vector3 projectileInitPos, float projectileSpeed)
     {
