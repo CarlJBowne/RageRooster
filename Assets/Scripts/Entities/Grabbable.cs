@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 
-[RequireComponent(typeof(Collider), typeof(MeleeTarget))]
+[RequireComponent(typeof(Collider), typeof(Target))]
 public class Grabbable : MonoBehaviour
 {
     /// <summary>
@@ -43,7 +43,7 @@ public class Grabbable : MonoBehaviour
 
     //Required Components
     [RelatedComponent(true)] public new Collider collider;
-    [RelatedComponent(true)] public MeleeTarget meleeTarget;
+    [RelatedComponent(true)] public Target target;
 
     //Potential Components
     [SerializeField, RelatedComponent] Rigidbody rigidBody;
@@ -190,7 +190,7 @@ public class Grabbable : MonoBehaviour
             state = value;
 
             enabled = value == States.Grabbable;
-            meleeTarget.enabled = value == States.Grabbable;
+            target.enabled = value == States.Grabbable;
 
             if (value > States.Grabbable || prev > States.Grabbable)
             {

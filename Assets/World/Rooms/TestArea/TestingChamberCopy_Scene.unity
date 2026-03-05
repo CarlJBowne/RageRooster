@@ -1445,7 +1445,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 67406
+    surfaceParameter: 53732
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
@@ -3249,9 +3249,8 @@ GameObject:
   - component: {fileID: 280758277}
   - component: {fileID: 280758276}
   - component: {fileID: 280758275}
-  - component: {fileID: 280758280}
-  - component: {fileID: 280758281}
   - component: {fileID: 280758282}
+  - component: {fileID: 280758281}
   m_Layer: 3
   m_Name: Grabb2
   m_TagString: Untagged
@@ -3378,24 +3377,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 513596489}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &280758280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 280758273}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 157b62d8004f9f14d8160afc57aae3b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
-  RealPositionOffset: {x: 0, y: 0, z: 0}
-  rigidBody: {fileID: 280758275}
-  collider: {fileID: 280758276}
-  navMeshAgent: {fileID: 0}
-  centerComputationType: 0
-  grabbable: {fileID: 280758281}
 --- !u!114 &280758281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3414,7 +3395,7 @@ MonoBehaviour:
   anchorPoint: {fileID: 0}
   AdditionalThrowDistance: 0
   collider: {fileID: 280758276}
-  meleeTarget: {fileID: 280758280}
+  target: {fileID: 280758282}
   rigidBody: {fileID: 280758275}
   ragdollHandler: {fileID: 0}
   thrownObjectAttack: {fileID: 0}
@@ -3430,14 +3411,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 280758273}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c15eb228060da4689a9f675157e315, type: 3}
+  m_Script: {fileID: 11500000, guid: ff959314ab21ec04496ded7c08d36f17, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RangedTarget
+  m_EditorClassIdentifier: Assembly-CSharp::Target
+  Types:
+    items:
+    - rid: 440872388981686363
+    - rid: 440872388981686364
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 280758275}
   collider: {fileID: 280758276}
   navMeshAgent: {fileID: 0}
-  centerComputationType: 2
+  centerComputationType: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 440872388981686363
+      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: 280758282}
+    - rid: 440872388981686364
+      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: 280758282}
 --- !u!1 &284672209
 GameObject:
   m_ObjectHideFlags: 0
@@ -8231,7 +8227,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 67996
+    surfaceParameter: 54372
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
@@ -8285,9 +8281,8 @@ GameObject:
   - component: {fileID: 961141757}
   - component: {fileID: 961141756}
   - component: {fileID: 961141755}
-  - component: {fileID: 961141760}
-  - component: {fileID: 961141761}
   - component: {fileID: 961141762}
+  - component: {fileID: 961141761}
   m_Layer: 3
   m_Name: Grabb1
   m_TagString: Untagged
@@ -8414,24 +8409,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 513596489}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &961141760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 961141753}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 157b62d8004f9f14d8160afc57aae3b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
-  RealPositionOffset: {x: 0, y: 0, z: 0}
-  rigidBody: {fileID: 961141755}
-  collider: {fileID: 961141756}
-  navMeshAgent: {fileID: 0}
-  centerComputationType: 0
-  grabbable: {fileID: 961141761}
 --- !u!114 &961141761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8450,7 +8427,7 @@ MonoBehaviour:
   anchorPoint: {fileID: 0}
   AdditionalThrowDistance: 0
   collider: {fileID: 961141756}
-  meleeTarget: {fileID: 961141760}
+  target: {fileID: 961141762}
   rigidBody: {fileID: 961141755}
   ragdollHandler: {fileID: 0}
   thrownObjectAttack: {fileID: 0}
@@ -8466,14 +8443,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 961141753}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c15eb228060da4689a9f675157e315, type: 3}
+  m_Script: {fileID: 11500000, guid: ff959314ab21ec04496ded7c08d36f17, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RangedTarget
+  m_EditorClassIdentifier: Assembly-CSharp::Target
+  Types:
+    items:
+    - rid: 440872388981686365
+    - rid: 440872388981686366
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 961141755}
   collider: {fileID: 961141756}
   navMeshAgent: {fileID: 0}
   centerComputationType: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 440872388981686365
+      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: 961141762}
+    - rid: 440872388981686366
+      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: 961141762}
 --- !u!1 &966652094
 GameObject:
   m_ObjectHideFlags: 0
@@ -15682,7 +15674,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1705452249
 Transform:
   m_ObjectHideFlags: 0
@@ -17083,7 +17075,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 67996
+    surfaceParameter: 54372
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
@@ -17442,7 +17434,6 @@ GameObject:
   - component: {fileID: 1891244946}
   - component: {fileID: 1891244945}
   - component: {fileID: 1891244944}
-  - component: {fileID: 1891244950}
   - component: {fileID: 1891244949}
   m_Layer: 0
   m_Name: Sphere
@@ -17571,32 +17562,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 1891244943}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 157b62d8004f9f14d8160afc57aae3b5, type: 3}
+  m_Script: {fileID: 11500000, guid: ff959314ab21ec04496ded7c08d36f17, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
+  m_EditorClassIdentifier: Assembly-CSharp::Target
+  Types:
+    items:
+    - rid: 440872388981686371
+    - rid: 440872388981686372
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 0}
   collider: {fileID: 1891244945}
   navMeshAgent: {fileID: 0}
   centerComputationType: 2
-  grabbable: {fileID: 0}
---- !u!114 &1891244950
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1891244943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c15eb228060da4689a9f675157e315, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RangedTarget
-  RealPositionOffset: {x: 0, y: 0, z: 0}
-  rigidBody: {fileID: 0}
-  collider: {fileID: 1891244945}
-  navMeshAgent: {fileID: 0}
-  centerComputationType: 2
+  references:
+    version: 2
+    RefIds:
+    - rid: 440872388981686371
+      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: 1891244949}
+    - rid: 440872388981686372
+      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: 1891244949}
 --- !u!43 &1897610679
 Mesh:
   m_ObjectHideFlags: 0
@@ -17818,7 +17806,7 @@ GameObject:
   - component: {fileID: 1911888894}
   - component: {fileID: 1911888898}
   - component: {fileID: 1911888897}
-  - component: {fileID: 1911888896}
+  - component: {fileID: 1911888899}
   - component: {fileID: 1911888895}
   m_Layer: 0
   m_Name: SYL
@@ -17861,31 +17849,13 @@ MonoBehaviour:
   anchorPoint: {fileID: 0}
   AdditionalThrowDistance: 0
   collider: {fileID: 1911888898}
-  meleeTarget: {fileID: 1911888896}
-  rigidBody: {fileID: 0}
+  target: {fileID: 1911888899}
+  rigidBody: {fileID: 1911888897}
   ragdollHandler: {fileID: 0}
   thrownObjectAttack: {fileID: 0}
   health: {fileID: 0}
   constantMovement: {fileID: 0}
   entityActivity: {fileID: 0}
---- !u!114 &1911888896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1911888893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 157b62d8004f9f14d8160afc57aae3b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
-  RealPositionOffset: {x: 0, y: 0, z: 0}
-  rigidBody: {fileID: 1911888897}
-  collider: {fileID: 1911888898}
-  navMeshAgent: {fileID: 0}
-  centerComputationType: 0
-  grabbable: {fileID: 1911888895}
 --- !u!54 &1911888897
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -17936,6 +17906,38 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1911888899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911888893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff959314ab21ec04496ded7c08d36f17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Target
+  Types:
+    items:
+    - rid: 440872388981686367
+    - rid: 440872388981686368
+  RealPositionOffset: {x: 0, y: 0, z: 0}
+  rigidBody: {fileID: 1911888897}
+  collider: {fileID: 1911888898}
+  navMeshAgent: {fileID: 0}
+  centerComputationType: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 440872388981686367
+      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: 1911888899}
+    - rid: 440872388981686368
+      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: 1911888899}
 --- !u!1 &1915707821
 GameObject:
   m_ObjectHideFlags: 0

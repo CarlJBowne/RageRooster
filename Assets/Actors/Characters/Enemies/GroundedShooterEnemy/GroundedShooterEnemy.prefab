@@ -4963,8 +4963,7 @@ GameObject:
   - component: {fileID: 2118259414133081454}
   - component: {fileID: 5231858220885111202}
   - component: {fileID: 8999987942707735413}
-  - component: {fileID: 8895559702137851200}
-  - component: {fileID: -2347159966343118322}
+  - component: {fileID: 2371090980624060258}
   - component: {fileID: 226772296267759708}
   - component: {fileID: 4339660178794021585}
   - component: {fileID: 838323740284995032}
@@ -5189,7 +5188,7 @@ MonoBehaviour:
   lootOnDepletePrefabs: []
   spawnForce: 5
   itemChance: 0.5
---- !u!114 &8895559702137851200
+--- !u!114 &2371090980624060258
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5198,32 +5197,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 4906831177318307996}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 157b62d8004f9f14d8160afc57aae3b5, type: 3}
+  m_Script: {fileID: 11500000, guid: ff959314ab21ec04496ded7c08d36f17, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
-  RealPositionOffset: {x: 0, y: 0.5, z: 0}
-  rigidBody: {fileID: 4955049059810562381}
-  collider: {fileID: 5120672082714371255}
-  navMeshAgent: {fileID: 0}
-  centerComputationType: 0
-  grabbable: {fileID: 226772296267759708}
---- !u!114 &-2347159966343118322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4906831177318307996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c15eb228060da4689a9f675157e315, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RangedTarget
+  m_EditorClassIdentifier: Assembly-CSharp::Target
+  Types:
+    items:
+    - rid: 440872388981686359
+    - rid: 440872388981686360
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 4955049059810562381}
   collider: {fileID: 5120672082714371255}
   navMeshAgent: {fileID: 8532330221387340354}
   centerComputationType: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 440872388981686359
+      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: 2371090980624060258}
+    - rid: 440872388981686360
+      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: 2371090980624060258}
 --- !u!114 &226772296267759708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5242,7 +5238,7 @@ MonoBehaviour:
   anchorPoint: {fileID: 5012654195610859544}
   AdditionalThrowDistance: 0
   collider: {fileID: 5120672082714371255}
-  meleeTarget: {fileID: 8895559702137851200}
+  target: {fileID: 2371090980624060258}
   rigidBody: {fileID: 4955049059810562381}
   ragdollHandler: {fileID: 4339660178794021585}
   thrownObjectAttack: {fileID: 838323740284995032}
