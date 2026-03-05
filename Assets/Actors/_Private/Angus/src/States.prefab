@@ -295,6 +295,279 @@ MonoBehaviour:
     m_RotationOrder: 4
   closeDistance: 0.75
   failedBackup: {fileID: 0}
+--- !u!1 &1941338016885725066
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2845466079362528439}
+  - component: {fileID: 323875197680923165}
+  - component: {fileID: 2670235176040345213}
+  - component: {fileID: 1860335289127101618}
+  - component: {fileID: 4655118319570618115}
+  m_Layer: 0
+  m_Name: LassoReady
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2845466079362528439
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941338016885725066}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1980973832954870035}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &323875197680923165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941338016885725066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+  <Behaviors>k__BackingField:
+  - {fileID: 2670235176040345213}
+  - {fileID: 1860335289127101618}
+  - {fileID: 4655118319570618115}
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 652664965994220841}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &2670235176040345213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941338016885725066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56991d69e0c7b384e9ac93dc554c6fda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 323875197680923165}
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  walkingSpeed: 4.5
+--- !u!114 &1860335289127101618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941338016885725066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 323875197680923165}
+  onEntry: 2
+  onEnterName: LassoReady
+  onEnterTime: 0.1
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &4655118319570618115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941338016885725066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 323875197680923165}
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  Jump:
+    rid: -2
+  Attack:
+    rid: -2
+  Grab:
+    rid: 440872388981686388
+  Charge:
+    rid: -2
+  Parry:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 440872388981686388
+      type: {class: PlayerButtonAction/CrossStatePressRelease, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        actionEvent:
+          _PersistentCalls:
+          - _Target: {fileID: 4439605229579258186}
+            _MemberName: Enter
+            _PersistentArguments: []
+        transferState: {fileID: 0}
+--- !u!1 &2230299446193029898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5981828637283061870}
+  - component: {fileID: 6528444147634730838}
+  - component: {fileID: 4447305129259393226}
+  - component: {fileID: 5927645786560226102}
+  - component: {fileID: 3099982968341016207}
+  m_Layer: 0
+  m_Name: LassoRetract
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &5981828637283061870
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2230299446193029898}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1980973832954870035}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6528444147634730838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2230299446193029898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+  <Behaviors>k__BackingField:
+  - {fileID: 4447305129259393226}
+  - {fileID: 5927645786560226102}
+  - {fileID: 3099982968341016207}
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 7919293595146936596}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &4447305129259393226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2230299446193029898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56991d69e0c7b384e9ac93dc554c6fda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 6528444147634730838}
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  walkingSpeed: 3
+--- !u!114 &5927645786560226102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2230299446193029898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 6528444147634730838}
+  onEntry: 2
+  onEnterName: LassoRetract
+  onEnterTime: 0.1
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &3099982968341016207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2230299446193029898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 6528444147634730838}
+  signals:
+    serializedList:
+    - Key: LassoReach
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 2554073388518371962}
+          _MemberName: EnterFade
+          _PersistentArguments:
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0.1
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+    - Key: LassoReachMiss
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 7544409849844556723}
+          _MemberName: EnterFade
+          _PersistentArguments:
+          - _Type: 5
+            _Int: 0
+            _String: 
+            _X: 0.1
+            _Y: 0
+            _Z: 0
+            _W: 0
+            _Object: {fileID: 0}
+  lockOnEnter: 0
 --- !u!1 &2847698529546440986
 GameObject:
   m_ObjectHideFlags: 0
@@ -982,6 +1255,147 @@ MonoBehaviour:
           _W: 0
           _Object: {fileID: 0}
   loopAfterLastEvent: 0
+--- !u!1 &7433711658735586084
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8761083280314177956}
+  - component: {fileID: 4439605229579258186}
+  - component: {fileID: 3410447530944384987}
+  - component: {fileID: 5298699795549901912}
+  - component: {fileID: 3900718834003416141}
+  - component: {fileID: 866020098066674853}
+  m_Layer: 0
+  m_Name: LassoThrow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &8761083280314177956
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7433711658735586084}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1980973832954870035}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4439605229579258186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7433711658735586084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+  <Behaviors>k__BackingField:
+  - {fileID: 3410447530944384987}
+  - {fileID: 5298699795549901912}
+  - {fileID: 3900718834003416141}
+  - {fileID: 866020098066674853}
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 652664965994220841}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &3410447530944384987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7433711658735586084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56991d69e0c7b384e9ac93dc554c6fda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 4439605229579258186}
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  walkingSpeed: 6
+--- !u!114 &5298699795549901912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7433711658735586084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 4439605229579258186}
+  onEntry: 2
+  onEnterName: LassoThrow
+  onEnterTime: 0.05
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &3900718834003416141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7433711658735586084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 4439605229579258186}
+  signals:
+    serializedList:
+    - Key: LassoPull
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 6528444147634730838}
+          _MemberName: Enter
+          _PersistentArguments: []
+  lockOnEnter: 0
+--- !u!114 &866020098066674853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7433711658735586084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
+  <Machine>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 4439605229579258186}
+  timeline: {fileID: 0}
+  events:
+  - time: 0.05
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: ThrowLassoPoint
+        _PersistentArguments: []
+  loopAfterLastEvent: 0
 --- !u!1 &8012621955457308071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1170,19 +1584,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3378635177629406471, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
         type: 3}
+      propertyPath: <ChildCount>k__BackingField
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3378635177629406471, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
+        type: 3}
       propertyPath: <Children>k__BackingField.Array.size
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3378635177629406471, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
         type: 3}
       propertyPath: '<Children>k__BackingField.Array.data[8]'
       value: 
-      objectReference: {fileID: 7515680845821507860}
+      objectReference: {fileID: 323875197680923165}
     - target: {fileID: 3378635177629406471, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
         type: 3}
       propertyPath: '<Children>k__BackingField.Array.data[9]'
       value: 
-      objectReference: {fileID: 3117435894684002521}
+      objectReference: {fileID: 4439605229579258186}
     - target: {fileID: 3378635177629406471, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
         type: 3}
       propertyPath: '<Children>k__BackingField.Array.data[10]'
@@ -1327,7 +1746,19 @@ PrefabInstance:
     - {fileID: 8792526432171425717, guid: 5d1a257aa4c38eb4daf2a4315fb23034, type: 3}
     - {fileID: 8039822837288100892, guid: 5d1a257aa4c38eb4daf2a4315fb23034, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4364054746706649405, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2845466079362528439}
+    - targetCorrespondingSourceObject: {fileID: 4364054746706649405, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8761083280314177956}
+    - targetCorrespondingSourceObject: {fileID: 4364054746706649405, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5981828637283061870}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2901553364885823806, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
         type: 3}
@@ -1361,6 +1792,18 @@ MonoBehaviour:
 --- !u!114 &409930143609120415 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2476334193753931441, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
+    type: 3}
+  m_PrefabInstance: {fileID: 2877212606258534446}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &652664965994220841 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3378635177629406471, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
     type: 3}
   m_PrefabInstance: {fileID: 2877212606258534446}
   m_PrefabAsset: {fileID: 0}
@@ -1479,6 +1922,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1980973832954870035 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4364054746706649405, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
+    type: 3}
+  m_PrefabInstance: {fileID: 2877212606258534446}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2346109994271278553 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 532241706185678327, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
@@ -1620,18 +2069,6 @@ MonoBehaviour:
 --- !u!114 &7304340134456832318 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4806417473190324496, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
-    type: 3}
-  m_PrefabInstance: {fileID: 2877212606258534446}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7515680845821507860 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5737839327790309690, guid: 5d1a257aa4c38eb4daf2a4315fb23034,
     type: 3}
   m_PrefabInstance: {fileID: 2877212606258534446}
   m_PrefabAsset: {fileID: 0}
@@ -2006,6 +2443,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5898498358072726126, guid: e2f7aba649dedca4b89f601ebb61b048,
         type: 3}
+      propertyPath: 'managedReferences[440872388981686421]'
+      value: Assembly-CSharp PlayerButtonAction/CrossStatePressRelease
+      objectReference: {fileID: 0}
+    - target: {fileID: 5898498358072726126, guid: e2f7aba649dedca4b89f601ebb61b048,
+        type: 3}
       propertyPath: 'managedReferences[1451162131572981847]'
       value: Assembly-CSharp PlayerButtonAction/TargetDependant
       objectReference: {fileID: 0}
@@ -2027,8 +2469,13 @@ PrefabInstance:
     - target: {fileID: 5898498358072726126, guid: e2f7aba649dedca4b89f601ebb61b048,
         type: 3}
       propertyPath: managedReferences[1451162131572981847].noTarget
-      value: -2
+      value: 440872388981686421
       objectReference: {fileID: 0}
+    - target: {fileID: 5898498358072726126, guid: e2f7aba649dedca4b89f601ebb61b048,
+        type: 3}
+      propertyPath: managedReferences[440872388981686421].transferState
+      value: 
+      objectReference: {fileID: 670717373684422110}
     - target: {fileID: 5898498358072726126, guid: e2f7aba649dedca4b89f601ebb61b048,
         type: 3}
       propertyPath: managedReferences[1451162131572981849].transferState
@@ -2043,6 +2490,11 @@ PrefabInstance:
         type: 3}
       propertyPath: managedReferences[1451162131572981847].hasRangedTarget
       value: 1451162131572981849
+      objectReference: {fileID: 0}
+    - target: {fileID: 5898498358072726126, guid: e2f7aba649dedca4b89f601ebb61b048,
+        type: 3}
+      propertyPath: managedReferences[440872388981686421].persistAcrossStateChange
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5898498358072726126, guid: e2f7aba649dedca4b89f601ebb61b048,
         type: 3}
@@ -2073,6 +2525,11 @@ PrefabInstance:
         type: 3}
       propertyPath: managedReferences[3657502764043599955].pressEvent._PersistentCalls.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5898498358072726126, guid: e2f7aba649dedca4b89f601ebb61b048,
+        type: 3}
+      propertyPath: managedReferences[440872388981686421].actionEvent._PersistentCalls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5898498358072726126, guid: e2f7aba649dedca4b89f601ebb61b048,
         type: 3}
@@ -3274,6 +3731,101 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
         type: 3}
+      propertyPath: Grab
+      value: 440872388981686385
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: 'managedReferences[-2]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: 'managedReferences[440872388981686385]'
+      value: Assembly-CSharp PlayerButtonAction/TargetDependant
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: 'managedReferences[440872388981686386]'
+      value: Assembly-CSharp PlayerButtonAction/BasicPush
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: 'managedReferences[440872388981686387]'
+      value: Assembly-CSharp PlayerButtonAction/CrossStatePressRelease
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: 'managedReferences[440872388981686396]'
+      value: Assembly-CSharp PlayerButtonAction/CrossStatePressRelease
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686385].noTarget
+      value: 440872388981686396
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686387].transferState
+      value: 
+      objectReference: {fileID: 4655118319570618115}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686396].transferState
+      value: 
+      objectReference: {fileID: 4655118319570618115}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686385].hasMeleeTarget
+      value: 440872388981686386
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686385].hasRangedTarget
+      value: 440872388981686387
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686385].persistAcrossStateChange
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686386].persistAcrossStateChange
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686387].persistAcrossStateChange
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686396].persistAcrossStateChange
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686386].pressEvent._PersistentCalls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686387].actionEvent._PersistentCalls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686396].actionEvent._PersistentCalls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686386].releaseEvent._PersistentCalls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
       propertyPath: managedReferences[1950655830041821280].tapEvent._PersistentCalls.Array.data[0]._Target
       value: 
       objectReference: {fileID: 1752920719945570319}
@@ -3282,6 +3834,11 @@ PrefabInstance:
       propertyPath: managedReferences[1950655830041821280].holdEvent._PersistentCalls.Array.data[0]._Target
       value: 
       objectReference: {fileID: 1071481867238633131}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686386].pressEvent._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 1446572254727929891}
     - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
         type: 3}
       propertyPath: managedReferences[1950655830041821279].pressEvent._PersistentCalls.Array.data[0]._Target
@@ -3297,6 +3854,16 @@ PrefabInstance:
       propertyPath: managedReferences[1950655830041821284].pressEvent._PersistentCalls.Array.data[0]._Target
       value: 
       objectReference: {fileID: 8047177713949543071}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686386].pressEvent._PersistentCalls.Array.data[0]._MemberName
+      value: GrabThrowButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[440872388981686386].pressEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1249639751377397145, guid: b256207bb61b85244915454556421f67,
         type: 3}
       propertyPath: signals.serializedList.Array.data[0].Value._PersistentCalls.Array.data[0]._Target
@@ -3310,38 +3877,38 @@ PrefabInstance:
     - target: {fileID: 1719738861989955058, guid: b256207bb61b85244915454556421f67,
         type: 3}
       propertyPath: <Children>k__BackingField.Array.size
-      value: 28
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1719738861989955058, guid: b256207bb61b85244915454556421f67,
         type: 3}
       propertyPath: '<Children>k__BackingField.Array.data[0]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1232897102874648030}
     - target: {fileID: 1719738861989955058, guid: b256207bb61b85244915454556421f67,
         type: 3}
       propertyPath: '<Children>k__BackingField.Array.data[1]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 4275974496908313364}
     - target: {fileID: 1719738861989955058, guid: b256207bb61b85244915454556421f67,
         type: 3}
       propertyPath: '<Children>k__BackingField.Array.data[2]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8005747311968293796}
     - target: {fileID: 1719738861989955058, guid: b256207bb61b85244915454556421f67,
         type: 3}
       propertyPath: '<Children>k__BackingField.Array.data[3]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7949998004010413276}
     - target: {fileID: 1719738861989955058, guid: b256207bb61b85244915454556421f67,
         type: 3}
       propertyPath: '<Children>k__BackingField.Array.data[4]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8432827380627521845}
     - target: {fileID: 1719738861989955058, guid: b256207bb61b85244915454556421f67,
         type: 3}
       propertyPath: '<Children>k__BackingField.Array.data[5]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8849587233143687256}
     - target: {fileID: 1719738861989955058, guid: b256207bb61b85244915454556421f67,
         type: 3}
       propertyPath: '<Children>k__BackingField.Array.data[6]'

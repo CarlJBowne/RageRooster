@@ -109,6 +109,8 @@ public class PlayerLassoProjectile : PlayerProjectile
         if (Vector3.Distance(transform.position, Player.Position) <= reachplayerDistance) ReachPlayer();
     }
 
+
+    protected override void OnTriggerEnter(Collider other) => Contact(other.gameObject);
     public override void Contact(GameObject target)
     {
         if (target == Player.GameObject || pullingPhase) return;
