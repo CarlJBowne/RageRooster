@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 /// <summary>
 /// A global Singleton representing the Player entity in the game. Provides static access to commonly used components and systems related to the player.
@@ -57,10 +58,10 @@ public class Player : MonoBehaviour
             Visible = value != ActivityStates.Invisible;
             StateMachine.enabled = value is ActivityStates.Active;
 
-            MovementBody.RBState =
-                value is ActivityStates.Active ? PlayerMovementBody.BodyState.Enabled
-                : value is ActivityStates.Dying ? PlayerMovementBody.BodyState.Ragdoll
-                : PlayerMovementBody.BodyState.OFF;
+            MovementBody.BodyState =
+                value is ActivityStates.Active ? PlayerMovementBody.BodyStates.Enabled
+                : value is ActivityStates.Dying ? PlayerMovementBody.BodyStates.Ragdoll
+                : PlayerMovementBody.BodyStates.OFF;
 
             MovementBody.enabled = value is ActivityStates.Active or ActivityStates.Dying;
             Controller.enabled = value is ActivityStates.Active;
@@ -174,6 +175,8 @@ public class Player : MonoBehaviour
     /// The <see cref="RagdollHandler"/> component attached to the <see cref="Player"/>. <br/>
     /// </summary>
     public static RagdollHandler RagdollHandler { get; private set; }
+
+    public static NavMeshAgent NavMeshAgent { get; private set; }
     #endregion
 
     #region Helper Properties / Methods
@@ -252,6 +255,7 @@ public class Player : MonoBehaviour
         Audio = GetComponent<AudioCaller>();
         RagdollHandler = GetComponent<RagdollHandler>();
         TargetingManager = GetComponent<TargetingManager>();
+        NavMeshAgent = GetComponent<NavMeshAgent>();
         SignalManager = GetComponent<SLS.StateMachineH.Signals.SignalManager>();
         Health.Initialize();
         Ammo.Initialize();

@@ -98,8 +98,9 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         Interface.Initialize(ref Instance);
 
         //NavAgent.updatePosition = false;
-        //NavAgent.updateRotation = false;
-        //NavAgent.updateUpAxis = false;
+        NavAgent.enabled = false;
+        NavAgent.updateRotation = false;
+        NavAgent.updateUpAxis = false;
     }
 
     /// <summary>
@@ -107,15 +108,15 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     void OnEnable()
     {
-        if (_rbState == BodyState.OFF)
-            RBState = BodyState.Enabled;
+        if (_rbState == BodyStates.OFF)
+            BodyState = BodyStates.Enabled;
     }
     /// <summary>
     /// Called when the component is disabled.
     /// </summary>
     void OnDisable()
     {
-        RBState = BodyState.OFF;
+        BodyState = BodyStates.OFF;
     }
 
     void OnDestroy() => Interface.DeInitialize(ref Instance);
@@ -145,28 +146,35 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
         DebugRR.DebugTextOverlay.SetText($"PMB : Velocity: {velocity}");
 
-        if (RBState != BodyState.Enabled) return;
+        if (BodyState != BodyStates.Enabled) return;
+
         RB.linearVelocity = Vector3.zero;
         RB.angularVelocity = Vector3.zero;
+
+        if (navDestinationDriven)
+        {
+            if (NavAgent.remainingDistance < 0.1f) NavDestination(false);
+            return;
+        }
 
         stepZeroVelocity = velocity * Time.fixedDeltaTime;
         stepZeroAnchor = anchorPoint;
 
         moveTestString = "";
 
-        if (velocity != Vector3.zero) Move(stepZeroVelocity);
+        if (velocity != Vector3.zero) MoveNext(stepZeroVelocity);
 
         if (velocity.y <= 0)
         {
             if (GroundCheck(out AnchorPoint groundHit))
             {
-                if (!Grounded)
+                if (!isGrounded)
                 {
                     Land(groundHit);
                     velocity.y = 0;
                 }
             }
-            else if (Grounded)
+            else if (isGrounded)
             {
                 moveTestString += "Walk Off.\n";
                 Player.StateMachine.SendSignal("WalkOff");
@@ -174,31 +182,79 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             }
         }
 
+
         DebugRR.DebugTextOverlay.SetText(moveTestString);
 
-        if (autoApplyGravity && !Grounded) ApplyGravity();
+        if (autoApplyGravity && !isGrounded) ApplyGravity();
 
         if (prePos != Position) _movingUpdateActionTimer.Tick(MovingUpdateAction);
     }
 
-
-    void Move(Vector3 stepVelocity, int step = 0)
+    /// <summary>
+    /// Moves body via either the Nav Mesh, if appropriate, or via the Collide and Slide Algorithm.
+    /// </summary>
+    void MoveNext(Vector3 stepVelocity, int step = 0)
     {
-        moveTestString += $"Step {step}: {stepVelocity}\n";
+        if (OnNavMesh) MoveNav(stepVelocity, step);
+        else MoveSlide(stepVelocity, step);
+    }
+
+    /// <summary>
+    /// Moves body via Nav Mesh.
+    /// </summary>
+    void MoveNav(Vector3 stepVelocity, int step = 0)
+    {
+        moveTestString += $"Step (Nav) {step}: {stepVelocity}\n";
 
         if (stepVelocity == Vector3.zero) return;
 
-        if (Grounded) stepVelocity = stepVelocity.ProjectAndScale(anchorPoint.normal);
+        if (!OnNavMesh)
+        {
+            moveTestString += $"Not sure why this is happening but MoveNav was somehow called despite not being on the NavMesh.";
+            MoveSlide(stepVelocity, step);
+            return;
+        }
+
+        if (!NavAgent.Raycast(Position + stepVelocity, out NavMeshHit hit))
+        {
+            moveTestString += "No hit, moving forward and ending loop. \n";
+            NavAgent.Move(stepVelocity);
+        }
+        else
+        {
+            moveTestString += $"Hit NavMesh edge, normal {hit.normal} at position {hit.position}";
+            Vector3 snapToSurface = stepVelocity.normalized * hit.distance;
+
+            NavAgent.Move(snapToSurface);
+
+            Vector3 leftover = stepVelocity - snapToSurface;
+            if (lockToNavMesh) leftover = leftover.ProjectAndScale(hit.normal);
+            else OnNavMesh = false;
+
+            MoveNext(leftover, step + 1);
+        }
+
+    }
+    /// <summary>
+    /// Moves body via Collide And Slide Algorithm.
+    /// </summary>
+    void MoveSlide(Vector3 stepVelocity, int step = 0)
+    {
+        moveTestString += $"Step (Slide) {step}: {stepVelocity}\n";
+
+        if (stepVelocity == Vector3.zero) return;
+
+        if (isGrounded) stepVelocity = stepVelocity.ProjectAndScale(anchorPoint.normal);
 
         float stopDistance = -1;
         Vector3 nextNormal = Vector3.zero;
         bool scaleByDot = false;
-        bool deleteVerticalLeftover = false;
+        bool land = false;
 
         bool sweepHit = SweepBody(stepVelocity, out RaycastHit hit, groundCheckBuffer) && !(stepVelocity.y == 0 && hit.normal == Vector3.up);
 
 
-        if (Grounded && !sweepHit)
+        if (isGrounded && !sweepHit)
         {
             moveTestString += $"Grounded, Hit Nothing.\n";
 
@@ -206,30 +262,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             {
                 Vector3 platformCheckDistance = stepVelocity.normalized * platformDetectionFactor;
 
-                if (NavMesh.SamplePosition(Position, out _, .1f, NavMesh.AllAreas) &&
-                    NavMesh.FindClosestEdge(Position, out NavMeshHit navHit, NavMesh.AllAreas))
-                {
-                    if (Vector3.Dot(navHit.normal, stepVelocity.normalized) < -0.1f)
-                    {
-                        if(navHit.position.XZ() == Position.XZ())
-                        {
-                            nextNormal = navHit.normal.XZ();
-                            stopDistance = 0;
-                        }
-                        else
-                        {
-                            Plane P = new(navHit.normal.XZ(), navHit.position);
-                            if (P.Raycast(new(Position, stepVelocity), out float hitDistance) && hitDistance <= stepVelocity.magnitude)
-                            {
-                                nextNormal = P.normal;
-                                stopDistance = hitDistance;
-                                //scaleByDot = true;
-                                moveTestString += $"Platform Locked onto NavMesh Platform, nextNormal: {nextNormal}\n";
-                            }
-                        }
-                    }
-                }
-                else if (!SweepBody(Vector3.down * groundCheckBuffer, out RaycastHit platformCheckHit,
+                if (!SweepBody(Vector3.down * groundCheckBuffer, out RaycastHit platformCheckHit,
                     groundCheckBuffer, Position + platformCheckDistance))
                 {
                     Vector3 reachAroundPos = Position + (platformCheckDistance * 1.01f) - (Vector3.up * Collider.height / 2);
@@ -264,7 +297,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                 }
             }
         }
-        else if (Grounded && sweepHit)
+        else if (isGrounded && sweepHit)
         {
             moveTestString += $"Grounded, Hit: {hit.normal} at distance {hit.distance} \n";
             stopDistance = hit.distance;
@@ -274,20 +307,20 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             {
                 moveTestString += "Hit a wall.\n";
                 scaleByDot = true;
-                deleteVerticalLeftover = true;
+                land = true;
                 nextNormal = nextNormal.XZ().normalized;
             }
             else if (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
             {
                 moveTestString += "Hit a steep slope.\n";
                 scaleByDot = true;
-                deleteVerticalLeftover = true;
+                land = true;
                 nextNormal = nextNormal.XZ().normalized;
             }
 
-            if (Grounded && anchorPoint.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchorPoint.normal, hit.normal);
+            if (isGrounded && anchorPoint.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchorPoint.normal, hit.normal);
             //Floor to Cieling
-            else if (Grounded && anchorPoint.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchorPoint.normal);
+            else if (isGrounded && anchorPoint.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchorPoint.normal);
             //Ceiling to Floor
 
             void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
@@ -299,7 +332,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
             if (hit.normal.y > 0 && WithinSlopeAngle(hit.normal) && stepVelocity.y <= 0) anchorPoint = hit;
         }
-        else if (!Grounded && sweepHit)
+        else if (!isGrounded && sweepHit)
         {
             moveTestString += $"Airborne, Hit: {hit.normal} at distance {hit.distance} \n";
             stopDistance = hit.distance;
@@ -311,8 +344,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                 if (WithinSlopeAngle(hit.normal))
                 {
                     moveTestString += "Landed on a standable ground.\n";
-                    Land(hit);
-                    deleteVerticalLeftover = true;
+                    land = true;
                 }
                 else moveTestString += "Hit a steep slope while falling.\n";
             }
@@ -323,7 +355,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             else
             {
                 moveTestString += "Hit a ceiling while jumping.\n";
-                deleteVerticalLeftover = true;
+                land = true;
                 velocity.y = -0.1f;
                 UnLand(JumpState.Falling);
             }
@@ -360,10 +392,15 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         }
 
         Vector3 leftover = stepVelocity - snapToSurface;
-        if (deleteVerticalLeftover) leftover.y = 0;
+        if (land)
+        {
+            leftover.y = 0;
+            Land(hit);
+        }
         Vector3 newDir = leftover.ProjectAndScale(nextNormal);
         if (scaleByDot) newDir *= Vector3.Dot(leftover.normalized, nextNormal) + 1;
-        Move(newDir, step + 1);
+
+        MoveNext(newDir, step + 1);
     }
 
     /// <summary>
@@ -680,7 +717,82 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
     #endregion
 
+    #region Body State
+
+    /// <summary>
+    /// The possible states for a <see cref="CharacterMovementBody"/>.
+    /// </summary>
+    public enum BodyStates
+    {
+        Enabled,
+        Ragdoll,
+        OFF
+    }
+
+    /// <summary>
+    /// The current state of this <see cref="CharacterMovementBody"/>.
+    /// </summary>
+    public BodyStates BodyState
+    {
+        get => _rbState;
+        set
+        {
+            _rbState = value;
+            switch (value)
+            {
+                case BodyStates.Enabled:
+                    RB.isKinematic = false;
+                    RB.detectCollisions = true;
+                    RB.useGravity = false;
+                    Collider.enabled = true;
+                    break;
+                case BodyStates.Ragdoll:
+                    RB.isKinematic = false;
+                    RB.detectCollisions = true;
+                    RB.useGravity = true;
+                    Collider.enabled = false;
+                    break;
+                case BodyStates.OFF:
+                    RB.isKinematic = true;
+                    RB.detectCollisions = false;
+                    RB.useGravity = false;
+                    Collider.enabled = false;
+                    break;
+            }
+        }
+    }
+    BodyStates _rbState = BodyStates.Enabled;
+
+
+
+    public void ReturnToNeutral(bool doCrossFade = true)
+    {
+        if (GroundCheck(out _))
+        {
+            Player.StateMachine.IdleWalk.Enter();
+            if (doCrossFade) Player.Animator.CrossFade("GroundBasic", .1f);
+        }
+        else Player.StateMachine.Airborne.Enter();
+    }
+
+
+    #endregion Body State
+
+
     #region Ground
+
+    /// <summary>
+    /// The possible states of a jump.
+    /// </summary>
+    public enum JumpState
+    {
+        Grounded = 0,
+        Jumping = 1,
+        Decelerating = 2,
+        Hangtime = 3,
+        Falling = 4,
+        TerminalVelocity = 5
+    }
 
 
     /// <summary>
@@ -690,21 +802,21 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     void OnCollisionEnter(Collision collision)
     {
         Vector3 contactPoint = collision.GetContact(0).normal;
-        if (!Grounded && velocity.y > .1f && Vector3.Dot(contactPoint, Vector3.up) < -0.75f) velocity.y = 0;
-        else if (!Grounded && WithinSlopeAngle(contactPoint))
+        if (!isGrounded && velocity.y > .1f && Vector3.Dot(contactPoint, Vector3.up) < -0.75f) velocity.y = 0;
+        else if (!isGrounded && WithinSlopeAngle(contactPoint))
             Land(collision.GetContact(0));
 
     }
 
     public void Land(AnchorPoint groundHit)
     {
-        bool wasntGrounded = jumpState != JumpState.Grounded;
+        bool wasntGrounded = _jumpState != JumpState.Grounded;
         bool objectChange = anchorPoint.collider != groundHit.collider;
         doubleJump.allowDoubleJump = true;
 
         if (!wasntGrounded && !objectChange) return;
 
-        jumpState = JumpState.Grounded;
+        _jumpState = JumpState.Grounded;
         anchorPoint = groundHit;
         velocity.y = 0;
 
@@ -720,6 +832,10 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             LandEvent?.Invoke();
             Player.StateMachine.SendSignal(new("Land", ignoreLock: true));
             if (Player.Controller.CheckJumpBuffer()) Player.StateMachine.SendSignal("Jump");
+
+            if (UseNavMeshIfPossible)
+                if (NavMesh.SamplePosition(Position, out _, navMeshDetectionRange, Player.NavMeshAgent.areaMask))
+                    OnNavMesh = true;
         }
     }
     /// <summary>
@@ -743,13 +859,14 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     public void UnLand(JumpState newState = JumpState.Falling)
     {
         if (newState < JumpState.Jumping) return;
-        jumpState = newState;
+        _jumpState = newState;
         anchorPoint = AnchorPoint.Null;
         if (movingAnchor != null)
         {
             movingAnchor.SetPlayerInfluence(false);
             movingAnchor = null;
         }
+        OnNavMesh = false;
     }
 
     void WalkOff()
@@ -758,19 +875,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         Player.StateMachine.SendSignal(new("WalkOff", ignoreLock: true));
     }
 
-    /// <summary>
-    /// Instantly snaps the character to the floor below, if any.
-    /// </summary>
-    /// <returns>True if snapped to floor, false otherwise.</returns>
-    public bool InstantSnapToFloor()
-    {
-        if (SweepBody(Vector3.down * 1000, out RaycastHit hit, .5f))
-        {
-            Position += Vector3.down * hit.distance;
-            return true;
-        }
-        return false;
-    }
     /// <summary>
     /// Instantly snaps the character to the floor below, if any, and outputs the hit information.
     /// </summary>
@@ -802,88 +906,99 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     IMovablePlatform movingAnchor;
 
-    #endregion Ground
-
-    #region States
-
-    /// <summary>
-    /// The possible states for a <see cref="CharacterMovementBody"/>.
-    /// </summary>
-    public enum BodyState
-    {
-        Enabled,
-        Kinematic,
-        Ragdoll,
-        OFF
-    }
-    /// <summary>
-    /// The current state of this <see cref="CharacterMovementBody"/>.
-    /// </summary>
-    public BodyState RBState
-    {
-        get => _rbState;
-        set
-        {
-            _rbState = value;
-            switch (value)
-            {
-                case BodyState.Enabled:
-                    RB.isKinematic = false;
-                    RB.detectCollisions = true;
-                    RB.useGravity = false;
-                    Collider.enabled = true;
-                    break;
-                case BodyState.Kinematic:
-                    RB.isKinematic = true;
-                    RB.detectCollisions = true;
-                    RB.useGravity = false;
-                    Collider.enabled = true;
-                    break;
-                case BodyState.Ragdoll:
-                    RB.isKinematic = false;
-                    RB.detectCollisions = true;
-                    RB.useGravity = true;
-                    Collider.enabled = false;
-                    break;
-                case BodyState.OFF:
-                    RB.isKinematic = true;
-                    RB.detectCollisions = false;
-                    RB.useGravity = false;
-                    Collider.enabled = false;
-                    break;
-            }
-        }
-    }
-    private BodyState _rbState = BodyState.Enabled;
-
-
     /// <summary>
     /// Whether the character is currently grounded.
     /// </summary>
-    public bool Grounded => jumpState == JumpState.Grounded;
+    public bool isGrounded => _jumpState == JumpState.Grounded;
     /// <summary>
     /// The current jump state of the character.
     /// </summary>
-    public JumpState JumpState => jumpState;
+    public JumpState isJumping => _jumpState;
 
     /// <summary>
     /// The current jump state of this body.
     /// </summary>
-    JumpState jumpState = JumpState.Grounded;
+    JumpState _jumpState = JumpState.Grounded;
 
-    public void ReturnToNeutral(bool doCrossFade = true)
+
+    #endregion Ground
+
+
+    #region NavMesh Navigation
+    public NavMeshAgent NavAgent => Player.NavMeshAgent;
+
+    public bool UseNavMeshIfPossible
     {
-        if (GroundCheck(out _))
+        get => _useNavMeshIfPossible;
+        set
         {
-            Player.StateMachine.IdleWalk.Enter();
-            if (doCrossFade) Player.Animator.CrossFade("GroundBasic", .1f);
+            _useNavMeshIfPossible = value;
+            if (isGrounded)
+            {
+                if (NavMesh.SamplePosition(Position, out _, navMeshDetectionRange, Player.NavMeshAgent.areaMask))
+                    OnNavMesh = true;
+            }
+            if (!value && OnNavMesh) OnNavMesh = false;
         }
-        else Player.StateMachine.Airborne.Enter();
+    }
+    [SerializeField] bool _useNavMeshIfPossible = true;
+    public bool lockToNavMesh = false;
+    public float navMeshDetectionRange = .35f;
+
+    public bool OnNavMesh
+    {
+        get => UseNavMeshIfPossible && NavAgent.enabled && NavAgent.isOnNavMesh;
+        set
+        {
+            if (value) NavAgent.nextPosition = Position;
+            else NavDestination(false);
+            NavAgent.enabled = value;
+        }
+    }
+
+    private bool navDestinationDriven = false;
+
+    /// <summary>
+    /// Getter Variant, just returns current Destination.
+    /// </summary>
+    /// <returns>The current NavDestination, will be zero if there is none.</returns>
+    public Vector3 NavDestination() => navDestinationDriven ? NavAgent.destination : Vector3.zero;
+
+    /// <summary>
+    /// Setter Value Variant. Sets Destination and activates Destination-driven behavior, if possible.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns>Success.</returns>
+    public bool NavDestination(Vector3 value)
+    {
+        if (!OnNavMesh) return navDestinationDriven;
+        navDestinationDriven = true;
+        NavAgent.destination = value;
+        return true;
+    }
+    /// <summary>
+    /// Setter Activation Variant. Activates/Deactivates Destination-driven Behavior. Destination value is optional to allow False Setting.
+    /// </summary>
+    public bool NavDestination(bool value, Vector3 destinationValue = default)
+    {
+        if (!OnNavMesh) return !value;
+        navDestinationDriven = value;
+        NavAgent.destination = destinationValue;
+        return value;
+    }
+    /// <summary>
+    /// Getter Bool with Output Variant. Returns whether Destination-driven Behavior is active and outs the destination value.
+    /// </summary>
+    public bool NavDestination(out Vector3 result)
+    {
+        result = NavAgent.destination;
+        return navDestinationDriven;
     }
 
 
-    #endregion States
 
+
+    #endregion NavMesh Navigation
 
     #region Other
 
@@ -1004,15 +1119,3 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 #endif
 
 }
-
-/*
- PLAN FOR FIXING PROBLEM.
- 
- Re-consolidate all functionality called by Move() to be within Move().
- (WHILE: making comment notes to denote each step for later organization.)
- 
- !!!!! Consider making "CollideAndSlide" CLASS! With Methods for each step that could be overridden.
- 
- Locate the Grounded "Move Forward" step and create a check that acts as if the Player is at the destination, and checks for ground below.
-
- */
