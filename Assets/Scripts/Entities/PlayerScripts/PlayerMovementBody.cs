@@ -63,7 +63,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     public LayerMask validGroundMask;
 
-    public bool cantWalkOff;
     public float platformDetectionFactor = 3;
     public float platformLockRadius = .25f;
 
@@ -227,11 +226,13 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
             NavAgent.Move(snapToSurface);
 
+            if (++step >= movementProjectionSteps) return;
+
             Vector3 leftover = stepVelocity - snapToSurface;
             if (lockToNavMesh) leftover = leftover.ProjectAndScale(hit.normal);
             else OnNavMesh = false;
 
-            MoveNext(leftover, step + 1);
+            MoveNext(leftover, step);
         }
 
     }
@@ -258,7 +259,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         {
             moveTestString += $"Grounded, Hit Nothing.\n";
 
-            if (cantWalkOff)
+            if (lockToNavMesh)
             {
                 Vector3 platformCheckDistance = stepVelocity.normalized * platformDetectionFactor;
 
@@ -384,7 +385,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
         Position += snapToSurface;
 
-        if (stopDistance < 0 || step + 1 >= movementProjectionSteps) return;
+        if (stopDistance < 0 || ++step >= movementProjectionSteps) return;
         else if (Vector3.Angle(stepVelocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Player.StateMachine.SendSignal(new("Bonk", 0, true)))
         {
             this.velocity = Vector3.zero;
@@ -400,7 +401,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         Vector3 newDir = leftover.ProjectAndScale(nextNormal);
         if (scaleByDot) newDir *= Vector3.Dot(leftover.normalized, nextNormal) + 1;
 
-        MoveNext(newDir, step + 1);
+        MoveNext(newDir, step);
     }
 
     /// <summary>
@@ -428,14 +429,22 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     public Vector3 Position
     {
-        get => RB.isKinematic ? transform.position : RB.position;
+        get => BodyState == BodyStates.Enabled
+            ? OnNavMesh
+                ? NavAgent.nextPosition
+                : RB.position
+            : transform.position;
         set
         {
-            if (RB.isKinematic)
-                return;
-            transform.position = value;
-            RB.position = value;
-            RB.MovePosition(value);
+            if (BodyState != BodyStates.Enabled) return;
+
+            if (OnNavMesh) NavAgent.nextPosition = value;
+            else
+            {
+                transform.position = value;
+                RB.position = value;
+                RB.MovePosition(value);
+            }
         }
     }
 
@@ -832,11 +841,15 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             LandEvent?.Invoke();
             Player.StateMachine.SendSignal(new("Land", ignoreLock: true));
             if (Player.Controller.CheckJumpBuffer()) Player.StateMachine.SendSignal("Jump");
-
-            if (UseNavMeshIfPossible)
-                if (NavMesh.SamplePosition(Position, out _, navMeshDetectionRange, Player.NavMeshAgent.areaMask))
-                    OnNavMesh = true;
         }
+
+        if (UseNavMeshIfPossible)
+            if (NavMesh.SamplePosition(Position, out _, navMeshDetectionRange, Player.NavMeshAgent.areaMask))
+            {
+                OnNavMesh = true;
+                navMeshOffset = groundHit.point.y - Position.y;
+            }
+                
     }
     /// <summary>
     /// Lands the body on the ground described by the AnchorPoint.
@@ -953,10 +966,47 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             if (value) NavAgent.nextPosition = Position;
             else NavDestination(false);
             NavAgent.enabled = value;
+
+            /*
+            if (value)
+            {
+                // Try to place the agent cleanly on the navmesh surface before enabling.
+                // Agent internal position = surface point; world RB position = surface + baseOffset.
+                Vector3 desiredAgentSurfacePos = Position - Vector3.up * NavAgent.baseOffset;
+                if (NavMesh.SamplePosition(desiredAgentSurfacePos, out NavMeshHit sampleHit, navMeshDetectionRange, NavAgent.areaMask))
+                {
+                    // Put agent internal position on the navmesh
+                    NavAgent.Warp(sampleHit.position);
+                    NavAgent.nextPosition = sampleHit.position;
+                    // Place the RB at the same surface + baseOffset so visuals/physics line up
+                    ForceSetPosition(sampleHit.position + Vector3.up * NavAgent.baseOffset);
+                    NavAgent.ResetPath(); // clear any stale path
+                    NavAgent.enabled = true;
+                }
+                else
+                {
+                    // can't attach to navmesh right now
+                    navDestinationDriven = false;
+                    NavAgent.enabled = false;
+                }
+            }
+            else
+            {
+                // Disable nav control immediately and clear nav-driven state to avoid stale Move calls.
+                navDestinationDriven = false;
+                NavAgent.ResetPath();
+                NavAgent.enabled = false;
+            }*/
         }
     }
 
     private bool navDestinationDriven = false;
+
+    public float navMeshOffset
+    {
+        get => NavAgent.baseOffset;
+        set => NavAgent.baseOffset = value;
+    }
 
     /// <summary>
     /// Getter Variant, just returns current Destination.
