@@ -128,6 +128,63 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     public static bool Loaded => Instance != null;
     #endregion
 
+    /// <summary>
+    /// The possible states for a <see cref="CharacterMovementBody"/>.
+    /// </summary>
+    public enum BodyStates
+    {
+        Enabled,
+        Ragdoll,
+        OFF
+    }
+
+    /// <summary>
+    /// The current state of this <see cref="CharacterMovementBody"/>.
+    /// </summary>
+    public BodyStates BodyState
+    {
+        get => _rbState;
+        set
+        {
+            _rbState = value;
+            switch (value)
+            {
+                case BodyStates.Enabled:
+                    RB.isKinematic = false;
+                    RB.detectCollisions = true;
+                    RB.useGravity = false;
+                    Collider.enabled = true;
+                    break;
+                case BodyStates.Ragdoll:
+                    RB.isKinematic = false;
+                    RB.detectCollisions = true;
+                    RB.useGravity = true;
+                    Collider.enabled = false;
+                    break;
+                case BodyStates.OFF:
+                    RB.isKinematic = true;
+                    RB.detectCollisions = false;
+                    RB.useGravity = false;
+                    Collider.enabled = false;
+                    break;
+            }
+        }
+    }
+    BodyStates _rbState = BodyStates.Enabled;
+
+
+
+    public void ReturnToNeutral(bool doCrossFade = true)
+    {
+        if (GroundCheck(out _))
+        {
+            Player.StateMachine.IdleWalk.Enter();
+            if (doCrossFade) Player.Animator.CrossFade("GroundBasic", .1f);
+        }
+        else Player.StateMachine.Airborne.Enter();
+    }
+
+
     #endregion LifeCycle
 
 
@@ -190,15 +247,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     }
 
     /// <summary>
-    /// Moves body via either the Nav Mesh, if appropriate, or via the Collide and Slide Algorithm.
-    /// </summary>
-    void MoveNext(Vector3 stepVelocity, int step = 0)
-    {
-        if (OnNavMesh) MoveNav(stepVelocity, step);
-        else MoveSlide(stepVelocity, step);
-    }
-
-    /// <summary>
     /// Moves body via Nav Mesh.
     /// </summary>
     void MoveNav(Vector3 stepVelocity, int step = 0)
@@ -245,20 +293,21 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
         if (stepVelocity == Vector3.zero) return;
 
-        if (isGrounded) stepVelocity = stepVelocity.ProjectAndScale(anchorPoint.normal);
+        stepVelocity = stepVelocity.ProjectAndScale(anchorPoint.normal);
 
         float stopDistance = -1;
         Vector3 nextNormal = Vector3.zero;
         bool scaleByDot = false;
-        bool land = false;
+        bool negateVerticalLefover = false;
 
+        // Sweep for any obstacle in the trajectory (ignore flat-floor hits when moving purely horizontally).
         bool sweepHit = SweepBody(stepVelocity, out RaycastHit hit, groundCheckBuffer) && !(stepVelocity.y == 0 && hit.normal == Vector3.up);
 
-
-        if (isGrounded && !sweepHit)
+        if (!sweepHit)
         {
             moveTestString += $"Grounded, Hit Nothing.\n";
 
+            // Keep platform lock behavior for grounded movement (attempt to detect unreachable edges and snap behavior).
             if (lockToNavMesh)
             {
                 Vector3 platformCheckDistance = stepVelocity.normalized * platformDetectionFactor;
@@ -274,15 +323,16 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                         P.Raycast(new(Position, stepVelocity), out float hitDistance);
                         if (hitDistance <= stepVelocity.magnitude) stopDistance = hitDistance;
 
-
                         scaleByDot = true;
                         moveTestString += $"Platform Locked onto non-NavMesh Platform, nextNormal: {nextNormal}\n";
                     }
                     else moveTestString += "Walking off platform when not allowed but reach around check failed. Failsafe situation, report to CJ.\n";
                 }
             }
+
             if (stopDistance == -1)
             {
+                // Snap down to a slightly lower ground if detected (small ledge correction).
                 if (GroundCheck(out _, out RaycastHit groundCast, true) && groundCast.normal != anchorPoint.normal)
                 {
                     Ray cornerCheckRay = new(groundCast.barycentricCoordinate + new Vector3(0, .1f, 0), Vector3.down);
@@ -298,7 +348,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                 }
             }
         }
-        else if (isGrounded && sweepHit)
+        else // grounded sweep hit handling
         {
             moveTestString += $"Grounded, Hit: {hit.normal} at distance {hit.distance} \n";
             stopDistance = hit.distance;
@@ -308,21 +358,19 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             {
                 moveTestString += "Hit a wall.\n";
                 scaleByDot = true;
-                land = true;
+                negateVerticalLefover = true;
                 nextNormal = nextNormal.XZ().normalized;
             }
             else if (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
             {
                 moveTestString += "Hit a steep slope.\n";
                 scaleByDot = true;
-                land = true;
+                negateVerticalLefover = true;
                 nextNormal = nextNormal.XZ().normalized;
             }
 
-            if (isGrounded && anchorPoint.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchorPoint.normal, hit.normal);
-            //Floor to Cieling
-            else if (isGrounded && anchorPoint.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchorPoint.normal);
-            //Ceiling to Floor
+            if (anchorPoint.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchorPoint.normal, hit.normal);
+            else if (anchorPoint.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchorPoint.normal);
 
             void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
             {
@@ -333,7 +381,49 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
             if (hit.normal.y > 0 && WithinSlopeAngle(hit.normal) && stepVelocity.y <= 0) anchorPoint = hit;
         }
-        else if (!isGrounded && sweepHit)
+
+        Vector3 snapToSurface = stopDistance != -1 ? stepVelocity.normalized * stopDistance : stepVelocity;
+
+        // Make sure we aren't moving off into the void at the destination
+        if (!SweepBody(Vector3.down * 5000, out _, groundCheckBuffer, snapToSurface)) return;
+
+        Position += snapToSurface;
+
+        if (stopDistance < 0 || ++step >= movementProjectionSteps) return;
+        else if (Vector3.Angle(stepVelocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Player.StateMachine.SendSignal(new("Bonk", 0, true)))
+        {
+            this.velocity = Vector3.zero;
+            return;
+        }
+
+        Vector3 leftover = stepVelocity - snapToSurface;
+        if (negateVerticalLefover)
+        {
+            leftover.y = 0;
+            Land(hit);
+        }
+        Vector3 newDir = leftover.ProjectAndScale(nextNormal);
+        if (scaleByDot) newDir *= Vector3.Dot(leftover.normalized, nextNormal) + 1;
+
+        MoveNext(newDir, step);
+    }
+    /// <summary>
+    /// Moves body in mid-air via a simplified airborne-focused Collide-And-Slide algorithm.
+    /// </summary>
+    void MoveAir(Vector3 stepVelocity, int step = 0)
+    {
+        moveTestString += $"Step (Slide) {step}: {stepVelocity}\n";
+
+        if (stepVelocity == Vector3.zero) return;
+
+        // Air-specific: do NOT project movement to anchor normal (we are airborne).
+        float stopDistance = -1;
+        Vector3 nextNormal = Vector3.zero;
+        bool land = false;
+
+        bool sweepHit = SweepBody(stepVelocity, out RaycastHit hit, groundCheckBuffer);
+
+        if (sweepHit)
         {
             moveTestString += $"Airborne, Hit: {hit.normal} at distance {hit.distance} \n";
             stopDistance = hit.distance;
@@ -367,20 +457,18 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         {
             moveTestString += $"Airborne, Hit Nothing.\n";
 
-            { //If not Grounded, skip straight to Checking for void.
-                if (!SweepBody(Vector3.down * 5000, out _, 0, Position + stepVelocity))
-                {//Since not necessarily anywhere near a platform, just stop the player in their tracks for now.
-                    moveTestString += "Hit the void while falling.\n";
-                    stopDistance = 0;
-                    nextNormal = -stepVelocity.XZ();
-                }
+            // If airborne and there is no surface below the destination, treat as void and stop forward motion.
+            if (!SweepBody(Vector3.down * 5000, out _, 0, Position + stepVelocity))
+            {
+                moveTestString += "Hit the void while falling.\n";
+                stopDistance = 0;
+                nextNormal = -stepVelocity.XZ();
             }
         }
 
-
         Vector3 snapToSurface = stopDistance != -1 ? stepVelocity.normalized * stopDistance : stepVelocity;
 
-        //Void Check. (Moved here cause making it work with the Platform detector is both not helpful and confusing.)
+        // Void check for the destination
         if (!SweepBody(Vector3.down * 5000, out _, groundCheckBuffer, snapToSurface)) return;
 
         Position += snapToSurface;
@@ -399,9 +487,18 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             Land(hit);
         }
         Vector3 newDir = leftover.ProjectAndScale(nextNormal);
-        if (scaleByDot) newDir *= Vector3.Dot(leftover.normalized, nextNormal) + 1;
 
         MoveNext(newDir, step);
+    }
+
+    /// <summary>
+    /// Moves body via either the Nav Mesh, if appropriate, or via the Collide and Slide Algorithm.
+    /// </summary>
+    void MoveNext(Vector3 stepVelocity, int step = 0)
+    {
+        if (OnNavMesh) MoveNav(stepVelocity, step);
+        else if (isGrounded) MoveSlide(stepVelocity, step);
+        else MoveAir(stepVelocity, step);
     }
 
     /// <summary>
@@ -412,6 +509,10 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// The (Projected) velocity used in the very first physics step, kept for reference during later steps of Collide and Slide.
     /// </summary>
     Vector3 stepZeroVelocity;
+    /// <summary>
+    /// (Currently unimplemented) A separate velocity to handle the "Floating Collider" spring forces.
+    /// </summary>
+    Vector3 springVelocity;
     /// <summary>
     /// The AnchorPoint used in the very first physics step, kept for reference during later steps of Collide and Slide.
     /// </summary>
@@ -726,67 +827,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
     #endregion
 
-    #region Body State
-
-    /// <summary>
-    /// The possible states for a <see cref="CharacterMovementBody"/>.
-    /// </summary>
-    public enum BodyStates
-    {
-        Enabled,
-        Ragdoll,
-        OFF
-    }
-
-    /// <summary>
-    /// The current state of this <see cref="CharacterMovementBody"/>.
-    /// </summary>
-    public BodyStates BodyState
-    {
-        get => _rbState;
-        set
-        {
-            _rbState = value;
-            switch (value)
-            {
-                case BodyStates.Enabled:
-                    RB.isKinematic = false;
-                    RB.detectCollisions = true;
-                    RB.useGravity = false;
-                    Collider.enabled = true;
-                    break;
-                case BodyStates.Ragdoll:
-                    RB.isKinematic = false;
-                    RB.detectCollisions = true;
-                    RB.useGravity = true;
-                    Collider.enabled = false;
-                    break;
-                case BodyStates.OFF:
-                    RB.isKinematic = true;
-                    RB.detectCollisions = false;
-                    RB.useGravity = false;
-                    Collider.enabled = false;
-                    break;
-            }
-        }
-    }
-    BodyStates _rbState = BodyStates.Enabled;
-
-
-
-    public void ReturnToNeutral(bool doCrossFade = true)
-    {
-        if (GroundCheck(out _))
-        {
-            Player.StateMachine.IdleWalk.Enter();
-            if (doCrossFade) Player.Animator.CrossFade("GroundBasic", .1f);
-        }
-        else Player.StateMachine.Airborne.Enter();
-    }
-
-
-    #endregion Body State
-
 
     #region Ground
 
@@ -844,12 +884,13 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         }
 
         if (UseNavMeshIfPossible)
-            if (NavMesh.SamplePosition(Position, out _, navMeshDetectionRange, Player.NavMeshAgent.areaMask))
+            if (NavMesh.SamplePosition(Position, out var res, navMeshDetectionRange, Player.NavMeshAgent.areaMask))
             {
                 OnNavMesh = true;
-                navMeshOffset = groundHit.point.y - Position.y;
+                NavAgent.Warp(res.position);
+                //navMeshOffset = groundHit.point.y - Position.y;
             }
-                
+
     }
     /// <summary>
     /// Lands the body on the ground described by the AnchorPoint.
@@ -1034,6 +1075,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         if (!OnNavMesh) return !value;
         navDestinationDriven = value;
         NavAgent.destination = destinationValue;
+        if (!value) NavAgent.ResetPath();
         return value;
     }
     /// <summary>
