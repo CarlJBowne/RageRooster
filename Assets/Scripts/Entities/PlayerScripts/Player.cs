@@ -175,8 +175,6 @@ public class Player : MonoBehaviour
     /// The <see cref="RagdollHandler"/> component attached to the <see cref="Player"/>. <br/>
     /// </summary>
     public static RagdollHandler RagdollHandler { get; private set; }
-
-    public static NavMeshAgent NavMeshAgent { get; private set; }
     #endregion
 
     #region Helper Properties / Methods
@@ -255,7 +253,6 @@ public class Player : MonoBehaviour
         Audio = GetComponent<AudioCaller>();
         RagdollHandler = GetComponent<RagdollHandler>();
         TargetingManager = GetComponent<TargetingManager>();
-        NavMeshAgent = GetComponent<NavMeshAgent>();
         SignalManager = GetComponent<SLS.StateMachineH.Signals.SignalManager>();
         Health.Initialize();
         Ammo.Initialize();

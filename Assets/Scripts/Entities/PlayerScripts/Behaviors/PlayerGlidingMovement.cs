@@ -60,7 +60,7 @@ public class PlayerGlidingMovement : PlayerAirborneMovement
 
         if (isVentGlide)
         {
-            currentVent = playerMovementBody.currentVent;
+            currentVent = playerMovementBody.CurrentVent;
             targetHeight = currentVent.transform.position.y + (currentVent.glideHeight/* * currentVent.transform.up.y*/);
         }
     }

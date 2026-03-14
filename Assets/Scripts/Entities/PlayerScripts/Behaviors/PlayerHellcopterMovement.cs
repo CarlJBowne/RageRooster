@@ -50,7 +50,7 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
     {
         if (!isUpward) return;
 
-        currentVent = playerMovementBody.currentVent;
+        currentVent = playerMovementBody.CurrentVent;
         targetHeight = currentVent.transform.position.y + currentVent.hellcopterTargetHeight;
 
         playerMovementBody.VelocitySet(y: currentVent.hellcopterSpeed);

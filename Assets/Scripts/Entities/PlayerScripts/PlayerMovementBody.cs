@@ -15,6 +15,19 @@ using UnityEditor;
 public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovementBody>
 {
     #region Config
+
+    /// <summary>
+    /// The Rigidbody component attached to this <see cref="CharacterMovementBody"/>.
+    /// </summary>
+    [field: SerializeField, RelatedComponent(true)] public Rigidbody RB { get; private set; }
+    /// <summary>
+    /// The <see cref="CapsuleCollider"/> component attached to this <see cref="CharacterMovementBody"/>.
+    /// </summary>
+    [field: SerializeField, RelatedComponent(true)] public CapsuleCollider Collider { get; private set; }
+    /// <summary>
+    /// The <see cref="CapsuleCollider"/> component attached to this <see cref="CharacterMovementBody"/>.
+    /// </summary>
+    [field: SerializeField, RelatedComponent(true)] public NavMeshAgent NavAgent { get; private set; }
     /// <summary>
     /// The default gravity vector for this <see cref="CharacterMovementBody"/>.
     /// </summary>
@@ -27,10 +40,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// The maximum angle (in degrees) of a slope this <see cref="CharacterMovementBody"/> can stand on.
     /// </summary>
     [SerializeField] float maxSlopeNormalAngle = 45f;
-    /// <summary>
-    /// The buffer used to check for ground.
-    /// </summary>
-    [SerializeField] float movementCheckBuffer = 0.1f;
     /// <summary>
     /// The buffer used to check for ground.
     /// </summary>
@@ -73,21 +82,14 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
     #endregion
 
-    #region Components
-
-    /// <summary>
-    /// The Rigidbody component attached to this <see cref="CharacterMovementBody"/>.
-    /// </summary>
-    [field: SerializeField, HideInInspector] public Rigidbody RB { get; private set; }
-    /// <summary>
-    /// The <see cref="CapsuleCollider"/> component attached to this <see cref="CharacterMovementBody"/>.
-    /// </summary>
-    [field: SerializeField, HideInInspector] public CapsuleCollider Collider { get; private set; }
-
-    #endregion
-
-
     #region LifeCycle
+
+    void Reset()
+    {
+        RB = GetComponent<Rigidbody>();
+        Collider = GetComponent<CapsuleCollider>();
+        NavAgent = GetComponent<NavMeshAgent>();
+    }
 
     void Awake()
     {
@@ -351,7 +353,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             }
         }
         else // grounded sweep hit handling
-        else // grounded sweep hit handling
         {
             AddDebugText($"Grounded, Hit: {hit.normal} at distance {hit.distance}");
             stopDistance = hit.distance;
@@ -392,7 +393,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         Vector3 snapToSurface = stopDistance != -1 ? stepVelocity.normalized * stopDistance : stepVelocity;
 
         // Make sure we aren't moving off into the void at the destination
-        if (!SweepBody(Vector3.down * 5000, out _, groundCheckBuffer, snapToSurface)) return;
+        if (!SweepBody(Vector3.down * 5000, out _, groundCheckBuffer, snapToSurface, QueryTriggerInteraction.Collide)) return;
 
         Position += snapToSurface;
 
@@ -476,7 +477,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         Vector3 snapToSurface = stopDistance != -1 ? stepVelocity.normalized * stopDistance : stepVelocity;
 
         // Void check for the destination
-        if (!SweepBody(Vector3.down * 5000, out _, groundCheckBuffer, snapToSurface)) return;
+        if (!SweepBody(Vector3.down * 5000, out _, groundCheckBuffer, snapToSurface, QueryTriggerInteraction.Collide)) return;
 
         Position += snapToSurface;
 
@@ -509,10 +510,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     }
 
 
-    /// <summary>
-    /// The initial (Unprojected) velocity prior to the current physics step. Used for reference in the Collide and Slide algorithm.
-    /// </summary>
-    Vector3 baseVelocity;
     /// <summary>
     /// The (Projected) velocity used in the very first physics step, kept for reference during later steps of Collide and Slide.
     /// </summary>
@@ -704,49 +701,178 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
     #endregion Velocity
 
-    #region Gravity
+    #region Checks
 
     /// <summary>
-    /// The active gravity value. (Inverted. y=1 is down.)
+    /// Casts the Rigidbody in a direction to check for collision using SweepTest. (Includes optional buffer)
     /// </summary>
-    [NonSerialized] private Vector3 gravity = new(0, 9.8f, 0);
+    /// <param name="offset"></param>
+    /// <param name="hit">The resulting Hit.</param>
+    /// <param name="buffer">A buffer that the Rigidbody is temporarily moved backwards by before the Sweep Test.</param>
+    /// <param name="tempOrigin">An optional temporary origin to move the Rigidbody to before the Sweep Test.</param>
+    /// <param name="queryTriggerInteraction">Override to include trigger colliders in the Sweep Test.</param>
+    /// <returns>Whether anything was Hit.</returns>
+    public bool SweepBody(Vector3 offset, out RaycastHit hit,
+        float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
+    {
+        Vector3 originalPos = RB.position;
+        if (tempOrigin.HasValue) RB.MovePosition(tempOrigin.Value);
+        if (buffer > 0) RB.MovePosition(RB.position - (offset.normalized * buffer));
+        bool result = RB.SweepTest(offset.normalized, out hit, offset.magnitude + buffer, queryTriggerInteraction);
+        RB.MovePosition(originalPos);
+        hit.distance = (hit.distance - buffer).Min(0);
+        sweepsThisPhysUpdate.Add(new()
+        {
+            origin = tempOrigin.GetValueOrDefault(),
+            direction = offset,
+            hit = result,
+            hitDistance = hit.distance,
+            hitNormal = hit.normal
+        });
+        return result;
+    }
 
 
     /// <summary>
-    /// Runs the calculations to automatically apply the current gravity to this body.
+    /// Checks if the character is grounded and outputs the ground hit information.
     /// </summary>
-    public void ApplyGravity() => velocity -= gravity * Time.fixedDeltaTime;
-
+    /// <param name="groundHit">The anchor point of the ground hit.</param>
+    /// <returns>True if grounded, false otherwise.</returns>
+    public bool GroundCheck(out AnchorPoint groundHit, bool dontApply = false)
+    {
+        bool result = SweepBody(Vector3.down * groundCheckBuffer, out RaycastHit raycast, groundCheckBuffer) && WithinSlopeAngle(raycast.normal);
+        groundHit = default;
+        if (!dontApply) groundHit = raycast;
+        return result;
+    }
     /// <summary>
-    /// Returns the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
+    /// Checks if the character is grounded and outputs the ground hit information.
     /// </summary>
-    public Vector3 Get3DGravity() => gravity;
-    /// <summary>
-    /// Returns the current gravity value on the Y axis. (Inverted. 1 is downwards, -1 is upwards.)
-    /// </summary>
-    public float GetGravity() => gravity.y;
+    /// <param name="groundHit">The anchor point of the ground hit.</param>
+    /// <returns>True if grounded, false otherwise.</returns>
+    public bool GroundCheck(out AnchorPoint groundHit, out RaycastHit raycast, bool dontApply = false)
+    {
+        bool result = SweepBody(Vector3.down * groundCheckBuffer, out raycast, groundCheckBuffer) && WithinSlopeAngle(raycast.normal);
+        groundHit = default;
+        if (!dontApply) groundHit = raycast;
+        return result;
+    }
 
-    /// <summary>
-    /// Sets the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
-    /// </summary>
-    /// <param name="newGravity">The new gravity value.</param>
-    public void SetGravity(Vector3 newGravity) => gravity = newGravity;
-    /// <summary>
-    /// Sets the current gravity value on the Y axis. (Inverted. 1 is downwards, -1 is upwards.)
-    /// </summary>
-    /// <param name="newGravity">The new gravity value.</param>
-    public void SetGravity(float newGravity) => gravity = new(0, newGravity, 0);
-    /// <summary>
-    /// Sets the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
-    /// </summary>
-    /// <param name="newX"> The new gravity value on the x axis. (1 = left.) </param>
-    /// <param name="newY"> The new gravity value on the y axis. (1 = down.) </param>
-    /// <param name="newZ"> The new gravity value on the z axis. (1 = back.) </param>
-    public void SetGravity(float newX, float newY, float newZ) => gravity = new(newX, newY, newZ);
+    public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
+    {
+        Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(sphereOffset),
+                                                   checkSphereRadius);
+        foreach (Collider r in results)
+            if (r.TryGetComponent(out T result))
+                return result;
+        return default;
+    }
+    public T CheckForTypeInFront<T>()
+    {
+        Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(frontCheckDefaultOffset),
+                                                   frontCheckDefaultRadius);
+        foreach (Collider r in results)
+            if (r.gameObject != gameObject && r.TryGetComponent(out T result))
+                return result;
+        return default;
+    }
 
 
+    private static readonly RaycastHit[] s_capsuleCastResults = new RaycastHit[32];
 
-    #endregion Gravity
+    public bool SweepBodyAlt(Vector3 offset, out RaycastHit hit,
+        float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
+    {
+        hit = default;
+
+        // world-space origin for the capsule
+        Vector3 originPos = tempOrigin ?? RB.position;
+        Vector3 worldCenter = originPos + transform.rotation * Collider.center;
+
+        // account for transform scale when computing radius and height
+        Vector3 lossy = transform.lossyScale;
+        float radius = Collider.radius * Mathf.Max(lossy.x, lossy.z);
+        float height = Mathf.Max(Collider.height * lossy.y, radius * 2f); // ensure valid capsule
+        float halfHeight = Mathf.Max(0f, (height / 2f) - radius);
+
+        // capsule endpoints in world space
+        Vector3 up = transform.up;
+        Vector3 p1 = worldCenter + up * halfHeight;
+        Vector3 p2 = worldCenter - up * halfHeight;
+
+        Vector3 dir = offset.normalized;
+        float maxDistance = offset.magnitude + buffer;
+
+        // Build a layer mask that includes layers this object's layer can collide with
+        // If we actually go down this road, change this to store the layerMask once at the beginning.
+        int selfLayer = gameObject.layer;
+        int layerMask = 0;
+        for (int i = 0; i < 32; i++)
+            if (!Physics.GetIgnoreLayerCollision(selfLayer, i))
+                layerMask |= 1 << i;
+
+        // Perform non-mutating capsule cast using the NonAlloc API
+        int count = Physics.CapsuleCastNonAlloc(p1, p2, radius, dir, s_capsuleCastResults, maxDistance, layerMask, queryTriggerInteraction);
+        if (count == 0)
+        {
+            sweepsThisPhysUpdate.Add(new()
+            {
+                origin = tempOrigin.GetValueOrDefault(),
+                direction = offset,
+                hit = false,
+                hitDistance = 0,
+                hitNormal = Vector3.zero
+            });
+            return false;
+        }
+
+        // Find nearest valid hit that is not this object's collider
+        int nearestIndex = -1;
+        float nearestDist = float.MaxValue;
+        for (int i = 0; i < count; i++)
+        {
+            var h = s_capsuleCastResults[i];
+            if (h.collider == null) continue;
+            if (h.collider == Collider || h.collider.gameObject == gameObject) continue; // exclude self
+            if (h.distance < nearestDist)
+            {
+                nearestDist = h.distance;
+                nearestIndex = i;
+            }
+        }
+
+        if (nearestIndex == -1)
+        {
+            sweepsThisPhysUpdate.Add(new()
+            {
+                origin = tempOrigin.GetValueOrDefault(),
+                direction = offset,
+                hit = false,
+                hitDistance = 0,
+                hitNormal = Vector3.zero
+            });
+            return false;
+        }
+
+        // copy and adjust distance for buffer, clamp >= 0
+        RaycastHit chosen = s_capsuleCastResults[nearestIndex];
+        chosen.distance = Mathf.Max(0f, chosen.distance - buffer);
+
+        // record debug info
+        sweepsThisPhysUpdate.Add(new()
+        {
+            origin = tempOrigin.GetValueOrDefault(),
+            direction = offset,
+            hit = true,
+            hitDistance = chosen.distance,
+            hitNormal = chosen.normal
+        });
+
+        hit = chosen;
+        return true;
+    }
+
+    #endregion
 
     #region Ground
 
@@ -804,7 +930,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         }
 
         if (UseNavMeshIfPossible)
-            if (NavMesh.SamplePosition(Position, out var res, navMeshDetectionRange, Player.NavMeshAgent.areaMask))
+            if (NavMesh.SamplePosition(Position, out var res, navMeshDetectionRange, NavAgent.areaMask))
             {
                 OnNavMesh = true;
                 NavAgent.Warp(res.position);
@@ -898,7 +1024,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     #endregion Ground
 
     #region NavMesh Navigation
-    public NavMeshAgent NavAgent => Player.NavMeshAgent;
 
     public bool UseNavMeshIfPossible
     {
@@ -908,7 +1033,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             _useNavMeshIfPossible = value;
             if (isGrounded)
             {
-                if (NavMesh.SamplePosition(Position, out _, navMeshDetectionRange, Player.NavMeshAgent.areaMask))
+                if (NavMesh.SamplePosition(Position, out _, navMeshDetectionRange, NavAgent.areaMask))
                     OnNavMesh = true;
             }
             if (!value && OnNavMesh) OnNavMesh = false;
@@ -1009,208 +1134,74 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
     #endregion NavMesh Navigation
 
-    #region Checks
+    #region Gravity
 
     /// <summary>
-    /// Casts the Rigidbody in a direction to check for collision using SweepTest. (Includes optional buffer)
+    /// The active gravity value. (Inverted. y=1 is down.)
     /// </summary>
-    /// <param name="offset"></param>
-    /// <param name="hit">The resulting Hit.</param>
-    /// <param name="buffer">A buffer that the Rigidbody is temporarily moved backwards by before the Sweep Test.</param>
-    /// <param name="tempOrigin">An optional temporary origin to move the Rigidbody to before the Sweep Test.</param>
-    /// <param name="queryTriggerInteraction">Override to include trigger colliders in the Sweep Test.</param>
-    /// <returns>Whether anything was Hit.</returns>
-    public bool SweepBody(Vector3 offset, out RaycastHit hit,
-        float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
-    {
-        Vector3 originalPos = RB.position;
-        if (tempOrigin.HasValue) RB.MovePosition(tempOrigin.Value);
-        if (buffer > 0) RB.MovePosition(RB.position - (offset.normalized * buffer));
-        bool result = RB.SweepTest(offset.normalized, out hit, offset.magnitude + buffer, queryTriggerInteraction);
-        RB.MovePosition(originalPos);
-        hit.distance = (hit.distance - buffer).Min(0);
-        sweepsThisPhysUpdate.Add(new()
-        {
-            origin = tempOrigin.GetValueOrDefault(),
-            direction = offset,
-            hit = result,
-            hitDistance = hit.distance,
-            hitNormal = hit.normal
-        });
-        return result;
-    }
+    [NonSerialized] private Vector3 gravity = new(0, 9.8f, 0);
 
 
     /// <summary>
-    /// Checks if the character is grounded and outputs the ground hit information.
+    /// Runs the calculations to automatically apply the current gravity to this body.
     /// </summary>
-    /// <param name="groundHit">The anchor point of the ground hit.</param>
-    /// <returns>True if grounded, false otherwise.</returns>
-    public bool GroundCheck(out AnchorPoint groundHit, bool dontApply = false)
-    {
-        bool result = SweepBody(Vector3.down * groundCheckBuffer, out RaycastHit raycast, groundCheckBuffer) && WithinSlopeAngle(raycast.normal);
-        groundHit = default;
-        if (!dontApply) groundHit = raycast;
-        return result;
-    }
+    public void ApplyGravity() => velocity -= gravity * Time.fixedDeltaTime;
+
     /// <summary>
-    /// Checks if the character is grounded and outputs the ground hit information.
+    /// Returns the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
     /// </summary>
-    /// <param name="groundHit">The anchor point of the ground hit.</param>
-    /// <returns>True if grounded, false otherwise.</returns>
-    public bool GroundCheck(out AnchorPoint groundHit, out RaycastHit raycast, bool dontApply = false)
-    {
-        bool result = SweepBody(Vector3.down * groundCheckBuffer, out raycast, groundCheckBuffer) && WithinSlopeAngle(raycast.normal);
-        groundHit = default;
-        if (!dontApply) groundHit = raycast;
-        return result;
-    }
+    public Vector3 Get3DGravity() => gravity;
+    /// <summary>
+    /// Returns the current gravity value on the Y axis. (Inverted. 1 is downwards, -1 is upwards.)
+    /// </summary>
+    public float GetGravity() => gravity.y;
 
-    public bool OverVoidCheck(Vector3 offset) => !SweepBody(Vector3.down * 5000, out _, 0, offset, QueryTriggerInteraction.Collide);
-
-    public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
-    {
-        Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(sphereOffset),
-                                                   checkSphereRadius);
-        foreach (Collider r in results)
-            if (r.TryGetComponent(out T result))
-                return result;
-        return default;
-    }
-    public T CheckForTypeInFront<T>()
-    {
-        Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(frontCheckDefaultOffset),
-                                                   frontCheckDefaultRadius);
-        foreach (Collider r in results)
-            if (r.gameObject != gameObject && r.TryGetComponent(out T result))
-                return result;
-        return default;
-    }
-
-
-    private static readonly RaycastHit[] s_capsuleCastResults = new RaycastHit[32];
-
-    public bool SweepBodyAlt(Vector3 offset, out RaycastHit hit,
-        float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
-    {
-        hit = default;
-
-        // world-space origin for the capsule
-        Vector3 originPos = tempOrigin ?? RB.position;
-        Vector3 worldCenter = originPos + transform.rotation * Collider.center;
-
-        // account for transform scale when computing radius and height
-        Vector3 lossy = transform.lossyScale;
-        float radius = Collider.radius * Mathf.Max(lossy.x, lossy.z);
-        float height = Mathf.Max(Collider.height * lossy.y, radius * 2f); // ensure valid capsule
-        float halfHeight = Mathf.Max(0f, (height / 2f) - radius);
-
-        // capsule endpoints in world space
-        Vector3 up = transform.up;
-        Vector3 p1 = worldCenter + up * halfHeight;
-        Vector3 p2 = worldCenter - up * halfHeight;
-
-        Vector3 dir = offset.normalized;
-        float maxDistance = offset.magnitude + buffer;
-
-        // Build a layer mask that includes layers this object's layer can collide with
-        int selfLayer = gameObject.layer;
-        int layerMask = 0;
-        for (int i = 0; i < 32; i++)
-            if (!Physics.GetIgnoreLayerCollision(selfLayer, i))
-                layerMask |= (1 << i);
-
-        // Perform non-mutating capsule cast using the NonAlloc API
-        int count = Physics.CapsuleCastNonAlloc(p1, p2, radius, dir, s_capsuleCastResults, maxDistance, layerMask, queryTriggerInteraction);
-        if (count == 0)
-        {
-            sweepsThisPhysUpdate.Add(new()
-            {
-                origin = tempOrigin.GetValueOrDefault(),
-                direction = offset,
-                hit = false,
-                hitDistance = 0,
-                hitNormal = Vector3.zero
-            });
-            return false;
-        }
-
-        // Find nearest valid hit that is not this object's collider
-        int nearestIndex = -1;
-        float nearestDist = float.MaxValue;
-        for (int i = 0; i < count; i++)
-        {
-            var h = s_capsuleCastResults[i];
-            if (h.collider == null) continue;
-            if (h.collider == Collider || h.collider.gameObject == gameObject) continue; // exclude self
-            if (h.distance < nearestDist)
-            {
-                nearestDist = h.distance;
-                nearestIndex = i;
-            }
-        }
-
-        if (nearestIndex == -1)
-        {
-            sweepsThisPhysUpdate.Add(new()
-            {
-                origin = tempOrigin.GetValueOrDefault(),
-                direction = offset,
-                hit = false,
-                hitDistance = 0,
-                hitNormal = Vector3.zero
-            });
-            return false;
-        }
-
-        // copy and adjust distance for buffer, clamp >= 0
-        RaycastHit chosen = s_capsuleCastResults[nearestIndex];
-        chosen.distance = Mathf.Max(0f, chosen.distance - buffer);
-
-        // record debug info
-        sweepsThisPhysUpdate.Add(new()
-        {
-            origin = tempOrigin.GetValueOrDefault(),
-            direction = offset,
-            hit = true,
-            hitDistance = chosen.distance,
-            hitNormal = chosen.normal
-        });
-
-        hit = chosen;
-        return true;
-    }
+    /// <summary>
+    /// Sets the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
+    /// </summary>
+    /// <param name="newGravity">The new gravity value.</param>
+    public void SetGravity(Vector3 newGravity) => gravity = newGravity;
+    /// <summary>
+    /// Sets the current gravity value on the Y axis. (Inverted. 1 is downwards, -1 is upwards.)
+    /// </summary>
+    /// <param name="newGravity">The new gravity value.</param>
+    public void SetGravity(float newGravity) => gravity = new(0, newGravity, 0);
+    /// <summary>
+    /// Sets the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
+    /// </summary>
+    /// <param name="newX"> The new gravity value on the x axis. (1 = left.) </param>
+    /// <param name="newY"> The new gravity value on the y axis. (1 = down.) </param>
+    /// <param name="newZ"> The new gravity value on the z axis. (1 = back.) </param>
+    public void SetGravity(float newX, float newY, float newZ) => gravity = new(newX, newY, newZ);
 
 
 
-    #endregion
+    #endregion Gravity
 
     #region Other
 
     public static System.Action MovingUpdateAction;
     private Timer.Loop _movingUpdateActionTimer = new(0.2f);
 
-
-    private VolcanicVent _currentVent;
-
-    public VolcanicVent currentVent
+    public VolcanicVent CurrentVent
     {
-        get => _currentVent;
+        get => currentVent;
         set
         {
-            _currentVent = value;
+            currentVent = value;
             Player.StateMachine.SendSignal(new(value != null ? "EnterVent" : "ExitVent", 0, true));
         }
     }
-    public bool isOverVent => _currentVent != null;
+    VolcanicVent currentVent;
+    public bool isOverVent => currentVent != null;
 
-    public float MovementCheckBuffer { get => movementCheckBuffer; }
+    public float GroundCheckBuffer => groundCheckBuffer;
 
 
     #endregion Other
 
 
-    //DEBUG
+    #region DEBUG
 #if UNITY_EDITOR
 
     private void OnDrawGizmos()
@@ -1307,6 +1298,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         moveTestString.AppendLine(text);
 #endif
     }
+    #endregion DEBUG
 
 }
 
