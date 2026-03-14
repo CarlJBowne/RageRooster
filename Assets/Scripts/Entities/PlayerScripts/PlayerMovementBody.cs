@@ -6,8 +6,14 @@ using RageRooster.Systems.SaveSystem;
 using SLS.ISingleton;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
+
+
 #if UNITY_EDITOR
+using UnityEditor.UIElements;
 using UnityEditor;
+using UnityEngine.UIElements;
+using System.Reflection;
 #endif
 
 
@@ -76,7 +82,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
     [SerializeField] float platformDetectionFactor = 3;
     [SerializeField] float platformLockRadius = .25f;
-    [SerializeField, Title("Use Nav Mesh")] bool _useNavMeshIfPossible = true;
+    [SerializeField, InspectorName("Use Nav Mesh")] bool _useNavMeshIfPossible = true;
     [SerializeField] bool lockToNavMesh = false;
 
 
@@ -523,7 +529,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     AnchorPoint stepZeroAnchor;
 
-    System.Text.StringBuilder moveTestString = new();
 
     #endregion Move Cycle
 
@@ -1202,6 +1207,16 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
 
     #region DEBUG
+
+    System.Text.StringBuilder moveTestString = new();
+
+    private void AddDebugText(string text)
+    {
+#if UNITY_EDITOR
+        moveTestString.AppendLine(text);
+#endif
+    }
+
 #if UNITY_EDITOR
 
     private void OnDrawGizmos()
@@ -1291,13 +1306,271 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         }
     }
 
-#endif
-    private void AddDebugText(string text)
+    [CustomEditor(typeof(PlayerMovementBody))]
+    public class Editor : UnityEditor.Editor
     {
-#if UNITY_EDITOR
-        moveTestString.AppendLine(text);
-#endif
+        // Runtime name labels (cached)
+        private Label _velNameLabel;
+        private Label _speedNameLabel;
+        private Label _jumpStateNameLabel;
+        private Label _onNavMeshNameLabel;
+        private Label _navDestNameLabel;
+        private Label _gravityNameLabel;
+        private Label _anchorNameLabel;
+        private Label _directionNameLabel;
+        private Label _currentVentNameLabel;
+
+        // Runtime value labels (cached)
+        private Label _velLabel;
+        private Label _speedLabel;
+        private Label _jumpStateLabel;
+        private Label _onNavMeshLabel;
+        private Label _navDestLabel;
+        private Label _gravityLabel;
+        private Label _anchorLabel;
+        private Label _directionLabel;
+        private Label _currentVentLabel;
+
+        // Row containers for layout and visibility toggles
+        private VisualElement _navRow;
+
+        private bool _subscribedToUpdate = false;
+
+        public override VisualElement CreateInspectorGUI()
+        {
+            // Root tab view container (uses project's existing TabView/Tab types)
+            TabView tabView = new();
+
+            // Shortcut to serialized object
+            var so = serializedObject;
+
+            // -----------------------
+            // Config Tab
+            // -----------------------
+            Tab configTab = new("Config");
+            configTab.tabHeader.style.flexGrow = 1;
+
+            // Helper to add property fields safely
+            void AddProp(string propName, string label = null)
+            {
+                var prop = so.FindProperty(propName);
+                if (prop != null)
+                {
+                    var pf = new PropertyField(prop, label ?? prop.displayName);
+                    pf.Bind(so);
+                    configTab.Add(pf);
+                }
+                else
+                {
+                    // fallback label so inspector isn't empty if names differ
+                    configTab.Add(new Label($"Missing serialized property: {propName}"));
+                }
+            }
+
+            // Add all relevant serialized/config fields present in PlayerMovementBody
+            AddProp($"<{nameof(RB)}>k__BackingField", "Rigidbody");
+            AddProp($"<{nameof(Collider)}>k__BackingField", "Collider");
+            AddProp($"<{nameof(NavAgent)}>k__BackingField", "Nav Mesh Agent");
+            AddProp(nameof(defaultGravity), "Default Gravity");
+            AddProp(nameof(autoApplyGravity), "Auto Apply Gravity");
+            AddProp(nameof(maxSlopeNormalAngle), "Max Slope Angle");
+            AddProp(nameof(groundCheckBuffer), "Ground Check Buffer");
+            AddProp(nameof(movementProjectionSteps), "Movement Projection Steps");
+            AddProp(nameof(bonkThreshold), "Bonk Threshold");
+            AddProp(nameof(doubleJump), "Double Jump Behavior");
+            AddProp(nameof(frontCheckDefaultOffset), "Front Check Default Offset");
+            AddProp(nameof(frontCheckDefaultRadius), "Front Check Default Radius");
+            AddProp(nameof(validGroundMask), "Valid Ground Mask");
+            AddProp(nameof(platformDetectionFactor), "Platform Detection Factor");
+            AddProp(nameof(platformLockRadius), "Platform Lock Radius");
+            AddProp(nameof(_useNavMeshIfPossible), "Use Nav Mesh If Possible");
+            AddProp(nameof(lockToNavMesh), "Lock To Nav Mesh");
+            AddProp(nameof(navMeshDetectionRange), "Nav Mesh Detection Range");
+
+            tabView.Add(configTab);
+
+            // -----------------------
+            // Active Tab (runtime info)
+            // -----------------------
+            Tab activeTab = new("Active");
+            activeTab.tabHeader.style.flexGrow = 1;
+
+            // Informational label when not playing
+            var notPlayingLabel = new Label("Runtime information shown here while in Play Mode.") { name = "runtime-info-label" };
+            activeTab.Add(notPlayingLabel);
+
+            // Container for runtime values
+            var runtimeContainer = new VisualElement();
+            runtimeContainer.style.flexDirection = FlexDirection.Column;
+            runtimeContainer.style.paddingLeft = 4;
+            runtimeContainer.style.paddingTop = 4;
+
+            // Instantiate value labels
+            _velLabel = new Label();
+            _speedLabel = new Label();
+            _jumpStateLabel = new Label();
+            _onNavMeshLabel = new Label();
+            _navDestLabel = new Label();
+            _gravityLabel = new Label();
+            _anchorLabel = new Label();
+            _directionLabel = new Label();
+            _currentVentLabel = new Label();
+
+            // Instantiate name labels
+            _velNameLabel = new Label("Velocity:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _speedNameLabel = new Label("CurrentSpeed:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _jumpStateNameLabel = new Label("Jump State:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _onNavMeshNameLabel = new Label("On NavMesh:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _navDestNameLabel = new Label("Nav Destination:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _gravityNameLabel = new Label("Gravity (3D):") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _anchorNameLabel = new Label("Anchor:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _directionNameLabel = new Label("Direction:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _currentVentNameLabel = new Label("Current Vent:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+
+            // Helper to create a horizontal row with name + value
+            VisualElement CreateRow(Label nameLabel, Label valueLabel)
+            {
+                var row = new VisualElement();
+                row.style.flexDirection = FlexDirection.Row;
+                row.style.alignItems = Align.Center;
+                // Reserve a consistent width for the name column for alignment
+                nameLabel.style.minWidth = 150;
+                nameLabel.style.marginRight = 6;
+                valueLabel.style.unityTextAlign = TextAnchor.MiddleLeft;
+                row.Add(nameLabel);
+                row.Add(valueLabel);
+                return row;
+            }
+
+            // Add rows
+            runtimeContainer.Add(CreateRow(_velNameLabel, _velLabel));
+            runtimeContainer.Add(CreateRow(_speedNameLabel, _speedLabel));
+            runtimeContainer.Add(CreateRow(_jumpStateNameLabel, _jumpStateLabel));
+            runtimeContainer.Add(CreateRow(_onNavMeshNameLabel, _onNavMeshLabel));
+
+            // Nav row must be addressable for visibility toggling
+            _navRow = CreateRow(_navDestNameLabel, _navDestLabel);
+            runtimeContainer.Add(_navRow);
+
+            runtimeContainer.Add(CreateRow(_gravityNameLabel, _gravityLabel));
+            runtimeContainer.Add(CreateRow(_directionNameLabel, _directionLabel));
+            runtimeContainer.Add(CreateRow(_anchorNameLabel, _anchorLabel));
+            runtimeContainer.Add(CreateRow(_currentVentNameLabel, _currentVentLabel));
+
+            activeTab.Add(runtimeContainer);
+
+            tabView.Add(activeTab);
+
+            // Force a redraw/update of property fields
+            so.Update();
+
+            // Setup update loop for runtime info when in Play Mode
+            void SubscribeUpdate()
+            {
+                if (_subscribedToUpdate) return;
+                EditorApplication.update += EditorUpdate;
+                _subscribedToUpdate = true;
+            }
+            void UnsubscribeUpdate()
+            {
+                if (!_subscribedToUpdate) return;
+                EditorApplication.update -= EditorUpdate;
+                _subscribedToUpdate = false;
+            }
+
+            // Initial subscription if playing
+            if (EditorApplication.isPlaying)
+                SubscribeUpdate();
+            else
+                UnsubscribeUpdate();
+
+            // When inspector is created, also ensure we react to play mode changes to start/stop updating
+            EditorApplication.playModeStateChanged += (state) =>
+            {
+                if (state == PlayModeStateChange.EnteredPlayMode)
+                    SubscribeUpdate();
+                else if (state == PlayModeStateChange.ExitingPlayMode || state == PlayModeStateChange.EnteredEditMode)
+                    UnsubscribeUpdate();
+            };
+
+            return tabView;
+        }
+
+        // Clean up subscription when editor is disabled / destroyed
+        private void OnDisable()
+        {
+            if (_subscribedToUpdate)
+            {
+                EditorApplication.update -= EditorUpdate;
+                _subscribedToUpdate = false;
+            }
+        }
+
+        // Update labels with runtime data
+        private void EditorUpdate()
+        {
+            if (serializedObject == null) return;
+            var pb = serializedObject.targetObject as PlayerMovementBody;
+            if (pb == null) return;
+
+            // Update textual info; guard with try/catch to avoid throwing during domain reloads
+            try
+            {
+                _velLabel.text = pb.velocity.ToString("F3");
+                _speedLabel.text = pb.CurrentSpeed.ToString("F3");
+                _jumpStateLabel.text = pb.JumpStateCurrent.ToString();
+                _onNavMeshLabel.text = pb.OnNavMesh ? "Yes" : "No";
+
+                Vector3 navDest = Vector3.zero;
+                bool hasNav = pb.NavDestination(out navDest);
+                bool showNav = pb.OnNavMesh && hasNav;
+                _navDestLabel.text = showNav ? navDest.ToString("F3") : "(none)";
+                // Toggle visibility of the nav row
+                _navRow.style.display = showNav ? DisplayStyle.Flex : DisplayStyle.None;
+
+                _gravityLabel.text = pb.Get3DGravity().ToString("F3");
+
+                _directionLabel.text = pb.direction.ToString("F3");
+
+                // Anchor reflection: only show when collider is present
+                var anchorObj = typeof(PlayerMovementBody)
+                    .GetField("anchorPoint", BindingFlags.NonPublic | BindingFlags.Instance)
+                    ?.GetValue(pb);
+
+                string anchorText = "(none)";
+                if (anchorObj != null)
+                {
+                    // Try to get collider property on the anchor and confirm it's non-null before showing details
+                    var anchorType = anchorObj.GetType();
+                    var colliderProp = anchorType.GetProperty("collider");
+                    var normalProp = anchorType.GetProperty("normal");
+                    var pointProp = anchorType.GetProperty("point");
+
+                    var colObj = colliderProp?.GetValue(anchorObj) as Collider;
+                    if (colObj != null)
+                    {
+                        string colliderName = colObj.name;
+                        string normal = normalProp?.GetValue(anchorObj)?.ToString() ?? "(unknown)";
+                        string point = pointProp?.GetValue(anchorObj)?.ToString() ?? "(unknown)";
+                        anchorText = $"Collider: {colliderName}, Normal: {normal}, Point: {point}";
+                    }
+                }
+                _anchorLabel.text = anchorText;
+
+                // Current vent (if present)
+                var currentVent = typeof(PlayerMovementBody)
+                    .GetProperty("CurrentVent", BindingFlags.Public | BindingFlags.Instance)
+                    ?.GetValue(pb) as VolcanicVent;
+                _currentVentLabel.text = currentVent != null ? currentVent.name : "(none)";
+            }
+            catch
+            {
+                // swallow exceptions during assembly reloads / domain changes
+            }
+        }
     }
+#endif
+
     #endregion DEBUG
 
 }

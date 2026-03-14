@@ -444,10 +444,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c3d6cd8aa43154aa3119b5010e205a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <RB>k__BackingField: {fileID: 1838944232945776554}
+  <Collider>k__BackingField: {fileID: 598530174602593461}
+  <NavAgent>k__BackingField: {fileID: 1755664598433715571}
   defaultGravity: {x: 0, y: 1, z: 0}
   autoApplyGravity: 0
   maxSlopeNormalAngle: 46
-  movementCheckBuffer: 0.1
   groundCheckBuffer: 0.1
   movementProjectionSteps: 3
   bonkThreshold: 15
@@ -456,19 +458,17 @@ MonoBehaviour:
   frontCheckDefaultRadius: 1
   validGroundMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 33921
   platformDetectionFactor: 1.6
   platformLockRadius: 0.25
-  <RB>k__BackingField: {fileID: 0}
-  <Collider>k__BackingField: {fileID: 598530174602593461}
+  _useNavMeshIfPossible: 1
+  lockToNavMesh: 0
   _direction: {x: 0, y: 0, z: 1}
   velocity: {x: 0, y: 0, z: 0}
   currentSpeed: 0
   movementModifier: 1
   baseMovability: 1
   canJump: 1
-  _useNavMeshIfPossible: 1
-  lockToNavMesh: 0
   navMeshDetectionRange: 0.35
   jumpMarkers: []
 --- !u!54 &1838944232945776554
