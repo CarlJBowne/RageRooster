@@ -108,7 +108,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         Interface.Initialize(ref Instance);
 
         NavAgent.enabled = false;
-        NavAgent.updateRotation = false;
+        //NavAgent.updateRotation = false;
         NavAgent.updateUpAxis = false;
         gravity = defaultGravity;
     }
@@ -212,18 +212,20 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
         if (navDestinationDriven)
         {
+            DirectionSet(NavAgent.desiredVelocity, NavAgent.angularSpeed);
+            NavAgent.velocity = Vector3.zero;
+            velocity = (Vector3.Dot(NavAgent.desiredVelocity, direction) + 1) * NavAgent.desiredVelocity.magnitude * direction;
             if (NavAgent.remainingDistance < 0.1f) NavDestination(false);
-            return;
         }
 
         stepZeroVelocity = velocity * Time.fixedDeltaTime;
         stepZeroAnchor = anchorPoint;
 
-#if UNITY_EDITOR
-        moveTestString = new();
-#endif
+        SetupDebugText(false);
 
         if (velocity != Vector3.zero) MoveNext(stepZeroVelocity);
+
+        SetupDebugText(true);
 
         if (velocity.y <= 0)
         {
@@ -242,10 +244,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                 UnLand(JumpState.Hangtime);
             }
         }
-
-#if UNITY_EDITOR
-        DebugRR.DebugTextOverlay.SetText(moveTestString.ToString());
-#endif
 
         if (autoApplyGravity && !isGrounded) ApplyGravity();
 
@@ -934,13 +932,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             if (Player.Controller.CheckJumpBuffer()) Player.StateMachine.SendSignal("Jump");
         }
 
-        if (UseNavMeshIfPossible)
-            if (NavMesh.SamplePosition(Position, out var res, navMeshDetectionRange, NavAgent.areaMask))
-            {
-                OnNavMesh = true;
-                NavAgent.Warp(res.position);
-                //navMeshOffset = groundHit.point.y - Position.y;
-            }
+        OnNavMesh = true; //Attempt to bind to Nav Mesh.
 
     }
     /// <summary>
@@ -1051,24 +1043,23 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         get => UseNavMeshIfPossible && NavAgent.enabled && NavAgent.isOnNavMesh;
         set
         {
-            if (value) NavAgent.nextPosition = Position;
-            else NavDestination(false);
-            NavAgent.enabled = value;
+            // No-op if nothing changes (avoid repeated expensive ops)
+            if (!UseNavMeshIfPossible) return;
+            if (value == (NavAgent.enabled && NavAgent.isOnNavMesh)) return;
 
-            /*
             if (value)
             {
                 // Try to place the agent cleanly on the navmesh surface before enabling.
-                // Agent internal position = surface point; world RB position = surface + baseOffset.
                 Vector3 desiredAgentSurfacePos = Position - Vector3.up * NavAgent.baseOffset;
                 if (NavMesh.SamplePosition(desiredAgentSurfacePos, out NavMeshHit sampleHit, navMeshDetectionRange, NavAgent.areaMask))
                 {
-                    // Put agent internal position on the navmesh
+                    // Place agent internal position on the navmesh
                     NavAgent.Warp(sampleHit.position);
                     NavAgent.nextPosition = sampleHit.position;
                     // Place the RB at the same surface + baseOffset so visuals/physics line up
                     ForceSetPosition(sampleHit.position + Vector3.up * NavAgent.baseOffset);
-                    NavAgent.ResetPath(); // clear any stale path
+
+                    // We will manage character position ourselves (RB) and use NavAgent for pathfinding only.
                     NavAgent.enabled = true;
                 }
                 else
@@ -1082,9 +1073,8 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             {
                 // Disable nav control immediately and clear nav-driven state to avoid stale Move calls.
                 navDestinationDriven = false;
-                NavAgent.ResetPath();
                 NavAgent.enabled = false;
-            }*/
+            }
         }
     }
 
@@ -1109,7 +1099,14 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// <returns>Success.</returns>
     public bool NavDestination(Vector3 value)
     {
-        if (!OnNavMesh) return navDestinationDriven;
+        // If not attached, try to attach first (if allowed)
+        if (!OnNavMesh)
+        {
+            if (!UseNavMeshIfPossible) return false;
+            OnNavMesh = true;
+            if (!OnNavMesh) return false;
+        }
+
         navDestinationDriven = true;
         NavAgent.destination = value;
         return true;
@@ -1119,11 +1116,26 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     public bool NavDestination(bool value, Vector3 destinationValue = default)
     {
-        if (!OnNavMesh) return !value;
-        navDestinationDriven = value;
-        NavAgent.destination = destinationValue;
-        if (!value) NavAgent.ResetPath();
-        return value;
+        if (value)
+        {
+            if (!OnNavMesh)
+            {
+                if (!UseNavMeshIfPossible) return false;
+                OnNavMesh = true;
+                if (!OnNavMesh) return false;
+            }
+
+            navDestinationDriven = true;
+            NavAgent.destination = destinationValue;
+            return true;
+        }
+        else
+        {
+            navDestinationDriven = false;
+            NavAgent.ResetPath();
+            // keep agent disabled? existing code leaves NavAgent.enabled as-is; we keep existing behavior
+            return false;
+        }
     }
     /// <summary>
     /// Getter Bool with Output Variant. Returns whether Destination-driven Behavior is active and outs the destination value.
@@ -1210,6 +1222,13 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
     System.Text.StringBuilder moveTestString = new();
 
+    private void SetupDebugText(bool post)
+    {
+#if UNITY_EDITOR
+        if (!post) moveTestString.Clear();
+        else DebugRR.DebugTextOverlay.SetText(moveTestString.ToString());
+#endif
+    }
     private void AddDebugText(string text)
     {
 #if UNITY_EDITOR
@@ -1330,6 +1349,8 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         private Label _anchorLabel;
         private Label _directionLabel;
         private Label _currentVentLabel;
+
+        private Button GoToOriginButton;
 
         // Row containers for layout and visibility toggles
         private VisualElement _navRow;
@@ -1456,6 +1477,13 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             runtimeContainer.Add(CreateRow(_directionNameLabel, _directionLabel));
             runtimeContainer.Add(CreateRow(_anchorNameLabel, _anchorLabel));
             runtimeContainer.Add(CreateRow(_currentVentNameLabel, _currentVentLabel));
+
+            GoToOriginButton = new(GoToOrigin)
+            {
+                name = "Go To Origin"
+            };
+            runtimeContainer.Add(GoToOriginButton);
+            void GoToOrigin() => (target as PlayerMovementBody).NavDestination(Vector3.zero);
 
             activeTab.Add(runtimeContainer);
 
