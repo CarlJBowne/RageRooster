@@ -29,12 +29,12 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
 
     protected override void VerticalUpwards(ref float? Y)
     {
-        if (playerMovementBody.isJumping == PlayerMovementBody.JumpState.Decelerating)
+        if (playerMovementBody.JumpStateCurrent == PlayerMovementBody.JumpState.Decelerating)
         {
             Y = currentVent.hellcopterSpeed;
             if (transform.position.y >= targetHeight) playerMovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
         } 
-        else if (playerMovementBody.isJumping == PlayerMovementBody.JumpState.Falling && playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref Y);
+        else if (playerMovementBody.JumpStateCurrent == PlayerMovementBody.JumpState.Falling && playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref Y);
 
     }
 

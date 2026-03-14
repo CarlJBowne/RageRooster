@@ -90,7 +90,7 @@ public class PlayerMovementNegater : PlayerMovementEffector
         {
             savedVelocity = playerMovementBody.velocity;
             savedHorizontalSpeed = playerMovementBody.CurrentSpeed;
-            savedJumpPhase = playerMovementBody.isJumping;
+            savedJumpPhase = playerMovementBody.JumpStateCurrent;
         }
     }
     protected override void OnExit(State next)

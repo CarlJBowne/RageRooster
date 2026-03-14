@@ -41,14 +41,14 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
     protected virtual void VerticalUpwards(ref float? Y)
     {
-        if (playerMovementBody.isJumping == PlayerMovementBody.JumpState.Jumping && transform.position.y >= targetMinHeight) 
+        if (playerMovementBody.JumpStateCurrent == PlayerMovementBody.JumpState.Jumping && transform.position.y >= targetMinHeight) 
             playerMovementBody.UnLand(PlayerMovementBody.JumpState.Decelerating);
-        if (playerMovementBody.isJumping == PlayerMovementBody.JumpState.Decelerating && transform.position.y >= targetHeight) 
+        if (playerMovementBody.JumpStateCurrent == PlayerMovementBody.JumpState.Decelerating && transform.position.y >= targetHeight) 
             playerMovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
 
-        if (playerMovementBody.isJumping < PlayerMovementBody.JumpState.Decelerating) 
+        if (playerMovementBody.JumpStateCurrent < PlayerMovementBody.JumpState.Decelerating) 
             Y = jumpPower;
-        if (playerMovementBody.isJumping > PlayerMovementBody.JumpState.Jumping &&
+        if (playerMovementBody.JumpStateCurrent > PlayerMovementBody.JumpState.Jumping &&
            (playerMovementBody.velocity.y <= fallStateThreshold || (allowMidFall && !Input.Jump.IsPressed())))
             Fall(ref Y);
 
@@ -82,7 +82,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         nextJumpPhase = defaultPhase;
         if (nextJumpPhase < PlayerMovementBody.JumpState.Jumping)
         {
-            nextJumpPhase = playerMovementBody.isJumping;
+            nextJumpPhase = playerMovementBody.JumpStateCurrent;
             if (nextJumpPhase < PlayerMovementBody.JumpState.Jumping) nextJumpPhase = PlayerMovementBody.JumpState.Jumping;
         }
     }
