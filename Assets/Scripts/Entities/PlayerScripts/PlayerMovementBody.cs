@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using EditorAttributes;
 using RageRooster.Systems.SaveSystem;
 using SLS.ISingleton;
-using SLS.StateMachineH;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
-[RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider), typeof(StateMachine))]
+
+[RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider), typeof(NavMeshAgent))]
 public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovementBody>
 {
     #region Config
@@ -20,7 +22,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// <summary>
     /// Whether Gravity should be automaticall applied or applied by some behavior
     /// </summary>
-    public bool autoApplyGravity = false;
+    [SerializeField] bool autoApplyGravity = false;
     /// <summary>
     /// The maximum angle (in degrees) of a slope this <see cref="CharacterMovementBody"/> can stand on.
     /// </summary>
@@ -28,32 +30,32 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// <summary>
     /// The buffer used to check for ground.
     /// </summary>
-    public float movementCheckBuffer = 0.1f;
+    [SerializeField] float movementCheckBuffer = 0.1f;
     /// <summary>
     /// The buffer used to check for ground.
     /// </summary>
-    public float groundCheckBuffer = 0.1f;
+    [SerializeField] float groundCheckBuffer = 0.1f;
     /// <summary>
     /// The number of steps used in the Collide & Slide Algorithm.
     /// </summary>
-    public int movementProjectionSteps = 5;
+    [SerializeField] int movementProjectionSteps = 5;
     /// <summary>
     /// Angle threshold for Bonking.
     /// </summary>
-    public float bonkThreshold = 15;
+    [SerializeField] float bonkThreshold = 15;
 
     /// <summary>
     /// Whether the player can currnetly do a double jump.
     /// </summary>
-    public PlayerAirborneMovement doubleJump;
+    [SerializeField] PlayerAirborneMovement doubleJump;
     /// <summary>
     /// The default offset for a Front-ways collision Check.
     /// </summary>
-    public Vector3 frontCheckDefaultOffset;
+    [SerializeField] Vector3 frontCheckDefaultOffset;
     /// <summary>
     /// the default radius for a Front-ways collision Check.
     /// </summary>
-    public float frontCheckDefaultRadius;
+    [SerializeField] float frontCheckDefaultRadius;
 
     //public PlatformDetectionMethod platformDetection;
     //[Tooltip("An unconventional means of hopefully avoiding falling through the floor. If true, the player will check if there is any ground below them before moving, and if not, their velocity will be set to 0 to prevent them from moving further. This is jank, but it might help with some edge cases and it doesn't require any extra components or setup.")]
@@ -61,10 +63,12 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// <summary>
     /// The LayerMask used for ground checks. Should be set to anything that can be stood on.
     /// </summary>
-    public LayerMask validGroundMask;
+    [SerializeField] LayerMask validGroundMask;
 
-    public float platformDetectionFactor = 3;
-    public float platformLockRadius = .25f;
+    [SerializeField] float platformDetectionFactor = 3;
+    [SerializeField] float platformLockRadius = .25f;
+    [SerializeField, Title("Use Nav Mesh")] bool _useNavMeshIfPossible = true;
+    [SerializeField] bool lockToNavMesh = false;
 
 
     #endregion
@@ -79,7 +83,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// The <see cref="CapsuleCollider"/> component attached to this <see cref="CharacterMovementBody"/>.
     /// </summary>
     [field: SerializeField, HideInInspector] public CapsuleCollider Collider { get; private set; }
-    //[RelatedComponent(true)] public NavMeshAgent NavAgent;
 
     #endregion
 
@@ -96,27 +99,20 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         direction = Vector3.forward;
         Interface.Initialize(ref Instance);
 
-        //NavAgent.updatePosition = false;
         NavAgent.enabled = false;
         NavAgent.updateRotation = false;
         NavAgent.updateUpAxis = false;
+        gravity = defaultGravity;
     }
 
     /// <summary>
     /// Called when the component is enabled.
     /// </summary>
-    void OnEnable()
-    {
-        if (_rbState == BodyStates.OFF)
-            BodyState = BodyStates.Enabled;
-    }
+    void OnEnable() { if (_rbState == BodyStates.OFF) BodyState = BodyStates.Enabled; }
     /// <summary>
     /// Called when the component is disabled.
     /// </summary>
-    void OnDisable()
-    {
-        BodyState = BodyStates.OFF;
-    }
+    void OnDisable() => BodyState = BodyStates.OFF;
 
     void OnDestroy() => Interface.DeInitialize(ref Instance);
 
@@ -187,7 +183,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
     #endregion LifeCycle
 
-
     #region Move Cycle
 
     void FixedUpdate()
@@ -216,7 +211,9 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         stepZeroVelocity = velocity * Time.fixedDeltaTime;
         stepZeroAnchor = anchorPoint;
 
-        moveTestString = "";
+#if UNITY_EDITOR
+        moveTestString = new();
+#endif
 
         if (velocity != Vector3.zero) MoveNext(stepZeroVelocity);
 
@@ -232,14 +229,15 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             }
             else if (isGrounded)
             {
-                moveTestString += "Walk Off.\n";
+                AddDebugText("Walk Off.");
                 Player.StateMachine.SendSignal("WalkOff");
                 UnLand(JumpState.Hangtime);
             }
         }
 
-
-        DebugRR.DebugTextOverlay.SetText(moveTestString);
+#if UNITY_EDITOR
+        DebugRR.DebugTextOverlay.SetText(moveTestString.ToString());
+#endif
 
         if (autoApplyGravity && !isGrounded) ApplyGravity();
 
@@ -251,25 +249,25 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     void MoveNav(Vector3 stepVelocity, int step = 0)
     {
-        moveTestString += $"Step (Nav) {step}: {stepVelocity}\n";
+        AddDebugText($"Step (Nav) {step}: {stepVelocity}");
 
         if (stepVelocity == Vector3.zero) return;
 
         if (!OnNavMesh)
         {
-            moveTestString += $"Not sure why this is happening but MoveNav was somehow called despite not being on the NavMesh.";
+            AddDebugText($"Not sure why this is happening but MoveNav was somehow called despite not being on the NavMesh.");
             MoveSlide(stepVelocity, step);
             return;
         }
 
         if (!NavAgent.Raycast(Position + stepVelocity, out NavMeshHit hit))
         {
-            moveTestString += "No hit, moving forward and ending loop. \n";
+            AddDebugText("No hit, moving forward and ending loop.");
             NavAgent.Move(stepVelocity);
         }
         else
         {
-            moveTestString += $"Hit NavMesh edge, normal {hit.normal} at position {hit.position}";
+            AddDebugText($"Hit NavMesh edge, normal {hit.normal} at position {hit.position}");
             Vector3 snapToSurface = stepVelocity.normalized * hit.distance;
 
             NavAgent.Move(snapToSurface);
@@ -289,10 +287,11 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     void MoveSlide(Vector3 stepVelocity, int step = 0)
     {
-        moveTestString += $"Step (Slide) {step}: {stepVelocity}\n";
+        AddDebugText($"Step (Slide) {step}: {stepVelocity}");
 
         if (stepVelocity == Vector3.zero) return;
 
+        stepVelocity = stepVelocity.ProjectAndScale(anchorPoint.normal);
         stepVelocity = stepVelocity.ProjectAndScale(anchorPoint.normal);
 
         float stopDistance = -1;
@@ -301,12 +300,14 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         bool negateVerticalLefover = false;
 
         // Sweep for any obstacle in the trajectory (ignore flat-floor hits when moving purely horizontally).
+        // Sweep for any obstacle in the trajectory (ignore flat-floor hits when moving purely horizontally).
         bool sweepHit = SweepBody(stepVelocity, out RaycastHit hit, groundCheckBuffer) && !(stepVelocity.y == 0 && hit.normal == Vector3.up);
 
         if (!sweepHit)
         {
-            moveTestString += $"Grounded, Hit Nothing.\n";
+            AddDebugText("Grounded, Hit Nothing.");
 
+            // Keep platform lock behavior for grounded movement (attempt to detect unreachable edges and snap behavior).
             // Keep platform lock behavior for grounded movement (attempt to detect unreachable edges and snap behavior).
             if (lockToNavMesh)
             {
@@ -324,11 +325,12 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                         if (hitDistance <= stepVelocity.magnitude) stopDistance = hitDistance;
 
                         scaleByDot = true;
-                        moveTestString += $"Platform Locked onto non-NavMesh Platform, nextNormal: {nextNormal}\n";
+                        AddDebugText($"Platform Locked onto non-NavMesh Platform, nextNormal: {nextNormal}");
                     }
-                    else moveTestString += "Walking off platform when not allowed but reach around check failed. Failsafe situation, report to CJ.\n";
+                    else AddDebugText("Walking off platform when not allowed but reach around check failed. Failsafe situation, report to CJ.");
                 }
             }
+
 
             if (stopDistance == -1)
             {
@@ -341,7 +343,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
                     if (groundCast.distance >= float.Epsilon && groundCast.distance <= groundCheckBuffer && !different)
                     {
-                        moveTestString += "Snapping to lowerGround.\n";
+                        AddDebugText("Snapping to lowerGround.");
                         Position += Vector3.down * groundCast.distance;
                         anchorPoint = groundCast;
                     }
@@ -349,32 +351,37 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             }
         }
         else // grounded sweep hit handling
+        else // grounded sweep hit handling
         {
-            moveTestString += $"Grounded, Hit: {hit.normal} at distance {hit.distance} \n";
+            AddDebugText($"Grounded, Hit: {hit.normal} at distance {hit.distance}");
             stopDistance = hit.distance;
             nextNormal = hit.normal;
 
             if (Mathf.Approximately(hit.normal.y, 0))
             {
-                moveTestString += "Hit a wall.\n";
+                AddDebugText("Hit a wall.");
                 scaleByDot = true;
+                negateVerticalLefover = true;
                 negateVerticalLefover = true;
                 nextNormal = nextNormal.XZ().normalized;
             }
             else if (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
             {
-                moveTestString += "Hit a steep slope.\n";
+                AddDebugText("Hit a steep slope.");
                 scaleByDot = true;
+                negateVerticalLefover = true;
                 negateVerticalLefover = true;
                 nextNormal = nextNormal.XZ().normalized;
             }
 
             if (anchorPoint.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchorPoint.normal, hit.normal);
             else if (anchorPoint.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchorPoint.normal);
+            if (anchorPoint.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchorPoint.normal, hit.normal);
+            else if (anchorPoint.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchorPoint.normal);
 
             void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
             {
-                moveTestString += "Encountered Vertical Squish.\n";
+                AddDebugText("Encountered Vertical Squish.");
                 scaleByDot = true;
                 nextNormal = floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal;
             }
@@ -412,7 +419,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     void MoveAir(Vector3 stepVelocity, int step = 0)
     {
-        moveTestString += $"Step (Slide) {step}: {stepVelocity}\n";
+        AddDebugText($"Step (Slide) {step}: {stepVelocity}");
 
         if (stepVelocity == Vector3.zero) return;
 
@@ -425,27 +432,27 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
         if (sweepHit)
         {
-            moveTestString += $"Airborne, Hit: {hit.normal} at distance {hit.distance} \n";
+            AddDebugText($"Airborne, Hit: {hit.normal} at distance {hit.distance}");
             stopDistance = hit.distance;
             nextNormal = hit.normal;
 
-            if (Mathf.Approximately(hit.normal.y, 0)) moveTestString += "Hit a Wall mid-air.\n";
+            if (Mathf.Approximately(hit.normal.y, 0)) AddDebugText("Hit a Wall mid-air.");
             else if (hit.normal.y > 0)
             {
                 if (WithinSlopeAngle(hit.normal))
                 {
-                    moveTestString += "Landed on a standable ground.\n";
+                    AddDebugText("Landed on a standable ground.");
                     land = true;
                 }
-                else moveTestString += "Hit a steep slope while falling.\n";
+                else AddDebugText("Hit a steep slope while falling.");
             }
             else if (!WithinSlopeAngle(-hit.normal))
             {
-                moveTestString += "Hit a sloped ceiling while jumping.\n";
+                AddDebugText("Hit a sloped ceiling while jumping.");
             }
             else
             {
-                moveTestString += "Hit a ceiling while jumping.\n";
+                AddDebugText("Hit a ceiling while jumping.");
                 land = true;
                 velocity.y = -0.1f;
                 UnLand(JumpState.Falling);
@@ -455,12 +462,12 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         }
         else
         {
-            moveTestString += $"Airborne, Hit Nothing.\n";
+            AddDebugText("Airborne, Hit Nothing.");
 
             // If airborne and there is no surface below the destination, treat as void and stop forward motion.
             if (!SweepBody(Vector3.down * 5000, out _, 0, Position + stepVelocity))
             {
-                moveTestString += "Hit the void while falling.\n";
+                AddDebugText("Hit the void while falling.");
                 stopDistance = 0;
                 nextNormal = -stepVelocity.XZ();
             }
@@ -501,6 +508,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         else MoveAir(stepVelocity, step);
     }
 
+
     /// <summary>
     /// The initial (Unprojected) velocity prior to the current physics step. Used for reference in the Collide and Slide algorithm.
     /// </summary>
@@ -518,10 +526,9 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     AnchorPoint stepZeroAnchor;
 
-    string moveTestString = "";
+    System.Text.StringBuilder moveTestString = new();
 
     #endregion Move Cycle
-
 
     #region Position
 
@@ -540,12 +547,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             if (BodyState != BodyStates.Enabled) return;
 
             if (OnNavMesh) NavAgent.nextPosition = value;
-            else
-            {
-                transform.position = value;
-                RB.position = value;
-                RB.MovePosition(value);
-            }
+            else RB.MovePosition(value);
         }
     }
 
@@ -690,7 +692,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     public float CurrentSpeed
     {
         get => currentSpeed;
-        set => currentSpeed = value.Min(0);
+        set => currentSpeed = value >= 0 ? value : 0;
     }
     [HideInEditMode, DisableInPlayMode, SerializeField] private float currentSpeed;
 
@@ -746,88 +748,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
     #endregion Gravity
 
-
-    #region Checks
-
-    /// <summary>
-    /// Casts the Rigidbody in a direction to check for collision using SweepTest. (Includes optional buffer)
-    /// </summary>
-    /// <param name="offset"></param>
-    /// <param name="hit">The resulting Hit.</param>
-    /// <param name="buffer">A buffer that the Rigidbody is temporarily moved backwards by before the Sweep Test.</param>
-    /// <param name="tempOrigin">An optional temporary origin to move the Rigidbody to before the Sweep Test.</param>
-    /// <param name="queryTriggerInteraction">Override to include trigger colliders in the Sweep Test.</param>
-    /// <returns>Whether anything was Hit.</returns>
-    public bool SweepBody(Vector3 offset, out RaycastHit hit,
-        float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
-    {
-        Vector3 originalPos = RB.position;
-        if (tempOrigin.HasValue) RB.MovePosition(tempOrigin.Value);
-        if (buffer > 0) RB.MovePosition(RB.position - (offset.normalized * buffer));
-        bool result = RB.SweepTest(offset.normalized, out hit, offset.magnitude + buffer, queryTriggerInteraction);
-        RB.MovePosition(originalPos);
-        hit.distance = (hit.distance - buffer).Min(0);
-        sweepsThisPhysUpdate.Add(new()
-        {
-            origin = tempOrigin.GetValueOrDefault(),
-            direction = offset,
-            hit = result,
-            hitDistance = hit.distance,
-            hitNormal = hit.normal
-        });
-        return result;
-    }
-
-
-    /// <summary>
-    /// Checks if the character is grounded and outputs the ground hit information.
-    /// </summary>
-    /// <param name="groundHit">The anchor point of the ground hit.</param>
-    /// <returns>True if grounded, false otherwise.</returns>
-    public bool GroundCheck(out AnchorPoint groundHit, bool dontApply = false)
-    {
-        bool result = SweepBody(Vector3.down * groundCheckBuffer, out RaycastHit raycast, groundCheckBuffer) && WithinSlopeAngle(raycast.normal);
-        groundHit = default;
-        if (!dontApply) groundHit = raycast;
-        return result;
-    }
-    /// <summary>
-    /// Checks if the character is grounded and outputs the ground hit information.
-    /// </summary>
-    /// <param name="groundHit">The anchor point of the ground hit.</param>
-    /// <returns>True if grounded, false otherwise.</returns>
-    public bool GroundCheck(out AnchorPoint groundHit, out RaycastHit raycast, bool dontApply = false)
-    {
-        bool result = SweepBody(Vector3.down * groundCheckBuffer, out raycast, groundCheckBuffer) && WithinSlopeAngle(raycast.normal);
-        groundHit = default;
-        if (!dontApply) groundHit = raycast;
-        return result;
-    }
-
-    public bool OverVoidCheck(Vector3 offset) => !SweepBody(Vector3.down * 5000, out _, 0, offset, QueryTriggerInteraction.Collide);
-
-    public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
-    {
-        Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(sphereOffset),
-                                                   checkSphereRadius);
-        foreach (Collider r in results)
-            if (r.TryGetComponent(out T result))
-                return result;
-        return default;
-    }
-    public T CheckForTypeInFront<T>()
-    {
-        Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(frontCheckDefaultOffset),
-                                                   frontCheckDefaultRadius);
-        foreach (Collider r in results)
-            if (r.gameObject != gameObject && r.TryGetComponent(out T result))
-                return result;
-        return default;
-    }
-
-    #endregion
-
-
     #region Ground
 
     /// <summary>
@@ -850,9 +770,9 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// <param name="collision">The collision information.</param>
     void OnCollisionEnter(Collision collision)
     {
-        Vector3 contactPoint = collision.GetContact(0).normal;
-        if (!isGrounded && velocity.y > .1f && Vector3.Dot(contactPoint, Vector3.up) < -0.75f) velocity.y = 0;
-        else if (!isGrounded && WithinSlopeAngle(contactPoint))
+        Vector3 contactNormal = collision.GetContact(0).normal;
+        if (!isGrounded && velocity.y > .1f && Vector3.Dot(contactNormal, Vector3.up) < -0.75f) velocity.y = 0;
+        else if (!isGrounded && WithinSlopeAngle(contactNormal))
             Land(collision.GetContact(0));
 
     }
@@ -967,7 +887,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// <summary>
     /// The current jump state of the character.
     /// </summary>
-    public JumpState isJumping => _jumpState;
+    public JumpState JumpStateCurrent => _jumpState;
 
     /// <summary>
     /// The current jump state of this body.
@@ -976,7 +896,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
 
     #endregion Ground
-
 
     #region NavMesh Navigation
     public NavMeshAgent NavAgent => Player.NavMeshAgent;
@@ -995,8 +914,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             if (!value && OnNavMesh) OnNavMesh = false;
         }
     }
-    [SerializeField] bool _useNavMeshIfPossible = true;
-    public bool lockToNavMesh = false;
     public float navMeshDetectionRange = .35f;
 
     public bool OnNavMesh
@@ -1092,6 +1009,182 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
     #endregion NavMesh Navigation
 
+    #region Checks
+
+    /// <summary>
+    /// Casts the Rigidbody in a direction to check for collision using SweepTest. (Includes optional buffer)
+    /// </summary>
+    /// <param name="offset"></param>
+    /// <param name="hit">The resulting Hit.</param>
+    /// <param name="buffer">A buffer that the Rigidbody is temporarily moved backwards by before the Sweep Test.</param>
+    /// <param name="tempOrigin">An optional temporary origin to move the Rigidbody to before the Sweep Test.</param>
+    /// <param name="queryTriggerInteraction">Override to include trigger colliders in the Sweep Test.</param>
+    /// <returns>Whether anything was Hit.</returns>
+    public bool SweepBody(Vector3 offset, out RaycastHit hit,
+        float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
+    {
+        Vector3 originalPos = RB.position;
+        if (tempOrigin.HasValue) RB.MovePosition(tempOrigin.Value);
+        if (buffer > 0) RB.MovePosition(RB.position - (offset.normalized * buffer));
+        bool result = RB.SweepTest(offset.normalized, out hit, offset.magnitude + buffer, queryTriggerInteraction);
+        RB.MovePosition(originalPos);
+        hit.distance = (hit.distance - buffer).Min(0);
+        sweepsThisPhysUpdate.Add(new()
+        {
+            origin = tempOrigin.GetValueOrDefault(),
+            direction = offset,
+            hit = result,
+            hitDistance = hit.distance,
+            hitNormal = hit.normal
+        });
+        return result;
+    }
+
+
+    /// <summary>
+    /// Checks if the character is grounded and outputs the ground hit information.
+    /// </summary>
+    /// <param name="groundHit">The anchor point of the ground hit.</param>
+    /// <returns>True if grounded, false otherwise.</returns>
+    public bool GroundCheck(out AnchorPoint groundHit, bool dontApply = false)
+    {
+        bool result = SweepBody(Vector3.down * groundCheckBuffer, out RaycastHit raycast, groundCheckBuffer) && WithinSlopeAngle(raycast.normal);
+        groundHit = default;
+        if (!dontApply) groundHit = raycast;
+        return result;
+    }
+    /// <summary>
+    /// Checks if the character is grounded and outputs the ground hit information.
+    /// </summary>
+    /// <param name="groundHit">The anchor point of the ground hit.</param>
+    /// <returns>True if grounded, false otherwise.</returns>
+    public bool GroundCheck(out AnchorPoint groundHit, out RaycastHit raycast, bool dontApply = false)
+    {
+        bool result = SweepBody(Vector3.down * groundCheckBuffer, out raycast, groundCheckBuffer) && WithinSlopeAngle(raycast.normal);
+        groundHit = default;
+        if (!dontApply) groundHit = raycast;
+        return result;
+    }
+
+    public bool OverVoidCheck(Vector3 offset) => !SweepBody(Vector3.down * 5000, out _, 0, offset, QueryTriggerInteraction.Collide);
+
+    public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
+    {
+        Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(sphereOffset),
+                                                   checkSphereRadius);
+        foreach (Collider r in results)
+            if (r.TryGetComponent(out T result))
+                return result;
+        return default;
+    }
+    public T CheckForTypeInFront<T>()
+    {
+        Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(frontCheckDefaultOffset),
+                                                   frontCheckDefaultRadius);
+        foreach (Collider r in results)
+            if (r.gameObject != gameObject && r.TryGetComponent(out T result))
+                return result;
+        return default;
+    }
+
+
+    private static readonly RaycastHit[] s_capsuleCastResults = new RaycastHit[32];
+
+    public bool SweepBodyAlt(Vector3 offset, out RaycastHit hit,
+        float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
+    {
+        hit = default;
+
+        // world-space origin for the capsule
+        Vector3 originPos = tempOrigin ?? RB.position;
+        Vector3 worldCenter = originPos + transform.rotation * Collider.center;
+
+        // account for transform scale when computing radius and height
+        Vector3 lossy = transform.lossyScale;
+        float radius = Collider.radius * Mathf.Max(lossy.x, lossy.z);
+        float height = Mathf.Max(Collider.height * lossy.y, radius * 2f); // ensure valid capsule
+        float halfHeight = Mathf.Max(0f, (height / 2f) - radius);
+
+        // capsule endpoints in world space
+        Vector3 up = transform.up;
+        Vector3 p1 = worldCenter + up * halfHeight;
+        Vector3 p2 = worldCenter - up * halfHeight;
+
+        Vector3 dir = offset.normalized;
+        float maxDistance = offset.magnitude + buffer;
+
+        // Build a layer mask that includes layers this object's layer can collide with
+        int selfLayer = gameObject.layer;
+        int layerMask = 0;
+        for (int i = 0; i < 32; i++)
+            if (!Physics.GetIgnoreLayerCollision(selfLayer, i))
+                layerMask |= (1 << i);
+
+        // Perform non-mutating capsule cast using the NonAlloc API
+        int count = Physics.CapsuleCastNonAlloc(p1, p2, radius, dir, s_capsuleCastResults, maxDistance, layerMask, queryTriggerInteraction);
+        if (count == 0)
+        {
+            sweepsThisPhysUpdate.Add(new()
+            {
+                origin = tempOrigin.GetValueOrDefault(),
+                direction = offset,
+                hit = false,
+                hitDistance = 0,
+                hitNormal = Vector3.zero
+            });
+            return false;
+        }
+
+        // Find nearest valid hit that is not this object's collider
+        int nearestIndex = -1;
+        float nearestDist = float.MaxValue;
+        for (int i = 0; i < count; i++)
+        {
+            var h = s_capsuleCastResults[i];
+            if (h.collider == null) continue;
+            if (h.collider == Collider || h.collider.gameObject == gameObject) continue; // exclude self
+            if (h.distance < nearestDist)
+            {
+                nearestDist = h.distance;
+                nearestIndex = i;
+            }
+        }
+
+        if (nearestIndex == -1)
+        {
+            sweepsThisPhysUpdate.Add(new()
+            {
+                origin = tempOrigin.GetValueOrDefault(),
+                direction = offset,
+                hit = false,
+                hitDistance = 0,
+                hitNormal = Vector3.zero
+            });
+            return false;
+        }
+
+        // copy and adjust distance for buffer, clamp >= 0
+        RaycastHit chosen = s_capsuleCastResults[nearestIndex];
+        chosen.distance = Mathf.Max(0f, chosen.distance - buffer);
+
+        // record debug info
+        sweepsThisPhysUpdate.Add(new()
+        {
+            origin = tempOrigin.GetValueOrDefault(),
+            direction = offset,
+            hit = true,
+            hitDistance = chosen.distance,
+            hitNormal = chosen.normal
+        });
+
+        hit = chosen;
+        return true;
+    }
+
+
+
+    #endregion
+
     #region Other
 
     public static System.Action MovingUpdateAction;
@@ -1110,6 +1203,8 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         }
     }
     public bool isOverVent => _currentVent != null;
+
+    public float MovementCheckBuffer { get => movementCheckBuffer; }
 
 
     #endregion Other
@@ -1205,9 +1300,13 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         }
     }
 
-
-
-
 #endif
+    private void AddDebugText(string text)
+    {
+#if UNITY_EDITOR
+        moveTestString.AppendLine(text);
+#endif
+    }
 
 }
+
