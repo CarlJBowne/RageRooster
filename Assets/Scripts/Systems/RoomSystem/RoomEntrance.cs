@@ -10,7 +10,7 @@ namespace RageRooster.RoomSystem
     /// An entrance to a Room. MonoBehavior that triggers entering the Room when colliding with the Player.
     /// <br/>A pure-data representation of this entrance, <see cref="RoomEntrance.Data"/> is stored in a <see cref="RoomAsset"/> for runtime loading.
     /// </summary>
-    public class RoomEntrance : MonoBehaviour, IRoomObject
+    public class RoomEntrance : MonoBehaviour, IRoomActor
     {
         /// <summary>
         /// The distance radius at which the room will begin loading.
@@ -39,12 +39,12 @@ namespace RageRooster.RoomSystem
         /// </summary>
         public bool forDeathOnly = false;
 
-        RoomRoot IRoomObject.root { get; set; }
-        RoomRoot root => ((IRoomObject)this).root;
+        RoomRoot IRoomActor.root { get; set; }
+        RoomRoot root => ((IRoomActor)this).root;
 
         private void Reset()
         {
-            IRoomObject.ConnectToRoomRoot(this);
+            IRoomActor.ConnectToRoomRoot(this);
         }
 
 

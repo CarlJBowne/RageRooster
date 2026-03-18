@@ -9,7 +9,7 @@ using UnityEngine;
 /// A set point in the world where the player can spawn. <br/>
 /// When activated it moves the player to the exact transform position.
 /// </summary>
-public class SpawnPoint : MonoBehaviour, IRoomObject
+public class SpawnPoint : MonoBehaviour, IRoomActor
 {
     //Make private but visible later.
     /// <summary>
@@ -47,10 +47,10 @@ public class SpawnPoint : MonoBehaviour, IRoomObject
         spawnID = ID
     };
 
-    RoomRoot IRoomObject.root { get; set; }
-    RoomRoot root => ((IRoomObject)this).root;
+    RoomRoot IRoomActor.root { get; set; }
+    RoomRoot root => ((IRoomActor)this).root;
 
-    private void Reset() => IRoomObject.ConnectToRoomRoot(this);
+    private void Reset() => IRoomActor.ConnectToRoomRoot(this);
 
     //Reflected
     private static void OnSaveSceneSet(RoomRoot root, List<SpawnPoint> list)
@@ -58,7 +58,7 @@ public class SpawnPoint : MonoBehaviour, IRoomObject
         root.spawns = list.ToArray();
         for (int i = 0; i < root.spawns.Length; i++)
         {
-            IRoomObject.ConnectToRoomRoot(root.spawns[i]);
+            IRoomActor.ConnectToRoomRoot(root.spawns[i]);
             root.spawns[i].ID = i;
         }
     }
