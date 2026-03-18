@@ -16,7 +16,7 @@ public class PlayerLassoProjectile : PlayerProjectile
     private float currentYVelocity;
     private Vector3 currentHDirection;
 
-    public override void Send(RangedTarget target, Transform initPosition, Transform fallBackTargetPosition)
+    public override void Send(Target target, Transform initPosition, Transform fallBackTargetPosition)
     {
         activeTarget = target;
         lostTarget = false;
@@ -109,6 +109,8 @@ public class PlayerLassoProjectile : PlayerProjectile
         if (Vector3.Distance(transform.position, Player.Position) <= reachplayerDistance) ReachPlayer();
     }
 
+
+    protected override void OnTriggerEnter(Collider other) => Contact(other.gameObject);
     public override void Contact(GameObject target)
     {
         if (target == Player.GameObject || pullingPhase) return;

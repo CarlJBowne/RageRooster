@@ -18,14 +18,14 @@ public class PlayerProjectile : AttackSourceSingle
     //Components
 
     //Data
-    protected RangedTarget activeTarget;
+    protected Target activeTarget;
     protected Vector3 activeVelocity;
     protected float timeFlying;
     protected bool lostTarget;
     public bool active => isActiveAndEnabled;
 
 
-    public virtual void Send(RangedTarget target, Transform initPosition, Transform fallBackTargetPosition)
+    public virtual void Send(Target target, Transform initPosition, Transform fallBackTargetPosition)
     {
         activeTarget = target;
         lostTarget = false;
