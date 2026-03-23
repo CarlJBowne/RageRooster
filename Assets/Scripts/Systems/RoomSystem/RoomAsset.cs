@@ -1,21 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.VisualScripting;
-using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 using System.IO;
 using System;
 using System.Linq;
 using UnityEngine.UIElements;
-using UnityEditor.VersionControl;
-using System.Drawing;
-
-
-
-
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -40,7 +30,6 @@ namespace RageRooster.RoomSystem
         /// </summary>
         [field: SerializeField] public AreaAsset area { get; protected set; }
 
-        [field: SerializeField, Obsolete("Not Necessary.")] public Vector3 globalCenter { get; protected set; }
         /// <summary>
         /// The Scene Asset containing the contents of this Room.
         /// </summary>
@@ -79,7 +68,7 @@ namespace RageRooster.RoomSystem
         public RoomState state { get; protected set; } = RoomState.Null;
 
 
-        public GameObject lowestLOD { get; internal set; }
+        public GameObject shellLodPiece { get; internal set; }
         /// <summary>
         /// The current ID of the LOD instance being shown. Currently only supports one LOD level.
         /// </summary>
@@ -113,61 +102,53 @@ namespace RageRooster.RoomSystem
             if (state is RoomState.Current or RoomState.Unloading or RoomState.Loading) return;
 
             if (entrances == null || entrances.Count == 0) return;
-            for (int i = 0; i < entrances.Count; i++) entrances[i].UpdateDistance();
 
-            float closestDistance = 90000000f;
-            foreach (RoomEntrance.Data entrance in entrances)
+
+            UpdateDistances(out int entranceID, out int stripScore);
+
+            if (state is RoomState.Present) 
+            { 
+                if(stripScore < 3) SceneUnload().Begin(area.root); 
+            }
+            else
             {
-                if (closestDistance > entrance.distanceSquared) closestDistance = entrance.distanceSquared;
-
-                if (state is RoomState.Present)
+                if(stripScore == 3) SceneLoad().Begin(area.root);
+                else if (state is RoomState.Lowest && stripScore > 0)
                 {
-                    if (entrance.distanceSquared > entrance.unloadRadiusSQR)
-                    {
-                        SceneUnload().Begin(area.root);
-                        break;
-                    }
+                    state = RoomState.LODS;
+                    lod.TurnOn();
+                    shellLodPiece.SetActive(false);
                 }
-                else
+                else if(state is RoomState.LODS && stripScore == 0)
                 {
-                    if (entrance.distanceSquared != -1 && entrance.distanceSquared < entrance.loadRadiusSQR)
-                    {
-                        SceneLoad().Begin(area.root);
-                        break;
-                    }
-
-                    if (state is RoomState.Lowest && WithinLodRange(player))
-                    {
-                        state = RoomState.LODS;
-                        lod.TurnOn();
-                    }
-                    else if (state is RoomState.LODS && !WithinLodRange(player))
-                    {
-                        state = RoomState.Lowest;
-                        lod.TurnOff();
-                    }
+                    state = RoomState.Lowest;
+                    lod.TurnOff();
+                    shellLodPiece.SetActive(true);
                 }
             }
-
-
-
         }
 
-        void UpdateDistances(out float closestDistance, out int  out RoomState highestState)
+        void UpdateDistances(out int entranceID, out int stripScore)
         {
-            closestDistance = 900000;
-            highestState = RoomState.Null;
+            entranceID = -1;
+            stripScore = -1;
 
             for (int i = 0; i < entrances.Count; i++)
             {
-                entrances[i].UpdateDistance();
-                if (entrances[i].distanceSquared < closestDistance) closestDistance = entrances[i].distanceSquared;
-
+                entrances[i].UpdateDistance(out int iStrip);
+                if (iStrip > stripScore)
+                {
+                    stripScore = iStrip;
+                    entranceID = i;
+                }
+                else if (iStrip == stripScore && entrances[i].distanceSquared < entrances[entranceID].distanceSquared)
+                    entranceID = i;
             }
         }
-
-
-
+        // 3 = Within Load Radius
+        // 2 = Within Unload Radius
+        // 1 = Within LOD Radius
+        // 0 = Outside
 
 
 
@@ -187,15 +168,17 @@ namespace RageRooster.RoomSystem
         public IEnumerator PrepSurrounding()
         {
             if (this == RoomManager.currentRoom) yield break;
-            Vector3 player = Player.Position;
-            if (WithinLoadRange(player))
+
+            UpdateDistances(out int entranceID, out int stripScore);
+
+            if (stripScore > 2)
             {
                 yield return SceneLoad();
                 state = RoomState.Present;
             }
             else
             {
-                if (WithinLodRange(player))
+                if (stripScore > 0)
                 {
                     state = RoomState.LODS;
                     yield return lod.Load();
@@ -220,6 +203,7 @@ namespace RageRooster.RoomSystem
             yield return SceneOperationRoutine.Load(scene);
             if (root == null) yield return new WaitUntil(() => root != null);
 
+            if(shellLodPiece && shellLodPiece.activeSelf) shellLodPiece.SetActive(false);
             state = RoomState.Present;
         }
         /// <summary>

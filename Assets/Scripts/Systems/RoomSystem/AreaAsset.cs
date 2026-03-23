@@ -90,7 +90,7 @@ namespace RageRooster.RoomSystem
             for (int i = 0; i < root.roomLowestLods.Length; i++)
             {
                 if (root.roomLowestLods[i] == null) continue;
-                rooms[i].lowestLOD = root.roomLowestLods[i];
+                rooms[i].shellLodPiece = root.roomLowestLods[i];
             }
         }
 

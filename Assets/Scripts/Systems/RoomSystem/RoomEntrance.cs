@@ -91,12 +91,16 @@ namespace RageRooster.RoomSystem
             [System.NonSerialized] public float distanceSquared;
 
 
-            public void UpdateDistance()
+            public void UpdateDistance(out int closestStrip)
             {
                 distanceSquared = direction != Vector3.zero && Vector3.Dot(point - Player.Position, direction) < 0
                     ? distanceSquared = -1
                     : Vector3.SqrMagnitude(Player.Position - point);
 
+                closestStrip = distanceSquared < loadRadiusSQR ? 3
+                    : distanceSquared < unloadRadiusSQR ? 2
+                    : distanceSquared < lodRadiusSQR ? 1
+                    : 0;
             }
         }
 
