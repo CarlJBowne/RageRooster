@@ -9,6 +9,8 @@ using System;
 using System.Linq;
 using UnityEngine.UIElements;
 using UnityEditor.VersionControl;
+using System.Drawing;
+
 
 
 
@@ -53,6 +55,7 @@ namespace RageRooster.RoomSystem
         #endregion
 
         #region Active Data
+
         /// <summary>
         /// The Active <see cref="RoomRoot" attached to the scene./>
         /// </summary>
@@ -75,6 +78,8 @@ namespace RageRooster.RoomSystem
         /// </summary>
         public RoomState state { get; protected set; } = RoomState.Null;
 
+
+        public GameObject lowestLOD { get; internal set; }
         /// <summary>
         /// The current ID of the LOD instance being shown. Currently only supports one LOD level.
         /// </summary>
@@ -107,81 +112,59 @@ namespace RageRooster.RoomSystem
         {
             if (state is RoomState.Current or RoomState.Unloading or RoomState.Loading) return;
 
-            Vector3 player = Player.Position;
-            if (state is RoomState.Present)
+            if (entrances == null || entrances.Count == 0) return;
+            for (int i = 0; i < entrances.Count; i++) entrances[i].UpdateDistance();
+
+            float closestDistance = 90000000f;
+            foreach (RoomEntrance.Data entrance in entrances)
             {
-                if (!WithinUnloadRange(player))
-                    SceneUnload().Begin(area.root);
-            }
-            else
-            {
-                if (WithinLoadRange(player))
+                if (closestDistance > entrance.distanceSquared) closestDistance = entrance.distanceSquared;
+
+                if (state is RoomState.Present)
                 {
-                    SceneLoad().Begin(area.root);
-                    return;
+                    if (entrance.distanceSquared > entrance.unloadRadiusSQR)
+                    {
+                        SceneUnload().Begin(area.root);
+                        break;
+                    }
                 }
-                else if (state is RoomState.Lowest && WithinLodRange(player))
+                else
                 {
-                    state = RoomState.LODS;
-                    lod.TurnOn();
+                    if (entrance.distanceSquared != -1 && entrance.distanceSquared < entrance.loadRadiusSQR)
+                    {
+                        SceneLoad().Begin(area.root);
+                        break;
+                    }
+
+                    if (state is RoomState.Lowest && WithinLodRange(player))
+                    {
+                        state = RoomState.LODS;
+                        lod.TurnOn();
+                    }
+                    else if (state is RoomState.LODS && !WithinLodRange(player))
+                    {
+                        state = RoomState.Lowest;
+                        lod.TurnOff();
+                    }
                 }
-                else if (state is RoomState.LODS && !WithinLodRange(player))
-                {
-                    state = RoomState.Lowest;
-                    lod.TurnOff();
-                }
             }
+
+
+
         }
 
-        #region Range Calculators
-        private bool WithinLoadRange(Vector3 player)
+        void UpdateDistances(out float closestDistance, out int  out RoomState highestState)
         {
-            // Early exit if there are no transitions
-            if (entrances == null || entrances.Count == 0)
-                return false;
+            closestDistance = 900000;
+            highestState = RoomState.Null;
 
-            // Use foreach, but return immediately on first match
-            foreach (RoomEntrance.Data item in entrances)
+            for (int i = 0; i < entrances.Count; i++)
             {
-                if (item.direction != Vector3.zero && Vector3.Dot(item.point - player, item.direction) < 0) continue;
-                if (Vector3.SqrMagnitude(player - item.point) < item.loadRadius * item.loadRadius)
-                    return true;
+                entrances[i].UpdateDistance();
+                if (entrances[i].distanceSquared < closestDistance) closestDistance = entrances[i].distanceSquared;
+
             }
-            return false;
         }
-        private bool WithinUnloadRange(Vector3 player)
-        {
-            // Early exit if there are no transitions
-            if (entrances == null || entrances.Count == 0)
-                return false;
-
-            // Use foreach, but return immediately on first match
-            foreach (RoomEntrance.Data item in entrances)
-            {
-                if (item.direction != Vector3.zero && Vector3.Dot(item.point - player, item.direction) < 0) continue;
-                if (Vector3.SqrMagnitude(player - item.point) < item.unloadRadius * item.unloadRadius)
-                    return true;
-            }
-            return false;
-        }
-        private bool WithinLodRange(Vector3 player)
-        {
-            // Early exit if there are no transitions
-            if (entrances == null || entrances.Count == 0)
-                return false;
-
-            // Use foreach, but return immediately on first match
-            foreach (RoomEntrance.Data item in entrances)
-            {
-                if (item.direction != Vector3.zero && Vector3.Dot(item.point - player, item.direction) < 0) continue;
-                if (Vector3.SqrMagnitude(player - item.point) < item.lodRadius * item.lodRadius)
-                    return true;
-            }
-            return false;
-        }
-        #endregion
-
-
 
 
 

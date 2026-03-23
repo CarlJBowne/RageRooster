@@ -23,7 +23,6 @@ namespace RageRooster.RoomSystem
         [field: SerializeField] public RoomAsset asset { get; protected set; }
         [field: SerializeField] public List<GameObject> RootGameObjects { get; private set; } = new();
 
-        //[field: SerializeField] public List<Component> roomActors { get; private set; } = new();
         /// <summary>
         /// The defined <see cref="SpawnPoint"/>s available in this room.
         /// <br/> Automatically populated upon saving the scene in the editor.

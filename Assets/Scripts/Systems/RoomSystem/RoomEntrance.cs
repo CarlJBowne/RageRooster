@@ -53,7 +53,7 @@ namespace RageRooster.RoomSystem
         {
             if (other != Player.Collider) return;
             RoomManager.EnterRoom(root.asset);
-            if(spawnPoint != null)
+            if (spawnPoint != null)
                 (forDeathOnly ? SaveData.DeathReloadData : SaveData.Current).location = spawnPoint.GetDestination();
         }
 
@@ -72,9 +72,9 @@ namespace RageRooster.RoomSystem
         {
             point = transform.position,
             direction = transform.TransformDirection(direction),
-            loadRadius = loadRadius,
-            unloadRadius = unloadRadius,
-            lodRadius = lodRadius
+            loadRadiusSQR = loadRadius * loadRadius,
+            unloadRadiusSQR = unloadRadius * unloadRadius,
+            lodRadiusSQR = lodRadius * lodRadius
         };
 
         /// <summary>
@@ -85,9 +85,19 @@ namespace RageRooster.RoomSystem
         {
             public Vector3 point;
             public Vector3 direction;
-            public float loadRadius;
-            public float unloadRadius;
-            public float lodRadius;
+            public float loadRadiusSQR;
+            public float unloadRadiusSQR;
+            public float lodRadiusSQR;
+            [System.NonSerialized] public float distanceSquared;
+
+
+            public void UpdateDistance()
+            {
+                distanceSquared = direction != Vector3.zero && Vector3.Dot(point - Player.Position, direction) < 0
+                    ? distanceSquared = -1
+                    : Vector3.SqrMagnitude(Player.Position - point);
+
+            }
         }
 
 #if UNITY_EDITOR
