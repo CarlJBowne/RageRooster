@@ -81,8 +81,11 @@ public class PlayerRanged : MonoBehaviour
         }
         else
         {
-            if (TargetingManager.RangedChannel.CurrentTarget != null)
-                targetPos.position = TargetingManager.RangedChannel.CurrentTarget.position;
+            targetPos.position = TargetingManager.RangedChannel.CurrentTarget != null
+                ? targetPos.position = TargetingManager.RangedChannel.CurrentTarget.position
+                : Player.Position + (Player.Transform.forward * TargetingManager.RangedChannel.Range.maxDistance);
+            
+                
         }
     }
 

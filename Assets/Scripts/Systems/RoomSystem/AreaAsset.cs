@@ -77,14 +77,22 @@ namespace RageRooster.RoomSystem
             if (root == null) yield return new WaitUntil(() => root != null);
 
             state = SceneState.Loaded;
-            for (int i = 0; i < rooms.Count; i++) 
+            for (int i = 0; i < rooms.Count; i++)
                 PlayerMovementBody.MovingUpdateAction += rooms[i].Update;
         }
 
         /// <summary>
         /// Establishes a connection to the specified <see cref="AreaRoot"/>.
         /// </summary>
-        public void Connect(AreaRoot root) => this.root = root;
+        public void Connect(AreaRoot root)
+        {
+            this.root = root;
+            for (int i = 0; i < root.roomLowestLods.Length; i++)
+            {
+                if (root.roomLowestLods[i] == null) continue;
+                rooms[i].shellLodPiece = root.roomLowestLods[i];
+            }
+        }
 
         /// <summary>
         /// Unloads this area's <see cref="shellScene"/> and all rooms within it.

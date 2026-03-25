@@ -11,11 +11,11 @@ public class VolcanicVent : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if(other.TryGetComponent(out PlayerMovementBody player)) 
-            player.currentVent = this;
+            player.CurrentVent = this;
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out PlayerMovementBody player) && player.currentVent == this) 
-            player.currentVent = null;
+        if (other.TryGetComponent(out PlayerMovementBody player) && player.CurrentVent == this) 
+            player.CurrentVent = null;
     }
 }

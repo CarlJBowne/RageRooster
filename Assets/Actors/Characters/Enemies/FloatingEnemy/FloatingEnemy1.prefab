@@ -3317,14 +3317,14 @@ GameObject:
   - component: {fileID: 3927902439295100161}
   - component: {fileID: 7145112600956375108}
   - component: {fileID: 1171501913040398372}
-  - component: {fileID: 293696221970066188}
   - component: {fileID: 8213563936651183793}
   - component: {fileID: 6245664928252330756}
   - component: {fileID: 6973894380732621090}
   - component: {fileID: 4232153444660359350}
-  - component: {fileID: 5972629405121182451}
-  - component: {fileID: 4413321632040456770}
+  - component: {fileID: 1120702831640861729}
   - component: {fileID: 185259028397660553}
+  - component: {fileID: 8399144936975446557}
+  - component: {fileID: 6124407262506827132}
   m_Layer: 7
   m_Name: FloatingEnemy1
   m_TagString: Untagged
@@ -3450,84 +3450,14 @@ MonoBehaviour:
   poofPrefab: {fileID: 0}
   stunComponents: []
   entityActivity: {fileID: 0}
+  hierarchicalMachine: {fileID: 0}
+  visualMachine: {fileID: 0}
   enemyLootSpawner: {fileID: 0}
   tintAnimator: {fileID: 7917854226350700324}
   ragdoll: {fileID: 0}
   respawnTime: 5
   onDamageEvent:
     _PersistentCalls: []
---- !u!114 &293696221970066188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3500639052055708832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a842d6755cba8b49800d602c295ad3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anchorPoint: {fileID: 0}
-  weight: 1
-  wiggleFreeTime: 0
-  maxHealthToGrab: -1
-  additionalThrowDistance: 0
-  additionalHoldHeight: 0
-  selectIcon: {fileID: 3556388966087526586}
-  GrabStateEvent:
-    _PersistentCalls: []
-  defaultEvent:
-    _PersistentCalls: []
-  grabbedEvent:
-    _PersistentCalls: []
-  thrownEvent:
-    _PersistentCalls: []
-  bounceEvent:
-    _PersistentCalls: []
-  thrownAttack:
-    amount: 30
-    velocity: {x: 0, y: 0, z: 0}
-    tags:
-    - name: Thrown
-    - name: ThrownEnemy
-    - name: FromPlayer
-  grabbed: 0
-  currentState: 0
-  minRagdollTime: 5
-  maxRagdollTime: 20
-  minRagdollVelovity: 1
-  nonRagdolledCollider: {fileID: 7145112600956375108}
-  nonRagdolledRigidBody: {fileID: 0}
-  defaultLayer: 7
-  advanced: 1
-  ragDollColliders:
-  - {fileID: 3913969823439890214}
-  - {fileID: 1535982896571281237}
-  - {fileID: 105917328572874822}
-  - {fileID: 2026464839802375383}
-  - {fileID: 1111731721790437032}
-  - {fileID: 4182659933052366920}
-  - {fileID: 1152603309924620081}
-  - {fileID: 6728538476781693894}
-  - {fileID: 484354332902099227}
-  - {fileID: 7998139900551307483}
-  - {fileID: 1771168487212555274}
-  ragDollRigidBodies:
-  - {fileID: 1758660291618972784}
-  - {fileID: 3108913901570465416}
-  - {fileID: 1728399485935418528}
-  - {fileID: 5436724012445032374}
-  - {fileID: 7881773869630855221}
-  - {fileID: 2541190452947247124}
-  - {fileID: 6060053572081360709}
-  - {fileID: 4329513474039859590}
-  - {fileID: 1353669938369148101}
-  - {fileID: 38489751913329003}
-  - {fileID: 3471155898970234419}
-  proxy: {fileID: 5254176539928865762}
-  isPlayer: 0
-  materialTinter: {fileID: 0}
 --- !u!54 &8213563936651183793
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3621,7 +3551,7 @@ MonoBehaviour:
   globalSignals:
     serializedList: []
   queueSignals: 1
---- !u!114 &5972629405121182451
+--- !u!114 &1120702831640861729
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3630,32 +3560,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 3500639052055708832}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 157b62d8004f9f14d8160afc57aae3b5, type: 3}
+  m_Script: {fileID: 11500000, guid: ff959314ab21ec04496ded7c08d36f17, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
+  m_EditorClassIdentifier: Assembly-CSharp::Target
+  Types:
+    items:
+    - rid: 440872388981686357
+    - rid: 440872388981686358
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 8213563936651183793}
   collider: {fileID: 7145112600956375108}
   navMeshAgent: {fileID: 0}
   centerComputationType: 0
-  grabbable: {fileID: 185259028397660553}
---- !u!114 &4413321632040456770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3500639052055708832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c15eb228060da4689a9f675157e315, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RangedTarget
-  RealPositionOffset: {x: 0, y: 0, z: 0}
-  rigidBody: {fileID: 8213563936651183793}
-  collider: {fileID: 7145112600956375108}
-  navMeshAgent: {fileID: 0}
-  centerComputationType: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 440872388981686357
+      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: 1120702831640861729}
+    - rid: 440872388981686358
+      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: 1120702831640861729}
 --- !u!114 &185259028397660553
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3674,13 +3601,70 @@ MonoBehaviour:
   anchorPoint: {fileID: 0}
   AdditionalThrowDistance: 0
   collider: {fileID: 7145112600956375108}
-  meleeTarget: {fileID: 5972629405121182451}
+  target: {fileID: 1120702831640861729}
   rigidBody: {fileID: 8213563936651183793}
-  ragdollHandler: {fileID: 0}
+  ragdollHandler: {fileID: 8399144936975446557}
   thrownObjectAttack: {fileID: 0}
   health: {fileID: 1171501913040398372}
   constantMovement: {fileID: 0}
+  entityActivity: {fileID: 6124407262506827132}
+--- !u!114 &8399144936975446557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3500639052055708832}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0489aa5e525cbfe459bfdb27ab7a705f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RagdollHandler
+  minCollisionTime: 0
+  minRagdollTime: 0
+  maxRagdollTime: 0
+  minRagdollVelocity: 0
+  rootBoneCollider: {fileID: 3913969823439890214}
+  ragDollColliders:
+  - {fileID: 1535982896571281237}
+  - {fileID: 105917328572874822}
+  - {fileID: 2026464839802375383}
+  - {fileID: 1111731721790437032}
+  - {fileID: 4182659933052366920}
+  - {fileID: 6728538476781693894}
+  - {fileID: 484354332902099227}
+  - {fileID: 7998139900551307483}
+  - {fileID: 1771168487212555274}
+  - {fileID: 1152603309924620081}
+  rootRigidBody: {fileID: 1758660291618972784}
+  ragDollRigidBodies:
+  - {fileID: 3108913901570465416}
+  - {fileID: 1728399485935418528}
+  - {fileID: 5436724012445032374}
+  - {fileID: 7881773869630855221}
+  - {fileID: 2541190452947247124}
+  - {fileID: 4329513474039859590}
+  - {fileID: 1353669938369148101}
+  - {fileID: 38489751913329003}
+  - {fileID: 3471155898970234419}
+  defaultCollider: {fileID: 7145112600956375108}
+  defaultRigidBody: {fileID: 8213563936651183793}
   entityActivity: {fileID: 0}
+  grabbable: {fileID: 185259028397660553}
+  health: {fileID: 1171501913040398372}
+--- !u!114 &6124407262506827132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3500639052055708832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb3807489f29eae45b14520befce1f9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityActivity
+  disableComponents: []
 --- !u!1 &3607626698313877417
 GameObject:
   m_ObjectHideFlags: 0
@@ -6693,7 +6677,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: {fileID: 1171501913040398372}
-  ragDoll: {fileID: 293696221970066188}
+  ragDoll: {fileID: 0}
   collider: {fileID: 7733723331619337749}
   rb: {fileID: 7033995056060772619}
 --- !u!136 &7733723331619337749
@@ -9818,12 +9802,6 @@ PrefabInstance:
 --- !u!4 &1197575962353505061 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2072881672364969091, guid: d7ae0227bca3990498448cccbcd653b3,
-    type: 3}
-  m_PrefabInstance: {fileID: 890303271986257830}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &3556388966087526586 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4395560480213554972, guid: d7ae0227bca3990498448cccbcd653b3,
     type: 3}
   m_PrefabInstance: {fileID: 890303271986257830}
   m_PrefabAsset: {fileID: 0}

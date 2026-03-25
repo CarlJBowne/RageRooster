@@ -1,19 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.VisualScripting;
-using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 using System.IO;
 using System;
 using System.Linq;
 using UnityEngine.UIElements;
-using UnityEditor.VersionControl;
-
-
-
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -38,7 +30,6 @@ namespace RageRooster.RoomSystem
         /// </summary>
         [field: SerializeField] public AreaAsset area { get; protected set; }
 
-        [field: SerializeField, Obsolete("Not Necessary.")] public Vector3 globalCenter { get; protected set; }
         /// <summary>
         /// The Scene Asset containing the contents of this Room.
         /// </summary>
@@ -53,6 +44,7 @@ namespace RageRooster.RoomSystem
         #endregion
 
         #region Active Data
+
         /// <summary>
         /// The Active <see cref="RoomRoot" attached to the scene./>
         /// </summary>
@@ -75,6 +67,8 @@ namespace RageRooster.RoomSystem
         /// </summary>
         public RoomState state { get; protected set; } = RoomState.Null;
 
+
+        public GameObject shellLodPiece { get; internal set; }
         /// <summary>
         /// The current ID of the LOD instance being shown. Currently only supports one LOD level.
         /// </summary>
@@ -107,84 +101,54 @@ namespace RageRooster.RoomSystem
         {
             if (state is RoomState.Current or RoomState.Unloading or RoomState.Loading) return;
 
-            Vector3 player = Player.Position;
-            if (state is RoomState.Present)
-            {
-                if (!WithinUnloadRange(player))
-                    SceneUnload().Begin(area.root);
+            if (entrances == null || entrances.Count == 0) return;
+
+
+            UpdateDistances(out int entranceID, out int stripScore);
+
+            if (state is RoomState.Present) 
+            { 
+                if(stripScore < 3) SceneUnload().Begin(area.root); 
             }
             else
             {
-                if (WithinLoadRange(player))
-                {
-                    SceneLoad().Begin(area.root);
-                    return;
-                }
-                else if (state is RoomState.Lowest && WithinLodRange(player))
+                if(stripScore == 3) SceneLoad().Begin(area.root);
+                else if (state is RoomState.Lowest && stripScore > 0)
                 {
                     state = RoomState.LODS;
                     lod.TurnOn();
+                    shellLodPiece.SetActive(false);
                 }
-                else if (state is RoomState.LODS && !WithinLodRange(player))
+                else if(state is RoomState.LODS && stripScore == 0)
                 {
                     state = RoomState.Lowest;
                     lod.TurnOff();
+                    shellLodPiece.SetActive(true);
                 }
             }
         }
 
-        #region Range Calculators
-        private bool WithinLoadRange(Vector3 player)
+        void UpdateDistances(out int entranceID, out int stripScore)
         {
-            // Early exit if there are no transitions
-            if (entrances == null || entrances.Count == 0)
-                return false;
+            entranceID = -1;
+            stripScore = -1;
 
-            // Use foreach, but return immediately on first match
-            foreach (RoomEntrance.Data item in entrances)
+            for (int i = 0; i < entrances.Count; i++)
             {
-                if (item.direction != Vector3.zero && Vector3.Dot(item.point - player, item.direction) < 0) continue;
-                if (Vector3.SqrMagnitude(player - item.point) < item.loadRadius * item.loadRadius)
-                    return true;
+                entrances[i].UpdateDistance(out int iStrip);
+                if (iStrip > stripScore)
+                {
+                    stripScore = iStrip;
+                    entranceID = i;
+                }
+                else if (iStrip == stripScore && entrances[i].distanceSquared < entrances[entranceID].distanceSquared)
+                    entranceID = i;
             }
-            return false;
         }
-        private bool WithinUnloadRange(Vector3 player)
-        {
-            // Early exit if there are no transitions
-            if (entrances == null || entrances.Count == 0)
-                return false;
-
-            // Use foreach, but return immediately on first match
-            foreach (RoomEntrance.Data item in entrances)
-            {
-                if (item.direction != Vector3.zero && Vector3.Dot(item.point - player, item.direction) < 0) continue;
-                if (Vector3.SqrMagnitude(player - item.point) < item.unloadRadius * item.unloadRadius)
-                    return true;
-            }
-            return false;
-        }
-        private bool WithinLodRange(Vector3 player)
-        {
-            // Early exit if there are no transitions
-            if (entrances == null || entrances.Count == 0)
-                return false;
-
-            // Use foreach, but return immediately on first match
-            foreach (RoomEntrance.Data item in entrances)
-            {
-                if (item.direction != Vector3.zero && Vector3.Dot(item.point - player, item.direction) < 0) continue;
-                if (Vector3.SqrMagnitude(player - item.point) < item.lodRadius * item.lodRadius)
-                    return true;
-            }
-            return false;
-        }
-        #endregion
-
-
-
-
-
+        // 3 = Within Load Radius
+        // 2 = Within Unload Radius
+        // 1 = Within LOD Radius
+        // 0 = Outside
 
 
 
@@ -204,15 +168,17 @@ namespace RageRooster.RoomSystem
         public IEnumerator PrepSurrounding()
         {
             if (this == RoomManager.currentRoom) yield break;
-            Vector3 player = Player.Position;
-            if (WithinLoadRange(player))
+
+            UpdateDistances(out int entranceID, out int stripScore);
+
+            if (stripScore > 2)
             {
                 yield return SceneLoad();
                 state = RoomState.Present;
             }
             else
             {
-                if (WithinLodRange(player))
+                if (stripScore > 0)
                 {
                     state = RoomState.LODS;
                     yield return lod.Load();
@@ -237,6 +203,7 @@ namespace RageRooster.RoomSystem
             yield return SceneOperationRoutine.Load(scene);
             if (root == null) yield return new WaitUntil(() => root != null);
 
+            if(shellLodPiece && shellLodPiece.activeSelf) shellLodPiece.SetActive(false);
             state = RoomState.Present;
         }
         /// <summary>

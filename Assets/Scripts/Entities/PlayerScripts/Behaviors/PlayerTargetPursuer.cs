@@ -14,7 +14,7 @@ public class PlayerTargetPursuer : StateTimeline
     public AnimationCurve verticalShiftCurve;
     public float closeDistance = .5f;
 
-    private MeleeTarget target;
+    private Target target;
     private Vector3 targetPosition;
     [SerializeField, Hide] private SLS.StateMachineH.Timelines.TimedMovementAffector failedBackup;
 
@@ -26,10 +26,10 @@ public class PlayerTargetPursuer : StateTimeline
 
     protected override void OnEnter(State prev, bool isFinal)
     {
-        if(TargetingManager.GetMeleeTarget() != null)
+        if (TargetingManager.GetMeleeTarget() != null)
         {
             target = TargetingManager.GetMeleeTarget();
-            if(failedBackup != null) failedBackup.overrideOff = true;
+            if (failedBackup != null) failedBackup.overrideOff = true;
             Begin();
         }
         else
@@ -53,9 +53,9 @@ public class PlayerTargetPursuer : StateTimeline
         float targetForwardSpeed = Player.MovementBody.CurrentSpeed;
 
 
-        if(forwardSpeedInfluence > 0f)
+        if (forwardSpeedInfluence > 0f)
         {
-            targetForwardSpeed = Mathf.Lerp(targetForwardSpeed, forwardSpeed, forwardSpeedInfluence * delta 
+            targetForwardSpeed = Mathf.Lerp(targetForwardSpeed, forwardSpeed, forwardSpeedInfluence * delta
                 * (Vector3.Distance(Player.Position, targetPosition) > closeDistance).Int());
         }
 
@@ -63,8 +63,8 @@ public class PlayerTargetPursuer : StateTimeline
         targetVelocity.x = (targetPosition - Player.Position).x * targetForwardSpeed;
         targetVelocity.z = (targetPosition - Player.Position).z * targetForwardSpeed;
 
-        targetVelocity.y = verticalShift > 0f 
-            ? verticalShift * (targetPosition.y - Player.Position.y).Sign() 
+        targetVelocity.y = verticalShift > 0f
+            ? verticalShift * (targetPosition.y - Player.Position.y).Sign()
             : Player.MovementBody.velocity.y;
 
         Player.MovementBody.VelocitySet(targetVelocity.x, targetVelocity.y, targetVelocity.z);

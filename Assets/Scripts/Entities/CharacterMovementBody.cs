@@ -604,6 +604,8 @@ public class CharacterMovementBody : MonoBehaviour
 
 }
 
+
+
 /// <summary>
 /// The possible states of a jump.
 /// </summary>

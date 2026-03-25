@@ -5718,8 +5718,7 @@ GameObject:
   - component: {fileID: 1015663925510759720}
   - component: {fileID: 4543461492338020441}
   - component: {fileID: 3674508901043307227}
-  - component: {fileID: 2553139906093570398}
-  - component: {fileID: 6414152419601664267}
+  - component: {fileID: 8358454157859321066}
   - component: {fileID: 1790795846713865799}
   - component: {fileID: 9177222470484513295}
   - component: {fileID: 8073722270089541327}
@@ -5903,10 +5902,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EntityStunner
   disableComponents:
   - {fileID: 6738454064187818541}
-  - {fileID: 0}
+  - {fileID: 2277274689722928693}
   - {fileID: 3182761241942017665}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &4543461492338020441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5962,7 +5959,7 @@ MonoBehaviour:
   - {fileID: 925324475207166938, guid: 8e07c4e22d1e1e544836d1ad9b0252b3, type: 3}
   spawnForce: 5
   itemChance: 0.4
---- !u!114 &2553139906093570398
+--- !u!114 &8358454157859321066
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5971,32 +5968,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 4811522196661094151}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 157b62d8004f9f14d8160afc57aae3b5, type: 3}
+  m_Script: {fileID: 11500000, guid: ff959314ab21ec04496ded7c08d36f17, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
-  RealPositionOffset: {x: 0, y: 1, z: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::Target
+  Types:
+    items:
+    - rid: 440872388981686361
+    - rid: 440872388981686362
+  RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 6988035877431068064}
   collider: {fileID: 982579509626493083}
   navMeshAgent: {fileID: 6738454064187818541}
   centerComputationType: 0
-  grabbable: {fileID: 1790795846713865799}
---- !u!114 &6414152419601664267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4811522196661094151}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58c15eb228060da4689a9f675157e315, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RangedTarget
-  RealPositionOffset: {x: 0, y: 1, z: 0}
-  rigidBody: {fileID: 6988035877431068064}
-  collider: {fileID: 982579509626493083}
-  navMeshAgent: {fileID: 6738454064187818541}
-  centerComputationType: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 440872388981686361
+      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: 8358454157859321066}
+    - rid: 440872388981686362
+      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: 8358454157859321066}
 --- !u!114 &1790795846713865799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6015,7 +6009,7 @@ MonoBehaviour:
   anchorPoint: {fileID: 8731360320969202055}
   AdditionalThrowDistance: 0
   collider: {fileID: 982579509626493083}
-  meleeTarget: {fileID: 2553139906093570398}
+  target: {fileID: 8358454157859321066}
   rigidBody: {fileID: 6988035877431068064}
   ragdollHandler: {fileID: 9177222470484513295}
   thrownObjectAttack: {fileID: 8073722270089541327}

@@ -29,19 +29,19 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
 
     protected override void VerticalUpwards(ref float? Y)
     {
-        if (playerMovementBody.JumpState == JumpState.Decelerating)
+        if (playerMovementBody.JumpStateCurrent == PlayerMovementBody.JumpState.Decelerating)
         {
             Y = currentVent.hellcopterSpeed;
-            if (transform.position.y >= targetHeight) playerMovementBody.UnLand(JumpState.Falling);
+            if (transform.position.y >= targetHeight) playerMovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
         } 
-        else if (playerMovementBody.JumpState == JumpState.Falling && playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref Y);
+        else if (playerMovementBody.JumpStateCurrent == PlayerMovementBody.JumpState.Falling && playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref Y);
 
     }
 
     protected override void Fall(ref float? Y)
     {
         if (playerMovementBody.velocity.y > fallStateThreshold) Y = fallStateThreshold;
-        playerMovementBody.UnLand(JumpState.Falling);
+        playerMovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
         if (fallState != null) fallState.Enter();
     }
 
@@ -50,7 +50,7 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
     {
         if (!isUpward) return;
 
-        currentVent = playerMovementBody.currentVent;
+        currentVent = playerMovementBody.CurrentVent;
         targetHeight = currentVent.transform.position.y + currentVent.hellcopterTargetHeight;
 
         playerMovementBody.VelocitySet(y: currentVent.hellcopterSpeed);
@@ -81,5 +81,5 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
 
     public override void BeginJump() => throw new System.Exception("Don't Use This Method.");
     public override void BeginJump(float power, float height, float minHeight) => throw new System.Exception("Don't Use This Method.");
-    public override void BeginJump(JumpState newState) => throw new System.Exception("Don't Use This Method.");
+    public override void BeginJump(PlayerMovementBody.JumpState newState) => throw new System.Exception("Don't Use This Method.");
 }

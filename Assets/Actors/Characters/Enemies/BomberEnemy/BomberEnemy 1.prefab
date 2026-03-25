@@ -7186,7 +7186,7 @@ GameObject:
   - component: {fileID: 3042019609250107629}
   - component: {fileID: 3335057551916077419}
   - component: {fileID: 7282141374881328275}
-  - component: {fileID: 4720255409611353251}
+  - component: {fileID: -5626565997039911734}
   - component: {fileID: 2302346554342993742}
   - component: {fileID: 4164844196294852286}
   - component: {fileID: 5909932016510006484}
@@ -7357,6 +7357,8 @@ MonoBehaviour:
   poofPrefab: {fileID: 0}
   stunComponents: []
   entityActivity: {fileID: 0}
+  hierarchicalMachine: {fileID: 0}
+  visualMachine: {fileID: 0}
   enemyLootSpawner: {fileID: 0}
   tintAnimator: {fileID: 7237475419804263782}
   ragdoll: {fileID: 0}
@@ -7425,7 +7427,7 @@ MonoBehaviour:
   globalSignals:
     serializedList: []
   queueSignals: 1
---- !u!114 &4720255409611353251
+--- !u!114 &-5626565997039911734
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7434,15 +7436,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 6425342840109763559}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 157b62d8004f9f14d8160afc57aae3b5, type: 3}
+  m_Script: {fileID: 11500000, guid: ff959314ab21ec04496ded7c08d36f17, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
+  m_EditorClassIdentifier: Assembly-CSharp::Target
+  Types:
+    items:
+    - rid: 440872388981686272
+    - rid: 440872388981686273
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 3526101412809164778}
   collider: {fileID: 287593057092732791}
-  navMeshAgent: {fileID: 0}
+  navMeshAgent: {fileID: 987003636535614580}
   centerComputationType: 0
-  grabbable: {fileID: 2302346554342993742}
+  references:
+    version: 2
+    RefIds:
+    - rid: 440872388981686272
+      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: -5626565997039911734}
+    - rid: 440872388981686273
+      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
+      data:
+        This: {fileID: -5626565997039911734}
 --- !u!114 &2302346554342993742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7461,7 +7477,7 @@ MonoBehaviour:
   anchorPoint: {fileID: 0}
   AdditionalThrowDistance: 0
   collider: {fileID: 287593057092732791}
-  meleeTarget: {fileID: 4720255409611353251}
+  target: {fileID: -5626565997039911734}
   rigidBody: {fileID: 3526101412809164778}
   ragdollHandler: {fileID: 4164844196294852286}
   thrownObjectAttack: {fileID: 5909932016510006484}

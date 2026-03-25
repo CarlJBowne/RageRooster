@@ -14,7 +14,7 @@ using UnityEditor.UIElements;
 #endif
 
 [System.Serializable]
-public abstract class PlayerButtonAction : PolymorphicObject
+public abstract class PlayerButtonAction : Polymorph
 {
     public bool persistAcrossStateChange = false;
 
@@ -239,9 +239,9 @@ public abstract class PlayerButtonAction : PolymorphicObject
         protected override IEnumerator HoldRoutine() => throw new NotImplementedException(); //Don't.
 
 #if UNITY_EDITOR
-        public override bool OverrideBody(VisualElement.Hierarchy container, SerializedProperty property)
+        public override bool OverrideBody(VisualElement container, SerializedProperty property)
         {
-            container.Clear();
+            container.hierarchy.Clear();
 
             PropertyField persistField = new(property.FindPropertyRelative(nameof(persistAcrossStateChange)));
             PropertyField upgradeField = new(property.FindPropertyRelative(nameof(upgrade)));
@@ -279,11 +279,7 @@ public abstract class PlayerButtonAction : PolymorphicObject
             if (active || Current != null) return;
 
             lockedAction = Choose();
-            lockedTarget = TargetingManager.MeleeChannel.CurrentTarget != null
-                ? TargetingManager.MeleeChannel.CurrentTarget
-                : TargetingManager.RangedChannel.CurrentTarget != null
-                    ? TargetingManager.RangedChannel.CurrentTarget
-                    : null;
+            lockedTarget = TargetingManager.MeleeChannel.CurrentTarget ?? TargetingManager.RangedChannel.CurrentTarget ?? null;
             if (lockedAction == null) return;
 
             active = true;
@@ -306,11 +302,11 @@ public abstract class PlayerButtonAction : PolymorphicObject
         protected override IEnumerator HoldRoutine() => throw new NotImplementedException(); //Don't.
 
 #if UNITY_EDITOR
-        public override bool OverrideBody(VisualElement.Hierarchy container, SerializedProperty property)
+        public override bool OverrideBody(VisualElement container, SerializedProperty property)
         {
-            container.Clear();
+            container.hierarchy.Clear();
 
-            var root = new PolymorphicObject.TabbedDrawer();
+            var root = new Polymorph.TabbedDrawer();
             container.Add(root);
 
             root.Add("Melee Target", property.FindPropertyRelative(nameof(hasMeleeTarget)));
