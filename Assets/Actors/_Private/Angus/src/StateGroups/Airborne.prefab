@@ -735,7 +735,7 @@ MonoBehaviour:
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   Jump:
-    rid: 1950655830041821296
+    rid: 440872815894724746
   Attack:
     rid: 1950655830041821297
   Grab:
@@ -747,6 +747,14 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 440872815894724746
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        pressEvent:
+          _PersistentCalls: []
+        releaseEvent:
+          _PersistentCalls: []
     - rid: 1676068557211041880
       type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
       data:
@@ -756,41 +764,6 @@ MonoBehaviour:
           - _Target: {fileID: 0}
             _MemberName: ParryActionAirborne
             _PersistentArguments: []
-        releaseEvent:
-          _PersistentCalls: []
-    - rid: 1950655830041821296
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 0
-        pressEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 5711956843680236850}
-            _MemberName: BeginDoubleJump
-            _PersistentArguments:
-            - _Type: 5
-              _Int: 0
-              _String: 
-              _X: 10
-              _Y: 0
-              _Z: 0
-              _W: 0
-              _Object: {fileID: 0}
-            - _Type: 5
-              _Int: 0
-              _String: 
-              _X: 3
-              _Y: 0
-              _Z: 0
-              _W: 0
-              _Object: {fileID: 0}
-            - _Type: 5
-              _Int: 0
-              _String: 
-              _X: 3
-              _Y: 0
-              _Z: 0
-              _W: 0
-              _Object: {fileID: 0}
         releaseEvent:
           _PersistentCalls: []
     - rid: 1950655830041821297

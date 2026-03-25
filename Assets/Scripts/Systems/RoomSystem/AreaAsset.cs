@@ -87,6 +87,7 @@ namespace RageRooster.RoomSystem
         public void Connect(AreaRoot root)
         {
             this.root = root;
+            if (root.roomLowestLods == null) return;
             for (int i = 0; i < root.roomLowestLods.Length; i++)
             {
                 if (root.roomLowestLods[i] == null) continue;

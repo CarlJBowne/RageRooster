@@ -148,7 +148,7 @@ public class PlayerRanged : MonoBehaviour
         aimingRig.weight = 0;
         UIHUDSystem.Instance.SetHitMarkerVisibility(false);
         Cameras.SetTargetVirtualCamera(Cameras.normalCamera);
-        Player.StateMachine.IdleWalk.Enter();
+        Player.StateMachine.IdleWalk.State.Enter();
     }
 
     public void ExitAimingInstant()
@@ -161,7 +161,7 @@ public class PlayerRanged : MonoBehaviour
         UIHUDSystem.Instance.SetHitMarkerVisibility(false);
         Cameras.SetTargetVirtualCamera(Cameras.normalCamera);
         Player.Animator.Play("GroundBasic");
-        Player.StateMachine.IdleWalk.Enter();
+        Player.StateMachine.IdleWalk.State.Enter();
     }
 
     public void SetAimDirection(float X, float Y)

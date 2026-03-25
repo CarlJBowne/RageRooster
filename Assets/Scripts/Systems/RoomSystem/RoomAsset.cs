@@ -117,13 +117,13 @@ namespace RageRooster.RoomSystem
                 {
                     state = RoomState.LODS;
                     lod.TurnOn();
-                    shellLodPiece.SetActive(false);
+                    if(shellLodPiece) shellLodPiece.SetActive(false);
                 }
                 else if(state is RoomState.LODS && stripScore == 0)
                 {
                     state = RoomState.Lowest;
                     lod.TurnOff();
-                    shellLodPiece.SetActive(true);
+                    if (shellLodPiece) shellLodPiece.SetActive(true);
                 }
             }
         }

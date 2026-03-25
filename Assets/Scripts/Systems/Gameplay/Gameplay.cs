@@ -94,6 +94,10 @@ public class Gameplay : MonoBehaviour
     /// </summary>
     public static System.Action onUpdate;
     /// <summary>
+    /// A Callback event for when the Gameplay system has finally finished its introduction.
+    /// </summary>
+    public static System.Action onFinalAwake;
+    /// <summary>
     /// A Callbck event for when the Gameplay system is Unloaded.
     /// </summary>
     public static System.Action onDestroy;
@@ -166,6 +170,7 @@ public class Gameplay : MonoBehaviour
                 },
             };
             yield return RoomManager.Transition();
+            onFinalAwake?.Invoke();
         }
     }
 

@@ -13,17 +13,6 @@ public class PlayerController : PlayerStateBehavior
 
     public float jumpBuffer = 0.3f;
 
-    public PlayerAirborneMovement airChargeState;
-    public PlayerAirborneMovement airChargeFallState;
-    public PlayerAirborneMovement glideCheck; //Keeping this here for now in case we decide to re-implement the gliding.
-    public PlayerWallJump wallJumpState;
-    public PlayerRanged ranged;
-    public PlayerStrafingMovement aimingState;
-    public State groundedSpin;
-    public State airSpin;
-    public PlayerHellcopterMovement airUpwardTornado;
-    public State ventGlideState;
-
     public bool overrideMovementControl;
     public Vector2 overrideMovementVector;
 
@@ -114,20 +103,35 @@ public class PlayerController : PlayerStateBehavior
     {
         if (Upgrades.Active.hellcopter)
         {
-            airSpin.Enter();
+            Player.StateMachine.AirParry.Enter();
             if (playerMovementBody.isOverVent) Machine.SendSignal(new("EnterVent", 0, true));
         }
     }
 
     public void MidJumpJumpAction()
     {
-        if (!wallJumpState.WallJump(transform.forward))
+        if (!Player.StateMachine.WallJump.WallJump(transform.forward))
         {
-            (!playerMovementBody.isOverVent ? Player.StateMachine.Gliding : ventGlideState).Enter();
+            if (playerMovementBody.isOverVent) Player.StateMachine.VentGliding.Enter();
+            else Player.StateMachine.Gliding.Enter();
         }
     }
-    public void MidWallJumpJumpAction() => wallJumpState.WallJump(transform.forward);
+    public void MidWallJumpJumpAction() => Player.StateMachine.WallJump.WallJump(transform.forward);
 
+    public void AirJumpAction(bool allowDoubleJump, bool allowGlide)
+    {
+        if (Upgrades.Active.wallJump && Player.StateMachine.WallJump.WallJump(transform.forward)) return;
+        else if (allowDoubleJump && Upgrades.Active.doubleJump && Player.MovementBody.canDoDoubleJump)
+        {
+            Player.StateMachine.Jump.BeginJump();
+            Player.MovementBody.canDoDoubleJump = false;
+        }
+        else if (allowGlide && Upgrades.Active.glide)
+        {
+            if (playerMovementBody.isOverVent) Player.StateMachine.VentGliding.Enter();
+            else Player.StateMachine.Gliding.Enter();
+        }
+    }
 
 
     private void AimPress(CTX cTX) => Machine.SendSignal("Aim");
