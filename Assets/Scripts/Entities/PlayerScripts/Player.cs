@@ -236,6 +236,8 @@ public class Player : MonoBehaviour
     /// </summary>
     public static Action onRespawn;
 
+    [SerializeField] Upgrades CurrentActiveUpgrades;
+
     /// <summary>
     /// Awake stage of the <see cref="Player"/>, saving the static references and other setup.
     /// </summary>
@@ -257,6 +259,7 @@ public class Player : MonoBehaviour
         Health.Initialize();
         Ammo.Initialize();
         Currency.Initialize();
+        CurrentActiveUpgrades = Upgrades.Active;
 
         _activeState = ActivityStates.Active;
 
@@ -294,8 +297,8 @@ public class Player : MonoBehaviour
             get => current;
             set
             {
-                if(value > max) value = max;
-                if(current == value) return;
+                if (value > max) value = max;
+                if (current == value) return;
 
                 current = value;
                 updateHealth?.Invoke();
@@ -435,7 +438,7 @@ public class Player : MonoBehaviour
                 FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(1f),
                 FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(1f),
                 //PreFadeInAction = Overlay.OverGameplay.Reset
-            };            
+            };
             //Note "Overlay.OverGameplay.Reset() used to be called just after the FadeOut. Not sure why. If necessary, uncomment the above line."
 
             Gameplay.Respawn();

@@ -43,6 +43,9 @@ namespace RageRooster.Systems.SaveSystem
             wallJump = true,
             hellcopter = true,
             ragingCharge = true,
+            glide = true,
+            doubleJump = true,
+            lasso = true,
             d_invincibility = true,
             d_moonJump = true
         };

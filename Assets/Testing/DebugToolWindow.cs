@@ -12,7 +12,7 @@ public class DebugToolWindow : EditorWindow
     {
         DebugToolWindow w = ScriptableObject.CreateInstance<DebugToolWindow>();
         w.titleContent = new("Debug Tools Window");
-        w.ShowAuxWindow();
+        w.ShowUtility();
     }
 
     Label onlyInGameMessage;
@@ -52,11 +52,11 @@ public class DebugToolWindow : EditorWindow
         actualWindowRoot.SetEnabled(true);
         actualWindowRoot.Clear();
 
-        UpgradesFoldout = new() 
+        UpgradesFoldout = new()
         {
             text = "Active Upgrades"
         };
-        actualWindowRoot.Add(UpgradesFoldout); 
+        actualWindowRoot.Add(UpgradesFoldout);
 
         CreateUpgradeDisplay(Upgrades.Upgrade.DropLaunch);
         CreateUpgradeDisplay(Upgrades.Upgrade.WallJump);
@@ -65,6 +65,29 @@ public class DebugToolWindow : EditorWindow
         CreateUpgradeDisplay(Upgrades.Upgrade.Glide);
         CreateUpgradeDisplay(Upgrades.Upgrade.DoubleJump);
         CreateUpgradeDisplay(Upgrades.Upgrade.Lasso);
+
+        {
+            Toggle moonJumpToggle = new()
+            {
+                text = "Moon Jump",
+                value = Upgrades.Active.d_moonJump
+            };
+            moonJumpToggle.RegisterValueChangedCallback(ValueChanged);
+            void ValueChanged(ChangeEvent<bool> value) => Upgrades.Active.d_moonJump = value.newValue;
+
+            UpgradesFoldout.Add(moonJumpToggle);
+        }
+        {
+            Toggle invinceToggle = new()
+            {
+                text = "Invincibility",
+                value = Upgrades.Active.d_invincibility
+            };
+            invinceToggle.RegisterValueChangedCallback(ValueChanged);
+            void ValueChanged(ChangeEvent<bool> value) => Upgrades.Active.d_invincibility = value.newValue;
+
+            UpgradesFoldout.Add(invinceToggle);
+        }
 
         Toggle CreateUpgradeDisplay(Upgrades.Upgrade upgrade)
         {
