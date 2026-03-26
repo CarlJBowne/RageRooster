@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2024 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
 
 using System;
 using UnityEngine;
@@ -21,6 +21,11 @@ namespace UltEvents
         /// </summary>
         event Action<T0, T1> DynamicCalls;
 
+        /// <summary>
+        /// Invokes all <see cref="UltEvent.PersistentCalls"/> then all <see cref="DynamicCalls"/>.
+        /// </summary>
+        void Invoke(T0 parameter0, T1 parameter1);
+
         /************************************************************************************************************************/
     }
 
@@ -34,7 +39,17 @@ namespace UltEvents
         /************************************************************************************************************************/
 
         /// <inheritdoc/>
-        public override int ParameterCount => 2;
+        public override int ParameterCount
+            => 2;
+
+        /// <inheritdoc/>
+        public override Type GetParameterType(int index)
+            => index switch
+            {
+                0 => typeof(T0),
+                1 => typeof(T1),
+                _ => throw new ArgumentOutOfRangeException(nameof(index)),
+            };
 
         /************************************************************************************************************************/
 
@@ -165,35 +180,20 @@ namespace UltEvents
         #endregion
         /************************************************************************************************************************/
 
-#if UNITY_EDITOR
-        /// <summary>[Editor-Only] The types of each of this event's parameters.</summary>
-        public override Type[] ParameterTypes => _ParameterTypes;
-        private static readonly Type[] _ParameterTypes = { typeof(T0), typeof(T1) };
-#endif
-
-        /************************************************************************************************************************/
-
-        /// <summary>
-        /// Invokes all <see cref="PersistentCalls"/> then all <see cref="DynamicCalls"/>.
-        /// <para></para>
-        /// See also: <seealso cref="InvokeSafe"/> and <seealso cref="UltEventUtils.InvokeX{T0, T1}(UltEvent{T0, T1}, T0, T1)"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public virtual void Invoke(T0 parameter0, T1 parameter1)
         {
             CacheParameter(parameter0);
             CacheParameter(parameter1);
             InvokePersistentCalls();
-            if (_DynamicCalls != null)
-                _DynamicCalls(parameter0, parameter1);
+            _DynamicCalls?.Invoke(parameter0, parameter1);
         }
 
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Invokes all <see cref="PersistentCalls"/> then all <see cref="DynamicCalls"/> inside a try/catch block
-        /// which logs any exceptions that are thrown.
-        /// <para></para>
-        /// See also: <seealso cref="Invoke"/> and <seealso cref="UltEventUtils.InvokeX{T0, T1}(UltEvent{T0, T1}, T0, T1)"/>.
+        /// Invokes all <see cref="PersistentCalls"/> then all <see cref="DynamicCalls"/>
+        /// inside a try/catch block which logs any exceptions that are thrown.
         /// </summary>
         public virtual void InvokeSafe(T0 parameter0, T1 parameter1)
         {
@@ -201,9 +201,9 @@ namespace UltEvents
             {
                 Invoke(parameter0, parameter1);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Debug.LogException(ex);
+                Debug.LogException(exception);
             }
         }
 

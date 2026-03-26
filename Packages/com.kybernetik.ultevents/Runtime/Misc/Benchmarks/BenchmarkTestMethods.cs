@@ -1,4 +1,4 @@
-// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2024 Kybernetik //
+// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member.
 
@@ -8,7 +8,7 @@ namespace UltEvents.Benchmarks
 {
     /// <summary>Dummy methods for performance testing events.</summary>
     [AddComponentMenu("")]// Don't show in the Add Component menu. You need to drag this script onto a prefab manually.
-    [HelpURL(UltEventUtils.APIDocumentationURL + "/Behchmarks/BenchmarkTestMethods")]
+    [UltEventsHelpUrl(typeof(BenchmarkTestMethods))]
     public class BenchmarkTestMethods : MonoBehaviour
     {
         /************************************************************************************************************************/

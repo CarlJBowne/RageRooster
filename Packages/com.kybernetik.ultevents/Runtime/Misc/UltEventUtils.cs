@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2024 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
 
 using System;
 using System.Collections;
@@ -21,7 +21,7 @@ namespace UltEvents
         public const string DocumentationURL = "https://kybernetik.com.au/ultevents";
 
         /// <summary>The address of the API documentation.</summary>
-        public const string APIDocumentationURL = DocumentationURL + "/api/UltEvents";
+        public const string APIDocumentationURL = DocumentationURL + "/api/";
 
         /************************************************************************************************************************/
         #region Type Names
@@ -458,7 +458,7 @@ namespace UltEvents
                 case 0: return "1st";
                 case 1: return "2nd";
                 case 2: return "3rd";
-                default: return index + "th";
+                default: return $"{index + 1}th";
             }
         }
 

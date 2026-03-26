@@ -26,7 +26,6 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     [field: SerializeField] public State AirParry { get; private set; }
     [field: SerializeField] public State GrabbedMovement { get; private set; }
     [field: SerializeField] public State Aiming { get; private set; }
-    [field: SerializeField] public State Animations { get; private set; }
     [field: SerializeField] public State Paused { get; private set; }
     [field: SerializeField] public State Ragdoll { get; private set; }
 
