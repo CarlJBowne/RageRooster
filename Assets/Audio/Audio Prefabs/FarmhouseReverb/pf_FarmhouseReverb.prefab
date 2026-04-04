@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4714955941727698258}
-  - component: {fileID: 1061857020487834542}
   - component: {fileID: 4228189706382559048}
   m_Layer: 0
   m_Name: pf_FarmhouseReverb
@@ -33,27 +32,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1061857020487834542
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2802300629379734287}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 55.62, y: 15.74, z: 45.76}
-  m_Center: {x: 0, y: 0, z: -3.88}
 --- !u!114 &4228189706382559048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,8 +53,8 @@ MonoBehaviour:
       Data4: 540661825
     Path: snapshot:/Farmhouse Reverb
   Event: 
-  PlayEvent: 3
-  StopEvent: 4
+  EventPlayTrigger: 3
+  EventStopTrigger: 4
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1
