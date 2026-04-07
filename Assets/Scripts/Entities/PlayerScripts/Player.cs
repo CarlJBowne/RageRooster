@@ -264,10 +264,7 @@ public class Player : MonoBehaviour
         _activeState = ActivityStates.Active;
 
 #if UNITY_EDITOR
-        Input.Debug.GodMode.performed += (_) =>
-        {
-            SaveData.Current.playerStats.upgrades = Upgrades.Debug();
-        };
+        Input.Debug.GodMode.performed += (_) => { Upgrades.Clone(Upgrades.Debug(), Upgrades.Active); };
 #endif
         fallDownPitTime = Health.playerObject.inFallDownPitTime;
         deathTime = Health.playerObject.inDeathTime;

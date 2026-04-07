@@ -18,42 +18,65 @@ public abstract class PlayerButtonAction : Polymorph
 {
     public bool persistAcrossStateChange = false;
 
-    public virtual void Begin(InputAction button)
+    /// <summary>
+    /// Call when this Action has officially begun: locks in this Action as the currently active one.
+    /// </summary>
+    /// <param name="button">Pass in the InputAction that triggered this so that it can be stored and compared. </param>
+    public virtual void Begin()
     {
         if (active || Current != null) return;
         Current = this;
         active = true;
-        activeButton = button;
         StartRoutine();
     }
+    /// <summary>
+    /// Call when this Action has officially ended: releases this Action from being currently active. (Also runs when Cancelled.)
+    /// </summary>
     public virtual void Finish()
     {
         if (!active || Current == null || Current != this) return;
         Current = null;
         active = false;
-        activeButton = null;
         StopRoutine();
     }
 
+    /// <summary>
+    /// The actual functionality tied to when the button tied to this Action is pressed. Separate from <see cref="Begin"/>, Most basic Action types should run <see cref="Begin"/> at the beginning of this.
+    /// </summary>
     public abstract void Press();
+    /// <summary>
+    /// The actual functionality tied to when the button tied to this Action is released. Separate from <see cref="Finish"/>, Most basic Action types should run <see cref="Finish"/> at the end of this.
+    /// </summary>
     public abstract void Release();
+    /// <summary>
+    /// The psudeo-Coroutine that runs for the duration of the Action.
+    /// </summary>
+    /// <returns></returns>
     protected abstract IEnumerator HoldRoutine();
 
-    public void StartRoutine() => CoroutinePlus.Begin(ref coroutine, HoldRoutine(), Player.Controller);
+    public void StartRoutine() => CoroutinePlus.Begin(ref ActiveRoutine, HoldRoutine(), Player.Controller);
     public void StopRoutine()
     {
-        if (coroutine)
+        if (ActiveRoutine)
         {
-            coroutine.StopAuto();
-            coroutine = null;
+            ActiveRoutine.StopAuto();
+            ActiveRoutine = null;
         }
     }
 
     //Non Serialized
     public static PlayerButtonAction Current { get; protected set; } = null;
     public bool active { get; protected set; } = false;
-    protected CoroutinePlus coroutine = null;
-    public InputAction activeButton { get; protected set; } = null;
+    protected static CoroutinePlus ActiveRoutine = null;
+
+
+
+
+
+
+
+
+
 
     [System.Serializable]
     public class BasicPush : PlayerButtonAction
@@ -62,12 +85,14 @@ public abstract class PlayerButtonAction : Polymorph
         public UltEvent releaseEvent;
         public override void Press()
         {
+            Begin();
             pressEvent?.Invoke();
             if (!releaseEvent.HasCalls) Finish();
         }
         public override void Release()
         {
             releaseEvent?.Invoke();
+            Finish();
         }
         protected override IEnumerator HoldRoutine()
         { yield return null; }
@@ -85,6 +110,7 @@ public abstract class PlayerButtonAction : Polymorph
         private bool pastHold = false;
         public override void Press()
         {
+            Begin();
             pressInstantEvent?.Invoke();
             pastHold = false;
         }
@@ -93,6 +119,7 @@ public abstract class PlayerButtonAction : Polymorph
             releaseInstantEvent?.Invoke();
             if (pastHold) holdEvent?.Invoke();
             else tapEvent?.Invoke();
+            Finish();
         }
 
         protected override IEnumerator HoldRoutine()
@@ -138,6 +165,8 @@ public abstract class PlayerButtonAction : Polymorph
                 return;
             }
 
+            Begin();
+
             // Otherwise begin locked-in hold routine.
             pressEvent?.Invoke();
         }
@@ -146,6 +175,7 @@ public abstract class PlayerButtonAction : Polymorph
         {
             releaseEvent?.Invoke();
             releaseResult?.Invoke();
+            Finish();
         }
 
         protected override IEnumerator HoldRoutine()
@@ -186,57 +216,32 @@ public abstract class PlayerButtonAction : Polymorph
             }
         }
     }
-    [System.Serializable]
-    public class CrossStatePressRelease : PlayerButtonAction
-    {
-        public UltEvent actionEvent;
-        public PlayerButtonActions transferState;
 
+    [System.Serializable]
+    public abstract class Base_ChooseType : PlayerButtonAction
+    {
+        public abstract PlayerButtonAction Choose();
         public override void Press()
         {
-            var activeButton = this.activeButton;
-            if (transferState != null) transferState.State.Enter();
-            actionEvent?.Invoke();
-            Finish();
-            transferState.GetButtonAction(activeButton).Begin(activeButton);
+            PlayerButtonAction chosen = Choose();
+            if (chosen == null) return;
+            chosen.Press();
         }
-        public override void Release()
-        {
-            actionEvent?.Invoke();
-            if (transferState != null) transferState.State.Enter();
-            Finish();
-        }
-        protected override IEnumerator HoldRoutine() { yield return null; }
+        public sealed override void Release() => throw new InvalidOperationException();
+        public sealed override void Begin() => throw new InvalidOperationException();
+        public sealed override void Finish() => throw new InvalidOperationException();
+        protected sealed override IEnumerator HoldRoutine() => throw new InvalidOperationException();
     }
+
     [System.Serializable]
-    public class UpgradeDependant : PlayerButtonAction
+    public class UpgradeDependant : Base_ChooseType
     {
         [SerializeReference] public PlayerButtonAction hasUpgrade;
         [SerializeReference] public PlayerButtonAction noUpgrade;
         [SerializeField]
         Upgrades.Upgrade upgrade;
-        public PlayerButtonAction Choose() => Upgrades.Active.HasUpgrade(upgrade) ? hasUpgrade : noUpgrade;
+        public override PlayerButtonAction Choose() => Upgrades.Active.HasUpgrade(upgrade) ? hasUpgrade : noUpgrade;
         protected PlayerButtonAction lockedAction;
-        public override void Begin(InputAction button)
-        {
-            if (active || Current != null) return;
-            lockedAction = Choose();
-            active = true;
-            activeButton = button;
-            lockedAction.Begin(button);
-        }
-        public override void Finish()
-        {
-            if (!active || Current == null || Current != lockedAction) return;
-            active = false;
-            activeButton = null;
-            lockedAction.Finish();
-            lockedAction = null;
-        }
-
-        public override void Press() => lockedAction.Press();
-        public override void Release() => lockedAction.Release();
-        protected override IEnumerator HoldRoutine() => throw new NotImplementedException(); //Don't.
 
 #if UNITY_EDITOR
         public override bool OverrideBody(VisualElement container, SerializedProperty property)
@@ -260,46 +265,16 @@ public abstract class PlayerButtonAction : Polymorph
 #endif
     }
     [System.Serializable]
-    public class TargetDependant : PlayerButtonAction
+    public class TargetDependant : Base_ChooseType
     {
         [SerializeReference] public PlayerButtonAction hasMeleeTarget;
         [SerializeReference] public PlayerButtonAction hasRangedTarget;
         [SerializeReference] public PlayerButtonAction noTarget;
 
-        public PlayerButtonAction Choose() =>
+        public override PlayerButtonAction Choose() =>
             TargetingManager.MeleeChannel.CurrentTarget ? hasMeleeTarget
             : TargetingManager.RangedChannel.CurrentTarget ? hasRangedTarget
             : noTarget;
-
-        protected Target lockedTarget;
-        protected PlayerButtonAction lockedAction;
-
-        public override void Begin(InputAction button)
-        {
-            if (active || Current != null) return;
-
-            lockedAction = Choose();
-            lockedTarget = TargetingManager.MeleeChannel.CurrentTarget ?? TargetingManager.RangedChannel.CurrentTarget ?? null;
-            if (lockedAction == null) return;
-
-            active = true;
-            activeButton = button;
-            lockedAction.Begin(button);
-        }
-        public override void Finish()
-        {
-            if (!active || Current == null || Current != lockedAction) return;
-            active = false;
-            activeButton = null;
-            lockedAction.Finish();
-            lockedAction = null;
-            lockedTarget = null;
-        }
-
-
-        public override void Press() => lockedAction?.Press();
-        public override void Release() => lockedAction?.Release();
-        protected override IEnumerator HoldRoutine() => throw new NotImplementedException(); //Don't.
 
 #if UNITY_EDITOR
         public override bool OverrideBody(VisualElement container, SerializedProperty property)
@@ -318,7 +293,26 @@ public abstract class PlayerButtonAction : Polymorph
 #endif
     }
 
+    [System.Serializable]
+    public class CrossStatePressRelease : PlayerButtonAction
+    {
+        public UltEvent actionEvent;
+        public PlayerButtonActions transferState;
 
+        public override void Press()
+        {
+            if (transferState != null) transferState.State.Enter();
+            actionEvent?.Invoke();
+            transferState.GetButtonAction(PlayerController.ActiveButtonAction).Begin();
+        }
+        public override void Release()
+        {
+            actionEvent?.Invoke();
+            if (transferState != null) transferState.State.Enter();
+            Finish();
+        }
+        protected override IEnumerator HoldRoutine() { yield return null; }
+    }
 
 
 }

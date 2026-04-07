@@ -49,6 +49,8 @@ namespace RageRooster.Systems.SaveSystem
             d_invincibility = true,
             d_moonJump = true
         };
+
+        public static void Clone(Upgrades source, Upgrades target)=> source.Clone(target);
         public Upgrades Clone(Upgrades target = null)
         {
             target ??= new Upgrades();

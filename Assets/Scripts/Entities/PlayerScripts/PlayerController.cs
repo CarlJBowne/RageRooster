@@ -143,23 +143,24 @@ public class PlayerController : PlayerStateBehavior
 
     private void ButtonPressed(CTX c)
     {
-        if (!ButtonReady || PlayerButtonAction.Current != null || ActionSourceStack.Count == 0) return;
-        if (ActionSourceStack[^1].GetButtonAction(c.action) is PlayerButtonAction action and not null)
+        if (PlayerButtonAction.Current != null || ActionSourceStack.Count == 0) return;
+        if (ActionSourceStack[^1].GetButtonAction(c.action) is PlayerButtonAction action and not null && !action.active)
         {
-            action.Begin(c.action);
+            ActiveButtonAction = c.action;
             action.Press();
         }
     }
     private void ButtonRelease(CTX c)
     {
-        if (PlayerButtonAction.Current != null && PlayerButtonAction.Current.activeButton == c.action)
+        if (PlayerButtonAction.Current != null && ActiveButtonAction == c.action)
         {
-            if (ButtonReady) PlayerButtonAction.Current.Release();
-            PlayerButtonAction.Current?.Finish();
+            PlayerButtonAction.Current.Release();
+            ActiveButtonAction = null;
         }
     }
 
-    public static bool ButtonReady = true;
+    //public static bool ButtonReady = true; Implement later
+    public static InputAction ActiveButtonAction { get; private set; } = null;
     private readonly static List<PlayerButtonActions> ActionSourceStack = new();
 
     public static void RegisterActionSource(PlayerButtonActions source, bool deregister = false)
