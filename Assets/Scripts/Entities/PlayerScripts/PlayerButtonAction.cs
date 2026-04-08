@@ -238,10 +238,8 @@ public abstract class PlayerButtonAction : Polymorph
     {
         [SerializeReference] public PlayerButtonAction hasUpgrade;
         [SerializeReference] public PlayerButtonAction noUpgrade;
-        [SerializeField]
-        Upgrades.Upgrade upgrade;
+        [SerializeField] Upgrades.Upgrade upgrade;
         public override PlayerButtonAction Choose() => Upgrades.Active.HasUpgrade(upgrade) ? hasUpgrade : noUpgrade;
-        protected PlayerButtonAction lockedAction;
 
 #if UNITY_EDITOR
         public override bool OverrideBody(VisualElement container, SerializedProperty property)

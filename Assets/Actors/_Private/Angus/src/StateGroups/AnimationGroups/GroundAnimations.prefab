@@ -1347,7 +1347,6 @@ GameObject:
   - component: {fileID: 574991774931540762}
   - component: {fileID: 7959568572361778172}
   - component: {fileID: 6646153185657916849}
-  - component: {fileID: 5663427661586256502}
   m_Layer: 6
   m_Name: Grab
   m_TagString: Untagged
@@ -1388,7 +1387,7 @@ MonoBehaviour:
   - {fileID: 574991774931540762}
   - {fileID: 7959568572361778172}
   - {fileID: 6646153185657916849}
-  - {fileID: 5663427661586256502}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1146425584514261869}
   <Layer>k__BackingField: 2
@@ -1619,38 +1618,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   closeDistance: 0.75
   failedBackup: {fileID: 0}
---- !u!114 &5663427661586256502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4119946758311288074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
-  <State>k__BackingField: {fileID: 7974572304232093520}
-  Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
-  Jump:
-    rid: -2
-  Attack:
-    rid: -2
-  Grab:
-    rid: -2
-  Charge:
-    rid: -2
-  Parry:
-    rid: -2
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
 --- !u!1 &5185706722228576407
 GameObject:
   m_ObjectHideFlags: 0

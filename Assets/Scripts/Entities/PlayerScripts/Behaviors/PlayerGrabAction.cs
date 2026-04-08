@@ -12,27 +12,41 @@ public class PlayerGrabAction : PlayerStateBehavior
     public UltEvents.UltEvent failBlockedReturn;
     public UltEvents.UltEvent altSwitchReturn;
 
-    public void GrabThrowButton()
-    {
-        if (Player.SignalManager.Locked) return;
-        State.Enter();
-    }
+    TargetType.Melee selectedTarget;
+    Grabbable selectedGrabbable;
 
-    public void EndGrabAttempt()
+    public void DoGrabAttempt()
     {
-        TargetType.Melee systemTarget = TargetingManager.MeleeChannel.CurrentTargetType<TargetType.Melee>();
-        if (systemTarget) Grabbable.Attempt(systemTarget.This.gameObject, Succeed, failMissedReturn.Invoke, failBlockedReturn.Invoke);
-        else
-        {
-            GameObject targetObject = null; //(Placeholder, get via Physics check later.)
-
-            //Grabbable.Attempt(targetObject, Player.Grabber.Grab, failMissedReturn.Invoke, failBlockedReturn.Invoke);
-        }
+        selectedTarget = TargetingManager.MeleeChannel.CurrentTargetType<TargetType.Melee>();
+        if (selectedTarget) Grabbable.Attempt(selectedTarget.This.gameObject, Succeed, FailMiss, FailBlock);
     }
 
     void Succeed(Grabbable G)
     {
-        Player.Grabber.Grab(G);
-        successReturn?.Invoke();
+        selectedGrabbable = G;
+        State.Enter();
     }
+    void FailMiss()
+    {
+        failMissedReturn?.Invoke();
+        selectedTarget = null;
+        selectedGrabbable = null;
+
+    }
+    void FailBlock() 
+    { 
+        failBlockedReturn?.Invoke();
+        selectedTarget = null;
+        selectedGrabbable = null;
+    }
+
+    public void FinishGrab()
+    {
+        Player.Grabber.Grab(selectedGrabbable);
+        successReturn?.Invoke();
+        selectedTarget = null;
+        selectedGrabbable = null;
+    }
+
+
 }

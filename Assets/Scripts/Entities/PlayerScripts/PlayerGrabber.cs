@@ -36,8 +36,9 @@ public class PlayerGrabber : MonoBehaviour
     }
 
 
-    public void Grab(Grabbable target)
+    public void Grab(Grabbable target, bool warpTo = true)
     {
+        Vector3 targetPos = target.transform.position;
         currentGrabbed = target;
         if (heldItemAnchor != null)
         {
@@ -48,6 +49,8 @@ public class PlayerGrabber : MonoBehaviour
         GrabStateEvent?.Invoke(true);
         SetGrabbingLayer(true);
         currentGrabbed.Grab();
+
+        if(warpTo) Player.MovementBody.Position = targetPos;
 
         if (Player.StateMachine.Airborne && Upgrades.Active.dropLaunch && Input.Grab.IsPressed()) dropLaunchState.Enter();
     }
