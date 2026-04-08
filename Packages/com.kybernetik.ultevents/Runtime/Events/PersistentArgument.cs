@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2024 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
 
 using System;
 using UnityEngine;
@@ -584,6 +584,112 @@ namespace UltEvents
         /************************************************************************************************************************/
 
         /// <summary>
+        /// Sets this argument to use
+        /// <see cref="PersistentArgumentType.Parameter"/> or
+        /// <see cref="PersistentArgumentType.ReturnValue"/>.
+        /// </summary>
+        /// <remarks>The specified `ultEvent` must be the one containing this argument.</remarks>
+        public void LinkTo(
+            UltEventBase ultEvent,
+            PersistentArgumentType linkType,
+            int linkIndex)
+        {
+            switch (linkType)
+            {
+                case PersistentArgumentType.Parameter:
+                    LinkToParameter(ultEvent, linkIndex);
+                    break;
+
+                case PersistentArgumentType.ReturnValue:
+                    LinkToReturnValue(ultEvent, linkIndex);
+                    break;
+
+                default:
+                    throw new InvalidOperationException(
+                        $"Invalid {nameof(PersistentArgumentType)}:" +
+                        $" only {nameof(PersistentArgumentType.Parameter)}" +
+                        $" and {nameof(PersistentArgumentType.ReturnValue)}" +
+                        $" are allowed by {nameof(LinkTo)}.");
+            }
+        }
+
+        /// <summary>Sets this argument to use <see cref="PersistentArgumentType.Parameter"/>.</summary>
+        /// <remarks>The specified `ultEvent` must be the one containing this argument.</remarks>
+        public void LinkToParameter(
+            UltEventBase ultEvent,
+            int parameterIndex)
+        {
+            var linkSystemType = ultEvent.GetParameterType(parameterIndex);
+            LinkTo(PersistentArgumentType.Parameter, parameterIndex, linkSystemType);
+        }
+
+        /// <summary>Sets this argument to use <see cref="PersistentArgumentType.ReturnValue"/>.</summary>
+        /// <remarks>The specified `ultEvent` must be the one containing this argument.</remarks>
+        public void LinkToReturnValue(
+            UltEventBase ultEvent,
+            PersistentCall call)
+            => LinkTo(
+                PersistentArgumentType.ReturnValue,
+                ultEvent.PersistentCallsList.IndexOf(call),
+                call.GetReturnType());
+
+        /// <summary>Sets this argument to use <see cref="PersistentArgumentType.ReturnValue"/>.</summary>
+        /// <remarks>The specified `ultEvent` must be the one containing this argument.</remarks>
+        public void LinkToReturnValue(
+            UltEventBase ultEvent,
+            int callIndex)
+        {
+            var linkSystemType = ultEvent.PersistentCallsList[callIndex].GetReturnType();
+            LinkTo(PersistentArgumentType.ReturnValue, callIndex, linkSystemType);
+        }
+
+        /// <summary>
+        /// Sets this argument to use
+        /// <see cref="PersistentArgumentType.Parameter"/> or
+        /// <see cref="PersistentArgumentType.ReturnValue"/>.
+        /// </summary>
+        /// <remarks>The specified `ultEvent` must be the one containing this argument.</remarks>
+        public void LinkTo(
+            PersistentArgumentType linkType,
+            int linkIndex,
+            Type linkSystemType)
+        {
+            var argumentType = Type;
+            Type = linkType;
+            _Int = linkIndex;
+
+            switch (argumentType)
+            {
+                case PersistentArgumentType.Bool:
+                case PersistentArgumentType.String:
+                case PersistentArgumentType.Int:
+                case PersistentArgumentType.Float:
+                case PersistentArgumentType.Vector2:
+                case PersistentArgumentType.Vector3:
+                case PersistentArgumentType.Vector4:
+                case PersistentArgumentType.Quaternion:
+                case PersistentArgumentType.Color:
+                case PersistentArgumentType.Color32:
+                case PersistentArgumentType.Rect:
+                    _X = (float)argumentType;
+                    break;
+
+                case PersistentArgumentType.Enum:
+                case PersistentArgumentType.Object:
+                case PersistentArgumentType.Parameter:
+                case PersistentArgumentType.ReturnValue:
+                    _String = linkSystemType?.AssemblyQualifiedName;
+                    break;
+
+                default:
+                    throw new InvalidOperationException(
+                        $"Invalid {Names.PersistentArgument.Full.Type}: {argumentType}");
+            }
+        }
+
+        /************************************************************************************************************************/
+
+        /// <summary>
         /// Returns the <see cref="System.Type"/> associated with the specified <see cref="PersistentArgumentType"/>.
         /// <para></para>
         /// If the `type` can be inherited (such as an Enum or Object),
@@ -632,7 +738,10 @@ namespace UltEvents
 
 #if UNITY_EDITOR
         /// <summary>[Editor-Only] A delegate type for <see cref="TryGetLinkable"/>.</summary>
-        public delegate bool TryGetLinkableDelegate(Type type, out int linkIndex, out PersistentArgumentType linkType);
+        public delegate bool TryGetLinkableDelegate(
+            Type type,
+            out int linkIndex,
+            out PersistentArgumentType linkType);
 
         /// <summary>[Editor-Only] A delegate type for accessing linkable values from the Inspector.</summary>
         public static TryGetLinkableDelegate TryGetLinkable { get; set; }
@@ -740,7 +849,7 @@ namespace UltEvents
                 case PersistentArgumentType.ReturnValue:
                     return $"{Names.PersistentArgument.Class}: SystemType={SystemType}, Value=Return{ReturnedValueIndex}";
                 default:
-                    Debug.LogWarning($"Unhandled {Names.PersistentArgumentType}");
+                    Debug.LogWarning($"Unhandled {Names.PersistentArgumentType}: {_Type}");
                     return base.ToString();
             }
         }

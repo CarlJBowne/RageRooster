@@ -94,6 +94,10 @@ public class Gameplay : MonoBehaviour
     /// </summary>
     public static System.Action onUpdate;
     /// <summary>
+    /// A Callback event for when the Gameplay system has finally finished its introduction.
+    /// </summary>
+    public static System.Action onFinalAwake;
+    /// <summary>
     /// A Callbck event for when the Gameplay system is Unloaded.
     /// </summary>
     public static System.Action onDestroy;
@@ -113,6 +117,7 @@ public class Gameplay : MonoBehaviour
     [SerializeField] DontDestroyMeOnLoad overlayPrefab;
     [SerializeField] Player inputPlayer;
     [SerializeField] UIHUDSystem inputUI;
+    [SerializeField] Cameras inputCams;
     [SerializeField] StudioEventEmitter musicEmitter;
     [SerializeField] StudioEventEmitter musicEmitter2;
 
@@ -135,7 +140,7 @@ public class Gameplay : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         inputPlayer.Awake();
         inputUI.Awake();
-        GetComponentInChildren<Cameras>().Awake();
+        inputCams.Awake();
         GlobalPool.poolParent = transform.Find("PooledObjects");
         GlobalPool.Instance.Initialize();
         Overlay.OverMenus.BasicBlackout = 1;
@@ -166,6 +171,7 @@ public class Gameplay : MonoBehaviour
                 },
             };
             yield return RoomManager.Transition();
+            onFinalAwake?.Invoke();
         }
     }
 

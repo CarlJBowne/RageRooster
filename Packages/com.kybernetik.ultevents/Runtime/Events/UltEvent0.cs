@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2024 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
 
 using System;
 using UnityEngine;
@@ -21,20 +21,30 @@ namespace UltEvents
         /// </summary>
         event Action DynamicCalls;
 
+        /// <summary>
+        /// Invokes all <see cref="UltEvent.PersistentCalls"/> then all <see cref="DynamicCalls"/>.
+        /// </summary>
+        void Invoke();
+
         /************************************************************************************************************************/
     }
 
     /// <summary>A serializable event with no parameters which can be viewed and configured in the inspector.</summary>
     /// <remarks>This is a more versatile and user friendly implementation than <see cref="UnityEvent"/>.</remarks>
     [Serializable]
-    public sealed class UltEvent : UltEventBase, IUltEvent
+    public class UltEvent : UltEventBase, IUltEvent
     {
         /************************************************************************************************************************/
         #region Fields and Properties
         /************************************************************************************************************************/
 
         /// <inheritdoc/>
-        public override int ParameterCount => 0;
+        public override int ParameterCount
+            => 0;
+
+        /// <inheritdoc/>
+        public override Type GetParameterType(int index)
+            => throw new InvalidOperationException($"Parameterless {nameof(UltEvent)} has no parameters.");
 
         /************************************************************************************************************************/
 
@@ -166,33 +176,18 @@ namespace UltEvents
         #endregion
         /************************************************************************************************************************/
 
-#if UNITY_EDITOR
-        /// <summary>[Editor-Only] The types of each of this event's parameters.</summary>
-        public override Type[] ParameterTypes
-            => Type.EmptyTypes;
-#endif
-
-        /************************************************************************************************************************/
-
-        /// <summary>
-        /// Invokes all <see cref="PersistentCalls"/> then all <see cref="DynamicCalls"/>.
-        /// <para></para>
-        /// See also: <seealso cref="InvokeSafe"/> and <seealso cref="UltEventUtils.InvokeX(UltEvent)"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public void Invoke()
         {
             InvokePersistentCalls();
-            if (_DynamicCalls != null)
-                _DynamicCalls();
+            _DynamicCalls?.Invoke();
         }
 
         /************************************************************************************************************************/
 
         /// <summary>
-        /// Invokes all <see cref="PersistentCalls"/> then all <see cref="DynamicCalls"/> inside a try/catch block
-        /// which logs any exceptions that are thrown.
-        /// <para></para>
-        /// See also: <seealso cref="Invoke"/> and <seealso cref="UltEventUtils.InvokeX(UltEvent)"/>.
+        /// Invokes all <see cref="PersistentCalls"/> then all <see cref="DynamicCalls"/>
+        /// inside a try/catch block which logs any exceptions that are thrown.
         /// </summary>
         public void InvokeSafe()
         {
@@ -200,9 +195,9 @@ namespace UltEvents
             {
                 Invoke();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Debug.LogException(ex);
+                Debug.LogException(exception);
             }
         }
 

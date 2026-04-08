@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2024 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
 
 using UnityEngine;
 
@@ -8,7 +8,7 @@ namespace UltEvents
     /// A component which encapsulates a single <see cref="UltEvent"/>.
     /// </summary>
     [AddComponentMenu(UltEventUtils.ComponentMenuPrefix + "Ult Event Holder")]
-    [HelpURL(UltEventUtils.APIDocumentationURL + "/UltEventHolder")]
+    [UltEventsHelpUrl(typeof(UltEventHolder))]
     public class UltEventHolder : MonoBehaviour
     {
         /************************************************************************************************************************/
@@ -19,7 +19,7 @@ namespace UltEvents
         /// <summary>The encapsulated event.</summary>
         public UltEvent Event
         {
-            get => _Event ??= new UltEvent();
+            get => _Event ??= new();
             set => _Event = value;
         }
 

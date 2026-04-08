@@ -10,7 +10,7 @@ namespace RageRooster.RoomSystem
     /// An entrance to a Room. MonoBehavior that triggers entering the Room when colliding with the Player.
     /// <br/>A pure-data representation of this entrance, <see cref="RoomEntrance.Data"/> is stored in a <see cref="RoomAsset"/> for runtime loading.
     /// </summary>
-    public class RoomEntrance : MonoBehaviour, IRoomObject
+    public class RoomEntrance : MonoBehaviour, IRoomActor
     {
         /// <summary>
         /// The distance radius at which the room will begin loading.
@@ -39,12 +39,12 @@ namespace RageRooster.RoomSystem
         /// </summary>
         public bool forDeathOnly = false;
 
-        RoomRoot IRoomObject.root { get; set; }
-        RoomRoot root => ((IRoomObject)this).root;
+        RoomRoot IRoomActor.root { get; set; }
+        RoomRoot root => ((IRoomActor)this).root;
 
         private void Reset()
         {
-            IRoomObject.ConnectToRoomRoot(this);
+            IRoomActor.ConnectToRoomRoot(this);
         }
 
 
@@ -53,7 +53,7 @@ namespace RageRooster.RoomSystem
         {
             if (other != Player.Collider) return;
             RoomManager.EnterRoom(root.asset);
-            if(spawnPoint != null)
+            if (spawnPoint != null)
                 (forDeathOnly ? SaveData.DeathReloadData : SaveData.Current).location = spawnPoint.GetDestination();
         }
 
@@ -72,9 +72,9 @@ namespace RageRooster.RoomSystem
         {
             point = transform.position,
             direction = transform.TransformDirection(direction),
-            loadRadius = loadRadius,
-            unloadRadius = unloadRadius,
-            lodRadius = lodRadius
+            loadRadiusSQR = loadRadius * loadRadius,
+            unloadRadiusSQR = unloadRadius * unloadRadius,
+            lodRadiusSQR = lodRadius * lodRadius
         };
 
         /// <summary>
@@ -85,9 +85,23 @@ namespace RageRooster.RoomSystem
         {
             public Vector3 point;
             public Vector3 direction;
-            public float loadRadius;
-            public float unloadRadius;
-            public float lodRadius;
+            public float loadRadiusSQR;
+            public float unloadRadiusSQR;
+            public float lodRadiusSQR;
+            [System.NonSerialized] public float distanceSquared;
+
+
+            public void UpdateDistance(out int closestStrip)
+            {
+                distanceSquared = direction != Vector3.zero && Vector3.Dot(point - Player.Position, direction) < 0
+                    ? distanceSquared = -1
+                    : Vector3.SqrMagnitude(Player.Position - point);
+
+                closestStrip = distanceSquared < loadRadiusSQR ? 3
+                    : distanceSquared < unloadRadiusSQR ? 2
+                    : distanceSquared < lodRadiusSQR ? 1
+                    : 0;
+            }
         }
 
 #if UNITY_EDITOR

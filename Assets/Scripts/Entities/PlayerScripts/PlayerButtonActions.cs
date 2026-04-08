@@ -50,11 +50,11 @@ public class PlayerButtonActions : PlayerStateBehavior
     protected override void OnExit(State next)
     {
         PlayerController.RegisterActionSource(this, true);
-        if (Jump != null && !Jump.persistAcrossStateChange) Jump.Finish();
-        if (Attack != null && !Attack.persistAcrossStateChange) Attack.Finish();
-        if (Grab != null && !Grab.persistAcrossStateChange) Grab.Finish();
-        if (Charge != null && !Charge.persistAcrossStateChange) Charge.Finish();
-        if (Parry != null && !Parry.persistAcrossStateChange) Parry.Finish();
+        if (Jump != null && Grab is not PlayerButtonAction.Base_ChooseType && !Jump.persistAcrossStateChange) Jump.Finish();
+        if (Attack != null && Grab is not PlayerButtonAction.Base_ChooseType && !Attack.persistAcrossStateChange) Attack.Finish();
+        if (Grab != null && Grab is not PlayerButtonAction.Base_ChooseType && !Grab.persistAcrossStateChange) Grab.Finish();
+        if (Charge != null && Grab is not PlayerButtonAction.Base_ChooseType && !Charge.persistAcrossStateChange) Charge.Finish();
+        if (Parry != null && Grab is not PlayerButtonAction.Base_ChooseType && !Parry.persistAcrossStateChange) Parry.Finish();
     }
 
 #if UNITY_EDITOR 
@@ -62,7 +62,7 @@ public class PlayerButtonActions : PlayerStateBehavior
     [CustomEditor(typeof(PlayerButtonActions)), CanEditMultipleObjects]
     public class PlayerButtonActionsEditor : Editor
     {
-        PolymorphicObject.TabbedDrawer drawer;
+        Polymorph.TabbedDrawer drawer;
 
         public override VisualElement CreateInspectorGUI()
         {

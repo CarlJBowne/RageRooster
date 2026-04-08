@@ -228,11 +228,12 @@ namespace SLS.StateMachineH {
         /// </summary>
         public static implicit operator bool(State state) => state != null && state.Active;
 
-        protected void ApplySetupChanges()
+        protected void ApplySetupChanges(bool applyPrefabChanges = false)
         {
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
 
+            if (!applyPrefabChanges) return;
             var prefabStatus = PrefabUtility.GetPrefabInstanceStatus(gameObject);
             bool isPartThatCanBeAppliedTo = PrefabUtility.IsPartOfPrefabThatCanBeAppliedTo(gameObject);
 

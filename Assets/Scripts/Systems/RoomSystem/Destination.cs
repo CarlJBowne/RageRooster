@@ -64,7 +64,7 @@ namespace RageRooster.RoomSystem
         };
         public static implicit operator Destination(SpawnPoint spawn) => new()
         {
-            room = ((IRoomObject)spawn).root.asset,
+            room = ((IRoomActor)spawn).root.asset,
             spawnID = spawn.ID
         };
 

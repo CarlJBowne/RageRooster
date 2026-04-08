@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2024 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
 
 #if UNITY_EDITOR
 
@@ -11,8 +11,9 @@ using Object = UnityEngine.Object;
 
 namespace UltEvents.Editor
 {
+    /// <summary>[Editor-Only] <see cref="PropertyDrawer"/> for <see cref="UltEventBase"/>.</summary>
     [CustomPropertyDrawer(typeof(UltEventBase), true)]
-    internal sealed class UltEventDrawer : PropertyDrawer
+    public class UltEventDrawer : PropertyDrawer
     {
         /************************************************************************************************************************/
 
@@ -290,8 +291,11 @@ namespace UltEvents.Editor
         /************************************************************************************************************************/
 
         private static GUIStyle _SeparatorLineStyle;
-        private static readonly Color SeparatorLineColor =
-            EditorGUIUtility.isProSkin ? new Color(0.157f, 0.157f, 0.157f) : new Color(0.5f, 0.5f, 0.5f);
+
+        private static Color SeparatorLineColor
+            => EditorGUIUtility.isProSkin
+            ? new(0.157f, 0.157f, 0.157f)
+            : new(0.5f, 0.5f, 0.5f);
 
         private static void DoSeparatorLineGUI(Rect area)
         {

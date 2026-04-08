@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeTarget : Target
+public class MeleeTarget : TargetOldBase
 {
     [SerializeField, RelatedComponent] Grabbable grabbable;
 }

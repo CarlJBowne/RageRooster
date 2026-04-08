@@ -4,15 +4,36 @@ using System.Collections.Generic;
 using EditorAttributes;
 using RageRooster.Systems.SaveSystem;
 using SLS.ISingleton;
-using SLS.StateMachineH;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
-[RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider), typeof(StateMachine))]
+
+#if UNITY_EDITOR
+using UnityEditor.UIElements;
+using UnityEditor;
+using UnityEngine.UIElements;
+using System.Reflection;
+#endif
+
+
+[RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider), typeof(NavMeshAgent))]
 public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovementBody>
 {
     #region Config
+
+    /// <summary>
+    /// The Rigidbody component attached to this <see cref="CharacterMovementBody"/>.
+    /// </summary>
+    [field: SerializeField, RelatedComponent(true)] public Rigidbody RB { get; private set; }
+    /// <summary>
+    /// The <see cref="CapsuleCollider"/> component attached to this <see cref="CharacterMovementBody"/>.
+    /// </summary>
+    [field: SerializeField, RelatedComponent(true)] public CapsuleCollider Collider { get; private set; }
+    /// <summary>
+    /// The <see cref="CapsuleCollider"/> component attached to this <see cref="CharacterMovementBody"/>.
+    /// </summary>
+    [field: SerializeField, RelatedComponent(true)] public NavMeshAgent NavAgent { get; private set; }
     /// <summary>
     /// The default gravity vector for this <see cref="CharacterMovementBody"/>.
     /// </summary>
@@ -20,7 +41,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// <summary>
     /// Whether Gravity should be automaticall applied or applied by some behavior
     /// </summary>
-    public bool autoApplyGravity = false;
+    [SerializeField] bool autoApplyGravity = false;
     /// <summary>
     /// The maximum angle (in degrees) of a slope this <see cref="CharacterMovementBody"/> can stand on.
     /// </summary>
@@ -28,32 +49,24 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// <summary>
     /// The buffer used to check for ground.
     /// </summary>
-    public float movementCheckBuffer = 0.1f;
-    /// <summary>
-    /// The buffer used to check for ground.
-    /// </summary>
-    public float groundCheckBuffer = 0.1f;
+    [SerializeField] float groundCheckBuffer = 0.1f;
     /// <summary>
     /// The number of steps used in the Collide & Slide Algorithm.
     /// </summary>
-    public int movementProjectionSteps = 5;
+    [SerializeField] int movementProjectionSteps = 5;
     /// <summary>
     /// Angle threshold for Bonking.
     /// </summary>
-    public float bonkThreshold = 15;
+    [SerializeField] float bonkThreshold = 15;
 
-    /// <summary>
-    /// Whether the player can currnetly do a double jump.
-    /// </summary>
-    public PlayerAirborneMovement doubleJump;
     /// <summary>
     /// The default offset for a Front-ways collision Check.
     /// </summary>
-    public Vector3 frontCheckDefaultOffset;
+    [SerializeField] Vector3 frontCheckDefaultOffset;
     /// <summary>
     /// the default radius for a Front-ways collision Check.
     /// </summary>
-    public float frontCheckDefaultRadius;
+    [SerializeField] float frontCheckDefaultRadius;
 
     //public PlatformDetectionMethod platformDetection;
     //[Tooltip("An unconventional means of hopefully avoiding falling through the floor. If true, the player will check if there is any ground below them before moving, and if not, their velocity will be set to 0 to prevent them from moving further. This is jank, but it might help with some edge cases and it doesn't require any extra components or setup.")]
@@ -61,31 +74,25 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// <summary>
     /// The LayerMask used for ground checks. Should be set to anything that can be stood on.
     /// </summary>
-    public LayerMask validGroundMask;
+    [SerializeField] LayerMask validGroundMask;
 
-    public bool cantWalkOff;
-    public float platformDetectionFactor = 3;
-    public float platformLockRadius = .25f;
+    [SerializeField] float platformDetectionFactor = 3;
+    [SerializeField] float platformLockRadius = .25f;
+    [SerializeField, InspectorName("Use Nav Mesh")] bool _useNavMeshIfPossible = true;
+    [SerializeField] bool lockToNavMesh = false;
 
-
-    #endregion
-
-    #region Components
-
-    /// <summary>
-    /// The Rigidbody component attached to this <see cref="CharacterMovementBody"/>.
-    /// </summary>
-    [field: SerializeField, HideInInspector] public Rigidbody RB { get; private set; }
-    /// <summary>
-    /// The <see cref="CapsuleCollider"/> component attached to this <see cref="CharacterMovementBody"/>.
-    /// </summary>
-    [field: SerializeField, HideInInspector] public CapsuleCollider Collider { get; private set; }
-    //[RelatedComponent(true)] public NavMeshAgent NavAgent;
+    internal bool canDoDoubleJump = true;
 
     #endregion
-
 
     #region LifeCycle
+
+    void Reset()
+    {
+        RB = GetComponent<Rigidbody>();
+        Collider = GetComponent<CapsuleCollider>();
+        NavAgent = GetComponent<NavMeshAgent>();
+    }
 
     void Awake()
     {
@@ -97,26 +104,20 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         direction = Vector3.forward;
         Interface.Initialize(ref Instance);
 
-        //NavAgent.updatePosition = false;
+        NavAgent.enabled = false;
         //NavAgent.updateRotation = false;
-        //NavAgent.updateUpAxis = false;
+        NavAgent.updateUpAxis = false;
+        gravity = defaultGravity;
     }
 
     /// <summary>
     /// Called when the component is enabled.
     /// </summary>
-    void OnEnable()
-    {
-        if (_rbState == BodyState.OFF)
-            RBState = BodyState.Enabled;
-    }
+    void OnEnable() { if (_rbState == BodyStates.OFF) BodyState = BodyStates.Enabled; }
     /// <summary>
     /// Called when the component is disabled.
     /// </summary>
-    void OnDisable()
-    {
-        RBState = BodyState.OFF;
-    }
+    void OnDisable() => BodyState = BodyStates.OFF;
 
     void OnDestroy() => Interface.DeInitialize(ref Instance);
 
@@ -128,8 +129,64 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     public static bool Loaded => Instance != null;
     #endregion
 
-    #endregion LifeCycle
+    /// <summary>
+    /// The possible states for a <see cref="CharacterMovementBody"/>.
+    /// </summary>
+    public enum BodyStates
+    {
+        Enabled,
+        Ragdoll,
+        OFF
+    }
 
+    /// <summary>
+    /// The current state of this <see cref="CharacterMovementBody"/>.
+    /// </summary>
+    public BodyStates BodyState
+    {
+        get => _rbState;
+        set
+        {
+            _rbState = value;
+            switch (value)
+            {
+                case BodyStates.Enabled:
+                    RB.isKinematic = false;
+                    RB.detectCollisions = true;
+                    RB.useGravity = false;
+                    Collider.enabled = true;
+                    break;
+                case BodyStates.Ragdoll:
+                    RB.isKinematic = false;
+                    RB.detectCollisions = true;
+                    RB.useGravity = true;
+                    Collider.enabled = false;
+                    break;
+                case BodyStates.OFF:
+                    RB.isKinematic = true;
+                    RB.detectCollisions = false;
+                    RB.useGravity = false;
+                    Collider.enabled = false;
+                    break;
+            }
+        }
+    }
+    BodyStates _rbState = BodyStates.Enabled;
+
+
+
+    public void ReturnToNeutral(bool doCrossFade = true)
+    {
+        if (GroundCheck(out _))
+        {
+            Player.StateMachine.IdleWalk.State.Enter();
+            if (doCrossFade) Player.Animator.CrossFade("GroundBasic", .1f);
+        }
+        else Player.StateMachine.Airborne.Enter();
+    }
+
+
+    #endregion LifeCycle
 
     #region Move Cycle
 
@@ -145,91 +202,121 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
         DebugRR.DebugTextOverlay.SetText($"PMB : Velocity: {velocity}");
 
-        if (RBState != BodyState.Enabled) return;
+        if (BodyState != BodyStates.Enabled) return;
+
         RB.linearVelocity = Vector3.zero;
         RB.angularVelocity = Vector3.zero;
+
+        if (navDestinationDriven)
+        {
+            DirectionSet(NavAgent.desiredVelocity, NavAgent.angularSpeed);
+            NavAgent.velocity = Vector3.zero;
+            velocity = (Vector3.Dot(NavAgent.desiredVelocity, direction) + 1) * NavAgent.desiredVelocity.magnitude * direction;
+            if (NavAgent.remainingDistance < 0.1f) NavDestination(false);
+        }
 
         stepZeroVelocity = velocity * Time.fixedDeltaTime;
         stepZeroAnchor = anchorPoint;
 
-        moveTestString = "";
+        SetupDebugText(false);
 
-        if (velocity != Vector3.zero) Move(stepZeroVelocity);
+        if (velocity != Vector3.zero) MoveNext(stepZeroVelocity);
+
+        SetupDebugText(true);
 
         if (velocity.y <= 0)
         {
             if (GroundCheck(out AnchorPoint groundHit))
             {
-                if (!Grounded)
+                if (!isGrounded)
                 {
                     Land(groundHit);
                     velocity.y = 0;
                 }
             }
-            else if (Grounded)
+            else if (isGrounded)
             {
-                moveTestString += "Walk Off.\n";
+                AddDebugText("Walk Off.");
                 Player.StateMachine.SendSignal("WalkOff");
                 UnLand(JumpState.Hangtime);
             }
         }
 
-        DebugRR.DebugTextOverlay.SetText(moveTestString);
-
-        if (autoApplyGravity && !Grounded) ApplyGravity();
+        if (autoApplyGravity && !isGrounded) ApplyGravity();
 
         if (prePos != Position) _movingUpdateActionTimer.Tick(MovingUpdateAction);
     }
 
-
-    void Move(Vector3 stepVelocity, int step = 0)
+    /// <summary>
+    /// Moves body via Nav Mesh.
+    /// </summary>
+    void MoveNav(Vector3 stepVelocity, int step = 0)
     {
-        moveTestString += $"Step {step}: {stepVelocity}\n";
+        AddDebugText($"Step (Nav) {step}: {stepVelocity}");
 
         if (stepVelocity == Vector3.zero) return;
 
-        if (Grounded) stepVelocity = stepVelocity.ProjectAndScale(anchorPoint.normal);
+        if (!OnNavMesh)
+        {
+            AddDebugText($"Not sure why this is happening but MoveNav was somehow called despite not being on the NavMesh.");
+            MoveSlide(stepVelocity, step);
+            return;
+        }
+
+        if (!NavAgent.Raycast(Position + stepVelocity, out NavMeshHit hit))
+        {
+            AddDebugText("No hit, moving forward and ending loop.");
+            NavAgent.Move(stepVelocity);
+        }
+        else
+        {
+            AddDebugText($"Hit NavMesh edge, normal {hit.normal} at position {hit.position}");
+            Vector3 snapToSurface = stepVelocity.normalized * hit.distance;
+
+            NavAgent.Move(snapToSurface);
+
+            if (++step >= movementProjectionSteps) return;
+
+            Vector3 leftover = stepVelocity - snapToSurface;
+            if (lockToNavMesh) leftover = leftover.ProjectAndScale(hit.normal);
+            else OnNavMesh = false;
+
+            MoveNext(leftover, step);
+        }
+
+    }
+    /// <summary>
+    /// Moves body via Collide And Slide Algorithm.
+    /// </summary>
+    void MoveSlide(Vector3 stepVelocity, int step = 0)
+    {
+        AddDebugText($"Step (Slide) {step}: {stepVelocity}");
+
+        if (stepVelocity == Vector3.zero) return;
+
+        stepVelocity = stepVelocity.ProjectAndScale(anchorPoint.normal);
+        stepVelocity = stepVelocity.ProjectAndScale(anchorPoint.normal);
 
         float stopDistance = -1;
         Vector3 nextNormal = Vector3.zero;
         bool scaleByDot = false;
-        bool deleteVerticalLeftover = false;
+        bool negateVerticalLefover = false;
 
+        // Sweep for any obstacle in the trajectory (ignore flat-floor hits when moving purely horizontally).
+        // Sweep for any obstacle in the trajectory (ignore flat-floor hits when moving purely horizontally).
         bool sweepHit = SweepBody(stepVelocity, out RaycastHit hit, groundCheckBuffer) && !(stepVelocity.y == 0 && hit.normal == Vector3.up);
 
-
-        if (Grounded && !sweepHit)
+        if (!sweepHit)
         {
-            moveTestString += $"Grounded, Hit Nothing.\n";
+            AddDebugText("Grounded, Hit Nothing.");
 
-            if (cantWalkOff)
+            // Keep platform lock behavior for grounded movement (attempt to detect unreachable edges and snap behavior).
+            // Keep platform lock behavior for grounded movement (attempt to detect unreachable edges and snap behavior).
+            if (lockToNavMesh)
             {
                 Vector3 platformCheckDistance = stepVelocity.normalized * platformDetectionFactor;
 
-                if (NavMesh.SamplePosition(Position, out _, .1f, NavMesh.AllAreas) &&
-                    NavMesh.FindClosestEdge(Position, out NavMeshHit navHit, NavMesh.AllAreas))
-                {
-                    if (Vector3.Dot(navHit.normal, stepVelocity.normalized) < -0.1f)
-                    {
-                        if(navHit.position.XZ() == Position.XZ())
-                        {
-                            nextNormal = navHit.normal.XZ();
-                            stopDistance = 0;
-                        }
-                        else
-                        {
-                            Plane P = new(navHit.normal.XZ(), navHit.position);
-                            if (P.Raycast(new(Position, stepVelocity), out float hitDistance) && hitDistance <= stepVelocity.magnitude)
-                            {
-                                nextNormal = P.normal;
-                                stopDistance = hitDistance;
-                                //scaleByDot = true;
-                                moveTestString += $"Platform Locked onto NavMesh Platform, nextNormal: {nextNormal}\n";
-                            }
-                        }
-                    }
-                }
-                else if (!SweepBody(Vector3.down * groundCheckBuffer, out RaycastHit platformCheckHit,
+                if (!SweepBody(Vector3.down * groundCheckBuffer, out RaycastHit platformCheckHit,
                     groundCheckBuffer, Position + platformCheckDistance))
                 {
                     Vector3 reachAroundPos = Position + (platformCheckDistance * 1.01f) - (Vector3.up * Collider.height / 2);
@@ -240,15 +327,17 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                         P.Raycast(new(Position, stepVelocity), out float hitDistance);
                         if (hitDistance <= stepVelocity.magnitude) stopDistance = hitDistance;
 
-
                         scaleByDot = true;
-                        moveTestString += $"Platform Locked onto non-NavMesh Platform, nextNormal: {nextNormal}\n";
+                        AddDebugText($"Platform Locked onto non-NavMesh Platform, nextNormal: {nextNormal}");
                     }
-                    else moveTestString += "Walking off platform when not allowed but reach around check failed. Failsafe situation, report to CJ.\n";
+                    else AddDebugText("Walking off platform when not allowed but reach around check failed. Failsafe situation, report to CJ.");
                 }
             }
+
+
             if (stopDistance == -1)
             {
+                // Snap down to a slightly lower ground if detected (small ledge correction).
                 if (GroundCheck(out _, out RaycastHit groundCast, true) && groundCast.normal != anchorPoint.normal)
                 {
                     Ray cornerCheckRay = new(groundCast.barycentricCoordinate + new Vector3(0, .1f, 0), Vector3.down);
@@ -257,73 +346,116 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
                     if (groundCast.distance >= float.Epsilon && groundCast.distance <= groundCheckBuffer && !different)
                     {
-                        moveTestString += "Snapping to lowerGround.\n";
+                        AddDebugText("Snapping to lowerGround.");
                         Position += Vector3.down * groundCast.distance;
                         anchorPoint = groundCast;
                     }
                 }
             }
         }
-        else if (Grounded && sweepHit)
+        else // grounded sweep hit handling
         {
-            moveTestString += $"Grounded, Hit: {hit.normal} at distance {hit.distance} \n";
+            AddDebugText($"Grounded, Hit: {hit.normal} at distance {hit.distance}");
             stopDistance = hit.distance;
             nextNormal = hit.normal;
 
             if (Mathf.Approximately(hit.normal.y, 0))
             {
-                moveTestString += "Hit a wall.\n";
+                AddDebugText("Hit a wall.");
                 scaleByDot = true;
-                deleteVerticalLeftover = true;
+                negateVerticalLefover = true;
+                negateVerticalLefover = true;
                 nextNormal = nextNormal.XZ().normalized;
             }
             else if (hit.normal.y > 0 && !WithinSlopeAngle(hit.normal))
             {
-                moveTestString += "Hit a steep slope.\n";
+                AddDebugText("Hit a steep slope.");
                 scaleByDot = true;
-                deleteVerticalLeftover = true;
+                negateVerticalLefover = true;
+                negateVerticalLefover = true;
                 nextNormal = nextNormal.XZ().normalized;
             }
 
-            if (Grounded && anchorPoint.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchorPoint.normal, hit.normal);
-            //Floor to Cieling
-            else if (Grounded && anchorPoint.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchorPoint.normal);
-            //Ceiling to Floor
+            if (anchorPoint.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchorPoint.normal, hit.normal);
+            else if (anchorPoint.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchorPoint.normal);
+            if (anchorPoint.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchorPoint.normal, hit.normal);
+            else if (anchorPoint.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchorPoint.normal);
 
             void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
             {
-                moveTestString += "Encountered Vertical Squish.\n";
+                AddDebugText("Encountered Vertical Squish.");
                 scaleByDot = true;
                 nextNormal = floorNormal.y != floorNormal.magnitude ? floorNormal : ceilingNormal;
             }
 
             if (hit.normal.y > 0 && WithinSlopeAngle(hit.normal) && stepVelocity.y <= 0) anchorPoint = hit;
         }
-        else if (!Grounded && sweepHit)
+
+        Vector3 snapToSurface = stopDistance != -1 ? stepVelocity.normalized * stopDistance : stepVelocity;
+
+        // Make sure we aren't moving off into the void at the destination
+        if (!SweepBody(Vector3.down * 5000, out _, groundCheckBuffer, snapToSurface, QueryTriggerInteraction.Collide)) return;
+
+        Position += snapToSurface;
+
+        if (stopDistance < 0 || ++step >= movementProjectionSteps) return;
+        else if (Vector3.Angle(stepVelocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Player.StateMachine.SendSignal(new("Bonk", 0, true)))
         {
-            moveTestString += $"Airborne, Hit: {hit.normal} at distance {hit.distance} \n";
+            this.velocity = Vector3.zero;
+            return;
+        }
+
+        Vector3 leftover = stepVelocity - snapToSurface;
+        if (negateVerticalLefover)
+        {
+            leftover.y = 0;
+            Land(hit);
+        }
+        Vector3 newDir = leftover.ProjectAndScale(nextNormal);
+        if (scaleByDot) newDir *= Vector3.Dot(leftover.normalized, nextNormal) + 1;
+
+        MoveNext(newDir, step);
+    }
+    /// <summary>
+    /// Moves body in mid-air via a simplified airborne-focused Collide-And-Slide algorithm.
+    /// </summary>
+    void MoveAir(Vector3 stepVelocity, int step = 0)
+    {
+        AddDebugText($"Step (Slide) {step}: {stepVelocity}");
+
+        if (stepVelocity == Vector3.zero) return;
+
+        // Air-specific: do NOT project movement to anchor normal (we are airborne).
+        float stopDistance = -1;
+        Vector3 nextNormal = Vector3.zero;
+        bool land = false;
+
+        bool sweepHit = SweepBody(stepVelocity, out RaycastHit hit, groundCheckBuffer);
+
+        if (sweepHit)
+        {
+            AddDebugText($"Airborne, Hit: {hit.normal} at distance {hit.distance}");
             stopDistance = hit.distance;
             nextNormal = hit.normal;
 
-            if (Mathf.Approximately(hit.normal.y, 0)) moveTestString += "Hit a Wall mid-air.\n";
+            if (Mathf.Approximately(hit.normal.y, 0)) AddDebugText("Hit a Wall mid-air.");
             else if (hit.normal.y > 0)
             {
                 if (WithinSlopeAngle(hit.normal))
                 {
-                    moveTestString += "Landed on a standable ground.\n";
-                    Land(hit);
-                    deleteVerticalLeftover = true;
+                    AddDebugText("Landed on a standable ground.");
+                    land = true;
                 }
-                else moveTestString += "Hit a steep slope while falling.\n";
+                else AddDebugText("Hit a steep slope while falling.");
             }
             else if (!WithinSlopeAngle(-hit.normal))
             {
-                moveTestString += "Hit a sloped ceiling while jumping.\n";
+                AddDebugText("Hit a sloped ceiling while jumping.");
             }
             else
             {
-                moveTestString += "Hit a ceiling while jumping.\n";
-                deleteVerticalLeftover = true;
+                AddDebugText("Hit a ceiling while jumping.");
+                land = true;
                 velocity.y = -0.1f;
                 UnLand(JumpState.Falling);
             }
@@ -332,27 +464,25 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         }
         else
         {
-            moveTestString += $"Airborne, Hit Nothing.\n";
+            AddDebugText("Airborne, Hit Nothing.");
 
-            { //If not Grounded, skip straight to Checking for void.
-                if (!SweepBody(Vector3.down * 5000, out _, 0, Position + stepVelocity))
-                {//Since not necessarily anywhere near a platform, just stop the player in their tracks for now.
-                    moveTestString += "Hit the void while falling.\n";
-                    stopDistance = 0;
-                    nextNormal = -stepVelocity.XZ();
-                }
+            // If airborne and there is no surface below the destination, treat as void and stop forward motion.
+            if (!SweepBody(Vector3.down * 5000, out _, 0, Position + stepVelocity))
+            {
+                AddDebugText("Hit the void while falling.");
+                stopDistance = 0;
+                nextNormal = -stepVelocity.XZ();
             }
         }
 
-
         Vector3 snapToSurface = stopDistance != -1 ? stepVelocity.normalized * stopDistance : stepVelocity;
 
-        //Void Check. (Moved here cause making it work with the Platform detector is both not helpful and confusing.)
-        if (!SweepBody(Vector3.down * 5000, out _, groundCheckBuffer, snapToSurface)) return;
+        // Void check for the destination
+        if (!SweepBody(Vector3.down * 5000, out _, groundCheckBuffer, snapToSurface, QueryTriggerInteraction.Collide)) return;
 
         Position += snapToSurface;
 
-        if (stopDistance < 0 || step + 1 >= movementProjectionSteps) return;
+        if (stopDistance < 0 || ++step >= movementProjectionSteps) return;
         else if (Vector3.Angle(stepVelocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Player.StateMachine.SendSignal(new("Bonk", 0, true)))
         {
             this.velocity = Vector3.zero;
@@ -360,29 +490,42 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         }
 
         Vector3 leftover = stepVelocity - snapToSurface;
-        if (deleteVerticalLeftover) leftover.y = 0;
+        if (land)
+        {
+            leftover.y = 0;
+            Land(hit);
+        }
         Vector3 newDir = leftover.ProjectAndScale(nextNormal);
-        if (scaleByDot) newDir *= Vector3.Dot(leftover.normalized, nextNormal) + 1;
-        Move(newDir, step + 1);
+
+        MoveNext(newDir, step);
     }
 
     /// <summary>
-    /// The initial (Unprojected) velocity prior to the current physics step. Used for reference in the Collide and Slide algorithm.
+    /// Moves body via either the Nav Mesh, if appropriate, or via the Collide and Slide Algorithm.
     /// </summary>
-    Vector3 baseVelocity;
+    void MoveNext(Vector3 stepVelocity, int step = 0)
+    {
+        if (OnNavMesh) MoveNav(stepVelocity, step);
+        else if (isGrounded) MoveSlide(stepVelocity, step);
+        else MoveAir(stepVelocity, step);
+    }
+
+
     /// <summary>
     /// The (Projected) velocity used in the very first physics step, kept for reference during later steps of Collide and Slide.
     /// </summary>
     Vector3 stepZeroVelocity;
     /// <summary>
+    /// (Currently unimplemented) A separate velocity to handle the "Floating Collider" spring forces.
+    /// </summary>
+    Vector3 springVelocity;
+    /// <summary>
     /// The AnchorPoint used in the very first physics step, kept for reference during later steps of Collide and Slide.
     /// </summary>
     AnchorPoint stepZeroAnchor;
 
-    string moveTestString = "";
 
     #endregion Move Cycle
-
 
     #region Position
 
@@ -391,14 +534,17 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     public Vector3 Position
     {
-        get => RB.isKinematic ? transform.position : RB.position;
+        get => BodyState == BodyStates.Enabled
+            ? OnNavMesh
+                ? NavAgent.nextPosition
+                : RB.position
+            : transform.position;
         set
         {
-            if (RB.isKinematic)
-                return;
-            transform.position = value;
-            RB.position = value;
-            RB.MovePosition(value);
+            if (BodyState != BodyStates.Enabled) return;
+
+            if (OnNavMesh) NavAgent.nextPosition = value;
+            else RB.MovePosition(value);
         }
     }
 
@@ -543,7 +689,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     public float CurrentSpeed
     {
         get => currentSpeed;
-        set => currentSpeed = value.Min(0);
+        set => currentSpeed = value >= 0 ? value : 0;
     }
     [HideInEditMode, DisableInPlayMode, SerializeField] private float currentSpeed;
 
@@ -554,51 +700,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
 
     #endregion Velocity
-
-    #region Gravity
-
-    /// <summary>
-    /// The active gravity value. (Inverted. y=1 is down.)
-    /// </summary>
-    [NonSerialized] private Vector3 gravity = new(0, 9.8f, 0);
-
-
-    /// <summary>
-    /// Runs the calculations to automatically apply the current gravity to this body.
-    /// </summary>
-    public void ApplyGravity() => velocity -= gravity * Time.fixedDeltaTime;
-
-    /// <summary>
-    /// Returns the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
-    /// </summary>
-    public Vector3 Get3DGravity() => gravity;
-    /// <summary>
-    /// Returns the current gravity value on the Y axis. (Inverted. 1 is downwards, -1 is upwards.)
-    /// </summary>
-    public float GetGravity() => gravity.y;
-
-    /// <summary>
-    /// Sets the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
-    /// </summary>
-    /// <param name="newGravity">The new gravity value.</param>
-    public void SetGravity(Vector3 newGravity) => gravity = newGravity;
-    /// <summary>
-    /// Sets the current gravity value on the Y axis. (Inverted. 1 is downwards, -1 is upwards.)
-    /// </summary>
-    /// <param name="newGravity">The new gravity value.</param>
-    public void SetGravity(float newGravity) => gravity = new(0, newGravity, 0);
-    /// <summary>
-    /// Sets the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
-    /// </summary>
-    /// <param name="newX"> The new gravity value on the x axis. (1 = left.) </param>
-    /// <param name="newY"> The new gravity value on the y axis. (1 = down.) </param>
-    /// <param name="newZ"> The new gravity value on the z axis. (1 = back.) </param>
-    public void SetGravity(float newX, float newY, float newZ) => gravity = new(newX, newY, newZ);
-
-
-
-    #endregion Gravity
-
 
     #region Checks
 
@@ -657,8 +758,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         return result;
     }
 
-    public bool OverVoidCheck(Vector3 offset) => !SweepBody(Vector3.down * 5000, out _, 0, offset, QueryTriggerInteraction.Collide);
-
     public T CheckForTypeInFront<T>(Vector3 sphereOffset, float checkSphereRadius)
     {
         Collider[] results = Physics.OverlapSphere(center + transform.TransformDirection(sphereOffset),
@@ -678,9 +777,117 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         return default;
     }
 
+
+    private static readonly RaycastHit[] s_capsuleCastResults = new RaycastHit[32];
+
+    public bool SweepBodyAlt(Vector3 offset, out RaycastHit hit,
+        float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
+    {
+        hit = default;
+
+        // world-space origin for the capsule
+        Vector3 originPos = tempOrigin ?? RB.position;
+        Vector3 worldCenter = originPos + transform.rotation * Collider.center;
+
+        // account for transform scale when computing radius and height
+        Vector3 lossy = transform.lossyScale;
+        float radius = Collider.radius * Mathf.Max(lossy.x, lossy.z);
+        float height = Mathf.Max(Collider.height * lossy.y, radius * 2f); // ensure valid capsule
+        float halfHeight = Mathf.Max(0f, (height / 2f) - radius);
+
+        // capsule endpoints in world space
+        Vector3 up = transform.up;
+        Vector3 p1 = worldCenter + up * halfHeight;
+        Vector3 p2 = worldCenter - up * halfHeight;
+
+        Vector3 dir = offset.normalized;
+        float maxDistance = offset.magnitude + buffer;
+
+        // Build a layer mask that includes layers this object's layer can collide with
+        // If we actually go down this road, change this to store the layerMask once at the beginning.
+        int selfLayer = gameObject.layer;
+        int layerMask = 0;
+        for (int i = 0; i < 32; i++)
+            if (!Physics.GetIgnoreLayerCollision(selfLayer, i))
+                layerMask |= 1 << i;
+
+        // Perform non-mutating capsule cast using the NonAlloc API
+        int count = Physics.CapsuleCastNonAlloc(p1, p2, radius, dir, s_capsuleCastResults, maxDistance, layerMask, queryTriggerInteraction);
+        if (count == 0)
+        {
+            sweepsThisPhysUpdate.Add(new()
+            {
+                origin = tempOrigin.GetValueOrDefault(),
+                direction = offset,
+                hit = false,
+                hitDistance = 0,
+                hitNormal = Vector3.zero
+            });
+            return false;
+        }
+
+        // Find nearest valid hit that is not this object's collider
+        int nearestIndex = -1;
+        float nearestDist = float.MaxValue;
+        for (int i = 0; i < count; i++)
+        {
+            var h = s_capsuleCastResults[i];
+            if (h.collider == null) continue;
+            if (h.collider == Collider || h.collider.gameObject == gameObject) continue; // exclude self
+            if (h.distance < nearestDist)
+            {
+                nearestDist = h.distance;
+                nearestIndex = i;
+            }
+        }
+
+        if (nearestIndex == -1)
+        {
+            sweepsThisPhysUpdate.Add(new()
+            {
+                origin = tempOrigin.GetValueOrDefault(),
+                direction = offset,
+                hit = false,
+                hitDistance = 0,
+                hitNormal = Vector3.zero
+            });
+            return false;
+        }
+
+        // copy and adjust distance for buffer, clamp >= 0
+        RaycastHit chosen = s_capsuleCastResults[nearestIndex];
+        chosen.distance = Mathf.Max(0f, chosen.distance - buffer);
+
+        // record debug info
+        sweepsThisPhysUpdate.Add(new()
+        {
+            origin = tempOrigin.GetValueOrDefault(),
+            direction = offset,
+            hit = true,
+            hitDistance = chosen.distance,
+            hitNormal = chosen.normal
+        });
+
+        hit = chosen;
+        return true;
+    }
+
     #endregion
 
     #region Ground
+
+    /// <summary>
+    /// The possible states of a jump.
+    /// </summary>
+    public enum JumpState
+    {
+        Grounded = 0,
+        Jumping = 1,
+        Decelerating = 2,
+        Hangtime = 3,
+        Falling = 4,
+        TerminalVelocity = 5
+    }
 
 
     /// <summary>
@@ -689,22 +896,22 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// <param name="collision">The collision information.</param>
     void OnCollisionEnter(Collision collision)
     {
-        Vector3 contactPoint = collision.GetContact(0).normal;
-        if (!Grounded && velocity.y > .1f && Vector3.Dot(contactPoint, Vector3.up) < -0.75f) velocity.y = 0;
-        else if (!Grounded && WithinSlopeAngle(contactPoint))
+        Vector3 contactNormal = collision.GetContact(0).normal;
+        if (!isGrounded && velocity.y > .1f && Vector3.Dot(contactNormal, Vector3.up) < -0.75f) velocity.y = 0;
+        else if (!isGrounded && WithinSlopeAngle(contactNormal))
             Land(collision.GetContact(0));
 
     }
 
     public void Land(AnchorPoint groundHit)
     {
-        bool wasntGrounded = jumpState != JumpState.Grounded;
+        bool wasntGrounded = _jumpState != JumpState.Grounded;
         bool objectChange = anchorPoint.collider != groundHit.collider;
-        doubleJump.allowDoubleJump = true;
+        canDoDoubleJump = true;
 
         if (!wasntGrounded && !objectChange) return;
 
-        jumpState = JumpState.Grounded;
+        _jumpState = JumpState.Grounded;
         anchorPoint = groundHit;
         velocity.y = 0;
 
@@ -721,6 +928,9 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             Player.StateMachine.SendSignal(new("Land", ignoreLock: true));
             if (Player.Controller.CheckJumpBuffer()) Player.StateMachine.SendSignal("Jump");
         }
+
+        OnNavMesh = true; //Attempt to bind to Nav Mesh.
+
     }
     /// <summary>
     /// Lands the body on the ground described by the AnchorPoint.
@@ -730,7 +940,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     {
         if (!GroundCheck(out AnchorPoint groundHit)) return;
         Land(groundHit);
-        doubleJump.allowDoubleJump = true;
     }
     /// <summary>
     /// Event invoked when the character lands.
@@ -743,13 +952,14 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     public void UnLand(JumpState newState = JumpState.Falling)
     {
         if (newState < JumpState.Jumping) return;
-        jumpState = newState;
+        _jumpState = newState;
         anchorPoint = AnchorPoint.Null;
         if (movingAnchor != null)
         {
             movingAnchor.SetPlayerInfluence(false);
             movingAnchor = null;
         }
+        OnNavMesh = false;
     }
 
     void WalkOff()
@@ -758,19 +968,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         Player.StateMachine.SendSignal(new("WalkOff", ignoreLock: true));
     }
 
-    /// <summary>
-    /// Instantly snaps the character to the floor below, if any.
-    /// </summary>
-    /// <returns>True if snapped to floor, false otherwise.</returns>
-    public bool InstantSnapToFloor()
-    {
-        if (SweepBody(Vector3.down * 1000, out RaycastHit hit, .5f))
-        {
-            Position += Vector3.down * hit.distance;
-            return true;
-        }
-        return false;
-    }
     /// <summary>
     /// Instantly snaps the character to the floor below, if any, and outputs the hit information.
     /// </summary>
@@ -802,113 +999,239 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     IMovablePlatform movingAnchor;
 
-    #endregion Ground
-
-    #region States
-
-    /// <summary>
-    /// The possible states for a <see cref="CharacterMovementBody"/>.
-    /// </summary>
-    public enum BodyState
-    {
-        Enabled,
-        Kinematic,
-        Ragdoll,
-        OFF
-    }
-    /// <summary>
-    /// The current state of this <see cref="CharacterMovementBody"/>.
-    /// </summary>
-    public BodyState RBState
-    {
-        get => _rbState;
-        set
-        {
-            _rbState = value;
-            switch (value)
-            {
-                case BodyState.Enabled:
-                    RB.isKinematic = false;
-                    RB.detectCollisions = true;
-                    RB.useGravity = false;
-                    Collider.enabled = true;
-                    break;
-                case BodyState.Kinematic:
-                    RB.isKinematic = true;
-                    RB.detectCollisions = true;
-                    RB.useGravity = false;
-                    Collider.enabled = true;
-                    break;
-                case BodyState.Ragdoll:
-                    RB.isKinematic = false;
-                    RB.detectCollisions = true;
-                    RB.useGravity = true;
-                    Collider.enabled = false;
-                    break;
-                case BodyState.OFF:
-                    RB.isKinematic = true;
-                    RB.detectCollisions = false;
-                    RB.useGravity = false;
-                    Collider.enabled = false;
-                    break;
-            }
-        }
-    }
-    private BodyState _rbState = BodyState.Enabled;
-
-
     /// <summary>
     /// Whether the character is currently grounded.
     /// </summary>
-    public bool Grounded => jumpState == JumpState.Grounded;
+    public bool isGrounded => _jumpState == JumpState.Grounded;
     /// <summary>
     /// The current jump state of the character.
     /// </summary>
-    public JumpState JumpState => jumpState;
+    public JumpState JumpStateCurrent => _jumpState;
 
     /// <summary>
     /// The current jump state of this body.
     /// </summary>
-    JumpState jumpState = JumpState.Grounded;
+    JumpState _jumpState = JumpState.Grounded;
 
-    public void ReturnToNeutral(bool doCrossFade = true)
+
+    #endregion Ground
+
+    #region NavMesh Navigation
+
+    public bool UseNavMeshIfPossible
     {
-        if (GroundCheck(out _))
+        get => _useNavMeshIfPossible;
+        set
         {
-            Player.StateMachine.IdleWalk.Enter();
-            if (doCrossFade) Player.Animator.CrossFade("GroundBasic", .1f);
+            _useNavMeshIfPossible = value;
+            if (isGrounded)
+            {
+                if (NavMesh.SamplePosition(Position, out _, navMeshDetectionRange, NavAgent.areaMask))
+                    OnNavMesh = true;
+            }
+            if (!value && OnNavMesh) OnNavMesh = false;
         }
-        else Player.StateMachine.Airborne.Enter();
+    }
+    public float navMeshDetectionRange = .35f;
+
+    public bool OnNavMesh
+    {
+        get => UseNavMeshIfPossible && NavAgent.enabled && NavAgent.isOnNavMesh;
+        set
+        {
+            // No-op if nothing changes (avoid repeated expensive ops)
+            if (!UseNavMeshIfPossible) return;
+            if (value == (NavAgent.enabled && NavAgent.isOnNavMesh)) return;
+
+            if (value)
+            {
+                // Try to place the agent cleanly on the navmesh surface before enabling.
+                Vector3 desiredAgentSurfacePos = Position - Vector3.up * NavAgent.baseOffset;
+                if (NavMesh.SamplePosition(desiredAgentSurfacePos, out NavMeshHit sampleHit, navMeshDetectionRange, NavAgent.areaMask))
+                {
+                    // Place agent internal position on the navmesh
+                    NavAgent.Warp(sampleHit.position);
+                    NavAgent.nextPosition = sampleHit.position;
+                    // Place the RB at the same surface + baseOffset so visuals/physics line up
+                    ForceSetPosition(sampleHit.position + Vector3.up * NavAgent.baseOffset);
+
+                    // We will manage character position ourselves (RB) and use NavAgent for pathfinding only.
+                    NavAgent.enabled = true;
+                }
+                else
+                {
+                    // can't attach to navmesh right now
+                    navDestinationDriven = false;
+                    NavAgent.enabled = false;
+                }
+            }
+            else
+            {
+                // Disable nav control immediately and clear nav-driven state to avoid stale Move calls.
+                navDestinationDriven = false;
+                NavAgent.enabled = false;
+            }
+        }
+    }
+
+    private bool navDestinationDriven = false;
+
+    public float navMeshOffset
+    {
+        get => NavAgent.baseOffset;
+        set => NavAgent.baseOffset = value;
+    }
+
+    /// <summary>
+    /// Getter Variant, just returns current Destination.
+    /// </summary>
+    /// <returns>The current NavDestination, will be zero if there is none.</returns>
+    public Vector3 NavDestination() => navDestinationDriven ? NavAgent.destination : Vector3.zero;
+
+    /// <summary>
+    /// Setter Value Variant. Sets Destination and activates Destination-driven behavior, if possible.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns>Success.</returns>
+    public bool NavDestination(Vector3 value)
+    {
+        // If not attached, try to attach first (if allowed)
+        if (!OnNavMesh)
+        {
+            if (!UseNavMeshIfPossible) return false;
+            OnNavMesh = true;
+            if (!OnNavMesh) return false;
+        }
+
+        navDestinationDriven = true;
+        NavAgent.destination = value;
+        return true;
+    }
+    /// <summary>
+    /// Setter Activation Variant. Activates/Deactivates Destination-driven Behavior. Destination value is optional to allow False Setting.
+    /// </summary>
+    public bool NavDestination(bool value, Vector3 destinationValue = default)
+    {
+        if (value)
+        {
+            if (!OnNavMesh)
+            {
+                if (!UseNavMeshIfPossible) return false;
+                OnNavMesh = true;
+                if (!OnNavMesh) return false;
+            }
+
+            navDestinationDriven = true;
+            NavAgent.destination = destinationValue;
+            return true;
+        }
+        else
+        {
+            navDestinationDriven = false;
+            NavAgent.ResetPath();
+            // keep agent disabled? existing code leaves NavAgent.enabled as-is; we keep existing behavior
+            return false;
+        }
+    }
+    /// <summary>
+    /// Getter Bool with Output Variant. Returns whether Destination-driven Behavior is active and outs the destination value.
+    /// </summary>
+    public bool NavDestination(out Vector3 result)
+    {
+        result = NavAgent.destination;
+        return navDestinationDriven;
     }
 
 
-    #endregion States
 
+
+    #endregion NavMesh Navigation
+
+    #region Gravity
+
+    /// <summary>
+    /// The active gravity value. (Inverted. y=1 is down.)
+    /// </summary>
+    [NonSerialized] private Vector3 gravity = new(0, 9.8f, 0);
+
+
+    /// <summary>
+    /// Runs the calculations to automatically apply the current gravity to this body.
+    /// </summary>
+    public void ApplyGravity() => velocity -= gravity * Time.fixedDeltaTime;
+
+    /// <summary>
+    /// Returns the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
+    /// </summary>
+    public Vector3 Get3DGravity() => gravity;
+    /// <summary>
+    /// Returns the current gravity value on the Y axis. (Inverted. 1 is downwards, -1 is upwards.)
+    /// </summary>
+    public float GetGravity() => gravity.y;
+
+    /// <summary>
+    /// Sets the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
+    /// </summary>
+    /// <param name="newGravity">The new gravity value.</param>
+    public void SetGravity(Vector3 newGravity) => gravity = newGravity;
+    /// <summary>
+    /// Sets the current gravity value on the Y axis. (Inverted. 1 is downwards, -1 is upwards.)
+    /// </summary>
+    /// <param name="newGravity">The new gravity value.</param>
+    public void SetGravity(float newGravity) => gravity = new(0, newGravity, 0);
+    /// <summary>
+    /// Sets the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
+    /// </summary>
+    /// <param name="newX"> The new gravity value on the x axis. (1 = left.) </param>
+    /// <param name="newY"> The new gravity value on the y axis. (1 = down.) </param>
+    /// <param name="newZ"> The new gravity value on the z axis. (1 = back.) </param>
+    public void SetGravity(float newX, float newY, float newZ) => gravity = new(newX, newY, newZ);
+
+
+
+    #endregion Gravity
 
     #region Other
 
     public static System.Action MovingUpdateAction;
     private Timer.Loop _movingUpdateActionTimer = new(0.2f);
 
-
-    private VolcanicVent _currentVent;
-
-    public VolcanicVent currentVent
+    public VolcanicVent CurrentVent
     {
-        get => _currentVent;
+        get => currentVent;
         set
         {
-            _currentVent = value;
+            currentVent = value;
             Player.StateMachine.SendSignal(new(value != null ? "EnterVent" : "ExitVent", 0, true));
         }
     }
-    public bool isOverVent => _currentVent != null;
+    VolcanicVent currentVent;
+    public bool isOverVent => currentVent != null;
+
+    public float GroundCheckBuffer => groundCheckBuffer;
 
 
     #endregion Other
 
 
-    //DEBUG
+    #region DEBUG
+
+    System.Text.StringBuilder moveTestString = new();
+
+    private void SetupDebugText(bool post)
+    {
+#if UNITY_EDITOR
+        if (!post) moveTestString.Clear();
+        else DebugRR.DebugTextOverlay.SetText(moveTestString.ToString());
+#endif
+    }
+    private void AddDebugText(string text)
+    {
+#if UNITY_EDITOR
+        moveTestString.AppendLine(text);
+#endif
+    }
+
 #if UNITY_EDITOR
 
     private void OnDrawGizmos()
@@ -998,21 +1321,280 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         }
     }
 
+    [CustomEditor(typeof(PlayerMovementBody))]
+    public class Editor : UnityEditor.Editor
+    {
+        // Runtime name labels (cached)
+        private Label _velNameLabel;
+        private Label _speedNameLabel;
+        private Label _jumpStateNameLabel;
+        private Label _onNavMeshNameLabel;
+        private Label _navDestNameLabel;
+        private Label _gravityNameLabel;
+        private Label _anchorNameLabel;
+        private Label _directionNameLabel;
+        private Label _currentVentNameLabel;
 
+        // Runtime value labels (cached)
+        private Label _velLabel;
+        private Label _speedLabel;
+        private Label _jumpStateLabel;
+        private Label _onNavMeshLabel;
+        private Label _navDestLabel;
+        private Label _gravityLabel;
+        private Label _anchorLabel;
+        private Label _directionLabel;
+        private Label _currentVentLabel;
 
+        private Button GoToOriginButton;
 
+        // Row containers for layout and visibility toggles
+        private VisualElement _navRow;
+
+        private bool _subscribedToUpdate = false;
+
+        public override VisualElement CreateInspectorGUI()
+        {
+            // Root tab view container (uses project's existing TabView/Tab types)
+            TabView tabView = new();
+
+            // Shortcut to serialized object
+            var so = serializedObject;
+
+            // -----------------------
+            // Config Tab
+            // -----------------------
+            Tab configTab = new("Config");
+            configTab.tabHeader.style.flexGrow = 1;
+
+            // Helper to add property fields safely
+            void AddProp(string propName, string label = null)
+            {
+                var prop = so.FindProperty(propName);
+                if (prop != null)
+                {
+                    var pf = new PropertyField(prop, label ?? prop.displayName);
+                    pf.Bind(so);
+                    configTab.Add(pf);
+                }
+                else
+                {
+                    // fallback label so inspector isn't empty if names differ
+                    configTab.Add(new Label($"Missing serialized property: {propName}"));
+                }
+            }
+
+            // Add all relevant serialized/config fields present in PlayerMovementBody
+            AddProp($"<{nameof(RB)}>k__BackingField", "Rigidbody");
+            AddProp($"<{nameof(Collider)}>k__BackingField", "Collider");
+            AddProp($"<{nameof(NavAgent)}>k__BackingField", "Nav Mesh Agent");
+            AddProp(nameof(defaultGravity), "Default Gravity");
+            AddProp(nameof(autoApplyGravity), "Auto Apply Gravity");
+            AddProp(nameof(maxSlopeNormalAngle), "Max Slope Angle");
+            AddProp(nameof(groundCheckBuffer), "Ground Check Buffer");
+            AddProp(nameof(movementProjectionSteps), "Movement Projection Steps");
+            AddProp(nameof(bonkThreshold), "Bonk Threshold");
+            AddProp(nameof(frontCheckDefaultOffset), "Front Check Default Offset");
+            AddProp(nameof(frontCheckDefaultRadius), "Front Check Default Radius");
+            AddProp(nameof(validGroundMask), "Valid Ground Mask");
+            AddProp(nameof(platformDetectionFactor), "Platform Detection Factor");
+            AddProp(nameof(platformLockRadius), "Platform Lock Radius");
+            AddProp(nameof(_useNavMeshIfPossible), "Use Nav Mesh If Possible");
+            AddProp(nameof(lockToNavMesh), "Lock To Nav Mesh");
+            AddProp(nameof(navMeshDetectionRange), "Nav Mesh Detection Range");
+
+            tabView.Add(configTab);
+
+            // -----------------------
+            // Active Tab (runtime info)
+            // -----------------------
+            Tab activeTab = new("Active");
+            activeTab.tabHeader.style.flexGrow = 1;
+
+            // Informational label when not playing
+            var notPlayingLabel = new Label("Runtime information shown here while in Play Mode.") { name = "runtime-info-label" };
+            activeTab.Add(notPlayingLabel);
+
+            // Container for runtime values
+            var runtimeContainer = new VisualElement();
+            runtimeContainer.style.flexDirection = FlexDirection.Column;
+            runtimeContainer.style.paddingLeft = 4;
+            runtimeContainer.style.paddingTop = 4;
+
+            // Instantiate value labels
+            _velLabel = new Label();
+            _speedLabel = new Label();
+            _jumpStateLabel = new Label();
+            _onNavMeshLabel = new Label();
+            _navDestLabel = new Label();
+            _gravityLabel = new Label();
+            _anchorLabel = new Label();
+            _directionLabel = new Label();
+            _currentVentLabel = new Label();
+
+            // Instantiate name labels
+            _velNameLabel = new Label("Velocity:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _speedNameLabel = new Label("CurrentSpeed:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _jumpStateNameLabel = new Label("Jump State:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _onNavMeshNameLabel = new Label("On NavMesh:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _navDestNameLabel = new Label("Nav Destination:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _gravityNameLabel = new Label("Gravity (3D):") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _anchorNameLabel = new Label("Anchor:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _directionNameLabel = new Label("Direction:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+            _currentVentNameLabel = new Label("Current Vent:") { style = { unityFontStyleAndWeight = FontStyle.Bold } };
+
+            // Helper to create a horizontal row with name + value
+            VisualElement CreateRow(Label nameLabel, Label valueLabel)
+            {
+                var row = new VisualElement();
+                row.style.flexDirection = FlexDirection.Row;
+                row.style.alignItems = Align.Center;
+                // Reserve a consistent width for the name column for alignment
+                nameLabel.style.minWidth = 150;
+                nameLabel.style.marginRight = 6;
+                valueLabel.style.unityTextAlign = TextAnchor.MiddleLeft;
+                row.Add(nameLabel);
+                row.Add(valueLabel);
+                return row;
+            }
+
+            // Add rows
+            runtimeContainer.Add(CreateRow(_velNameLabel, _velLabel));
+            runtimeContainer.Add(CreateRow(_speedNameLabel, _speedLabel));
+            runtimeContainer.Add(CreateRow(_jumpStateNameLabel, _jumpStateLabel));
+            runtimeContainer.Add(CreateRow(_onNavMeshNameLabel, _onNavMeshLabel));
+
+            // Nav row must be addressable for visibility toggling
+            _navRow = CreateRow(_navDestNameLabel, _navDestLabel);
+            runtimeContainer.Add(_navRow);
+
+            runtimeContainer.Add(CreateRow(_gravityNameLabel, _gravityLabel));
+            runtimeContainer.Add(CreateRow(_directionNameLabel, _directionLabel));
+            runtimeContainer.Add(CreateRow(_anchorNameLabel, _anchorLabel));
+            runtimeContainer.Add(CreateRow(_currentVentNameLabel, _currentVentLabel));
+
+            GoToOriginButton = new(GoToOrigin)
+            {
+                name = "Go To Origin"
+            };
+            runtimeContainer.Add(GoToOriginButton);
+            void GoToOrigin() => (target as PlayerMovementBody).NavDestination(Vector3.zero);
+
+            activeTab.Add(runtimeContainer);
+
+            tabView.Add(activeTab);
+
+            // Force a redraw/update of property fields
+            so.Update();
+
+            // Setup update loop for runtime info when in Play Mode
+            void SubscribeUpdate()
+            {
+                if (_subscribedToUpdate) return;
+                EditorApplication.update += EditorUpdate;
+                _subscribedToUpdate = true;
+            }
+            void UnsubscribeUpdate()
+            {
+                if (!_subscribedToUpdate) return;
+                EditorApplication.update -= EditorUpdate;
+                _subscribedToUpdate = false;
+            }
+
+            // Initial subscription if playing
+            if (EditorApplication.isPlaying)
+                SubscribeUpdate();
+            else
+                UnsubscribeUpdate();
+
+            // When inspector is created, also ensure we react to play mode changes to start/stop updating
+            EditorApplication.playModeStateChanged += (state) =>
+            {
+                if (state == PlayModeStateChange.EnteredPlayMode)
+                    SubscribeUpdate();
+                else if (state == PlayModeStateChange.ExitingPlayMode || state == PlayModeStateChange.EnteredEditMode)
+                    UnsubscribeUpdate();
+            };
+
+            return tabView;
+        }
+
+        // Clean up subscription when editor is disabled / destroyed
+        private void OnDisable()
+        {
+            if (_subscribedToUpdate)
+            {
+                EditorApplication.update -= EditorUpdate;
+                _subscribedToUpdate = false;
+            }
+        }
+
+        // Update labels with runtime data
+        private void EditorUpdate()
+        {
+            if (serializedObject == null) return;
+            var pb = serializedObject.targetObject as PlayerMovementBody;
+            if (pb == null) return;
+
+            // Update textual info; guard with try/catch to avoid throwing during domain reloads
+            try
+            {
+                _velLabel.text = pb.velocity.ToString("F3");
+                _speedLabel.text = pb.CurrentSpeed.ToString("F3");
+                _jumpStateLabel.text = pb.JumpStateCurrent.ToString();
+                _onNavMeshLabel.text = pb.OnNavMesh ? "Yes" : "No";
+
+                Vector3 navDest = Vector3.zero;
+                bool hasNav = pb.NavDestination(out navDest);
+                bool showNav = pb.OnNavMesh && hasNav;
+                _navDestLabel.text = showNav ? navDest.ToString("F3") : "(none)";
+                // Toggle visibility of the nav row
+                _navRow.style.display = showNav ? DisplayStyle.Flex : DisplayStyle.None;
+
+                _gravityLabel.text = pb.Get3DGravity().ToString("F3");
+
+                _directionLabel.text = pb.direction.ToString("F3");
+
+                // Anchor reflection: only show when collider is present
+                var anchorObj = typeof(PlayerMovementBody)
+                    .GetField("anchorPoint", BindingFlags.NonPublic | BindingFlags.Instance)
+                    ?.GetValue(pb);
+
+                string anchorText = "(none)";
+                if (anchorObj != null)
+                {
+                    // Try to get collider property on the anchor and confirm it's non-null before showing details
+                    var anchorType = anchorObj.GetType();
+                    var colliderProp = anchorType.GetProperty("collider");
+                    var normalProp = anchorType.GetProperty("normal");
+                    var pointProp = anchorType.GetProperty("point");
+
+                    var colObj = colliderProp?.GetValue(anchorObj) as Collider;
+                    if (colObj != null)
+                    {
+                        string colliderName = colObj.name;
+                        string normal = normalProp?.GetValue(anchorObj)?.ToString() ?? "(unknown)";
+                        string point = pointProp?.GetValue(anchorObj)?.ToString() ?? "(unknown)";
+                        anchorText = $"Collider: {colliderName}, Normal: {normal}, Point: {point}";
+                    }
+                }
+                _anchorLabel.text = anchorText;
+
+                // Current vent (if present)
+                var currentVent = typeof(PlayerMovementBody)
+                    .GetProperty("CurrentVent", BindingFlags.Public | BindingFlags.Instance)
+                    ?.GetValue(pb) as VolcanicVent;
+                _currentVentLabel.text = currentVent != null ? currentVent.name : "(none)";
+            }
+            catch
+            {
+                // swallow exceptions during assembly reloads / domain changes
+            }
+        }
+    }
 #endif
+
+    #endregion DEBUG
 
 }
 
-/*
- PLAN FOR FIXING PROBLEM.
- 
- Re-consolidate all functionality called by Move() to be within Move().
- (WHILE: making comment notes to denote each step for later organization.)
- 
- !!!!! Consider making "CollideAndSlide" CLASS! With Methods for each step that could be overridden.
- 
- Locate the Grounded "Move Forward" step and create a check that acts as if the Player is at the destination, and checks for ground below.
-
- */

@@ -16,6 +16,8 @@ namespace RageRooster.RoomSystem
         /// </summary>
         [field: SerializeField] public AreaAsset asset { get; protected set; }
 
+        [field: SerializeField] public GameObject[] roomLowestLods { get; private set; }
+
         private void Awake()
         {
             if (!RoomManager.Active)

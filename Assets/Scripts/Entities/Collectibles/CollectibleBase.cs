@@ -5,6 +5,7 @@ using UnityEditor.SceneManagement;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
+using RageRooster.RoomSystem;
 
 namespace RageRooster.Entities.Collectibles
 {
@@ -84,8 +85,8 @@ namespace RageRooster.Entities.Collectibles
                 {
                     if (GUILayout.Button("Generate Global ID"))
                     {
-                        RoomSystem.RoomRoot room = This.transform.FindComponentInAncestry<RoomSystem.RoomRoot>();
-                        if (room == null) throw new System.Exception("Wishbone must be a child of a RoomRoot to generate an ID.");
+                        RoomRoot room = RoomRoot.Find(This);
+                        if (room == null) throw new System.Exception("Wishbone must be in a properly configured Room scene to generate an ID.");
                         This.SetID($"{room.asset.area.name}_{room.asset.name}_{System.Guid.NewGuid()}");
                     }
                 }

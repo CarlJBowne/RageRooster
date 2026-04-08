@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2024 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
 
 using UnityEngine;
 
@@ -9,7 +9,7 @@ namespace UltEvents.Benchmarks
     /// in <see cref="OnEnable"/> and logs the amount of time it takes.
     /// </summary>
     [AddComponentMenu("")]// Don't show in the Add Component menu. You need to drag this script onto a prefab manually.
-    [HelpURL(UltEventUtils.APIDocumentationURL + "/Behchmarks/EnableBenchmark")]
+    [UltEventsHelpUrl(typeof(EnableBenchmark))]
     public abstract class EnableBenchmark : MonoBehaviour
     {
         /************************************************************************************************************************/

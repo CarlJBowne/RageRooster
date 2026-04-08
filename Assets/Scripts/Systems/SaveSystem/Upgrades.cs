@@ -17,6 +17,12 @@ namespace RageRooster.Systems.SaveSystem
         public bool hellcopter;
         /// <summary> The ability to charge with fury, breaking through certain obstacles and enemies. </summary>
         public bool ragingCharge;
+        /// <summary> The ability to glide through the air slowly. </summary>
+        public bool glide;
+        /// <summary> The ability to Jump a second time in mid air. </summary>
+        public bool doubleJump;
+        /// <summary> The ability to throw a lasso at grabbable objects to grab them from a distance. </summary>
+        public bool lasso;
         /// <summary> A debug-privilege upgrade that makes the player invincible. </summary>
         [JsonIgnore] public bool d_invincibility;
         /// <summary> A debug-privilege upgrade that makes the player go infinitely upwards as long as the jump button is held. </summary>
@@ -37,9 +43,14 @@ namespace RageRooster.Systems.SaveSystem
             wallJump = true,
             hellcopter = true,
             ragingCharge = true,
+            glide = true,
+            doubleJump = true,
+            lasso = true,
             d_invincibility = true,
             d_moonJump = true
         };
+
+        public static void Clone(Upgrades source, Upgrades target)=> source.Clone(target);
         public Upgrades Clone(Upgrades target = null)
         {
             target ??= new Upgrades();
@@ -58,6 +69,9 @@ namespace RageRooster.Systems.SaveSystem
             WallJump,
             Hellcopter,
             RagingCharge,
+            Glide,
+            DoubleJump,
+            Lasso,
         }
         public bool HasUpgrade(Upgrade upgrade)
         {
@@ -67,8 +81,23 @@ namespace RageRooster.Systems.SaveSystem
                 Upgrade.WallJump => wallJump,
                 Upgrade.Hellcopter => hellcopter,
                 Upgrade.RagingCharge => ragingCharge,
+                Upgrade.Glide => glide,
+                Upgrade.DoubleJump => doubleJump,
+                Upgrade.Lasso => lasso,
                 _ => false,
             };
+        }
+        public bool SetUpgrade(Upgrade upgrade, bool value)
+        {
+            if (upgrade == Upgrade.DropLaunch) dropLaunch = value;
+            if (upgrade == Upgrade.WallJump) wallJump = value;
+            if (upgrade == Upgrade.Hellcopter) hellcopter = value;
+            if (upgrade == Upgrade.RagingCharge) ragingCharge = value;
+            if (upgrade == Upgrade.Glide) glide = value;
+            if (upgrade == Upgrade.DoubleJump) doubleJump = value;
+            if (upgrade == Upgrade.Lasso) lasso = value;
+
+            return false;
         }
     }
 }

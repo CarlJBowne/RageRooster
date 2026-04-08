@@ -157,10 +157,6 @@ public static class _MonoBehaviorHelpers
         if (scale) transform.localScale = Vector3.one;
     }
 
-    public static T Random<T>(this T[] array) => array[UnityEngine.Random.Range(0, array.Length)];
-    public static T Random<T>(this List<T> array) => array[UnityEngine.Random.Range(0, array.Count)];
-    public static void RemoveAtLast<T>(this List<T> array, int i = 1) => array.Remove(array[^i]);
-
     public static T GetOrAddComponent<T>(this Component O) where T : Component
     {
         O.gameObject.TryGetComponent(out T V);
@@ -252,5 +248,29 @@ public static class _CloneableExtensions
     {
         source.Clone(target);
         return target;
+    }
+}
+
+public static class _CollectionExtensions
+{
+    public static T Random<T>(this T[] array) => array[UnityEngine.Random.Range(0, array.Length)];
+    public static T Random<T>(this List<T> array) => array[UnityEngine.Random.Range(0, array.Count)];
+    public static void RemoveAtLast<T>(this List<T> array, int i = 1)
+    {
+        if (array == null || array.Count == 0) return;
+        int index = array.Count - i;
+        if (index >= 0 && index < array.Count) array.RemoveAt(index);
+    }
+    public static void ClearNull<T>(this List<T> list) where T : class
+    {
+        if (list == null) return;
+        for (int i = list.Count - 1; i >= 0; i--)
+            if (list[i] == null)
+                list.RemoveAt(i);
+    }
+    public static void AddUnique<T>(this List<T> list, T item) where T : class
+    {
+        if (list == null || item == null || list.Contains(item)) return;
+        list.Add(item);
     }
 }
