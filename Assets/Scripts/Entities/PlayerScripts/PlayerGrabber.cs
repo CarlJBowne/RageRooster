@@ -13,7 +13,6 @@ public class PlayerGrabber : MonoBehaviour
     public Transform twoHandedHand;
     public UltEvent<bool> GrabStateEvent;
     public Transform heldItemAnchor;
-    public State dropLaunchState;
     public float turnToGrabRate;
 
     // Data
@@ -50,16 +49,16 @@ public class PlayerGrabber : MonoBehaviour
         SetGrabbingLayer(true);
         currentGrabbed.Grab();
 
-        if(warpTo) Player.MovementBody.Position = targetPos;
+        if(warpTo) Player.MovementBody.Position = new(targetPos.x, Player.Position.y, targetPos.z);
 
-        if (Player.StateMachine.Airborne && Upgrades.Active.dropLaunch && Input.Grab.IsPressed()) dropLaunchState.Enter();
+        if (Player.StateMachine.Airborne && Upgrades.Active.dropLaunch && Input.Grab.IsPressed()) 
+            Player.StateMachine.DropLaunch.Enter();
     }
 
-
-    public void Throw()
+    public void Throw(Vector3 direction)
     {
         if(currentGrabbed == null) return;
-        Vector3 throwDirection = Player.Forward;
+        Vector3 throwDirection = direction;
         Vector3 throwVelocity = throwDirection * launchVelocity + Player.MovementBody.velocity;
         currentGrabbed?.Throw(throwVelocity);
         currentGrabbed = null;
@@ -74,6 +73,12 @@ public class PlayerGrabber : MonoBehaviour
         currentGrabbed = null;
         GrabStateEvent?.Invoke(false);
         SetGrabbingLayer(false);
+    }
+
+    public void AirThrowAction(State throwState)
+    {
+        if (Upgrades.Active.dropLaunch) Player.StateMachine.DropLaunch.Enter();
+        else if (throwState != null) throwState.Enter();
     }
 
 

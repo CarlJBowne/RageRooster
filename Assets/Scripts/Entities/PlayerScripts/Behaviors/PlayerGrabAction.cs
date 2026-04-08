@@ -11,6 +11,7 @@ public class PlayerGrabAction : PlayerStateBehavior
     public UltEvents.UltEvent failMissedReturn;
     public UltEvents.UltEvent failBlockedReturn;
     public UltEvents.UltEvent altSwitchReturn;
+    public bool snapToGrabbed;
 
     TargetType.Melee selectedTarget;
     Grabbable selectedGrabbable;
@@ -42,7 +43,7 @@ public class PlayerGrabAction : PlayerStateBehavior
 
     public void FinishGrab()
     {
-        Player.Grabber.Grab(selectedGrabbable);
+        Player.Grabber.Grab(selectedGrabbable, snapToGrabbed);
         successReturn?.Invoke();
         selectedTarget = null;
         selectedGrabbable = null;

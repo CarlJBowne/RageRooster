@@ -85,14 +85,13 @@ public abstract class PlayerButtonAction : Polymorph
         public UltEvent releaseEvent;
         public override void Press()
         {
-            Begin();
+            if (!releaseEvent.HasCalls) Begin();
             pressEvent?.Invoke();
-            if (!releaseEvent.HasCalls) Finish();
         }
         public override void Release()
         {
             releaseEvent?.Invoke();
-            Finish();
+            if (!releaseEvent.HasCalls) Finish();
         }
         protected override IEnumerator HoldRoutine()
         { yield return null; }

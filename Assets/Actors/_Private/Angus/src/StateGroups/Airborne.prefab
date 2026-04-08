@@ -1367,7 +1367,7 @@ GameObject:
   - component: {fileID: 1277634764288700224}
   - component: {fileID: 8045438663692130845}
   - component: {fileID: 8610041465738997136}
-  - component: {fileID: 8121447919945305324}
+  - component: {fileID: 3787184251587994200}
   m_Layer: 6
   m_Name: DropLaunch
   m_TagString: Untagged
@@ -1407,7 +1407,7 @@ MonoBehaviour:
   - {fileID: 3767862025383768759}
   - {fileID: 8045438663692130845}
   - {fileID: 8610041465738997136}
-  - {fileID: 8121447919945305324}
+  - {fileID: 3787184251587994200}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 376499432679914711}
   <Layer>k__BackingField: 1
@@ -1538,7 +1538,7 @@ MonoBehaviour:
   onEnterTime: 0.01
   doWhenNotFinal: 0
   animator: {fileID: 0}
---- !u!114 &8121447919945305324
+--- !u!114 &3787184251587994200
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1547,68 +1547,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 3077565335076583419}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
+  m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
   <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 8663034410992953364}
-  Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
-  Jump:
-    rid: 1950655830041821303
-  Attack:
-    rid: -2
-  Grab:
-    rid: 1950655830041821304
-  Charge:
-    rid: 1950655830041821305
-  Parry:
-    rid: -2
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 1950655830041821303
-      type: {class: PlayerButtonAction/TapOrHold, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 0
-        pressInstantEvent:
-          _PersistentCalls: []
-        releaseInstantEvent:
-          _PersistentCalls: []
-        tapEvent:
-          _PersistentCalls: []
-        holdTime: 0.3
-        holdEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 0}
-            _MemberName: Enter
-            _PersistentArguments: []
-        autoFinishHold: 1
-    - rid: 1950655830041821304
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 0
-        pressEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 0}
-            _MemberName: GrabThrowButton
-            _PersistentArguments: []
-        releaseEvent:
-          _PersistentCalls: []
-    - rid: 1950655830041821305
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 0
-        pressEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 0}
-            _MemberName: Enter
-            _PersistentArguments: []
-        releaseEvent:
-          _PersistentCalls: []
+  timeline: {fileID: 0}
+  events:
+  - time: 0.1666667
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Throw
+        _PersistentArguments:
+        - _Type: 7
+          _Int: 0
+          _String: 
+          _X: 0
+          _Y: -1
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+  - time: 0.9166667
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 1501509694756331304}
+        _MemberName: Enter
+        _PersistentArguments: []
+  loopAfterLastEvent: 0
 --- !u!1 &3113314633541517961
 GameObject:
   m_ObjectHideFlags: 0

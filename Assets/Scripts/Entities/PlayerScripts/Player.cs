@@ -191,10 +191,16 @@ public class Player : MonoBehaviour
     /// The current Rotation of the <see cref="Player"/> as a Quaternion.
     /// </summary>
     public static Quaternion Rotation => Transform.rotation;
-    /// <summary>
-    /// The current Forward Vector of the <see cref="Player"/>.
-    /// </summary>
+    /// <summary>The current Forward Vector of the <see cref="Player"/>. </summary>
     public static Vector3 Forward => Transform.forward;
+    /// <summary>The current Up Vector of the <see cref="Player"/>. </summary>
+    public static Vector3 Up => Transform.up;
+    /// <summary>The current Down Vector of the <see cref="Player"/>. </summary>
+    public static Vector3 Down => -Transform.up;
+    /// <summary>The current Right Vector of the <see cref="Player"/>. </summary>
+    public static Vector3 Right => Transform.right;
+    /// <summary>The current Left Vector of the <see cref="Player"/>. </summary>
+    public static Vector3 Left => -Transform.right;
     /// <summary>
     /// The current Rotation of the <see cref="Player"/> in Euler Angles.
     /// </summary>
