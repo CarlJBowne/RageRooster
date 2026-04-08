@@ -249,6 +249,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void Awake()
     {
+        DontDestroyOnLoad(this);
         GameObject = gameObject;
         Transform = transform;
         StateMachine = GetComponent<PlayerStateMachine>();

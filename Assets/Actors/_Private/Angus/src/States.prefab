@@ -95,6 +95,7 @@ MonoBehaviour:
       _PersistentArguments: []
   altSwitchReturn:
     _PersistentCalls: []
+  snapToGrabbed: 0
 --- !u!114 &2986057846797002032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2596,6 +2597,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GrabbedMovement
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468325439734856268, guid: aada0ff0faa779d42804f021194f2ede,
+        type: 3}
+      propertyPath: Grab
+      value: 3995430819782459513
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468325439734856268, guid: aada0ff0faa779d42804f021194f2ede,
+        type: 3}
+      propertyPath: 'managedReferences[1950655830041821322]'
+      value: Assembly-CSharp PlayerButtonAction/BasicPush
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468325439734856268, guid: aada0ff0faa779d42804f021194f2ede,
+        type: 3}
+      propertyPath: 'managedReferences[3995430819782459513]'
+      value: Assembly-CSharp PlayerButtonAction/BasicPush
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468325439734856268, guid: aada0ff0faa779d42804f021194f2ede,
+        type: 3}
+      propertyPath: managedReferences[3995430819782459513].persistAcrossStateChange
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468325439734856268, guid: aada0ff0faa779d42804f021194f2ede,
+        type: 3}
+      propertyPath: managedReferences[1950655830041821322].pressEvent._PersistentCalls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468325439734856268, guid: aada0ff0faa779d42804f021194f2ede,
+        type: 3}
+      propertyPath: managedReferences[3995430819782459513].pressEvent._PersistentCalls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468325439734856268, guid: aada0ff0faa779d42804f021194f2ede,
+        type: 3}
+      propertyPath: managedReferences[3995430819782459513].releaseEvent._PersistentCalls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5468325439734856268, guid: aada0ff0faa779d42804f021194f2ede,
         type: 3}
@@ -6150,7 +6186,7 @@ PrefabInstance:
     - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
         type: 3}
       propertyPath: managedReferences[440872815894724755].pressEvent._PersistentCalls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
         type: 3}
@@ -6274,11 +6310,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
         type: 3}
-      propertyPath: managedReferences[1950655830041821279].pressEvent._PersistentCalls.Array.data[0]._Target
-      value: 
-      objectReference: {fileID: 2616927189368296223}
-    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
-        type: 3}
       propertyPath: managedReferences[1950655830041821281].pressEvent._PersistentCalls.Array.data[0]._Target
       value: 
       objectReference: {fileID: 1446572254727929891}
@@ -6287,6 +6318,11 @@ PrefabInstance:
       propertyPath: managedReferences[1950655830041821284].pressEvent._PersistentCalls.Array.data[0]._Target
       value: 
       objectReference: {fileID: 3163434777347356036}
+    - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: managedReferences[3995430819782459523].pressEvent._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
         type: 3}
       propertyPath: managedReferences[440872388981686386].pressEvent._PersistentCalls.Array.data[0]._MemberName
@@ -6305,7 +6341,7 @@ PrefabInstance:
     - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
         type: 3}
       propertyPath: managedReferences[440872815894724751].pressEvent._PersistentCalls.Array.data[0]._MemberName
-      value: GrabThrowButton
+      value: DoGrabAttempt
       objectReference: {fileID: 0}
     - target: {fileID: 444049789313555850, guid: b256207bb61b85244915454556421f67,
         type: 3}

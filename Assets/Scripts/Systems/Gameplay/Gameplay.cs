@@ -117,6 +117,7 @@ public class Gameplay : MonoBehaviour
     [SerializeField] DontDestroyMeOnLoad overlayPrefab;
     [SerializeField] Player inputPlayer;
     [SerializeField] UIHUDSystem inputUI;
+    [SerializeField] Cameras inputCams;
     [SerializeField] StudioEventEmitter musicEmitter;
     [SerializeField] StudioEventEmitter musicEmitter2;
 
@@ -139,7 +140,7 @@ public class Gameplay : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         inputPlayer.Awake();
         inputUI.Awake();
-        GetComponentInChildren<Cameras>().Awake();
+        inputCams.Awake();
         GlobalPool.poolParent = transform.Find("PooledObjects");
         GlobalPool.Instance.Initialize();
         Overlay.OverMenus.BasicBlackout = 1;

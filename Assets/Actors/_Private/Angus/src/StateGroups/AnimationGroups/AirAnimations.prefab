@@ -1527,11 +1527,18 @@ MonoBehaviour:
   successReturn:
     _PersistentCalls: []
   failMissedReturn:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 7509005124000629188}
+      _MemberName: Enter
+      _PersistentArguments: []
   failBlockedReturn:
-    _PersistentCalls: []
+    _PersistentCalls:
+    - _Target: {fileID: 935463664092948736}
+      _MemberName: Enter
+      _PersistentArguments: []
   altSwitchReturn:
     _PersistentCalls: []
+  snapToGrabbed: 1
 --- !u!114 &6841539181753343840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2736,8 +2743,19 @@ MonoBehaviour:
     output:
       _PersistentCalls:
       - _Target: {fileID: 0}
-        _MemberName: Throw
+        _MemberName: Player, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null.get_Forward
         _PersistentArguments: []
+      - _Target: {fileID: 0}
+        _MemberName: Throw
+        _PersistentArguments:
+        - _Type: 7
+          _Int: 0
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   - time: 0.55
     output:
       _PersistentCalls:

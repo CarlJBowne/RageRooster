@@ -26,6 +26,7 @@ public class Cameras : MonoBehaviour
             return;
         }
         instance = this;
+        DontDestroyOnLoad(this);
 
         RealCamera.brain = inputBrain;
         RealCamera.camera = inputBrain.GetComponent<Camera>();

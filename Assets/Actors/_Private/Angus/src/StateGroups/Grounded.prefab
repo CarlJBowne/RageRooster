@@ -1122,7 +1122,7 @@ MonoBehaviour:
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   Jump:
-    rid: 1950655830041821279
+    rid: 3995430819782459523
   Attack:
     rid: 1950655830041821280
   Grab:
@@ -1134,41 +1134,6 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1950655830041821279
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 0
-        pressEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 0}
-            _MemberName: BeginJump
-            _PersistentArguments:
-            - _Type: 5
-              _Int: 0
-              _String: 
-              _X: 12
-              _Y: 0
-              _Z: 0
-              _W: 0
-              _Object: {fileID: 0}
-            - _Type: 5
-              _Int: 0
-              _String: 
-              _X: 5
-              _Y: 0
-              _Z: 0
-              _W: 0
-              _Object: {fileID: 0}
-            - _Type: 5
-              _Int: 0
-              _String: 
-              _X: 5
-              _Y: 0
-              _Z: 0
-              _W: 0
-              _Object: {fileID: 0}
-        releaseEvent:
-          _PersistentCalls: []
     - rid: 1950655830041821280
       type: {class: PlayerButtonAction/TapOrHold, ns: , asm: Assembly-CSharp}
       data:
@@ -1212,6 +1177,17 @@ MonoBehaviour:
         releaseEvent:
           _PersistentCalls: []
     - rid: 1950655830041821284
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        pressEvent:
+          _PersistentCalls:
+          - _Target: {fileID: 0}
+            _MemberName: Enter
+            _PersistentArguments: []
+        releaseEvent:
+          _PersistentCalls: []
+    - rid: 3995430819782459523
       type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
       data:
         persistAcrossStateChange: 0

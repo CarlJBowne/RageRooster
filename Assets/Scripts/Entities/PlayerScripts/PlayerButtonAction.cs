@@ -251,7 +251,7 @@ public abstract class PlayerButtonAction : Polymorph
             container.Add(persistField);
             container.Add(upgradeField);
 
-            var tabDrawer = new TabbedDrawer();
+            TabbedDrawer tabDrawer = new();
             container.Add(tabDrawer);
 
             tabDrawer.Add("Has Upgrade", property.FindPropertyRelative(nameof(hasUpgrade)));
