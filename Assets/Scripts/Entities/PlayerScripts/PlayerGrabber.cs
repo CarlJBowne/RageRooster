@@ -49,15 +49,15 @@ public class PlayerGrabber : MonoBehaviour
         SetGrabbingLayer(true);
         currentGrabbed.Grab();
 
-        if(warpTo) Player.MovementBody.Position = new(targetPos.x, Player.Position.y, targetPos.z);
+        if (warpTo) Player.MovementBody.Position = new(targetPos.x, Player.Position.y, targetPos.z);
 
-        if (Player.StateMachine.Airborne && Upgrades.Active.dropLaunch && Input.Grab.IsPressed()) 
+        if (Player.StateMachine.Airborne && Upgrades.Active.dropLaunch && Input.Grab.IsPressed())
             Player.StateMachine.DropLaunch.Enter();
     }
 
     public void Throw(Vector3 direction)
     {
-        if(currentGrabbed == null) return;
+        if (currentGrabbed == null) return;
         Vector3 throwDirection = direction;
         Vector3 throwVelocity = throwDirection * launchVelocity + Player.MovementBody.velocity;
         currentGrabbed?.Throw(throwVelocity);
@@ -104,6 +104,7 @@ public class PlayerGrabber : MonoBehaviour
     }
 
 
-
+    public static void Grab_Static(Grabbable target, bool warpTo = true) => Player.Grabber.Grab(target, warpTo);
+    public static void Throw_Static(Vector3 direction) => Player.Grabber.Throw(direction);
 
 }

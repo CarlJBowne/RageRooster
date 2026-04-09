@@ -1,5 +1,188 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &77060564305961655
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4355461183557771069}
+  - component: {fileID: 4013964010397517232}
+  - component: {fileID: 7480665489456482996}
+  - component: {fileID: 2287129866375311486}
+  - component: {fileID: 5314307773985429491}
+  - component: {fileID: 5854373079976201164}
+  - component: {fileID: 2172773124327044178}
+  m_Layer: 6
+  m_Name: AirChargeWindup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &4355461183557771069
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77060564305961655}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8110135924380990025}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4013964010397517232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77060564305961655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 2287129866375311486}
+  - {fileID: 5314307773985429491}
+  - {fileID: 5854373079976201164}
+  - {fileID: 2172773124327044178}
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 1240914359256471248}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &7480665489456482996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77060564305961655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1681649120
+      Data2: 1168265751
+      Data3: 243103399
+      Data4: -1067112179
+    Path: event:/SFX/Player SFX/Movement/airDash
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &2287129866375311486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77060564305961655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <State>k__BackingField: {fileID: 4013964010397517232}
+  signals:
+    serializedList:
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 0}
+          _MemberName: EnterFade
+          _PersistentArguments: []
+  lockOnEnter: 0
+--- !u!114 &5314307773985429491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77060564305961655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <State>k__BackingField: {fileID: 4013964010397517232}
+  onEntry: 2
+  onEnterName: SomersaultWindup
+  onEnterTime: 0.2
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &5854373079976201164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77060564305961655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
+  <State>k__BackingField: {fileID: 4013964010397517232}
+  timeline: {fileID: 0}
+  events:
+  - time: 0.13333334
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
+  loopAfterLastEvent: 0
+--- !u!114 &2172773124327044178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77060564305961655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
+  <State>k__BackingField: {fileID: 4013964010397517232}
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  Jump:
+    rid: -2
+  Attack:
+    rid: -2
+  Grab:
+    rid: -2
+  Charge:
+    rid: -2
+  Parry:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &666090841383921340
 GameObject:
   m_ObjectHideFlags: 0
@@ -74,7 +257,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1596455508646601812}
   signals:
     serializedList:
@@ -105,7 +287,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1596455508646601812}
   onEntry: 2
   onEnterName: AirKick
@@ -124,7 +305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1596455508646601812}
   timeline: {fileID: 0}
   minForwardMovementCurve:
@@ -317,7 +497,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839f2e7aba0e21d4b87f3a6945083fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTargetPursuer
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1596455508646601812}
   timeline: {fileID: 0}
   length: 0.2333333
@@ -422,7 +601,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1596455508646601812}
   timeline: {fileID: 0}
   events:
@@ -478,7 +656,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1596455508646601812}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -615,7 +792,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7940821063771917098}
   signals:
     serializedList:
@@ -657,7 +833,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7940821063771917098}
   onEntry: 2
   onEnterName: LightPunchAir2
@@ -676,7 +851,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7940821063771917098}
   timeline: {fileID: 0}
   minForwardMovementCurve:
@@ -851,8 +1025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839f2e7aba0e21d4b87f3a6945083fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTargetPursuer
-  <Machine>k__BackingField: {fileID: 0}
-  <State>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 7940821063771917098}
   timeline: {fileID: 0}
   length: 0.2333333
   forwardSpeedCurve:
@@ -943,7 +1116,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   closeDistance: 0.75
-  failedBackup: {fileID: 0}
+  failedBackup: {fileID: 2357885435015564703}
 --- !u!114 &1274625630210408939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -956,7 +1129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7940821063771917098}
   timeline: {fileID: 0}
   events:
@@ -993,7 +1165,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7940821063771917098}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -1120,7 +1291,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7337055026775649160}
   signals:
     serializedList:
@@ -1168,7 +1338,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5627c717a97d6104886deaae615e9509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7337055026775649160}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -1237,7 +1406,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7337055026775649160}
   onEntry: 2
   onEnterName: GroundSlam_Start
@@ -1304,7 +1472,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7337055026775649160}
   timeline: {fileID: 0}
   minForwardMovementCurve:
@@ -1416,7 +1583,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7337055026775649160}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -1442,7 +1608,7 @@ MonoBehaviour:
         persistAcrossStateChange: 0
         pressEvent:
           _PersistentCalls:
-          - _Target: {fileID: 0}
+          - _Target: {fileID: 4013964010397517232}
             _MemberName: Enter
             _PersistentArguments: []
         releaseEvent:
@@ -1501,7 +1667,6 @@ MonoBehaviour:
   - {fileID: 3496320805565519492}
   - {fileID: 4938220053268705026}
   - {fileID: 7797969928910121717}
-  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -1519,7 +1684,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9ea06674c3fe044c81dee4e88f1ae12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 5660543822451208385}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -1582,7 +1746,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 5660543822451208385}
   signals:
     serializedList:
@@ -1619,7 +1782,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 5660543822451208385}
   timeline: {fileID: 0}
   events:
@@ -1627,7 +1789,7 @@ MonoBehaviour:
     output:
       _PersistentCalls:
       - _Target: {fileID: 298940288332899255}
-        _MemberName: EndGrabAttempt
+        _MemberName: FinishGrab
         _PersistentArguments: []
   - time: 0.4666667
     output:
@@ -1667,8 +1829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839f2e7aba0e21d4b87f3a6945083fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTargetPursuer
-  <Machine>k__BackingField: {fileID: 0}
-  <State>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 5660543822451208385}
   timeline: {fileID: 0}
   length: 0.2333333
   forwardSpeedCurve:
@@ -1760,6 +1921,617 @@ MonoBehaviour:
     m_RotationOrder: 4
   closeDistance: 0.75
   failedBackup: {fileID: 0}
+--- !u!1 &2549990567691232858
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6085693502157551463}
+  - component: {fileID: 7081657350339548755}
+  - component: {fileID: 4418998661789656379}
+  - component: {fileID: 8009914028543508673}
+  - component: {fileID: 4166950754799812384}
+  - component: {fileID: 6002171360735996087}
+  - component: {fileID: 3124737419329290273}
+  m_Layer: 6
+  m_Name: AirBonk
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &6085693502157551463
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2549990567691232858}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8110135924380990025}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7081657350339548755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2549990567691232858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 8009914028543508673}
+  - {fileID: 4166950754799812384}
+  - {fileID: 6002171360735996087}
+  - {fileID: 3124737419329290273}
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 1240914359256471248}
+  <Layer>k__BackingField: 2
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &4418998661789656379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2549990567691232858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -265496798
+      Data2: 1098911609
+      Data3: 514920626
+      Data4: 512150926
+    Path: event:/SFX/Player SFX/General/playerBonk
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &8009914028543508673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2549990567691232858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <State>k__BackingField: {fileID: 7081657350339548755}
+  signals:
+    serializedList:
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 0}
+          _MemberName: Enter
+          _PersistentArguments: []
+        - _Target: {fileID: 0}
+          _MemberName: Land
+          _PersistentArguments: []
+  lockOnEnter: 0
+--- !u!114 &4166950754799812384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2549990567691232858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <State>k__BackingField: {fileID: 7081657350339548755}
+  onEntry: 1
+  onEnterName: BonkAir
+  onEnterTime: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &6002171360735996087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2549990567691232858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
+  <State>k__BackingField: {fileID: 7081657350339548755}
+  timeline: {fileID: 0}
+  minForwardMovementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.19000003
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.28500003
+      value: -2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6333334
+      value: -2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxForwardMovementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.19000003
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.28500003
+      value: -2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6333334
+      value: -2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speedChangeCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  turnabilityCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  verticalAccelerationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25333336
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.28399757
+      value: 1
+      inSlope: 8.681513
+      outSlope: 8.681513
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.3166667
+      value: -0.07533556
+      inSlope: -46.28203
+      outSlope: -46.28203
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.38000005
+      value: -50
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6333334
+      value: -50
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  terminalVelocity: 98.1
+  setVerticalInfluenceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.36100003
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.43066671
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6333334
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  setVerticalVelocityCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  sidewaysMovementCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  loopTime: 0
+  influenceFadeTime: 0.5
+  overrideOff: 0
+--- !u!114 &3124737419329290273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2549990567691232858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
+  <State>k__BackingField: {fileID: 7081657350339548755}
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  Jump:
+    rid: -2
+  Attack:
+    rid: -2
+  Grab:
+    rid: -2
+  Charge:
+    rid: -2
+  Parry:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+--- !u!1 &4455649396155297584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4939414768959268548}
+  - component: {fileID: 9136615076610149191}
+  - component: {fileID: 4352082223274014327}
+  - component: {fileID: 7483014765755114567}
+  - component: {fileID: 8124401093494964817}
+  - component: {fileID: 5293022077158188796}
+  - component: {fileID: 1495146948802109046}
+  - component: {fileID: 2305499323867276782}
+  m_Layer: 6
+  m_Name: DropLaunch
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &4939414768959268548
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455649396155297584}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8110135924380990025}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9136615076610149191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455649396155297584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 4352082223274014327}
+  - {fileID: 7483014765755114567}
+  - {fileID: 5293022077158188796}
+  - {fileID: 1495146948802109046}
+  - {fileID: 2305499323867276782}
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &4352082223274014327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455649396155297584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe34ac105f41a84097b0a3ee58e92c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <State>k__BackingField: {fileID: 9136615076610149191}
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  acceleration: 0.35
+  decceleration: 0.5
+  maxSpeed: 10
+  stopping: 0.3
+  maxTurnSpeed: 10
+  forceOutward: 0
+  minSpeed: 0
+--- !u!114 &7483014765755114567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455649396155297584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89a8416e01b52494193d14c59b41a835, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <State>k__BackingField: {fileID: 9136615076610149191}
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  defaultPhase: 1
+  jumpHeight: 4
+  jumpPower: 14
+  jumpMinHeight: 2
+  gravity: 30
+  terminalVelocity: 98.1
+  flatGravity: 0
+  allowMidFall: 0
+  allowDoubleJump: 1
+  fallState: {fileID: 0}
+  fallStateThreshold: 0
+--- !u!114 &8124401093494964817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455649396155297584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1963148907
+      Data2: 1118223752
+      Data3: -1998053447
+      Data4: 615740914
+    Path: event:/SFX/Player SFX/Combat/PlayerThrow&DropLaunch
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &5293022077158188796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455649396155297584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <State>k__BackingField: {fileID: 9136615076610149191}
+  signals:
+    serializedList:
+    - Key: Land
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 0}
+          _MemberName: EnterTrigger
+          _PersistentArguments: []
+  lockOnEnter: 0
+--- !u!114 &1495146948802109046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455649396155297584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <State>k__BackingField: {fileID: 9136615076610149191}
+  onEntry: 2
+  onEnterName: DropLaunch
+  onEnterTime: 0.01
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &2305499323867276782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455649396155297584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
+  <State>k__BackingField: {fileID: 9136615076610149191}
+  timeline: {fileID: 0}
+  events:
+  - time: 0.1666667
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: PlayerGrabber, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null.Throw_Static
+        _PersistentArguments:
+        - _Type: 7
+          _Int: 0
+          _String: 
+          _X: 0
+          _Y: -1
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+  - time: 0.9166667
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
+  loopAfterLastEvent: 0
 --- !u!1 &4740896802998860751
 GameObject:
   m_ObjectHideFlags: 0
@@ -1866,7 +2638,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 9220388631842718837}
   signals:
     serializedList:
@@ -1908,7 +2679,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 9220388631842718837}
   onEntry: 2
   onEnterName: LightPunchAir1
@@ -1927,7 +2697,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 9220388631842718837}
   timeline: {fileID: 0}
   minForwardMovementCurve:
@@ -2102,8 +2871,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839f2e7aba0e21d4b87f3a6945083fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTargetPursuer
-  <Machine>k__BackingField: {fileID: 0}
-  <State>k__BackingField: {fileID: 0}
+  <State>k__BackingField: {fileID: 9220388631842718837}
   timeline: {fileID: 0}
   length: 0.2333333
   forwardSpeedCurve:
@@ -2194,7 +2962,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   closeDistance: 0.75
-  failedBackup: {fileID: 0}
+  failedBackup: {fileID: 4082322391070217788}
 --- !u!114 &1818697774432629862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2207,7 +2975,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 9220388631842718837}
   timeline: {fileID: 0}
   events:
@@ -2244,7 +3011,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 9220388631842718837}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -2365,7 +3131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7509005124000629188}
   onEntry: 2
   onEnterName: AirGrabMiss
@@ -2384,7 +3149,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7509005124000629188}
   timeline: {fileID: 0}
   minForwardMovementCurve:
@@ -2541,7 +3305,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7509005124000629188}
   timeline: {fileID: 0}
   events:
@@ -2578,7 +3341,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7509005124000629188}
   signals:
     serializedList:
@@ -2605,6 +3367,7 @@ GameObject:
   - component: {fileID: 4945723595789684522}
   - component: {fileID: 9073209158844073788}
   - component: {fileID: 5440792583322738497}
+  - component: {fileID: 5812798475129713075}
   m_Layer: 6
   m_Name: AirThrow
   m_TagString: Untagged
@@ -2645,6 +3408,7 @@ MonoBehaviour:
   - {fileID: 4945723595789684522}
   - {fileID: 9073209158844073788}
   - {fileID: 5440792583322738497}
+  - {fileID: 5812798475129713075}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -2693,7 +3457,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 305372263694839032}
   signals:
     serializedList:
@@ -2716,7 +3479,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 305372263694839032}
   onEntry: 1
   onEnterName: AirThrow
@@ -2735,23 +3497,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 305372263694839032}
   timeline: {fileID: 0}
   events:
-  - time: 0.16666667
+  - time: 0.1666667
     output:
       _PersistentCalls:
       - _Target: {fileID: 0}
         _MemberName: Player, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null.get_Forward
         _PersistentArguments: []
       - _Target: {fileID: 0}
-        _MemberName: Throw
+        _MemberName: PlayerGrabber, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null.Throw_Static
         _PersistentArguments:
-        - _Type: 7
+        - _Type: 15
           _Int: 0
           _String: 
-          _X: 0
+          _X: 7
           _Y: 0
           _Z: 0
           _W: 0
@@ -2781,7 +3543,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 305372263694839032}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -2813,11 +3574,184 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 305372263694839032}
   signals:
     serializedList: []
   lockOnEnter: 0
+--- !u!114 &5812798475129713075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7445540337320547508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
+  <State>k__BackingField: {fileID: 305372263694839032}
+  timeline: {fileID: 0}
+  minForwardMovementCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxForwardMovementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25201672
+      value: 2.5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.3872045
+      value: 0
+      inSlope: -22.19136
+      outSlope: 0
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.2000002
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speedChangeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1
+      value: 8
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 8
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  turnabilityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 10
+      inSlope: -63.070152
+      outSlope: -63.070152
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1585536
+      value: 0
+      inSlope: 0.69183415
+      outSlope: 0.69183415
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.07235043
+    - serializedVersion: 3
+      time: 1
+      value: 10
+      inSlope: 11.884298
+      outSlope: 11.884298
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  verticalAccelerationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: -50
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  terminalVelocity: 98.1
+  setVerticalInfluenceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  setVerticalVelocityCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  sidewaysMovementCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  loopTime: 0
+  influenceFadeTime: 0.1
+  overrideOff: 0
 --- !u!1 &7744234404908530503
 GameObject:
   m_ObjectHideFlags: 0
@@ -2888,7 +3822,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 935463664092948736}
   onEntry: 1
   onEnterName: AirGrabBlocked
@@ -2907,7 +3840,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 935463664092948736}
   timeline: {fileID: 0}
   minForwardMovementCurve:
@@ -3073,7 +4005,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 935463664092948736}
   timeline: {fileID: 0}
   events:
@@ -3104,7 +4035,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 935463664092948736}
   signals:
     serializedList:
@@ -3153,6 +4083,9 @@ Transform:
   - {fileID: 5736666430588890440}
   - {fileID: 1652433871933845568}
   - {fileID: 8318261483835635308}
+  - {fileID: 6085693502157551463}
+  - {fileID: 4355461183557771069}
+  - {fileID: 4939414768959268548}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1240914359256471248
@@ -3180,4 +4113,6 @@ MonoBehaviour:
   - {fileID: 935463664092948736}
   - {fileID: 305372263694839032}
   - {fileID: 7337055026775649160}
-  <ChildCount>k__BackingField: 8
+  - {fileID: 7081657350339548755}
+  - {fileID: 4013964010397517232}
+  <ChildCount>k__BackingField: 10

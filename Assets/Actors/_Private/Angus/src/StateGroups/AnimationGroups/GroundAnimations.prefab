@@ -70,7 +70,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56991d69e0c7b384e9ac93dc554c6fda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 5979072417615712909}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -88,7 +87,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 5979072417615712909}
   onEntry: 2
   onEnterName: LassoThrow
@@ -107,7 +105,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 5979072417615712909}
   signals:
     serializedList:
@@ -130,7 +127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 5979072417615712909}
   timeline: {fileID: 0}
   events:
@@ -247,7 +243,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 592500146358321391}
   signals:
     serializedList: []
@@ -264,7 +259,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 592500146358321391}
   onEntry: 2
   onEnterName: Headbutt
@@ -283,7 +277,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 592500146358321391}
   timeline: {fileID: 0}
   minForwardMovementCurve:
@@ -512,7 +505,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839f2e7aba0e21d4b87f3a6945083fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTargetPursuer
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 592500146358321391}
   timeline: {fileID: 0}
   length: 0.2333333
@@ -608,7 +600,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 592500146358321391}
   timeline: {fileID: 0}
   events:
@@ -645,8 +636,289 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 592500146358321391}
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  Jump:
+    rid: -2
+  Attack:
+    rid: -2
+  Grab:
+    rid: -2
+  Charge:
+    rid: -2
+  Parry:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+--- !u!1 &2360898005857778852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7312612994327661827}
+  - component: {fileID: 7594748674704045997}
+  - component: {fileID: 8009265994717551068}
+  - component: {fileID: 710733281379643764}
+  - component: {fileID: 5062887101163654036}
+  - component: {fileID: 3683181791791778158}
+  - component: {fileID: 4443140218539018019}
+  - component: {fileID: 3304159952572019631}
+  - component: {fileID: 1644505023217051549}
+  m_Layer: 6
+  m_Name: DamageWhamLanded
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &7312612994327661827
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2360898005857778852}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2133445763074070359}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7594748674704045997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2360898005857778852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 710733281379643764}
+  - {fileID: 5062887101163654036}
+  - {fileID: 3683181791791778158}
+  - {fileID: 4443140218539018019}
+  - {fileID: 3304159952572019631}
+  - {fileID: 1644505023217051549}
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &8009265994717551068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2360898005857778852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 1177642333
+      Data2: 1223021355
+      Data3: 195088528
+      Data4: -181475175
+    Path: event:/SFX/Player SFX/General/playerDamaged
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &710733281379643764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2360898005857778852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <State>k__BackingField: {fileID: 7594748674704045997}
+  signals:
+    serializedList: []
+  lockOnEnter: 0
+--- !u!114 &5062887101163654036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2360898005857778852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <State>k__BackingField: {fileID: 7594748674704045997}
+  onEntry: 1
+  onEnterName: DamageLand
+  onEnterTime: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &3683181791791778158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2360898005857778852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed047d72c584ca444a0e69c00e878b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <State>k__BackingField: {fileID: 7594748674704045997}
+  onSetup:
+    _PersistentCalls: []
+  onAwake:
+    _PersistentCalls: []
+  onEnter:
+    _PersistentCalls:
+    - _Target: {fileID: 0}
+      _MemberName: Pump
+      _PersistentArguments:
+      - _Type: 2
+        _Int: 0
+        _String: Damage
+        _X: 0
+        _Y: 0
+        _Z: 0
+        _W: 0
+        _Object: {fileID: 0}
+  onExit:
+    _PersistentCalls: []
+  onStateChange:
+    _PersistentCalls: []
+  activateObjects: []
+--- !u!114 &4443140218539018019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2360898005857778852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
+  <State>k__BackingField: {fileID: 7594748674704045997}
+  timeline: {fileID: 0}
+  minForwardMovementCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxForwardMovementCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speedChangeCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  turnabilityCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  verticalAccelerationCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  terminalVelocity: 98.1
+  setVerticalInfluenceCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  setVerticalVelocityCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  sidewaysMovementCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  loopTime: 0
+  influenceFadeTime: 0.5
+  overrideOff: 0
+--- !u!114 &3304159952572019631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2360898005857778852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
+  <State>k__BackingField: {fileID: 7594748674704045997}
+  timeline: {fileID: 0}
+  events:
+  - time: 0.5833333
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: EnterFade
+        _PersistentArguments: []
+  loopAfterLastEvent: 0
+--- !u!114 &1644505023217051549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2360898005857778852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
+  <State>k__BackingField: {fileID: 7594748674704045997}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
@@ -771,7 +1043,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 6063192653884144173}
   signals:
     serializedList:
@@ -794,7 +1065,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 6063192653884144173}
   onEntry: 2
   onEnterName: Uppercut
@@ -813,7 +1083,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 6063192653884144173}
   timeline: {fileID: 0}
   minForwardMovementCurve:
@@ -961,7 +1230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839f2e7aba0e21d4b87f3a6945083fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTargetPursuer
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 6063192653884144173}
   timeline: {fileID: 0}
   length: 0.2333333
@@ -1057,7 +1325,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 6063192653884144173}
   timeline: {fileID: 0}
   events:
@@ -1094,7 +1361,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 6063192653884144173}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -1136,6 +1402,638 @@ MonoBehaviour:
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!1 &2921341992611231107
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1280671804737750468}
+  - component: {fileID: 7772055570066141359}
+  - component: {fileID: 1696423045381748422}
+  - component: {fileID: 6453295402102442212}
+  - component: {fileID: 6582296487860853402}
+  - component: {fileID: 3250556400427331045}
+  m_Layer: 6
+  m_Name: GroundSlamImpact
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1280671804737750468
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2921341992611231107}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2133445763074070359}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7772055570066141359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2921341992611231107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 6453295402102442212}
+  - {fileID: 6582296487860853402}
+  - {fileID: 3250556400427331045}
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &1696423045381748422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2921341992611231107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -210542458
+      Data2: 1194973838
+      Data3: -2037135231
+      Data4: 1414933640
+    Path: event:/SFX/Player SFX/Combat/PlayerButtSlamImpact
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &6453295402102442212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2921341992611231107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <State>k__BackingField: {fileID: 7772055570066141359}
+  signals:
+    serializedList:
+    - Key: WalkOff
+      Value:
+        _PersistentCalls:
+        - _Target: {fileID: 0}
+          _MemberName: Enter
+          _PersistentArguments: []
+  lockOnEnter: 0
+--- !u!114 &6582296487860853402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2921341992611231107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
+  <State>k__BackingField: {fileID: 7772055570066141359}
+  timeline: {fileID: 0}
+  events:
+  - time: 0.26666668
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: EnterFade
+        _PersistentArguments: []
+  loopAfterLastEvent: 0
+--- !u!114 &3250556400427331045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2921341992611231107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
+  <State>k__BackingField: {fileID: 7772055570066141359}
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  Jump:
+    rid: -2
+  Attack:
+    rid: -2
+  Grab:
+    rid: -2
+  Charge:
+    rid: -2
+  Parry:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+--- !u!1 &3375737613361932522
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4410723280591454270}
+  - component: {fileID: 7103699631016929}
+  - component: {fileID: 1838187170234007779}
+  - component: {fileID: 8826215202981765275}
+  - component: {fileID: 6398026129373013685}
+  - component: {fileID: 908011633218898233}
+  - component: {fileID: 7167448672612371638}
+  - component: {fileID: 8620923372940193496}
+  m_Layer: 6
+  m_Name: Bonk
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &4410723280591454270
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3375737613361932522}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2133445763074070359}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7103699631016929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3375737613361932522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Behaviors>k__BackingField:
+  - {fileID: 8826215202981765275}
+  - {fileID: 6398026129373013685}
+  - {fileID: 908011633218898233}
+  - {fileID: 7167448672612371638}
+  - {fileID: 8620923372940193496}
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 0}
+  <Layer>k__BackingField: 1
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &1838187170234007779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3375737613361932522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -265496798
+      Data2: 1098911609
+      Data3: 514920626
+      Data4: 512150926
+    Path: event:/SFX/Player SFX/General/playerBonk
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
+--- !u!114 &8826215202981765275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3375737613361932522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <State>k__BackingField: {fileID: 7103699631016929}
+  signals:
+    serializedList: []
+  lockOnEnter: 0
+--- !u!114 &6398026129373013685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3375737613361932522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <State>k__BackingField: {fileID: 7103699631016929}
+  onEntry: 1
+  onEnterName: Bonk
+  onEnterTime: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &908011633218898233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3375737613361932522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
+  <State>k__BackingField: {fileID: 7103699631016929}
+  timeline: {fileID: 0}
+  minForwardMovementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.2
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.21
+      value: -2
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.33333334
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxForwardMovementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.32586718
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.33586717
+      value: -8
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.45920053
+      value: 0
+      inSlope: 50.18187
+      outSlope: 0
+      tangentMode: 65
+      weightedMode: 0
+      inWeight: 0.0944193
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9584162
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.1349075
+      value: 12
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speedChangeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 200
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  turnabilityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.9584162
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.1349075
+      value: 0.6
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  verticalAccelerationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.4
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.4484172
+      value: 1
+      inSlope: 8.681513
+      outSlope: 8.681513
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: -0.07533556
+      inSlope: -46.28203
+      outSlope: -46.28203
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.6
+      value: -50
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: -50
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  terminalVelocity: 98.1
+  setVerticalInfluenceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.35
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  setVerticalVelocityCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  sidewaysMovementCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  loopTime: 0
+  influenceFadeTime: 0.5
+  overrideOff: 0
+--- !u!114 &7167448672612371638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3375737613361932522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
+  <State>k__BackingField: {fileID: 7103699631016929}
+  timeline: {fileID: 0}
+  events:
+  - time: 0.93333334
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: EnterFade
+        _PersistentArguments:
+        - _Type: 5
+          _Int: 0
+          _String: 
+          _X: 0.1
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+  loopAfterLastEvent: 0
+--- !u!114 &8620923372940193496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3375737613361932522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
+  <State>k__BackingField: {fileID: 7103699631016929}
+  Machine: {fileID: 0}
+  playerMovementBody: {fileID: 0}
+  playerController: {fileID: 0}
+  Jump:
+    rid: -2
+  Attack:
+    rid: -2
+  Grab:
+    rid: -2
+  Charge:
+    rid: -2
+  Parry:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &3654854618218296324
 GameObject:
   m_ObjectHideFlags: 0
@@ -1238,7 +2136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 538145963387661634}
   signals:
     serializedList: []
@@ -1255,7 +2152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 538145963387661634}
   onEntry: 1
   onEnterName: Throw
@@ -1274,7 +2170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 538145963387661634}
   timeline: {fileID: 0}
   events:
@@ -1322,7 +2217,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 538145963387661634}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -1416,7 +2310,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9ea06674c3fe044c81dee4e88f1ae12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7974572304232093520}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -1442,7 +2335,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7974572304232093520}
   onEntry: 2
   onEnterName: Grab
@@ -1492,7 +2384,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7974572304232093520}
   signals:
     serializedList: []
@@ -1509,7 +2400,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7974572304232093520}
   timeline: {fileID: 0}
   events:
@@ -1546,7 +2436,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839f2e7aba0e21d4b87f3a6945083fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTargetPursuer
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7974572304232093520}
   timeline: {fileID: 0}
   length: 0.2333333
@@ -1671,6 +2560,9 @@ Transform:
   - {fileID: 5195020447641005936}
   - {fileID: 1653055341310919267}
   - {fileID: 4352432942776044457}
+  - {fileID: 4410723280591454270}
+  - {fileID: 1280671804737750468}
+  - {fileID: 7312612994327661827}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1146425584514261869
@@ -1767,7 +2659,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1670855201682651777}
   onEntry: 1
   onEnterName: GrabBlocked
@@ -1786,7 +2677,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1670855201682651777}
   timeline: {fileID: 0}
   minForwardMovementCurve:
@@ -1943,7 +2833,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1670855201682651777}
   timeline: {fileID: 0}
   events:
@@ -2068,7 +2957,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1944005435322958134}
   signals:
     serializedList:
@@ -2110,7 +2998,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1944005435322958134}
   onEntry: 2
   onEnterName: LightPunch2
@@ -2129,7 +3016,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1944005435322958134}
   timeline: {fileID: 0}
   minForwardMovementCurve:
@@ -2340,7 +3226,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839f2e7aba0e21d4b87f3a6945083fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTargetPursuer
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7974572304232093520}
   timeline: {fileID: 0}
   length: 0.2333333
@@ -2445,7 +3330,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1944005435322958134}
   timeline: {fileID: 0}
   events:
@@ -2482,7 +3366,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1944005435322958134}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -2601,7 +3484,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 3289048053427259037}
   onEntry: 2
   onEnterName: GrabMiss
@@ -2620,7 +3502,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 3289048053427259037}
   timeline: {fileID: 0}
   minForwardMovementCurve:
@@ -2768,7 +3649,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 3289048053427259037}
   timeline: {fileID: 0}
   events:
@@ -2861,7 +3741,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56991d69e0c7b384e9ac93dc554c6fda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 3890259728980585617}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -2879,7 +3758,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 3890259728980585617}
   onEntry: 2
   onEnterName: LassoRetract
@@ -2898,7 +3776,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 3890259728980585617}
   signals:
     serializedList:
@@ -2999,7 +3876,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56991d69e0c7b384e9ac93dc554c6fda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7718018602217990618}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -3017,7 +3893,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7718018602217990618}
   onEntry: 2
   onEnterName: LassoReady
@@ -3036,7 +3911,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7718018602217990618}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -3195,7 +4069,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2212939438660449867}
   signals:
     serializedList:
@@ -3237,7 +4110,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2212939438660449867}
   onEntry: 2
   onEnterName: LightPunch1
@@ -3256,7 +4128,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2212939438660449867}
   timeline: {fileID: 0}
   minForwardMovementCurve:
@@ -3467,7 +4338,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839f2e7aba0e21d4b87f3a6945083fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTargetPursuer
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7974572304232093520}
   timeline: {fileID: 0}
   length: 0.2333333
@@ -3572,7 +4442,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2212939438660449867}
   timeline: {fileID: 0}
   events:
@@ -3609,7 +4478,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2212939438660449867}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}

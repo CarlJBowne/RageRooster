@@ -72,7 +72,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afe34ac105f41a84097b0a3ee58e92c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 6271237044072515728}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -96,7 +95,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89a8416e01b52494193d14c59b41a835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 6271237044072515728}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -124,7 +122,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 6271237044072515728}
   signals:
     serializedList:
@@ -147,7 +144,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 6271237044072515728}
   onEntry: 2
   onEnterName: Jump
@@ -166,7 +162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 6271237044072515728}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -193,8 +188,17 @@ MonoBehaviour:
         pressEvent:
           _PersistentCalls:
           - _Target: {fileID: 0}
-            _MemberName: BeginThrow
-            _PersistentArguments: []
+            _MemberName: AirThrowAction
+            _PersistentArguments:
+            - _Type: 13
+              _Int: 0
+              _String: SLS.StateMachineH.State, SLS.StateMachineH.Runtime, Version=0.0.0.0,
+                Culture=neutral, PublicKeyToken=null
+              _X: 0
+              _Y: 0
+              _Z: 0
+              _W: 0
+              _Object: {fileID: 0}
         releaseEvent:
           _PersistentCalls: []
 --- !u!1 &2528148129664022703
@@ -269,7 +273,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afe34ac105f41a84097b0a3ee58e92c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1043544688649570288}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -293,7 +296,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89a8416e01b52494193d14c59b41a835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1043544688649570288}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -321,7 +323,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1043544688649570288}
   signals:
     serializedList:
@@ -344,7 +345,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1043544688649570288}
   onEntry: 2
   onEnterName: Fall
@@ -363,17 +363,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 1043544688649570288}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   Jump:
-    rid: -2
+    rid: 3995430819782459490
   Attack:
     rid: -2
   Grab:
-    rid: 1950655830041821322
+    rid: 3995430819782459513
   Charge:
     rid: -2
   Parry:
@@ -383,15 +382,44 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 1950655830041821322
+    - rid: 3995430819782459490
       type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
       data:
         persistAcrossStateChange: 0
         pressEvent:
           _PersistentCalls:
           - _Target: {fileID: 0}
-            _MemberName: BeginThrow
-            _PersistentArguments: []
+            _MemberName: AirThrowAction
+            _PersistentArguments:
+            - _Type: 13
+              _Int: 0
+              _String: SLS.StateMachineH.State, SLS.StateMachineH.Runtime, Version=0.0.0.0,
+                Culture=neutral, PublicKeyToken=null
+              _X: 0
+              _Y: 0
+              _Z: 0
+              _W: 0
+              _Object: {fileID: 0}
+        releaseEvent:
+          _PersistentCalls: []
+    - rid: 3995430819782459513
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        pressEvent:
+          _PersistentCalls:
+          - _Target: {fileID: 0}
+            _MemberName: AirThrowAction
+            _PersistentArguments:
+            - _Type: 13
+              _Int: 0
+              _String: SLS.StateMachineH.State, SLS.StateMachineH.Runtime, Version=0.0.0.0,
+                Culture=neutral, PublicKeyToken=null
+              _X: 0
+              _Y: 0
+              _Z: 0
+              _W: 0
+              _Object: {fileID: 0}
         releaseEvent:
           _PersistentCalls: []
 --- !u!1 &4263969479853029250
@@ -419,7 +447,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4263969479853029250}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -520,7 +548,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b72d747b5bfbe8c4cbf86c5074858e04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerGroundMovement
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2445453732124527778}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -545,7 +572,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2445453732124527778}
   signals:
     serializedList:
@@ -583,7 +609,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2445453732124527778}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -693,7 +718,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89a8416e01b52494193d14c59b41a835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 3903339348009504380}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -721,7 +745,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 3903339348009504380}
   signals:
     serializedList:
@@ -744,7 +767,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 3903339348009504380}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
