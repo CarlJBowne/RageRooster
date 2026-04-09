@@ -85,13 +85,13 @@ public abstract class PlayerButtonAction : Polymorph
         public UltEvent releaseEvent;
         public override void Press()
         {
-            if (!releaseEvent.HasCalls) Begin();
+            if (releaseEvent.HasCalls) Begin();
             pressEvent?.Invoke();
         }
         public override void Release()
         {
             releaseEvent?.Invoke();
-            if (!releaseEvent.HasCalls) Finish();
+            if (releaseEvent.HasCalls) Finish();
         }
         protected override IEnumerator HoldRoutine()
         { yield return null; }
@@ -300,7 +300,7 @@ public abstract class PlayerButtonAction : Polymorph
         {
             if (transferState != null) transferState.State.Enter();
             actionEvent?.Invoke();
-            transferState.GetButtonAction(PlayerController.ActiveButtonAction).Begin();
+            transferState[PlayerController.ActiveButtonAction].Begin();
         }
         public override void Release()
         {

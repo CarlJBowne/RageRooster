@@ -728,8 +728,8 @@ MonoBehaviour:
     viewColor: {r: 0, g: 0.63962555, b: 1, a: 1}
   grabbingRange:
     front: {fileID: 2494881031508191783}
-    maxDistance: 1.7781098
-    maxAngle: 73.05075
+    maxDistance: 2.446733
+    maxAngle: 73.05074
     distanceAngleWeighting: 0.5
     viewColor: {r: 1, g: 0.4820457, b: 0, a: 1}
   interactionRange:
@@ -3690,6 +3690,16 @@ PrefabInstance:
       propertyPath: events.Array.data[1].output._PersistentCalls.Array.data[0]._Target
       value: 
       objectReference: {fileID: 8191279611815052833}
+    - target: {fileID: 571696713249729274, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: events.Array.data[0].output._PersistentCalls.Array.data[1]._PersistentArguments.Array.data[0]._X
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 571696713249729274, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: events.Array.data[0].output._PersistentCalls.Array.data[1]._PersistentArguments.Array.data[0]._Type
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 573595896642447208, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: <Machine>k__BackingField
@@ -4907,6 +4917,11 @@ PrefabInstance:
       objectReference: {fileID: 6328031082010280587}
     - target: {fileID: 2261491961507140548, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
+      propertyPath: <State>k__BackingField
+      value: 
+      objectReference: {fileID: 1266119143318590064}
+    - target: {fileID: 2261491961507140548, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
       propertyPath: <Machine>k__BackingField
       value: 
       objectReference: {fileID: 8455434200384702600}
@@ -5635,6 +5650,11 @@ PrefabInstance:
       propertyPath: timeline
       value: 
       objectReference: {fileID: 6328031082010280587}
+    - target: {fileID: 3421145943801614117, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: <State>k__BackingField
+      value: 
+      objectReference: {fileID: 1266119143318590064}
     - target: {fileID: 3421145943801614117, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: <Machine>k__BackingField
@@ -6670,6 +6690,21 @@ PrefabInstance:
       propertyPath: <Machine>k__BackingField
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 5147975276579539240, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: <Behaviors>k__BackingField.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5147975276579539240, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: '<Behaviors>k__BackingField.Array.data[3]'
+      value: 
+      objectReference: {fileID: 5788499037384443517}
+    - target: {fileID: 5147975276579539240, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: '<Behaviors>k__BackingField.Array.data[4]'
+      value: 
+      objectReference: {fileID: 4385704728237963788}
     - target: {fileID: 5208870602979332652, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: Machine
@@ -7730,6 +7765,11 @@ PrefabInstance:
       propertyPath: timeline
       value: 
       objectReference: {fileID: 6328031082010280587}
+    - target: {fileID: 6649976352790253902, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: <State>k__BackingField
+      value: 
+      objectReference: {fileID: 1266119143318590064}
     - target: {fileID: 6649976352790253902, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: <Machine>k__BackingField
@@ -9499,10 +9539,15 @@ PrefabInstance:
       propertyPath: <Machine>k__BackingField
       value: 
       objectReference: {fileID: 8455434200384702600}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4514627599769871084, guid: 10f8c208526e83a41baa81d4b8ab10ac, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2602642105135837540, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4385704728237963788}
   m_SourcePrefab: {fileID: 100100000, guid: 10f8c208526e83a41baa81d4b8ab10ac, type: 3}
 --- !u!114 &282846797096850838 stripped
 MonoBehaviour:
@@ -9526,6 +9571,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b99ed78f039d85e41ae053d8e7266e81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1266119143318590064 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5263287245190459036, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+    type: 3}
+  m_PrefabInstance: {fileID: 6384093789312023788}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1482355560524724200 stripped
@@ -9558,7 +9615,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 6384093789312023788}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 8973046562093583752}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
@@ -9720,6 +9777,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5788499037384443517 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 633945757275519633, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+    type: 3}
+  m_PrefabInstance: {fileID: 6384093789312023788}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8973046562093583752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
 --- !u!4 &5843890195377022443 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 684952114709764359, guid: 10f8c208526e83a41baa81d4b8ab10ac,
@@ -9741,6 +9810,18 @@ MonoBehaviour:
 --- !u!114 &6808957617573995924 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 497258096482605432, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+    type: 3}
+  m_PrefabInstance: {fileID: 6384093789312023788}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7214788217008856393 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4375467844285292965, guid: 10f8c208526e83a41baa81d4b8ab10ac,
     type: 3}
   m_PrefabInstance: {fileID: 6384093789312023788}
   m_PrefabAsset: {fileID: 0}
@@ -9774,6 +9855,187 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &8973046562093583752 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2602642105135837540, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+    type: 3}
+  m_PrefabInstance: {fileID: 6384093789312023788}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4385704728237963788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8973046562093583752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
+  <Machine>k__BackingField: {fileID: 8455434200384702600}
+  <State>k__BackingField: {fileID: 7214788217008856393}
+  timeline: {fileID: 6328031082010280587}
+  minForwardMovementCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxForwardMovementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.25201672
+      value: 2.5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.3872045
+      value: 0
+      inSlope: -22.19136
+      outSlope: 0
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.2000002
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  speedChangeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1
+      value: 8
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 8
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  turnabilityCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 10
+      inSlope: -63.070152
+      outSlope: -63.070152
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1585536
+      value: 0
+      inSlope: 0.69183415
+      outSlope: 0.69183415
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.07235043
+    - serializedVersion: 3
+      time: 1
+      value: 10
+      inSlope: 11.884298
+      outSlope: 11.884298
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  verticalAccelerationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: -50
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  terminalVelocity: 98.1
+  setVerticalInfluenceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  setVerticalVelocityCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  sidewaysMovementCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  loopTime: 0
+  influenceFadeTime: 0.1
+  overrideOff: 0
 --- !u!114 &8991975502539632627 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2616927189368296223, guid: 10f8c208526e83a41baa81d4b8ab10ac,

@@ -23,15 +23,13 @@ public class PlayerButtonActions : PlayerStateBehavior
     [SerializeReference] public PlayerButtonAction Charge;
     [SerializeReference] public PlayerButtonAction Parry;
 
-    public PlayerButtonAction GetButtonAction(InputAction button)
-    {
-        return button == Input.Jump ? Jump
+    public PlayerButtonAction this[InputAction button] => 
+              button == Input.Jump ? Jump
             : button == Input.Attack ? Attack
             : button == Input.Grab ? Grab
             : button == Input.Charge1 || button == Input.Charge2 ? Charge
             : button == Input.Parry ? Parry
             : null;
-    }
     public PlayerButtonAction[] All { get; private set; }
 
     protected override void OnAwake()

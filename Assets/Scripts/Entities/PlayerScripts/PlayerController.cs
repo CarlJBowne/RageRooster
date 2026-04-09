@@ -35,41 +35,41 @@ public class PlayerController : PlayerStateBehavior
 
     private void OnEnable()
     {
-        Input.Jump.started += ButtonPressed;
-        Input.Jump.canceled += ButtonRelease;
-        Input.Attack.started += ButtonPressed;
-        Input.Attack.canceled += ButtonRelease;
-        Input.Grab.started += ButtonPressed;
-        Input.Grab.canceled += ButtonRelease;
-        Input.Charge1.started += ButtonPressed;
-        Input.Charge1.canceled += ButtonRelease;
-        Input.Charge2.started += ButtonPressed;
-        Input.Charge2.canceled += ButtonRelease;
+        Input.Jump.started += ActionButtonPressed;
+        Input.Jump.canceled += ActionButtonReleased;
+        Input.Attack.started += ActionButtonPressed;
+        Input.Attack.canceled += ActionButtonReleased;
+        Input.Grab.started += ActionButtonPressed;
+        Input.Grab.canceled += ActionButtonReleased;
+        Input.Charge1.started += ActionButtonPressed;
+        Input.Charge1.canceled += ActionButtonReleased;
+        Input.Charge2.started += ActionButtonPressed;
+        Input.Charge2.canceled += ActionButtonReleased;
         Input.Aim.started += AimPress;
         Input.Aim.canceled += AimRelease;
         //Input.Aim.started += ButtonPressed;
         //Input.Aim.canceled += ButtonRelease;
-        Input.Parry.started += ButtonPressed;
-        Input.Parry.canceled += ButtonRelease;
+        Input.Parry.started += ActionButtonPressed;
+        Input.Parry.canceled += ActionButtonReleased;
     }
     private void OnDisable()
     {
-        Input.Jump.started -= ButtonPressed;
-        Input.Jump.canceled -= ButtonRelease;
-        Input.Attack.started -= ButtonPressed;
-        Input.Attack.canceled -= ButtonRelease;
-        Input.Grab.started -= ButtonPressed;
-        Input.Grab.canceled -= ButtonRelease;
-        Input.Charge1.started -= ButtonPressed;
-        Input.Charge1.canceled -= ButtonRelease;
-        Input.Charge2.started -= ButtonPressed;
-        Input.Charge2.canceled -= ButtonRelease;
+        Input.Jump.started -= ActionButtonPressed;
+        Input.Jump.canceled -= ActionButtonReleased;
+        Input.Attack.started -= ActionButtonPressed;
+        Input.Attack.canceled -= ActionButtonReleased;
+        Input.Grab.started -= ActionButtonPressed;
+        Input.Grab.canceled -= ActionButtonReleased;
+        Input.Charge1.started -= ActionButtonPressed;
+        Input.Charge1.canceled -= ActionButtonReleased;
+        Input.Charge2.started -= ActionButtonPressed;
+        Input.Charge2.canceled -= ActionButtonReleased;
         Input.Aim.started -= AimPress;
         Input.Aim.canceled -= AimRelease;
         //Input.Aim.started -= ButtonPressed;
         //Input.Aim.canceled -= ButtonRelease;
-        Input.Parry.started -= ButtonPressed;
-        Input.Parry.canceled -= ButtonRelease;
+        Input.Parry.started -= ActionButtonPressed;
+        Input.Parry.canceled -= ActionButtonReleased;
     }
 
     protected override void OnUpdate()
@@ -141,16 +141,16 @@ public class PlayerController : PlayerStateBehavior
 
     //NewButtonSystem.
 
-    private void ButtonPressed(CTX c)
+    private void ActionButtonPressed(CTX c)
     {
         if (PlayerButtonAction.Current != null || ActionSourceStack.Count == 0) return;
-        if (ActionSourceStack[^1].GetButtonAction(c.action) is PlayerButtonAction action and not null && !action.active)
+        if (ActionSourceStack[^1][c.action] is PlayerButtonAction action and not null && !action.active)
         {
             ActiveButtonAction = c.action;
             action.Press();
         }
     }
-    private void ButtonRelease(CTX c)
+    private void ActionButtonReleased(CTX c)
     {
         if (PlayerButtonAction.Current != null && ActiveButtonAction == c.action)
         {
