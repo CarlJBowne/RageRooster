@@ -294,7 +294,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
         if (stepVelocity == Vector3.zero) return;
 
-        stepVelocity = stepVelocity.ProjectAndScale(anchorPoint.normal);
+        if (isGrounded) stepVelocity.y = 0;
         stepVelocity = stepVelocity.ProjectAndScale(anchorPoint.normal);
 
         float stopDistance = -1;
@@ -423,6 +423,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     {
         AddDebugText($"Step (Slide) {step}: {stepVelocity}");
 
+        if (isGrounded) stepVelocity.y = 0;
         if (stepVelocity == Vector3.zero) return;
 
         // Air-specific: do NOT project movement to anchor normal (we are airborne).
