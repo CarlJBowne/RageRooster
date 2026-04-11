@@ -128,21 +128,26 @@ namespace RageRooster.RoomSystem
             }
         }
 
-        void UpdateDistances(out int entranceID, out int stripScore)
+        void UpdateDistances(out int bestEntranceID, out int topStripScore)
         {
-            entranceID = -1;
-            stripScore = -1;
+            bestEntranceID = 0;
+            topStripScore = -5;
 
             for (int i = 0; i < entrances.Count; i++)
             {
-                entrances[i].UpdateDistance(out int iStrip);
-                if (iStrip > stripScore)
+                entrances[i].UpdateDistance();
+                int iStrip = entrances[i].strip;
+
+                if (iStrip == -2) continue;
+                if (iStrip == -1 && state is RoomState.Present or RoomState.Loading) iStrip = 3;
+
+                if (iStrip > topStripScore)
                 {
-                    stripScore = iStrip;
-                    entranceID = i;
+                    topStripScore = iStrip;
+                    bestEntranceID = i;
                 }
-                else if (iStrip == stripScore && entrances[i].distanceSquared < entrances[entranceID].distanceSquared)
-                    entranceID = i;
+                else if (iStrip == topStripScore && entrances[i] < entrances[bestEntranceID])
+                    bestEntranceID = i;
             }
         }
         // 3 = Within Load Radius

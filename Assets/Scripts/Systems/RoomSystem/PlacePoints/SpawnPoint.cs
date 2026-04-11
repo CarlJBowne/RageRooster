@@ -47,8 +47,8 @@ public class SpawnPoint : MonoBehaviour, IRoomActor
         spawnID = ID
     };
 
-    RoomRoot IRoomActor.root { get; set; }
-    RoomRoot root => ((IRoomActor)this).root;
+    RoomRoot IRoomActor.root { get => root; set => root = value; }
+    [SerializeField] RoomRoot root;
 
     private void Reset() => IRoomActor.ConnectToRoomRoot(this);
 
