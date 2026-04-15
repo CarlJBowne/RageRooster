@@ -3640,10 +3640,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  ID: 4
+  <Root>k__BackingField: {fileID: 818894099}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 818894099}
 --- !u!4 &66392603
 Transform:
   m_ObjectHideFlags: 0
@@ -4660,10 +4659,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  ID: 1
+  <Root>k__BackingField: {fileID: 818894099}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 818894099}
 --- !u!1001 &110473245
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6544,6 +6542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4b388a78e5eed449b02b774ba9c94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RageRooster.RoomSystem.RoomEntrance
+  <Root>k__BackingField: {fileID: 818894099}
   loadRadius: 30
   unloadRadius: 50
   lodRadius: 50
@@ -6552,7 +6551,6 @@ MonoBehaviour:
   collider: {fileID: 269902860}
   spawnPoint: {fileID: 1132536412}
   forDeathOnly: 0
-  root: {fileID: 818894099}
 --- !u!1001 &274764360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13975,6 +13973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4b388a78e5eed449b02b774ba9c94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RageRooster.RoomSystem.RoomEntrance
+  <Root>k__BackingField: {fileID: 818894099}
   loadRadius: 51.6
   unloadRadius: 60.5
   lodRadius: 108.5
@@ -13983,7 +13982,6 @@ MonoBehaviour:
   collider: {fileID: 678786198}
   spawnPoint: {fileID: 66392602}
   forDeathOnly: 0
-  root: {fileID: 818894099}
 --- !u!1001 &689478402
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16879,10 +16877,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  <Root>k__BackingField: {fileID: 818894099}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 818894099}
 --- !u!4 &778081729
 Transform:
   m_ObjectHideFlags: 0
@@ -17504,12 +17501,26 @@ MonoBehaviour:
   - {fileID: 493301646}
   - {fileID: 1402119332}
   - {fileID: 904428735}
-  <spawns>k__BackingField:
+  <RoomActors>k__BackingField:
+    list:
+    - {fileID: 778081728}
+    - {fileID: 105253727}
+    - {fileID: 269902861}
+    - {fileID: 1132536412}
+    - {fileID: 1400344203}
+    - {fileID: 1980757419}
+    - {fileID: 678786199}
+    - {fileID: 66392602}
+  <Spawns>k__BackingField:
   - {fileID: 778081728}
   - {fileID: 105253727}
   - {fileID: 1132536412}
   - {fileID: 1980757419}
   - {fileID: 66392602}
+  <EntranceActors>k__BackingField:
+  - {fileID: 269902861}
+  - {fileID: 1400344203}
+  - {fileID: 678786199}
 --- !u!4 &818894100
 Transform:
   m_ObjectHideFlags: 0
@@ -23707,10 +23718,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  ID: 2
+  <Root>k__BackingField: {fileID: 818894099}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 818894099}
 --- !u!1001 &1136910151
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27484,6 +27494,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4b388a78e5eed449b02b774ba9c94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RageRooster.RoomSystem.RoomEntrance
+  <Root>k__BackingField: {fileID: 818894099}
   loadRadius: 45.4
   unloadRadius: 71.9
   lodRadius: 83.8
@@ -27492,7 +27503,6 @@ MonoBehaviour:
   collider: {fileID: 1400344202}
   spawnPoint: {fileID: 1980757419}
   forDeathOnly: 0
-  root: {fileID: 818894099}
 --- !u!1 &1402119332
 GameObject:
   m_ObjectHideFlags: 17
@@ -44693,10 +44703,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  ID: 3
+  <Root>k__BackingField: {fileID: 818894099}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 818894099}
 --- !u!4 &1980757420
 Transform:
   m_ObjectHideFlags: 0

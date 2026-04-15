@@ -389,6 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4b388a78e5eed449b02b774ba9c94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RageRooster.RoomSystem.RoomEntrance
+  <Root>k__BackingField: {fileID: 818894099}
   loadRadius: 13
   unloadRadius: 50
   lodRadius: 50
@@ -397,7 +398,6 @@ MonoBehaviour:
   collider: {fileID: 66392603}
   spawnPoint: {fileID: 493301647}
   forDeathOnly: 0
-  root: {fileID: 818894099}
 --- !u!1001 &114639149
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1499,10 +1499,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  ID: 1
+  <Root>k__BackingField: {fileID: 818894099}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 818894099}
 --- !u!1 &391269483
 GameObject:
   m_ObjectHideFlags: 0
@@ -1946,10 +1945,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  ID: 4
+  <Root>k__BackingField: {fileID: 818894099}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 818894099}
 --- !u!4 &493301648
 Transform:
   m_ObjectHideFlags: 0
@@ -2667,10 +2665,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  <Root>k__BackingField: {fileID: 818894099}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 818894099}
 --- !u!4 &778081729
 Transform:
   m_ObjectHideFlags: 0
@@ -2724,12 +2721,22 @@ MonoBehaviour:
   - {fileID: 1239385678}
   - {fileID: 1757724740}
   - {fileID: 325020473}
-  <spawns>k__BackingField:
+  <RoomActors>k__BackingField:
+    list:
+    - {fileID: 778081728}
+    - {fileID: 384656751}
+    - {fileID: 1434085470}
+    - {fileID: 1235815731}
+    - {fileID: 66392604}
+    - {fileID: 493301647}
+  <Spawns>k__BackingField:
   - {fileID: 778081728}
   - {fileID: 384656751}
   - {fileID: 1434085470}
   - {fileID: 1235815731}
   - {fileID: 493301647}
+  <EntranceActors>k__BackingField:
+  - {fileID: 66392604}
 --- !u!4 &818894100
 Transform:
   m_ObjectHideFlags: 0
@@ -3701,10 +3708,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  ID: 3
+  <Root>k__BackingField: {fileID: 818894099}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 818894099}
 --- !u!1 &1239385678
 GameObject:
   m_ObjectHideFlags: 17
@@ -4359,10 +4365,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  ID: 2
+  <Root>k__BackingField: {fileID: 818894099}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 818894099}
 --- !u!1 &1439100360
 GameObject:
   m_ObjectHideFlags: 0

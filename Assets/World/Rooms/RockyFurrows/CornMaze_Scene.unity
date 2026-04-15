@@ -972,6 +972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4b388a78e5eed449b02b774ba9c94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RageRooster.RoomSystem.RoomEntrance
+  <Root>k__BackingField: {fileID: 818894099}
   loadRadius: 20
   unloadRadius: 44.2
   lodRadius: 44.2
@@ -980,7 +981,6 @@ MonoBehaviour:
   collider: {fileID: 66392603}
   spawnPoint: {fileID: 1570299641}
   forDeathOnly: 0
-  root: {fileID: 818894099}
 --- !u!1001 &98920397
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2062,6 +2062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4b388a78e5eed449b02b774ba9c94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RageRooster.RoomSystem.RoomEntrance
+  <Root>k__BackingField: {fileID: 818894099}
   loadRadius: 27.4
   unloadRadius: 52.1
   lodRadius: 68.4
@@ -2070,7 +2071,6 @@ MonoBehaviour:
   collider: {fileID: 214574413}
   spawnPoint: {fileID: 493301647}
   forDeathOnly: 0
-  root: {fileID: 818894099}
 --- !u!1001 &216364745
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3930,10 +3930,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  ID: 2
+  <Root>k__BackingField: {fileID: 818894099}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 818894099}
 --- !u!4 &493301648
 Transform:
   m_ObjectHideFlags: 0
@@ -6295,10 +6294,20 @@ MonoBehaviour:
   <RootGameObjects>k__BackingField:
   - {fileID: 818894098}
   - {fileID: 1966325677}
-  <spawns>k__BackingField:
+  <RoomActors>k__BackingField:
+    list:
+    - {fileID: 1657722308}
+    - {fileID: 66392604}
+    - {fileID: 1570299641}
+    - {fileID: 214574414}
+    - {fileID: 493301647}
+  <Spawns>k__BackingField:
   - {fileID: 1657722308}
   - {fileID: 1570299641}
   - {fileID: 493301647}
+  <EntranceActors>k__BackingField:
+  - {fileID: 66392604}
+  - {fileID: 214574414}
 --- !u!4 &818894100
 Transform:
   m_ObjectHideFlags: 0
@@ -14213,10 +14222,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  ID: 1
+  <Root>k__BackingField: {fileID: 818894099}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 818894099}
 --- !u!1001 &1576395674
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15227,10 +15235,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  <Root>k__BackingField: {fileID: 818894099}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 818894099}
 --- !u!1001 &1666556825
 PrefabInstance:
   m_ObjectHideFlags: 0

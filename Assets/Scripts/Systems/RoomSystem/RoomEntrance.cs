@@ -73,8 +73,8 @@ namespace RageRooster.RoomSystem
 
         public void OnTriggerEnter(Collider other)
         {
-            if (other != Player.Collider || root.asset == RoomManager.currentRoom) return;
-            RoomManager.EnterRoom(root.asset);
+            if (other != Player.Collider || Root.asset == RoomManager.currentRoom) return;
+            RoomManager.EnterRoom(Root.asset);
             if (spawnPoint != null)
                 (forDeathOnly ? SaveData.DeathReloadData : SaveData.Current).location = spawnPoint.GetDestination();
         }
