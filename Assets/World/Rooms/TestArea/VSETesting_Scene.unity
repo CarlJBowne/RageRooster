@@ -136,7 +136,7 @@ PrefabInstance:
     - target: {fileID: 4811522196661094151, guid: bae59963cc72d7944868ead2202c05a2,
         type: 3}
       propertyPath: m_Name
-      value: FirstEnemy (1)
+      value: FirstEnemy_Alt
       objectReference: {fileID: 0}
     - target: {fileID: 4811522196661094151, guid: bae59963cc72d7944868ead2202c05a2,
         type: 3}
@@ -369,7 +369,7 @@ PrefabInstance:
     - target: {fileID: 4811522196661094151, guid: bae59963cc72d7944868ead2202c05a2,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
         type: 3}
@@ -613,6 +613,155 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 502048673}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &546200524
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1059562793}
+    m_Modifications:
+    - target: {fileID: 415525979749151024, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: _data._json
+      value: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"EnemyObject","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"Player","value":null,"typeHandle":{"Identification":"UnityEngine.Transform,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"AttackCooldown","value":{"$content":2.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"AttackReady","value":{"$content":true,"$type":"System.Boolean"},"typeHandle":{"Identification":"System.Boolean,
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"SpeedEnum","value":{"$content":[3.5,7.0,0.0],"$type":"System.Collections.Generic.List`1[[System.Single,
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"typeHandle":{"Identification":"System.Collections.Generic.List`1[[System.Single,
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"EnemyAnimator","value":{"$content":1,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Animator,
+        UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 1015663925510759720, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: disableComponents.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1015663925510759720, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: 'disableComponents.Array.data[3]'
+      value: 
+      objectReference: {fileID: 546200527}
+    - target: {fileID: 2277274689722928693, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: '_data._objectReferences.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 620f6569ecc1c0c45a05f670de1cb535,
+        type: 2}
+    - target: {fileID: 4811522196661094151, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_Name
+      value: FirstEnemy_ERM_V1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4811522196661094151, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 158.33969
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 428.12997
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 763.8598
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4811522196661094151, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 546200527}
+  m_SourcePrefab: {fileID: 100100000, guid: bae59963cc72d7944868ead2202c05a2, type: 3}
+--- !u!4 &546200525 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 546200524}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &546200526 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4811522196661094151, guid: bae59963cc72d7944868ead2202c05a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 546200524}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &546200527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546200526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7242c640d1a9884581a01a912275038, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityRangeManager
+  ranges:
+  - name: Attacking
+    outerThreshold: 2
+    lineOfSightReq: 75
+    E_displayColor_EDITOR: {r: 0.8018868, g: 0.78651845, b: 0.1021271, a: 1}
+    openInEditor_EDITOR: 1
+  - name: Following
+    outerThreshold: 15
+    lineOfSightReq: 180
+    E_displayColor_EDITOR: {r: 0.3670238, g: 0.9044429, b: 0.21622656, a: 1}
+    openInEditor_EDITOR: 1
+  updateInterval: 1
+  targetOverride: {fileID: 0}
+  sendVisualEvents: 1
+  ultEvents:
+    _PersistentCalls: []
+  sendUltEvents: 0
+  outerMostRangeName: Wandering
+  showGizmos: 0
 --- !u!1 &573054546
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,6 +1128,8 @@ Transform:
   - {fileID: 502048674}
   - {fileID: 215796735}
   - {fileID: 98073024}
+  - {fileID: 546200525}
+  - {fileID: 1386745425}
   - {fileID: 673595234}
   - {fileID: 873811661}
   - {fileID: 1154796956}
@@ -1163,6 +1314,145 @@ MonoBehaviour:
   m_IgnoreFromBuild: 1
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!1001 &1386745424
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1059562793}
+    m_Modifications:
+    - target: {fileID: 415525979749151024, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: _data._json
+      value: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"EnemyObject","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"Player","value":null,"typeHandle":{"Identification":"UnityEngine.Transform,
+        UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"AttackCooldown","value":{"$content":2.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"AttackReady","value":{"$content":true,"$type":"System.Boolean"},"typeHandle":{"Identification":"System.Boolean,
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"SpeedEnum","value":{"$content":[3.5,7.0,0.0],"$type":"System.Collections.Generic.List`1[[System.Single,
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"typeHandle":{"Identification":"System.Collections.Generic.List`1[[System.Single,
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
+        mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"EnemyAnimator","value":{"$content":1,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Animator,
+        UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 2277274689722928693, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: '_data._objectReferences.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 4b65860a2fd8d144199733c169cb2870,
+        type: 2}
+    - target: {fileID: 4811522196661094151, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_Name
+      value: FirstEnemy_ERM_V2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4811522196661094151, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 140
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 428.12997
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 763.8598
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4811522196661094151, guid: bae59963cc72d7944868ead2202c05a2,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1386745427}
+  m_SourcePrefab: {fileID: 100100000, guid: bae59963cc72d7944868ead2202c05a2, type: 3}
+--- !u!4 &1386745425 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6859429191497836494, guid: bae59963cc72d7944868ead2202c05a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1386745424}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1386745426 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4811522196661094151, guid: bae59963cc72d7944868ead2202c05a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1386745424}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1386745427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1386745426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7242c640d1a9884581a01a912275038, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityRangeManager
+  ranges:
+  - name: Attacking
+    outerThreshold: 2
+    lineOfSightReq: 75
+    E_displayColor_EDITOR: {r: 0.8018868, g: 0.78651845, b: 0.1021271, a: 1}
+    openInEditor_EDITOR: 1
+  - name: Following
+    outerThreshold: 15
+    lineOfSightReq: 180
+    E_displayColor_EDITOR: {r: 0.3670238, g: 0.9044429, b: 0.21622656, a: 1}
+    openInEditor_EDITOR: 1
+  updateInterval: 1
+  targetOverride: {fileID: 0}
+  sendVisualEvents: 1
+  ultEvents:
+    _PersistentCalls: []
+  sendUltEvents: 0
+  outerMostRangeName: Wandering
+  showGizmos: 0
 --- !u!1 &1405875661
 GameObject:
   m_ObjectHideFlags: 0
