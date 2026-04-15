@@ -47,7 +47,6 @@ public class SpawnPoint : RoomActor
         spawnID = ID
     };
 
-
 #if UNITY_EDITOR
     public override void OnRegister()
     {
