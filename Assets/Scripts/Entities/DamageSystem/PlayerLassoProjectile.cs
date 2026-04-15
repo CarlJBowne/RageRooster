@@ -127,7 +127,7 @@ public class PlayerLassoProjectile : PlayerProjectile
         pullingPhase = false;
         gameObject.SetActive(false);
         Player.SignalManager.FireSignalBasic(grabbable != null ? "LassoReach" : "LassoReachMiss");
-        if (grabbable != null) Player.Grabber.Grab(grabbable, false);
+        if (grabbable != null) Player.Grabber.Grab(grabbable);
         grabbable = null;
     }
 }

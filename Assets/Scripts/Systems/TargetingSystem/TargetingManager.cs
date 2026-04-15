@@ -145,8 +145,8 @@ public class TargetingChannel
         {
             if (AllTargets[i] == null || AllTargets[i].Enabled == false) continue;
 
-            float distance = Vector3.Distance(Range.front.position, AllTargets[i].This.position);
-            float angle = Vector3.Angle(Range.front.forward, AllTargets[i].This.position - Range.front.position);
+            float distance = Vector3.Distance(Range.front.position, AllTargets[i].Target.position);
+            float angle = Vector3.Angle(Range.front.forward, AllTargets[i].Target.position - Range.front.position);
 
             if (distance > Range.maxDistance || angle > Range.maxAngle)
             {
@@ -181,7 +181,7 @@ public class TargetingChannel
                 if (currentTarget != null)
                 {
                     debugDisplayReticle.gameObject.SetActive(true);
-                    debugDisplayReticle.rectTransform.position = Cameras.RealCamera.camera.WorldToScreenPoint(currentTarget.This.position);
+                    debugDisplayReticle.rectTransform.position = Cameras.RealCamera.camera.WorldToScreenPoint(currentTarget.Target.position);
                 }
                 else
                 {
@@ -194,7 +194,7 @@ public class TargetingChannel
 
     public void ChangeRange(TargetingRange newRange) => Range = newRange;
 
-    public Target CurrentTarget => currentTarget?.This;
+    public Target CurrentTarget => currentTarget?.Target;
     public TargetType CurrentTargetTypeBase => currentTarget;
 
     public T CurrentTargetType<T>() where T : TargetType => currentTarget as T;

@@ -61,6 +61,11 @@ public class Target : MonoBehaviour
         return Vector3.zero;
     }
 
+    public virtual void Move(Vector3 offset)
+    {
+
+    }
+
     public TargetType this[System.Type T] => Types[T];
 
 }
@@ -68,7 +73,7 @@ public class Target : MonoBehaviour
 [System.Serializable]
 public abstract class TargetType : Polymorph
 {
-    public Target This;
+    public Target Target;
 
     public abstract TargetingChannel thisChannel { get; }
 
@@ -131,7 +136,7 @@ public abstract class TargetType : Polymorph
         public override void OnTargeted(TargetType prevTarget)
         {
             InteractionPopup.SetActive(true);
-            InteractionPopup.transform.position = This.transform.position + PopupPosition;
+            InteractionPopup.transform.position = Target.transform.position + PopupPosition;
         }
         public override void OnDeTargeted(TargetType nextTarget)
         {
@@ -142,7 +147,7 @@ public abstract class TargetType : Polymorph
 
     public override bool OverrideBody(VisualElement container, SerializedProperty property)
     {
-        SerializedProperty ThisProp = property.FindPropertyRelative(nameof(This));
+        SerializedProperty ThisProp = property.FindPropertyRelative(nameof(Target));
         ThisProp.objectReferenceValue = property.serializedObject.targetObject;
 
         container.DelayedBuild(() =>
@@ -150,7 +155,7 @@ public abstract class TargetType : Polymorph
             PropertyField ThisField;
             if (container.QCache(out ThisField)) ThisField.style.display = DisplayStyle.None;
         });
-        
+
         return false;
     }
 
