@@ -9,6 +9,7 @@ using UnityEngine.UIElements;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.UIElements;
 #endif
 
 namespace RageRooster.RoomSystem
@@ -40,6 +41,10 @@ namespace RageRooster.RoomSystem
         /// The list of Entrance points into this room. The Player's position to these entrances is compared every few frames to determine when to load/unload the room.
         /// </summary>
         [field: SerializeField] public List<RoomEntrance.Data> entrances { get; protected set; } = new();
+
+#if UNITY_EDITOR
+        [field: SerializeField] public List<string> spawnPointNames { get; protected set; } = new();
+#endif
 
         #endregion
 
@@ -106,20 +111,20 @@ namespace RageRooster.RoomSystem
 
             UpdateDistances(out int entranceID, out int stripScore);
 
-            if (state is RoomState.Present) 
-            { 
-                if(stripScore < 3) SceneUnload().Begin(area.root); 
+            if (state is RoomState.Present)
+            {
+                if (stripScore < 3) SceneUnload().Begin(area.root);
             }
             else
             {
-                if(stripScore == 3) SceneLoad().Begin(area.root);
+                if (stripScore == 3) SceneLoad().Begin(area.root);
                 else if (state is RoomState.Lowest && stripScore > 0)
                 {
                     state = RoomState.LODS;
                     lod.TurnOn();
-                    if(shellLodPiece) shellLodPiece.SetActive(false);
+                    if (shellLodPiece) shellLodPiece.SetActive(false);
                 }
-                else if(state is RoomState.LODS && stripScore == 0)
+                else if (state is RoomState.LODS && stripScore == 0)
                 {
                     state = RoomState.Lowest;
                     lod.TurnOff();
@@ -203,7 +208,7 @@ namespace RageRooster.RoomSystem
             yield return SceneOperationRoutine.Load(scene);
             if (root == null) yield return new WaitUntil(() => root != null);
 
-            if(shellLodPiece && shellLodPiece.activeSelf) shellLodPiece.SetActive(false);
+            if (shellLodPiece && shellLodPiece.activeSelf) shellLodPiece.SetActive(false);
             state = RoomState.Present;
         }
         /// <summary>
@@ -329,86 +334,146 @@ namespace RageRooster.RoomSystem
         [CustomEditor(typeof(RoomAsset))]
         public class Editor : UnityEditor.Editor
         {
-            public override void OnInspectorGUI()
+            public override VisualElement CreateInspectorGUI()
             {
-                RoomAsset roomAsset = (RoomAsset)target;
+                serializedObject.Update();
 
-                // Draw Area link or orphan warning
+                var root = new VisualElement();
+
+                // Area link or orphan warning
                 SerializedProperty areaProp = serializedObject.FindProperty(nameof(RoomAsset.area), backingField: true);
-                AreaAsset areaAsset = areaProp.objectReferenceValue as AreaAsset;
-
-                GUILayout.Space(8);
+                AreaAsset areaAsset = areaProp != null ? areaProp.objectReferenceValue as AreaAsset : null;
 
                 if (areaAsset != null)
                 {
-                    GUIStyle linkStyle = new GUIStyle(EditorStyles.label);
-                    linkStyle.normal.textColor = new Color(0.2f, 0.5f, 1f);
-                    linkStyle.fontStyle = FontStyle.Bold;
+                    var areaButton = new Label($"Area: {areaAsset.displayName}")
+                    {
+                        style =
+                        {
+                            color = new StyleColor(new Color(0.2f, 0.5f, 1f)),
+                            unityFontStyleAndWeight = FontStyle.Bold,
+                            alignSelf = Align.FlexStart,
+                        }
+                    };
+                    areaButton.Highlighter(.3f);
+                    areaButton.RegisterCallback<ClickEvent>(PING);
+                    root.Add(areaButton);
 
-                    if (GUILayout.Button($"Area: {areaAsset.displayName}", linkStyle))
+
+                    void PING(ClickEvent _)
                     {
                         Selection.activeObject = areaAsset;
                         EditorGUIUtility.PingObject(areaAsset);
+
                     }
                 }
                 else
                 {
-                    GUIStyle redStyle = new GUIStyle(EditorStyles.label);
-                    redStyle.normal.textColor = Color.red;
-                    redStyle.fontStyle = FontStyle.Bold;
-                    GUILayout.Label("ORPHAN ROOM, PLEASE ADD TO AREA", redStyle);
+                    var orphanLabel = new Label("ORPHAN ROOM, PLEASE ADD TO AREA");
+                    orphanLabel.style.color = new StyleColor(Color.red);
+                    orphanLabel.style.unityFontStyleAndWeight = FontStyle.Bold;
+                    orphanLabel.style.alignSelf = Align.FlexStart;
+                    root.Add(orphanLabel);
                 }
 
-                GUILayout.Space(8);
+                // Spacer
+                var spacer = new VisualElement();
+                spacer.style.height = 8;
+                root.Add(spacer);
 
-                serializedObject.Update();
-                EditorGUI.BeginChangeCheck();
-                EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.displayName), backingField: true));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.scene), backingField: true));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(RoomAsset.lod), backingField: true));
-                if (EditorGUI.EndChangeCheck())
-                {
-                    serializedObject.ApplyModifiedProperties();
-                    Undo.RecordObject(roomAsset, "Modified Room Asset");
-                    EditorUtility.SetDirty(roomAsset);
-                }
+                // Editable properties
+                var displayNameProp = serializedObject.FindProperty(nameof(RoomAsset.displayName), backingField: true);
+                var sceneProp = serializedObject.FindProperty(nameof(RoomAsset.scene), backingField: true);
+                var lodProp = serializedObject.FindProperty(nameof(RoomAsset.lod), backingField: true);
 
-                // Display foldable, uneditable list of transitions
+                if (displayNameProp != null)
+                    root.Add(new PropertyField(displayNameProp, "Display Name"));
+                if (sceneProp != null)
+                    root.Add(new PropertyField(sceneProp, "Scene"));
+                if (lodProp != null)
+                    root.Add(new PropertyField(lodProp, "LOD"));
+
+                // Entrances foldout (read-only)
                 SerializedProperty transitionsProp = serializedObject.FindProperty(nameof(RoomAsset.entrances), backingField: true);
-                bool transitionsFoldout = EditorPrefs.GetBool("RoomAsset_EntrancesFoldout", true);
-                transitionsFoldout = EditorGUILayout.Foldout(transitionsFoldout, "Entrances", true);
-                EditorPrefs.SetBool("RoomAsset_EntrancesFoldout", transitionsFoldout);
-
-                if (transitionsFoldout)
+                bool transitionsFoldoutState = EditorPrefs.GetBool("RoomAsset_EntrancesFoldout", true);
+                var entrancesFoldout = new Foldout
                 {
-                    if (transitionsProp != null && transitionsProp.isArray)
+                    text = "Entrances",
+                    value = transitionsFoldoutState
+                };
+                entrancesFoldout.RegisterValueChangedCallback(evt => EditorPrefs.SetBool("RoomAsset_EntrancesFoldout", evt.newValue));
+
+                if (transitionsProp != null && transitionsProp.isArray)
+                {
+                    int count = transitionsProp.arraySize;
+                    if (count == 0)
                     {
-                        int count = transitionsProp.arraySize;
-                        if (count == 0)
-                        {
-                            EditorGUILayout.LabelField("No Entrances attached.");
-                        }
-                        else
-                        {
-                            EditorGUI.indentLevel++;
-                            for (int i = 0; i < count; i++)
-                            {
-                                SerializedProperty itemProp = transitionsProp.GetArrayElementAtIndex(i);
-                                EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-                                EditorGUI.BeginDisabledGroup(true);
-                                EditorGUILayout.PropertyField(itemProp, new($"Entrance {i + 1}"), true);
-                                EditorGUI.EndDisabledGroup();
-                                EditorGUILayout.EndVertical();
-                            }
-                            EditorGUI.indentLevel--;
-                        }
+                        entrancesFoldout.Add(new Label("No Entrances attached."));
                     }
                     else
                     {
-                        EditorGUILayout.LabelField("Entrances property not found.");
+                        for (int i = 0; i < count; i++)
+                        {
+                            SerializedProperty itemProp = transitionsProp.GetArrayElementAtIndex(i);
+                            var container = new VisualElement();
+                            container.style.marginTop = 4;
+                            container.style.marginBottom = 4;
+                            container.style.paddingLeft = 4;
+                            container.style.paddingRight = 4;
+                            container.style.unityBackgroundImageTintColor = Color.clear;
+                            container.style.borderTopWidth = 1;
+                            container.style.borderBottomWidth = 1;
+                            container.style.borderLeftWidth = 1;
+                            container.style.borderRightWidth = 1;
+                            container.style.borderTopColor = new StyleColor(new Color(0.0f, 0.0f, 0.0f, 0.0f));
+                            var pf = new PropertyField(itemProp, $"Entrance {i + 1}");
+                            // Make read-only
+                            pf.SetEnabled(false);
+                            container.Add(pf);
+                            entrancesFoldout.Add(container);
+                        }
                     }
                 }
+                else
+                {
+                    entrancesFoldout.Add(new Label("Entrances property not found."));
+                }
+
+                root.Add(entrancesFoldout);
+
+
+                Foldout spawnFoldout = new()
+                {
+                    text = "SpawnPoint Names",
+                    value = true
+                };
+                root.Add(spawnFoldout);
+
+                // Spawn point names display (editable)
+                SerializedProperty spawnNamesProp = serializedObject.FindProperty(nameof(RoomAsset.spawnPointNames), backingField: true);
+                for (int i = 0; i < spawnNamesProp.arraySize; i++)
+                    spawnFoldout.Add(new Label($"{i} : {spawnNamesProp.GetArrayElementAtIndex(i).stringValue}"));
+                
+
+                // Bind fields to serializedObject - PropertyField does this automatically.
+                // Ensure changes are applied when serialization changes occur.
+                // Subscribe to focus out on root to apply modified properties (defensive).
+                root.RegisterCallback<FocusOutEvent>(evt =>
+                {
+                    if (serializedObject != null)
+                    {
+                        serializedObject.ApplyModifiedProperties();
+                        Undo.RecordObject(target, "Modified Room Asset");
+                        EditorUtility.SetDirty(target);
+                    }
+                });
+
+                // Also ensure ApplyModifiedProperties when inspector is rebuilt / returned
+                root.style.flexDirection = FlexDirection.Column;
+
+                return root;
             }
+
             protected void OnDisable()
             {
                 AssetDatabase.SaveAssetIfDirty(target);

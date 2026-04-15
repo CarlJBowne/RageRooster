@@ -117,7 +117,7 @@ namespace RageRooster.RoomSystem
             yield return destination.room.PrepEnter();
             EnterRoom(destination.room);
 
-            SpawnPoint targetSpawn = currentRoom.root.spawns[destination.spawnID];
+            SpawnPoint targetSpawn = currentRoom.root.Spawns[destination.spawnID];
 
             targetSpawn.SpawnPlayerAt();
 

@@ -1,17 +1,21 @@
 using RageRooster.Systems.SaveSystem;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.XR.OpenVR;
 using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace RageRooster.RoomSystem
 {
+    [ExecuteInEditMode]
     /// <summary>
     /// An entrance to a Room. MonoBehavior that triggers entering the Room when colliding with the Player.
     /// <br/>A pure-data representation of this entrance, <see cref="RoomEntrance.Data"/> is stored in a <see cref="RoomAsset"/> for runtime loading.
     /// </summary>
-    public class RoomEntrance : MonoBehaviour, IRoomActor
+    public class RoomEntrance : RoomActor
     {
+
+
         /// <summary>
         /// The distance radius at which the room will begin loading.
         /// </summary>
@@ -39,36 +43,37 @@ namespace RageRooster.RoomSystem
         /// </summary>
         public bool forDeathOnly = false;
 
-        RoomRoot IRoomActor.root { get; set; }
-        RoomRoot root => ((IRoomActor)this).root;
 
-        private void Reset()
+
+
+#if UNITY_EDITOR
+        public override void OnRegister()
         {
-            IRoomActor.ConnectToRoomRoot(this);
+            Root.EntranceActors.Add(this);
+            Root.asset.entrances.Add(GetData());
         }
-
-
+        public override void OnDeregister()
+        {
+            Root.asset.entrances.RemoveAt(Root.EntranceActors.IndexOf(this));
+            Root.EntranceActors.Remove(this);
+        }
+        public override void OnSave() => Root.asset.entrances[Root.EntranceActors.IndexOf(this)] = GetData();
+#endif
 
         public void OnTriggerEnter(Collider other)
         {
             if (other != Player.Collider) return;
-            RoomManager.EnterRoom(root.asset);
+            RoomManager.EnterRoom(Root.asset);
             if (spawnPoint != null)
                 (forDeathOnly ? SaveData.DeathReloadData : SaveData.Current).location = spawnPoint.GetDestination();
         }
 
-        //Reflected
-        private static void OnSaveSceneSet(RoomRoot root, List<RoomEntrance> list)
-        {
-            root.asset.entrances.Clear();
-            foreach (var entrance in list)
-                root.asset.entrances.Add(entrance.GetData());
-        }
 
 
 
 
-        public Data GetData() => new Data()
+
+        public Data GetData() => new()
         {
             point = transform.position,
             direction = transform.TransformDirection(direction),

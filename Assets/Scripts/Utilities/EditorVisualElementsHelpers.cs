@@ -199,7 +199,7 @@ namespace UnityEngine.UIElements
                 }
             }
         }
-        public static void Highlighter(this VisualElement V, float factor)
+        public static void Highlighter(this VisualElement V, float factor = .3f)
         {
             Color initialColor = V.style.color.value;
 

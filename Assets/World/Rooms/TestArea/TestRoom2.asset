@@ -15,12 +15,8 @@ MonoBehaviour:
   <displayName>k__BackingField: Test Room 2
   <area>k__BackingField: {fileID: 11400000, guid: 14d3877dd745a914b9a8ae97a8bd02fd,
     type: 2}
-  <globalCenter>k__BackingField: {x: 0, y: 0, z: 0}
   <scene>k__BackingField:
-    <sceneName>k__BackingField: TestRoom2
-    <scenePath>k__BackingField: Assets/Testing/NewRoomSystemTests/TestArea_Scenes/TestRoom2.unity
-    <state>k__BackingField: 1
-    isSerialized: 0
+    <sceneName>k__BackingField: TestRoom2_Scene
     <asset>k__BackingField: {fileID: 102900000, guid: 3e24c56d75a8ce74f9a9e20601edc476,
       type: 3}
   <lod>k__BackingField:
@@ -32,11 +28,12 @@ MonoBehaviour:
   <entrances>k__BackingField:
   - point: {x: -19, y: 0, z: 0}
     direction: {x: 0, y: 0, z: 1}
-    loadRadius: 20
-    unloadRadius: 30
-    lodRadius: 50
+    loadRadiusSQR: 400
+    unloadRadiusSQR: 900
+    lodRadiusSQR: 2500
   - point: {x: -34, y: 0, z: -46.75}
     direction: {x: 0, y: 0, z: 1}
-    loadRadius: 20
-    unloadRadius: 30
-    lodRadius: 50
+    loadRadiusSQR: 400
+    unloadRadiusSQR: 900
+    lodRadiusSQR: 2500
+  <spawnPointNames>k__BackingField: []
