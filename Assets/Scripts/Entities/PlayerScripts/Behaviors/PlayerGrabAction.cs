@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class PlayerGrabAction : PlayerStateBehavior
 {
-    [SerializeReference] public AnimationAction initialAnimation;
+    //[SerializeReference] public AnimationAction initialAnimation;
     public AnimationCurve forwardSpeedCurve;
     public AnimationCurve forwardSpeedInfluenceCurve;
     public AnimationCurve turningSpeedCurve;
@@ -22,7 +22,8 @@ public class PlayerGrabAction : PlayerStateBehavior
     public TimedMovementAffector failMissedReturn;
     public TimedMovementAffector failBlockedReturn;
     //public TimedMovementAffector passthroughReturn;                      NOTE. GRABBABLE SWITCHES DOES NOT WORK CORRECTLY YET.
-    [SerializeReference] public AnimationAction grabAnimation;
+    //[SerializeReference] public AnimationAction grabAnimation;
+    public State successState;
     public float grabAnimationTime;
     public bool moveToTargetPosition;
     public bool considerDropLaunch = false;
@@ -59,7 +60,7 @@ public class PlayerGrabAction : PlayerStateBehavior
         selectedGrabbable = grabbable;
 
         State.Enter();
-        initialAnimation.Do(Player.Animator);
+        //initialAnimation.Do(Player.Animator);
     }
 
     protected override void OnFixedUpdate()
@@ -79,7 +80,7 @@ public class PlayerGrabAction : PlayerStateBehavior
             SampleCurve(turningSpeedCurve, out float turningSpeed);
             SampleCurve(verticalShiftCurve, out float verticalShift);
 
-            if (turningSpeed > 0) Player.MovementBody.DirectionSet((storedTargetPosition - Player.Center).XZ(), turningSpeed);
+            if (turningSpeed > 0) Player.MovementBody.DirectionSet((storedTargetPosition - Player.Center).XZ(), turningSpeed * Time.fixedDeltaTime);
 
             Vector3 targetVelocity = Player.MovementBody.velocity;
             float targetForwardSpeed = Player.MovementBody.CurrentSpeed;
@@ -90,8 +91,8 @@ public class PlayerGrabAction : PlayerStateBehavior
                     : 0;
 
             Player.MovementBody.CurrentSpeed = targetForwardSpeed;
-            targetVelocity.x = Player.Forward.x * targetForwardSpeed;
-            targetVelocity.z = Player.Forward.z * targetForwardSpeed;
+            targetVelocity.x = Player.Forward.x * targetForwardSpeed * Time.fixedDeltaTime;
+            targetVelocity.z = Player.Forward.z * targetForwardSpeed * Time.fixedDeltaTime;
 
             targetVelocity.y = verticalShift > 0f && verticalDistance > 0 ? verticalShift : Player.MovementBody.velocity.y;
 
@@ -119,15 +120,19 @@ public class PlayerGrabAction : PlayerStateBehavior
                 elapsedTime = 0;
                 Player.Grabber.Grab(selectedGrabbable);
                 secondPhase = true;
-
+                successState.Enter();
+                //grabAnimation.Do(Player.Animator);
             }
         }
         else
         {
             elapsedTime += Time.fixedDeltaTime * grabAnimationTime;
 
-            Vector3 newPosition = Vector3.Lerp(playerPhaseTwoStatePosition, storedTargetPosition, elapsedTime);
-            Player.MovementBody.Position = newPosition;
+            if (moveToTargetPosition)
+            {
+                Vector3 newPosition = Vector3.Lerp(playerPhaseTwoStatePosition, storedTargetPosition, elapsedTime);
+                Player.MovementBody.Position = newPosition;
+            }
 
             if (elapsedTime >= 1)
             {

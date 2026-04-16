@@ -1138,7 +1138,7 @@ MonoBehaviour:
         pressEvent:
           _PersistentCalls:
           - _Target: {fileID: 4544501634881249195}
-            _MemberName: DoGrabAttempt
+            _MemberName: BeginGrabAttempt
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
@@ -1188,8 +1188,8 @@ MonoBehaviour:
         persistAcrossStateChange: 0
         pressEvent:
           _PersistentCalls:
-          - _Target: {fileID: 0}
-            _MemberName: GrabThrowButton
+          - _Target: {fileID: 4544501634881249195}
+            _MemberName: BeginGrabAttempt
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
@@ -1421,36 +1421,6 @@ PrefabInstance:
       objectReference: {fileID: 1719738861989955058}
     - target: {fileID: 1146425584514261869, guid: 71084fab85c849a448a24e907f52d954,
         type: 3}
-      propertyPath: <ChildCount>k__BackingField
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 1146425584514261869, guid: 71084fab85c849a448a24e907f52d954,
-        type: 3}
-      propertyPath: <Children>k__BackingField.Array.size
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 1146425584514261869, guid: 71084fab85c849a448a24e907f52d954,
-        type: 3}
-      propertyPath: '<Children>k__BackingField.Array.data[8]'
-      value: 
-      objectReference: {fileID: 5115992736805115926}
-    - target: {fileID: 1146425584514261869, guid: 71084fab85c849a448a24e907f52d954,
-        type: 3}
-      propertyPath: '<Children>k__BackingField.Array.data[9]'
-      value: 
-      objectReference: {fileID: 9159670594954994497}
-    - target: {fileID: 1146425584514261869, guid: 71084fab85c849a448a24e907f52d954,
-        type: 3}
-      propertyPath: '<Children>k__BackingField.Array.data[10]'
-      value: 
-      objectReference: {fileID: 1736344173819534685}
-    - target: {fileID: 1146425584514261869, guid: 71084fab85c849a448a24e907f52d954,
-        type: 3}
-      propertyPath: '<Children>k__BackingField.Array.data[11]'
-      value: 
-      objectReference: {fileID: 3313942931410860589}
-    - target: {fileID: 1146425584514261869, guid: 71084fab85c849a448a24e907f52d954,
-        type: 3}
       propertyPath: '<Children>k__BackingField.Array.data[12]'
       value: 
       objectReference: {fileID: 5061942712196088163}
@@ -1461,29 +1431,24 @@ PrefabInstance:
       objectReference: {fileID: 4936427745797883489}
     - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
         type: 3}
+      propertyPath: Machine
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: playerMovementBody
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
       propertyPath: successReturn._PersistentCalls.Array.size
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
-        type: 3}
-      propertyPath: failMissedReturn._PersistentCalls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
-        type: 3}
-      propertyPath: failBlockedReturn._PersistentCalls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
-        type: 3}
-      propertyPath: failMissedReturn._PersistentCalls.Array.data[0]._Target
-      value: 
-      objectReference: {fileID: 18377823543162705}
-    - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
-        type: 3}
-      propertyPath: failBlockedReturn._PersistentCalls.Array.data[0]._Target
-      value: 
-      objectReference: {fileID: 4239101914338839373}
     - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
         type: 3}
       propertyPath: successReturn._PersistentCalls.Array.data[0]._MemberName
@@ -1491,13 +1456,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
         type: 3}
-      propertyPath: failMissedReturn._PersistentCalls.Array.data[0]._MemberName
-      value: Enter
-      objectReference: {fileID: 0}
-    - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
-        type: 3}
-      propertyPath: failBlockedReturn._PersistentCalls.Array.data[0]._MemberName
-      value: Enter
+      propertyPath: finalSuccessReturn._PersistentCalls.Array.data[0]._Target
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2133445763074070359, guid: 71084fab85c849a448a24e907f52d954,
         type: 3}
@@ -1686,8 +1646,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7974572304232093520, guid: 71084fab85c849a448a24e907f52d954,
         type: 3}
-      propertyPath: <Behaviors>k__BackingField.Array.size
-      value: 5
+      propertyPath: <Machine>k__BackingField
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8458405776686900128, guid: 71084fab85c849a448a24e907f52d954,
         type: 3}
@@ -1699,18 +1659,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71084fab85c849a448a24e907f52d954, type: 3}
---- !u!114 &18377823543162705 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3289048053427259037, guid: 71084fab85c849a448a24e907f52d954,
-    type: 3}
-  m_PrefabInstance: {fileID: 3306839834855748044}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
 --- !u!114 &151794167796755720 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3458490404699135172, guid: 71084fab85c849a448a24e907f52d954,
@@ -1801,18 +1749,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4239101914338839373 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1670855201682651777, guid: 71084fab85c849a448a24e907f52d954,
-    type: 3}
-  m_PrefabInstance: {fileID: 3306839834855748044}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
 --- !u!114 &4544501634881249195 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
@@ -1849,18 +1785,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5115992736805115926 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7718018602217990618, guid: 71084fab85c849a448a24e907f52d954,
-    type: 3}
-  m_PrefabInstance: {fileID: 3306839834855748044}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
 --- !u!114 &7649529961253108717 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5173747255915760161, guid: 71084fab85c849a448a24e907f52d954,

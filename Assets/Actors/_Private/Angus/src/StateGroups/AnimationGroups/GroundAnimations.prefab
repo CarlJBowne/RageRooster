@@ -655,6 +655,76 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+--- !u!1 &789867804549674859
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4782014426764467021}
+  - component: {fileID: 5314198211248385389}
+  - component: {fileID: 3456832706081447242}
+  m_Layer: 6
+  m_Name: Initial
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4782014426764467021
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789867804549674859}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 993806177238499785}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5314198211248385389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789867804549674859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+  <Behaviors>k__BackingField:
+  - {fileID: 3456832706081447242}
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 7974572304232093520}
+  <Layer>k__BackingField: 3
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &3456832706081447242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789867804549674859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 5314198211248385389}
+  onEntry: 2
+  onEnterName: GrabReady
+  onEnterTime: 0.1
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &2360898005857778852
 GameObject:
   m_ObjectHideFlags: 0
@@ -1565,6 +1635,76 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+--- !u!1 &3173302890089524309
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6886467242579147106}
+  - component: {fileID: 8471575633726008516}
+  - component: {fileID: 869554692256762856}
+  m_Layer: 6
+  m_Name: Success
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6886467242579147106
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3173302890089524309}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 993806177238499785}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8471575633726008516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3173302890089524309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+  <Behaviors>k__BackingField:
+  - {fileID: 869554692256762856}
+  <Machine>k__BackingField: {fileID: 0}
+  <Parent>k__BackingField: {fileID: 7974572304232093520}
+  <Layer>k__BackingField: 3
+  <Children>k__BackingField: []
+  <ChildCount>k__BackingField: 0
+--- !u!114 &869554692256762856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3173302890089524309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 8471575633726008516}
+  onEntry: 1
+  onEnterName: Grab
+  onEnterTime: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &3375737613361932522
 GameObject:
   m_ObjectHideFlags: 0
@@ -2247,11 +2387,7 @@ GameObject:
   - component: {fileID: 993806177238499785}
   - component: {fileID: 7974572304232093520}
   - component: {fileID: 1366017198370811495}
-  - component: {fileID: 7276127759619167346}
   - component: {fileID: 3010400875209367007}
-  - component: {fileID: 574991774931540762}
-  - component: {fileID: 7959568572361778172}
-  - component: {fileID: 6646153185657916849}
   m_Layer: 6
   m_Name: Grab
   m_TagString: Untagged
@@ -2271,7 +2407,11 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 4782014426764467021}
+  - {fileID: 6886467242579147106}
+  - {fileID: 6922684673667637972}
+  - {fileID: 8247376267192501126}
   m_Father: {fileID: 2133445763074070359}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7974572304232093520
@@ -2288,16 +2428,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 1366017198370811495}
-  - {fileID: 7276127759619167346}
-  - {fileID: 574991774931540762}
-  - {fileID: 7959568572361778172}
-  - {fileID: 6646153185657916849}
-  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1146425584514261869}
   <Layer>k__BackingField: 2
-  <Children>k__BackingField: []
-  <ChildCount>k__BackingField: 0
+  <Children>k__BackingField:
+  - {fileID: 5314198211248385389}
+  - {fileID: 8471575633726008516}
+  - {fileID: 3289048053427259037}
+  - {fileID: 1670855201682651777}
+  <ChildCount>k__BackingField: 4
 --- !u!114 &1366017198370811495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2314,131 +2453,6 @@ MonoBehaviour:
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
-  successReturn:
-    _PersistentCalls: []
-  failMissedReturn:
-    _PersistentCalls: []
-  failBlockedReturn:
-    _PersistentCalls: []
-  altSwitchReturn:
-    _PersistentCalls: []
-  snapToGrabbed: 0
---- !u!114 &7276127759619167346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4119946758311288074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
-  <State>k__BackingField: {fileID: 7974572304232093520}
-  onEntry: 2
-  onEnterName: Grab
-  onEnterTime: 0.1
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
---- !u!114 &3010400875209367007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4119946758311288074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionTag: 
-  EventReference:
-    Guid:
-      Data1: 584274670
-      Data2: 1219636909
-      Data3: 2053922187
-      Data4: -1601820662
-    Path: event:/SFX/Player SFX/Combat/PlayerGrab
-  Event: 
-  EventPlayTrigger: 11
-  EventStopTrigger: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 1
-  NonRigidbodyVelocity: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
---- !u!114 &574991774931540762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4119946758311288074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 7974572304232093520}
-  signals:
-    serializedList: []
-  lockOnEnter: 0
---- !u!114 &7959568572361778172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4119946758311288074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <State>k__BackingField: {fileID: 7974572304232093520}
-  timeline: {fileID: 0}
-  events:
-  - time: 0.3222222
-    output:
-      _PersistentCalls:
-      - _Target: {fileID: 1366017198370811495}
-        _MemberName: EndGrabAttempt
-        _PersistentArguments: []
-  - time: 0.4666667
-    output:
-      _PersistentCalls:
-      - _Target: {fileID: 0}
-        _MemberName: EnterFade
-        _PersistentArguments:
-        - _Type: 5
-          _Int: 0
-          _String: 
-          _X: 0.1
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-  loopAfterLastEvent: 0
---- !u!114 &6646153185657916849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4119946758311288074}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 839f2e7aba0e21d4b87f3a6945083fac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerTargetPursuer
-  <State>k__BackingField: {fileID: 7974572304232093520}
-  timeline: {fileID: 0}
-  length: 0.2333333
   forwardSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -2517,8 +2531,52 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  closeDistance: 0.75
-  failedBackup: {fileID: 0}
+  horizontalThreshold: 0.75
+  verticalThreshold: 0
+  directionalThreshold: 1
+  maxAttemptTime: 9
+  failMissedReturn: {fileID: 1317775717574601787}
+  failBlockedReturn: {fileID: 8518090479879383297}
+  successState: {fileID: 8471575633726008516}
+  grabAnimationTime: 0.4
+  moveToTargetPosition: 0
+  considerDropLaunch: 0
+  finalSuccessReturn:
+    _PersistentCalls:
+    - _Target: {fileID: 0}
+      _MemberName: Enter
+      _PersistentArguments: []
+--- !u!114 &3010400875209367007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4119946758311288074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 584274670
+      Data2: 1219636909
+      Data3: 2053922187
+      Data4: -1601820662
+    Path: event:/SFX/Player SFX/Combat/PlayerGrab
+  Event: 
+  EventPlayTrigger: 11
+  EventStopTrigger: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 1
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &5185706722228576407
 GameObject:
   m_ObjectHideFlags: 0
@@ -2554,8 +2612,6 @@ Transform:
   - {fileID: 9195733653301161052}
   - {fileID: 328554303840461451}
   - {fileID: 993806177238499785}
-  - {fileID: 6922684673667637972}
-  - {fileID: 8247376267192501126}
   - {fileID: 5166708086482412913}
   - {fileID: 5195020447641005936}
   - {fileID: 1653055341310919267}
@@ -2587,10 +2643,14 @@ MonoBehaviour:
   - {fileID: 6063192653884144173}
   - {fileID: 592500146358321391}
   - {fileID: 7974572304232093520}
-  - {fileID: 3289048053427259037}
-  - {fileID: 1670855201682651777}
   - {fileID: 538145963387661634}
-  <ChildCount>k__BackingField: 8
+  - {fileID: 7718018602217990618}
+  - {fileID: 5979072417615712909}
+  - {fileID: 3890259728980585617}
+  - {fileID: 7103699631016929}
+  - {fileID: 7772055570066141359}
+  - {fileID: 7594748674704045997}
+  <ChildCount>k__BackingField: 12
 --- !u!1 &5955952101318765927
 GameObject:
   m_ObjectHideFlags: 0
@@ -2619,12 +2679,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5955952101318765927}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2133445763074070359}
+  m_Father: {fileID: 993806177238499785}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1670855201682651777
 MonoBehaviour:
@@ -2643,8 +2703,8 @@ MonoBehaviour:
   - {fileID: 8518090479879383297}
   - {fileID: 5961185048042031459}
   <Machine>k__BackingField: {fileID: 0}
-  <Parent>k__BackingField: {fileID: 1146425584514261869}
-  <Layer>k__BackingField: 2
+  <Parent>k__BackingField: {fileID: 7974572304232093520}
+  <Layer>k__BackingField: 3
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
 --- !u!114 &2022399184418118913
@@ -3444,12 +3504,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7011390158379552018}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2133445763074070359}
+  m_Father: {fileID: 993806177238499785}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3289048053427259037
 MonoBehaviour:
@@ -3468,8 +3528,8 @@ MonoBehaviour:
   - {fileID: 1317775717574601787}
   - {fileID: 4971515753925946305}
   <Machine>k__BackingField: {fileID: 0}
-  <Parent>k__BackingField: {fileID: 1146425584514261869}
-  <Layer>k__BackingField: 2
+  <Parent>k__BackingField: {fileID: 7974572304232093520}
+  <Layer>k__BackingField: 3
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
 --- !u!114 &9080227979850299338
