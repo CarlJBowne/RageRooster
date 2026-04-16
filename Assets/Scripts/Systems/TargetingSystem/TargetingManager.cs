@@ -143,7 +143,7 @@ public class TargetingChannel
 
         for (int i = 0; i < AllTargets.Count; i++)
         {
-            if (AllTargets[i] == null || AllTargets[i].Enabled == false) continue;
+            if (AllTargets[i] == null || AllTargets[i].Target == null || AllTargets[i].Enabled == false) continue;
 
             float distance = Vector3.Distance(Range.front.position, AllTargets[i].Target.position);
             float angle = Vector3.Angle(Range.front.forward, AllTargets[i].Target.position - Range.front.position);

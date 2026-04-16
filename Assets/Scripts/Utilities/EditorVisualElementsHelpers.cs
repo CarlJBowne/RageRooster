@@ -216,6 +216,16 @@ namespace UnityEngine.UIElements
             V.RegisterCallback<MouseLeaveEvent>(Do);
             void Do(UIElements.EventBase E) => hovered?.Invoke(E is MouseOverEvent);
         }
+
+        public static void SetCursor(this VisualElement element, MouseCursor cursor)
+        {
+            object objCursor = new UnityEngine.UIElements.Cursor();
+            PropertyInfo fields = typeof(UnityEngine.UIElements.Cursor)
+                .GetProperty("defaultCursorId", BindingFlags.NonPublic | BindingFlags.Instance);
+            fields.SetValue(objCursor, (int)cursor);
+            element.style.cursor = new StyleCursor((UnityEngine.UIElements.Cursor)objCursor);
+        }
+
     }
 
     public static class CustomStyles

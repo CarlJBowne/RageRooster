@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
@@ -17,7 +18,7 @@ namespace SLS.StateMachineH {
         /// <summary>  
         /// The <see cref="StateBehavior"/>s associated with this <see cref="State"/>.  
         /// </summary>  
-        [field: SerializeField] public StateBehavior[] Behaviors { get; internal set; }
+        [field: SerializeField] public StateBehavior[] Behaviors { get; internal set; } = { };
 
         /// <summary>  
         /// The <see cref="StateMachine"/> that owns this <see cref="State"/>.  

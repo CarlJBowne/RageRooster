@@ -18,7 +18,7 @@ public class PlayerGrabAction : PlayerStateBehavior
     public float horizontalThreshold;
     public float verticalThreshold;
     public float directionalThreshold;
-    public float maxAttemptTime;
+    public float maxAttemptTime = 9;
     public TimedMovementAffector failMissedReturn;
     public TimedMovementAffector failBlockedReturn;
     //public TimedMovementAffector passthroughReturn;                      NOTE. GRABBABLE SWITCHES DOES NOT WORK CORRECTLY YET.
@@ -97,7 +97,8 @@ public class PlayerGrabAction : PlayerStateBehavior
 
             Player.MovementBody.VelocitySet(targetVelocity.x, targetVelocity.y, targetVelocity.z);
 
-            if ((horizontalDistance <= horizontalThreshold && verticalDistance <= verticalThreshold && angleDifference <= directionalThreshold) || elapsedTime > maxAttemptTime) //CHANGE PHASE
+
+            if (elapsedTime > maxAttemptTime || (horizontalDistance <= horizontalThreshold && angleDifference <= directionalThreshold && (verticalDistance <= verticalThreshold || verticalShift == 0))) //CHANGE PHASE
             {
                 if (selectedTarget == null || selectedGrabbable == null)
                 {
