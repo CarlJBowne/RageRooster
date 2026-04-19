@@ -15,5 +15,16 @@ using UnityEditor.UIElements;
 
 public class TestScript : MonoBehaviour
 {
-    public GlobalPool.Client client;
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!Player.IsPlayer(other)) return;
+        Cameras.LockPrimary(true, false);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!Player.IsPlayer(other)) return;
+        Cameras.LockPrimary(false, false);
+
+    }
 }

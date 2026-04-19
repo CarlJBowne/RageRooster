@@ -68,4 +68,11 @@ public class Cameras : MonoBehaviour
         currentVirtualCamera.Priority = 10;
         currentVirtualCamera.gameObject.SetActive(true);
     }
+
+    public static void LockPrimary(bool lockPosition = true, bool lockRotation = false)
+    {
+        normalCamera.m_Follow = lockPosition ? null : Player.Transform;
+        normalCamera.m_LookAt = lockRotation ? null : Player.Transform;
+    }
+
 }
