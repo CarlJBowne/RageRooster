@@ -11,6 +11,8 @@ namespace RageRooster.RoomSystem.MovementSystems
         public float fadeoutTime = 1f;
         public bool cancellable;
         public bool forceFullTransition;
+        public bool lockCameraPosition;
+        public bool lockCameraRotation;
 
         private bool playerWithin;
         CoroutinePlus coroutine;
@@ -21,6 +23,7 @@ namespace RageRooster.RoomSystem.MovementSystems
             if (!playerWithin && other == Player.Collider)
             {
                 playerWithin = true;
+                if (lockCameraPosition || lockCameraRotation) Cameras.LockPrimary(lockCameraPosition, lockCameraRotation);
                 coroutine?.StopAuto();
                 coroutine = new(TransitionEnum(), this);
                 activeMusicChannel = Music.Primary;
@@ -32,6 +35,7 @@ namespace RageRooster.RoomSystem.MovementSystems
             if(playerWithin && other == Player.Collider && cancellable)
             {
                 playerWithin = false;
+                if (lockCameraPosition || lockCameraRotation) Cameras.LockPrimary(false, false);
                 coroutine?.StopAuto();
                 coroutine = new(CancelEnum(), this);
             }
