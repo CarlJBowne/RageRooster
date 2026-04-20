@@ -24,7 +24,7 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
 
     [HideInEditMode, HideInPlayMode] public UltEvents.UltEvent<EntityActivity.States> GrabStateEvent;
 
-    [FoldoutGroup("Entity State Change Events", nameof(defaultEvent),nameof(grabbedEvent),nameof(thrownEvent),nameof(bounceEvent))]
+    [FoldoutGroup("Entity State Change Events", nameof(defaultEvent), nameof(grabbedEvent), nameof(thrownEvent), nameof(bounceEvent))]
     public Void _EntityStateEvents;
     [HideInInspector] public UltEvents.UltEvent defaultEvent;
     [HideInInspector] public UltEvents.UltEvent grabbedEvent;
@@ -39,7 +39,7 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
     public bool grabbed;
 
     public new Collider collider { get; private set; }
-    
+
     private Rigidbody rb;
     public EnemyHealth health { get; protected set; }
 
@@ -102,11 +102,11 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
     public void Release()
     {
 
-        if (!grabbed) return; 
+        if (!grabbed) return;
 
         State = EntityActivity.States.Default;
         SetVelocity(Vector3.zero);
-    } 
+    }
 
     public void Release(Vector3? velocity = null)
     {
@@ -123,7 +123,7 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
 
     public virtual void Contact(GameObject target)
     {
-        if(currentState == EntityActivity.States.Thrown && target != PlayerInteracter.ThisGameObject)
+        if (currentState == EntityActivity.States.Thrown && target != PlayerInteracter.ThisGameObject)
         {
             State = EntityActivity.States.RagDoll;
             if (thrownAttack.amount > 0 && target.TryGetComponent(out IDamagable targetDamagable)) targetDamagable.Damage(this.GetAttack());
@@ -175,7 +175,7 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
     public Attack GetAttack()
     {
         Attack result = thrownAttack;
-        result.velocity = rigidBody.linearVelocity; 
+        result.velocity = rigidBody.linearVelocity;
         return result;
     }
 
@@ -193,4 +193,6 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
 
         if (this is RagdollHandler_Obsolete ragdoll) ragdoll.ReplaceWithNew();
     }
+
+    public void TransferTags() => thrownAttack.TransferTags();
 }

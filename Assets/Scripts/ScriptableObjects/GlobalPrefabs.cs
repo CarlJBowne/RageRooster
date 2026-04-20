@@ -1,5 +1,6 @@
 ﻿#define AYellowPaper
 
+using EditorAttributes;
 using SLS.ISingleton;
 using System;
 using System.Collections.Generic;
@@ -27,11 +28,19 @@ public class GlobalPrefabs : SingletonAsset<GlobalPrefabs>
     public static bool TryNamedPrefab(string name, out GameObject result) => Get().dictionary.TryGetValue(name, out result);
 
     public List<string> attackTagNames;
-    public List<string> AttackTagNames => Get().attackTagNames;
+    protected override void OnInitialize()
+    {
+        base.OnInitialize();
+        Attack.InitGlobalData(attackTagNames);
+    }
+    private void OnValidate() => Attack.InitGlobalData(attackTagNames);
 
-    public AttackTags attackTagTest;
-
-
-
+    [Button]
+    public void GetFromTagsEnum()
+    {
+        attackTagNames = new List<string>();
+        for (int i = 0; i < 27; i++) attackTagNames.Add(((Attack.Tags)i).ToString());
+        Attack.InitGlobalData(attackTagNames);
+    }
 
 }

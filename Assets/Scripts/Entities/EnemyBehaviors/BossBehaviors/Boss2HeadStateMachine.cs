@@ -130,7 +130,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
         }
         else if (headID == FinalBossHead.Stumpy)
         {
-            if (currentState == "Charging" && attack.HasTag(Attack.Tag.Egg))
+            if (currentState == "Charging" && attack == Attack.Tags.Egg)
             {
                 individualDamageCounter++;
                 DoDamageTint(false);
@@ -151,7 +151,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
                     DoDamageTint(false);
                     return true;
                 }
-                else if (attack.HasTag(Attack.Tag.Wham))
+                else if (attack == Attack.Tags.Wham)
                 {
                     animator.enabled = true;
                     damageTaken++;
