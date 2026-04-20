@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -141,6 +144,12 @@ public struct Attack
         }
     }
 #endif
+
+
+
+
+
+
 }
 public static class _AttackTagOverrides
 {
@@ -160,7 +169,7 @@ public class _AttackTagPropertyDrawer : PropertyDrawer
     {
         EditorGUI.BeginProperty(position, label, property);
 
-        position.xMin -= 10; 
+        position.xMin -= 10;
 
         // Retrieve the serialized fields
         SerializedProperty nameProperty = property.FindPropertyRelative("name");
@@ -169,4 +178,62 @@ public class _AttackTagPropertyDrawer : PropertyDrawer
         EditorGUI.EndProperty();
     }
 }
+
 #endif
+
+[Serializable]
+public class AttackTags : BitwiseEnum
+{
+#if UNITY_EDITOR
+    [CustomPropertyDrawer(typeof(AttackTags))]
+    public class AttackTagBitEnumDrawer : UnityEditor.PropertyDrawer
+    {
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            var container = new VisualElement();
+
+            SerializedProperty intProp = property.FindPropertyRelative(nameof(intValue));
+            if (intProp == null)
+            {
+                // Fallback: show a label if property layout is unexpected
+                container.Add(new Label("Error: intValue not found on AttackTagBitEnum"));
+                return container;
+            }
+
+            var imgui = new IMGUIContainer(() =>
+            {
+                // Retrieve dynamic names from GlobalPrefabs; ensure null-safety
+                string[] options;
+                try
+                {
+                    var gp = GlobalPrefabs.Get();
+                    if (gp != null && gp.attackTagNames != null && gp.attackTagNames.Count > 0)
+                        options = gp.attackTagNames.ToArray();
+                    else
+                        options = new string[] { "None" };
+                }
+                catch
+                {
+                    options = new string[] { "None" };
+                }
+
+                EditorGUI.BeginChangeCheck();
+
+                // Render mask field using GUILayout so it integrates into the IMGUIContainer
+                int currentMask = intProp.intValue;
+                int newMask = EditorGUILayout.MaskField(property.displayName, currentMask, options);
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    intProp.intValue = newMask;
+                    // Apply changes immediately to the serialized object
+                    property.serializedObject.ApplyModifiedProperties();
+                }
+            });
+
+            container.Add(imgui);
+            return container;
+        }
+    }
+#endif
+}

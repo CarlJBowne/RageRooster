@@ -26,9 +26,10 @@ public class GlobalPrefabs : SingletonAsset<GlobalPrefabs>
     public static GameObject NamedPrefab(string name) => Get().dictionary[name];
     public static bool TryNamedPrefab(string name, out GameObject result) => Get().dictionary.TryGetValue(name, out result);
 
+    public List<string> attackTagNames;
+    public List<string> AttackTagNames => Get().attackTagNames;
 
-
-
+    public AttackTags attackTagTest;
 
 
 
