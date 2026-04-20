@@ -18,7 +18,7 @@ public class DamageReciever : MonoBehaviour, IDamagable
     {
         if (!enabled) return false;
 
-        attack.tags = attack.tags.ToArray().Append(attachTag).ToArray();
+        attack.oldTags = attack.oldTags.ToArray().Append(attachTag).ToArray();
 
         return target.I.Damage(attack);
     }

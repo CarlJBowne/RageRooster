@@ -52,7 +52,7 @@ public class EnemyHealth : Health
 
     #region DamageOverrides
 
-    protected override bool OverrideDamageable(Attack attack) => !attack.tags.Contains(Attack.Tag.FromEnemy) || attack.tags.Contains(Attack.Tag.FriendlyFire);
+    protected override bool OverrideDamageable(Attack attack) => attack != Attack.Tags.Enemy || attack == Attack.Tags.FriendlyFire;
 
     protected override void OnDamage(Attack attack)
     {
@@ -70,7 +70,7 @@ public class EnemyHealth : Health
     {
         base.OnDeplete(attack);
         if (visualMachine) visualMachine.enabled = false;
-        if (attack == Attack.Tag.Wham)
+        if (attack == Attack.Tags.Wham)
         {
             CoroutinePlus.Stop(ref stunRoutine);
             if (ragdoll)
@@ -90,7 +90,7 @@ public class EnemyHealth : Health
 
     void Stun(Attack attack)
     {
-        stunTimeLeft = stunTime * (attack == Attack.Tag.Wham ? 2 : 1);
+        stunTimeLeft = stunTime * (attack == Attack.Tags.Wham ? 2 : 1);
         CoroutinePlus.Begin(ref stunRoutine, StunEnum(), this, false);
 
         IEnumerator StunEnum()

@@ -1,8 +1,10 @@
 #if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cinemachine.Editor;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -37,29 +39,21 @@ public class AnimationHelperWindow : EditorWindow
         w.ShowUtility();
     }
 
-    //private List<AnimationClip> manyAnimationClips = new();
-
-    //ObjectField InputAnimationClipField;
-    //SerializedProperty InputManyAnimationClipProp;
-    //PropertyField InputManyAnimationClipField;
     Button ClearUnecessaryChannelsButton;
+    Button TransferAllAttackTagsButton;
 
     private void OnEnable()
     {
-        //InputAnimationClipField = new("Animation Clip")
-        //{
-        //    objectType = typeof(AnimationClip),
-        //};
         ClearUnecessaryChannelsButton = new Button(ClearUnecessaryChannelsButtonPress)
         {
             text = "Clear Unecessary Channels"
         };
-        //rootVisualElement.Add(InputAnimationClipField);
         rootVisualElement.Add(ClearUnecessaryChannelsButton);
-
-        //InputManyAnimationClipProp = new SerializedObject(this).FindProperty(nameof(manyAnimationClips));
-        //InputManyAnimationClipField = new(InputManyAnimationClipProp);
-        //rootVisualElement.Add(InputManyAnimationClipField); 
+        TransferAllAttackTagsButton = new Button(TransferAllAttackTags)
+        {
+            text = "Transfer All Attack Tags"
+        };
+        rootVisualElement.Add(TransferAllAttackTagsButton);
 
     }
 
@@ -71,10 +65,6 @@ public class AnimationHelperWindow : EditorWindow
         }
 
 
-        //if (InputManyAnimationClipProp.arraySize > 0)
-        //    for (int i = 0; i < InputManyAnimationClipProp.arraySize; i++)
-        //        ClearUnnecessaryChannels(InputManyAnimationClipProp.GetArrayElementAtIndex(i).objectReferenceValue as AnimationClip);
-        //else ClearUnnecessaryChannels(InputAnimationClipField.value as AnimationClip);
     }
 
     public void ClearUnnecessaryChannels(AnimationClip source)
@@ -203,6 +193,60 @@ public class AnimationHelperWindow : EditorWindow
         Debug.Log($"ClearUnnecessaryChannels: Removed {removedCount} channel(s) from clip '{source.name}'.");
     }
 
+    public void TransferAllAttackTags()
+    {
+        string[] prefabGUIDS = AssetDatabase.FindAssets("t:Prefab");
+        foreach (string guid in prefabGUIDS)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            // Use EditPrefabContentsScope to safely open and save prefab data
+            using (var editingScope = new PrefabUtility.EditPrefabContentsScope(path))
+            {
+                var root = editingScope.prefabContentsRoot;
+                var attackSourceComps = root.GetComponentsInChildren<IAttackSource>(true);
+                foreach (var comp in attackSourceComps)
+                {
+                    comp.TransferTags();
+                    EditorUtility.SetDirty(comp as Component);
+                }
+
+                var healthComps = root.GetComponentsInChildren<Health>(true);
+                foreach (var comp in healthComps)
+                {
+                    comp.TransferImmuneTags();
+                    EditorUtility.SetDirty(comp as Component);
+                }
+
+            }
+        }
+
+        foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
+        {
+            if (!scene.enabled) continue;
+            var openedScene = EditorSceneManager.OpenScene(scene.path);
+            var attackSourceComps =
+                Object.FindObjectsByType(typeof(IAttackSource), FindObjectsInactive.Include, FindObjectsSortMode.None).Cast<IAttackSource>();
+            bool isDirty = false;
+
+            foreach (var comp in attackSourceComps)
+            {
+                comp.TransferTags();
+                EditorUtility.SetDirty(comp as Component);
+                isDirty = true;
+            }
+
+            var healthComps = Object.FindObjectsByType<Health>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+            foreach (var comp in healthComps)
+            {
+                comp.TransferImmuneTags();
+                EditorUtility.SetDirty(comp as Component);
+                isDirty = true;
+            }
+
+            if (isDirty) EditorSceneManager.SaveScene(openedScene);
+        }
+    }
 
 }
 #endif
