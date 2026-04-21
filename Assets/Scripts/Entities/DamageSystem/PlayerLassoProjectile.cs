@@ -9,6 +9,7 @@ public class PlayerLassoProjectile : PlayerProjectile
     public float pullSpeed;
     public float reachplayerDistance = 1f;
     public float gravity;
+    public float verticalCorrection = 2;
 
     //data
     private bool pullingPhase;
@@ -36,7 +37,7 @@ public class PlayerLassoProjectile : PlayerProjectile
         float horizontalDistance = currentHDirection.magnitude;
         currentHDirection.Normalize();
 
-        float yDelta = targetDelta.y + 1; //Make lasso aim slightly high to look more like its looping around the target
+        float yDelta = targetDelta.y + verticalCorrection; //Make lasso aim slightly high to look more like its looping around the target
 
         // Compute time to reach target based on horizontal speed
         float expectedTravelTime = (speed > 0f && horizontalDistance > 0f) ? horizontalDistance / speed : 0f;
@@ -80,14 +81,14 @@ public class PlayerLassoProjectile : PlayerProjectile
             toTarget.Normalize();
             float angleToTarget = Vector3.Angle(currentHDirection, toTarget);
             if (angleToTarget > loseTargetAngle) lostTarget = true;
-            else if (angleToTarget > .1f)
+            else if (angleToTarget > .05f)
             {
                 float currentHomingPerSecond = (timeFlying < initialHomingDuration) ? initialHomingPerSecond : homingPerSecond;
                 currentHDirection = Vector3.RotateTowards(currentHDirection, toTarget, currentHomingPerSecond * Mathf.Deg2Rad * Time.fixedDeltaTime, 0f).normalized;
                 if (rotateActualBody) transform.rotation = Quaternion.LookRotation(currentHDirection);
             }
 
-            if (distanceLeft <= 1.5f) targetSpeed *= distanceLeft * 1.5f;
+            if (distanceLeft <= 1.5f) targetSpeed -= targetSpeed * (1.5f - distanceLeft);
         }
 
         //Note, Look into possible homing adjustments to vertical velocity as well for better target tracking.

@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
+using SLS.StateMachineH.Timelines;
 using UnityEditor;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-namespace SLS.StateMachineH {
+namespace SLS.StateMachineH
+{
 
     /// <summary>  
     /// A state within a Hierarchical <see cref="StateMachine"/>.  
@@ -17,7 +20,7 @@ namespace SLS.StateMachineH {
         /// <summary>  
         /// The <see cref="StateBehavior"/>s associated with this <see cref="State"/>.  
         /// </summary>  
-        [field: SerializeField] public StateBehavior[] Behaviors { get; internal set; }
+        [field: SerializeField] public StateBehavior[] Behaviors { get; internal set; } = { };
 
         /// <summary>  
         /// The <see cref="StateMachine"/> that owns this <see cref="State"/>.  
@@ -116,7 +119,7 @@ namespace SLS.StateMachineH {
                 ChildCount = childCount;
                 Children = children;
             }
-            if(makeDirty) ApplySetupChanges();
+            if (makeDirty) ApplySetupChanges();
 
         }
 
@@ -126,11 +129,11 @@ namespace SLS.StateMachineH {
         internal void DoAwake()
         {
             for (int i = 0; i < Behaviors.Length; i++)
-                if (Behaviors[i] != null) 
+                if (Behaviors[i] != null)
                     Behaviors[i].DoAwake();
 
             for (int i = 0; i < Children.Count; i++)
-                if(Children[i] != null)
+                if (Children[i] != null)
                     Children[i].DoAwake();
         }
 
@@ -140,7 +143,7 @@ namespace SLS.StateMachineH {
         internal void DoUpdate()
         {
             for (int i = 0; i < Behaviors.Length; i++)
-                if (Behaviors[i] != null) 
+                if (Behaviors[i] != null)
                     Behaviors[i].DoUpdate();
 
             CurrentChild?.DoUpdate();
@@ -152,7 +155,7 @@ namespace SLS.StateMachineH {
         internal void DoFixedUpdate()
         {
             for (int i = 0; i < Behaviors.Length; i++)
-                if (Behaviors[i] != null) 
+                if (Behaviors[i] != null)
                     Behaviors[i].DoFixedUpdate();
 
             if (CurrentChild) CurrentChild.DoFixedUpdate();
@@ -165,12 +168,12 @@ namespace SLS.StateMachineH {
         internal void DoEnter(State prev)
         {
             for (int i = 0; i < Behaviors.Length; i++)
-                if (Behaviors[i] != null) 
+                if (Behaviors[i] != null)
                     Behaviors[i].DoEnter(null, !HasChildren);
             Active = true;
             gameObject.SetActive(true);
             for (int i = 0; i < Behaviors.Length; i++)
-                if (Behaviors[i] != null) 
+                if (Behaviors[i] != null)
                     Behaviors[i].DoEnter(prev, !HasChildren);
         }
 
@@ -181,13 +184,13 @@ namespace SLS.StateMachineH {
         internal void DoExit(State next)
         {
             for (int i = 0; i < Behaviors.Length; i++)
-                if (Behaviors[i] != null) 
+                if (Behaviors[i] != null)
                     Behaviors[i].DoExit(null);
             Active = false;
             gameObject.SetActive(false);
             CurrentChild = null;
             for (int i = 0; i < Behaviors.Length; i++)
-                if (Behaviors[i] != null) 
+                if (Behaviors[i] != null)
                     Behaviors[i].DoExit(next);
         }
 
@@ -230,26 +233,94 @@ namespace SLS.StateMachineH {
 
         protected void ApplySetupChanges()
         {
+            /*
+            PSEUDOCODE / PLAN (detailed):
+            - Ensure this method only applies a limited set of prefab changes by default:
+              - Always mark this object dirty in the editor.
+              - Determine prefab instance status and whether the object is part that can be applied to.
+              - If the prefab instance is Connected and the object can be applied to:
+                - Retrieve added GameObjects on the prefab instance and apply them.
+                  - Use reflection to call Apply() on each added GO override item (robust to API versions).
+                - Retrieve object overrides for `this` (the State component).
+                  - For each override, inspect its property path (robust via reflection).
+                  - Maintain an allowlist of property name patterns that correspond to serialized State fields:
+                    Behaviors, Machine, Parent, Layer, Children, ChildCount and likely backing-field/name variants
+                    (e.g. "<Behaviors>k__BackingField", "m_Behaviors", etc).
+                  - If an override's property path matches any allowlisted pattern, apply that override via reflection.
+              - If applyAllPrefabChanges is true, retain the existing full-apply behavior (apply added components,
+                removed components, all overrides and added game objects) as before.
+            - Use reflection to access `Apply()` and `propertyPath` members to remain compatible with different Unity
+              API types returned by PrefabUtility helper methods.
+            - Keep all editor-only functionality inside #if UNITY_EDITOR.
+            */
+
 #if UNITY_EDITOR
             EditorUtility.SetDirty(this);
 
             var prefabStatus = PrefabUtility.GetPrefabInstanceStatus(gameObject);
             bool isPartThatCanBeAppliedTo = PrefabUtility.IsPartOfPrefabThatCanBeAppliedTo(gameObject);
 
-            if (prefabStatus is PrefabInstanceStatus.Connected && isPartThatCanBeAppliedTo)
+            if (prefabStatus is not PrefabInstanceStatus.Connected || !isPartThatCanBeAppliedTo) return;
+            string path = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this);
+
+            // 1) Apply added GameObjects (always applied by default)
+
+            var addedGOs = PrefabUtility.GetAddedGameObjects(gameObject);
+            for (int i = 0; i < addedGOs.Count; i++)
             {
-                string assetPath = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(gameObject);
-
-                var addedComps = PrefabUtility.GetAddedComponents(gameObject);
-                var removedComps = PrefabUtility.GetRemovedComponents(gameObject);
-                var overrides = PrefabUtility.GetObjectOverrides(gameObject);
-                var addedGOs = PrefabUtility.GetAddedGameObjects(gameObject);
-
-                for (int i = 0; i < addedComps.Count; i++) addedComps[i].Apply();
-                for (int i = 0; i < removedComps.Count; i++) removedComps[i].Apply();
-                for (int i = 0; i < overrides.Count; i++) overrides[i].Apply();
-                for (int i = 0; i < addedGOs.Count; i++) addedGOs[i].Apply();
+                var item = addedGOs[i];
+                item?.Apply();
             }
+
+            SerializedObject SO = new(this);
+
+            void ApplyPropertyOverride(string name, bool backingField, SerializedObject SO)
+            {
+                PrefabUtility.ApplyPropertyOverride(SO.FindProperty(backingField ? $"<{name}>k__BackingField" : name), 
+                    path, InteractionMode.AutomatedAction);
+            }
+
+            ApplyPropertyOverride(nameof(Behaviors), true, SO);
+            ApplyPropertyOverride(nameof(Machine), true, SO);
+            ApplyPropertyOverride(nameof(Parent), true, SO);
+            ApplyPropertyOverride(nameof(Layer), true, SO);
+            ApplyPropertyOverride(nameof(Children), true, SO);
+            ApplyPropertyOverride(nameof(ChildCount), true, SO);
+            ApplyPropertyOverride(nameof(Behaviors), true, SO);
+            ApplyPropertyOverride(nameof(Behaviors), true, SO);
+
+            for (int i = 0; i < Behaviors.Length; i++)
+            {
+                SerializedObject behaviorSO = new(Behaviors[i]);
+                ApplyPropertyOverride(nameof(StateBehavior.State), true, behaviorSO);
+                if (Behaviors[i] is StateAnimator) ApplyPropertyOverride("animator", false, behaviorSO);
+                if (Behaviors[i] is StateTimeline) ApplyPropertyOverride("timeline", false, behaviorSO);
+            }
+
+            /*
+             var addedComps = PrefabUtility.GetAddedComponents(gameObject);
+            var removedComps = PrefabUtility.GetRemovedComponents(gameObject);
+            var overrides = PrefabUtility.GetObjectOverrides(gameObject);
+
+
+            for (int i = 0; i < addedComps.Count; i++)
+            {
+                var item = addedComps[i];
+                item?.Apply();
+            }
+
+            for (int i = 0; i < removedComps.Count; i++)
+            {
+                var item = removedComps[i];
+                item?.Apply();
+            }
+
+            for (int i = 0; i < overrides.Count; i++)
+            {
+                var item = overrides[i];
+                item?.Apply();
+            } 
+            */
 #endif
         }
 

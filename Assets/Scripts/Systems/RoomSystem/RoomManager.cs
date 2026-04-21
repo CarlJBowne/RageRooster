@@ -117,7 +117,7 @@ namespace RageRooster.RoomSystem
             yield return destination.room.PrepEnter();
             EnterRoom(destination.room);
 
-            SpawnPoint targetSpawn = currentRoom.root.spawns[destination.spawnID];
+            SpawnPoint targetSpawn = currentRoom.root.Spawns[destination.spawnID];
 
             targetSpawn.SpawnPlayerAt();
 
@@ -169,6 +169,7 @@ namespace RageRooster.RoomSystem
         /// <param name="nextRoom">The target room to enter</param>
         public static void EnterRoom(RoomAsset nextRoom)
         {
+            if (currentRoom == nextRoom) return;
             if (currentRoom != null) currentRoom._Exit();
             currentRoom = nextRoom;
             currentRoom._Enter();

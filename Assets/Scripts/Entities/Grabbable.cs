@@ -93,13 +93,23 @@ public class Grabbable : MonoBehaviour
             }
         }
 
-        if (grabbable == null && target.TryGetComponent(out GrabbableSwitch @switch))
+        if (grabbable == null && target.TryGetComponent(out GrabbableSwitch @switch)) return GrabResult.Passthrough;
+
+        miss?.Invoke();
+        return GrabResult.Missed;
+    }
+    public static void Attempt(GameObject target, out GrabResult grabResult, out Grabbable grabbable)
+    {
+        target.TryGetComponent(out grabbable);
+        if (grabbable == null && target.TryGetComponent(out GrabbableIndirect ind)) grabbable = ind.Get();
+
+        if (grabbable != null) grabResult = grabbable.GetGrabbable();
+        else if (grabbable == null && target.TryGetComponent(out GrabbableSwitch @switch))
         {
             @switch.Invoke();
-            return GrabResult.Passthrough;
+            grabResult = GrabResult.Passthrough;
         }
-
-        return GrabResult.Missed;
+        else grabResult = GrabResult.Missed;
     }
 
 

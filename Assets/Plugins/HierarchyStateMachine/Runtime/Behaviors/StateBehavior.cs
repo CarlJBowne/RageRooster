@@ -16,12 +16,12 @@ namespace SLS.StateMachineH
         /// The <see cref="StateMachine"/> owning this behavior. Likely the most important field you'll be referencing a lot.  
         /// Override with the "new" keyword with an expression like "=> M as MyStateMachine" to get a custom <see cref="StateMachine"/>.  
         /// </summary>  
-        [field: SerializeField, HideInInspector] public StateMachine Machine { get; internal set; }
+        public StateMachine Machine => State.Machine;
 
         /// <summary>  
         /// The current <see cref="StateMachineH.State"/>. Useful for referencing this SubObject.  
         /// </summary>  
-        [field: SerializeField, HideInInspector] public State State { get; internal set; }
+        [field: SerializeField] public State State { get; internal set; }
 
         /// <summary>  
         /// An indirection to access the <see cref="StateMachine"/>'s <see cref="GameObject"/> property.  
@@ -41,9 +41,6 @@ namespace SLS.StateMachineH
         public void Setup(State @state, bool makeDirty = false)
         {
             this.State = @state;
-            Machine = State != null
-                ? @state.Machine
-                : GetComponent<StateMachine>();
 
             this.OnSetup();
 
@@ -65,7 +62,6 @@ namespace SLS.StateMachineH
         protected virtual void Reset()
         {
             if (State == null) State = GetComponent<State>();
-            if (State != null) Machine = State.Machine;
         }
 
         /// <summary>  

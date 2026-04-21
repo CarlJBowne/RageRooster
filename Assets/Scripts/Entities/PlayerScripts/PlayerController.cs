@@ -13,17 +13,6 @@ public class PlayerController : PlayerStateBehavior
 
     public float jumpBuffer = 0.3f;
 
-    public PlayerAirborneMovement airChargeState;
-    public PlayerAirborneMovement airChargeFallState;
-    public PlayerAirborneMovement glideCheck; //Keeping this here for now in case we decide to re-implement the gliding.
-    public PlayerWallJump wallJumpState;
-    public PlayerRanged ranged;
-    public PlayerStrafingMovement aimingState;
-    public State groundedSpin;
-    public State airSpin;
-    public PlayerHellcopterMovement airUpwardTornado;
-    public State ventGlideState;
-
     public bool overrideMovementControl;
     public Vector2 overrideMovementVector;
 
@@ -46,41 +35,41 @@ public class PlayerController : PlayerStateBehavior
 
     private void OnEnable()
     {
-        Input.Jump.started += ButtonPressed;
-        Input.Jump.canceled += ButtonRelease;
-        Input.Attack.started += ButtonPressed;
-        Input.Attack.canceled += ButtonRelease;
-        Input.Grab.started += ButtonPressed;
-        Input.Grab.canceled += ButtonRelease;
-        Input.Charge1.started += ButtonPressed;
-        Input.Charge1.canceled += ButtonRelease;
-        Input.Charge2.started += ButtonPressed;
-        Input.Charge2.canceled += ButtonRelease;
+        Input.Jump.started += ActionButtonPressed;
+        Input.Jump.canceled += ActionButtonReleased;
+        Input.Attack.started += ActionButtonPressed;
+        Input.Attack.canceled += ActionButtonReleased;
+        Input.Grab.started += ActionButtonPressed;
+        Input.Grab.canceled += ActionButtonReleased;
+        Input.Charge1.started += ActionButtonPressed;
+        Input.Charge1.canceled += ActionButtonReleased;
+        Input.Charge2.started += ActionButtonPressed;
+        Input.Charge2.canceled += ActionButtonReleased;
         Input.Aim.started += AimPress;
         Input.Aim.canceled += AimRelease;
         //Input.Aim.started += ButtonPressed;
         //Input.Aim.canceled += ButtonRelease;
-        Input.Parry.started += ButtonPressed;
-        Input.Parry.canceled += ButtonRelease;
+        Input.Parry.started += ActionButtonPressed;
+        Input.Parry.canceled += ActionButtonReleased;
     }
     private void OnDisable()
     {
-        Input.Jump.started -= ButtonPressed;
-        Input.Jump.canceled -= ButtonRelease;
-        Input.Attack.started -= ButtonPressed;
-        Input.Attack.canceled -= ButtonRelease;
-        Input.Grab.started -= ButtonPressed;
-        Input.Grab.canceled -= ButtonRelease;
-        Input.Charge1.started -= ButtonPressed;
-        Input.Charge1.canceled -= ButtonRelease;
-        Input.Charge2.started -= ButtonPressed;
-        Input.Charge2.canceled -= ButtonRelease;
+        Input.Jump.started -= ActionButtonPressed;
+        Input.Jump.canceled -= ActionButtonReleased;
+        Input.Attack.started -= ActionButtonPressed;
+        Input.Attack.canceled -= ActionButtonReleased;
+        Input.Grab.started -= ActionButtonPressed;
+        Input.Grab.canceled -= ActionButtonReleased;
+        Input.Charge1.started -= ActionButtonPressed;
+        Input.Charge1.canceled -= ActionButtonReleased;
+        Input.Charge2.started -= ActionButtonPressed;
+        Input.Charge2.canceled -= ActionButtonReleased;
         Input.Aim.started -= AimPress;
         Input.Aim.canceled -= AimRelease;
         //Input.Aim.started -= ButtonPressed;
         //Input.Aim.canceled -= ButtonRelease;
-        Input.Parry.started -= ButtonPressed;
-        Input.Parry.canceled -= ButtonRelease;
+        Input.Parry.started -= ActionButtonPressed;
+        Input.Parry.canceled -= ActionButtonReleased;
     }
 
     protected override void OnUpdate()
@@ -114,20 +103,35 @@ public class PlayerController : PlayerStateBehavior
     {
         if (Upgrades.Active.hellcopter)
         {
-            airSpin.Enter();
+            Player.StateMachine.AirParry.Enter();
             if (playerMovementBody.isOverVent) Machine.SendSignal(new("EnterVent", 0, true));
         }
     }
 
     public void MidJumpJumpAction()
     {
-        if (!wallJumpState.WallJump(transform.forward))
+        if (!Player.StateMachine.WallJump.WallJump(transform.forward))
         {
-            (!playerMovementBody.isOverVent ? Player.StateMachine.Gliding : ventGlideState).Enter();
+            if (playerMovementBody.isOverVent) Player.StateMachine.VentGliding.Enter();
+            else Player.StateMachine.Gliding.Enter();
         }
     }
-    public void MidWallJumpJumpAction() => wallJumpState.WallJump(transform.forward);
+    public void MidWallJumpJumpAction() => Player.StateMachine.WallJump.WallJump(transform.forward);
 
+    public void AirJumpAction(bool allowDoubleJump, bool allowGlide)
+    {
+        if (Upgrades.Active.wallJump && Player.StateMachine.WallJump.WallJump(transform.forward)) return;
+        else if (allowDoubleJump && Upgrades.Active.doubleJump && Player.MovementBody.canDoDoubleJump)
+        {
+            Player.StateMachine.Jump.BeginJump();
+            Player.MovementBody.canDoDoubleJump = false;
+        }
+        else if (allowGlide && Upgrades.Active.glide)
+        {
+            if (playerMovementBody.isOverVent) Player.StateMachine.VentGliding.Enter();
+            else Player.StateMachine.Gliding.Enter();
+        }
+    }
 
 
     private void AimPress(CTX cTX) => Machine.SendSignal("Aim");
@@ -137,25 +141,26 @@ public class PlayerController : PlayerStateBehavior
 
     //NewButtonSystem.
 
-    private void ButtonPressed(CTX c)
+    private void ActionButtonPressed(CTX c)
     {
-        if (!ButtonReady || PlayerButtonAction.Current != null || ActionSourceStack.Count == 0) return;
-        if (ActionSourceStack[^1].GetButtonAction(c.action) is PlayerButtonAction action and not null)
+        if (PlayerButtonAction.Current != null || ActionSourceStack.Count == 0) return;
+        if (ActionSourceStack[^1][c.action] is PlayerButtonAction action and not null && !action.active)
         {
-            action.Begin(c.action);
+            ActiveButtonAction = c.action;
             action.Press();
         }
     }
-    private void ButtonRelease(CTX c)
+    private void ActionButtonReleased(CTX c)
     {
-        if (PlayerButtonAction.Current != null && PlayerButtonAction.Current.activeButton == c.action)
+        if (PlayerButtonAction.Current != null && ActiveButtonAction == c.action)
         {
-            if (ButtonReady) PlayerButtonAction.Current.Release();
-            PlayerButtonAction.Current?.Finish();
+            PlayerButtonAction.Current.Release();
+            ActiveButtonAction = null;
         }
     }
 
-    public static bool ButtonReady = true;
+    //public static bool ButtonReady = true; Implement later
+    public static InputAction ActiveButtonAction { get; private set; } = null;
     private readonly static List<PlayerButtonActions> ActionSourceStack = new();
 
     public static void RegisterActionSource(PlayerButtonActions source, bool deregister = false)

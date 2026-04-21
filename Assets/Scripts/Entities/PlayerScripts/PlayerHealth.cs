@@ -48,15 +48,15 @@ public class PlayerHealth : Health
         if (tintAnimator) tintAnimator.BeginAnimation();
         if (health != 0)
         {
-            if(Player.StateMachine.Aiming) Player.Ranged.ExitAimingAux();
+            if (Player.StateMachine.Aiming) Player.Ranged.ExitAimingAux();
             CoroutinePlus.Begin(ref invincibility, InvinceEnum(invincibilityTime), this);
             damagable = false;
-            if (attack.HasTag(Attack.Tag.Pit))
+            if (attack == Attack.Tags.Pit)
             {
                 Player.PitFall();
                 damagable = true;
             }
-            else if (attack.HasTag(Attack.Tag.Wham)) 
+            else if (attack == Attack.Tags.Wham)
             {
                 damageStateWham.Enter();
                 Player.MovementBody.UnLand();
@@ -71,7 +71,7 @@ public class PlayerHealth : Health
 
     protected override void OnDeplete(Attack attack)
     {
-        if(attack == Attack.Tag.Wham)
+        if (attack == Attack.Tags.Wham)
         {
             damageStateWham.Enter();
             Player.MovementBody.UnLand();
@@ -91,7 +91,7 @@ public class PlayerHealth : Health
 
     protected override bool OverrideDamageable(Attack attack)
     {
-        if (Upgrades.Active.d_invincibility && !attack.HasTag(Attack.Tag.Pit)) return false;
+        if (Upgrades.Active.d_invincibility && attack != Attack.Tags.Pit) return false;
 
         if (ConversationManager.instance && ConversationManager.instance.inDialogue) return false;
         return true;
@@ -101,17 +101,22 @@ public class PlayerHealth : Health
     {
         if (attack.amount < 1) return;
         attack.amount = 1;
-        for (int i = 0; i < attack.tags.Length; i++)
-        {
-            string iTag = attack.tags[i];
-            if (iTag[0] == 'P' && 
-                iTag.StartsWith("PlayerPoints=") && 
-                int.TryParse(iTag[13..], out int result))
-            {
-                attack.amount = result;
-                break;
-            }
-        }
+        if (attack == Attack.Tags.OnPlayerDouble) attack.amount = 2;
+        else if (attack == Attack.Tags.OnPlayerNone) attack.amount = 0;
+        else if (attack == Attack.Tags.OnPlayerTriple) attack.amount = 3;
+        else if (attack == Attack.Tags.OnPlayerQuadruple) attack.amount = 4;
+
+        //for (int i = 0; i < attack.oldTags.Length; i++)
+        //{
+        //    string iTag = attack.oldTags[i];
+        //    if (iTag[0] == 'P' && 
+        //        iTag.StartsWith("PlayerPoints=") && 
+        //        int.TryParse(iTag[13..], out int result))
+        //    {
+        //        attack.amount = result;
+        //        break;
+        //    }
+        //}
     }
 
 
@@ -119,7 +124,7 @@ public class PlayerHealth : Health
     {
         if (health == Player.Health.Current) return;
         health = Player.Health.Current;
-        if(health < 1) OnDeplete(default);
+        if (health < 1) OnDeplete(default);
     }
     private void MaxHealthChangeCallback()
     {

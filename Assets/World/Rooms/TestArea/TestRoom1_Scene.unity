@@ -624,13 +624,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4b388a78e5eed449b02b774ba9c94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Root>k__BackingField: {fileID: 841564672}
   loadRadius: 20
   unloadRadius: 30
   lodRadius: 50
   direction: {x: 1, y: 0, z: 0}
   spawnPoint: {fileID: 0}
   forDeathOnly: 0
-  root: {fileID: 841564672}
 --- !u!1 &174955397
 GameObject:
   m_ObjectHideFlags: 0
@@ -906,7 +906,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 54194
+    surfaceParameter: 54388
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: -5110150945789371810
@@ -1110,10 +1110,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  <Root>k__BackingField: {fileID: 841564672}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 841564672}
 --- !u!4 &555978581
 Transform:
   m_ObjectHideFlags: 0
@@ -1418,7 +1417,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 53562
+    surfaceParameter: 53746
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: -5110150945789371810
@@ -1607,13 +1606,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4b388a78e5eed449b02b774ba9c94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Root>k__BackingField: {fileID: 841564672}
   loadRadius: 20
   unloadRadius: 30
   lodRadius: 50
   direction: {x: 0, y: 0, z: 1}
   spawnPoint: {fileID: 0}
   forDeathOnly: 0
-  root: {fileID: 841564672}
 --- !u!1 &834428461
 GameObject:
   m_ObjectHideFlags: 0
@@ -1659,13 +1658,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b9c101c5f0b5240a7aece14537daf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestScript
-  secondMusic:
-    Guid:
-      Data1: 976656312
-      Data2: 1324722293
-      Data3: -2096513610
-      Data4: -1237814035
-    Path: event:/Music/Vs. Grubblord
+  client:
+    owner: {fileID: 0}
+    prefab: {fileID: 0}
+    muzzle: {fileID: 0}
 --- !u!65 &834428464
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1718,8 +1714,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <asset>k__BackingField: {fileID: 11400000, guid: 7453aab70edc7cf4baf23bfa79c198d9,
     type: 2}
-  <spawns>k__BackingField:
+  <RootGameObjects>k__BackingField:
+  - {fileID: 841564671}
+  - {fileID: 320782415}
+  <RoomActors>k__BackingField:
+    list:
+    - {fileID: 173858163}
+    - {fileID: 797379130}
+    - {fileID: 555978580}
+  <Spawns>k__BackingField:
   - {fileID: 555978580}
+  <EntranceActors>k__BackingField:
+  - {fileID: 173858163}
+  - {fileID: 797379130}
 --- !u!4 &841564673
 Transform:
   m_ObjectHideFlags: 0
@@ -3510,7 +3517,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 54194
+    surfaceParameter: 54388
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: -5110150945789371810

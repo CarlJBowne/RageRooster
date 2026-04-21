@@ -15,7 +15,7 @@ namespace SLS.StateMachineH.Timelines
         public AnimationCurve speedChangeCurve = Curve(15);
         public AnimationCurve turnabilityCurve = Curve(10);
         public AnimationCurve verticalAccelerationCurve = Curve(0);
-        public float terminalVelocity = 98.1f; 
+        public float terminalVelocity = 98.1f;
         public AnimationCurve setVerticalInfluenceCurve = Curve(0);
         public AnimationCurve setVerticalVelocityCurve = Curve(0);
         public AnimationCurve sidewaysMovementCurve = Curve(0);
@@ -110,6 +110,8 @@ namespace SLS.StateMachineH.Timelines
                 Y += verticalAcceleration * delta;
             if (setVerticalInfluence > 0f)
                 Y = Mathf.Lerp(Y, setVerticalVelocity, setVerticalInfluence);
+            if (Player.MovementBody.isGrounded && Y < 0) Y = 0;
+            if (Player.MovementBody.isGrounded && Y > 0) Player.MovementBody.UnLand();
             output.y = Y;
 
             //DebugRR.DebugTextOverlay.AppendNewLine($"TMA : Output: {output}");

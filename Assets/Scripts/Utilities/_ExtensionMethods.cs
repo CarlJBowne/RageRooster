@@ -1,11 +1,12 @@
-﻿using AYellowpaper.SerializedCollections;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using AYellowpaper.SerializedCollections;
 using Unity.VisualScripting;
 using UnityEngine;
-using static Unity.VisualScripting.Member;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public static class _ExtensionMethods
 {
@@ -124,10 +125,28 @@ public static class _MonoBehaviorHelpers
 
     public static bool Unloading(this MonoBehaviour m) => m.gameObject.scene.isLoaded;
 
-    public static void SafeDestroyers(this MonoBehaviour m, BasicDelegate SafeDestroy, BasicDelegate UnloadDestroy)
+    public static void OnDestroyDetails(this MonoBehaviour M, Action<bool, bool, bool> result)
     {
-        if (!m.gameObject.scene.isLoaded) SafeDestroy();
-        else UnloadDestroy();
+        bool unloading = !M.gameObject.scene.isLoaded;
+#if UNITY_EDITOR
+        bool isPlaying = EditorApplication.isPlayingOrWillChangePlaymode;
+
+        result?.Invoke(unloading, isPlaying, true);
+#else
+        result?.Invoke(justUnloading, true, false); 
+#endif
+    }
+
+    public static void GetExecutionDetails(this MonoBehaviour M, out bool gameIsEditor, out bool gameIsPlaying, out bool objectSceneIsLoaded)
+    {
+#if UNITY_EDITOR
+        gameIsEditor = true;
+        gameIsPlaying = EditorApplication.isPlayingOrWillChangePlaymode;
+#else
+        gameIsEditor = false;
+        gameIsPlaying = true;
+#endif
+        objectSceneIsLoaded = M.gameObject.scene.isLoaded;
     }
 
     public static void Set(this Transform T, Vector3? pos = null, Vector3? rot = null, Vector3? scale = null, Transform parent = null)
@@ -210,7 +229,7 @@ public static class _MonoBehaviorHelpers
         return null;
     }
 
-    public static void ApplyCameraStateToTransform(this Cinemachine.CinemachineVirtualCamera V, Transform T) 
+    public static void ApplyCameraStateToTransform(this Cinemachine.CinemachineVirtualCamera V, Transform T)
         => T.SetPositionAndRotation(V.State.FinalPosition, V.State.FinalOrientation);
 }
 
@@ -272,5 +291,25 @@ public static class _CollectionExtensions
     {
         if (list == null || item == null || list.Contains(item)) return;
         list.Add(item);
+    }
+    public static List<T> GetComponentsInChildren<T>(this List<GameObject> l)
+    {
+        List<T> result = new();
+        for (int i = 0; i < l.Count; i++)
+        {
+            T[] I = l[i].GetComponentsInChildren<T>();
+            result.AddRange(I);
+        }
+        return result;
+    }
+    public static List<T> GetComponentsInChildren<T>(this GameObject[] l)
+    {
+        List<T> result = new();
+        for (int i = 0; i < l.Length; i++)
+        {
+            T[] I = l[i].GetComponentsInChildren<T>();
+            result.AddRange(I);
+        }
+        return result;
     }
 }

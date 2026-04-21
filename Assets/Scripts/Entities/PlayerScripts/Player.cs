@@ -191,10 +191,16 @@ public class Player : MonoBehaviour
     /// The current Rotation of the <see cref="Player"/> as a Quaternion.
     /// </summary>
     public static Quaternion Rotation => Transform.rotation;
-    /// <summary>
-    /// The current Forward Vector of the <see cref="Player"/>.
-    /// </summary>
+    /// <summary>The current Forward Vector of the <see cref="Player"/>. </summary>
     public static Vector3 Forward => Transform.forward;
+    /// <summary>The current Up Vector of the <see cref="Player"/>. </summary>
+    public static Vector3 Up => Transform.up;
+    /// <summary>The current Down Vector of the <see cref="Player"/>. </summary>
+    public static Vector3 Down => -Transform.up;
+    /// <summary>The current Right Vector of the <see cref="Player"/>. </summary>
+    public static Vector3 Right => Transform.right;
+    /// <summary>The current Left Vector of the <see cref="Player"/>. </summary>
+    public static Vector3 Left => -Transform.right;
     /// <summary>
     /// The current Rotation of the <see cref="Player"/> in Euler Angles.
     /// </summary>
@@ -236,11 +242,14 @@ public class Player : MonoBehaviour
     /// </summary>
     public static Action onRespawn;
 
+    [SerializeField] Upgrades CurrentActiveUpgrades;
+
     /// <summary>
     /// Awake stage of the <see cref="Player"/>, saving the static references and other setup.
     /// </summary>
     public void Awake()
     {
+        DontDestroyOnLoad(this);
         GameObject = gameObject;
         Transform = transform;
         StateMachine = GetComponent<PlayerStateMachine>();
@@ -257,14 +266,12 @@ public class Player : MonoBehaviour
         Health.Initialize();
         Ammo.Initialize();
         Currency.Initialize();
+        CurrentActiveUpgrades = Upgrades.Active;
 
         _activeState = ActivityStates.Active;
 
 #if UNITY_EDITOR
-        Input.Debug.GodMode.performed += (_) =>
-        {
-            SaveData.Current.playerStats.upgrades = Upgrades.Debug();
-        };
+        Input.Debug.GodMode.performed += (_) => { Upgrades.Clone(Upgrades.Debug(), Upgrades.Active); };
 #endif
         fallDownPitTime = Health.playerObject.inFallDownPitTime;
         deathTime = Health.playerObject.inDeathTime;
@@ -294,8 +301,8 @@ public class Player : MonoBehaviour
             get => current;
             set
             {
-                if(value > max) value = max;
-                if(current == value) return;
+                if (value > max) value = max;
+                if (current == value) return;
 
                 current = value;
                 updateHealth?.Invoke();
@@ -435,7 +442,7 @@ public class Player : MonoBehaviour
                 FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(1f),
                 FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(1f),
                 //PreFadeInAction = Overlay.OverGameplay.Reset
-            };            
+            };
             //Note "Overlay.OverGameplay.Reset() used to be called just after the FadeOut. Not sure why. If necessary, uncomment the above line."
 
             Gameplay.Respawn();

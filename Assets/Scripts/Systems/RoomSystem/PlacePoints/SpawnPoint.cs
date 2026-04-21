@@ -9,13 +9,13 @@ using UnityEngine;
 /// A set point in the world where the player can spawn. <br/>
 /// When activated it moves the player to the exact transform position.
 /// </summary>
-public class SpawnPoint : MonoBehaviour, IRoomActor
+public class SpawnPoint : RoomActor
 {
-    //Make private but visible later.
+
     /// <summary>
     /// The ID of this SpawnPoint within the Room it belongs to.
     /// </summary>
-    public int ID = -1;
+    public int ID => Root.Spawns.IndexOf(this);
     /// <summary>
     /// Whether the player should rotate to the forward direction of the <see cref="SpawnPoint"/>.
     /// </summary>
@@ -43,25 +43,26 @@ public class SpawnPoint : MonoBehaviour, IRoomActor
     /// <returns>The <see cref="Destination"/> this <see cref="SpawnPoint"/> goes to.</returns>
     public Destination GetDestination() => new()
     {
-        room = root.asset,
+        room = Root.asset,
         spawnID = ID
     };
 
-    RoomRoot IRoomActor.root { get; set; }
-    RoomRoot root => ((IRoomActor)this).root;
-
-    private void Reset() => IRoomActor.ConnectToRoomRoot(this);
-
-    //Reflected
-    private static void OnSaveSceneSet(RoomRoot root, List<SpawnPoint> list)
-    { 
-        root.spawns = list.ToArray();
-        for (int i = 0; i < root.spawns.Length; i++)
-        {
-            IRoomActor.ConnectToRoomRoot(root.spawns[i]);
-            root.spawns[i].ID = i;
-        }
+#if UNITY_EDITOR
+    public override void OnRegister()
+    {
+        Root.Spawns.AddUnique(this);
+        Root.asset.spawnPointNames.Add(gameObject.name);
     }
+    public override void OnDeregister()
+    {
+        Root.asset.spawnPointNames.RemoveAt(Root.Spawns.IndexOf(this));
+        Root.Spawns.Remove(this);
+    }
+    public override void OnSave() => Root.asset.spawnPointNames[Root.Spawns.IndexOf(this)] = gameObject.name;
+#endif
+
+    [Button]
+    void AAAAAAAA() => Reset();
 
 #if UNITY_EDITOR
     [Button("Play from here.")]
@@ -69,7 +70,7 @@ public class SpawnPoint : MonoBehaviour, IRoomActor
     {
         EditorState.EditorDestination = new()
         {
-            room = root.asset,
+            room = Root.asset,
             spawnID = ID
         };
         UnityEditor.EditorApplication.isPlaying = true;
@@ -81,8 +82,10 @@ public class SpawnPoint : MonoBehaviour, IRoomActor
         GameObject newObject = new("SpawnPoint");
         UnityEditor.Undo.RegisterCreatedObjectUndo(newObject, "Create Spawn Point");
         SpawnPoint spawnPoint = newObject.AddComponent<SpawnPoint>();
-        if (UnityEditor.Selection.activeTransform != null) 
+        if (UnityEditor.Selection.activeTransform != null)
             newObject.transform.SetParent(UnityEditor.Selection.activeTransform);
     }
+
+
 #endif
 }

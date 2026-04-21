@@ -36,6 +36,7 @@ Transform:
   - {fileID: 6360162830282182524}
   - {fileID: 8016053911614478484}
   - {fileID: 809999542718391148}
+  - {fileID: 3494728237826156187}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1719738861989955058
@@ -56,7 +57,13 @@ MonoBehaviour:
   <Layer>k__BackingField: 0
   <Children>k__BackingField:
   - {fileID: 7202587913768018711}
-  <ChildCount>k__BackingField: 6
+  - {fileID: 5314189078780984797}
+  - {fileID: 2157991863056936301}
+  - {fileID: 2070683833346511381}
+  - {fileID: 571940914220793852}
+  - {fileID: 592388666345993873}
+  - {fileID: 2453523576541958817}
+  <ChildCount>k__BackingField: 7
 --- !u!1 &806735589426787925
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,7 +132,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89a8416e01b52494193d14c59b41a835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 571940914220793852}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -153,7 +159,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 571940914220793852}
   signals:
     serializedList:
@@ -176,7 +181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 571940914220793852}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -275,16 +279,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 5314189078780984797}
   signals:
-    serializedList:
-    - Key: Jump
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: BeginJump
-          _PersistentArguments: []
+    serializedList: []
   lockOnEnter: 0
 --- !u!114 &4583152462653021694
 MonoBehaviour:
@@ -298,7 +295,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 5314189078780984797}
   onEntry: 2
   onEnterName: Fall
@@ -317,13 +313,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 5314189078780984797}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   Jump:
-    rid: 1676068309935587427
+    rid: 3657502764043599953
   Attack:
     rid: 1950655830041821297
   Grab:
@@ -331,45 +326,10 @@ MonoBehaviour:
   Charge:
     rid: 1950655830041821299
   Parry:
-    rid: 1950655830041821300
+    rid: 3657502764043599954
   references:
     version: 2
     RefIds:
-    - rid: 1676068309935587427
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 0
-        pressEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 0}
-            _MemberName: BeginJump
-            _PersistentArguments:
-            - _Type: 5
-              _Int: 0
-              _String: 
-              _X: 10
-              _Y: 0
-              _Z: 0
-              _W: 0
-              _Object: {fileID: 0}
-            - _Type: 5
-              _Int: 0
-              _String: 
-              _X: 3
-              _Y: 0
-              _Z: 0
-              _W: 0
-              _Object: {fileID: 0}
-            - _Type: 5
-              _Int: 0
-              _String: 
-              _X: 3
-              _Y: 0
-              _Z: 0
-              _W: 0
-              _Object: {fileID: 0}
-        releaseEvent:
-          _PersistentCalls: []
     - rid: 1950655830041821297
       type: {class: PlayerButtonAction/TapOrHold, ns: , asm: Assembly-CSharp}
       data:
@@ -409,15 +369,47 @@ MonoBehaviour:
           _PersistentCalls: []
         releaseEvent:
           _PersistentCalls: []
-    - rid: 1950655830041821300
+    - rid: 3657502764043599953
       type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
       data:
         persistAcrossStateChange: 0
         pressEvent:
           _PersistentCalls:
           - _Target: {fileID: 0}
-            _MemberName: ParryActionAirborne
-            _PersistentArguments: []
+            _MemberName: BeginJump
+            _PersistentArguments:
+            - _Type: 5
+              _Int: 0
+              _String: 
+              _X: 9
+              _Y: 0
+              _Z: 0
+              _W: 0
+              _Object: {fileID: 0}
+            - _Type: 5
+              _Int: 0
+              _String: 
+              _X: 3
+              _Y: 0
+              _Z: 0
+              _W: 0
+              _Object: {fileID: 0}
+            - _Type: 5
+              _Int: 0
+              _String: 
+              _X: 3
+              _Y: 0
+              _Z: 0
+              _W: 0
+              _Object: {fileID: 0}
+        releaseEvent:
+          _PersistentCalls: []
+    - rid: 3657502764043599954
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        pressEvent:
+          _PersistentCalls: []
         releaseEvent:
           _PersistentCalls: []
 --- !u!1 &2260822527530590281
@@ -491,7 +483,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b72d747b5bfbe8c4cbf86c5074858e04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerGroundMovement
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2070683833346511381}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -516,7 +507,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed047d72c584ca444a0e69c00e878b44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2070683833346511381}
   onSetup:
     _PersistentCalls: []
@@ -573,7 +563,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2070683833346511381}
   signals:
     serializedList:
@@ -586,7 +575,7 @@ MonoBehaviour:
     - Key: Bonk
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 0}
+        - _Target: {fileID: 3313942931410860589}
           _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
@@ -602,7 +591,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2070683833346511381}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -635,7 +623,7 @@ MonoBehaviour:
         holdTime: 0.3
         holdEvent:
           _PersistentCalls:
-          - _Target: {fileID: 0}
+          - _Target: {fileID: 2728261019682877731}
             _MemberName: Enter
             _PersistentArguments: []
         autoFinishHold: 1
@@ -709,14 +697,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2157991863056936301}
   signals:
     serializedList:
     - Key: Bonk
       Value:
         _PersistentCalls:
-        - _Target: {fileID: 0}
+        - _Target: {fileID: 3313942931410860589}
           _MemberName: Enter
           _PersistentArguments: []
   lockOnEnter: 0
@@ -732,7 +719,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2157991863056936301}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -799,7 +785,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2157991863056936301}
   timeline: {fileID: 0}
   minForwardMovementCurve:
@@ -974,7 +959,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e6afd9f9d92424bbc809b4799f9634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.TimedEvents
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 2157991863056936301}
   timeline: {fileID: 0}
   events:
@@ -1053,7 +1037,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b72d747b5bfbe8c4cbf86c5074858e04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerGroundMovement
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7202587913768018711}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -1078,7 +1061,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7202587913768018711}
   signals:
     serializedList:
@@ -1122,17 +1104,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 7202587913768018711}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
   playerController: {fileID: 0}
   Jump:
-    rid: 1950655830041821279
+    rid: 3995430819782459523
   Attack:
     rid: 1950655830041821280
   Grab:
-    rid: 1950655830041821281
+    rid: 440872815894724750
   Charge:
     rid: 1950655830041821282
   Parry:
@@ -1140,39 +1121,76 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 1950655830041821279
+    - rid: 440872815894724750
+      type: {class: PlayerButtonAction/TargetDependant, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        hasMeleeTarget:
+          rid: 440872815894724751
+        hasRangedTarget:
+          rid: 440872815894724752
+        noTarget:
+          rid: 440872815894724753
+    - rid: 440872815894724751
       type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
       data:
         persistAcrossStateChange: 0
         pressEvent:
           _PersistentCalls:
-          - _Target: {fileID: 0}
-            _MemberName: BeginJump
-            _PersistentArguments:
-            - _Type: 5
-              _Int: 0
-              _String: 
-              _X: 12
-              _Y: 0
-              _Z: 0
-              _W: 0
-              _Object: {fileID: 0}
-            - _Type: 5
-              _Int: 0
-              _String: 
-              _X: 5
-              _Y: 0
-              _Z: 0
-              _W: 0
-              _Object: {fileID: 0}
-            - _Type: 5
-              _Int: 0
-              _String: 
-              _X: 5
-              _Y: 0
-              _Z: 0
-              _W: 0
-              _Object: {fileID: 0}
+          - _Target: {fileID: 4544501634881249195}
+            _MemberName: BeginGrabAttempt
+            _PersistentArguments: []
+        releaseEvent:
+          _PersistentCalls: []
+    - rid: 440872815894724752
+      type: {class: PlayerButtonAction/UpgradeDependant, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 1
+        hasUpgrade:
+          rid: 440872815894724754
+        noUpgrade:
+          rid: 440872815894724755
+        upgrade: 6
+    - rid: 440872815894724753
+      type: {class: PlayerButtonAction/UpgradeDependant, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 1
+        hasUpgrade:
+          rid: 440872815894724756
+        noUpgrade:
+          rid: 440872815894724757
+        upgrade: 6
+    - rid: 440872815894724754
+      type: {class: PlayerButtonAction/CrossStatePressRelease, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 1
+        actionEvent:
+          _PersistentCalls: []
+        transferState: {fileID: 151794167796755720}
+    - rid: 440872815894724755
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        pressEvent:
+          _PersistentCalls: []
+        releaseEvent:
+          _PersistentCalls: []
+    - rid: 440872815894724756
+      type: {class: PlayerButtonAction/CrossStatePressRelease, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 1
+        actionEvent:
+          _PersistentCalls: []
+        transferState: {fileID: 151794167796755720}
+    - rid: 440872815894724757
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        pressEvent:
+          _PersistentCalls:
+          - _Target: {fileID: 4544501634881249195}
+            _MemberName: BeginGrabAttempt
+            _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
     - rid: 1950655830041821280
@@ -1185,27 +1203,16 @@ MonoBehaviour:
           _PersistentCalls: []
         tapEvent:
           _PersistentCalls:
-          - _Target: {fileID: 0}
+          - _Target: {fileID: 3697932477478651783}
             _MemberName: Enter
             _PersistentArguments: []
         holdTime: 0.3
         holdEvent:
           _PersistentCalls:
-          - _Target: {fileID: 0}
+          - _Target: {fileID: 2728261019682877731}
             _MemberName: Enter
             _PersistentArguments: []
         autoFinishHold: 1
-    - rid: 1950655830041821281
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 0
-        pressEvent:
-          _PersistentCalls:
-          - _Target: {fileID: 0}
-            _MemberName: GrabThrowButton
-            _PersistentArguments: []
-        releaseEvent:
-          _PersistentCalls: []
     - rid: 1950655830041821282
       type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
       data:
@@ -1218,6 +1225,17 @@ MonoBehaviour:
         releaseEvent:
           _PersistentCalls: []
     - rid: 1950655830041821284
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      data:
+        persistAcrossStateChange: 0
+        pressEvent:
+          _PersistentCalls:
+          - _Target: {fileID: 0}
+            _MemberName: Enter
+            _PersistentArguments: []
+        releaseEvent:
+          _PersistentCalls: []
+    - rid: 3995430819782459523
       type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
       data:
         persistAcrossStateChange: 0
@@ -1296,7 +1314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89a8416e01b52494193d14c59b41a835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 592388666345993873}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -1324,7 +1341,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 592388666345993873}
   signals:
     serializedList:
@@ -1347,7 +1363,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
-  <Machine>k__BackingField: {fileID: 0}
   <State>k__BackingField: {fileID: 592388666345993873}
   Machine: {fileID: 0}
   playerMovementBody: {fileID: 0}
@@ -1378,3 +1393,443 @@ MonoBehaviour:
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!1001 &3306839834855748044
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2629912002041302075}
+    m_Modifications:
+    - target: {fileID: 7103699631016929, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+      propertyPath: <Layer>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7103699631016929, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+      propertyPath: <Parent>k__BackingField
+      value: 
+      objectReference: {fileID: 2453523576541958817}
+    - target: {fileID: 1001529568253689834, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[1].output._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 1899316317574978938}
+    - target: {fileID: 1146425584514261869, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: <Parent>k__BackingField
+      value: 
+      objectReference: {fileID: 1719738861989955058}
+    - target: {fileID: 1146425584514261869, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: '<Children>k__BackingField.Array.data[12]'
+      value: 
+      objectReference: {fileID: 5061942712196088163}
+    - target: {fileID: 1146425584514261869, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: '<Children>k__BackingField.Array.data[13]'
+      value: 
+      objectReference: {fileID: 4936427745797883489}
+    - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: Machine
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: playerMovementBody
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: successReturn._PersistentCalls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: successReturn._PersistentCalls.Array.data[0]._MemberName
+      value: Enter
+      objectReference: {fileID: 0}
+    - target: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: finalSuccessReturn._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2133445763074070359, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2133445763074070359, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2133445763074070359, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2133445763074070359, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2133445763074070359, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2133445763074070359, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2133445763074070359, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2133445763074070359, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2133445763074070359, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2133445763074070359, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3304159952572019631, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[0].output._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 1899316317574978938}
+    - target: {fileID: 3458490404699135172, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: managedReferences[440872388981686388].actionEvent._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 9159670594954994497}
+    - target: {fileID: 3698339938118962140, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: Jump
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3982550624124318185, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: failedBackup
+      value: 
+      objectReference: {fileID: 8374000418286937237}
+    - target: {fileID: 3982550624124318185, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: <State>k__BackingField
+      value: 
+      objectReference: {fileID: 3971682203970744570}
+    - target: {fileID: 4926957601215870280, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: signals.serializedList.Array.data[1].Value._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 1899316317574978938}
+    - target: {fileID: 5185706722228576407, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: m_Name
+      value: GroundAnimations
+      objectReference: {fileID: 0}
+    - target: {fileID: 5243293790767325734, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: failedBackup
+      value: 
+      objectReference: {fileID: 7649529961253108717}
+    - target: {fileID: 5243293790767325734, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: <State>k__BackingField
+      value: 
+      objectReference: {fileID: 3697932477478651783}
+    - target: {fileID: 6433225889158844298, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: signals.serializedList.Array.data[0].Value._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 1736344173819534685}
+    - target: {fileID: 6561442296239639007, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: Jump
+      value: 3657502764043599956
+      objectReference: {fileID: 0}
+    - target: {fileID: 6561442296239639007, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: 'managedReferences[3657502764043599956]'
+      value: Assembly-CSharp PlayerButtonAction/BasicPush
+      objectReference: {fileID: 0}
+    - target: {fileID: 6561442296239639007, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: managedReferences[3657502764043599956].persistAcrossStateChange
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6561442296239639007, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: managedReferences[3657502764043599956].pressEvent._PersistentCalls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6561442296239639007, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: managedReferences[3657502764043599956].releaseEvent._PersistentCalls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6561442296239639007, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: managedReferences[3657502764043599956].pressEvent._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 8773162531221244897}
+    - target: {fileID: 6561442296239639007, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: managedReferences[3657502764043599956].pressEvent._PersistentCalls.Array.data[0]._MemberName
+      value: Enter
+      objectReference: {fileID: 0}
+    - target: {fileID: 6561442296239639007, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: managedReferences[3657502764043599956].pressEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6582296487860853402, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[0].output._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 1899316317574978938}
+    - target: {fileID: 7167448672612371638, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[0].output._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 1899316317574978938}
+    - target: {fileID: 7573132109667932607, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: managedReferences[1950655830041821328].tapEvent._PersistentCalls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7573132109667932607, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: managedReferences[1950655830041821328].holdEvent._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 2728261019682877731}
+    - target: {fileID: 7594748674704045997, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: <Layer>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594748674704045997, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: <Parent>k__BackingField
+      value: 
+      objectReference: {fileID: 2453523576541958817}
+    - target: {fileID: 7772055570066141359, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: <Layer>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7772055570066141359, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: <Parent>k__BackingField
+      value: 
+      objectReference: {fileID: 2453523576541958817}
+    - target: {fileID: 7959568572361778172, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[0].output._PersistentCalls.Array.data[0]._MemberName
+      value: FinishGrab
+      objectReference: {fileID: 0}
+    - target: {fileID: 7974572304232093520, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: <Machine>k__BackingField
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8458405776686900128, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: managedReferences[1950655830041821326].holdEvent._PersistentCalls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+--- !u!114 &151794167796755720 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3458490404699135172, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
+--- !u!114 &1736344173819534685 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3890259728980585617, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+--- !u!114 &2453523576541958817 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1146425584514261869, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2728261019682877731 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 592500146358321391, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3313942931410860589 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7103699631016929, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &3494728237826156187 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2133445763074070359, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3697932477478651783 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2212939438660449867, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3971682203970744570 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1944005435322958134, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4544501634881249195 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9ea06674c3fe044c81dee4e88f1ae12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4936427745797883489 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7594748674704045997, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5061942712196088163 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7772055570066141359, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7649529961253108717 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5173747255915760161, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
+--- !u!114 &8374000418286937237 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6472284321247335769, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
+--- !u!114 &8773162531221244897 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6063192653884144173, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &9159670594954994497 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5979072417615712909, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State

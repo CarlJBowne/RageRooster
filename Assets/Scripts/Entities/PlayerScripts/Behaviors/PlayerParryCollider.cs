@@ -30,4 +30,10 @@ public class PlayerParryCollider : MonoBehaviour, IAttackSource
         result.velocity = (target.transform.position - (transform.position + collider.center)).normalized * result.velocity.x;
         return result;
     }
+
+    public void TransferTags()
+    {
+        baseAttack.TransferTags();
+        hellUpgradedAttack.TransferTags();
+    }
 }

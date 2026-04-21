@@ -37,7 +37,8 @@ namespace SLS.StateMachineH
         /// <summary>  
         /// The <see cref="Animator"/> component used to control animations.  
         /// </summary>  
-        [HideInInspector] public Animator animator;
+        [SerializeField] private Animator animator;
+        public Animator Animator => animator;
 
         /// <summary>  
         /// Sets up the <see cref="StateAnimator"/> by attempting to retrieve the <see cref="Animator"/> component.  
@@ -95,4 +96,3 @@ namespace SLS.StateMachineH
     }
 
 }
-

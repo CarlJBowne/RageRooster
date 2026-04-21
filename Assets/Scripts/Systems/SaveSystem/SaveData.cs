@@ -190,7 +190,7 @@ namespace RageRooster.Systems.SaveSystem
                     UnityEngine.Debug.LogWarning($"Save file version mismatch. Expected {targetFileVersion}, found {(string)playerFile.Data["FileVersion"]}. Attempting to load anyway.");
                 }
 
-                file.location = (Destination)(DestinationSerial)playerFile.Data[nameof(file.location)];
+                file.location = (Destination)(DestinationBasic)playerFile.Data[nameof(file.location)];
                 file.playerStats.maxHealth = (int)playerFile.Data[nameof(SavedPlayerStats.maxHealth)];
                 file.playerStats.maxAmmo = (int)playerFile.Data[nameof(SavedPlayerStats.maxAmmo)];
                 file.playerStats.currency = (int)playerFile.Data[nameof(SavedPlayerStats.currency)];
@@ -231,7 +231,7 @@ namespace RageRooster.Systems.SaveSystem
                 playerFile.Data = new JObject
                 {
                     ["FileVersion"] = targetFileVersion,
-                    [nameof(file.location)] = (JToken)(DestinationSerial)file.location,
+                    [nameof(file.location)] = (JToken)(DestinationBasic)file.location,
                     [nameof(SavedPlayerStats.playTime)] = file.playerStats.playTime,
                     [nameof(SavedPlayerStats.maxHealth)] = file.playerStats.maxHealth,
                     [nameof(SavedPlayerStats.maxAmmo)] = file.playerStats.maxAmmo,

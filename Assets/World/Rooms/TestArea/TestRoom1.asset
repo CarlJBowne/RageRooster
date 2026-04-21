@@ -15,7 +15,6 @@ MonoBehaviour:
   <displayName>k__BackingField: Test Room 1
   <area>k__BackingField: {fileID: 11400000, guid: 14d3877dd745a914b9a8ae97a8bd02fd,
     type: 2}
-  <globalCenter>k__BackingField: {x: 0, y: 0, z: 0}
   <scene>k__BackingField:
     <sceneName>k__BackingField: TestRoom1_Scene
     <asset>k__BackingField: {fileID: 102900000, guid: 59bccf0019c5dab488c4864a22e66a46,
@@ -29,11 +28,13 @@ MonoBehaviour:
   <entrances>k__BackingField:
   - point: {x: -16.5, y: 0, z: -6.5}
     direction: {x: 1, y: 0, z: 0}
-    loadRadius: 20
-    unloadRadius: 30
-    lodRadius: 50
+    loadRadiusSQR: 400
+    unloadRadiusSQR: 900
+    lodRadiusSQR: 2500
   - point: {x: -3, y: 0, z: -24.5}
     direction: {x: 0, y: 0, z: 1}
-    loadRadius: 20
-    unloadRadius: 30
-    lodRadius: 50
+    loadRadiusSQR: 400
+    unloadRadiusSQR: 900
+    lodRadiusSQR: 2500
+  <spawnPointNames>k__BackingField:
+  - SpawnPoint 1

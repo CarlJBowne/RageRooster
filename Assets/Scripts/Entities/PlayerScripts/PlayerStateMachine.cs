@@ -15,14 +15,18 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     #region Config
 
     [field: SerializeField] public State Grounded { get; private set; }
-    [field: SerializeField] public State IdleWalk { get; private set; }
+    [field: SerializeField] public PlayerGroundMovement IdleWalk { get; private set; }
     [field: SerializeField] public State Airborne { get; private set; }
-    [field: SerializeField] public State Jump { get; private set; }
-    [field: SerializeField] public State Falling { get; private set; }
-    [field: SerializeField] public State Gliding { get; private set; }
+    [field: SerializeField] public PlayerAirborneMovement Jump { get; private set; }
+    [field: SerializeField] public PlayerAirborneMovement Falling { get; private set; }
+    [field: SerializeField] public PlayerAirborneMovement Gliding { get; private set; }
+    [field: SerializeField] public PlayerAirborneMovement VentGliding { get; private set; }
+    [field: SerializeField] public PlayerWallJump WallJump { get; private set; }
+    [field: SerializeField] public State DropLaunch { get; private set; }
+    [field: SerializeField] public State GroundParry { get; private set; }
+    [field: SerializeField] public State AirParry { get; private set; }
     [field: SerializeField] public State GrabbedMovement { get; private set; }
     [field: SerializeField] public State Aiming { get; private set; }
-    [field: SerializeField] public State Animations { get; private set; }
     [field: SerializeField] public State Paused { get; private set; }
     [field: SerializeField] public State Ragdoll { get; private set; }
 

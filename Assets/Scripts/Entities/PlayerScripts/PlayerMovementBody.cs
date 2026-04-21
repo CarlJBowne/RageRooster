@@ -60,10 +60,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     [SerializeField] float bonkThreshold = 15;
 
     /// <summary>
-    /// Whether the player can currnetly do a double jump.
-    /// </summary>
-    [SerializeField] PlayerAirborneMovement doubleJump;
-    /// <summary>
     /// The default offset for a Front-ways collision Check.
     /// </summary>
     [SerializeField] Vector3 frontCheckDefaultOffset;
@@ -85,6 +81,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     [SerializeField, InspectorName("Use Nav Mesh")] bool _useNavMeshIfPossible = true;
     [SerializeField] bool lockToNavMesh = false;
 
+    internal bool canDoDoubleJump = true;
 
     #endregion
 
@@ -182,7 +179,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     {
         if (GroundCheck(out _))
         {
-            Player.StateMachine.IdleWalk.Enter();
+            Player.StateMachine.IdleWalk.State.Enter();
             if (doCrossFade) Player.Animator.CrossFade("GroundBasic", .1f);
         }
         else Player.StateMachine.Airborne.Enter();
@@ -297,7 +294,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
         if (stepVelocity == Vector3.zero) return;
 
-        stepVelocity = stepVelocity.ProjectAndScale(anchorPoint.normal);
+        if (isGrounded) stepVelocity.y = 0;
         stepVelocity = stepVelocity.ProjectAndScale(anchorPoint.normal);
 
         float stopDistance = -1;
@@ -426,6 +423,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     {
         AddDebugText($"Step (Slide) {step}: {stepVelocity}");
 
+        if (isGrounded) stepVelocity.y = 0;
         if (stepVelocity == Vector3.zero) return;
 
         // Air-specific: do NOT project movement to anchor normal (we are airborne).
@@ -910,7 +908,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     {
         bool wasntGrounded = _jumpState != JumpState.Grounded;
         bool objectChange = anchorPoint.collider != groundHit.collider;
-        doubleJump.allowDoubleJump = true;
+        canDoDoubleJump = true;
 
         if (!wasntGrounded && !objectChange) return;
 
@@ -943,7 +941,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     {
         if (!GroundCheck(out AnchorPoint groundHit)) return;
         Land(groundHit);
-        doubleJump.allowDoubleJump = true;
     }
     /// <summary>
     /// Event invoked when the character lands.
@@ -1398,7 +1395,6 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             AddProp(nameof(groundCheckBuffer), "Ground Check Buffer");
             AddProp(nameof(movementProjectionSteps), "Movement Projection Steps");
             AddProp(nameof(bonkThreshold), "Bonk Threshold");
-            AddProp(nameof(doubleJump), "Double Jump Behavior");
             AddProp(nameof(frontCheckDefaultOffset), "Front Check Default Offset");
             AddProp(nameof(frontCheckDefaultRadius), "Front Check Default Radius");
             AddProp(nameof(validGroundMask), "Valid Ground Mask");

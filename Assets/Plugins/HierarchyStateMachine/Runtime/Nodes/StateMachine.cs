@@ -248,6 +248,7 @@ namespace SLS.StateMachineH
                 transitionBalance = 0;
                 transitionBalanceTemp = 0;
                 ExitStates.Clear();
+                AfterStateTransition?.Invoke();
                 //Cleanup
             }
              
@@ -266,6 +267,7 @@ namespace SLS.StateMachineH
         private static State transitionCursorDest;
         private static int transitionBalance = 0;
         private static int transitionBalanceTemp = 0;
+        public System.Action AfterStateTransition;
 
         /// <summary>  
         /// Builds the state machine by setting up its states.  

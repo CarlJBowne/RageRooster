@@ -23,15 +23,13 @@ public class PlayerButtonActions : PlayerStateBehavior
     [SerializeReference] public PlayerButtonAction Charge;
     [SerializeReference] public PlayerButtonAction Parry;
 
-    public PlayerButtonAction GetButtonAction(InputAction button)
-    {
-        return button == Input.Jump ? Jump
+    public PlayerButtonAction this[InputAction button] => 
+              button == Input.Jump ? Jump
             : button == Input.Attack ? Attack
             : button == Input.Grab ? Grab
             : button == Input.Charge1 || button == Input.Charge2 ? Charge
             : button == Input.Parry ? Parry
             : null;
-    }
     public PlayerButtonAction[] All { get; private set; }
 
     protected override void OnAwake()
@@ -50,11 +48,11 @@ public class PlayerButtonActions : PlayerStateBehavior
     protected override void OnExit(State next)
     {
         PlayerController.RegisterActionSource(this, true);
-        if (Jump != null && !Jump.persistAcrossStateChange) Jump.Finish();
-        if (Attack != null && !Attack.persistAcrossStateChange) Attack.Finish();
-        if (Grab != null && !Grab.persistAcrossStateChange) Grab.Finish();
-        if (Charge != null && !Charge.persistAcrossStateChange) Charge.Finish();
-        if (Parry != null && !Parry.persistAcrossStateChange) Parry.Finish();
+        if (Jump != null && Grab is not PlayerButtonAction.Base_ChooseType && !Jump.persistAcrossStateChange) Jump.Finish();
+        if (Attack != null && Grab is not PlayerButtonAction.Base_ChooseType && !Attack.persistAcrossStateChange) Attack.Finish();
+        if (Grab != null && Grab is not PlayerButtonAction.Base_ChooseType && !Grab.persistAcrossStateChange) Grab.Finish();
+        if (Charge != null && Grab is not PlayerButtonAction.Base_ChooseType && !Charge.persistAcrossStateChange) Charge.Finish();
+        if (Parry != null && Grab is not PlayerButtonAction.Base_ChooseType && !Parry.persistAcrossStateChange) Parry.Finish();
     }
 
 #if UNITY_EDITOR 

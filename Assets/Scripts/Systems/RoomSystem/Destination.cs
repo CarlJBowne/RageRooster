@@ -2,13 +2,18 @@ using Newtonsoft.Json.Linq;
 using RageRooster.Systems.SaveSystem;
 using System;
 using System.Collections.Generic;
-using static RageRooster.RoomSystem.RoomAsset;
+using UnityEngine.UIElements;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.UIElements;
+#endif
 
 namespace RageRooster.RoomSystem
 {
     /// <summary>
     /// Represents a specific Destination within the game world that can be fed into the <see cref="RoomManager"/>, defined with a <see cref="RoomAsset"/> and a <see cref="SpawnPoint"/> ID. <br/>
-    /// A Serialized equivalent, <see cref="DestinationSerial"/>, is also provided for easy saving/loading of Destinations. <br/>
+    /// A Serialized equivalent, <see cref="DestinationBasic"/>, is also provided for easy saving/loading of Destinations. <br/>
     /// </summary>
     [System.Serializable]
     public struct Destination
@@ -64,7 +69,7 @@ namespace RageRooster.RoomSystem
         };
         public static implicit operator Destination(SpawnPoint spawn) => new()
         {
-            room = ((IRoomActor)spawn).root.asset,
+            room = ((IRoomActor)spawn).Root.asset,
             spawnID = spawn.ID
         };
 
@@ -133,12 +138,75 @@ namespace RageRooster.RoomSystem
             spawnID = -2;
         }
         */
+
+#if UNITY_EDITOR
+        [UnityEditor.CustomPropertyDrawer(typeof(Destination))]
+        public class Editor : UnityEditor.PropertyDrawer
+        {
+            SerializedProperty roomProp;
+            SerializedProperty spawnProp;
+            ObjectField roomField;
+            DynamicEnumField spawnField;
+
+            public override VisualElement CreatePropertyGUI(SerializedProperty property)
+            {
+                VisualElement root = new();
+
+
+                roomProp = property.FindPropertyRelative(nameof(Destination.room));
+                spawnProp = property.FindPropertyRelative(nameof(Destination.spawnID));
+
+                // Room selection field (ObjectField so we can detect value changes easily)
+                roomField = new("Room")
+                {
+                    objectType = typeof(RoomAsset),
+                    allowSceneObjects = false,
+                    value = roomProp.objectReferenceValue as RoomAsset
+                };
+                List<string> initOptions = roomField.value != null ? (roomField.value as RoomAsset).spawnPointNames : new();
+                spawnField = new(initOptions, spawnProp.intValue, Changed)
+                {
+                    label = "Spawn"
+                };
+
+                void Changed(int v)
+                {
+                    spawnProp.intValue = 0;
+                    property.serializedObject.ApplyModifiedProperties();
+                }
+
+                // When room selection changes, update the serialized property and rebuild the spawn list
+                roomField.RegisterValueChangedCallback(evt =>
+                {
+                    var so = property.serializedObject;
+                    so.Update();
+
+                    RoomAsset target = evt.newValue as RoomAsset;
+                    roomProp.objectReferenceValue = target;
+
+                    spawnProp.intValue = 0;
+                    if (target) spawnField.SetOptions((evt.newValue as RoomAsset).spawnPointNames, 0);
+                    else spawnField.SetOptions(null, -1);
+
+
+
+                        so.ApplyModifiedProperties();
+                });
+
+                // Add the room field and the spawn container to the inspector UI
+                root.Add(roomField);
+                root.Add(spawnField);
+
+                return root;
+            }
+        }
+#endif
     }
 
     /// <summary>
     /// A serialized version of <see cref="Destination"/> using basic data types that can be easily saved/loaded. <br/>
     /// </summary>
-    public struct DestinationSerial
+    public struct DestinationBasic
     {
         /// <summary>
         /// The Display name of the Area. Used to look up the <see cref="AreaAsset"/> through the <see cref="AreaRegistry"/>.
@@ -153,13 +221,13 @@ namespace RageRooster.RoomSystem
         /// </summary>
         public int spawnID;
 
-        public static implicit operator JToken(DestinationSerial serial) => new JObject
+        public static implicit operator JToken(DestinationBasic serial) => new JObject
         {
             ["area"] = serial.areaName,
             ["roomID"] = serial.roomID,
             ["spawnID"] = serial.spawnID
         };
-        public static implicit operator DestinationSerial(JToken Data) => new()
+        public static implicit operator DestinationBasic(JToken Data) => new()
         {
             areaName = (string)Data["area"],
             roomID = (int)Data["roomID"],
@@ -170,7 +238,7 @@ namespace RageRooster.RoomSystem
         /// Converts this Destination into the serializable format equivalent.
         /// </summary>
         /// <returns></returns>
-        public static explicit operator DestinationSerial(Destination destination) => new()
+        public static explicit operator DestinationBasic(Destination destination) => new()
         {
             areaName = destination.area.name,
             roomID = destination.area.rooms.IndexOf(destination.room),
@@ -180,7 +248,7 @@ namespace RageRooster.RoomSystem
         /// <summary>
         /// Converts this Serial Destination back into the runtime Asset-based equivalent.
         /// </summary>
-        public static explicit operator Destination(DestinationSerial input)
+        public static explicit operator Destination(DestinationBasic input)
         {
             AreaAsset area = AreaRegistry.GetArea(input.areaName);
             if (area == null) throw new System.Exception("Invalid name does not belong to any area.");

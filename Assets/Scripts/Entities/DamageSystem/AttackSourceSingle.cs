@@ -26,4 +26,5 @@ public class AttackSourceSingle : MonoBehaviour, IAttackSource
         targetDamagable.Damage(GetAttack());
     }
 
+    public void TransferTags() => attack.TransferTags();
 }

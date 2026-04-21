@@ -2,6 +2,46 @@ https://kybernetik.com.au/ultevents/docs/changes
 
 > When updating plugins, you must delete any previous version from your project first. This is mandatory since Unity's package importer system doesn't delete or rename existing files so any old scripts that aren't directly overwritten will cause compile errors that prevent anything from working.
 
+# UltEvents 3.0.8
+
+- 2025-10-27
+- Fixed exception in `MemberSelectionMenu` when a `static` member is selected.
+
+# UltEvents 3.0.7
+
+- 2025-10-19
+- Added Display Options for `Show Declaring Type Names` and `Show Arrows For Sub Menus`.
+- Fixed member selection with multiple components of the same type to only show the correct one as being currently selected.
+
+# UltEvents 3.0.6
+
+- 2025-08-19
+- Fixed `PersistentArgument.LinkTo` to allow changing between `PersistentArgumentType.Parameter` and `ReturnValue`.
+
+# UltEvents 3.0.5
+
+- 2024-12-03
+- Fixed build error by replacing the editor-only `UltEventBase.ParameterTypes` with `GetParameterType` method to allow parameter types to be aaccessed generically at runtime.
+
+# UltEvents 3.0.4
+
+- 2024-11-30
+- Added `PersistentArgument.LinkTo` methods for setting an argument to `PersistentArgumentType.Parameter` or `ReturnValue` using code.
+- Removed all custom event types from the Event Holder scripts because Unity now allows serialized fields to directly use generic types.
+  - This includes `CollisionEvent2D`, `CollisionEvent3D`, `TriggerEvent2D`, and `TriggerEvent3D`.
+
+# UltEvents 3.0.3
+
+- 2024-08-17
+- Un-`sealed` `UltEvent`. All the generic versions were already un-`sealed` and this allows Animancer to have an inheriting class which can be used for Animancer Event callbacks.
+- Changed the Example scene into a hidden Sample which can be imported via the Package Manager.
+- Changed the type picker menu to support context menu style in Unity 2023 since it's now searchable and scrollable.
+- Added `IUltEvent.Invoke`.
+- Added `UnityEventCompatibility` containing extension methods for `AddCallback` and `RemoveCallback` to give `UltEvents` an API like `UnityEvents`.
+- Added conditional compilation symbols for `UNITY_PHYSICS_3D` and `2D` in case those modules have been disabled.
+- Fixed `UltEventUtils.GetPlacementName` to give the proper values beyond "3rd".
+- Fixed potential `NullReferenceException` in `UltEventBase.ToString`.
+
 # UltEvents 3.0.2
 
 - 2024-01-04

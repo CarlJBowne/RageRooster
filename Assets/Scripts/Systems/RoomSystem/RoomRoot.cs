@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,8 +6,10 @@ using System.Reflection;
 using AYellowpaper;
 using SLS.ISingleton;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 namespace RageRooster.RoomSystem
 {
@@ -23,11 +26,10 @@ namespace RageRooster.RoomSystem
         [field: SerializeField] public RoomAsset asset { get; protected set; }
         [field: SerializeField] public List<GameObject> RootGameObjects { get; private set; } = new();
 
-        /// <summary>
-        /// The defined <see cref="SpawnPoint"/>s available in this room.
-        /// <br/> Automatically populated upon saving the scene in the editor.
-        /// </summary>
-        [field: SerializeField] public SpawnPoint[] spawns { get; internal set; }
+        [field: SerializeField] public IComponentList<IRoomActor> RoomActors { get; private set; } = new();
+
+        [field: SerializeField] public List<SpawnPoint> Spawns { get; internal set; }
+        [field: SerializeField] public List<RoomEntrance> EntranceActors { get; internal set; }
 
         private void Awake()
         {
@@ -72,10 +74,67 @@ namespace RageRooster.RoomSystem
             return result;
         }
 
-
 #if UNITY_EDITOR
+        [ContextMenu("Force Registration")]
+        private void ForceRegistration()
+        {
+            RootGameObjects = gameObject.scene.GetRootGameObjects().ToList();
+
+            RoomActors.Clear();
+            var actors = FindComponentsInRoom<IRoomActor>();
+            Spawns.Clear();
+            EntranceActors.Clear();
+            asset.entrances.Clear();
+            asset.spawnPointNames.Clear();
+            foreach (IRoomActor actor in actors) IRoomActor.RegisterWithRoot(actor, true);
+            UnityEditor.EditorUtility.SetDirty(this);
+            UnityEditor.EditorUtility.SetDirty(asset);
+        }
+
+        [CustomEditor(typeof(RoomRoot))]
         public class Editor : UnityEditor.Editor
         {
+            RoomRoot This;
+            public override VisualElement CreateInspectorGUI()
+            {
+                VisualElement root = new();
+
+                SerializedProperty scriptProp = serializedObject.FindProperty("m_Script");
+                PropertyField scriptField = new(scriptProp);
+                scriptField.SetEnabled(false);
+                root.Add(scriptField);
+
+
+                This = target as RoomRoot;
+
+                PropertyField assetField = new(serializedObject.FindProperty(nameof(asset).BackingField()));
+                root.Add(assetField);
+
+                Foldout MakeDisplayOnlyList(string propName, string displayName)
+                {
+                    SerializedProperty prop = serializedObject.FindProperty(propName);
+                    Foldout foldout = new()
+                    {
+                        text = $"{displayName} : {prop.arraySize}",
+                        value = false
+                    };
+                    for (int i = 0; i < prop.arraySize; i++)
+                    {
+                        var iProp = prop.GetArrayElementAtIndex(i);
+                        PropertyField iPropField = new(iProp, "");
+                        foldout.Add(iPropField);
+                        iPropField.SetEnabled(false);
+                    }
+                    return foldout;
+                }
+
+                root.Add(MakeDisplayOnlyList(nameof(RootGameObjects).BackingField(), "Root GameObjects"));
+                root.Add(MakeDisplayOnlyList($"{nameof(RoomActors).BackingField()}.list", "All RoomActors"));
+                root.Add(MakeDisplayOnlyList(nameof(EntranceActors).BackingField(), "Entrances"));
+
+                return root;
+            }
+
 
             public static void AttachAsset(RoomRoot This, RoomAsset room)
             {
@@ -96,14 +155,20 @@ namespace RageRooster.RoomSystem
 
                     root.RootGameObjects = sceneGameObjects.ToList();
 
-
                     if (root.asset == null)
                     {
                         throw new System.Exception($"ERROR: The RoomRoot in scene {scene.name} does not have an associated RoomAsset. Please create a RoomAsset and assign it to the RoomRoot before saving the scene.");
                     }
 
-                    List<IRoomActor> roomObjects = root.gameObject.GetComponentsInChildren<IRoomActor>().ToList();
+                    foreach (var actor in root.FindComponentsInRoom<IRoomActor>())
+                    {
+                        if (actor.Root == null) IRoomActor.RegisterWithRoot(actor, true);
+                        actor.OnSave();
+                        EditorUtility.SetDirty(root);
+                        EditorUtility.SetDirty(root.asset);
+                    }
 
+                    /*
                     var types = typeof(IRoomActor).GetAllChildTypes(true);
 
                     foreach (var type in types)
@@ -140,7 +205,7 @@ namespace RageRooster.RoomSystem
                         }
 
                     }
-
+                    */
                     EditorUtility.SetDirty(root.asset);
                     EditorUtility.SetDirty(root);
                 }
@@ -148,53 +213,5 @@ namespace RageRooster.RoomSystem
         }
 
 #endif
-    }
-    /// <summary>
-    /// An interface representing objects with an important connection to the <see cref="RoomRoot"/>/<see cref="RoomAsset"/> they belong to.
-    /// <br/> Add the OnSaveSceneSet method to override what happens when the Room's scene is saved in editor.
-    /// <br/> (See script for example.)
-    /// </summary>
-    public interface IRoomActor
-    {
-        RoomRoot root { get; set; }
-        public RoomRoot GetRoot() => root;
-        protected static void ConnectToRoomRoot(MonoBehaviour obj)
-        {
-            if (obj is not IRoomActor roomObj || roomObj.root != null) return;
-            RoomRoot foundRoot = obj.GetComponentInParent<RoomRoot>();
-            if (foundRoot == null)
-                throw new System.Exception($"The object {obj.name} is not inside a RoomRoot and cannot connect to it.");
-            roomObj.root = foundRoot;
-        }
-
-        //private void OnSaveScene(RoomRoot root)
-        //private static void OnSaveSceneSet(RoomRoot root, List<CLASSTYPE> list)
-    }
-
-    public static class _RoomActorExtensions
-    {
-        public static void RegisterWithRoot<T>(this T actor) where T : Component, IRoomActor
-        {
-            var root = RoomRoot.Find(actor);
-            //root.roomActors.AddUnique(actor);
-        }
-        public static void DeregisterFromRoot<T>(this T actor) where T : Component, IRoomActor
-        {
-            var root = RoomRoot.Find(actor);
-            //root.roomActors.Remove(actor);
-        }
-        public static RoomRoot FindRoot<T>(this T actor) where T : Component, IRoomActor
-        {
-            if (actor == null || actor.gameObject.scene == null) return null;
-
-            actor.gameObject.scene.GetRootGameObjects()[0].TryGetComponent(out RoomRoot res);
-            return res;
-        }
-        public static bool FindRoot<T>(this T actor, out RoomRoot result) where T : Component, IRoomActor
-        {
-            result = null;
-            return actor != null && actor.gameObject.scene != null && actor.gameObject.scene.GetRootGameObjects()[0].TryGetComponent(out result);
-        }
-
     }
 }

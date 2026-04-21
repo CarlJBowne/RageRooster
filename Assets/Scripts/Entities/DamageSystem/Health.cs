@@ -6,6 +6,8 @@ using Unity;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
+using UnityEngine.Serialization;
+
 
 
 #if UNITY_EDITOR
@@ -18,32 +20,33 @@ using UnityEditor;
 
 public class Health : MonoBehaviour, IDamagable
 {
-	//Config
-	[SerializeField] protected int maxHealth;
-	[SerializeField] protected UltEvents.UltEvent<int> damageEvent = new();
+    //Config
+    [SerializeField] protected int maxHealth;
+    [SerializeField] protected UltEvents.UltEvent<int> damageEvent = new();
     [SerializeField] public UltEvents.UltEvent depleteEvent = new();
-    [SerializeField] protected Attack.Tag[] immuneTags;
+    [SerializeField, FormerlySerializedAs("immuneTags")] protected Attack.Tag_OLD[] immuneTags_Old;
+    [SerializeField] protected Attack.TagSet immuneTags = new();
 
-	//Data
-	[SerializeField, HideInEditMode, DisableInPlayMode] protected int health;
-	protected bool damagable = true;
+    //Data
+    [SerializeField, HideInEditMode, DisableInPlayMode] protected int health;
+    protected bool damagable = true;
 
-	//Getters
-	public int GetCurrentHealth() => health;
-	public int GetMaxHealth() => maxHealth;
-	public float GetHealthPercentage() => health / maxHealth;
+    //Getters
+    public int GetCurrentHealth() => health;
+    public int GetMaxHealth() => maxHealth;
+    public float GetHealthPercentage() => health / maxHealth;
 
-	protected virtual void Awake() => health = maxHealth;
+    protected virtual void Awake() => health = maxHealth;
 
 
     public bool Damage(Attack attack)
     {
-        if (!damagable || attack.amount < 1 || immuneTags.IncludesAny(attack.tags) || !OverrideDamageable(attack)) return false;
+        if (!damagable || attack.amount < 1 || immuneTags_Old.IncludesAny(attack.oldTags) || !OverrideDamageable(attack)) return false;
         OverrideDamageValue(ref attack);
 
         health -= attack.amount;
 
-		if(health < 0) health = 0;
+        if (health < 0) health = 0;
 
         OnDamage(attack);
         if (health == 0) OnDeplete(attack);
@@ -52,9 +55,10 @@ public class Health : MonoBehaviour, IDamagable
     }
 
     protected virtual void OnDamage(Attack attack) => damageEvent?.Invoke(attack.amount);
-    protected virtual void OnHeal(int amount) {
+    protected virtual void OnHeal(int amount)
+    {
 
-     }
+    }
     protected virtual void OnDeplete(Attack attack)
     {
         depleteEvent?.Invoke();
@@ -66,20 +70,20 @@ public class Health : MonoBehaviour, IDamagable
     /// <param name="attack">The attack fed in.</param>
     /// <returns>Whether the attack successfully connects.</returns>
 	protected virtual bool OverrideDamageable(Attack attack) { return true; }
-	protected virtual void OverrideDamageValue(ref Attack attack) { }
+    protected virtual void OverrideDamageValue(ref Attack attack) { }
 
     public bool Heal(int amount)
-	{
-		if (amount < 1 || health == maxHealth) return false;
+    {
+        if (amount < 1 || health == maxHealth) return false;
 
-		health += amount;
+        health += amount;
 
 
-		if (health > maxHealth) health = maxHealth;
+        if (health > maxHealth) health = maxHealth;
         OnHeal(amount);
 
         return true;
-	}
+    }
 
     public virtual void Destroy()
     {
@@ -92,5 +96,10 @@ public class Health : MonoBehaviour, IDamagable
         else if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Disable();
         else */
         Destroy(gameObject);
+    }
+
+    public void TransferImmuneTags()
+    {
+        Attack.TagSet.TransferFromOldTags(immuneTags_Old, immuneTags);
     }
 }
