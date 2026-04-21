@@ -13,32 +13,27 @@ using UnityEngine.UIElements;
 #endif
 
 [System.Serializable]
-public partial struct Attack
+public partial class Attack
 {
     public int amount;
 
-    public Vector3 velocity;
+    public Vector3 velocity = Vector3.zero;
     public TagSet tags;
 
     public Attack(int damage, TagSet tags)
     {
         this.amount = damage;
         velocity = Vector3.zero;
-        this.oldTags = null;
-        this.tags = default;
-
     }
     public Attack(int damage, Vector3 velocity, TagSet tags)
     {
         this.amount = damage;
         this.velocity = velocity;
-        this.oldTags = null;
-        this.tags = default;
     }
 
-    public readonly float x => velocity.x;
-    public readonly float y => velocity.y;
-    public readonly float z => velocity.z;
+    public float x => velocity.x;
+    public float y => velocity.y;
+    public float z => velocity.z;
 
 
 
@@ -95,7 +90,7 @@ public partial struct Attack
 
     }
 
-    public readonly bool HasTag(Tag_OLD tag)
+    public bool HasTag(Tag_OLD tag)
     {
         for (int i = 0; i < oldTags.Length; i++)
             if (oldTags[i].name == tag.name) return true;
@@ -145,37 +140,45 @@ public partial struct Attack
     #endregion
 
 #if UNITY_EDITOR
+    [SerializeField] private string _displayName = "";
     [CustomPropertyDrawer(typeof(Attack))]
     public class PropertyDrawer : UnityEditor.PropertyDrawer
     {
+        PropertyField displayNameField;
+        PropertyField amountField;
+        PropertyField velocityField;
+        PropertyField oldTagsField;
+        PropertyField tagsField;
+        bool oldTagsVisible = true;
+
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
             VisualElement root = new VisualElement();
 
-            SerializedProperty amountProp = property.FindPropertyRelative(nameof(amount));
-            SerializedProperty velocityProp = property.FindPropertyRelative(nameof(velocity));
-            SerializedProperty tagsProp = property.FindPropertyRelative(nameof(oldTags));
-            SerializedProperty tagsProp2 = property.FindPropertyRelative(nameof(tags));
+            displayNameField = new(property.FindPropertyRelative(nameof(_displayName)), "Attack Name");
+            amountField = new(property.FindPropertyRelative(nameof(amount)), string.Empty);
+            velocityField = new(property.FindPropertyRelative(nameof(velocity)));
+            oldTagsField = new(property.FindPropertyRelative(nameof(oldTags)));
+            tagsField = new(property.FindPropertyRelative(nameof(tags)));
 
             FoldoutPlus foldout = new();
+            foldout.value = false;
             root.Add(foldout);
-            foldout.text = property.displayName;
-            foldout.value = false; // collapsed by default
 
-            PropertyField amountField = new(amountProp, string.Empty);
             foldout.headerSide.Add(amountField);
-
-            PropertyField velocityField = new(velocityProp);
+            foldout.contentContainer.Add(displayNameField);
             foldout.contentContainer.Add(velocityField);
-            PropertyField tagsField = new(tagsProp);
             foldout.contentContainer.Add(tagsField);
+            foldout.contentContainer.Add(oldTagsField);
 
-            PropertyField tags2Field = new(tagsProp2);
-            foldout.contentContainer.Add(tags2Field);
+            displayNameField.RegisterValueChangeCallback(DisplayNameChanged);
+            void DisplayNameChanged(SerializedPropertyChangeEvent ev) => foldout.text = !string.IsNullOrEmpty(ev.changedProperty.stringValue) 
+                    ? ev.changedProperty.stringValue 
+                    : property.displayName;
 
             root.Bind(property.serializedObject);
 
-            return root;
+            return root; 
         }
     }
 #endif

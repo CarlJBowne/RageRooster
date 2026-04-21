@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine.UIElements;
 #endif
 
-public partial struct Attack
+public partial class Attack
 {
     public enum Tags
     {
