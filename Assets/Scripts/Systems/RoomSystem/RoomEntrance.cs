@@ -185,7 +185,7 @@ namespace RageRooster.RoomSystem
         {
             Vector3 point = IgnoreVertical(transform.position);
             Vector3 dir = IgnoreVertical(transform.TransformDirection(direction));
-            return new Plane(dir, point).GetDistanceToPoint(collider.ClosestPoint(point));
+            return new Plane(dir, point).GetDistanceToPoint(collider != null ? collider.ClosestPoint(point) : point);
         }
 
         /// <summary>

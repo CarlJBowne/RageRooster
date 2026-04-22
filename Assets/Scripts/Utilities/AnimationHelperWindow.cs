@@ -195,52 +195,107 @@ public class AnimationHelperWindow : EditorWindow
 
     public void TransferAllAttackTags()
     {
+        // PSEUDOCODE / PLAN:
+        // 1. Query all prefab asset GUIDs.
+        // 2. For each prefab:
+        //    a. Load the prefab asset root with AssetDatabase.LoadAssetAtPath<GameObject>(path).
+        //    b. Inspect the prefab asset (non-editing) for any components of interest (IAttackSource or Health)
+        //       by enumerating root.GetComponentsInChildren<Component>(true) and checking types.
+        //    c. If none found -> skip (do not open EditPrefabContentsScope).
+        //    d. If found -> open EditPrefabContentsScope(path), perform TransferTags/TransferImmuneTags on matching
+        //       components, call EditorUtility.SetDirty only for modified components; let the scope save changes on dispose.
+        // 3. For each enabled build scene:
+        //    a. Open the scene.
+        //    b. Find components of type IAttackSource and Health using Object.FindObjectsByType(...).
+        //    c. Filter out any components that belong to prefab instances in the scene using PrefabUtility.IsPartOfPrefabInstance.
+        //    d. Transfer tags on remaining components and mark dirty; save the scene only if any changes were made.
+        //
+        // Notes:
+        // - This avoids opening and touching prefabs that don't contain relevant components,
+        //   preventing accidental serialized changes to unrelated prefabs.
+        // - Uses non-destructive inspection (LoadAssetAtPath) before EditPrefabContentsScope.
+
         string[] prefabGUIDS = AssetDatabase.FindAssets("t:Prefab");
         foreach (string guid in prefabGUIDS)
         {
             string path = AssetDatabase.GUIDToAssetPath(guid);
-            // Use EditPrefabContentsScope to safely open and save prefab data
-            using (var editingScope = new PrefabUtility.EditPrefabContentsScope(path))
+
+            // Load prefab asset for inspection without opening edit scope.
+            GameObject prefabAsset = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (prefabAsset == null)
+                continue;
+
+            // Quick check: does this prefab asset contain any IAttackSource or Health components?
+            Component[] allComponents = prefabAsset.GetComponentsInChildren<Component>(true);
+            bool containsRelevant = allComponents.Any(c => c is IAttackSource or Health);
+            if (!containsRelevant)
+                continue; // Skip opening and touching this prefab.
+
+            // Only now open the prefab for editing.
+            using (PrefabUtility.EditPrefabContentsScope editingScope = new PrefabUtility.EditPrefabContentsScope(path))
             {
-                var root = editingScope.prefabContentsRoot;
-                var attackSourceComps = root.GetComponentsInChildren<IAttackSource>(true);
-                foreach (var comp in attackSourceComps)
+                GameObject root = editingScope.prefabContentsRoot;
+
+                IAttackSource[] attackSourceComps = root.GetComponentsInChildren<IAttackSource>(true);
+                foreach (IAttackSource comp in attackSourceComps)
                 {
-                    comp.TransferTags();
-                    EditorUtility.SetDirty(comp as Component);
+                    if (comp == null) continue;
+                    // comp should be a Component (IAttackSource implemented by MonoBehaviour). Safely cast.
+                    if (comp is Component compAsComponent)
+                    {
+                        comp.TransferTags();
+                        EditorUtility.SetDirty(compAsComponent);
+                    }
                 }
 
-                var healthComps = root.GetComponentsInChildren<Health>(true);
-                foreach (var comp in healthComps)
+                Health[] healthComps = root.GetComponentsInChildren<Health>(true);
+                foreach (Health comp in healthComps)
                 {
+                    if (comp == null) continue;
+                    EditorUtility.SetDirty(comp as Component);
                     comp.TransferImmuneTags();
-                    EditorUtility.SetDirty(comp as Component);
                 }
-
+                // EditPrefabContentsScope will save changes only if edits were actually made.
             }
         }
 
+        // Process scenes, but only operate on components that are NOT part of prefab instances in the scene.
         foreach (EditorBuildSettingsScene scene in EditorBuildSettings.scenes)
         {
             if (!scene.enabled) continue;
             var openedScene = EditorSceneManager.OpenScene(scene.path);
-            var attackSourceComps =
-                Object.FindObjectsByType(typeof(IAttackSource), FindObjectsInactive.Include, FindObjectsSortMode.None).Cast<IAttackSource>();
+
             bool isDirty = false;
 
-            foreach (var comp in attackSourceComps)
+            // Find IAttackSource in the opened scene
+            IEnumerable<IAttackSource> attackSourceObjects = Object.FindObjectsByType<Component>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .Where(C => C is IAttackSource).Cast<IAttackSource>();
+            foreach (var comp in attackSourceObjects)
             {
+                if (comp == null) continue;
+                if (!(comp is Component compAsComponent)) continue;
+
+                // Skip components that are part of prefab instances in the scene
+                if (PrefabUtility.IsPartOfPrefabInstance(compAsComponent)) continue;
+
                 comp.TransferTags();
-                EditorUtility.SetDirty(comp as Component);
+                EditorUtility.SetDirty(compAsComponent);
                 isDirty = true;
             }
 
-            var healthComps = Object.FindObjectsByType<Health>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-
-            foreach (var comp in healthComps)
+            // Find Health components in the opened scene
+            Health[] healthObjects = Object.FindObjectsByType<Health>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+            foreach (Health comp in healthObjects)
             {
+                if (comp == null) continue;
+                Component compAsComponent = comp as Component;
+                if (compAsComponent == null) continue;
+
+                // Skip components that are part of prefab instances in the scene
+                if (PrefabUtility.IsPartOfPrefabInstance(compAsComponent)) continue;
+
                 comp.TransferImmuneTags();
-                EditorUtility.SetDirty(comp as Component);
+                EditorUtility.SetDirty(compAsComponent);
                 isDirty = true;
             }
 
