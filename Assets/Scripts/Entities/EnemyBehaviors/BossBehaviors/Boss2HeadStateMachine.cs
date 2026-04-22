@@ -18,7 +18,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
     [DisableInEditMode, DisableInPlayMode] public string currentState = "NULL";
 
     public ObjectPool_OBSOLETE projectilePool;
-    [Range(0f, 1f)] public float projectileChance = 1f/3f;
+    [Range(0f, 1f)] public float projectileChance = 1f / 3f;
 
 
     [HideInEditMode, HideInPlayMode] public Boss2CentralController controller;
@@ -70,7 +70,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
         if (hitStunCoroutine) return;
         if (currentState == "Idle")
         {
-            if(headID != FinalBossHead.Stumpy)
+            if (headID != FinalBossHead.Stumpy)
             {
                 if (controller.Stumpy.currentState != "LavaBreath")
                     attackTimer.Tick(() =>
@@ -79,8 +79,8 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
                         DoAttack((damageTaken < damageUntilNewAttack || Random.Range(0, 3) != 0) ? 1 : 2);
                     });
             }
-            else if(damageTaken >= damageUntilNewAttack && 
-                (controller.Pecky.currentState == idleState || controller.Pecky.currentState == knockedState) && 
+            else if (damageTaken >= damageUntilNewAttack &&
+                (controller.Pecky.currentState == idleState || controller.Pecky.currentState == knockedState) &&
                 (controller.Slasher.currentState == idleState || controller.Slasher.currentState == knockedState))
                 attackTimer.Tick(() =>
                 {
@@ -92,25 +92,25 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
     }
 
 
-    public bool Damage(Attack attack) 
+    public bool Damage(Attack attack)
     {
 
         if (headID == FinalBossHead.Pecky)
         {
             if (currentState == knockedState) return false;
-            if (attack.HasTag("ThrownRock"))
+            if (attack[Attack.Tags.Thrown] && attack[Attack.Tags.Boulder])
             {
                 SetKnockedState(true);
                 damageTaken++;
                 DoDamageTint(true);
                 return true;
             }
-            else if (currentState == idleState && attack == "Egg") attackTimer.rate -= 1f;
+            else if (currentState == idleState && attack[Attack.Tags.Egg]) attackTimer.rate -= 1f;
         }
         else if (headID == FinalBossHead.Slasher)
         {
-            if (currentState == knockedState || attack.HasTag("ThrownRock") || !attack.HasTag("FromPlayer")) return false;
-            if (currentState == idleState && attack == "Egg") attackTimer.rate -= 1f;
+            if (currentState == knockedState || (attack[Attack.Tags.Thrown] && attack[Attack.Tags.Boulder]) || !attack[Attack.Tags.Player]) return false;
+            if (currentState == idleState && attack[Attack.Tags.Egg]) attackTimer.rate -= 1f;
             else if (individualDamageCounter < 5)
             {
                 individualDamageCounter++;
@@ -156,7 +156,10 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
                     animator.enabled = true;
                     damageTaken++;
                     DoDamageTint(true);
-                    controller.Damage(new Attack(1, "FromPlayer", "OnWeakSpot"));
+                    Attack.TagSet tags = new();
+                    tags[Attack.Tags.Player] = true;
+                    tags[Attack.Tags.WeakSpot] = true;
+                    controller.Damage(new Attack(1, tags: tags));
                     individualDamageCounter = 0;
                     controller.VulnerableReturn();
                     return true;
@@ -210,17 +213,17 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
 
     public void SpawnProjectile()
     {
-        
-        if(headID == FinalBossHead.Pecky && Random.Range(0f, 1f) <= projectileChance)
+
+        if (headID == FinalBossHead.Pecky && Random.Range(0f, 1f) <= projectileChance)
         {
             PoolableObject_OBSOLETE projectile = projectilePool.Pump();
-            if(projectile != null)
+            if (projectile != null)
             {
                 projectile.transform.position -= Direction.front;
                 projectile.rb.linearVelocity = Direction.upBack;
             }
         }
-        else if(headID == FinalBossHead.Slasher)
+        else if (headID == FinalBossHead.Slasher)
         {
             PoolableObject_OBSOLETE projectile = projectilePool.Pump();
             projectile.transform.localScale = .1f * Direction.one;
@@ -271,4 +274,4 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
     }
 }
 
-public enum FinalBossHead {Pecky, Slasher, Stumpy}
+public enum FinalBossHead { Pecky, Slasher, Stumpy }

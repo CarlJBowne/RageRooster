@@ -5,6 +5,4 @@ public interface IAttackSource
     public Attack GetAttack();
 
     public void Contact(GameObject target);
-
-    public void TransferTags();
 }

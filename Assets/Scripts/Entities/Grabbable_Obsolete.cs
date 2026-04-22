@@ -31,7 +31,7 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
     [HideInInspector] public UltEvents.UltEvent thrownEvent;
     [HideInInspector] public UltEvents.UltEvent bounceEvent;
 
-    public Attack thrownAttack = new(1, "Thrown");
+    public Attack thrownAttack = new(1, new());
 
     #endregion
     #region Data
@@ -194,5 +194,4 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
         if (this is RagdollHandler_Obsolete ragdoll) ragdoll.ReplaceWithNew();
     }
 
-    public void TransferTags() => thrownAttack.TransferTags();
 }

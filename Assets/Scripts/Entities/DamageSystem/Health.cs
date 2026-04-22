@@ -24,7 +24,6 @@ public class Health : MonoBehaviour, IDamagable
     [SerializeField] protected int maxHealth;
     [SerializeField] protected UltEvents.UltEvent<int> damageEvent = new();
     [SerializeField] public UltEvents.UltEvent depleteEvent = new();
-    [SerializeField, FormerlySerializedAs("immuneTags")] protected Attack.Tag_OLD[] immuneTags_Old;
     [SerializeField] protected Attack.TagSet immuneTags = new();
 
     //Data
@@ -41,7 +40,7 @@ public class Health : MonoBehaviour, IDamagable
 
     public bool Damage(Attack attack)
     {
-        if (!damagable || attack.amount < 1 || immuneTags_Old.IncludesAny(attack.oldTags) || !OverrideDamageable(attack)) return false;
+        if (!damagable || attack.amount < 1 || immuneTags.ContainsAnyFrom(attack.tags) || !OverrideDamageable(attack)) return false;
         OverrideDamageValue(ref attack);
 
         health -= attack.amount;
@@ -96,10 +95,5 @@ public class Health : MonoBehaviour, IDamagable
         else if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Disable();
         else */
         Destroy(gameObject);
-    }
-
-    public void TransferImmuneTags()
-    {
-        Attack.TagSet.TransferFromOldTags(immuneTags_Old, immuneTags);
     }
 }

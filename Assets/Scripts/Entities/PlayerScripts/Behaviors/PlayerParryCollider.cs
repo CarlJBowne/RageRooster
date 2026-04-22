@@ -31,9 +31,4 @@ public class PlayerParryCollider : MonoBehaviour, IAttackSource
         return result;
     }
 
-    public void TransferTags()
-    {
-        baseAttack.TransferTags();
-        hellUpgradedAttack.TransferTags();
-    }
 }

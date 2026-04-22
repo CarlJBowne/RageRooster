@@ -29,7 +29,7 @@ public class Boss1Health : Health
     protected override void Awake()
     {
         base.Awake();
-        TryGetComponent(out animator); 
+        TryGetComponent(out animator);
         TryGetComponent(out moveAnim);
         TryGetComponent(out machine);
         respawnPoint = transform.position;
@@ -42,27 +42,27 @@ public class Boss1Health : Health
     }
     private void OnDestroy()
     {
-        Player.onRespawn -= ResetBoss; 
+        Player.onRespawn -= ResetBoss;
     }
 
     protected override bool OverrideDamageable(Attack attack)
     {
         if (lastDamageTime + damageCooldown > Time.time) return false;
-        if (attack.HasTag("OnWeakSpot") && attack.HasTag("GroundSlam"))
+        if (attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.GroundSlam])
         {
             damageTint.BeginAnimation();
             animator.Play("Damage");
             return true;
         }
-        if (bossPhase != 2 && attack.HasTag("InEyes") && attack.HasTag("Egg") && machine.CurrentState.gameObject.name != "Charging")
+        if (bossPhase != 2 && attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.Egg] && machine.CurrentState.gameObject.name != "Charging")
         {
-            stunCounter++; 
+            stunCounter++;
             if (stunCounter > 2)
             {
                 stunCounter = 0;
                 machine.SendSignal("Charge");
             }
-            else machine.SendSignal("Flinch"); 
+            else machine.SendSignal("Flinch");
             lastDamageTime = Time.time;
         }
         return false;

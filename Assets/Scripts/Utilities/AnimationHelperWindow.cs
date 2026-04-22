@@ -243,7 +243,7 @@ public class AnimationHelperWindow : EditorWindow
                     // comp should be a Component (IAttackSource implemented by MonoBehaviour). Safely cast.
                     if (comp is Component compAsComponent)
                     {
-                        comp.TransferTags();
+                        //comp.TransferTags();
                         EditorUtility.SetDirty(compAsComponent);
                     }
                 }
@@ -253,7 +253,7 @@ public class AnimationHelperWindow : EditorWindow
                 {
                     if (comp == null) continue;
                     EditorUtility.SetDirty(comp as Component);
-                    comp.TransferImmuneTags();
+                    //comp.TransferImmuneTags();
                 }
                 // EditPrefabContentsScope will save changes only if edits were actually made.
             }
@@ -278,7 +278,7 @@ public class AnimationHelperWindow : EditorWindow
                 // Skip components that are part of prefab instances in the scene
                 if (PrefabUtility.IsPartOfPrefabInstance(compAsComponent)) continue;
 
-                comp.TransferTags();
+                //comp.TransferTags();
                 EditorUtility.SetDirty(compAsComponent);
                 isDirty = true;
             }
@@ -294,7 +294,7 @@ public class AnimationHelperWindow : EditorWindow
                 // Skip components that are part of prefab instances in the scene
                 if (PrefabUtility.IsPartOfPrefabInstance(compAsComponent)) continue;
 
-                comp.TransferImmuneTags();
+                //comp.TransferImmuneTags();
                 EditorUtility.SetDirty(compAsComponent);
                 isDirty = true;
             }

@@ -29,10 +29,7 @@ public class Boss2CentralController : Health
     [Button]
     public void FinishBoss() => FinishBossEvent?.Invoke();
 
-    protected override bool OverrideDamageable(Attack attack)
-    {
-        return attack.HasTag("FromPlayer") && attack.HasTag("OnWeakSpot");
-    }
+    protected override bool OverrideDamageable(Attack attack) => attack[Attack.Tags.Player] && attack[Attack.Tags.WeakSpot];
 
     public void CheckIfBothKnocked()
     {

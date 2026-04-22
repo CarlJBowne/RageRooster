@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class DestructibleWall : Health
 {
-    public string requiredTag;
+    public Attack.TagSet requiredTags;
     public bool basicDelete = true;
 
-    protected override bool OverrideDamageable(Attack attack) => attack.HasTag(requiredTag);
+    protected override bool OverrideDamageable(Attack attack) => attack.tags.ContainsAllOf(requiredTags);
     protected override void OnDeplete(Attack attack)
-    {if (basicDelete) gameObject.SetActive(false);}
+    { if (basicDelete) gameObject.SetActive(false); }
 
 }
