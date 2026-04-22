@@ -176,16 +176,16 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 77eadee4048cf504fbc7cb22d340ad32,
         type: 3}
       propertyPath: m_Name
-      value: Handsaw
+      value: pf_Handsaw
       objectReference: {fileID: 0}
     - target: {fileID: 8032750206264916975, guid: 77eadee4048cf504fbc7cb22d340ad32,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 12e77e0f2521a5b469a57b22129da1af, type: 2}
     - target: {fileID: 8084854973141751649, guid: 77eadee4048cf504fbc7cb22d340ad32,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 70b2f0bb67317fa48a30b0b98e61d7b1, type: 2}
     m_RemovedComponents: []
@@ -204,6 +204,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1681979223683112109}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 77eadee4048cf504fbc7cb22d340ad32,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5238909765504135221}
     - targetCorrespondingSourceObject: {fileID: -7334951474422550414, guid: 77eadee4048cf504fbc7cb22d340ad32,
         type: 3}
       insertIndex: -1
@@ -254,13 +258,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44ed58beabcca8749bd2e13371ec85c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  twoHanded: 0
+  anchorPoint: {fileID: 0}
   weight: 0
   wiggleFreeTime: 0
   maxHealthToGrab: 0
+  additionalThrowDistance: 0
+  additionalHoldHeight: 0
+  selectIcon: {fileID: 0}
   GrabStateEvent:
-    m_PersistentCalls:
-      m_Calls: []
+    _PersistentCalls: []
+  defaultEvent:
+    _PersistentCalls: []
+  grabbedEvent:
+    _PersistentCalls: []
+  thrownEvent:
+    _PersistentCalls: []
+  bounceEvent:
+    _PersistentCalls: []
+  thrownAttack:
+    amount: 1
+    velocity: {x: 0, y: 0, z: 0}
+    tags:
+      intValue: 16
+    oldTags:
+    - name: Thrown
+    _displayName: 
+  grabbed: 0
+  currentState: 0
 --- !u!65 &3564689798310331367
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -289,10 +313,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6511345351311963812}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -309,3 +333,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5238909765504135221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6511345351311963812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 157b62d8004f9f14d8160afc57aae3b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
+  RealPositionOffset: {x: 0, y: 0, z: 0}
+  rigidBody: {fileID: 0}
+  collider: {fileID: 0}
+  navMeshAgent: {fileID: 0}
+  centerComputationType: 0
+  grabbable: {fileID: 0}

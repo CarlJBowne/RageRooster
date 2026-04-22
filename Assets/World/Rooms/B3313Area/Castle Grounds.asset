@@ -15,9 +15,8 @@ MonoBehaviour:
   <displayName>k__BackingField: Castle Grounds
   <area>k__BackingField: {fileID: 11400000, guid: c09e02aeb4b5ee64f931293c4c4b46fd,
     type: 2}
-  <globalCenter>k__BackingField: {x: 0, y: 0, z: 0}
   <scene>k__BackingField:
-    <sceneName>k__BackingField: CastleGroundsScene
+    <sceneName>k__BackingField: CastleGrounds_Scene
     <asset>k__BackingField: {fileID: 102900000, guid: 5d4f225b7db7adb438b794418cf3fea9,
       type: 3}
   <lod>k__BackingField:
@@ -29,6 +28,19 @@ MonoBehaviour:
   <entrances>k__BackingField:
   - point: {x: -14.36, y: -1.99, z: -194.32}
     direction: {x: 0, y: 0, z: 1}
-    loadRadius: 20
-    unloadRadius: 30
-    lodRadius: 50
+    loadRadiusSQR: 400
+    unloadRadiusSQR: 900
+    lodRadiusSQR: 2500
+    colliderDepth: 0
+    ignoreVertical: 1
+  - point: {x: -14.36, y: -1.99, z: -194.32}
+    direction: {x: 0, y: 0, z: 1}
+    loadRadiusSQR: 400
+    unloadRadiusSQR: 900
+    lodRadiusSQR: 2500
+    colliderDepth: 0
+    ignoreVertical: 1
+  <spawnPointNames>k__BackingField:
+  - SpawnPoint
+  - SpawnPoint
+  - Spawn

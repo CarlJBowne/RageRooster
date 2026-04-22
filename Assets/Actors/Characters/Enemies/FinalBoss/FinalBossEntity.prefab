@@ -56,7 +56,9 @@ MonoBehaviour:
     - _Target: {fileID: 1379741155112482241}
       _MemberName: FinishBoss
       _PersistentArguments: []
-  immuneTags: []
+  immuneTags_Old: []
+  immuneTags:
+    intValue: 0
   health: 0
   Pecky: {fileID: 6931067895969434382}
   Slasher: {fileID: 8700716878835570007}
@@ -173,6 +175,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6402251889940720377}
     m_Modifications:
+    - target: {fileID: 1737310975830199529, guid: 62a23ad4d55731b44be26ce14f433dcc,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 67117315
+      objectReference: {fileID: 0}
+    - target: {fileID: 5016899114564261269, guid: 62a23ad4d55731b44be26ce14f433dcc,
+        type: 3}
+      propertyPath: additionalTags.intValue
+      value: 259
+      objectReference: {fileID: 0}
+    - target: {fileID: 5016899114564261269, guid: 62a23ad4d55731b44be26ce14f433dcc,
+        type: 3}
+      propertyPath: attacks.Array.data[0].tags.intValue
+      value: 33554432
+      objectReference: {fileID: 0}
     - target: {fileID: 6872497757141364272, guid: 62a23ad4d55731b44be26ce14f433dcc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -309,6 +326,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6202617116758010352, guid: 5a6fcef714c60374d81806c0d9adf3b0,
+        type: 3}
+      propertyPath: additionalTags.intValue
+      value: 259
+      objectReference: {fileID: 0}
+    - target: {fileID: 6202617116758010352, guid: 5a6fcef714c60374d81806c0d9adf3b0,
+        type: 3}
+      propertyPath: attacks.Array.data[0].tags.intValue
+      value: 33554432
+      objectReference: {fileID: 0}
     - target: {fileID: 7822020318923592540, guid: 5a6fcef714c60374d81806c0d9adf3b0,
         type: 3}
       propertyPath: m_Name
@@ -399,6 +426,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7435391131732183160, guid: 930d8b83b56410a4faaefc09fded5c5d,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 16777475
+      objectReference: {fileID: 0}
+    - target: {fileID: 8928413812791103829, guid: 930d8b83b56410a4faaefc09fded5c5d,
+        type: 3}
+      propertyPath: additionalTags.intValue
+      value: 259
+      objectReference: {fileID: 0}
+    - target: {fileID: 8928413812791103829, guid: 930d8b83b56410a4faaefc09fded5c5d,
+        type: 3}
+      propertyPath: attacks.Array.data[0].tags.intValue
+      value: 33554432
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

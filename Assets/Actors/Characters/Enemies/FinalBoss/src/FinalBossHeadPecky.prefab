@@ -205,12 +205,14 @@ MonoBehaviour:
     amount: 1
     velocity: {x: 0, y: 0, z: 0}
     tags:
+      intValue: 16777475
+    oldTags:
     - name: FromEnemy
     - name: FromBoss
     - name: FromPecky
     - name: Lazer
+    _displayName: 
   sourceEntity: {fileID: 0}
-  enabled: 1
 --- !u!120 &7151331009531696090
 LineRenderer:
   serializedVersion: 2
@@ -229,6 +231,11 @@ LineRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -250,6 +257,7 @@ LineRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0

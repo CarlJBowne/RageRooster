@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -42,8 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
-  m_GIWorkflowMode: 1
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -66,9 +66,6 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_FinalGather: 0
-    m_FinalGatherFiltering: 1
-    m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
     m_BakeBackend: 1
@@ -195,6 +192,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -216,6 +218,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -244,9 +247,11 @@ MonoBehaviour:
     amount: 1
     velocity: {x: 0, y: 0, z: 0}
     tags:
+      intValue: 128
+    oldTags:
     - name: Pit
+    _displayName: 
   sourceEntity: {fileID: 0}
-  enabled: 1
 --- !u!1 &331609514
 GameObject:
   m_ObjectHideFlags: 0
@@ -276,10 +281,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
+  <Root>k__BackingField: {fileID: 351845662}
   rotate: 0
   snapToFloor: 1
-  root: {fileID: 351845662}
 --- !u!4 &331609516
 Transform:
   m_ObjectHideFlags: 0
@@ -326,10 +330,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <asset>k__BackingField: {fileID: 11400000, guid: fe5d2621dd058784d81543d2b2850809,
     type: 2}
-  <spawns>k__BackingField:
+  <RootGameObjects>k__BackingField:
+  - {fileID: 351845661}
+  <RoomActors>k__BackingField:
+    list:
+    - {fileID: 1040532477}
+    - {fileID: 331609515}
+    - {fileID: 1545039155}
+    - {fileID: 1868836529}
+  <Spawns>k__BackingField:
   - {fileID: 331609515}
   - {fileID: 1545039155}
   - {fileID: 1868836529}
+  <EntranceActors>k__BackingField:
+  - {fileID: 1040532477}
 --- !u!4 &351845663
 Transform:
   m_ObjectHideFlags: 0
@@ -410,42 +424,42 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 11ba90a13ee1fc741b2e57d58f7a190d,
         type: 3}
-      propertyPath: m_Materials.Array.data[66]
+      propertyPath: 'm_Materials.Array.data[66]'
       value: 
       objectReference: {fileID: 2100000, guid: 95d4b23e7f5248b4d8fd8ef1fbb26428, type: 2}
     - target: {fileID: -7511558181221131132, guid: 11ba90a13ee1fc741b2e57d58f7a190d,
         type: 3}
-      propertyPath: m_Materials.Array.data[84]
+      propertyPath: 'm_Materials.Array.data[84]'
       value: 
       objectReference: {fileID: 2100000, guid: df1f1320d5bce2344ba353de77d16a0a, type: 2}
     - target: {fileID: -7511558181221131132, guid: 11ba90a13ee1fc741b2e57d58f7a190d,
         type: 3}
-      propertyPath: m_Materials.Array.data[87]
+      propertyPath: 'm_Materials.Array.data[87]'
       value: 
       objectReference: {fileID: 2100000, guid: 5c23fb43fabd41e40b865347f2bec473, type: 2}
     - target: {fileID: -7511558181221131132, guid: 11ba90a13ee1fc741b2e57d58f7a190d,
         type: 3}
-      propertyPath: m_Materials.Array.data[88]
+      propertyPath: 'm_Materials.Array.data[88]'
       value: 
       objectReference: {fileID: 2100000, guid: 5c23fb43fabd41e40b865347f2bec473, type: 2}
     - target: {fileID: -7511558181221131132, guid: 11ba90a13ee1fc741b2e57d58f7a190d,
         type: 3}
-      propertyPath: m_Materials.Array.data[91]
+      propertyPath: 'm_Materials.Array.data[91]'
       value: 
       objectReference: {fileID: 2100000, guid: df1f1320d5bce2344ba353de77d16a0a, type: 2}
     - target: {fileID: -7511558181221131132, guid: 11ba90a13ee1fc741b2e57d58f7a190d,
         type: 3}
-      propertyPath: m_Materials.Array.data[93]
+      propertyPath: 'm_Materials.Array.data[93]'
       value: 
       objectReference: {fileID: 2100000, guid: 28d8d979ff1e4634e97f2756e0552d13, type: 2}
     - target: {fileID: -7511558181221131132, guid: 11ba90a13ee1fc741b2e57d58f7a190d,
         type: 3}
-      propertyPath: m_Materials.Array.data[103]
+      propertyPath: 'm_Materials.Array.data[103]'
       value: 
       objectReference: {fileID: 2100000, guid: 5c23fb43fabd41e40b865347f2bec473, type: 2}
     - target: {fileID: -7511558181221131132, guid: 11ba90a13ee1fc741b2e57d58f7a190d,
         type: 3}
-      propertyPath: m_Materials.Array.data[104]
+      propertyPath: 'm_Materials.Array.data[104]'
       value: 
       objectReference: {fileID: 2100000, guid: df1f1320d5bce2344ba353de77d16a0a, type: 2}
     - target: {fileID: 919132149155446097, guid: 11ba90a13ee1fc741b2e57d58f7a190d,
@@ -542,13 +556,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4b388a78e5eed449b02b774ba9c94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <Root>k__BackingField: {fileID: 351845662}
   loadRadius: 20
   unloadRadius: 30
   lodRadius: 50
   direction: {x: 0, y: 0, z: 1}
+  ignoreVerticalAngle: 1
+  collider: {fileID: 0}
   spawnPoint: {fileID: 331609515}
   forDeathOnly: 0
-  root: {fileID: 351845662}
 --- !u!65 &1040532478
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -643,6 +659,11 @@ PrefabInstance:
       propertyPath: root
       value: 
       objectReference: {fileID: 351845662}
+    - target: {fileID: 7495099174112998436, guid: 22b18ca4524ddd1459acb80287aea9bb,
+        type: 3}
+      propertyPath: <Root>k__BackingField
+      value: 
+      objectReference: {fileID: 351845662}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -695,10 +716,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87f84e3297bc58b42a482a677e3ef8ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 2
+  <Root>k__BackingField: {fileID: 351845662}
   rotate: 1
   snapToFloor: 1
-  root: {fileID: 351845662}
 --- !u!4 &1868836530
 Transform:
   m_ObjectHideFlags: 0
@@ -768,6 +788,8 @@ MonoBehaviour:
   fadeoutTime: 1
   cancellable: 1
   forceFullTransition: 1
+  lockCameraPosition: 0
+  lockCameraRotation: 0
 --- !u!65 &1941556158
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -806,6 +828,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -827,6 +854,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0

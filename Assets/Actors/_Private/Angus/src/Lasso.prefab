@@ -155,7 +155,10 @@ MonoBehaviour:
   attack:
     amount: 0
     velocity: {x: 0, y: 0, z: 0}
-    tags: []
+    tags:
+      intValue: 0
+    oldTags: []
+    _displayName: 
   sourceEntity: {fileID: 0}
   speed: 15
   velocityPredictionFactor: 1
@@ -168,3 +171,4 @@ MonoBehaviour:
   pullSpeed: 30
   reachplayerDistance: 1
   gravity: 9.8
+  verticalCorrection: 2

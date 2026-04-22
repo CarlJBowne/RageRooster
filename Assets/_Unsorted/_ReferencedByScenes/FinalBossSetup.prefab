@@ -246,6 +246,11 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -267,6 +272,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -995,6 +1001,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2843296489540364817}
     m_Modifications:
+    - target: {fileID: 127916005699484608, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
+        type: 3}
+      propertyPath: additionalTags.intValue
+      value: 259
+      objectReference: {fileID: 0}
+    - target: {fileID: 127916005699484608, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
+        type: 3}
+      propertyPath: attacks.Array.data[0].tags.intValue
+      value: 33554432
+      objectReference: {fileID: 0}
+    - target: {fileID: 600569673786561080, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 67117315
+      objectReference: {fileID: 0}
     - target: {fileID: 656305723184038079, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
         type: 3}
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
@@ -1005,6 +1026,21 @@ PrefabInstance:
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
       value: 
       objectReference: {fileID: 246659514663194431}
+    - target: {fileID: 1822071695871042969, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
+        type: 3}
+      propertyPath: additionalTags.intValue
+      value: 259
+      objectReference: {fileID: 0}
+    - target: {fileID: 1822071695871042969, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
+        type: 3}
+      propertyPath: attacks.Array.data[0].tags.intValue
+      value: 33554432
+      objectReference: {fileID: 0}
+    - target: {fileID: 2090157534679376621, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 16777475
+      objectReference: {fileID: 0}
     - target: {fileID: 3580229023811511725, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
         type: 3}
       propertyPath: m_Name
@@ -1030,6 +1066,16 @@ PrefabInstance:
       propertyPath: m_Data.m_SourceObjects.m_Item0.transform
       value: 
       objectReference: {fileID: 246659514663194431}
+    - target: {fileID: 6185156319428184900, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
+        type: 3}
+      propertyPath: additionalTags.intValue
+      value: 259
+      objectReference: {fileID: 0}
+    - target: {fileID: 6185156319428184900, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
+        type: 3}
+      propertyPath: attacks.Array.data[0].tags.intValue
+      value: 33554432
+      objectReference: {fileID: 0}
     - target: {fileID: 6402251889940720377, guid: 6f318437c1ef5bf458dfc50f9f1926ee,
         type: 3}
       propertyPath: m_LocalPosition.x

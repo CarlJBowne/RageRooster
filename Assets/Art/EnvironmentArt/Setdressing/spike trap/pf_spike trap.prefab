@@ -65,12 +65,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3258771382408540265, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: d65a2619d97d5034abc1af8cfd85a307, type: 2}
     - target: {fileID: -2497042905631214616, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: e07aeaf0807ee2d4a8f674855aae2b4f, type: 2}
     - target: {fileID: 424797892135438382, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
@@ -81,7 +81,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
         type: 3}
       propertyPath: m_Name
-      value: spike trap
+      value: pf_spike trap
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
         type: 3}
@@ -90,7 +90,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4531912228224351498, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: c8005eaae435bc548abd5ea2398b5cae, type: 2}
     - target: {fileID: 7953606483559150473, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
@@ -168,7 +168,9 @@ MonoBehaviour:
   currentAttackID: 0
   sourceEntity: {fileID: 0}
   attacks: []
-  additionalTags: []
+  additionalTags_Old: []
+  additionalTags:
+    intValue: 0
   enabled: 1
 --- !u!64 &2439819325754492012
 MeshCollider:
@@ -208,9 +210,11 @@ MonoBehaviour:
     amount: 1
     velocity: {x: 0, y: 0, z: 0}
     tags:
+      intValue: 128
+    oldTags:
     - name: Pit
+    _displayName: 
   sourceEntity: {fileID: 0}
-  enabled: 1
 --- !u!1 &3863602911140700956 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 424797892135438382, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
@@ -254,7 +258,9 @@ MonoBehaviour:
   currentAttackID: 0
   sourceEntity: {fileID: 0}
   attacks: []
-  additionalTags: []
+  additionalTags_Old: []
+  additionalTags:
+    intValue: 0
   enabled: 1
 --- !u!64 &3834863334972036768
 MeshCollider:
@@ -294,9 +300,11 @@ MonoBehaviour:
     amount: 1
     velocity: {x: 0, y: 0, z: 0}
     tags:
+      intValue: 128
+    oldTags:
     - name: Pit
+    _displayName: 
   sourceEntity: {fileID: 0}
-  enabled: 1
 --- !u!1 &6781167573391956155 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7953606483559150473, guid: 2a8b188c0fb4a8f48a01609e7f57086b,
@@ -340,7 +348,9 @@ MonoBehaviour:
   currentAttackID: 0
   sourceEntity: {fileID: 0}
   attacks: []
-  additionalTags: []
+  additionalTags_Old: []
+  additionalTags:
+    intValue: 0
   enabled: 1
 --- !u!64 &3661712056040036734
 MeshCollider:
@@ -380,6 +390,8 @@ MonoBehaviour:
     amount: 1
     velocity: {x: 0, y: 0, z: 0}
     tags:
+      intValue: 128
+    oldTags:
     - name: Pit
+    _displayName: 
   sourceEntity: {fileID: 0}
-  enabled: 1

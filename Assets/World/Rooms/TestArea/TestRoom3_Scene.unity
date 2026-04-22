@@ -195,7 +195,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 54388
+    surfaceParameter: 54446
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: -8894674620610811335
@@ -335,7 +335,10 @@ MonoBehaviour:
     amount: 0
     velocity: {x: 0, y: 0, z: 0}
     tags:
+      intValue: 3
+    oldTags:
     - name: FromEnemy
+    _displayName: 
   sourceEntity: {fileID: 0}
 --- !u!1 &173858160
 GameObject:
@@ -409,6 +412,8 @@ MonoBehaviour:
   unloadRadius: 30
   lodRadius: 50
   direction: {x: 0, y: 0, z: -1}
+  ignoreVerticalAngle: 1
+  collider: {fileID: 0}
   spawnPoint: {fileID: 1783102105}
   forDeathOnly: 0
 --- !u!1 &174955397
@@ -966,7 +971,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 53746
+    surfaceParameter: 53802
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: -8894674620610811335
@@ -1339,6 +1344,8 @@ MonoBehaviour:
   unloadRadius: 30
   lodRadius: 50
   direction: {x: 0, y: 0, z: -1}
+  ignoreVerticalAngle: 1
+  collider: {fileID: 0}
   spawnPoint: {fileID: 518008250}
   forDeathOnly: 0
 --- !u!1 &841564671
@@ -1480,7 +1487,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 54388
+    surfaceParameter: 54446
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: -8894674620610811335

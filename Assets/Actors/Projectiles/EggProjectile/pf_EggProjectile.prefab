@@ -221,7 +221,10 @@ MonoBehaviour:
   attack:
     amount: 10
     velocity: {x: 0, y: 0, z: 0}
-    tags: []
+    tags:
+      intValue: 0
+    oldTags: []
+    _displayName: 
   sourceEntity: {fileID: 0}
   speed: 20
   velocityPredictionFactor: 1
@@ -255,16 +258,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68b9c101c5f0b5240a7aece14537daf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestScript
-  testVal:
-    rid: 1451161998592311556
-  references:
-    version: 2
-    RefIds:
-    - rid: 1451161998592311556
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
-      data:
-        persistAcrossStateChange: 0
-        pressEvent:
-          _PersistentCalls: []
-        releaseEvent:
-          _PersistentCalls: []

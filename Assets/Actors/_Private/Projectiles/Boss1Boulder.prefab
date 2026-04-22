@@ -74,11 +74,13 @@ MonoBehaviour:
     amount: 1
     velocity: {x: 0, y: 0, z: 0}
     tags:
+      intValue: 4355
+    oldTags:
     - name: FromEnemy
     - name: FromBoss
     - name: Boulder
+    _displayName: 
   sourceEntity: {fileID: 0}
-  enabled: 1
   disableOnHit: 1
   disableOnlyWithHealth: 1
   disableOnlyIfSuccessfulHit: 0
@@ -93,10 +95,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8587716749453340891}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -157,8 +159,8 @@ MonoBehaviour:
       Data4: 502946856
     Path: event:/SFX/Msc./stoneDestructible
   Event: 
-  PlayEvent: 2
-  StopEvent: 0
+  EventPlayTrigger: 2
+  EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 1

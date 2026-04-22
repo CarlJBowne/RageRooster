@@ -1798,7 +1798,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e171649d6a246244b6f37b90c1c4f9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 255690769701385632}
   <State>k__BackingField: {fileID: 1556957864367648040}
   timer:
     length: 5
@@ -1831,7 +1830,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 255690769701385632}
   <State>k__BackingField: {fileID: 1556957864367648040}
   onEntry: 2
   onEnterName: Punching
@@ -7351,7 +7349,9 @@ MonoBehaviour:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
-  immuneTags: []
+  immuneTags_Old: []
+  immuneTags:
+    intValue: 0
   health: 0
   stunTime: 0
   poofPrefab: {fileID: 0}
@@ -7377,7 +7377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0452307ce3dc7f044a8c8da0714c5455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 255690769701385632}
   <State>k__BackingField: {fileID: 255690769701385632}
   target: {fileID: 0}
   autoCheckRate: 0
@@ -7422,7 +7421,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8e318945a4f6224dad4dd3c599394f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 255690769701385632}
   <State>k__BackingField: {fileID: 255690769701385632}
   globalSignals:
     serializedList: []
@@ -7454,11 +7452,11 @@ MonoBehaviour:
     - rid: 440872388981686272
       type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
       data:
-        This: {fileID: -5626565997039911734}
+        Target: {fileID: 0}
     - rid: 440872388981686273
       type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
       data:
-        This: {fileID: -5626565997039911734}
+        Target: {fileID: 0}
 --- !u!114 &2302346554342993742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7473,6 +7471,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
   grabbablePublic: 1
   grabHealthMax: -1
+  grabRadius: 0.5
   wiggleFreeTime: 0
   anchorPoint: {fileID: 0}
   AdditionalThrowDistance: 0
@@ -7546,7 +7545,10 @@ MonoBehaviour:
   attack:
     amount: 0
     velocity: {x: 0, y: 0, z: 0}
-    tags: []
+    tags:
+      intValue: 0
+    oldTags: []
+    _displayName: 
   sourceEntity: {fileID: 0}
   onContactEvent:
     _PersistentCalls:
@@ -10401,7 +10403,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 255690769701385632}
   <State>k__BackingField: {fileID: 5007312227450130214}
   onEntry: 2
   onEnterName: Attacking

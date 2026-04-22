@@ -413,16 +413,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f53dcb109650cd40b63bf8d437626bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentActiveUpgrades:
-    dropLaunch: 0
-    wallJump: 0
-    hellcopter: 0
-    ragingCharge: 0
-    glide: 0
-    doubleJump: 0
-    lasso: 0
-    d_invincibility: 0
-    d_moonJump: 0
 --- !u!114 &8455434200384702600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -652,7 +642,7 @@ MonoBehaviour:
   immuneTags_Old:
   - name: FromPlayer
   immuneTags:
-    intValue: 0
+    intValue: 1
   health: 0
   invincibilityTime: 3
   damageState: {fileID: 7172318012010073439}
@@ -681,7 +671,16 @@ MonoBehaviour:
   overrideMovementVector: {x: 0, y: 0}
   jumpInput: 0
   camAdjustedMovement: {x: 0, y: 0, z: 0}
-  grabber: {fileID: 2714541672873312079}
+  upgradesDisplay:
+    dropLaunch: 0
+    wallJump: 0
+    hellcopter: 0
+    ragingCharge: 0
+    glide: 0
+    doubleJump: 0
+    lasso: 0
+    d_invincibility: 0
+    d_moonJump: 0
 --- !u!114 &2714541672873312079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1261,14 +1260,14 @@ MonoBehaviour:
   - amount: 10
     velocity: {x: 0, y: 0, z: 10}
     tags:
-      intValue: 0
+      intValue: 131072
     oldTags:
     - name: Punch
     _displayName: 
   - amount: 15
     velocity: {x: 10, y: 15, z: 0}
     tags:
-      intValue: 0
+      intValue: 393220
     oldTags:
     - name: Punch
     - name: Uppercut
@@ -1277,7 +1276,7 @@ MonoBehaviour:
   - amount: 15
     velocity: {x: 0, y: -5, z: 15}
     tags:
-      intValue: 0
+      intValue: 1048580
     oldTags:
     - name: Headbutt
     - name: Wham
@@ -1285,14 +1284,14 @@ MonoBehaviour:
   - amount: 10
     velocity: {x: 0, y: 0, z: 10}
     tags:
-      intValue: 0
+      intValue: 524288
     oldTags:
     - name: Kick
     _displayName: 
   additionalTags_Old:
   - name: FromPlayer
   additionalTags:
-    intValue: 0
+    intValue: 1
   enabled: 1
 --- !u!1 &5911819457794312854
 GameObject:
@@ -2513,6 +2512,21 @@ PrefabInstance:
       propertyPath: sourceEntity
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 5292332295115122385, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: additionalTags.intValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292332295115122385, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: attacks.Array.data[0].tags.intValue
+      value: 131072
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292332295115122385, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: attacks.Array.data[1].tags.intValue
+      value: 393220
+      objectReference: {fileID: 0}
     - target: {fileID: 5421199382510708715, guid: 46647d2eef54bed49b2289debcc53dbb,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2612,6 +2626,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5698658679822280092, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 524293
       objectReference: {fileID: 0}
     - target: {fileID: 5700136695971771812, guid: 46647d2eef54bed49b2289debcc53dbb,
         type: 3}
@@ -2738,6 +2757,16 @@ PrefabInstance:
       propertyPath: sourceEntity
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 6300021525495177137, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: additionalTags.intValue
+      value: 1048581
+      objectReference: {fileID: 0}
+    - target: {fileID: 6300021525495177137, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: attacks.Array.data[0].tags.intValue
+      value: 1048576
+      objectReference: {fileID: 0}
     - target: {fileID: 6331361782292309409, guid: 46647d2eef54bed49b2289debcc53dbb,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2918,6 +2947,26 @@ PrefabInstance:
       propertyPath: sourceEntity
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 7640120600108155022, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: additionalTags.intValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7640120600108155022, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: attacks.Array.data[0].tags.intValue
+      value: 131072
+      objectReference: {fileID: 0}
+    - target: {fileID: 7640120600108155022, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: attacks.Array.data[1].tags.intValue
+      value: 393220
+      objectReference: {fileID: 0}
+    - target: {fileID: 7640120600108155022, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: attacks.Array.data[2].tags.intValue
+      value: 393220
+      objectReference: {fileID: 0}
     - target: {fileID: 7989980258059182158, guid: 46647d2eef54bed49b2289debcc53dbb,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4707,7 +4756,7 @@ MonoBehaviour:
     amount: 10
     velocity: {x: 0, y: 0, z: 1.5}
     tags:
-      intValue: 0
+      intValue: 2098181
     oldTags:
     - name: FromPlayer
     - name: Charge
@@ -6038,6 +6087,11 @@ PrefabInstance:
       propertyPath: sourceEntity
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 2909500379867055991, guid: 1f67d09c767892146a20aa418605b718,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 2097157
+      objectReference: {fileID: 0}
     - target: {fileID: 2948087638957705177, guid: 1f67d09c767892146a20aa418605b718,
         type: 3}
       propertyPath: <Machine>k__BackingField
@@ -6428,6 +6482,11 @@ PrefabInstance:
       propertyPath: sourceEntity
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 5936757187478350436, guid: 1f67d09c767892146a20aa418605b718,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 4194309
+      objectReference: {fileID: 0}
     - target: {fileID: 5946518165730303023, guid: 1f67d09c767892146a20aa418605b718,
         type: 3}
       propertyPath: signals.serializedList.Array.data[0].Value._PersistentCalls.Array.data[0]._Target
@@ -6478,6 +6537,11 @@ PrefabInstance:
       propertyPath: sourceEntity
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 6285745273891015681, guid: 1f67d09c767892146a20aa418605b718,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6450305307945234983, guid: 1f67d09c767892146a20aa418605b718,
         type: 3}
       propertyPath: animator
@@ -6883,6 +6947,11 @@ PrefabInstance:
       propertyPath: sourceEntity
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 8944842294468627015, guid: 1f67d09c767892146a20aa418605b718,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 2097157
+      objectReference: {fileID: 0}
     - target: {fileID: 8956007311103701706, guid: 1f67d09c767892146a20aa418605b718,
         type: 3}
       propertyPath: <Machine>k__BackingField

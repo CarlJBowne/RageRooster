@@ -394,11 +394,11 @@ MonoBehaviour:
   <Gliding>k__BackingField: {fileID: 1150588390469737330}
   <VentGliding>k__BackingField: {fileID: 2095790091468025607}
   <WallJump>k__BackingField: {fileID: 750694679335013753}
+  <DropLaunch>k__BackingField: {fileID: 0}
   <GroundParry>k__BackingField: {fileID: 4517767350401232540}
   <AirParry>k__BackingField: {fileID: 1419214192395305568}
   <GrabbedMovement>k__BackingField: {fileID: 4641746869726642701}
   <Aiming>k__BackingField: {fileID: 5660112243806928363}
-  <Animations>k__BackingField: {fileID: 8942686959975924183}
   <Paused>k__BackingField: {fileID: 5357812896936097306}
   <Ragdoll>k__BackingField: {fileID: 2580061565448867863}
   audio: {fileID: 6199145597115895703}
@@ -416,7 +416,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8e318945a4f6224dad4dd3c599394f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 8455434200384702600}
   globalSignals:
     serializedList: []
@@ -433,7 +432,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e71debd7e0bdab47aab8c5fb57ecb48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Timelines.StateTimelineManager
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 8455434200384702600}
   timelineSpace: 1
 --- !u!114 &3941225653291784218
@@ -581,8 +579,10 @@ MonoBehaviour:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
-  immuneTags:
+  immuneTags_Old:
   - name: FromPlayer
+  immuneTags:
+    intValue: 1
   health: 0
   invincibilityTime: 3
   damageState: {fileID: 8568736502713642114}
@@ -602,7 +602,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 412fc1213c3f21a46932934c7ad746cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 8455434200384702600}
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
@@ -612,7 +611,16 @@ MonoBehaviour:
   overrideMovementVector: {x: 0, y: 0}
   jumpInput: 0
   camAdjustedMovement: {x: 0, y: 0, z: 0}
-  grabber: {fileID: 2714541672873312079}
+  upgradesDisplay:
+    dropLaunch: 0
+    wallJump: 0
+    hellcopter: 0
+    ragingCharge: 0
+    glide: 0
+    doubleJump: 0
+    lasso: 0
+    d_invincibility: 0
+    d_moonJump: 0
 --- !u!114 &2714541672873312079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -747,7 +755,6 @@ MonoBehaviour:
   GrabStateEvent:
     _PersistentCalls: []
   heldItemAnchor: {fileID: 3536800914225926894}
-  dropLaunchState: {fileID: 4770298227795515962}
   turnToGrabRate: 1
 --- !u!114 &1383563739033628448
 MonoBehaviour:
@@ -761,7 +768,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30cd8ac4b5fa21944a87c0df0eaf78a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLedgeGrab
-  <Machine>k__BackingField: {fileID: 8455434200384702600}
   <State>k__BackingField: {fileID: 8455434200384702600}
   Machine: {fileID: 8455434200384702600}
   playerMovementBody: {fileID: 3941225653291784218}
@@ -1403,16 +1409,66 @@ PrefabInstance:
       propertyPath: sourceEntity
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 5292332295115122385, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: additionalTags.intValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292332295115122385, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: attacks.Array.data[0].tags.intValue
+      value: 131072
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292332295115122385, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: attacks.Array.data[1].tags.intValue
+      value: 393220
+      objectReference: {fileID: 0}
+    - target: {fileID: 5698658679822280092, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 524293
+      objectReference: {fileID: 0}
     - target: {fileID: 6300021525495177137, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: sourceEntity
+      value: 
+      objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 6300021525495177137, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: additionalTags.intValue
+      value: 1048581
+      objectReference: {fileID: 0}
+    - target: {fileID: 6300021525495177137, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: attacks.Array.data[0].tags.intValue
+      value: 1048576
+      objectReference: {fileID: 0}
+    - target: {fileID: 7640120600108155022, guid: 46647d2eef54bed49b2289debcc53dbb,
         type: 3}
       propertyPath: sourceEntity
       value: 
       objectReference: {fileID: 8455434200384702600}
     - target: {fileID: 7640120600108155022, guid: 46647d2eef54bed49b2289debcc53dbb,
         type: 3}
-      propertyPath: sourceEntity
-      value: 
-      objectReference: {fileID: 8455434200384702600}
+      propertyPath: additionalTags.intValue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7640120600108155022, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: attacks.Array.data[0].tags.intValue
+      value: 131072
+      objectReference: {fileID: 0}
+    - target: {fileID: 7640120600108155022, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: attacks.Array.data[1].tags.intValue
+      value: 393220
+      objectReference: {fileID: 0}
+    - target: {fileID: 7640120600108155022, guid: 46647d2eef54bed49b2289debcc53dbb,
+        type: 3}
+      propertyPath: attacks.Array.data[2].tags.intValue
+      value: 393220
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2485,10 +2541,13 @@ MonoBehaviour:
     amount: 10
     velocity: {x: 0, y: 0, z: 1.5}
     tags:
+      intValue: 2098181
+    oldTags:
     - name: FromPlayer
     - name: Charge
     - name: Wham
     - name: RagingCharge
+    _displayName: 
   sourceEntity: {fileID: 8455434200384702600}
 --- !u!1001 &1520963399024276478
 PrefabInstance:
@@ -4359,6 +4418,11 @@ PrefabInstance:
       propertyPath: sourceEntity
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 1673005593956621418, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 2097157
+      objectReference: {fileID: 0}
     - target: {fileID: 1722708810175075198, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: Machine
@@ -5519,6 +5583,11 @@ PrefabInstance:
       propertyPath: <Machine>k__BackingField
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 4140596003714841673, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 4194309
+      objectReference: {fileID: 0}
     - target: {fileID: 4220926048405533345, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: <Machine>k__BackingField
@@ -5609,6 +5678,11 @@ PrefabInstance:
       propertyPath: sourceEntity
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 4336604772639087148, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4435354490910741165, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: timeline
@@ -5839,6 +5913,11 @@ PrefabInstance:
       propertyPath: sourceEntity
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 4860892784197947738, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 2097157
+      objectReference: {fileID: 0}
     - target: {fileID: 4867543984225321540, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: timeline
@@ -6489,6 +6568,11 @@ PrefabInstance:
       propertyPath: sourceEntity
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 6486627945323898980, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 4194309
+      objectReference: {fileID: 0}
     - target: {fileID: 6508758766100839708, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: Machine
@@ -6574,6 +6658,11 @@ PrefabInstance:
       propertyPath: <Machine>k__BackingField
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 6635479858347942885, guid: 10f8c208526e83a41baa81d4b8ab10ac,
+        type: 3}
+      propertyPath: attack.tags.intValue
+      value: 4194309
+      objectReference: {fileID: 0}
     - target: {fileID: 6636750832981773930, guid: 10f8c208526e83a41baa81d4b8ab10ac,
         type: 3}
       propertyPath: <Machine>k__BackingField
@@ -7831,18 +7920,6 @@ MonoBehaviour:
 --- !u!114 &4641746869726642701 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1258131753461376526, guid: 10f8c208526e83a41baa81d4b8ab10ac,
-    type: 3}
-  m_PrefabInstance: {fileID: 5845395268100613123}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4770298227795515962 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1381625353676504633, guid: 10f8c208526e83a41baa81d4b8ab10ac,
     type: 3}
   m_PrefabInstance: {fileID: 5845395268100613123}
   m_PrefabAsset: {fileID: 0}

@@ -5142,7 +5142,9 @@ MonoBehaviour:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
-  immuneTags: []
+  immuneTags_Old: []
+  immuneTags:
+    intValue: 0
   health: 0
   stunTime: 0.2
   poofPrefab: {fileID: 0}
@@ -5215,11 +5217,11 @@ MonoBehaviour:
     - rid: 440872388981686359
       type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
       data:
-        This: {fileID: 2371090980624060258}
+        Target: {fileID: 0}
     - rid: 440872388981686360
       type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
       data:
-        This: {fileID: 2371090980624060258}
+        Target: {fileID: 0}
 --- !u!114 &226772296267759708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5234,6 +5236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
   grabbablePublic: 1
   grabHealthMax: 15
+  grabRadius: 0.5
   wiggleFreeTime: 0
   anchorPoint: {fileID: 5012654195610859544}
   AdditionalThrowDistance: 0
@@ -5306,9 +5309,12 @@ MonoBehaviour:
     amount: 10
     velocity: {x: 0, y: 0, z: 0}
     tags:
+      intValue: 17
+    oldTags:
     - name: Thrown
     - name: ThrownEnemy
     - name: FromPlayer
+    _displayName: 
   sourceEntity: {fileID: 0}
   onContactEvent:
     _PersistentCalls: []
