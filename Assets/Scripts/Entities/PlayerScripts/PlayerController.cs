@@ -21,17 +21,14 @@ public class PlayerController : PlayerStateBehavior
 
     [HideProperty] public float jumpInput;
     [HideProperty] public Vector3 camAdjustedMovement;
-    [HideProperty] public PlayerRanged grabber;
+    [SerializeField] Upgrades upgradesDisplay;
 
     #endregion
     #region Getters
 
     #endregion
 
-    protected override void OnAwake()
-    {
-        if (!grabber) grabber = GetComponentFromMachine<PlayerRanged>();
-    }
+    protected override void OnAwake() => upgradesDisplay = Upgrades.Active;
 
     private void OnEnable()
     {

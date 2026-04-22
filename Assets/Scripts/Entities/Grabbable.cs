@@ -35,6 +35,7 @@ public class Grabbable : MonoBehaviour
 
     public bool grabbablePublic = true;
     public int grabHealthMax;
+    public float grabRadius = .5f;
     public float wiggleFreeTime;
     public Transform anchorPoint;
     public float AdditionalThrowDistance;

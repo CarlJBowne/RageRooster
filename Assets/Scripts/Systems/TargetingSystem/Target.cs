@@ -40,8 +40,18 @@ public class Target : MonoBehaviour
     public float GetDistance(TargetingRange range) => Vector3.Distance(range.front.position, position);
     public float GetAngle(TargetingRange range) => Vector3.Angle(range.front.forward, position - range.front.position);
 
-    private void OnEnable() { for (int i = 0; i < Types.Count; i++) if (Types[i] != null) Types[i].Enabled = true; }
-    private void OnDisable() { for (int i = 0; i < Types.Count; i++) if (Types[i] != null) Types[i].Enabled = false; }
+    private void OnEnable() 
+    { 
+        for (int i = 0; i < Types.Count; i++) 
+            if (Types[i] != null) 
+                Types[i].Enabled = true; 
+    }
+    private void OnDisable() 
+    { 
+        for (int i = 0; i < Types.Count; i++) 
+            if (Types[i] != null) 
+                Types[i].Enabled = false; 
+    }
 
     public virtual Vector3 PredictFuturePosition(Vector3 projectileInitPos, float projectileSpeed)
     {

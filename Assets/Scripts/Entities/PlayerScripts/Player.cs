@@ -242,8 +242,6 @@ public class Player : MonoBehaviour
     /// </summary>
     public static Action onRespawn;
 
-    [SerializeField] Upgrades CurrentActiveUpgrades;
-
     /// <summary>
     /// Awake stage of the <see cref="Player"/>, saving the static references and other setup.
     /// </summary>
@@ -266,12 +264,11 @@ public class Player : MonoBehaviour
         Health.Initialize();
         Ammo.Initialize();
         Currency.Initialize();
-        CurrentActiveUpgrades = Upgrades.Active;
 
         _activeState = ActivityStates.Active;
 
 #if UNITY_EDITOR
-        Input.Debug.GodMode.performed += (_) => { Upgrades.Clone(Upgrades.Debug(), Upgrades.Active); };
+        Input.Debug.GodMode.performed += (_) => { Upgrades.ActivateDebug(); };
 #endif
         fallDownPitTime = Health.playerObject.inFallDownPitTime;
         deathTime = Health.playerObject.inDeathTime;

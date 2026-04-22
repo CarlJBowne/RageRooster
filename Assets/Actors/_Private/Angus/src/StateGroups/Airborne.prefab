@@ -1649,8 +1649,11 @@ MonoBehaviour:
     amount: 10
     velocity: {x: 0, y: 15, z: 0}
     tags:
+      intValue: 0
+    oldTags:
     - name: FromPlayer
     - name: Wham
+    _displayName: 
   sourceEntity: {fileID: 0}
 --- !u!114 &5374830324173488577
 MonoBehaviour:
@@ -1878,9 +1881,12 @@ MonoBehaviour:
     amount: 10
     velocity: {x: 0, y: 0, z: 15}
     tags:
+      intValue: 0
+    oldTags:
     - name: FromPlayer
     - name: Charge
     - name: Wham
+    _displayName: 
   sourceEntity: {fileID: 0}
 --- !u!114 &4858474362670200390
 MonoBehaviour:
@@ -2192,9 +2198,12 @@ MonoBehaviour:
     amount: 10
     velocity: {x: 0, y: 0, z: 15}
     tags:
+      intValue: 0
+    oldTags:
     - name: FromPlayer
     - name: Charge
     - name: Wham
+    _displayName: 
   sourceEntity: {fileID: 0}
 --- !u!114 &5815639621226970365
 MonoBehaviour:
@@ -2389,6 +2398,11 @@ PrefabInstance:
       propertyPath: fallState
       value: 
       objectReference: {fileID: 1795561309536884184}
+    - target: {fileID: 7527315008399973723, guid: 8277e19a7a2db4b46839df848adbc826,
+        type: 3}
+      propertyPath: verticalThreshold
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8110135924380990025, guid: 8277e19a7a2db4b46839df848adbc826,
         type: 3}
       propertyPath: m_LocalPosition.x

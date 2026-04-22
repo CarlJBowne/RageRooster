@@ -37,18 +37,18 @@ namespace RageRooster.Systems.SaveSystem
         public static Upgrades Default => SavedValueRegistry.Upgrades.Clone();
 
         /// <returns>A new instance of <see cref="Upgrades"/> with all upgrades active, including debug-privilege upgrades</returns>
-        public static Upgrades Debug() => new()
+        public static void ActivateDebug()
         {
-            dropLaunch = true,
-            wallJump = true,
-            hellcopter = true,
-            ragingCharge = true,
-            glide = true,
-            doubleJump = true,
-            lasso = true,
-            d_invincibility = true,
-            d_moonJump = true
-        };
+            Active.dropLaunch = true;
+            Active.wallJump = true;
+            Active.hellcopter = true;
+            Active.ragingCharge = true;
+            Active.glide = true;
+            Active.doubleJump = true;
+            Active.lasso = true;
+            Active.d_invincibility = true;
+            Active.d_moonJump = true;
+        }
 
         public static void Clone(Upgrades source, Upgrades target)=> source.Clone(target);
         public Upgrades Clone(Upgrades target = null)

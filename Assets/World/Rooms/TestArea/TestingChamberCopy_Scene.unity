@@ -1445,7 +1445,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 53786
+    surfaceParameter: 53802
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
@@ -2755,7 +2755,9 @@ MonoBehaviour:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
-  immuneTags: []
+  immuneTags_Old: []
+  immuneTags:
+    intValue: 0
   health: 0
 --- !u!1001 &231645634
 PrefabInstance:
@@ -2916,21 +2918,32 @@ MonoBehaviour:
   - amount: 10
     velocity: {x: -10, y: 0, z: 0}
     tags:
+      intValue: 0
+    oldTags:
     - name: Punch
+    _displayName: 
   - amount: 15
     velocity: {x: 0, y: 15, z: 0}
     tags:
+      intValue: 0
+    oldTags:
     - name: Punch
     - name: Uppercut
     - name: Wham
+    _displayName: 
   - amount: 15
     velocity: {x: -15, y: 0, z: 0}
     tags:
+      intValue: 0
+    oldTags:
     - name: Punch
     - name: Uppercut
     - name: Wham
-  additionalTags:
+    _displayName: 
+  additionalTags_Old:
   - name: FromPlayer
+  additionalTags:
+    intValue: 0
   enabled: 1
 --- !u!136 &247418544
 CapsuleCollider:
@@ -3391,6 +3404,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
   grabbablePublic: 1
   grabHealthMax: 0
+  grabRadius: 0.5
   wiggleFreeTime: 0
   anchorPoint: {fileID: 0}
   AdditionalThrowDistance: 0
@@ -3429,11 +3443,11 @@ MonoBehaviour:
     - rid: 440872388981686363
       type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
       data:
-        Target: {fileID: 0}
+        Target: {fileID: 280758282}
     - rid: 440872388981686364
       type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
       data:
-        Target: {fileID: 0}
+        Target: {fileID: 280758282}
 --- !u!1 &284672209
 GameObject:
   m_ObjectHideFlags: 0
@@ -4327,11 +4341,16 @@ MonoBehaviour:
   - amount: 15
     velocity: {x: -5, y: 20, z: 0}
     tags:
+      intValue: 0
+    oldTags:
     - name: Headbutt
-  additionalTags:
+    _displayName: 
+  additionalTags_Old:
   - name: FromPlayer
   - name: Wham
   - name: Headbutt
+  additionalTags:
+    intValue: 0
   enabled: 1
 --- !u!54 &346384042
 Rigidbody:
@@ -5851,7 +5870,7 @@ MonoBehaviour:
   <RootGameObjects>k__BackingField:
   - {fileID: 615939426}
   - {fileID: 1112968315}
-  - {fileID: 1138056020}
+  - {fileID: 1818353720}
   <RoomActors>k__BackingField:
     list:
     - {fileID: 128197235}
@@ -6977,7 +6996,7 @@ Transform:
   m_GameObject: {fileID: 779113065}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 27.98, y: 3.533, z: -23.24}
+  m_LocalPosition: {x: 27.98, y: 7.048, z: -23.24}
   m_LocalScale: {x: 1.2477169, y: 1.2477169, z: 1.2477169}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -6997,6 +7016,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
   grabbablePublic: 1
   grabHealthMax: 0
+  grabRadius: 0.6238585
   wiggleFreeTime: 0
   anchorPoint: {fileID: 0}
   AdditionalThrowDistance: 0
@@ -7035,11 +7055,11 @@ MonoBehaviour:
     - rid: 440872388981686365
       type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
       data:
-        Target: {fileID: 0}
+        Target: {fileID: 779113068}
     - rid: 440872388981686366
       type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
       data:
-        Target: {fileID: 0}
+        Target: {fileID: 779113068}
 --- !u!54 &779113069
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7487,8 +7507,13 @@ MonoBehaviour:
   - amount: 1
     velocity: {x: 0, y: 0, z: 0}
     tags:
+      intValue: 0
+    oldTags:
     - name: Pit
-  additionalTags: []
+    _displayName: 
+  additionalTags_Old: []
+  additionalTags:
+    intValue: 0
   enabled: 1
 --- !u!1 &837764984
 GameObject:
@@ -8441,7 +8466,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 54428
+    surfaceParameter: 54446
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
@@ -8637,6 +8662,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
   grabbablePublic: 1
   grabHealthMax: 0
+  grabRadius: 1
   wiggleFreeTime: 0
   anchorPoint: {fileID: 0}
   AdditionalThrowDistance: 0
@@ -9811,7 +9837,9 @@ MonoBehaviour:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
-  immuneTags: []
+  immuneTags_Old: []
+  immuneTags:
+    intValue: 0
   health: 0
 --- !u!1 &1086525401
 GameObject:
@@ -9997,15 +10025,23 @@ MonoBehaviour:
   - amount: 10
     velocity: {x: 10, y: 0, z: 0}
     tags:
+      intValue: 0
+    oldTags:
     - name: Punch
+    _displayName: 
   - amount: 15
     velocity: {x: 25, y: 0, z: 0}
     tags:
+      intValue: 0
+    oldTags:
     - name: Punch
     - name: Uppercut
     - name: Wham
-  additionalTags:
+    _displayName: 
+  additionalTags_Old:
   - name: FromPlayer
+  additionalTags:
+    intValue: 0
   enabled: 1
 --- !u!136 &1093453242
 CapsuleCollider:
@@ -10506,74 +10542,6 @@ Transform:
   - {fileID: 1159203450}
   m_Father: {fileID: 1110479482}
   m_LocalEulerAnglesHint: {x: -0.7370852, y: 0, z: 0}
---- !u!1 &1138056020
-GameObject:
-  m_ObjectHideFlags: 17
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1138056022}
-  - component: {fileID: 1138056021}
-  m_Layer: 0
-  m_Name: '[default-CSGModel]'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 124
-  m_IsActive: 1
---- !u!114 &1138056021
-MonoBehaviour:
-  m_ObjectHideFlags: 17
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1138056020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8672dcc90e16b0a489a41edf56e016f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp-firstpass::RealtimeCSG.Components.CSGModel
-  PrefabBehaviour: 0
-  PrefabSourceAlignment: 4
-  PrefabDestinationAlignment: 0
-  Version: 1.1
-  infiniteBrush: {fileID: 0}
-  Settings: 1025
-  VertexChannels: 14
-  ReceiveGI: 2
-  MeshColliderCookingOptions: 14
-  ShowGeneratedMeshes: 0
-  DefaultPhysicsMaterial: {fileID: 13400000, guid: 0c5fdfb44d6f19646a41a0720fbf751a,
-    type: 2}
-  exportType: 0
-  originType: 0
-  exportColliders: 0
-  exportPath: 
-  angleError: 1
-  areaError: 1
-  hardAngle: 60
-  packMargin: 20
-  scaleInLightmap: 1
-  autoUVMaxDistance: 0.5
-  autoUVMaxAngle: 89
-  minimumChartSize: 4
---- !u!4 &1138056022
-Transform:
-  m_ObjectHideFlags: 17
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1138056020}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1148487790
 GameObject:
   m_ObjectHideFlags: 0
@@ -12190,7 +12158,9 @@ MonoBehaviour:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
-  immuneTags: []
+  immuneTags_Old: []
+  immuneTags:
+    intValue: 0
   health: 0
   requiredTag: Explosion
   basicDelete: 1
@@ -13175,9 +13145,12 @@ MonoBehaviour:
     amount: 15
     velocity: {x: 0, y: 16, z: 16}
     tags:
+      intValue: 0
+    oldTags:
     - name: FromPlayer
     - name: Kick
     - name: Wham
+    _displayName: 
   sourceEntity: {fileID: 0}
 --- !u!54 &1356522311
 Rigidbody:
@@ -16892,6 +16865,74 @@ MonoBehaviour:
     - EdgeIndices: 07000000060000000500000004000000
       TexGenIndex: 5
     Generation: 2
+--- !u!1 &1818353720
+GameObject:
+  m_ObjectHideFlags: 17
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1818353722}
+  - component: {fileID: 1818353721}
+  m_Layer: 0
+  m_Name: '[default-CSGModel]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 124
+  m_IsActive: 1
+--- !u!114 &1818353721
+MonoBehaviour:
+  m_ObjectHideFlags: 17
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818353720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8672dcc90e16b0a489a41edf56e016f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp-firstpass::RealtimeCSG.Components.CSGModel
+  PrefabBehaviour: 0
+  PrefabSourceAlignment: 4
+  PrefabDestinationAlignment: 0
+  Version: 1.1
+  infiniteBrush: {fileID: 0}
+  Settings: 1025
+  VertexChannels: 14
+  ReceiveGI: 2
+  MeshColliderCookingOptions: 14
+  ShowGeneratedMeshes: 0
+  DefaultPhysicsMaterial: {fileID: 13400000, guid: 0c5fdfb44d6f19646a41a0720fbf751a,
+    type: 2}
+  exportType: 0
+  originType: 0
+  exportColliders: 0
+  exportPath: 
+  angleError: 1
+  areaError: 1
+  hardAngle: 60
+  packMargin: 20
+  scaleInLightmap: 1
+  autoUVMaxDistance: 0.5
+  autoUVMaxAngle: 89
+  minimumChartSize: 4
+--- !u!4 &1818353722
+Transform:
+  m_ObjectHideFlags: 17
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1818353720}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1820741867
 GameObject:
   m_ObjectHideFlags: 0
@@ -17290,7 +17331,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 54428
+    surfaceParameter: 54446
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
@@ -17674,7 +17715,9 @@ MonoBehaviour:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
-  immuneTags: []
+  immuneTags_Old: []
+  immuneTags:
+    intValue: 0
   health: 0
 --- !u!135 &1891244945
 SphereCollider:
@@ -18060,6 +18103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Grabbable
   grabbablePublic: 1
   grabHealthMax: 0
+  grabRadius: 1
   wiggleFreeTime: 0
   anchorPoint: {fileID: 0}
   AdditionalThrowDistance: 0
@@ -18148,11 +18192,11 @@ MonoBehaviour:
     - rid: 440872388981686367
       type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
       data:
-        Target: {fileID: 0}
+        Target: {fileID: 1911888899}
     - rid: 440872388981686368
       type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
       data:
-        Target: {fileID: 0}
+        Target: {fileID: 1911888899}
 --- !u!1 &1915707821
 GameObject:
   m_ObjectHideFlags: 0
@@ -20369,4 +20413,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 615939428}
   - {fileID: 1112968318}
-  - {fileID: 1138056022}
+  - {fileID: 1818353722}

@@ -15,7 +15,7 @@ public class PlayerGrabAction : PlayerStateBehavior
     public AnimationCurve forwardSpeedInfluenceCurve;
     public AnimationCurve turningSpeedCurve;
     public AnimationCurve verticalShiftCurve;
-    public float horizontalThreshold;
+    public float horizontalThresholdAdjustment = 0.05f;
     public float verticalThreshold;
     public float directionalThreshold;
     public float maxAttemptTime = 9;
@@ -30,18 +30,22 @@ public class PlayerGrabAction : PlayerStateBehavior
     public UltEvent finalSuccessReturn;
 
     float elapsedTime = 0;
-    bool secondPhase = false;
+    int phase = 0;
+    //0 = Inactive
+    //1 = Pursuing Phase
+    //2 = Grabbing Animation
+    float horizontalThreshold;
     Target selectedTarget;
     Grabbable selectedGrabbable;
     Vector3 storedTargetPosition;
-    Vector3 playerPhaseTwoStatePosition;
+    Vector3 playerPhaseTwoStartPosition;
 
     protected override void OnAwake() => grabAnimationTime = 1 / grabAnimationTime;
 
     public void BeginGrabAttempt()
     {
         elapsedTime = 0f;
-        secondPhase = false;
+        phase = 0;
         selectedTarget = TargetingManager.MeleeChannel.CurrentTarget;
         if (selectedTarget == null)
         {
@@ -60,12 +64,14 @@ public class PlayerGrabAction : PlayerStateBehavior
         selectedGrabbable = grabbable;
 
         State.Enter();
+        phase = 1;
+        horizontalThreshold = selectedGrabbable.grabRadius + Player.Collider.radius + horizontalThresholdAdjustment;
         //initialAnimation.Do(Player.Animator);
     }
 
     protected override void OnFixedUpdate()
     {
-        if (!secondPhase)
+        if (phase == 1)
         {
             elapsedTime += Time.fixedDeltaTime;
 
@@ -80,7 +86,7 @@ public class PlayerGrabAction : PlayerStateBehavior
             SampleCurve(turningSpeedCurve, out float turningSpeed);
             SampleCurve(verticalShiftCurve, out float verticalShift);
 
-            if (turningSpeed > 0) Player.MovementBody.DirectionSet((storedTargetPosition - Player.Center).XZ(), turningSpeed * Time.fixedDeltaTime);
+            if (turningSpeed > 0) Player.MovementBody.DirectionSet((storedTargetPosition - Player.Center).XZ(), turningSpeed);
 
             Vector3 targetVelocity = Player.MovementBody.velocity;
             float targetForwardSpeed = Player.MovementBody.CurrentSpeed;
@@ -91,12 +97,23 @@ public class PlayerGrabAction : PlayerStateBehavior
                     : 0;
 
             Player.MovementBody.CurrentSpeed = targetForwardSpeed;
-            targetVelocity.x = Player.Forward.x * targetForwardSpeed * Time.fixedDeltaTime;
-            targetVelocity.z = Player.Forward.z * targetForwardSpeed * Time.fixedDeltaTime;
+            targetVelocity.x = Player.Forward.x * targetForwardSpeed;
+            targetVelocity.z = Player.Forward.z * targetForwardSpeed;
 
-            targetVelocity.y = verticalShift > 0f && verticalDistance > 0 ? verticalShift : Player.MovementBody.velocity.y;
+            //Simpsons Comic Book Guy voice: "This is a big fat steaming Hack, but I'm strapped for time and don't want to deal with deltaTime nonsense."
 
-            Player.MovementBody.VelocitySet(targetVelocity.x, targetVelocity.y, targetVelocity.z);
+            if (verticalShift > 0f && verticalDistance > 0)
+            {
+                //targetVelocity.y used as holder for Position calculations
+                targetVelocity.y = Player.Transform.position.y;
+                targetVelocity.y = targetVelocity.y.MoveTowards(verticalShift * Time.fixedDeltaTime, storedTargetPosition.y - Player.Collider.center.y);
+                Player.MovementBody.Position = new(Player.Position.x, targetVelocity.y, Player.Position.z);
+                targetVelocity.y = 0;
+            }
+
+
+
+            Player.MovementBody.velocity = new(targetVelocity.x, targetVelocity.y, targetVelocity.z);
 
 
             if (elapsedTime > maxAttemptTime || (horizontalDistance <= horizontalThreshold && angleDifference <= directionalThreshold && (verticalDistance <= verticalThreshold || verticalShift == 0))) //CHANGE PHASE
@@ -116,21 +133,21 @@ public class PlayerGrabAction : PlayerStateBehavior
                 }
 
                 storedTargetPosition = selectedTarget.position + (Player.Position - Player.Center);
-                playerPhaseTwoStatePosition = Player.Position;
+                playerPhaseTwoStartPosition = Player.Position;
                 elapsedTime = 0;
                 Player.Grabber.Grab(selectedGrabbable);
-                secondPhase = true;
+                phase = 2;
                 successState.Enter();
                 //grabAnimation.Do(Player.Animator);
             }
         }
-        else
+        else if (phase == 2)
         {
             elapsedTime += Time.fixedDeltaTime * grabAnimationTime;
 
             if (moveToTargetPosition)
             {
-                Vector3 newPosition = Vector3.Lerp(playerPhaseTwoStatePosition, storedTargetPosition, elapsedTime);
+                Vector3 newPosition = Vector3.Lerp(playerPhaseTwoStartPosition, storedTargetPosition, elapsedTime);
                 Player.MovementBody.Position = newPosition;
             }
 
@@ -149,7 +166,19 @@ public class PlayerGrabAction : PlayerStateBehavior
     {
         selectedTarget = null;
         selectedGrabbable = null;
-        secondPhase = false;
+        phase = 0;
     }
     private void SampleCurve(AnimationCurve C, out float res) => res = C.Evaluate(elapsedTime);
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        if (phase == 1)
+        {
+            Gizmos.DrawSphere(storedTargetPosition, .02f);
+            UnityEditor.Handles.DrawWireDisc(storedTargetPosition + (Vector3.up * verticalThreshold), Vector3.up, horizontalThreshold);
+            UnityEditor.Handles.DrawWireDisc(storedTargetPosition - (Vector3.up * verticalThreshold), Vector3.up, horizontalThreshold);
+        }
+    }
+#endif
 }
