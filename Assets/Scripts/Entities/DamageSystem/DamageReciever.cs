@@ -18,7 +18,7 @@ public class DamageReciever : MonoBehaviour, IDamagable
     {
         if (!enabled) return false;
 
-        attack.tags.Add(appendedTags);
+        attack.tags += appendedTags;
 
         return target.I.Damage(attack);
     }
