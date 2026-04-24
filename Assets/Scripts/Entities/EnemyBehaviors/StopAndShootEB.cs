@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+[System.Obsolete]
 public class StopAndShootEB : StateBehavior
 {
     public ObjectPool_OBSOLETE bulletPool = new();

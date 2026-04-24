@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Obsolete]
 public class ShooterEB : StateBehavior
 {
     public ObjectPool_OBSOLETE bulletPool;

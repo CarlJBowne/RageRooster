@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 
+[System.Obsolete]
 public class ChaseEB : StateBehavior
 {
     [SerializeField] float speed;

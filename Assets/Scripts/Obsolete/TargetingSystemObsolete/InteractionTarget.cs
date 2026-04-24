@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UltEvents;
 using UnityEngine;
 
+[System.Obsolete]
 public class InteractionTarget : TargetOldBase
 {
     public UltEvent OnInteract;
