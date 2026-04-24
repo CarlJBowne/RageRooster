@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
+[System.Obsolete]
 public class WanderEB : StateBehavior
 {
     [SerializeField] float speed;
