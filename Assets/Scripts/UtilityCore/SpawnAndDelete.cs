@@ -11,11 +11,11 @@ public class SpawnAndDelete : MonoBehaviour
 {
     // Object that will be spawned.
     public GameObject prefab;
-    public EnemyHealth health;
+    //public GameObject alsoDestroy;
 
     private void Awake()
     {
-        if (health == null) TryGetComponent(out health);
+        //if (health == null) TryGetComponent(out health);
     }
 
     // First, instantiate the object to be spawned the the position of the original object.
@@ -23,8 +23,9 @@ public class SpawnAndDelete : MonoBehaviour
     public void PerformSpawnAndDelete()
     {
         Instantiate(prefab, this.transform.position, Quaternion.identity);
-        if (health) health.Destroy();
-        else Destroy(gameObject);
+        //if (health) health.Destroy();
+        //else 
+            Destroy(gameObject);
         //this.transform.gameObject.SetActive(false);
     }
 }

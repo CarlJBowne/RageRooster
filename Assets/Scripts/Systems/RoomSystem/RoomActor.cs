@@ -17,7 +17,7 @@ namespace RageRooster.RoomSystem
         {
 #if UNITY_EDITOR
             this.GetExecutionDetails(out bool gameIsEditor, out bool gameIsPlaying, out bool objectSceneIsLoaded);
-            if (gameIsEditor && !objectSceneIsLoaded && !gameIsPlaying) IRoomActor.DeregisterWithRoot(this);
+            if (gameIsEditor && objectSceneIsLoaded && !gameIsPlaying) IRoomActor.DeregisterWithRoot(this);
 #endif
 
         }

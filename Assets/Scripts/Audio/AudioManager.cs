@@ -6,11 +6,19 @@ using FMOD.Studio;
 using UnityEngine.SceneManagement;
 using Utilities.Singletons;
 
-public class AudioManager : Singleton.MonoBehaviour<AudioManager>
+public class AudioManager : MonoBehaviour
 {
+    static Singleton<AudioManager> S = new(() =>
+    {
+        GameObject GO = new("--Audio-Manager--");
+        AudioManager result = GO.AddComponent<AudioManager>();
+        result.Awake();
+        return result;
+    });
 
-    // Set up the AudioManager with specific settings
-    //static void Data() => SetData(spawnMethod: InitSavedPrefab, dontDestroyOnLoad: true, spawnOnBoot: true);
+    public static AudioManager Get => S.Get;
+    public static bool TryGet(out AudioManager res) => S.TryGet(out res);
+    public static bool Active => S.Active;
 
     // Properties to set the volume for different audio buses
     public float masterVolume { set => masterBus.setVolume(value); }
@@ -22,15 +30,16 @@ public class AudioManager : Singleton.MonoBehaviour<AudioManager>
     private Bus musicBus;
     private Bus sfxBus;
     private Bus ambienceBus;
-
+    
     private List<EventInstance> eventInstances;
     private List<StudioEventEmitter> eventEmitters;
     private EventInstance ambienceEventInstance;
     public EventInstance musicEventInstance;
 
     // Called when the script instance is being loaded
-    protected override void OnInit() 
+    protected void Awake()
     {
+        S.Register(this);
         DontDestroyOnLoad(gameObject);
 
         eventInstances = new List<EventInstance>();
@@ -117,12 +126,13 @@ public class AudioManager : Singleton.MonoBehaviour<AudioManager>
     }
 
     // Called when the AudioManager is destroyed
-    protected override void OnDeInit()
+    protected void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
         musicEventInstance.setPaused(true);
         CleanUp();
+        S.Deregister(this);
     }
 
     // Called when a new scene is loaded
@@ -160,7 +170,7 @@ public class AudioManager : Singleton.MonoBehaviour<AudioManager>
         {
             case "MainMenu": musicEvent = FMODEvents.Get.titleScreenMusic; break;
             case "Forest": musicEvent = FMODEvents.Get.ireGorgeMusic; break;
-            case "FarmHouse": musicEvent = FMODEvents.Get.rockyFurrowsHubMusic;  break;
+            case "FarmHouse": musicEvent = FMODEvents.Get.rockyFurrowsHubMusic; break;
             default:
                 return;
         }

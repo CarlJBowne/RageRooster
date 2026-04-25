@@ -123,7 +123,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
     /// </summary>
     void OnDisable() => BodyState = BodyStates.OFF;
 
-    void OnDestroy() => Singleton.Unregister(ref instance, this);
+    void OnDestroy() => Singleton.Deregister(ref instance, this);
 
     #region Singleton Stuff
     static PlayerMovementBody instance;

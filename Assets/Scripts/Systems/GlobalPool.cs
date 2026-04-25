@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using Utilities.Singletons;
 
-namespace RageRooster.Systems.ObjectPooling
+namespace Utilities.ObjectPooling
 {
     /// <summary>
     /// A global pool for pooled objects shared between multiple entities. Use a <see cref="GlobalPool.Client"/> to interface with this.
@@ -30,7 +30,8 @@ namespace RageRooster.Systems.ObjectPooling
 
         public void Initialize()
         {
-            if (initialized && !Active) return;
+            if (initialized && Active) return;
+            if (!Application.isPlaying) return;
 
             InitPoolGlobally(basicEnemyBullet);
             BasicEnemyBullet = basicEnemyBullet;
@@ -39,6 +40,8 @@ namespace RageRooster.Systems.ObjectPooling
 
             Gameplay.onUpdate += Update;
             Gameplay.onDestroy += OnDeInit;
+
+            ObjectPool.DefaultPoolParent = poolParent;
 
             initialized = true;
         }
@@ -191,7 +194,7 @@ namespace RageRooster.Systems.ObjectPooling
                     // Prefab field
                     if (prefabProp != null)
                     {
-                        PropertyField prefabField = new (prefabProp)
+                        PropertyField prefabField = new(prefabProp)
                         {
                             label = "Prefab",
                             style =
@@ -281,7 +284,7 @@ namespace RageRooster.Systems.ObjectPooling
                         {
                             prefabProp.objectReferenceValue = pool.prefab;
                             property?.serializedObject?.ApplyModifiedProperties();
-                        }); 
+                        });
                     }
                     menu.DropDown(button.worldBound, button, false);
                 }

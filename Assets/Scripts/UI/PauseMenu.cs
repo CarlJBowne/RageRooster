@@ -5,8 +5,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using System;
-using RageRooster.Systems;
-using RageRooster.RoomSystem;
 
 public class PauseMenu : MenuSingleton<PauseMenu>
 {
@@ -20,14 +18,14 @@ public class PauseMenu : MenuSingleton<PauseMenu>
     {
         base.OnOpen();
         onPause?.Invoke();
-        Gameplay.GameState = Gameplay.GameStates.Paused;
+        Services.Gameplay.GameState.Value = Services.Gameplay.GameStates.Paused;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
     protected override void OnClose()
     {
         base.OnClose();
-        Gameplay.GameState = Gameplay.GameStates.Active;
+        Services.Gameplay.GameState.Value = Services.Gameplay.GameStates.Active;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         onUnPause?.Invoke();
@@ -42,9 +40,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
             Time.timeScale = 1f;
             Close();
-            Music.StopAllMusic();
-            Player.StateMachine.HaveDestroyed();
-            Gameplay.DESTROY(areYouSure: true);
+            Gameplay.EndGame();
             SceneManager.LoadScene("MainMenu");
             SceneManager.sceneLoaded += Done;
             void Done(Scene arg0, LoadSceneMode arg1)
@@ -64,7 +60,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
     public void Respawn()
     {
-        RoomManager.TransitionStyle = new()
+        Services.RoomManager.TransitionStyle.Value = new()
         {
             FadeOutRoutine = Overlay.OverMenus.BasicFadeOutWait(1f),
             FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(1f),
@@ -74,7 +70,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
     }
     public void ReloadSave()
     {
-        RoomManager.TransitionStyle = new()
+        Services.RoomManager.TransitionStyle.Value = new()
         {
             FadeOutRoutine = Overlay.OverMenus.BasicFadeOutWait(1.2f),
             FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(1.2f),

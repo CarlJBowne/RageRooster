@@ -24,7 +24,7 @@ public abstract class MenuSingleton<T> : Menu where T : Menu
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        Singleton.Unregister<T>(ref instance, this as T);
+        Singleton.Deregister<T>(ref instance, this as T);
         OnDeInitialize();
     }
 

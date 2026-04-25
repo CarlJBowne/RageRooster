@@ -66,7 +66,7 @@ public class PlayerStateMachine : StateMachine
         PauseMenu.onPause -= Pause;
         PauseMenu.onUnPause -= UnPause;
 
-        Singleton.Unregister(ref instance, this);
+        Singleton.Deregister(ref instance, this);
     }
 
 

@@ -5,7 +5,6 @@ using UnityEngine;
 using EditorAttributes;
 using UnityEngine.UI;
 using System;
-using static UnityEngine.Rendering.DebugUI;
 using RageRooster.Systems.SaveSystem;
 
 public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized

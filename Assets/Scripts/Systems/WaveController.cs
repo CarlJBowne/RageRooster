@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
-using RageRooster.Systems.ObjectPooling;
+using Utilities.ObjectPooling;
 
 public class WaveController : MonoBehaviour
 {

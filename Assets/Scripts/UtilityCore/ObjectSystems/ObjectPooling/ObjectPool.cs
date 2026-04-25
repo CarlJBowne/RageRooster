@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Utilities.ObjectPooling
 {
     /// <summary>
-    /// An active <see cref="ObjectPool"/> in the game's memory, can be attached directly to a behavior or the <see cref="GlobalPool"/>.
+    /// An active <see cref="ObjectPool"/> in the game's memory, can be attached directly to a behavior or the GlobalPool.
     /// </summary>
     [System.Serializable, Inspectable]
     public class ObjectPool
@@ -28,7 +28,8 @@ namespace Utilities.ObjectPooling
         [field: NonSerialized] public bool initialized { get; protected set; } = false;
         [field: NonSerialized] public bool initializing { get; protected set; } = false;
         public int pooledObjects => poolList.Count;
-        public Transform poolParent => poolParentOverride != null ? poolParentOverride : GlobalPool.poolParent;
+        public Transform poolParent => poolParentOverride != null ? poolParentOverride : DefaultPoolParent;
+        public static Transform DefaultPoolParent;
 
         //Customizable Callbacks
         public Action<ObjectPool> onInitialize;
@@ -221,7 +222,7 @@ namespace Utilities.ObjectPooling
                 else
                 {
                     poolList[i].Active = false;
-                    UnityEngine.Object.Destroy(poolList[i].gameObject);
+                    if(poolList[i].gameObject != null) UnityEngine.Object.Destroy(poolList[i].gameObject);
                 }
             }
         }

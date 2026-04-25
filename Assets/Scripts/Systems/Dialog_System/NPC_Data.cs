@@ -18,26 +18,26 @@ public class NPC_Data : ScriptableObject
 
     [HideInEditMode, DisableInPlayMode]
     public int dialogueID = 0;
-    public List<RageRooster.Obsolete.WorldChange> worldChanges;
+    //public List<RageRooster.Obsolete.WorldChange> worldChanges;
 
     private void OnEnable()
     {
         dialogueID = 0;
-        for (int i = 0; i < worldChanges.Count; i++)
-            if (worldChanges[i].Enabled == true) WorldChangeFired(); 
-            else worldChanges[i].Action += WorldChangeFired;
+        //for (int i = 0; i < worldChanges.Count; i++)
+        //    if (worldChanges[i].Enabled == true) WorldChangeFired(); 
+        //    else worldChanges[i].Action += WorldChangeFired;
     }
     private void OnDisable()
     {
-        for (int i = 0; i < worldChanges.Count; i++)
-            worldChanges[i].Action -= WorldChangeFired;
+        //for (int i = 0; i < worldChanges.Count; i++)
+        //    worldChanges[i].Action -= WorldChangeFired;
     }
 
     void WorldChangeFired() => dialogueID++;
     
     public void OnConversationFinished()
     {
-        if (worldChanges.Count > dialogueID && worldChanges[dialogueID] != null)  
-            worldChanges[dialogueID].Enabled = true;
+        //if (worldChanges.Count > dialogueID && worldChanges[dialogueID] != null)  
+        //    worldChanges[dialogueID].Enabled = true;
     }
 }
