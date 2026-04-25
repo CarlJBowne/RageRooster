@@ -72,7 +72,7 @@ public class EnemyHealth : Health
         if (visualMachine) visualMachine.enabled = false;
         if (attack == Attack.Tags.Wham)
         {
-            CoroutinePlus.Stop(ref stunRoutine);
+            Coroutine.Stop(ref stunRoutine);
             if (ragdoll)
             {
                 ragdoll.State = RagdollHandler.States.Thrown;
@@ -91,7 +91,7 @@ public class EnemyHealth : Health
     void Stun(Attack attack)
     {
         stunTimeLeft = stunTime * (attack == Attack.Tags.Wham ? 2 : 1);
-        CoroutinePlus.Begin(ref stunRoutine, StunEnum(), this, false);
+        Coroutine.Begin(ref stunRoutine, StunEnum(), this, false);
 
         IEnumerator StunEnum()
         {
@@ -114,7 +114,7 @@ public class EnemyHealth : Health
             }
         }
     }
-    private CoroutinePlus stunRoutine;
+    private Coroutine stunRoutine;
     private float stunTimeLeft = 0;
 
 

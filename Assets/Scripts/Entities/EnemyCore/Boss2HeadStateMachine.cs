@@ -255,7 +255,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
             animator.enabled = true;
         }
     }
-    private CoroutinePlus hitStunCoroutine;
+    private Coroutine hitStunCoroutine;
 
     public void EnableHead()
     {

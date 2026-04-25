@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using FMODUnity;
 using EditorAttributes;
 using System.Collections.Generic;
-using SLS.ISingleton;
+ 
 using RageRooster.RoomSystem;
 using RageRooster.Systems.SaveSystem;
 using RageRooster.Systems.ObjectPooling;
@@ -142,7 +142,7 @@ public class Gameplay : MonoBehaviour
         inputUI.Awake();
         inputCams.Awake();
         GlobalPool.poolParent = transform.Find("PooledObjects");
-        GlobalPool.Instance.Initialize();
+        GlobalPool.Get.Initialize();
         Overlay.OverMenus.BasicBlackout = 1;
         Overlay.OverGameplay.Reset();
         Overlay.OverHUD.Reset();
@@ -329,7 +329,7 @@ public class Gameplay : MonoBehaviour
         static List<BoundingSphere> enemyBoundingSpheres = new();
 
         public const float tickTime = 0.1f;
-        static CoroutinePlus activeRoutine;
+        static Coroutine activeRoutine;
         static WaitForSeconds activeTickDelay = new WaitForSeconds(tickTime);
 
         public static void Initialize(MonoBehaviour owner)

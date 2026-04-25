@@ -1,13 +1,13 @@
-using SLS.ISingleton;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Utilities.Singletons;
 using Button = UnityEngine.InputSystem.InputAction;
 using Ref = UnityEngine.InputSystem.InputActionReference;
 
-public class Input : SingletonAsset<Input>
+public class Input : GlobalAsset<Input>
 {
 
 	[SerializeField] public InputActionAsset Asset;
@@ -25,27 +25,27 @@ public class Input : SingletonAsset<Input>
 	[SerializeField] Ref _Debug_GodMode;
 	[SerializeField] Ref _Debug_ToggleTextOverlay;
 
-    public static Vector2 Movement => Get()._Movement.action.ReadValue<Vector2>();
-    public static Vector2 Camera => Get()._Camera.action.ReadValue<Vector2>();
-	public static Button MovementAction => Get()._Movement;
-	public static Button CameraAction => Get()._Camera;
-	public static Button Jump => Get()._Jump;
-	public static Button Attack => Get()._Attack;
-	public static Button Parry => Get()._Parry;
-	public static Button Grab => Get()._Grab;
-	public static Button Aim => Get()._Aim;
-	public static Button Charge1 => Get()._Charge1;
-	public static Button Charge2 => Get()._Charge2;
-	public static Button Interact => Get()._Interact;
-	public static Button Pause => Get()._Pause;
+    public static Vector2 Movement => Get._Movement.action.ReadValue<Vector2>();
+    public static Vector2 Camera => Get._Camera.action.ReadValue<Vector2>();
+	public static Button MovementAction => Get._Movement;
+	public static Button CameraAction => Get._Camera;
+	public static Button Jump => Get._Jump;
+	public static Button Attack => Get._Attack;
+	public static Button Parry => Get._Parry;
+	public static Button Grab => Get._Grab;
+	public static Button Aim => Get._Aim;
+	public static Button Charge1 => Get._Charge1;
+	public static Button Charge2 => Get._Charge2;
+	public static Button Interact => Get._Interact;
+	public static Button Pause => Get._Pause;
 
 	public static class Debug
 	{
-		public static Button GodMode => Get()._Debug_GodMode;
-		public static Button ToggleTextOverlay => Get()._Debug_ToggleTextOverlay;
+		public static Button GodMode => Get._Debug_GodMode;
+		public static Button ToggleTextOverlay => Get._Debug_ToggleTextOverlay;
     }
 
-    protected override void OnInitialize()
+    public override void OnInit()
 	{
         Asset.Enable();
         //Enable Debug Action Map only if in dev build or editor

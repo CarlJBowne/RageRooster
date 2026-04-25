@@ -2,7 +2,7 @@ using RageRooster.RoomSystem;
 using RageRooster.Systems;
 using RageRooster.Systems.ObjectPooling;
 using RageRooster.Systems.SaveSystem;
-using SLS.ISingleton;
+using Utilities.Singletons;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace RageRooster.RoomSystem
     /// <summary>
     /// Global Gameplay System for managing Room transitions, current Room/Area tracking, and related functionality.
     /// </summary>
-    public class RoomManager : SingletonMonoBasic<RoomManager>
+    public class RoomManager : Singleton.MonoBehaviour<RoomManager>
     {
         /// <summary>
         /// The Currently active Area in the game world. <br/>

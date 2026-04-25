@@ -4,17 +4,10 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.SceneManagement;
-using SLS.ISingleton;
+using Utilities.Singletons;
 
-public class AudioManager : MonoBehaviour, ISingleton<AudioManager>
+public class AudioManager : Singleton.MonoBehaviour<AudioManager>
 {
-
-    protected static AudioManager Instance;
-    protected ISingleton<AudioManager> Interface => this;
-    public static AudioManager Get() => ISingleton<AudioManager>.Get(ref Instance, ISingleton<AudioManager>.FromPreloaded);
-    public static bool TryGet(out AudioManager result) => ISingleton<AudioManager>.TryGet(Get, out result);
-    public static bool Active => Instance != null;
-
 
     // Set up the AudioManager with specific settings
     //static void Data() => SetData(spawnMethod: InitSavedPrefab, dontDestroyOnLoad: true, spawnOnBoot: true);
@@ -36,9 +29,8 @@ public class AudioManager : MonoBehaviour, ISingleton<AudioManager>
     public EventInstance musicEventInstance;
 
     // Called when the script instance is being loaded
-    public void Awake()
+    protected override void OnInit() 
     {
-        Interface.Initialize(ref Instance);
         DontDestroyOnLoad(gameObject);
 
         eventInstances = new List<EventInstance>();
@@ -58,16 +50,10 @@ public class AudioManager : MonoBehaviour, ISingleton<AudioManager>
     // Called when the script is started
     private void Start()
     {
-        if (FMODEvents.instance != null)
+        if (FMODEvents.Active)
         {
-            if (FMODEvents.instance.HasAmbience())
-            {
-                InitializeAmbience(FMODEvents.instance.GetAmbience());
-            }
-            if (FMODEvents.instance.HasMusic())
-            {
-                InitializeMusic(FMODEvents.instance.GetMusic());
-            }
+            if (FMODEvents.Get.HasAmbience()) InitializeAmbience(FMODEvents.Get.GetAmbience());
+            if (FMODEvents.Get.HasMusic()) InitializeMusic(FMODEvents.Get.GetMusic());
         }
     }
 
@@ -131,13 +117,12 @@ public class AudioManager : MonoBehaviour, ISingleton<AudioManager>
     }
 
     // Called when the AudioManager is destroyed
-    private void OnDestroy()
+    protected override void OnDeInit()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
         musicEventInstance.setPaused(true);
         CleanUp();
-        Interface.DeInitialize(ref Instance);
     }
 
     // Called when a new scene is loaded
@@ -173,15 +158,9 @@ public class AudioManager : MonoBehaviour, ISingleton<AudioManager>
         EventReference musicEvent = new EventReference();
         switch (sceneName)
         {
-            case "MainMenu":
-                musicEvent = FMODEvents.instance.titleScreenMusic;
-                break;
-            case "Forest":
-                musicEvent = FMODEvents.instance.ireGorgeMusic;
-                break;
-            case "FarmHouse":
-                musicEvent = FMODEvents.instance.rockyFurrowsHubMusic;
-                break;
+            case "MainMenu": musicEvent = FMODEvents.Get.titleScreenMusic; break;
+            case "Forest": musicEvent = FMODEvents.Get.ireGorgeMusic; break;
+            case "FarmHouse": musicEvent = FMODEvents.Get.rockyFurrowsHubMusic;  break;
             default:
                 return;
         }

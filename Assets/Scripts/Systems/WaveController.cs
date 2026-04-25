@@ -33,7 +33,7 @@ public class WaveController : MonoBehaviour
     private int currentWave = 0;
     private int activeEnemies = 0;
     private bool isActive = false;
-    private CoroutinePlus coroutine;
+    private Coroutine coroutine;
 
     private void Start()
     {
@@ -146,7 +146,7 @@ public class WaveController : MonoBehaviour
         currentWave = 0;
         activeEnemies = 0;
         isActive = false;
-        CoroutinePlus.Stop(ref coroutine);
+        Coroutine.Stop(ref coroutine);
         Player.onRespawn -= ResetArena;
     }
 

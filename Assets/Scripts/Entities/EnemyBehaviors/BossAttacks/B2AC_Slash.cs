@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using Utilities.Xtensions.Unity;
 using THIS = B2AC_Slash;
 
 public class B2AC_Slash : RigConstraint<THIS.Job, THIS.Data, THIS.Binder>

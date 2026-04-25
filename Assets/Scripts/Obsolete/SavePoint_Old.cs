@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utilities.Xtensions.Unity;
 
 namespace RageRooster.Obsolete
 {
@@ -48,7 +49,7 @@ namespace RageRooster.Obsolete
 
         bool IInteractable.Interaction()
         {
-            new CoroutinePlus(Save_CR(), this);
+            new Coroutine(Save_CR(), this);
             IEnumerator Save_CR()
             {
                 Save();

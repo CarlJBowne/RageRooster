@@ -4,6 +4,7 @@ using UnityEngine;
 using EditorAttributes;
 using Newtonsoft.Json.Linq;
 using static UnityEngine.Rendering.DebugUI;
+using RageRooster.Systems.SaveSystem;
 
 [CreateAssetMenu(fileName = "SaveTester", menuName = "ScriptableObjects/SaveTester")]
 public class SaveTester : ScriptableObject

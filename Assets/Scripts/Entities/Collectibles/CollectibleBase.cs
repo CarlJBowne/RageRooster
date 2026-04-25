@@ -53,7 +53,7 @@ namespace RageRooster.Entities.Collectibles
             else
                 targetRegistryList.Add(input);
             ID = input;
-            EditorUtility.SetDirty(SavedValueRegistry.Get());
+            EditorUtility.SetDirty(SavedValueRegistry.Get);
             EditorUtility.SetDirty(this);
         }
 

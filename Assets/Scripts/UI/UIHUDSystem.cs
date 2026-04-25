@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using DG.Tweening;
-using SLS.ISingleton;
+ 
 
 [DefaultExecutionOrder(ExecutionOrders.GameplaySystems)]
 public class UIHUDSystem : MonoBehaviour

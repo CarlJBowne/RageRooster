@@ -396,7 +396,7 @@ public class Player : MonoBehaviour
     #region Death / Respawn Sequence
     static float fallDownPitTime;
     static float deathTime;
-    static CoroutinePlus deathCoroutine;
+    static Coroutine deathCoroutine;
 
     /// <summary>
     /// Begins the <see cref="Player"/> death sequence.

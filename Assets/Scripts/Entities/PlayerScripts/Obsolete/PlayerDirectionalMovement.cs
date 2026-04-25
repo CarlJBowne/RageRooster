@@ -1,4 +1,5 @@
 using UnityEngine;
+using Utilities.Xtensions.Unity;
 
 [System.Obsolete]
 public class PlayerDirectionalMovement : PlayerStateBehavior

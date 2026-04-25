@@ -1,13 +1,13 @@
-using SLS.ISingleton;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities.Singletons;
 
 /// <summary>
 /// Now Combined with the Dialogue Trigger
 /// </summary>
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems), System.Obsolete]
-public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
+public class PlayerInteracter : Singleton.MonoBehaviour<PlayerInteracter>
 {
     public static GameObject ThisGameObject;
 
@@ -29,10 +29,8 @@ public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
     private static IGrabbable_Obsolete _selectedGrabbable;
 
 
-    [System.Obsolete("If you're using this, you're not going to work.")]
-    public new static PlayerInteracter Instance = null;
 
-    protected override void OnInitialize()
+    protected override void OnInit()
     {
         Gameplay.PreReloadSave += ResetSystem;
         PopupTransform = popupTransform;
@@ -134,7 +132,7 @@ public class PlayerInteracter : SingletonMonoBasic<PlayerInteracter>
         else return false;
     }
 
-    protected override void OnDeInitialize()
+    protected override void OnDeInit()
     {
         Gameplay.PreReloadSave -= ResetSystem;
     }

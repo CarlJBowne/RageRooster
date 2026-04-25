@@ -4,6 +4,8 @@ using SLS.StateMachineH;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Utilities.Xtensions;
+using Utilities.Xtensions.Unity;
 using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
@@ -74,8 +76,8 @@ public class PlayerController : PlayerStateBehavior
         if (!enabled) return;
         if (jumpInput > 0) jumpInput -= Time.deltaTime;
         camAdjustedMovement = !overrideMovementControl
-            ? Input.Movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up)
-            : overrideMovementVector.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
+            ? Input.Movement.ToXZ().Rotated(Machine.cameraTransform.eulerAngles.y, Vector3.up)
+            : overrideMovementVector.ToXZ().Rotated(Machine.cameraTransform.eulerAngles.y, Vector3.up);
     }
 
     public bool CheckJumpBuffer()

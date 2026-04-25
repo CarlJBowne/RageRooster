@@ -5,13 +5,12 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using System;
-using SLS.ISingleton;
 using RageRooster.Systems;
 using RageRooster.RoomSystem;
 
 public class PauseMenu : MenuSingleton<PauseMenu>
 {
-    public static bool isPaused => Get().isActive;
+    public static bool isPaused => Get.isActive;
     public static bool canPause = true;
 
     public static System.Action onPause;

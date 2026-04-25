@@ -1,5 +1,6 @@
 using EditorAttributes;
 using Newtonsoft.Json.Linq;
+using RageRooster.Systems.SaveSystem;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -58,10 +59,10 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
     {
         for (int i = 0; i < buttons.Length; i++)
         {
-            buttons[i].main = Input.Get().Asset.FindAction(buttons[i].main.action.name).Reference();
+            buttons[i].main = Input.Get.Asset.FindAction(buttons[i].main.action.name).Reference();
             for (int j = 0; j < buttons[i].relatives.Length; j++)
             {
-                buttons[i].relatives[j] = Input.Get().Asset.FindAction(buttons[i].relatives[j].action.name).Reference();
+                buttons[i].relatives[j] = Input.Get.Asset.FindAction(buttons[i].relatives[j].action.name).Reference();
             }
         }
     } 
@@ -91,7 +92,7 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
 
         public void RebindControl(RemappingMenu menu)
         {
-            Input.Get().Asset.Disable();
+            Input.Get.Asset.Disable();
             menu.rebindingOverlay.SetActive(true);
             menu.rebindingText.text = $"Now Rebinding Controls for [{displayName}]";
 
@@ -104,7 +105,7 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
             .OnApplyBinding((op, path) =>
             {
                 string chosenScheme = null;
-                foreach (InputControlScheme scheme in Input.Get().Asset.controlSchemes)
+                foreach (InputControlScheme scheme in Input.Get.Asset.controlSchemes)
                     if (scheme.SupportsDevice(op.selectedControl.device))
                     {
                         chosenScheme = scheme.bindingGroup;
@@ -115,7 +116,7 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
             })
             .OnComplete(op =>
             {
-                Input.Get().Asset.Enable();
+                Input.Get.Asset.Enable();
                 menu.rebindingOverlay.SetActive(false);
                 op.Dispose();
             })
@@ -153,8 +154,8 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
 
         public void UpdateImages()
         {
-            keyboardImage.sprite = ButtonIcons.Get().GetKeyboardSprite(main.action.GetBindingEffectivePath("Keyboard"));
-            gamepadImage.sprite = ButtonIcons.Get().GetGamepadSprite(main.action.GetBindingEffectivePath("Gamepad"));
+            keyboardImage.sprite = ButtonIcons.Get.GetKeyboardSprite(main.action.GetBindingEffectivePath("Keyboard"));
+            gamepadImage.sprite = ButtonIcons.Get.GetGamepadSprite(main.action.GetBindingEffectivePath("Gamepad"));
             keyboardImage.enabled = keyboardImage.sprite != null;
             gamepadImage.enabled = gamepadImage.sprite != null;
         }
@@ -168,7 +169,7 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
 
     public static string GetControlString(string input)
     {
-        RemappingMenu R = SettingsMenu.Get().remap;
+        RemappingMenu R = SettingsMenu.Get.remap;
 
         int i = 0;
         for (; i < R.buttons.Length; i++) 

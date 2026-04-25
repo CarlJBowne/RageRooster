@@ -2,6 +2,7 @@ using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities.Xtensions.Unity;
 
 [System.Obsolete]
 public class PlayerMovementNegater : PlayerMovementEffector

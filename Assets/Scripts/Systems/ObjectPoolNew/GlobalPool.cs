@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
+using Utilities.Singletons;
 
 namespace RageRooster.Systems.ObjectPooling
 {
     /// <summary>
     /// A global pool for pooled objects shared between multiple entities. Use a <see cref="GlobalPool.Client"/> to interface with this.
     /// </summary>
-    public class GlobalPool : ScriptableObject
+    public class GlobalPool : GlobalAsset<GlobalPool>
     {
-        public static GlobalPool Instance { private set; get; }
+        static GlobalPool instance;
+
         public static bool initialized { private set; get; }
         public static Transform poolParent;
 
@@ -25,15 +26,11 @@ namespace RageRooster.Systems.ObjectPooling
         public ObjectPool<AttackProjectile> basicEnemyBullet;
         public static ObjectPool<AttackProjectile> BasicEnemyBullet;
 
-        private void OnEnable()
-        {
-            if (Instance == this) return;
-            Instance = this;
-        }
+        public override void OnInit() => Initialize();
 
         public void Initialize()
         {
-            if (initialized && Instance == null) return;
+            if (initialized && !Active) return;
 
             InitPoolGlobally(basicEnemyBullet);
             BasicEnemyBullet = basicEnemyBullet;
@@ -41,7 +38,7 @@ namespace RageRooster.Systems.ObjectPooling
             foreach (var item in serializedPools) InitPoolGlobally(item);
 
             Gameplay.onUpdate += Update;
-            Gameplay.onDestroy += DeInitialize;
+            Gameplay.onDestroy += OnDeInit;
 
             initialized = true;
         }
@@ -52,12 +49,11 @@ namespace RageRooster.Systems.ObjectPooling
             for (int i = 0; i < serializedPools.Count; i++) serializedPools[i].Update(Time.deltaTime);
         }
 
-        void DeInitialize()
+        public override void OnDeInit()
         {
             initialized = false;
-            Instance = null;
             Gameplay.onUpdate -= Update;
-            Gameplay.onDestroy -= DeInitialize;
+            Gameplay.onDestroy -= OnDeInit;
             foreach (var pool in serializedPools) pool.Cleanup();
         }
 
@@ -73,7 +69,7 @@ namespace RageRooster.Systems.ObjectPooling
         public static void UnloadAllPools()
         {
             if (!initialized) return;
-            foreach (var pool in Instance.serializedPools) pool.DisableAll();
+            foreach (var pool in Get.serializedPools) pool.DisableAll();
         }
 
         public static ObjectPool GetPool(string poolName)
@@ -103,12 +99,12 @@ namespace RageRooster.Systems.ObjectPooling
         /// <summary>
         /// A <see cref="Client"/> of the <see cref="GlobalPool"/> system.
         /// </summary>
-        [System.Serializable, Inspectable]
+        [System.Serializable, Unity.VisualScripting.Inspectable]
         public class Client
         {
-            [SerializeField, Inspectable] MonoBehaviour owner;
-            [SerializeField, Inspectable] PoolableObject prefab;
-            [SerializeField, Inspectable] Transform muzzle;
+            [SerializeField, Unity.VisualScripting.Inspectable] MonoBehaviour owner;
+            [SerializeField, Unity.VisualScripting.Inspectable] PoolableObject prefab;
+            [SerializeField, Unity.VisualScripting.Inspectable] Transform muzzle;
             private bool initialized;
             private ObjectPool pool;
             public Action<PoolableObject> onPumpInstance;
@@ -241,11 +237,11 @@ namespace RageRooster.Systems.ObjectPooling
                     List<ObjectPool> poolList = new();
 
                     // Prefer runtime instance
-                    if (GlobalPool.Instance != null)
+                    if (GlobalPool.Get != null)
                     {
                         try
                         {
-                            poolList = GlobalPool.Instance.ALLGlobalPools() ?? new List<ObjectPool>();
+                            poolList = GlobalPool.Get.ALLGlobalPools() ?? new List<ObjectPool>();
                         }
                         catch
                         {

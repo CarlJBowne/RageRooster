@@ -43,7 +43,7 @@ public class Grabbable_Obsolete : MonoBehaviour, IGrabbable_Obsolete, IAttackSou
     private Rigidbody rb;
     public EnemyHealth health { get; protected set; }
 
-    public CoroutinePlus wiggleCoroutine;
+    public Coroutine wiggleCoroutine;
 
     [SerializeField, HideInEditMode, DisableInPlayMode] protected EntityActivity.States currentState;
 

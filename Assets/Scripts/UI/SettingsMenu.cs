@@ -6,6 +6,7 @@ using EditorAttributes;
 using UnityEngine.UI;
 using System;
 using static UnityEngine.Rendering.DebugUI;
+using RageRooster.Systems.SaveSystem;
 
 public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
 {
@@ -32,10 +33,10 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
     {
         base.Awake();
 
-        masterVolume.Init(value => { AudioManager.Get().masterVolume = value; });
-        musicVolume.Init(value => { AudioManager.Get().musicVolume = value; });
-        SFXVolume.Init(value => { AudioManager.Get().SFXVolume = value; });
-        ambienceVolume.Init(value => { AudioManager.Get().ambienceVolume = value; });
+        masterVolume.Init(value => { AudioManager.Get.masterVolume = value; });
+        musicVolume.Init(value => { AudioManager.Get.musicVolume = value; });
+        SFXVolume.Init(value => { AudioManager.Get.SFXVolume = value; });
+        ambienceVolume.Init(value => { AudioManager.Get.ambienceVolume = value; });
 
         if (Overlay.ActiveOverlays.ContainsKey(Overlay.OverlayLayer.OverMenus))
         {
@@ -50,7 +51,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
     // Confirms the changes made to the settings and saves them to a file
     public void ConfirmChanges()
     {
-        File.SaveToFile(Get());
+        File.SaveToFile(Get);
         TrueClose();
     }
 

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities.Xtensions.Unity;
 
 [System.Obsolete]
 public class ShooterEB : StateBehavior
