@@ -134,7 +134,9 @@ namespace RageRooster.Systems.SaveSystem
         /// <summary>
         /// Gets the full path of the JSON file, including the filename and extension.
         /// </summary>
-        public string FullPath => Path.Combine(path, $"{filename}.json");
+        public string FullPath => Path.Combine(path, $"{filename}{fileType}");
+
+        public string fileType = ".json";
 
         /// <summary>
         /// Implicitly accesses a JsonFile's JToken Data.

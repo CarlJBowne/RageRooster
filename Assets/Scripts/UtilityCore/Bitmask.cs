@@ -482,7 +482,7 @@ public class LongBitMask : IEquatable<LongBitMask>
         set
         {
             if (i is < 0 or > 63) throw new ArgumentOutOfRangeException(nameof(i));
-            if (value) longValue |= 1 << i;
+            if (value) longValue |= 1L << i;
             else longValue &= ~(1 << i);
         }
     }
@@ -507,7 +507,7 @@ public class LongBitMask : IEquatable<LongBitMask>
         int maxBits = sizeof(int) * 8;
         int len = Math.Min(inputs.Length, maxBits);
         for (int i = 0; i < len; i++)
-            if (inputs[i]) longValue |= 1 << i;
+            if (inputs[i]) longValue |= 1L << i;
     }
 
     /// <summary>
@@ -579,7 +579,7 @@ public class LongBitMask : IEquatable<LongBitMask>
     {
         L ??= new();
         if (idx is < 0 or > 32) throw new ArgumentOutOfRangeException(nameof(idx));
-        return new(L.longValue | (1 << idx));
+        return new(L.longValue | (1L << idx));
     }
 
     /// <summary>
