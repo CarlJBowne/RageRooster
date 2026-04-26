@@ -30,11 +30,11 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
     protected override void OnFixedUpdate()
     {
         float deltaTime = Time.fixedDeltaTime / 0.02f;
-        float currentSpeed = playerMovementBody.CurrentSpeed;
-        Vector3 currentDirection = playerMovementBody.direction;
+        float currentSpeed = Player.MovementBody.velocity.f;
+        Vector3 currentDirection = Player.MovementBody.DirectionGet;
 
-        Vector3 controlDirection = playerController.camAdjustedMovement.normalized;
-        float controlMag = playerController.camAdjustedMovement.sqrMagnitude;
+        Vector3 controlDirection = Player.Controller.camAdjustedMovement.normalized;
+        float controlMag = Player.Controller.camAdjustedMovement.sqrMagnitude;
 
         if (!forceMaxVelocity)
         {
@@ -42,7 +42,7 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
             {
                 float Dot = Vector3.Dot(controlDirection, currentDirection);
 
-                if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
+                if (maxTurnSpeed > 0) Player.MovementBody.DirectionSet(maxTurnSpeed * Time.fixedDeltaTime);
 
                 if (!outwardTurn) currentSpeed *= Dot;
                 if (currentSpeed < maxSpeed)
@@ -62,15 +62,15 @@ public class PlayerDirectionalMovement : PlayerStateBehavior
         else
         {
             currentSpeed = maxSpeed;
-            if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
+            if (maxTurnSpeed > 0) Player.MovementBody.DirectionSet(maxTurnSpeed * Time.fixedDeltaTime);
             MaxSpeedChange(true);
         }
 
-        playerMovementBody.CurrentSpeed = currentSpeed;
+        Player.MovementBody.velocity.f = currentSpeed;
 
         Vector3 literalDirection = transform.forward * currentSpeed;
 
-        playerMovementBody.VelocitySet(x: literalDirection.x, z: literalDirection.z);
+        //Player.MovementBody.VelocitySet(x: literalDirection.x, z: literalDirection.z);
 
         
         

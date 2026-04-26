@@ -20,7 +20,12 @@ public class PlayerController : PlayerStateBehavior
     #region Data
 
     [HideProperty] public float jumpInput;
-    [HideProperty] public Vector3 camAdjustedMovement;
+    [HideProperty] public Vector3 camAdjustedMovement
+    {
+        get => !overrideMovementControl
+          ? Input.Movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up)
+          : overrideMovementVector.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
+    }
     [SerializeField] Upgrades upgradesDisplay;
 
     #endregion
@@ -73,9 +78,6 @@ public class PlayerController : PlayerStateBehavior
     {
         if (!enabled) return;
         if (jumpInput > 0) jumpInput -= Time.deltaTime;
-        camAdjustedMovement = !overrideMovementControl
-            ? Input.Movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up)
-            : overrideMovementVector.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
     }
 
     public bool CheckJumpBuffer()
@@ -101,7 +103,7 @@ public class PlayerController : PlayerStateBehavior
         if (Upgrades.Active.hellcopter)
         {
             Player.StateMachine.AirParry.Enter();
-            if (playerMovementBody.isOverVent) Machine.SendSignal(new("EnterVent", 0, true));
+            if (Player.MovementBody.isOverVent) Machine.SendSignal(new("EnterVent", 0, true));
         }
     }
 
@@ -109,7 +111,7 @@ public class PlayerController : PlayerStateBehavior
     {
         if (!Player.StateMachine.WallJump.WallJump(transform.forward))
         {
-            if (playerMovementBody.isOverVent) Player.StateMachine.VentGliding.Enter();
+            if (Player.MovementBody.isOverVent) Player.StateMachine.VentGliding.Enter();
             else Player.StateMachine.Gliding.Enter();
         }
     }
@@ -125,7 +127,7 @@ public class PlayerController : PlayerStateBehavior
         }
         else if (allowGlide && Upgrades.Active.glide)
         {
-            if (playerMovementBody.isOverVent) Player.StateMachine.VentGliding.Enter();
+            if (Player.MovementBody.isOverVent) Player.StateMachine.VentGliding.Enter();
             else Player.StateMachine.Gliding.Enter();
         }
     }

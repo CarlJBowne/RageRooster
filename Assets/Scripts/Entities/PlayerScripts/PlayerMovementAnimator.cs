@@ -9,7 +9,7 @@ using UnityEngine;
 [System.Obsolete("PlayerMovementAnimator is deprecated, please use TimedMovementAffector instead.")]
 public class PlayerMovementAnimator : PlayerMovementEffector
 {
-    [Tooltip("Generally recommended to keep at 0 and have set to 1 in animation so that the CrossFade can automatically smoothly blend the effect."), Range(0,1)]
+    [Tooltip("Generally recommended to keep at 0 and have set to 1 in animation so that the CrossFade can automatically smoothly blend the effect."), Range(0, 1)]
     public float influence;
     public bool fullStop;
 
@@ -32,88 +32,85 @@ public class PlayerMovementAnimator : PlayerMovementEffector
     [Tooltip("Makes this Movement Effector inoperable no matter the parameters. Must be set by some kind of alternative source, or by an inheriting class.")]
     public bool locked;
 
-    public override void HorizontalMovement(out float? resultX, out float? resultZ)
+    public override bool ForwardMovement(out float result)
     {
-        if(locked)
+        if (locked)
         {
-            base.HorizontalMovement(out resultX, out resultZ);
-            return;
+            base.ForwardMovement(out result);
+            return true;
         }
+        if (fullStop)
+        {
+            result = 0;
+            return true;
+        }
+        
 
-        resultX = playerMovementBody.velocity.x;
-        resultZ = playerMovementBody.velocity.z;
+        result = Player.MovementBody.velocity.f;
 
         if (influence > 0)
         {
-            Vector3 controlVector = playerController.camAdjustedMovement;
+            Vector3 controlVector = Player.Controller.camAdjustedMovement;
 
-            Vector3 targetDirection = playerMovementBody.direction;
-            float targetSpeed = playerMovementBody.CurrentSpeed;
+            Vector3 targetDirection = Player.MovementBody.DirectionGet;
+            float targetSpeed = Player.MovementBody.velocity.f;
 
             if (turnability > 0) targetDirection = Vector3.RotateTowards(targetDirection, controlVector.normalized, turnability * Mathf.PI * Time.fixedDeltaTime, 0);
 
             targetSpeed = controlVector.sqrMagnitude > 0
-                ? targetSpeed.MoveTowards(controlVector.magnitude * speedChangeRate * (Time.deltaTime * 50), maxSpeed)
-                : targetSpeed.MoveTowards(speedChangeRate * (Time.deltaTime * 50), minSpeed);
+                ? targetSpeed.Move(controlVector.magnitude * speedChangeRate * (Time.deltaTime * 50), maxSpeed)
+                : targetSpeed.Move(speedChangeRate * (Time.deltaTime * 50), minSpeed);
 
             if (influence == 1)
             {
-                playerMovementBody.CurrentSpeed = targetSpeed;
-                playerMovementBody.InstantDirectionChange(targetDirection);
-                resultX = targetDirection.x * targetSpeed;
-                resultZ = targetDirection.z * targetSpeed;
+                Player.MovementBody.velocity.f = targetSpeed;
+                Player.MovementBody.DirectionSet(targetDirection);
             }
             else
             {
-                playerMovementBody.CurrentSpeed = Mathf.Lerp(playerMovementBody.CurrentSpeed, targetSpeed, influence);
-                playerMovementBody.InstantDirectionChange(Vector3.Lerp(playerMovementBody.direction, targetDirection, influence));
-                resultX = Mathf.Lerp(resultX.Value, targetDirection.x * targetSpeed, influence);
-                resultZ = Mathf.Lerp(resultZ.Value, targetDirection.z * targetSpeed, influence);
+                Player.MovementBody.velocity.f = Mathf.Lerp(Player.MovementBody.velocity.f, targetSpeed, influence);
+                Player.MovementBody.DirectionSet(Vector3.Lerp(Player.MovementBody.DirectionGet, targetDirection, influence));
             }
 
         }
         if (worldspaceInfluence > 0)
         {
             Vector3 relative = transform.TransformDirection(worldspaceVelocity);
-            resultX = worldspaceInfluence == 1
+            result = worldspaceInfluence == 1
                 ? relative.x
-                : Mathf.Lerp(resultX.Value, relative.x, worldspaceInfluence);
-            resultZ = worldspaceInfluence == 1
+                : Mathf.Lerp(result, relative.x, worldspaceInfluence);
+            result = worldspaceInfluence == 1
                 ? relative.z
-                : Mathf.Lerp(resultZ.Value, relative.z, worldspaceInfluence);
+                : Mathf.Lerp(result, relative.z, worldspaceInfluence);
         }
-        if (fullStop)
-        {
-            resultX = 0;
-            resultZ = 0;
-        }
-
+        return true;
     }
-    public override void VerticalMovement(out float? result)
+    public override bool VerticalMovement(out float result)
     {
         if (locked)
         {
-            result = playerMovementBody.velocity.y - defaultGravity * .02f;
-            return;
+            result = Player.MovementBody.velocity.y - defaultGravity * .02f;
+            return true;
         }
 
-        result = playerMovementBody.velocity.y;
+        result = Player.MovementBody.velocity.y;
 
-        if (influence > 0 && !Mathf.Approximately(verticalAddSpeed, 0)) result = (result.Value + verticalAddSpeed * Time.fixedDeltaTime * influence).Min(-terminalVelocity);
-        if(setVerticalInfluence > 0) 
-            result = setVerticalInfluence == 1 
-                ? setVerticalVelocity 
-                : Mathf.Lerp(result.Value, setVerticalVelocity, setVerticalInfluence);
+        if (influence > 0 && !Mathf.Approximately(verticalAddSpeed, 0)) result = (result + verticalAddSpeed * Time.fixedDeltaTime * influence).Min(-terminalVelocity);
+        if (setVerticalInfluence > 0)
+            result = setVerticalInfluence == 1
+                ? setVerticalVelocity
+                : Mathf.Lerp(result, setVerticalVelocity, setVerticalInfluence);
         if (worldspaceInfluence > 0)
         {
-            result = worldspaceInfluence == 1 
-                ? worldspaceVelocity.y 
-                : Mathf.Lerp(result.Value, worldspaceVelocity.y, worldspaceInfluence);
+            result = worldspaceInfluence == 1
+                ? worldspaceVelocity.y
+                : Mathf.Lerp(result, worldspaceVelocity.y, worldspaceInfluence);
         }
         if (fullStop)
         {
             result = 0;
         }
+        return true;
     }
 
     protected override void OnExit(State next)

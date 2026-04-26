@@ -74,7 +74,7 @@ public static class _EasierMathExtensions
 
     public static bool RandomChance(this float input) => UnityEngine.Random.Range(0f, 1f) >= input;
 
-    public static float MoveTowards(this float current, float rate, float target)
+    public static float Move(this float current, float rate, float target)
     {
         return current == target
             ? target

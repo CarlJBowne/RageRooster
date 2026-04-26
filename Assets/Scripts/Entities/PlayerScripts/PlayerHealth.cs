@@ -60,7 +60,7 @@ public class PlayerHealth : Health
             {
                 damageStateWham.Enter();
                 Player.MovementBody.UnLand();
-                Player.MovementBody.VelocitySet(y: 14);
+                Player.MovementBody.velocity.y = 14;
             }
             else damageState.Enter();
         }
@@ -75,7 +75,7 @@ public class PlayerHealth : Health
         {
             damageStateWham.Enter();
             Player.MovementBody.UnLand();
-            Player.MovementBody.VelocitySet(y: 14);
+            Player.MovementBody.velocity.y = 14;
         }
         else Player.Death();
     }

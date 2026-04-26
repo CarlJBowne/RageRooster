@@ -21,31 +21,31 @@ public class PlayerGlidingMovement : PlayerAirborneMovement
 
     //Only change from PlayerAirborneMovement is the removal of HorizontalCharge.
 
-    public override void VerticalMovement(out float? result)
+    public override bool VerticalMovement(out float result)
     {
         if (!isVentGlide || transform.position.y > targetHeight)
         {
             result = ApplyGravity(gravity, terminalVelocity, flatGravity);
-            playerMovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
+            Player.MovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
         }
         else if (transform.position.y < targetHeight)
         {
             result = raiseRate/* * currentVent.transform.up.y*/;
-            playerMovementBody.UnLand(PlayerMovementBody.JumpState.Hangtime);
+            Player.MovementBody.UnLand(PlayerMovementBody.JumpState.Hangtime);
         }
         else result = 0;
 
         if (!Input.Jump.IsPressed()) Fall(ref result);
-
+        return true;
     }
 
 
 
-    protected override void Fall(ref float? Y)
+    protected override void Fall(ref float Y)
     {
-        Y = Y.Value.Max(0);
+        Y = Y.Max(0);
 
-        playerMovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
+        Player.MovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
         if (fallState != null) fallState.Enter();
     }
 
@@ -54,13 +54,13 @@ public class PlayerGlidingMovement : PlayerAirborneMovement
         base.OnEnter(prev, isFinal);
         if (!isFinal) return;
 
-        playerMovementBody.UnLand();
+        Player.MovementBody.UnLand();
 
-        playerMovementBody.VelocitySet(y: playerMovementBody.velocity.y.Max(0));
+        Player.MovementBody.velocity.y = Player.MovementBody.velocity.y.Max(0);
 
         if (isVentGlide)
         {
-            currentVent = playerMovementBody.CurrentVent;
+            currentVent = Player.MovementBody.CurrentVent;
             targetHeight = currentVent.transform.position.y + (currentVent.glideHeight/* * currentVent.transform.up.y*/);
         }
     }

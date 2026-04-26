@@ -42,7 +42,7 @@ public class B2AC_Slash : RigConstraint<THIS.Job, THIS.Data, THIS.Binder>
         {
             if (!stream.isValid) return; // Ensure valid data before proceeding
 
-            zMax.Set(stream, zMax.Get(stream).MoveTowards(zMaxMaxDelta.Get(stream), relativeSpaceMatrix.inverse.MultiplyPoint3x4(source.GetPosition(stream)).z));
+            zMax.Set(stream, zMax.Get(stream).Move(zMaxMaxDelta.Get(stream), relativeSpaceMatrix.inverse.MultiplyPoint3x4(source.GetPosition(stream)).z));
 
             Vector3 targetPos = new(Mathf.LerpUnclamped(xMin.Get(stream), xMax.Get(stream), xPercentage.Get(stream)), 
                                     yPos.Get(stream), 
