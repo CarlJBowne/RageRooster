@@ -369,6 +369,7 @@ GameObject:
   - component: {fileID: 1988227033855750315}
   - component: {fileID: 3205789306894012546}
   - component: {fileID: 1755664598433715571}
+  - component: {fileID: 3322145483811095597}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -524,9 +525,6 @@ MonoBehaviour:
   platformLockRadius: 0.25
   _useNavMeshIfPossible: 1
   lockToNavMesh: 0
-  _direction: {x: 0, y: 0, z: 1}
-  velocity: {x: 0, y: 0, z: 0}
-  currentSpeed: 0
   movementModifier: 1
   baseMovability: 1
   canJump: 1
@@ -639,8 +637,6 @@ MonoBehaviour:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
-  immuneTags_Old:
-  - name: FromPlayer
   immuneTags:
     intValue: 1
   health: 0
@@ -664,13 +660,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 8455434200384702600}
   Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
   jumpBuffer: 0.3
   overrideMovementControl: 0
   overrideMovementVector: {x: 0, y: 0}
   jumpInput: 0
-  camAdjustedMovement: {x: 0, y: 0, z: 0}
   upgradesDisplay:
     dropLaunch: 0
     wallJump: 0
@@ -830,8 +823,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLedgeGrab
   <State>k__BackingField: {fileID: 8455434200384702600}
   Machine: {fileID: 8455434200384702600}
-  playerMovementBody: {fileID: 3941225653291784218}
-  playerController: {fileID: 1371118413310184343}
   ledged: 0
   ledgeState: {fileID: 0}
 --- !u!114 &6199145597115895703
@@ -1010,6 +1001,25 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &3322145483811095597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c51543cae38bbb47be02ebe83f9fc63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimationBakeUtility
+  StateName: BAKE_Grabbing_
+  LayerApplications:
+  - 1
+  - 0
+  - 1
+  - 0
+  RunSpeedValue: 10
 --- !u!1 &3325132208426641913
 GameObject:
   m_ObjectHideFlags: 0
@@ -1261,35 +1271,22 @@ MonoBehaviour:
     velocity: {x: 0, y: 0, z: 10}
     tags:
       intValue: 131072
-    oldTags:
-    - name: Punch
     _displayName: 
   - amount: 15
     velocity: {x: 10, y: 15, z: 0}
     tags:
       intValue: 393220
-    oldTags:
-    - name: Punch
-    - name: Uppercut
-    - name: Wham
     _displayName: 
   - amount: 15
     velocity: {x: 0, y: -5, z: 15}
     tags:
       intValue: 1048580
-    oldTags:
-    - name: Headbutt
-    - name: Wham
     _displayName: 
   - amount: 10
     velocity: {x: 0, y: 0, z: 10}
     tags:
       intValue: 524288
-    oldTags:
-    - name: Kick
     _displayName: 
-  additionalTags_Old:
-  - name: FromPlayer
   additionalTags:
     intValue: 1
   enabled: 1
@@ -4757,11 +4754,6 @@ MonoBehaviour:
     velocity: {x: 0, y: 0, z: 1.5}
     tags:
       intValue: 2098181
-    oldTags:
-    - name: FromPlayer
-    - name: Charge
-    - name: Wham
-    - name: RagingCharge
     _displayName: 
   sourceEntity: {fileID: 8455434200384702600}
 --- !u!1001 &1520963399024276478
