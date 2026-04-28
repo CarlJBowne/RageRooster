@@ -6,6 +6,7 @@ using EditorAttributes;
 using UnityEngine.UI;
 using System;
 using RageRooster.Systems.SaveSystem;
+using Utilities.JSON;
 
 public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
 {
@@ -50,7 +51,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
     // Confirms the changes made to the settings and saves them to a file
     public void ConfirmChanges()
     {
-        File.SaveToFile(Get);
+        File.SaveToFile();
         TrueClose();
     }
 
@@ -87,7 +88,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
         SFXVolume.Deserialize(Data["V_SFX"]);
         ambienceVolume.Deserialize(Data["V_Amb"]);
         if (Data["G_Brightness"] != null) brightness.Deserialize(Data["G_Brightness"]);
-        //if (Data["SkipIntro"] != null) skipIntro = Data["SkipIntro"].As<bool>();
+        //if (Data["SkipIntro"] != null) skipIntro = Data["SkipIntro"].ToObject<bool>();
 
         remap.Deserialize(Data["Controls"]);
     }
@@ -135,6 +136,6 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, ICustomSerialized
 
         public JToken Serialize(string name = null) => new JProperty(name, currentValue);
         public static implicit operator JToken(FloatSetting THIS) => THIS.Serialize();
-        public void Deserialize(JToken Data) => Set(Data.As<float>());
+        public void Deserialize(JToken Data) => Set(Data.ToObject<float>());
     }
 }

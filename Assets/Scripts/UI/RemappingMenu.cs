@@ -146,8 +146,8 @@ public class RemappingMenu : MonoBehaviour, ICustomSerialized
         {
             if (Data == null) return;
             ClearOverrides();
-            string G = Data["Gamepad"].As<string>();
-            string K = Data["Keyboard"].As<string>();
+            string G = Data["Gamepad"].ToObject<string>();
+            string K = Data["Keyboard"].ToObject<string>();
             if (!string.IsNullOrEmpty(G)) SetControl(G, "Gamepad");
             if (!string.IsNullOrEmpty(K)) SetControl(K, "Keyboard");
         }

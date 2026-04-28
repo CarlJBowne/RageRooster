@@ -9,10 +9,10 @@ using Utilities.JSON;
 using UnityEditor;
 #endif
 
-namespace RageRooster.Systems.SaveSystem.Flags
+namespace SaveSystem.Flags
 {
     [System.Serializable]
-    public abstract class Flag : ICloneable<Flag>
+    public abstract class Flag
     {
 
         public bool IsType<T>() => type == TypeEnumFromCType<T>();

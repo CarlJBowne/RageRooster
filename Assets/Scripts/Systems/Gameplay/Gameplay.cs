@@ -242,7 +242,6 @@ public class Gameplay : MonoBehaviour
     public static void InitializeSaves(int fileNo)
     {
         SaveData.IO = new(fileNo);
-        SaveData.IO.Load();
         SaveData.RevertToSaveFile();
     }
 

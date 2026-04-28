@@ -1094,8 +1094,6 @@ namespace Utilities.Xtensions.VisualElements
         }
     }
 
-
-
     /// <summary>
     /// Doesn't work for my purposes. CRAP.
     /// </summary>

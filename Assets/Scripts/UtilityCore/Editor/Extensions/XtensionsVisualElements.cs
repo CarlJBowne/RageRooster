@@ -522,10 +522,8 @@ namespace Utilities.Xtensions.VisualElements
             if (font != null) S.unityFont = font;
             return S;
         }
-        internal static Color Gray(this float v) => new(v, v, v, 1);
 
-
-
+        static internal Color Gray(this float F) => new(F, F, F);
 
 
 
