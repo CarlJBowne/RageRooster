@@ -10,10 +10,6 @@ using Utilities.Singletons;
 using Utilities.Xtensions.Unity;
 using Utilities.Xtensions;
 
-
-
-
-
 #if UNITY_EDITOR
 using UnityEditor.UIElements;
 using UnityEditor;
@@ -105,13 +101,14 @@ public sealed class PlayerMovementBody : MonoBehaviour
 
         if (InstantSnapToFloor(out RaycastHit hit)) Land(hit);
 
-        direction = Vector3.forward;
         Singleton.Register(ref instance, this);
+        DirectionGet = Vector3.forward;
 
         NavAgent.enabled = false;
         //NavAgent.updateRotation = false;
         NavAgent.updateUpAxis = false;
-        gravity = defaultGravity;
+        gravity = defaultGravity.y;
+        velocity = new(transform);
     }
 
     /// <summary>
@@ -196,8 +193,8 @@ public sealed class PlayerMovementBody : MonoBehaviour
     void FixedUpdate()
     {
         sweepsThisPhysUpdate.Clear();
-        Player.Animator.SetFloat("CurrentSpeed", currentSpeed);
-        if (Upgrades.Active.d_moonJump && Input.Jump.IsPressed()) VelocitySet(y: 10f);
+        Player.Animator.SetFloat("CurrentSpeed", velocity.magnitudeH);
+        if (Upgrades.Active.d_moonJump && Input.Jump.IsPressed()) velocity.u = 10f;
 
         //NavAgent.nextPosition = Position;
 
@@ -212,18 +209,21 @@ public sealed class PlayerMovementBody : MonoBehaviour
 
         if (navDestinationDriven)
         {
-            DirectionSet(NavAgent.desiredVelocity, NavAgent.angularSpeed);
+            DirectionSet(NavAgent.desiredVelocity, NavAgent.angularSpeed * Time.fixedDeltaTime);
             NavAgent.velocity = Vector3.zero;
-            velocity = (Vector3.Dot(NavAgent.desiredVelocity, direction) + 1) * NavAgent.desiredVelocity.magnitude * direction;
+
+            velocity.Global = (Vector3.Dot(NavAgent.desiredVelocity, DirectionGet) + 1) * NavAgent.desiredVelocity.magnitude * DirectionGet;
             if (NavAgent.remainingDistance < 0.1f) NavDestination(false);
         }
 
-        stepZeroVelocity = velocity * Time.fixedDeltaTime;
+        if (velocity.r != 0f) Rotation = new(Rotation.x, Rotation.y + (velocity.r * Time.fixedDeltaTime), Rotation.z);
+
+        stepZeroVelocity = velocity.Global * Time.fixedDeltaTime;
         stepZeroAnchor = anchorPoint;
 
         SetupDebugText(false);
 
-        if (velocity != Vector3.zero) MoveNext(stepZeroVelocity);
+        if (stepZeroVelocity != Vector3.zero) MoveNext(stepZeroVelocity);
 
         SetupDebugText(true);
 
@@ -404,7 +404,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
         if (stopDistance < 0 || ++step >= movementProjectionSteps) return;
         else if (Vector3.Angle(stepVelocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Player.StateMachine.SendSignal(new("Bonk", 0, true)))
         {
-            this.velocity = Vector3.zero;
+            this.velocity.Global = Vector3.zero;
             return;
         }
 
@@ -489,7 +489,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
         if (stopDistance < 0 || ++step >= movementProjectionSteps) return;
         else if (Vector3.Angle(stepVelocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Player.StateMachine.SendSignal(new("Bonk", 0, true)))
         {
-            this.velocity = Vector3.zero;
+            this.velocity.Global = Vector3.zero;
             return;
         }
 
@@ -575,92 +575,103 @@ public sealed class PlayerMovementBody : MonoBehaviour
 
     #region Direction
 
-    public Vector3 direction
-    {
-        get => _direction;
-        private set
-        {
-            if (_direction == value) return;
-            _direction = value;
-            RotationQ = Quaternion.LookRotation(value, Vector3.up);
-        }
-    }
+    /// <summary>
+    /// The active forward direction of this <see cref="PlayerMovementBody"/>. Simpler controllers can probably avoid using this.
+    /// </summary>
+    public Vector3 DirectionGet { get; private set; }
 
     /// <summary>
-    /// The active direction of this <see cref="CharacterMovementBody"/>. Simpler controllers can probably avoid using this.
+    /// Sets the active forward direction of this <see cref="PlayerMovementBody"/>. 
     /// </summary>
-    public Vector3 _direction = new(0, 0, 1);
-
-
-    public void DirectionSet(Vector3 target, float maxTurnSpeed)
+    public void DirectionSet(Vector3 target, float maxTurnDegrees)
     {
         if (target == Vector3.zero) return;
-        direction = Vector3.RotateTowards(direction, target.normalized, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
+        Vector3 res = Vector3.RotateTowards(DirectionGet, target.normalized, maxTurnDegrees * Mathf.PI, 1);
+        DirectionSet(res);
     }
-    public void DirectionSet(float maxTurnSpeed) => DirectionSet(Player.Controller.camAdjustedMovement, maxTurnSpeed);
-    public void InstantDirectionChange(Vector3 target)
+    /// <summary>
+    /// Sets the active forward direction of this <see cref="PlayerMovementBody"/> to the direction the player's thumbstick is going in.
+    /// </summary>
+    public void DirectionSet(float maxTurnDegrees) => DirectionSet(Player.Controller.camAdjustedMovement, maxTurnDegrees);
+    /// <summary>
+    /// Instantly Sets the active forward direction of this <see cref="PlayerMovementBody"/>.
+    /// </summary>
+    public void DirectionSet(Vector3 target)
     {
-        if (target.sqrMagnitude == 0) return;
-        direction = target;
+        if (DirectionGet == target || target == Vector3.zero) return;
+        DirectionGet = target;
+        RotationQ = Quaternion.LookRotation(target, Vector3.up);
+        velocity.CallThisPostRotation();
     }
 
     /// <summary>
     /// Gets or sets the rotation of the Rigidbody as a Quaternion.
     /// </summary>
     public Quaternion RotationQ
-    { get => RB.rotation; set => RB.rotation = value; }
+    {
+        get => RB.rotation;
+        set
+        {
+            RB.rotation = value;
+            velocity.CallThisPostRotation();
+        }
+    }
     /// <summary>
     /// Gets or sets the rotation of the character in Euler angles.
     /// </summary>
     public Vector3 Rotation
     {
         get => transform.eulerAngles;
-        set => transform.eulerAngles = value;
+        set
+        {
+            transform.eulerAngles = value;
+            velocity.CallThisPostRotation();
+        }
     }
 
-    public void QuickTurnTime(Vector3 newForward, float length)
+    public void QuickTurnTime(Vector3 target, float lengthSeconds)
     {
-        newForward = newForward.XZ(); //Ensure no weird rotations
+        target = target.XZ(); //Ensure no weird rotations
 
-        if (length <= 0f)
+        if (lengthSeconds <= 0f)
         {
-            direction = newForward;
+            DirectionGet = target;
             return;
         }
 
         QuickTurnRoutine = Enum().Begin(Player.MovementBody);
         IEnumerator Enum()
         {
-            float deltaRad = Vector3.Angle(direction, newForward) * Mathf.Deg2Rad;
-            float rateRadPerSec = deltaRad / length; // radians per second
+            float deltaRad = Vector3.Angle(DirectionGet, target) * Mathf.Deg2Rad;
+            float rateRadPerSec = deltaRad / lengthSeconds; // radians per second
 
             while (deltaRad > 0f)
             {
-                direction = Vector3.RotateTowards(direction, newForward, rateRadPerSec * Time.fixedDeltaTime, 0f);
+                DirectionGet = Vector3.RotateTowards(DirectionGet, target, rateRadPerSec * Time.fixedDeltaTime, 0f);
                 yield return new WaitForFixedUpdate();
                 deltaRad -= rateRadPerSec * Time.fixedDeltaTime;
             }
-            direction = newForward;
+            DirectionGet = target;
         }
     }
-    public void QuickTurnLimited(Vector3 newForward, float maxDelta)
+    public void QuickTurnLimited(Vector3 target, float maxDelta)
     {
-        newForward = newForward.XZ(); //Ensure no weird rotations
+        target = target.XZ(); //Ensure no weird rotations
         if (maxDelta <= 0f) return;
 
         QuickTurnRoutine = Enum().Begin(Player.MovementBody);
         IEnumerator Enum()
         {
-            float fullDelta = Vector3.Angle(direction, newForward) * Mathf.Deg2Rad;
+            float fullDelta = Vector3.Angle(DirectionGet, target) * Mathf.Deg2Rad;
 
             while (fullDelta > 0f)
             {
-                direction = Vector3.RotateTowards(direction, newForward, maxDelta * Time.fixedDeltaTime, 0f);
+                DirectionGet = Vector3.RotateTowards(DirectionGet, target, maxDelta * Time.fixedDeltaTime, 0f);
                 yield return null;
                 fullDelta -= maxDelta * Time.fixedDeltaTime;
             }
 
-            direction = newForward;
+            DirectionGet = target;
         }
     }
     private Coroutine QuickTurnRoutine;
@@ -673,29 +684,225 @@ public sealed class PlayerMovementBody : MonoBehaviour
     #region Velocity
 
     /// <summary>
-    /// Custom velocity value.
+    /// Custom Velocity handler that has velocity in both Global and Local spaces.
     /// </summary>
-    public Vector3 velocity = new(0, 0, 0);
+    public class BodyVelocityState
+    {
+        public BodyVelocityState(Transform This) => this.transform = This;
+
+        public Transform transform;
+
+        /// <summary>
+        /// Forward Velocity
+        /// <br/> Setting this will rebuild the x and z values to match the new forward velocity.
+        /// </summary>
+        public float f
+        {
+            get => fValue;
+            set
+            {
+                fValue = value;
+                if(!allowBackwards && value < 0) fValue = 0;
+                Vector3 global = transform.TransformVector(Local);
+                zValue = global.z;
+                xValue = global.x;
+            }
+        }
+        float fValue;
+        /// <summary>
+        /// Upward Velocity (Identical to y)
+        /// </summary>
+        public float u { get => yValue; set => yValue = value; }
+        /// <summary>
+        /// Sideways Velocity
+        /// <br/> Setting this will rebuild the x and z values to match the new sideways velocity.
+        /// </summary>
+        public float s
+        {
+            get => sValue;
+            set
+            {
+                sValue = value;
+                Vector3 global = transform.TransformVector(Local);
+                zValue = global.z;
+                xValue = global.x;
+            }
+        }
+        float sValue;
+
+        /// <summary>
+        /// Velocity on the X global direction
+        /// <br/> Setting this will rebuild the f and s values to match the new x velocity.
+        /// </summary>
+        public float x
+        {
+            get => xValue;
+            set
+            {
+                xValue = value;
+                Vector3 local = transform.InverseTransformVector(Global);
+                fValue = local.z;
+                sValue = local.x;
+            }
+        }
+        float xValue;
+        /// <summary>
+        /// Velocity on the Y global direction (Identical to u)
+        /// </summary>
+        public float y
+        {
+            get => yValue; set => yValue = value;
+        }
+        float yValue;
+        /// <summary>
+        /// Velocity on the Z global direction
+        /// <br/> Setting this will rebuild the f and s values to match the new z velocity.
+        /// </summary>
+        public float z
+        {
+            get => zValue;
+            set
+            {
+                zValue = value;
+                Vector3 local = transform.InverseTransformVector(Global);
+                fValue = local.z;
+                sValue = local.x;
+            }
+        }
+        float zValue;
+
+
+
+        public Vector3 Global
+        {
+            get => new(xValue, yValue, zValue);
+            set
+            {
+                xValue = value.x;
+                yValue = value.y;
+                zValue = value.z;
+
+                Vector3 local = transform.InverseTransformVector(Global);
+                fValue = local.z;
+                sValue = local.x;
+            }
+        }
+        public Vector3 Local
+        {
+            get => new(sValue, yValue, fValue);
+            set
+            {
+                sValue = value.x;
+                yValue = value.y;
+                fValue = value.z;
+
+                Vector3 global = transform.TransformVector(Local);
+                zValue = global.z;
+                xValue = global.x;
+            }
+        }
+
+        /// <summary>
+        /// Rotational Velocity, clockwise on the Y/U axis.
+        /// </summary>
+        public float r
+        {
+            get => rValue;
+            set => rValue = value;
+        }
+        float rValue;
+        /// <summary>
+        /// How much Local Velocity is carried over upon rotation. 0-1
+        /// </summary>
+        public float cL
+        {
+            get => cLValue;
+            set
+            {
+                cLValue = Mathf.Clamp01(value);
+                if (cLValue + cGValue > 1) cGValue = 1 - cLValue;
+            }
+        }
+        float cLValue = 1f;
+        /// <summary>
+        /// How much Global Velocity is carried over upon rotation. 0-1
+        /// </summary>
+        public float cG
+        {
+            get => cGValue;
+            set
+            {
+                cLValue = Mathf.Clamp01(value);
+                if (cLValue + cGValue > 1) cGValue = 1 - cLValue;
+            }
+        }
+        float cGValue;
+
+        public bool allowBackwards = true;
+
+        public void CallThisPostRotation()
+        {
+            if (cLValue == 0 && cGValue == 0) { xValue = 0; zValue = 0; fValue = 0; sValue = 0; return; }
+
+            Vector3 adjustedGlobalValues = transform.InverseTransformVector(Global);
+
+            float fFinal = (fValue * cLValue) + (adjustedGlobalValues.z * cGValue),
+                  sFinal = (sValue * cLValue) + (adjustedGlobalValues.x * cGValue);
+
+            Vector3 finalGlobalValues = transform.TransformVector(new(sFinal, 0, fFinal));
+
+            fValue = fFinal;
+            sValue = sFinal;
+            xValue = finalGlobalValues.x;
+            zValue = finalGlobalValues.z;
+        }
+
+        public void Zero(bool horizontal = true, bool vertical = true, bool rotational = true)
+        {
+            if (horizontal)
+            {
+                fValue = 0;
+                sValue = 0;
+                xValue = 0;
+                zValue = 0;
+            }
+            if (vertical) yValue = 0;
+            if (rotational) rValue = 0;
+        }
+
+        public float magnitudeH =>
+            sValue != 0 ? MathF.Sqrt((fValue * fValue) + (sValue * sValue))
+            : fValue;
+        public float sqrMagnitudeH =>
+            sValue != 0 ? (fValue * fValue) + (sValue * sValue)
+            : fValue * fValue;
+        public float magnitude =>
+            fValue != 0 && sValue != 0 && yValue != 0         ? Mathf.Sqrt((fValue * fValue) + (sValue * sValue) + (yValue * yValue)) //All 3 NonZero
+                  : fValue != 0 && sValue == 0 && yValue == 0 ? Mathf.Sqrt(fValue * fValue) //Only F
+                  : fValue == 0 && sValue == 0 && yValue != 0 ? Mathf.Sqrt(yValue * yValue) //Only Y
+                  : fValue == 0 && sValue != 0 && yValue == 0 ? Mathf.Sqrt(sValue * sValue) //Only S
+                  : fValue != 0 && sValue == 0 && yValue != 0 ? Mathf.Sqrt((fValue * fValue) + (yValue * yValue)) // F+Y
+                  : fValue != 0 && sValue != 0 && yValue == 0 ? Mathf.Sqrt((fValue * fValue) + (sValue * sValue)) // F+S
+                  : fValue == 0 && sValue != 0 && yValue != 0 ? Mathf.Sqrt((sValue * sValue) + (yValue * yValue)) // S+Y
+            : 0; //All 3 Zero
+
+        public float sqrMagnitude =>
+            fValue != 0 && sValue != 0 && yValue != 0         ? (fValue * fValue) + (sValue * sValue) + (yValue * yValue) //All 3 NonZero
+                  : fValue != 0 && sValue == 0 && yValue == 0 ? fValue * fValue //Only F
+                  : fValue == 0 && sValue == 0 && yValue != 0 ? yValue * yValue //Only Y
+                  : fValue == 0 && sValue != 0 && yValue == 0 ? sValue * sValue //Only S
+                  : fValue != 0 && sValue == 0 && yValue != 0 ? (fValue * fValue) + (yValue * yValue) // F+Y
+                  : fValue != 0 && sValue != 0 && yValue == 0 ? (fValue * fValue) + (sValue * sValue) // F+S
+                  : fValue == 0 && sValue != 0 && yValue != 0 ? (sValue * sValue) + (yValue * yValue) // S+Y
+            : 0; //All 3 Zero
+    }
+
     /// <summary>
-    /// Custom angular velocity value.
+    /// Specialzed Doubly-Direction Velocity Property. 
+    /// <br/>Contains Local and Global velocities and automatically adjusts the other when one is changed.
+    /// <br/>Members: x-y-z f-u-s r-cL-cG 
     /// </summary>
-    [NonSerialized] public Vector3 angularVelocity = new(0, 0, 0);
-
-    public void VelocitySet(float? x = null, float? y = null, float? z = null)
-    {
-        velocity = new Vector3(
-            x ?? velocity.x,
-            y ?? velocity.y,
-            z ?? velocity.z
-            );
-    }
-
-    public float CurrentSpeed
-    {
-        get => currentSpeed;
-        set => currentSpeed = value >= 0 ? value : 0;
-    }
-    [HideInEditMode, DisableInPlayMode, SerializeField] private float currentSpeed;
+    public BodyVelocityState velocity { get; private set; }
 
     public float movementModifier = 1;
 
@@ -1154,15 +1361,20 @@ public sealed class PlayerMovementBody : MonoBehaviour
     #region Gravity
 
     /// <summary>
+    /// Runs the calculations to automatically apply the current gravity to this body.
+    /// </summary>
+    public void ApplyGravity() => velocity.u -= gravity * Time.fixedDeltaTime;
+
+    /// <summary>
+    /// The active gravity value. (Inverted. y=1 is down.)
+    /// </summary>
+    private float gravity = 9.8f;
+
+    /* 3D Gravity (Not Necessary for this project.)
+    /// <summary>
     /// The active gravity value. (Inverted. y=1 is down.)
     /// </summary>
     [NonSerialized] private Vector3 gravity = new(0, 9.8f, 0);
-
-
-    /// <summary>
-    /// Runs the calculations to automatically apply the current gravity to this body.
-    /// </summary>
-    public void ApplyGravity() => velocity -= gravity * Time.fixedDeltaTime;
 
     /// <summary>
     /// Returns the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
@@ -1190,7 +1402,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
     /// <param name="newY"> The new gravity value on the y axis. (1 = down.) </param>
     /// <param name="newZ"> The new gravity value on the z axis. (1 = back.) </param>
     public void SetGravity(float newX, float newY, float newZ) => gravity = new(newX, newY, newZ);
-
+    */
 
 
     #endregion Gravity
@@ -1340,8 +1552,8 @@ public sealed class PlayerMovementBody : MonoBehaviour
         private Label _currentVentNameLabel;
 
         // Runtime value labels (cached)
-        private Label _velLabel;
-        private Label _speedLabel;
+        private Label _velLabelA;
+        private Label _velLabelB;
         private Label _jumpStateLabel;
         private Label _onNavMeshLabel;
         private Label _navDestLabel;
@@ -1426,8 +1638,8 @@ public sealed class PlayerMovementBody : MonoBehaviour
             runtimeContainer.style.paddingTop = 4;
 
             // Instantiate value labels
-            _velLabel = new Label();
-            _speedLabel = new Label();
+            _velLabelA = new Label();
+            _velLabelB = new Label();
             _jumpStateLabel = new Label();
             _onNavMeshLabel = new Label();
             _navDestLabel = new Label();
@@ -1463,8 +1675,8 @@ public sealed class PlayerMovementBody : MonoBehaviour
             }
 
             // Add rows
-            runtimeContainer.Add(CreateRow(_velNameLabel, _velLabel));
-            runtimeContainer.Add(CreateRow(_speedNameLabel, _speedLabel));
+            runtimeContainer.Add(CreateRow(_velNameLabel, _velLabelA));
+            runtimeContainer.Add(CreateRow(_velNameLabel, _velLabelB));
             runtimeContainer.Add(CreateRow(_jumpStateNameLabel, _jumpStateLabel));
             runtimeContainer.Add(CreateRow(_onNavMeshNameLabel, _onNavMeshLabel));
 
@@ -1543,8 +1755,8 @@ public sealed class PlayerMovementBody : MonoBehaviour
             // Update textual info; guard with try/catch to avoid throwing during domain reloads
             try
             {
-                _velLabel.text = pb.velocity.ToString("F3");
-                _speedLabel.text = pb.CurrentSpeed.ToString("F3");
+                _velLabelA.text = pb.velocity.Local.ToString("F3");
+                _velLabelB.text = pb.velocity.Global.ToString("F3");
                 _jumpStateLabel.text = pb.JumpStateCurrent.ToString();
                 _onNavMeshLabel.text = pb.OnNavMesh ? "Yes" : "No";
 
@@ -1555,9 +1767,9 @@ public sealed class PlayerMovementBody : MonoBehaviour
                 // Toggle visibility of the nav row
                 _navRow.style.display = showNav ? DisplayStyle.Flex : DisplayStyle.None;
 
-                _gravityLabel.text = pb.Get3DGravity().ToString("F3");
+                _gravityLabel.text = pb.gravity.ToString();
 
-                _directionLabel.text = pb.direction.ToString("F3");
+                _directionLabel.text = pb.DirectionGet.ToString("F3");
 
                 // Anchor reflection: only show when collider is present
                 var anchorObj = typeof(PlayerMovementBody)

@@ -55,7 +55,7 @@ public class PlayerGrabber : MonoBehaviour
     {
         if (currentGrabbed == null) return;
         Vector3 throwDirection = direction;
-        Vector3 throwVelocity = throwDirection * launchVelocity + Player.MovementBody.velocity;
+        Vector3 throwVelocity = throwDirection * launchVelocity + Player.MovementBody.velocity.Global;
         currentGrabbed?.Throw(throwVelocity);
         currentGrabbed = null;
         GrabStateEvent?.Invoke(false);

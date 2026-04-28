@@ -32,33 +32,33 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         
     }
 
-    public override void VerticalMovement(out float? result)
+    public override bool VerticalMovement(out float result)
     {
         result = ApplyGravity(gravity, terminalVelocity, flatGravity);
         if (isUpward) VerticalUpwards(ref result);
-        else if (playerMovementBody.velocity.y <= fallStateThreshold && fallState != this) Fall(ref result);
-
+        else if (Player.MovementBody.velocity.y <= fallStateThreshold && fallState != this) Fall(ref result);
+        return true;
     }
 
-    protected virtual void VerticalUpwards(ref float? Y)
+    protected virtual void VerticalUpwards(ref float Y)
     {
-        if (playerMovementBody.JumpStateCurrent == PlayerMovementBody.JumpState.Jumping && transform.position.y >= targetMinHeight) 
-            playerMovementBody.UnLand(PlayerMovementBody.JumpState.Decelerating);
-        if (playerMovementBody.JumpStateCurrent == PlayerMovementBody.JumpState.Decelerating && transform.position.y >= targetHeight) 
-            playerMovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
+        if (Player.MovementBody.JumpStateCurrent == PlayerMovementBody.JumpState.Jumping && transform.position.y >= targetMinHeight) 
+            Player.MovementBody.UnLand(PlayerMovementBody.JumpState.Decelerating);
+        if (Player.MovementBody.JumpStateCurrent == PlayerMovementBody.JumpState.Decelerating && transform.position.y >= targetHeight) 
+            Player.MovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
 
-        if (playerMovementBody.JumpStateCurrent < PlayerMovementBody.JumpState.Decelerating) 
+        if (Player.MovementBody.JumpStateCurrent < PlayerMovementBody.JumpState.Decelerating) 
             Y = jumpPower;
-        if (playerMovementBody.JumpStateCurrent > PlayerMovementBody.JumpState.Jumping &&
-           (playerMovementBody.velocity.y <= fallStateThreshold || (allowMidFall && !Input.Jump.IsPressed())))
+        if (Player.MovementBody.JumpStateCurrent > PlayerMovementBody.JumpState.Jumping &&
+           (Player.MovementBody.velocity.y <= fallStateThreshold || (allowMidFall && !Input.Jump.IsPressed())))
             Fall(ref Y);
 
     }
 
-    protected virtual void Fall(ref float? Y)
+    protected virtual void Fall(ref float Y)
     {
-        if (playerMovementBody.velocity.y > fallStateThreshold) Y = fallStateThreshold;
-        playerMovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
+        if (Player.MovementBody.velocity.y > fallStateThreshold) Y = fallStateThreshold;
+        Player.MovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
         if (fallState != null) fallState.Enter();
     }
 
@@ -69,7 +69,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
         PrepPhase(out PlayerMovementBody.JumpState nextJumpPhase);
 
-        playerMovementBody.UnLand(nextJumpPhase);
+        Player.MovementBody.UnLand(nextJumpPhase);
         switch (nextJumpPhase)
         {
             case PlayerMovementBody.JumpState.Jumping: StartFrom_Jump(); break;
@@ -83,24 +83,24 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         nextJumpPhase = defaultPhase;
         if (nextJumpPhase < PlayerMovementBody.JumpState.Jumping)
         {
-            nextJumpPhase = playerMovementBody.JumpStateCurrent;
+            nextJumpPhase = Player.MovementBody.JumpStateCurrent;
             if (nextJumpPhase < PlayerMovementBody.JumpState.Jumping) nextJumpPhase = PlayerMovementBody.JumpState.Jumping;
         }
     }
 
     protected virtual void StartFrom_Jump()
     {
-        playerMovementBody.VelocitySet(y: jumpPower);
+        Player.MovementBody.velocity.y = jumpPower;
         targetMinHeight = transform.position.y + jumpMinHeight;
         targetHeight = (transform.position.y + jumpHeight) - (jumpPower.P()) / (2 * gravity);
         if (targetHeight <= transform.position.y)
         {
-            playerMovementBody.VelocitySet(y: Mathf.Sqrt(2 * gravity * jumpHeight));
+            Player.MovementBody.velocity.y = Mathf.Sqrt(2 * gravity * jumpHeight);
             targetMinHeight = transform.position.y;
         }
 
 #if UNITY_EDITOR
-        playerMovementBody.jumpMarkers = new()
+        Player.MovementBody.jumpMarkers = new()
                 {
                     transform.position,
                     transform.position + Vector3.up * targetHeight,
@@ -114,7 +114,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     }
     protected virtual void StartFrom_Falling()
     {
-        playerMovementBody.VelocitySet(y: playerMovementBody.velocity.y.Max(0));
+        Player.MovementBody.velocity.y = Player.MovementBody.velocity.y.Max(0);
     }
 
 

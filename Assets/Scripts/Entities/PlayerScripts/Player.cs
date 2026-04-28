@@ -207,9 +207,13 @@ public class Player : MonoBehaviour
     public static Vector3 EularAngles => Transform.eulerAngles;
 
     /// <summary>
-    /// The current velocity of the <see cref="Player"/>'s <see cref="PlayerMovementBody"/>.
+    /// The current (Local) velocity of the <see cref="Player"/>'s <see cref="PlayerMovementBody"/>.
     /// </summary>
-    public static Vector3 Velocity => MovementBody.velocity;
+    public static Vector3 VelocityLocal => MovementBody.velocity.Local;
+    /// <summary>
+    /// The current (Global) velocity of the <see cref="Player"/>'s <see cref="PlayerMovementBody"/>.
+    /// </summary>
+    public static Vector3 VelocityGlobal => MovementBody.velocity.Global;
 
     /// <param name="pos">The position to be compared.</param>
     /// <returns>The distance between the <see cref="Player"/> and and a given position, such as an enemy.</returns>
@@ -229,7 +233,7 @@ public class Player : MonoBehaviour
         StateMachine.ResetState();
         Cameras.currentVirtualCamera.PreviousStateIsValid = false;
         Cameras.currentVirtualCamera.OnTargetObjectWarped(Transform, camDelta);
-        MovementBody.velocity = Vector3.zero;
+        MovementBody.velocity.Zero();
     }
 
     public static bool IsPlayer(Component C) => Exists && C != null && C.gameObject == GameObject;
@@ -447,10 +451,10 @@ public class Player : MonoBehaviour
     }
     private static void DeathOrPit()
     {
-        Vector3 targetVelocity = MovementBody.velocity;
+        Vector3 targetVelocity = MovementBody.velocity.Global;
         Audio.PlayOneShot("Death");
         StateMachine.Ragdoll.Enter();
-        MovementBody.velocity = Vector3.zero;
+        MovementBody.velocity.Zero();
         RagdollHandler.State = RagdollHandler.States.Thrown;
         RagdollHandler.SetVelocity(targetVelocity * 0.75f);
         Animator.enabled = false;

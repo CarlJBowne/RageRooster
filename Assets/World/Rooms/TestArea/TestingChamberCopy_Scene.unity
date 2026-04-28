@@ -1445,7 +1445,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 53802
+    surfaceParameter: 53832
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
@@ -2755,7 +2755,6 @@ MonoBehaviour:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
-  immuneTags_Old: []
   immuneTags:
     intValue: 0
   health: 0
@@ -2919,29 +2918,17 @@ MonoBehaviour:
     velocity: {x: -10, y: 0, z: 0}
     tags:
       intValue: 0
-    oldTags:
-    - name: Punch
     _displayName: 
   - amount: 15
     velocity: {x: 0, y: 15, z: 0}
     tags:
       intValue: 0
-    oldTags:
-    - name: Punch
-    - name: Uppercut
-    - name: Wham
     _displayName: 
   - amount: 15
     velocity: {x: -15, y: 0, z: 0}
     tags:
       intValue: 0
-    oldTags:
-    - name: Punch
-    - name: Uppercut
-    - name: Wham
     _displayName: 
-  additionalTags_Old:
-  - name: FromPlayer
   additionalTags:
     intValue: 0
   enabled: 1
@@ -4342,13 +4329,7 @@ MonoBehaviour:
     velocity: {x: -5, y: 20, z: 0}
     tags:
       intValue: 0
-    oldTags:
-    - name: Headbutt
     _displayName: 
-  additionalTags_Old:
-  - name: FromPlayer
-  - name: Wham
-  - name: Headbutt
   additionalTags:
     intValue: 0
   enabled: 1
@@ -5566,11 +5547,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPool:
-    prefabObject: {fileID: 3500639052055708832, guid: 1321a3ef03ad2e64d9fd745d79e72abe,
-      type: 3}
-    defaultPoolDepth: 8
+    prefabObject: {fileID: 0}
+    defaultPoolDepth: 1
     canGrow: 1
-    parent: {fileID: 1457079448}
+    parent: {fileID: 0}
     autoDisableTime: -1
     spawnPoint: {fileID: 0}
     rotate: 0
@@ -5588,9 +5568,8 @@ MonoBehaviour:
   wallsToDisable:
   - {fileID: 154589803}
   - {fileID: 1012559556}
-  worldChange: {fileID: 8113563479148203286, guid: 546d60c46cc1b4c4fb90fec693b180d8,
-    type: 2}
-  trigger: {fileID: 718936657}
+  worldChange: {fileID: 0}
+  trigger: {fileID: 0}
 --- !u!1 &581689740
 GameObject:
   m_ObjectHideFlags: 0
@@ -5870,7 +5849,7 @@ MonoBehaviour:
   <RootGameObjects>k__BackingField:
   - {fileID: 615939426}
   - {fileID: 1112968315}
-  - {fileID: 1818353720}
+  - {fileID: 1676550761}
   <RoomActors>k__BackingField:
     list:
     - {fileID: 128197235}
@@ -7508,10 +7487,7 @@ MonoBehaviour:
     velocity: {x: 0, y: 0, z: 0}
     tags:
       intValue: 0
-    oldTags:
-    - name: Pit
     _displayName: 
-  additionalTags_Old: []
   additionalTags:
     intValue: 0
   enabled: 1
@@ -8466,7 +8442,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 54446
+    surfaceParameter: 54476
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
@@ -9837,7 +9813,6 @@ MonoBehaviour:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
-  immuneTags_Old: []
   immuneTags:
     intValue: 0
   health: 0
@@ -10026,20 +10001,12 @@ MonoBehaviour:
     velocity: {x: 10, y: 0, z: 0}
     tags:
       intValue: 0
-    oldTags:
-    - name: Punch
     _displayName: 
   - amount: 15
     velocity: {x: 25, y: 0, z: 0}
     tags:
       intValue: 0
-    oldTags:
-    - name: Punch
-    - name: Uppercut
-    - name: Wham
     _displayName: 
-  additionalTags_Old:
-  - name: FromPlayer
   additionalTags:
     intValue: 0
   enabled: 1
@@ -12158,11 +12125,11 @@ MonoBehaviour:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
-  immuneTags_Old: []
   immuneTags:
     intValue: 0
   health: 0
-  requiredTag: Explosion
+  requiredTags:
+    intValue: 0
   basicDelete: 1
 --- !u!65 &1271075593
 BoxCollider:
@@ -13146,10 +13113,6 @@ MonoBehaviour:
     velocity: {x: 0, y: 16, z: 16}
     tags:
       intValue: 0
-    oldTags:
-    - name: FromPlayer
-    - name: Kick
-    - name: Wham
     _displayName: 
   sourceEntity: {fileID: 0}
 --- !u!54 &1356522311
@@ -15401,6 +15364,74 @@ CapsuleCollider:
   m_Height: 0.51649755
   m_Direction: 0
   m_Center: {x: -0.14, y: -0.009391682, z: -0.0000015224635}
+--- !u!1 &1676550761
+GameObject:
+  m_ObjectHideFlags: 17
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1676550763}
+  - component: {fileID: 1676550762}
+  m_Layer: 0
+  m_Name: '[default-CSGModel]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 124
+  m_IsActive: 1
+--- !u!114 &1676550762
+MonoBehaviour:
+  m_ObjectHideFlags: 17
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676550761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8672dcc90e16b0a489a41edf56e016f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp-firstpass::RealtimeCSG.Components.CSGModel
+  PrefabBehaviour: 0
+  PrefabSourceAlignment: 4
+  PrefabDestinationAlignment: 0
+  Version: 1.1
+  infiniteBrush: {fileID: 0}
+  Settings: 1025
+  VertexChannels: 14
+  ReceiveGI: 2
+  MeshColliderCookingOptions: 14
+  ShowGeneratedMeshes: 0
+  DefaultPhysicsMaterial: {fileID: 13400000, guid: 0c5fdfb44d6f19646a41a0720fbf751a,
+    type: 2}
+  exportType: 0
+  originType: 0
+  exportColliders: 0
+  exportPath: 
+  angleError: 1
+  areaError: 1
+  hardAngle: 60
+  packMargin: 20
+  scaleInLightmap: 1
+  autoUVMaxDistance: 0.5
+  autoUVMaxAngle: 89
+  minimumChartSize: 4
+--- !u!4 &1676550763
+Transform:
+  m_ObjectHideFlags: 17
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1676550761}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1679438379
 GameObject:
   m_ObjectHideFlags: 0
@@ -16865,74 +16896,6 @@ MonoBehaviour:
     - EdgeIndices: 07000000060000000500000004000000
       TexGenIndex: 5
     Generation: 2
---- !u!1 &1818353720
-GameObject:
-  m_ObjectHideFlags: 17
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1818353722}
-  - component: {fileID: 1818353721}
-  m_Layer: 0
-  m_Name: '[default-CSGModel]'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 124
-  m_IsActive: 1
---- !u!114 &1818353721
-MonoBehaviour:
-  m_ObjectHideFlags: 17
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818353720}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8672dcc90e16b0a489a41edf56e016f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp-firstpass::RealtimeCSG.Components.CSGModel
-  PrefabBehaviour: 0
-  PrefabSourceAlignment: 4
-  PrefabDestinationAlignment: 0
-  Version: 1.1
-  infiniteBrush: {fileID: 0}
-  Settings: 1025
-  VertexChannels: 14
-  ReceiveGI: 2
-  MeshColliderCookingOptions: 14
-  ShowGeneratedMeshes: 0
-  DefaultPhysicsMaterial: {fileID: 13400000, guid: 0c5fdfb44d6f19646a41a0720fbf751a,
-    type: 2}
-  exportType: 0
-  originType: 0
-  exportColliders: 0
-  exportPath: 
-  angleError: 1
-  areaError: 1
-  hardAngle: 60
-  packMargin: 20
-  scaleInLightmap: 1
-  autoUVMaxDistance: 0.5
-  autoUVMaxAngle: 89
-  minimumChartSize: 4
---- !u!4 &1818353722
-Transform:
-  m_ObjectHideFlags: 17
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1818353720}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1820741867
 GameObject:
   m_ObjectHideFlags: 0
@@ -17331,7 +17294,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 54446
+    surfaceParameter: 54476
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
@@ -17715,7 +17678,6 @@ MonoBehaviour:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
-  immuneTags_Old: []
   immuneTags:
     intValue: 0
   health: 0
@@ -20413,4 +20375,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 615939428}
   - {fileID: 1112968318}
-  - {fileID: 1818353722}
+  - {fileID: 1676550763}

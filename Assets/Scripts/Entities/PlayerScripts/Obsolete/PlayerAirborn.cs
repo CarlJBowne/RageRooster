@@ -29,18 +29,18 @@ public class PlayerAirborn : PlayerStateBehavior
 
     protected override void OnFixedUpdate()
     {
-        playerMovementBody.VelocitySet(y: ApplyGravity());
+        Player.MovementBody.velocity.y = ApplyGravity();
 
         if (jumpHeight <= 0) return;
 
         if (phase == 0 && transform.position.y >= targetMinHeight) phase = 1;
         if (phase == 1 && transform.position.y >= targetHeight) phase = 2;
-        if (phase == 2 && playerMovementBody.velocity.y < 0) phase = 3; 
+        if (phase == 2 && Player.MovementBody.velocity.y < 0) phase = 3; 
 
-        if (phase < 2) playerMovementBody.VelocitySet(y: jumpPower);
-        if (playerMovementBody.velocity.y <= 0 || (allowMidFall && phase > 0 && !Input.Jump.IsPressed()))
+        if (phase < 2) Player.MovementBody.velocity.y = jumpPower;
+        if (Player.MovementBody.velocity.y <= 0 || (allowMidFall && phase > 0 && !Input.Jump.IsPressed()))
         {
-            if (playerMovementBody.velocity.y > 0) playerMovementBody.VelocitySet(y: 0);
+            if (Player.MovementBody.velocity.y > 0) Player.MovementBody.velocity.y = 0;
             phase = 3;
             if (fallState != null) fallState.State.Enter();
         }
@@ -51,18 +51,18 @@ public class PlayerAirborn : PlayerStateBehavior
     {
         if (jumpPower == 0) return;
         phase = 0;
-        playerMovementBody.VelocitySet(y: jumpPower);
+        Player.MovementBody.velocity.y = jumpPower;
         if (jumpPower <= 0) return;
         targetMinHeight = transform.position.y + jumpMinHeight;
         targetHeight = (transform.position.y + jumpHeight) - (jumpPower.P()) / (2 * gravity);
         if (targetHeight <= transform.position.y)
         {
-            playerMovementBody.VelocitySet(y: Mathf.Sqrt(2 * gravity * jumpHeight));
+            Player.MovementBody.velocity.y = Mathf.Sqrt(2 * gravity * jumpHeight);
             targetMinHeight = transform.position.y;
         }
 
 #if UNITY_EDITOR
-        playerMovementBody.jumpMarkers = new()
+        Player.MovementBody.jumpMarkers = new()
         {
             transform.position,
             transform.position + Vector3.up * targetHeight,
@@ -75,7 +75,7 @@ public class PlayerAirborn : PlayerStateBehavior
     protected float ApplyGravity()
     {
         return  (!flatGravity 
-            ? playerMovementBody.velocity.y - (gravity * Time.deltaTime) 
+            ? Player.MovementBody.velocity.y - (gravity * Time.deltaTime) 
             : -gravity * Time.deltaTime
             ).Min(-terminalVelocity);
     }

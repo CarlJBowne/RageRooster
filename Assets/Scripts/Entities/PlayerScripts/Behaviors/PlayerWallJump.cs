@@ -22,34 +22,34 @@ public class PlayerWallJump : PlayerMovementEffector
     protected Vector3 fixedDirection;
 
 
-    public override void HorizontalMovement(out float? resultX, out float? resultZ)
+    public override bool ForwardMovement(out float resultF)
     {
-        resultX = fixedDirection.x * outwardVelocity;
-        resultZ = fixedDirection.z * outwardVelocity;
-
-        playerMovementBody.CurrentSpeed = outwardVelocity;
-        //playerMovementBody.direction = fixedDirection;
+        resultF = outwardVelocity;
 
         float distance = (transform.position - startPoint).XZ().magnitude;
         if (distance >= minDistance) Player.StateMachine.Falling.Enter();
-
+        return true;
     }
-    public override void VerticalMovement(out float? result) => result = ApplyGravity(gravity, terminalVelocity, flatGravity);
+    public override bool VerticalMovement(out float result)
+    {
+        result = ApplyGravity(gravity, terminalVelocity, flatGravity);
+        return true;
+    }
 
     public bool WallJump(Vector3 direction)
     {
-        if (playerMovementBody.SweepBody(playerMovementBody.direction * 0.5f, out RaycastHit hit, playerMovementBody.GroundCheckBuffer))
+        if (Player.MovementBody.SweepBody(Player.MovementBody.DirectionGet * 0.5f, out RaycastHit hit, Player.MovementBody.GroundCheckBuffer))
         {
             if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return false;
 
             if (!State.Active) State.Enter();
             Player.Animator.Play(animationName, -1, 0f);
-            playerMovementBody.VelocitySet(y: jumpPower);
+            Player.MovementBody.velocity.y = jumpPower;
 
             startPoint = transform.position;
             fixedDirection = hit.normal.XZ();
 
-            playerMovementBody.InstantDirectionChange(fixedDirection);
+            Player.MovementBody.DirectionSet(fixedDirection);
 
             State.Enter();
             return true;

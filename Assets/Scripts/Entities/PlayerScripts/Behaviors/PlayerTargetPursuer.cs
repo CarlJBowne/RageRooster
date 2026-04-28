@@ -49,10 +49,9 @@ public class PlayerTargetPursuer : StateTimeline
         SampleCurve(turningSpeedCurve, out float turningSpeed);
         SampleCurve(verticalShiftCurve, out float verticalShift);
 
-        if (turningSpeed > 0) Player.MovementBody.DirectionSet((target.position - Player.Transform.position).XZ(), turningSpeed);
+        if (turningSpeed > 0) Player.MovementBody.DirectionSet((target.position - Player.Transform.position).XZ(), turningSpeed * Time.fixedDeltaTime);
 
-        Vector3 targetVelocity = Player.MovementBody.velocity;
-        float targetForwardSpeed = Player.MovementBody.CurrentSpeed;
+        float targetForwardSpeed = Player.MovementBody.velocity.sqrMagnitudeH;
 
 
         if (forwardSpeedInfluence > 0f)
@@ -61,15 +60,12 @@ public class PlayerTargetPursuer : StateTimeline
                 * (Vector3.Distance(Player.Position, targetPosition) > closeDistance).Int());
         }
 
-        Player.MovementBody.CurrentSpeed = targetForwardSpeed;
-        targetVelocity.x = (targetPosition - Player.Position).x * targetForwardSpeed;
-        targetVelocity.z = (targetPosition - Player.Position).z * targetForwardSpeed;
+        Player.MovementBody.velocity.x = (targetPosition - Player.Position).x * targetForwardSpeed;
+        Player.MovementBody.velocity.z = (targetPosition - Player.Position).z * targetForwardSpeed;
 
-        targetVelocity.y = verticalShift > 0f
+        Player.MovementBody.velocity.y = verticalShift > 0f
             ? verticalShift * (targetPosition.y - Player.Position.y).Sign()
             : Player.MovementBody.velocity.y;
-
-        Player.MovementBody.VelocitySet(targetVelocity.x, targetVelocity.y, targetVelocity.z);
 
         if (elapsedTime >= length) End();
     }
