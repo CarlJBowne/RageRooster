@@ -93,3 +93,17 @@ public class PlayerGroundMovement : PlayerMovementEffector
     public void EnterNoAnimation() => DoEnter();
     public void EnterFadeSynced(float time) => Player.Animator.CrossFade(name, time, 0, Player.Animator.GetCurrentAnimatorStateInfo(-1).normalizedTime);
 }
+
+public static class _________HELPER_PUT_SOMEWHERE_ELSE_LATER
+{
+    public static void Trigger(this Animator anim, string triggerName)
+    {
+        Wait().Begin(anim);
+        IEnumerator Wait()
+        {
+            anim.SetTrigger(triggerName);
+            yield return null;
+            anim.ResetTrigger(triggerName);
+        }
+    }
+}

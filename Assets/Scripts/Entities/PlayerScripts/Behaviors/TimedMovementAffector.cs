@@ -92,8 +92,8 @@ namespace SLS.StateMachineH.Timelines
             if (turnability > 0f && controlVector.sqrMagnitude > 0.000001f)
                 Player.MovementBody.DirectionSet(controlVector.normalized, turnability * Time.fixedDeltaTime);
 
-            Player.MovementBody.velocity.f = controlVector.sqrMagnitude > 0f
-                ? Player.MovementBody.velocity.f.Move(controlVector.magnitude * speedChange * (delta * 50f), maxForwardMovement)
+            Player.MovementBody.velocity.f = controlVector.sqrMagnitude > 0f && Vector3.Dot(controlVector, Player.Forward) > 0f
+                ? Player.MovementBody.velocity.f.Move(speedChange * (delta * 50f), maxForwardMovement)
                 : Player.MovementBody.velocity.f.Move(speedChange * (delta * 50f), minForwardMovement);
 
             Player.MovementBody.velocity.s = sidewaysMovement;

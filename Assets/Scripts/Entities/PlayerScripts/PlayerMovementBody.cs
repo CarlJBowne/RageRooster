@@ -821,7 +821,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
                 if (cLValue + cGValue > 1) cGValue = 1 - cLValue;
             }
         }
-        float cLValue;
+        float cLValue = 1f;
         /// <summary>
         /// How much Global Velocity is carried over upon rotation. 0-1
         /// </summary>
