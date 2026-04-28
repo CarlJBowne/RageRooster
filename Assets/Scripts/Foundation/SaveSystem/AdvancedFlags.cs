@@ -12,8 +12,9 @@ using UnityEditor;
 namespace RageRooster.Systems.SaveSystem.Flags
 {
     [System.Serializable]
-    public abstract class Flag : ICloneable<Flag>
+    public abstract class Flag : Polymorph, ICloneable<Flag>
     {
+        public string Name { get; set; }
 
         public bool IsType<T>() => type == TypeEnumFromCType<T>();
         public static Type TypeEnumFromCType<T>()

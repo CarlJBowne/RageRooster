@@ -40,4 +40,12 @@ namespace Services
         public static Action Respawn;
         public static Action EndGame;
     }
+    public static class Player
+    {
+        public static class Stats
+        {
+            public static Action<int, int, int> ResetService;
+            public static void Reset(int maxHealth, int maxAmmo, int currency) => ResetService?.Invoke(maxHealth, maxAmmo, currency);
+        }
+    }
 }

@@ -284,11 +284,12 @@ namespace RageRooster.Systems.SaveSystem
         {
             IO.LoadFromFile(Current);
             Clone(Current, DeathReloadData);
-            Player.Health.Max = Current.playerStats.maxHealth;
-            Player.Health.Current = Player.Health.Max;
-            Player.Ammo.Max = Current.playerStats.maxAmmo;
-            Player.Ammo.Current = Player.Ammo.Max;
-            Player.Currency.Current = Current.playerStats.currency;
+            Services.Player.Stats.Reset(Current.playerStats.maxHealth, Current.playerStats.maxAmmo, Current.playerStats.currency);
+            //Player.Health.Max = Current.playerStats.maxHealth;
+            //Player.Health.Current = Player.Health.Max;
+            //Player.Ammo.Max = Current.playerStats.maxAmmo;
+            //Player.Ammo.Current = Player.Ammo.Max;
+            //Player.Currency.Current = Current.playerStats.currency;
         }
         /// <summary>
         /// Saves the current Data to disk.
