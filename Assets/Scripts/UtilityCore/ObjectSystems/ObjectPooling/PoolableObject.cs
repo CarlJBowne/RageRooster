@@ -23,6 +23,7 @@ namespace Utilities.ObjectPooling
                 gameObject.SetActive(value);
                 if (_active) spawnTime = Time.time;
                 else pool.OnInstanceDisable(this);
+                (value ? onActivate : onDeactivate)?.Invoke();
             }
             get => _active;
         }
@@ -30,6 +31,8 @@ namespace Utilities.ObjectPooling
         private bool _active;
         public float spawnTime { private set; get; }
         public bool initialized { get; private set; } = false;
+        public Action onActivate;
+        public Action onDeactivate;
 
         private void Awake() => gameObject.SetActive(false);
 

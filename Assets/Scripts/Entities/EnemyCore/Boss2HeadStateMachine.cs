@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EditorAttributes;
 using UnityEngine.Animations.Rigging;
+using Utilities.ObjectPooling;
 
 public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
 {
@@ -17,7 +18,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
 
     [DisableInEditMode, DisableInPlayMode] public string currentState = "NULL";
 
-    public ObjectPool_OBSOLETE projectilePool;
+    public ObjectPool projectilePool;
     [Range(0f, 1f)] public float projectileChance = 1f / 3f;
 
 
@@ -66,7 +67,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
 
     protected void FixedUpdate()
     {
-        projectilePool.Update();
+        projectilePool.Update(Time.fixedDeltaTime);
         if (hitStunCoroutine) return;
         if (currentState == "Idle")
         {
@@ -216,16 +217,16 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
 
         if (headID == FinalBossHead.Pecky && Random.Range(0f, 1f) <= projectileChance)
         {
-            PoolableObject_OBSOLETE projectile = projectilePool.Pump();
+            PoolableObject projectile = projectilePool.Pump();
             if (projectile != null)
             {
                 projectile.transform.position -= Direction.front;
-                projectile.rb.linearVelocity = Direction.upBack;
+                projectile.GetComponent<Rigidbody>().linearVelocity = Direction.upBack;
             }
         }
         else if (headID == FinalBossHead.Slasher)
         {
-            PoolableObject_OBSOLETE projectile = projectilePool.Pump();
+            PoolableObject projectile = projectilePool.Pump();
             projectile.transform.localScale = .1f * Direction.one;
         }
         else if (headID == FinalBossHead.Stumpy)

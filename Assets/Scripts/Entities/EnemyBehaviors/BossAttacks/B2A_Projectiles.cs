@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities.ObjectPooling;
 
 public class B2A_Projectiles : MonoBehaviour
 {
-    public ObjectPool_OBSOLETE pool;
+    public ObjectPool pool;
 
     public FinalBossHead bossID;
 

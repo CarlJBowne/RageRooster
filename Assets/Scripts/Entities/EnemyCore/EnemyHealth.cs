@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Utilities.ObjectPooling;
 using static UnityEngine.Rendering.DebugUI;
 
 public class EnemyHealth : Health
@@ -42,9 +43,9 @@ public class EnemyHealth : Health
     {
         base.Awake();
         startPosition = transform.position;
-        if (TryGetComponent(out PoolableObject_OBSOLETE pool))
+        if (TryGetComponent(out PoolableObject pool))
         {
-            pool.onActivate += Respawn;
+            pool.onDeactivate += Respawn;
             respawnTime = 0;
         }
         enemyLootSpawner = GetComponent<EnemyLootSpawner>();
@@ -130,7 +131,7 @@ public class EnemyHealth : Health
             gameObject.SetActive(false);
             Invoke(nameof(Respawn), respawnTime);
         }
-        else if (PoolableObject_OBSOLETE.Is(gameObject)) PoolableObject_OBSOLETE.Is(gameObject).Disable();
+        else if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Active = false;
         else Destroy(gameObject);
     }
 

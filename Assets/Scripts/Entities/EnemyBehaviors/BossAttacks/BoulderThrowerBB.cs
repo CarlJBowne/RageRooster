@@ -2,6 +2,7 @@ using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities.ObjectPooling;
 
 public class BoulderThrowerBB : MonoBehaviour
 {
@@ -9,8 +10,8 @@ public class BoulderThrowerBB : MonoBehaviour
     public float throwTime;
     public float minVelocity;
 
-    public ObjectPool_OBSOLETE projectiles;
-    public ObjectPool_OBSOLETE warnings;
+    public ObjectPool projectiles;
+    public ObjectPool warnings;
     public Transform fakeMuzzle;
     public Transform trueMuzzle;
 
@@ -23,13 +24,13 @@ public class BoulderThrowerBB : MonoBehaviour
 
     private void Update()
     {
-        warnings.Update();
-        projectiles.Update();
+        warnings.Update(Time.deltaTime);
+        projectiles.Update(Time.deltaTime);
     }
 
     public void Launch()
     {
-        if (projectiles.prefabObject == null) return;
+        if (projectiles.prefab == null) return;
 
         Vector3 trueTarget = target.position + (inaccuracy * Random.insideUnitCircle.ToXZ());
         trueMuzzle.position = fakeMuzzle.position;
@@ -42,9 +43,9 @@ public class BoulderThrowerBB : MonoBehaviour
         PhysicsPro.ThrowAt.WithTimeAndMinVelocity(targetDistanceXY, throwTime, -Physics.gravity.y, minVelocity, out float initialVelocity, out float angle);
 
         trueMuzzle.eulerAngles = trueMuzzle.eulerAngles - (Vector3.right * angle);
-        PoolableObject_OBSOLETE boulder = projectiles.Pump();
+        PoolableObject boulder = projectiles.Pump();
         boulder.SetPosition(trueMuzzle.position);
-        boulder.rb.linearVelocity = initialVelocity * trueMuzzle.forward; 
+        boulder.GetComponent<Rigidbody>().linearVelocity = initialVelocity * trueMuzzle.forward;
 
     }
 
