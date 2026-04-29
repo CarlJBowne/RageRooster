@@ -108,19 +108,4 @@ public class PlayerStateMachine : StateMachine
     }
 
     public void DeathIfAtZero() { if (Player.Health.playerObject.GetCurrentHealth() == 0) Player.Death(); }
-
-#if UNITY_EDITOR
-    protected override void Update()
-    {
-        base.Update();
-        //queuedSignals = signalQueue.ToList();
-    }
-    public List<string> queuedSignals;
-#endif
-
-    protected override void FixedUpdate()
-    {
-        //DebugRR.DebugTextOverlay.ClearText();
-        base.FixedUpdate();
-    }
 }

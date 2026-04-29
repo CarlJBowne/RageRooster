@@ -7,6 +7,8 @@ using System;
 using System.Linq;
 using UnityEngine.UIElements;
 using Utilities.Xtensions.VisualElements;
+using Utilities.Xtensions;
+
 
 
 #if UNITY_EDITOR
@@ -348,7 +350,7 @@ namespace RageRooster.RoomSystem
                 var root = new VisualElement();
 
                 // Area link or orphan warning
-                SerializedProperty areaProp = serializedObject.FindProperty(nameof(RoomAsset.area), backingField: true);
+                SerializedProperty areaProp = serializedObject.FindProperty(nameof(RoomAsset.area).BackingField());
                 AreaAsset areaAsset = areaProp != null ? areaProp.objectReferenceValue as AreaAsset : null;
 
                 if (areaAsset != null)
@@ -389,9 +391,9 @@ namespace RageRooster.RoomSystem
                 root.Add(spacer);
 
                 // Editable properties
-                var displayNameProp = serializedObject.FindProperty(nameof(RoomAsset.displayName), backingField: true);
-                var sceneProp = serializedObject.FindProperty(nameof(RoomAsset.scene), backingField: true);
-                var lodProp = serializedObject.FindProperty(nameof(RoomAsset.lod), backingField: true);
+                var displayNameProp = serializedObject.FindProperty(nameof(RoomAsset.displayName).BackingField());
+                var sceneProp = serializedObject.FindProperty(nameof(RoomAsset.scene).BackingField());
+                var lodProp = serializedObject.FindProperty(nameof(RoomAsset.lod).BackingField());
 
                 if (displayNameProp != null)
                     root.Add(new PropertyField(displayNameProp, "Display Name"));
@@ -401,7 +403,7 @@ namespace RageRooster.RoomSystem
                     root.Add(new PropertyField(lodProp, "LOD"));
 
                 // Entrances foldout (read-only)
-                SerializedProperty transitionsProp = serializedObject.FindProperty(nameof(RoomAsset.entrances), backingField: true);
+                SerializedProperty transitionsProp = serializedObject.FindProperty(nameof(RoomAsset.entrances).BackingField());
                 bool transitionsFoldoutState = EditorPrefs.GetBool("RoomAsset_EntrancesFoldout", true);
                 var entrancesFoldout = new Foldout
                 {
@@ -457,7 +459,7 @@ namespace RageRooster.RoomSystem
                 root.Add(spawnFoldout);
 
                 // Spawn point names display (editable)
-                SerializedProperty spawnNamesProp = serializedObject.FindProperty(nameof(RoomAsset.spawnPointNames), backingField: true);
+                SerializedProperty spawnNamesProp = serializedObject.FindProperty(nameof(RoomAsset.spawnPointNames).BackingField());
                 for (int i = 0; i < spawnNamesProp.arraySize; i++)
                     spawnFoldout.Add(new Label($"{i} : {spawnNamesProp.GetArrayElementAtIndex(i).stringValue}"));
                 

@@ -14,12 +14,12 @@ public class BobAndTurn : MonoBehaviour
     private void OnEnable()
     {
         startPosition = transform.position;
-        Gameplay.bobAndTurnList.Add(this);
+        //Gameplay.bobAndTurnList.Add(this);
     }
 
     private void OnDisable()
     {
-        Gameplay.bobAndTurnList.Remove(this);
+        //Gameplay.bobAndTurnList.Remove(this);
     }
 
     public void DoUpdate(float bob, float rotate)

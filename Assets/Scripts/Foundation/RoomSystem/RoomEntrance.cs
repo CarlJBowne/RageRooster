@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using RageRooster.Systems.SaveSystem;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Rendering;

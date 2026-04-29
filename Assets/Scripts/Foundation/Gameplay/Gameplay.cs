@@ -128,7 +128,7 @@ public class Gameplay : MonoBehaviour
     [SerializeField] UIHUDSystem uI;
     [SerializeField] SettingsMenu settingsMenu;
     [SerializeField] DontDestroyMeOnLoad overlayPrefab;
-    [SerializeField] Player inputPlayer;
+    [SerializeField] MonoBehaviour inputPlayer;
     [SerializeField] UIHUDSystem inputUI;
     [SerializeField] Cameras inputCams;
     [SerializeField] StudioEventEmitter musicEmitter;
@@ -151,7 +151,7 @@ public class Gameplay : MonoBehaviour
         GameObject = gameObject;
         if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
         DontDestroyOnLoad(gameObject);
-        inputPlayer.Awake();
+        inputPlayer.SendMessage("Awake");
         inputUI.Awake();
         inputCams.Awake();
         GlobalPool.poolParent = transform.Find("PooledObjects");
@@ -319,7 +319,9 @@ public class Gameplay : MonoBehaviour
 
 
 
-    private const float bobSpeed = 1f;
+
+    /*
+        private const float bobSpeed = 1f;
     private const float rotateSpeed = 90f;
     private void FixedUpdate()
     {
@@ -331,7 +333,8 @@ public class Gameplay : MonoBehaviour
     }
     public static List<BobAndTurn> bobAndTurnList = new();
 
-    /*
+    
+    
     public static class EnemyCullingGroup
     {
         static Transform camera;
