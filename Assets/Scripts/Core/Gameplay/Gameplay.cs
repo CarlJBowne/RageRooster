@@ -124,12 +124,9 @@ public class Gameplay : MonoBehaviour
     #region Instance Fields
 
     [SerializeField] Transform cameraTransform;
-    [SerializeField] PauseMenu pauseMenu;
-    [SerializeField] UIHUDSystem uI;
-    [SerializeField] SettingsMenu settingsMenu;
     [SerializeField] DontDestroyMeOnLoad overlayPrefab;
     [SerializeField] MonoBehaviour inputPlayer;
-    [SerializeField] UIHUDSystem inputUI;
+    [SerializeField] MonoBehaviour inputUI;
     [SerializeField] Cameras inputCams;
     [SerializeField] StudioEventEmitter musicEmitter;
     [SerializeField] StudioEventEmitter musicEmitter2;
@@ -152,7 +149,7 @@ public class Gameplay : MonoBehaviour
         if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
         DontDestroyOnLoad(gameObject);
         inputPlayer.SendMessage("Awake");
-        inputUI.Awake();
+        inputUI.SendMessage("Awake");
         inputCams.Awake();
         GlobalPool.poolParent = transform.Find("PooledObjects");
         GlobalPool.Get.Initialize();
