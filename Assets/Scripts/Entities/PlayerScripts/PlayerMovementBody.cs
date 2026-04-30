@@ -3,19 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using EditorAttributes;
 using RageRooster.Systems.SaveSystem;
-using SLS.ISingleton;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
+using Utilities.Singletons;
+using Utilities.Xtensions.Unity;
+using Utilities.Xtensions;
+
 #if UNITY_EDITOR
 using UnityEditor.UIElements;
 using UnityEditor;
-using UnityEngine.UIElements;
 using System.Reflection;
 #endif
 
 
 [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider), typeof(NavMeshAgent))]
-public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovementBody>
+public sealed class PlayerMovementBody : MonoBehaviour
 {
     #region Config
 
@@ -98,8 +101,8 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
 
         if (InstantSnapToFloor(out RaycastHit hit)) Land(hit);
 
+        Singleton.Register(ref instance, this);
         DirectionGet = Vector3.forward;
-        Interface.Initialize(ref Instance);
 
         NavAgent.enabled = false;
         //NavAgent.updateRotation = false;
@@ -117,14 +120,13 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
     /// </summary>
     void OnDisable() => BodyState = BodyStates.OFF;
 
-    void OnDestroy() => Interface.DeInitialize(ref Instance);
+    void OnDestroy() => Singleton.Deregister(ref instance, this);
 
     #region Singleton Stuff
-    static PlayerMovementBody Instance;
-    ISingleton<PlayerMovementBody> Interface => this;
-    public static PlayerMovementBody Get() => ISingleton<PlayerMovementBody>.Get(ref Instance);
-    public static bool TryGet(out PlayerMovementBody result) => ISingleton<PlayerMovementBody>.TryGet(Get, out result);
-    public static bool Loaded => Instance != null;
+    static PlayerMovementBody instance;
+    public static PlayerMovementBody Get => Singleton.Get(ref instance);
+    public static bool TryGet(out PlayerMovementBody result) => Singleton.TryGet(Get, out result);
+    public static bool Loaded => instance != null;
     #endregion
 
     /// <summary>
@@ -672,7 +674,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
             DirectionGet = target;
         }
     }
-    private CoroutinePlus QuickTurnRoutine;
+    private Coroutine QuickTurnRoutine;
 
 
 
@@ -1457,7 +1459,7 @@ public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovemen
         foreach (var sweep in sweepsThisPhysUpdate)
         {
             Color color = sweep.hit ? Color.green : Color.red;
-            Color colorE = color.SetAlpha(.5f);
+            Color colorE = color.Changed(a: .5f); 
             Vector3 height = Vector3.up * Collider.height / 2;
 
             DrawWireCapsule(sweep.origin + height, Quaternion.identity, Collider.radius, Collider.height, color);

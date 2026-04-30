@@ -7,7 +7,7 @@ static class Init
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     public static void Initialize()
     {
-        AudioManager.Get();
+        var d = AudioManager.Get;
         Debug.Log("Project initialized successfully.");
     }
 }

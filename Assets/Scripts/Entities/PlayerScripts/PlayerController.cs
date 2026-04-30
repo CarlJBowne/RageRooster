@@ -4,6 +4,8 @@ using SLS.StateMachineH;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Utilities.Xtensions;
+using Utilities.Xtensions.Unity;
 using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
@@ -23,8 +25,8 @@ public class PlayerController : PlayerStateBehavior
     [HideProperty] public Vector3 camAdjustedMovement
     {
         get => !overrideMovementControl
-          ? Input.Movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up)
-          : overrideMovementVector.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
+          ? Input.Movement.ToXZ().Rotated(Machine.cameraTransform.eulerAngles.y, Vector3.up)
+          : overrideMovementVector.ToXZ().Rotated(Machine.cameraTransform.eulerAngles.y, Vector3.up);
     }
     [SerializeField] Upgrades upgradesDisplay;
 

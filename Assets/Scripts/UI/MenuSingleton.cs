@@ -1,29 +1,30 @@
-﻿using SLS.ISingleton;
+﻿ 
 using System;
 using UnityEngine;
+using Utilities.Singletons;
+
 /// <summary>
 /// A Singletonized version of the Menu base class. (The main reason I'm looking into Interface based Singletons for the future.)
 /// </summary>
 /// <typeparam name="T">The Type, should be the same as the class name.</typeparam>
-public abstract class MenuSingleton<T> : Menu, ISingleton<T> where T : Menu, ISingleton<T>, new()
+public abstract class MenuSingleton<T> : Menu where T : Menu
 {
-    protected static T Instance;
-    protected ISingleton<T> Interface => this;
-    public static T Get() => ISingleton<T>.Get(ref Instance);
-    public static bool TryGet(out T result) => ISingleton<T>.TryGet(Get, out result);
-    public static bool Loaded => Instance != null;
-    public static bool Active => Loaded && Get().isActive;
+    protected static T instance;
+    public static T Get => Singleton.Get(ref instance);
+    public static bool TryGet(out T result) => Singleton.TryGet(Get, out result);
+    public static bool Loaded => instance != null;
+    public static bool Active => Loaded && Get.isActive;
 
     protected override void Awake()
     {
-        Interface.Initialize(ref Instance);
+        Singleton.Register<T>(ref instance, this as T);
         base.Awake();
         OnInitialize();
     }
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        Interface.DeInitialize(ref Instance);
+        Singleton.Deregister<T>(ref instance, this as T);
         OnDeInitialize();
     }
 

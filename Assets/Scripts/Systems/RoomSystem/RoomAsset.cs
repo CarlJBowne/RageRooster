@@ -6,6 +6,8 @@ using System.IO;
 using System;
 using System.Linq;
 using UnityEngine.UIElements;
+using Utilities.Xtensions.VisualElements;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -271,7 +273,7 @@ namespace RageRooster.RoomSystem
             bool loaded = false;
 
             private AsyncInstantiateOperation currentOP;
-            private CoroutinePlus currentCoroutine;
+            private Coroutine currentCoroutine;
 
 
             public void TurnOn()

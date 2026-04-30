@@ -15,7 +15,7 @@ public class ScreenTransition
     public IEnumerator InTransition;
     public Action PostInTransitionEvent;
 
-    public CoroutinePlus ActiveCoroutine { get; private set; }
+    public Coroutine ActiveCoroutine { get; private set; }
 
     public IEnumerator Enum()
     {

@@ -27,7 +27,7 @@ namespace RageRooster.Systems.SaveSystem.Flags
                 pair.Value.LoadFromJson((JValue)json[pair.Key]);
         }
 
-        public JToken SaveToJson()
+        public JObject SaveToJson()
         {
             var result = new JObject();
 

@@ -1,8 +1,8 @@
 using RageRooster.RoomSystem;
 using RageRooster.Systems;
-using RageRooster.Systems.ObjectPooling;
+using Utilities.ObjectPooling;
 using RageRooster.Systems.SaveSystem;
-using SLS.ISingleton;
+using Utilities.Singletons;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace RageRooster.RoomSystem
     /// <summary>
     /// Global Gameplay System for managing Room transitions, current Room/Area tracking, and related functionality.
     /// </summary>
-    public class RoomManager : SingletonMonoBasic<RoomManager>
+    public class RoomManager : Singleton.MonoBehaviour<RoomManager>
     {
         /// <summary>
         /// The Currently active Area in the game world. <br/>
@@ -27,7 +27,8 @@ namespace RageRooster.RoomSystem
         /// <summary>
         /// If the game is currently in the process of transitioning between Rooms/Areas. <br/>
         /// </summary>
-        public static bool currentlyTransitioning;
+        public static bool CurrentlyTransitioning;
+
 
         /// <summary>
         /// The target Destination for the next Room transition. <br/>
@@ -67,6 +68,17 @@ namespace RageRooster.RoomSystem
         /// </summary>
         public static Action PostFadeInAction;
 
+        [RuntimeInitializeOnLoadMethod]
+        static void InitStaticServices()
+        {
+            Services.RoomManager.CurrentlyTransitioning = new(() => CurrentlyTransitioning);
+            Services.RoomManager.TransitionStyle = new()
+            {
+                Setter = value => TransitionStyle = value
+            };
+        }
+
+
         /// <summary>
         /// Begins a Room transition to the specified <see cref="Destination"/>.
         /// </summary>
@@ -101,7 +113,7 @@ namespace RageRooster.RoomSystem
 
             Player.ActivityState = Player.ActivityStates.Invisible;
             yield return null;
-            currentlyTransitioning = true;
+            CurrentlyTransitioning = true;
             OverlayLoading.ShowIfLong();
 
             if (fullTransition)
@@ -132,7 +144,7 @@ namespace RageRooster.RoomSystem
 
             yield return MidTransitionRoutine;
 
-            currentlyTransitioning = false;
+            CurrentlyTransitioning = false;
             OverlayLoading.SetVisible(false);
             Player.ActivityState = Player.ActivityStates.Active;
 
@@ -175,6 +187,8 @@ namespace RageRooster.RoomSystem
             currentRoom._Enter();
         }
 
+
+
         /// <summary>
         /// Set-Only property to quickly and succinctly set or not set all optional Transition-related data in one go.
         /// </summary>
@@ -207,6 +221,20 @@ namespace RageRooster.RoomSystem
             public IEnumerator FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(0.5f);
             public Action PostFadeInAction = null;
 
+            public static implicit operator TransitionData(Services.RoomManager.TransitionData input)
+            {
+                TransitionData res = new();
+                res.forceFullTransition = input.forceFullTransition;
+                res.PreFadeOutAction = input.PreFadeOutAction;
+                res.FadeOutRoutine = input.FadeOutRoutine;
+                res.PostFadeOutAction = input.PostFadeOutAction;
+                res.MidTransitionRoutine = input.MidTransitionRoutine;
+                res.PreFadeInAction = input.PreFadeInAction;
+                res.FadeInRoutine = input.FadeInRoutine;
+                res.PostFadeInAction = input.PostFadeInAction;
+
+                return res;
+            }
         }
     }
 }

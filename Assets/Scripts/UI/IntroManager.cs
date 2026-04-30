@@ -63,11 +63,11 @@ public class IntroManager : MonoBehaviour
         if (loadAttempt != null && loadAttempt.HasValues)
         {
             
-            AudioManager.Get().masterVolume = loadAttempt["V_Master"].As<float>();
-            AudioManager.Get().musicVolume = loadAttempt["V_Music"].As<float>();
-            AudioManager.Get().SFXVolume = loadAttempt["V_SFX"].As<float>();
-            AudioManager.Get().ambienceVolume = loadAttempt["V_Amb"].As<float>();
-            float brightness = loadAttempt["G_Brightness"].As<float>();
+            AudioManager.Get.masterVolume = loadAttempt["V_Master"].ToObject<float>();
+            AudioManager.Get.musicVolume = loadAttempt["V_Music"].ToObject<float>();
+            AudioManager.Get.SFXVolume = loadAttempt["V_SFX"].ToObject<float>();
+            AudioManager.Get.ambienceVolume = loadAttempt["V_Amb"].ToObject<float>();
+            float brightness = loadAttempt["G_Brightness"].ToObject<float>();
 
             SettingsMenu.brightnessOverlay.color = new(0, 0, 0, brightness);
         }
@@ -183,7 +183,7 @@ public class IntroManager : MonoBehaviour
         yield return new WaitForSeconds(pressKeyFadeDelay);
         yield return StartCoroutine(FadeImage(pressAnyKeyTMP, 0f, 1f));
 
-        pulseCoroutine = StartCoroutine(PulseTextAlpha(pressAnyKeyTMP));
+        pulseCoroutine = PulseTextAlpha(pressAnyKeyTMP).Begin(this);
 
         continueButton.action.performed += LoadMainMenu;
 
