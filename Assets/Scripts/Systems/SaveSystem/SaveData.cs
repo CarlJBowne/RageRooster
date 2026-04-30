@@ -81,7 +81,7 @@ namespace RageRooster.Systems.SaveSystem
         public Flags.SavedFlagSet globalChanges;
         public Dictionary<AreaAsset, Flags.SavedFlagSet> areaChanges = new();
 
-        #endregion Actual Data
+        #endregion Actual Data 
 
 
 
@@ -101,7 +101,15 @@ namespace RageRooster.Systems.SaveSystem
                 areaChanges.Add(area, area.flagDefaults.Clone());
         }
 
-        public static SaveData Clone(SaveData source, SaveData target)
+        public static void InitializeSaves(int fileNo)
+        {
+            IO = new(fileNo);
+            Current = new();
+            DeathReloadData = new();
+            RevertToSaveFile();
+        }
+
+        public static void Clone(SaveData source, SaveData target)
         {
             source ??= new SaveData();
             target ??= new SaveData();
@@ -120,7 +128,6 @@ namespace RageRooster.Systems.SaveSystem
             source.globalChanges.Clone(target.globalChanges);
             foreach (AreaAsset area in AreaRegistry.GetAll())
                 target.areaChanges[area].CloneFrom(source.areaChanges[area]);
-            return target;
         }
 
         /// <summary>

@@ -242,8 +242,6 @@ namespace Utilities.JSON
                 if (iFileResult != JsonFile.LoadResult.Success) return iFileResult;
             }
 
-            ResultingData = new();
-
             return ReadToData(RootFile.Data as JObject, ResultingData);
         }
 

@@ -24,6 +24,7 @@ namespace RageRooster.Systems.SaveSystem
         private void Awake()
         {
             file = new(ID);
+            data = new();
             UpdateFile();
         }
 

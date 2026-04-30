@@ -239,11 +239,7 @@ public class Gameplay : MonoBehaviour
         SceneManager.LoadScene(GAMEPLAY_SCENE);
     }
 
-    public static void InitializeSaves(int fileNo)
-    {
-        SaveData.IO = new(fileNo);
-        SaveData.RevertToSaveFile();
-    }
+    public static void InitializeSaves(int fileNo) => SaveData.InitializeSaves(fileNo);
 
     private static Destination CalculateEditorSpawn()
     {
