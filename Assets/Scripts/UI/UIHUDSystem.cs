@@ -38,10 +38,10 @@ public class UIHUDSystem : MonoBehaviour
         transform.parent.TryGetComponent(out canvas);
         transform.parent.TryGetComponent(out canvasRect);
 
-        health.UpdateMax();
-        health.UpdateHeath();
+        health.Init();
         ammo.UpdateMax();
         ammo.UpdateAmmo();
+
         SetCurrencyText();
 
         Player.Health.updateHealth += health.UpdateHeath;
@@ -86,6 +86,13 @@ public class UIHUDSystem : MonoBehaviour
         int activeMaxHealth = 1;
 
         Sequence healthBar;
+
+        public void Init()
+        {
+            activeMaxHealth = healthImages.Count;
+            UpdateMax();
+            UpdateHeath();
+        }
 
         public void UpdateHeath()
         {

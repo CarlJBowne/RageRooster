@@ -134,8 +134,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 571940914220793852}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   defaultPhase: 3
   jumpHeight: 0
   jumpPower: 0
@@ -183,8 +181,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 571940914220793852}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: 1950655830041821290
   Attack:
@@ -315,8 +311,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 5314189078780984797}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: 3657502764043599953
   Attack:
@@ -485,8 +479,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerGroundMovement
   <State>k__BackingField: {fileID: 2070683833346511381}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   acceleration: 0.07
   decceleration: 0.5
   maxSpeed: 25
@@ -593,8 +585,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 2070683833346511381}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: 1950655830041821289
   Attack:
@@ -721,8 +711,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 2157991863056936301}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: 1950655830041821285
   Attack:
@@ -1039,8 +1027,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerGroundMovement
   <State>k__BackingField: {fileID: 7202587913768018711}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   acceleration: 0.35
   decceleration: 0.5
   maxSpeed: 12
@@ -1106,8 +1092,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 7202587913768018711}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: 3995430819782459523
   Attack:
@@ -1316,8 +1300,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 592388666345993873}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   defaultPhase: 3
   jumpHeight: 0
   jumpPower: 0
@@ -1365,8 +1347,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 592388666345993873}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: 1950655830041821291
   Attack:
@@ -1539,6 +1519,11 @@ PrefabInstance:
       propertyPath: signals.serializedList.Array.data[1].Value._PersistentCalls.Array.data[0]._Target
       value: 
       objectReference: {fileID: 1899316317574978938}
+    - target: {fileID: 4971515753925946305, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[1].time
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 5185706722228576407, guid: 71084fab85c849a448a24e907f52d954,
         type: 3}
       propertyPath: m_Name
