@@ -138,35 +138,33 @@ namespace RageRooster.Systems.SaveSystem
         /// <summary>
         /// An Input Output stream for Saving/Loading Save Data to/from disk. Also used to display save files in UI.
         /// </summary>
-        public class IOStream : Utilities.JSON.JsonSaveStream<SaveData>
+        public class IOStream : JsonSaveStream<SaveData>
         {
-            public IOStream(int fileID) : base(fileID) { }
-            public override void InitFiles()
+            public IOStream(int fileID)
             {
-                saveRootPath = $"{saveRootPath}/Save{fileID}";
+                this.fileID = fileID;
+                savePath = $"{savePath}/Save{fileID}";
 
-                PlayerFile = new(saveRootPath, $"playerData");
-                WorldChangesFile = new(saveRootPath, $"worldChanges");
+                File = new(savePath, $"playerData");
+                WorldChangesFile = new(savePath, $"worldChanges");
                 areaChangesFiles = new();
                 foreach (var area in AreaRegistry.GetAll())
                 {
-                    areaChangesFiles.Add(area, new JsonFile(saveRootPath, $"flags_{area.name}"));
+                    areaChangesFiles.Add(area, new JsonFile(savePath, $"flags_{area.name}"));
                 }
                 SecondaryFiles = areaChangesFiles.Values.Append(WorldChangesFile).ToArray();
             }
 
-            public JsonFile PlayerFile
-            {
-                get => RootFile;
-                set => RootFile = value;
-            }
+            int fileID;
+
+            public JsonFile PlayerFile => File;
 
             //Contains powerEggs, hensRescued, and globalChanges
             public JsonFile WorldChangesFile;
 
             public Dictionary<AreaAsset, JsonFile> areaChangesFiles;
 
-            protected override JsonFile.LoadResult ReadToData(JObject RootFileData, SaveData ResultingData)
+            protected override JsonFile.LoadResult ReadToData(SaveData ResultingData)
             {
                 ResultingData.location = (Destination)(DestinationBasic)PlayerFile.Data[nameof(ResultingData.location)];
                 ResultingData.playerStats.maxHealth = (int)PlayerFile.Data[nameof(SavedPlayerStats.maxHealth)];

@@ -75,6 +75,21 @@ namespace Utilities.JSON
                     JsonSerializer.CreateDefault().Populate(sr, target);
             return true;
         }
+        /// <summary>
+        /// Populates an existing object using this Token.
+        /// <br />For when you're unsure if the target object is an ICustomSerialized or not.
+        /// </summary>
+        /// <param name="target">The Target object.</param>
+        public static bool DeserializeInto<T>(this JToken THIS, T target)
+        {
+            if (THIS == null) return false;
+            target ??= Activator.CreateInstance<T>();
+            if (target is ICustomSerialized Custom) Custom.Deserialize(THIS);
+            else
+                using (JsonReader sr = THIS.CreateReader())
+                    JsonSerializer.CreateDefault().Populate(sr, target);
+            return true;
+        }
 
         /// <summary>
         /// Deserializes the JToken to the specified type and invokes the provided action with the result.

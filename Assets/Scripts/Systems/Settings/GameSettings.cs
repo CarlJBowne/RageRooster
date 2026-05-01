@@ -1,5 +1,4 @@
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Text;
 using Unity.VisualScripting;
@@ -16,79 +15,25 @@ namespace RageRooster.Settings
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         static void Init()
         {
-            stream = new(0);
+            stream = new();
             {
                 Volume.Master.Value = 1f;
                 Volume.Music.Value = 1f;
                 Volume.SFX.Value = 1f;
                 Volume.Ambience.Value = 1f;
                 Graphics.Brightness.Value = 1f;
-
             }
             stream.LoadFromFile(null);
         }
-
-        [System.Serializable]
-        public class Setting<T>
-        {
-            private T _value;
-            public T defaultValue;
-            public Action<T> onChanged;
-            public Action<T> updateUI;
-            public Func<T, T> validate;
-
-            public Setting(T defaultValue, Action<T> onChanged = null, Action<T> updateUI = null, Func<T, T> validate = null)
-            {
-                _value = defaultValue;
-                this.defaultValue = defaultValue;
-                this.onChanged = onChanged;
-                this.updateUI = updateUI;
-            }
-
-            public T Value
-            {
-                get => _value;
-                set
-                {
-                    _value = value;
-                    onChanged(value);
-                    updateUI(value);
-                }
-            }
-            public T ValueFromUI
-            {
-                get => _value;
-                set
-                {
-                    _value = value;
-                    onChanged(value);
-                }
-            }
-            public static implicit operator T(Setting<T> This) => This._value;
-        }
+        public static void LoadSettings() => stream.LoadFromFile(null);
+        public static void SaveSettings() => stream.SaveToFile(null);
 
         public static class Volume
         {
-            public static Setting<float> Master = new(1f)
-            {
-                onChanged = value => { AudioManager.Get.masterVolume = value; },
-                validate = inValue => Mathf.Clamp(inValue, 0f, 1f)
-            };
-            public static Setting<float> Music = new(1f)
-            {
-                onChanged = value => { AudioManager.Get.musicVolume = value; },
-                validate = inValue => Mathf.Clamp(inValue, 0f, 1f)
-            };
-            public static Setting<float> SFX = new(1f)
-            {
-                onChanged = value => { AudioManager.Get.SFXVolume = value; },
-                validate = inValue => Mathf.Clamp(inValue, 0f, 1f)
-            };
-            public static Setting<float> Ambience = new(1f)
-            {
-                onChanged = value => { AudioManager.Get.ambienceVolume = value; },
-                validate = inValue => Mathf.Clamp(inValue, 0f, 1f)
-            };
+            public static FloatSetting Master = new(1f, value =>  AudioManager.Get.masterVolume = value);
+            public static FloatSetting Music = new(1f, value => AudioManager.Get.musicVolume = value);
+            public static FloatSetting SFX = new(1f, value => AudioManager.Get.SFXVolume = value);
+            public static FloatSetting Ambience = new(1f, value => AudioManager.Get.ambienceVolume = value);
         }
 
         public static class Graphics
@@ -97,12 +42,11 @@ namespace RageRooster.Settings
             {
                 onChanged = value =>
                 {
-                    if(brightnessOverlay == null) brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
+                    if (brightnessOverlay == null) brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
                     brightnessOverlay.color = brightnessOverlay.color.WithAlpha(1 - value);
                 },
-                validate = inValue => Mathf.Clamp(inValue, 0f, 1f)
             };
-            private static Image brightnessOverlay;
+            public static Image brightnessOverlay;
         }
 
         public static class Remapping
@@ -110,41 +54,56 @@ namespace RageRooster.Settings
 
         }
 
+
         static IOStream stream;
         public class IOStream : JsonSaveStream<GameSettings>
         {
-            public IOStream(int fileID) : base(fileID)
+            public IOStream()
             {
+                savePath = $"{Application.persistentDataPath}";
+                File = new JsonFile(savePath, "Config.json");
+                SecondaryFiles = new JsonFile[0];
             }
 
-            protected override JsonFile.LoadResult ReadToData(JObject RootFileJ, GameSettings ResultingData)
+            protected override JsonFile.LoadResult ReadToData(GameSettings ResultingData)
             {
-                if (RootFileJ.TryGetValue("Volume", out JToken VolumeJ))
+                if (File.Data.TryGetValue("Volume", out JToken VolumeJ))
                 {
-                    VolumeJ["Master"].Deserializer<float>(value => Volume.Master.Value = value);
-                    VolumeJ["Music"].Deserializer<float>(value => Volume.Music.Value = value);
-                    VolumeJ["SFX"].Deserializer<float>(value => Volume.SFX.Value = value);
-                    VolumeJ["Ambience"].Deserializer<float>(value => Volume.Ambience.Value = value);
+                    Volume.Master.TakeSaveInput(VolumeJ["Master"]);
+                    Volume.Music.TakeSaveInput(VolumeJ["Music"]);
+                    Volume.SFX.TakeSaveInput(VolumeJ["SFX"]);
+                    Volume.Ambience.TakeSaveInput(VolumeJ["Ambience"]);
                 }
                 else
                 {
-                    RootFileJ["V_Master"].Deserializer<float>(value => Volume.Master.Value = value);
-                    RootFileJ["V_Music"].Deserializer<float>(value => Volume.Music.Value = value);
-                    RootFileJ["V_SFX"].Deserializer<float>(value => Volume.SFX.Value = value);
-                    RootFileJ["V_Amb"].Deserializer<float>(value => Volume.Ambience.Value = value);
+                    Volume.Master.TakeSaveInput(File["V_Master"]);
+                    Volume.Music.TakeSaveInput(File["V_Music"]);
+                    Volume.SFX.TakeSaveInput(File["V_SFX"]);
+                    Volume.Ambience.TakeSaveInput(File["V_Amb"]);
                 }
 
-                if(RootFileJ.TryGetValue("Graphics", out JToken GraphicsJ))
-                {
-                    GraphicsJ.Deserializer<float>(value => Graphics.Brightness.Value = value);
-                }
-                else RootFileJ["G_Brightness"].Deserializer<float>(value => Graphics.Brightness.Value = value);                    
+                if (File.Data.TryGetValue("Graphics", out JToken GraphicsJ))
+                    Graphics.Brightness.TakeSaveInput(GraphicsJ["Brightness"]);
+                else Graphics.Brightness.TakeSaveInput(GraphicsJ["G_Brightness"]);
 
                 return JsonFile.LoadResult.Success;
             }
             protected override JsonFile.FileState WriteFromData(GameSettings sourceData)
             {
+                File.Data = new()
+                {
+                    new JProperty("Volume", new JObject(
+                        new JProperty("Master", Volume.Master.Value),
+                        new JProperty("Music", Volume.Music.Value),
+                        new JProperty("SFX", Volume.SFX.Value),
+                        new JProperty("Ambience", Volume.Ambience.Value)
+                        )),
+                    new JProperty("Graphics", new JObject(
+                        new JProperty("Brightness", Graphics.Brightness.Value)
+                        ))
+                };
 
+                return JsonFile.FileState.Valid;
             }
         }
 

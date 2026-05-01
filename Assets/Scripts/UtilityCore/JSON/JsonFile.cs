@@ -190,31 +190,38 @@ namespace Utilities.JSON
     }
 
     /// <summary>
-    /// An Input Output stream for Saving/Loading Save Data to/from disk. Also used to display save files in UI.
+    /// A derivable class representing a stream of one or more JsonFiles used to save and load a specific type of data. Contains abstract functions for reading and writing data to and from the files in the stream, built-in functionality for checking the presence of all files in the stream, as well as virtual functions for handling version mismatches. <br/>
+    /// The Provided Type Parameter allows for the derived class to interlace itself with a given class type so instances of that class can be used as input and output for the stream's read and write functions.
     /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class JsonSaveStream<T> where T : class, new()
     {
-        public JsonSaveStream(int fileID)
+        public JsonSaveStream() => InitBasicSingleFile("File");
+        protected void InitBasicSingleFile(string filename)
         {
-            this.fileID = fileID;
-            InitFiles();
-        }
-        public virtual void InitFiles()
-        {
-            saveRootPath = Path.Combine(UnityEngine.Application.persistentDataPath, "Saves");
-            RootFile = new(saveRootPath, $"Save{fileID}");
+            savePath = UnityEngine.Application.persistentDataPath;
+            File = new(savePath, filename);
             SecondaryFiles = new JsonFile[0];
         }
-        protected JsonFile[] SecondaryFiles;
-        protected JsonFile RootFile;
 
-        public string saveRootPath;
-        public int fileID = -1;
+        /// <summary>
+        /// The Primary <see cref="JsonFile"/> for this stream. If a derived class uses multiple files, consider this the "root."
+        /// </summary>
+        protected JsonFile File;
+        /// <summary>
+        /// The Primary file path of this <see cref="JsonFileStream{T}"/>. If a derived class uses multiple files, this should point to the directory containing all files, and the individual <see cref="JsonFile"/> instances should point to their respective files within that directory.
+        /// </summary>
+        public string savePath;
+        /// <summary>
+        /// A collection of all Secondary Files used by this stream. Needs to be initialized in the Constructor to point to all <see cref="JsonFile"/>s used by this stream beyond the primary, as otherwise the stream will be unable to check for their presence prior to operations.
+        /// </summary>
+        protected JsonFile[] SecondaryFiles;
+
         public bool filesDoExist
         {
             get
             {
-                if (!RootFile.FileExists) return false;
+                if (!File.FileExists) return false;
                 for (int i = 0; i < SecondaryFiles.Length; i++)
                     if (!SecondaryFiles[i].FileExists)
                         return false;
@@ -224,13 +231,12 @@ namespace Utilities.JSON
 
         public JsonFile.LoadResult LoadFromFile(T ResultingData)
         {
-            if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
-            if (!RootFile.FileExists) return JsonFile.LoadResult.FileNotFound;
+            if (!File.FileExists) return JsonFile.LoadResult.FileNotFound;
             for (int i = 0; i < SecondaryFiles.Length; i++)
                 if (!SecondaryFiles[i].FileExists)
                     return JsonFile.LoadResult.FileNotFound;
 
-            JsonFile.LoadResult rootFileLoadResult = RootFile.LoadFromFile();
+            JsonFile.LoadResult rootFileLoadResult = File.LoadFromFile();
             if (rootFileLoadResult != JsonFile.LoadResult.Success) return rootFileLoadResult;
 
             var fileVersionBehavior = FileVersionBehavior();
@@ -242,31 +248,19 @@ namespace Utilities.JSON
                 if (iFileResult != JsonFile.LoadResult.Success) return iFileResult;
             }
 
-            return ReadToData(RootFile.Data as JObject, ResultingData);
+            return ReadToData(ResultingData);
         }
-
-        public virtual JsonFile.LoadResult FileVersionBehavior()
-        {
-            //if ((string)RootFile.Data["FileVersion"] != targetFileVersion)
-            //{
-            //    UnityEngine.Debug.LogWarning($"Save file version mismatch. Expected {targetFileVersion}, found {(string)RootFile.Data/["FileVersion"]}. /Attempting to load anyway.");
-            //}
-            return JsonFile.LoadResult.Success;
-        }
-
-        protected abstract JsonFile.LoadResult ReadToData(JObject RootFileJ, T ResultingData);
+        protected abstract JsonFile.LoadResult ReadToData(T ResultingData);
 
 
         public JsonFile.FileState SaveToFile(T sourceData)
         {
-            if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
-
             JsonFile.FileState writeResult = WriteFromData(sourceData);
             if (writeResult != JsonFile.FileState.Valid) return writeResult;
 
             JsonFile.FileState resultState;
 
-            resultState = RootFile.SaveToFile();
+            resultState = File.SaveToFile();
             if (resultState != JsonFile.FileState.Valid) return resultState;
 
             for (int i = 0; i < SecondaryFiles.Length; i++)
@@ -276,13 +270,18 @@ namespace Utilities.JSON
             }
             return resultState;
         }
-
         protected abstract JsonFile.FileState WriteFromData(T sourceData);
 
+
+        public virtual JsonFile.LoadResult FileVersionBehavior() =>
+            //if ((string)RootFile.Data["FileVersion"] != targetFileVersion)
+            //{
+            //    UnityEngine.Debug.LogWarning($"Save file version mismatch. Expected {targetFileVersion}, found {(string)RootFile.Data/["FileVersion"]}. /Attempting to load anyway.");
+            //}
+            JsonFile.LoadResult.Success;
         public JsonFile.FileState DeleteFile()
         {
-            if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
-            RootFile.DeleteFile();
+            File.DeleteFile();
             for (int i = 0; i < SecondaryFiles.Length; i++) SecondaryFiles[i].DeleteFile();
             return JsonFile.FileState.Null;
         }
