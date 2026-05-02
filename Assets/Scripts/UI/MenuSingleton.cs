@@ -15,21 +15,19 @@ public abstract class MenuSingleton<T> : Menu where T : Menu
     public static bool Loaded => instance != null;
     public static bool Active => Loaded && Get.isActive;
 
-    protected override void Awake()
+    protected sealed override void Awake()
     {
         Singleton.Register<T>(ref instance, this as T);
         base.Awake();
         OnInitialize();
     }
-    protected override void OnDestroy()
+    protected sealed override void OnDestroy()
     {
         base.OnDestroy();
         Singleton.Deregister<T>(ref instance, this as T);
         OnDeInitialize();
     }
 
-    //This redirection isn't necessary if creating the coding from scratch.
-    //Just use the first two methods to override Initialization and DeInitialization functionality.
     protected virtual void OnInitialize() { }
     protected virtual void OnDeInitialize() { }
 }

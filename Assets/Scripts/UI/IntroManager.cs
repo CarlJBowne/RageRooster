@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections;
+using RageRooster.Settings;
 
 public class IntroManager : MonoBehaviour
 {
@@ -56,21 +57,7 @@ public class IntroManager : MonoBehaviour
         skipButton.action.performed += SkipButtonPressed;
 
         if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
-        if (SettingsMenu.brightnessOverlay == null) 
-            SettingsMenu.brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
-
-        var loadAttempt = SettingsMenu.GetTempSettings();
-        if (loadAttempt != null && loadAttempt.HasValues)
-        {
-            
-            AudioManager.Get.masterVolume = loadAttempt["V_Master"].ToObject<float>();
-            AudioManager.Get.musicVolume = loadAttempt["V_Music"].ToObject<float>();
-            AudioManager.Get.SFXVolume = loadAttempt["V_SFX"].ToObject<float>();
-            AudioManager.Get.ambienceVolume = loadAttempt["V_Amb"].ToObject<float>();
-            float brightness = loadAttempt["G_Brightness"].ToObject<float>();
-
-            SettingsMenu.brightnessOverlay.color = new(0, 0, 0, brightness);
-        }
+        GameSettings.Graphics.EstablishBrightnessOverlay();
 
         SetAlpha(introVideoImage, 0f);
         SetAlpha(titleScreenImage, 0f);

@@ -26,18 +26,14 @@ namespace RageRooster.Settings
             set
             {
                 _value = value;
-                onChanged(value);
-                updateUI(value);
+                onChanged?.Invoke(value);
+                updateUI?.Invoke(value);
             }
         }
-        public T ValueFromUI
+        public void ValueFromUI(T value)
         {
-            get => _value;
-            set
-            {
-                _value = value;
-                onChanged(value);
-            }
+            _value = value;
+            onChanged?.Invoke(value);
         }
         public static implicit operator T(Setting<T> This) => This._value;
 
@@ -61,8 +57,10 @@ namespace RageRooster.Settings
         {
             slider.minValue = min;
             slider.maxValue = max;
-            slider.value = Value;
             updateUI += value => slider.value = value;
+            updateUI?.Invoke(Value);
+            onChanged?.Invoke(Value);
+            slider.onValueChanged.AddListener(ValueFromUI);
         }
     }
 }

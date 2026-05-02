@@ -164,7 +164,7 @@ namespace RageRooster.Systems.SaveSystem
 
             public Dictionary<AreaAsset, JsonFile> areaChangesFiles;
 
-            protected override JsonFile.LoadResult ReadToData(SaveData ResultingData)
+            protected override JsonFile.LoadResult ReadFromData(SaveData ResultingData)
             {
                 ResultingData.location = (Destination)(DestinationBasic)PlayerFile.Data[nameof(ResultingData.location)];
                 ResultingData.playerStats.maxHealth = (int)PlayerFile.Data[nameof(SavedPlayerStats.maxHealth)];
@@ -199,7 +199,7 @@ namespace RageRooster.Systems.SaveSystem
 
                 return JsonFile.LoadResult.Success;
             }
-            protected override JsonFile.FileState WriteFromData(SaveData sourceData)
+            protected override JsonFile.FileState WriteToData(SaveData sourceData)
             {
 
                 PlayerFile.Data = new JObject

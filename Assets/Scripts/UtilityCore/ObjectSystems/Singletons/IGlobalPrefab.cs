@@ -28,7 +28,7 @@ namespace Utilities.Singletons
         /// <param name="prefab">The GameObject prefab to register. Must contain a component implementing <see cref="IGlobalPrefab"/>.</param>
         public static void RegisterPrefab(GameObject prefab)
         {
-            Type type = prefab.GetComponent<IGlobalPrefab>().GetType();
+            Type type = prefab.GetComponentInChildren<IGlobalPrefab>().GetType();
             if (!typedPrefabs.ContainsKey(type)) typedPrefabs[type] = new(prefab);
         }
 

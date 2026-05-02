@@ -229,6 +229,11 @@ namespace Utilities.JSON
             }
         }
 
+        /// <summary>
+        /// The Primary function for loading data from files. Checks for the presence of all files in the stream, then calls the abstract <see cref="ReadFromData(T)"/> function to read data from the Json files into game-relevant data. <br/>
+        /// </summary>
+        /// <param name="ResultingData">The game-relevant data object that this function should populate from the Json files. (Ignorable if dealing with static information.)</param>
+        /// <returns>The Result of the operation.</returns>
         public JsonFile.LoadResult LoadFromFile(T ResultingData)
         {
             if (!File.FileExists) return JsonFile.LoadResult.FileNotFound;
@@ -248,14 +253,23 @@ namespace Utilities.JSON
                 if (iFileResult != JsonFile.LoadResult.Success) return iFileResult;
             }
 
-            return ReadToData(ResultingData);
+            return ReadFromData(ResultingData);
         }
-        protected abstract JsonFile.LoadResult ReadToData(T ResultingData);
+        /// <summary>
+        /// A required abstract function where the derived class should Read data loaded from the appropriate Json files into game-relevant data.
+        /// </summary>
+        /// <param name="ResultingData">The game-relevant data object that this function should populate from the Json files. (Ignorable if dealing with static information.)</param>
+        /// <returns>The Result of the operation.</returns>
+        protected abstract JsonFile.LoadResult ReadFromData(T ResultingData);
 
-
+        /// <summary>
+        /// The Primary function for saving data to files. Calls the abstract <see cref="WriteToData(T)"/> function to write data into the Json files, then saves all files in the stream. <br/>
+        /// </summary>
+        /// <param name="sourceData">The game-relevant data object that this function should populate the Json files from. (ignorable if dealing with static information.)</param>
+        /// <returns>The Result of the operation.</returns>
         public JsonFile.FileState SaveToFile(T sourceData)
         {
-            JsonFile.FileState writeResult = WriteFromData(sourceData);
+            JsonFile.FileState writeResult = WriteToData(sourceData);
             if (writeResult != JsonFile.FileState.Valid) return writeResult;
 
             JsonFile.FileState resultState;
@@ -270,7 +284,12 @@ namespace Utilities.JSON
             }
             return resultState;
         }
-        protected abstract JsonFile.FileState WriteFromData(T sourceData);
+        /// <summary>
+        /// A required abstract function where the derived class should Write data from game-relevant data into the appropriate Json files.
+        /// </summary>
+        /// <param name="sourceData">The game-relevant data object that this function should populate the Json files from. (ignorable if dealing with static information.)</param>
+        /// <returns>The Result of the operation.</returns>
+        protected abstract JsonFile.FileState WriteToData(T sourceData);
 
 
         public virtual JsonFile.LoadResult FileVersionBehavior() =>
