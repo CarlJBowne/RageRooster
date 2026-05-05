@@ -4,20 +4,21 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.SceneManagement;
-using SLS.ISingleton;
+using Utilities.Singletons;
 
-public class AudioManager : MonoBehaviour, ISingleton<AudioManager>
+public class AudioManager : MonoBehaviour
 {
+    static Singleton<AudioManager> S = new(() =>
+    {
+        GameObject GO = new("--Audio-Manager--");
+        AudioManager result = GO.AddComponent<AudioManager>();
+        result.Awake();
+        return result;
+    });
 
-    protected static AudioManager Instance;
-    protected ISingleton<AudioManager> Interface => this;
-    public static AudioManager Get() => ISingleton<AudioManager>.Get(ref Instance, ISingleton<AudioManager>.FromPreloaded);
-    public static bool TryGet(out AudioManager result) => ISingleton<AudioManager>.TryGet(Get, out result);
-    public static bool Active => Instance != null;
-
-
-    // Set up the AudioManager with specific settings
-    //static void Data() => SetData(spawnMethod: InitSavedPrefab, dontDestroyOnLoad: true, spawnOnBoot: true);
+    public static AudioManager Get => S.Get;
+    public static bool TryGet(out AudioManager res) => S.TryGet(out res);
+    public static bool Active => S.Active;
 
     // Properties to set the volume for different audio buses
     public float masterVolume { set => masterBus.setVolume(value); }
@@ -29,16 +30,16 @@ public class AudioManager : MonoBehaviour, ISingleton<AudioManager>
     private Bus musicBus;
     private Bus sfxBus;
     private Bus ambienceBus;
-
+    
     private List<EventInstance> eventInstances;
     private List<StudioEventEmitter> eventEmitters;
     private EventInstance ambienceEventInstance;
     public EventInstance musicEventInstance;
 
     // Called when the script instance is being loaded
-    public void Awake()
+    protected void Awake()
     {
-        Interface.Initialize(ref Instance);
+        S.Register(this);
         DontDestroyOnLoad(gameObject);
 
         eventInstances = new List<EventInstance>();
@@ -58,16 +59,10 @@ public class AudioManager : MonoBehaviour, ISingleton<AudioManager>
     // Called when the script is started
     private void Start()
     {
-        if (FMODEvents.instance != null)
+        if (FMODEvents.Active)
         {
-            if (FMODEvents.instance.HasAmbience())
-            {
-                InitializeAmbience(FMODEvents.instance.GetAmbience());
-            }
-            if (FMODEvents.instance.HasMusic())
-            {
-                InitializeMusic(FMODEvents.instance.GetMusic());
-            }
+            if (FMODEvents.Get.HasAmbience()) InitializeAmbience(FMODEvents.Get.GetAmbience());
+            if (FMODEvents.Get.HasMusic()) InitializeMusic(FMODEvents.Get.GetMusic());
         }
     }
 
@@ -131,13 +126,13 @@ public class AudioManager : MonoBehaviour, ISingleton<AudioManager>
     }
 
     // Called when the AudioManager is destroyed
-    private void OnDestroy()
+    protected void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
         musicEventInstance.setPaused(true);
         CleanUp();
-        Interface.DeInitialize(ref Instance);
+        S.Deregister(this);
     }
 
     // Called when a new scene is loaded
@@ -173,15 +168,9 @@ public class AudioManager : MonoBehaviour, ISingleton<AudioManager>
         EventReference musicEvent = new EventReference();
         switch (sceneName)
         {
-            case "MainMenu":
-                musicEvent = FMODEvents.instance.titleScreenMusic;
-                break;
-            case "Forest":
-                musicEvent = FMODEvents.instance.ireGorgeMusic;
-                break;
-            case "FarmHouse":
-                musicEvent = FMODEvents.instance.rockyFurrowsHubMusic;
-                break;
+            case "MainMenu": musicEvent = FMODEvents.Get.titleScreenMusic; break;
+            case "Forest": musicEvent = FMODEvents.Get.ireGorgeMusic; break;
+            case "FarmHouse": musicEvent = FMODEvents.Get.rockyFurrowsHubMusic; break;
             default:
                 return;
         }

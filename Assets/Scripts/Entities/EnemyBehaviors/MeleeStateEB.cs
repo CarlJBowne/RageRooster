@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
 
+[System.Obsolete]
 public class MeleeStateEB : StateBehavior
 {
 

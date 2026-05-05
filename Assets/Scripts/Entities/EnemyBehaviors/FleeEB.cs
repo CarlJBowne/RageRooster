@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 // Based on ChaseEB. Enemy will back up instead of move forward.
 
+[System.Obsolete]
 public class FleeEB : StateBehavior
 {
     [SerializeField] float speed;

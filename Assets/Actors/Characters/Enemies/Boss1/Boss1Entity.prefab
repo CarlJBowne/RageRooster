@@ -101,12 +101,7 @@ MonoBehaviour:
     velocity: {x: 0, y: -1, z: 0}
     tags:
       intValue: 259
-    oldTags:
-    - name: Boss1Slam
     _displayName: 
-  additionalTags_Old:
-  - name: FromEnemy
-  - name: FromBoss
   additionalTags:
     intValue: 259
   enabled: 1
@@ -823,8 +818,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target:
-    obj: {fileID: 1883925095344967230}
-  attachTag: OnWeakSpot
+    _underlyingValue: {fileID: 0}
+  appendedTags:
+    intValue: 0
 --- !u!65 &3462325170673791437
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2002,12 +1998,7 @@ MonoBehaviour:
     velocity: {x: 0, y: -1, z: 0}
     tags:
       intValue: 259
-    oldTags:
-    - name: Boss1Slam
     _displayName: 
-  additionalTags_Old:
-  - name: FromEnemy
-  - name: FromBoss
   additionalTags:
     intValue: 259
   enabled: 1
@@ -3678,20 +3669,12 @@ MonoBehaviour:
     velocity: {x: 0, y: -1, z: 0}
     tags:
       intValue: 259
-    oldTags:
-    - name: Boss1Slam
     _displayName: 
   - amount: 2
     velocity: {x: 0, y: -1, z: 0}
     tags:
       intValue: 8451
-    oldTags:
-    - name: Boss1Charge
-    - name: PlayerPoints=2
     _displayName: 
-  additionalTags_Old:
-  - name: FromEnemy
-  - name: FromBoss
   additionalTags:
     intValue: 259
   enabled: 1
@@ -5864,12 +5847,7 @@ MonoBehaviour:
     velocity: {x: 0, y: -1, z: 0}
     tags:
       intValue: 259
-    oldTags:
-    - name: Boss1Slam
     _displayName: 
-  additionalTags_Old:
-  - name: FromEnemy
-  - name: FromBoss
   additionalTags:
     intValue: 259
   enabled: 1
@@ -7165,8 +7143,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target:
-    obj: {fileID: 1883925095344967230}
-  attachTag: InEyes
+    _underlyingValue: {fileID: 0}
+  appendedTags:
+    intValue: 0
 --- !u!54 &8972169266198248213
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7554,14 +7533,7 @@ MonoBehaviour:
     velocity: {x: 0, y: -1, z: 0}
     tags:
       intValue: 8455
-    oldTags:
-    - name: Boss1Charge
-    - name: PlayerPoints=2
-    - name: Wham
     _displayName: 
-  additionalTags_Old:
-  - name: FromEnemy
-  - name: FromBoss
   additionalTags:
     intValue: 259
   enabled: 1
@@ -8647,7 +8619,6 @@ MonoBehaviour:
     - _Target: {fileID: 1883925095344967230}
       _MemberName: FinishBoss
       _PersistentArguments: []
-  immuneTags_Old: []
   immuneTags:
     intValue: 0
   health: 0
@@ -9013,25 +8984,25 @@ MonoBehaviour:
   throwTime: 2.5
   minVelocity: 12
   projectiles:
-    prefabObject: {fileID: 8587716749453340891, guid: aca5f8b51cba47f4f88293234a23a13a,
+    <name>k__BackingField: 
+    <prefab>k__BackingField: {fileID: -4520884847626975732, guid: aca5f8b51cba47f4f88293234a23a13a,
       type: 3}
-    defaultPoolDepth: 3
-    canGrow: 1
-    parent: {fileID: 0}
-    autoDisableTime: 4
-    spawnPoint: {fileID: 0}
-    rotate: 0
-    autoSpawnRate: 0
+    <initialSize>k__BackingField: 5
+    <canGrow>k__BackingField: 1
+    <autoEnable>k__BackingField: 1
+    <autoDisableTime>k__BackingField: -1
+    <poolParentOverride>k__BackingField: {fileID: 0}
+    <orphanOnDestroy>k__BackingField: 0
   warnings:
-    prefabObject: {fileID: 2443813439036209627, guid: eec77a9687cfe27479375d795d5f8bbf,
+    <name>k__BackingField: Warning
+    <prefab>k__BackingField: {fileID: 1393904009637471662, guid: eec77a9687cfe27479375d795d5f8bbf,
       type: 3}
-    defaultPoolDepth: 3
-    canGrow: 1
-    parent: {fileID: 0}
-    autoDisableTime: 2
-    spawnPoint: {fileID: 0}
-    rotate: 0
-    autoSpawnRate: 0
+    <initialSize>k__BackingField: 5
+    <canGrow>k__BackingField: 1
+    <autoEnable>k__BackingField: 1
+    <autoDisableTime>k__BackingField: 10
+    <poolParentOverride>k__BackingField: {fileID: 0}
+    <orphanOnDestroy>k__BackingField: 0
   fakeMuzzle: {fileID: 6533246922379371565}
   trueMuzzle: {fileID: 0}
 --- !u!114 &4455258169255629691

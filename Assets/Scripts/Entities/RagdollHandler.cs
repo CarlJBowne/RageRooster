@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Utilities.Xtensions.Unity;
 
 [RequireComponent(typeof(Collider))]
 public class RagdollHandler : MonoBehaviour

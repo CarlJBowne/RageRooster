@@ -1,7 +1,7 @@
-using SLS.ISingleton;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities.Singletons;
 
 namespace RageRooster.RoomSystem
 {
@@ -9,7 +9,7 @@ namespace RageRooster.RoomSystem
     /// A global registry asset of all <see cref="AreaAsset"/>s in the project.
     /// <br/> Used to access <see cref="AreaAsset"/>s at runtime by name or all at once.
     /// </summary>
-    public class AreaRegistry : SingletonAsset<AreaRegistry>
+    public class AreaRegistry : GlobalAsset<AreaRegistry>
     {
         [SerializeField] private AreaAsset[] areaAssets;
         
@@ -18,16 +18,15 @@ namespace RageRooster.RoomSystem
         private static bool dictionarybuilt = false;
         private static Dictionary<string, AreaAsset> dictionary;
 
-        protected override void OnInitialize()
+        public override void OnInit()
         {
             if (Application.isPlaying && !dictionarybuilt) BuildDictionary();
         }
 
         static void BuildDictionary()
         {
-            AreaRegistry This = Get();
             dictionary = new Dictionary<string, AreaAsset>();
-            foreach (var item in This.areaAssets) dictionary.Add(item.name, item);
+            foreach (var item in Get.areaAssets) dictionary.Add(item.name, item);
             dictionarybuilt = true;
         }
 
@@ -41,7 +40,7 @@ namespace RageRooster.RoomSystem
         }
 
         /// <returns>All areas in the registry.</returns>
-        public static AreaAsset[] GetAll() => Get().areaAssets;
+        public static AreaAsset[] GetAll() => Get.areaAssets;
 
 
 #if UNITY_EDITOR
@@ -51,7 +50,7 @@ namespace RageRooster.RoomSystem
         /// <param name="area"></param>
         public static void Editor_AddArea(AreaAsset area)
         {
-            AreaRegistry This = Get();
+            AreaRegistry This = Get;
             var areas = new List<AreaAsset>(This.areaAssets)
             {area};
             This.areaAssets = areas.ToArray();

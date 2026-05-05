@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
+using Utilities.Xtensions.Unity;
 
 [System.Obsolete("PlayerMovementAnimator is deprecated, please use TimedMovementAffector instead.")]
 public class PlayerMovementAnimator : PlayerMovementEffector

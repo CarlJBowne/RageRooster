@@ -4,6 +4,7 @@ using RageRooster.RoomSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities.Xtensions;
 
 /// <summary>
 /// A set point in the world where the player can spawn. <br/>

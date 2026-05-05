@@ -5,6 +5,7 @@ using EditorAttributes;
 using UnityEngine.Events;
 
 
+[System.Obsolete]
 public class TrackerEB : StateBehavior
 {
     public Transform target;
