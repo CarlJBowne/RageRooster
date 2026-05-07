@@ -2677,6 +2677,11 @@ PrefabInstance:
       propertyPath: m_LocalRotation.x
       value: -0.05820302
       objectReference: {fileID: 0}
+    - target: {fileID: 2867681804670368759, guid: c3b4281c82ceb8e43b91452852c90ff4,
+        type: 3}
+      propertyPath: m_ForceIntoRT
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3289453418822868149, guid: c3b4281c82ceb8e43b91452852c90ff4,
         type: 3}
       propertyPath: interactionPopup
@@ -2780,7 +2785,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8737228245405854629, guid: c3b4281c82ceb8e43b91452852c90ff4,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7444220411845398303}
   m_SourcePrefab: {fileID: 100100000, guid: c3b4281c82ceb8e43b91452852c90ff4, type: 3}
 --- !u!4 &7444220411845398300 stripped
 Transform:
@@ -2800,6 +2809,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a490ff13c2fb2ec47bf60456b5b1e20f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7444220411845398302 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8737228245405854629, guid: c3b4281c82ceb8e43b91452852c90ff4,
+    type: 3}
+  m_PrefabInstance: {fileID: 7444220411845398299}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7444220411845398303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7444220411845398302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bb42831ee5422f409e7f24f9e7488ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EPO::EPOOutline.Outliner
+  stage: 1
+  renderingStrategy: 0
+  renderingMode: 0
+  outlineLayerMask: -1
+  primaryBufferSizeMode: 0
+  primaryRendererScale: 0.75
+  primarySizeReference: 800
+  blurShift: 1
+  dilateShift: 1
+  dilateIterations: 1
+  dilateQuality: 0
+  blurIterations: 1
+  blurType: 1
 --- !u!1001 &9064661362639578555
 PrefabInstance:
   m_ObjectHideFlags: 0
