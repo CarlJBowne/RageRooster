@@ -12,6 +12,8 @@ namespace EPOOutline
     [RequireComponent(typeof(Camera))]
     public class Outliner : MonoBehaviour
     {
+        [TextArea] public string Notes;
+
 #if UNITY_EDITOR
         private static GameObject lastSelectedOutliner;
 

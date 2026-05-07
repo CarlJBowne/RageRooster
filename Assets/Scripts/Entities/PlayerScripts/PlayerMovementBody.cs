@@ -9,6 +9,8 @@ using UnityEngine.UIElements;
 using Utilities.Singletons;
 using Utilities.Xtensions.Unity;
 using Utilities.Xtensions;
+using Cinemachine.Utility;
+
 
 #if UNITY_EDITOR
 using UnityEditor.UIElements;
@@ -223,6 +225,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
 
         SetupDebugText(false);
 
+        if (stepZeroVelocity.IsNaN() || stepZeroVelocity.sqrMagnitude > 300) stepZeroVelocity = Vector3.zero;
         if (stepZeroVelocity != Vector3.zero) MoveNext(stepZeroVelocity);
 
         SetupDebugText(true);
@@ -702,7 +705,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
             set
             {
                 fValue = value;
-                if(!allowBackwards && value < 0) fValue = 0;
+                if (!allowBackwards && value < 0) fValue = 0;
                 Vector3 global = transform.TransformVector(Local);
                 zValue = global.z;
                 xValue = global.x;
@@ -877,7 +880,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
             sValue != 0 ? (fValue * fValue) + (sValue * sValue)
             : fValue * fValue;
         public float magnitude =>
-            fValue != 0 && sValue != 0 && yValue != 0         ? Mathf.Sqrt((fValue * fValue) + (sValue * sValue) + (yValue * yValue)) //All 3 NonZero
+            fValue != 0 && sValue != 0 && yValue != 0 ? Mathf.Sqrt((fValue * fValue) + (sValue * sValue) + (yValue * yValue)) //All 3 NonZero
                   : fValue != 0 && sValue == 0 && yValue == 0 ? Mathf.Sqrt(fValue * fValue) //Only F
                   : fValue == 0 && sValue == 0 && yValue != 0 ? Mathf.Sqrt(yValue * yValue) //Only Y
                   : fValue == 0 && sValue != 0 && yValue == 0 ? Mathf.Sqrt(sValue * sValue) //Only S
@@ -887,7 +890,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
             : 0; //All 3 Zero
 
         public float sqrMagnitude =>
-            fValue != 0 && sValue != 0 && yValue != 0         ? (fValue * fValue) + (sValue * sValue) + (yValue * yValue) //All 3 NonZero
+            fValue != 0 && sValue != 0 && yValue != 0 ? (fValue * fValue) + (sValue * sValue) + (yValue * yValue) //All 3 NonZero
                   : fValue != 0 && sValue == 0 && yValue == 0 ? fValue * fValue //Only F
                   : fValue == 0 && sValue == 0 && yValue != 0 ? yValue * yValue //Only Y
                   : fValue == 0 && sValue != 0 && yValue == 0 ? sValue * sValue //Only S
@@ -927,10 +930,15 @@ public sealed class PlayerMovementBody : MonoBehaviour
         float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
     {
         Vector3 originalPos = RB.position;
-        if (tempOrigin.HasValue) RB.MovePosition(tempOrigin.Value);
-        if (buffer > 0) RB.MovePosition(RB.position - (offset.normalized * buffer));
+
+        if (tempOrigin.HasValue && buffer > 0) RB.MovePosition(tempOrigin.Value - (offset.normalized * buffer));
+        else if (tempOrigin.HasValue) RB.MovePosition(tempOrigin.Value);
+        else if (buffer > 0) RB.MovePosition(RB.position - (offset.normalized * buffer));
+
         bool result = RB.SweepTest(offset.normalized, out hit, offset.magnitude + buffer, queryTriggerInteraction);
-        RB.MovePosition(originalPos);
+
+        if (tempOrigin.HasValue || buffer > 0) RB.MovePosition(originalPos);
+
         hit.distance = (hit.distance - buffer).Min(0);
         sweepsThisPhysUpdate.Add(new()
         {
@@ -1459,7 +1467,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
         foreach (var sweep in sweepsThisPhysUpdate)
         {
             Color color = sweep.hit ? Color.green : Color.red;
-            Color colorE = color.Changed(a: .5f); 
+            Color colorE = color.Changed(a: .5f);
             Vector3 height = Vector3.up * Collider.height / 2;
 
             DrawWireCapsule(sweep.origin + height, Quaternion.identity, Collider.radius, Collider.height, color);

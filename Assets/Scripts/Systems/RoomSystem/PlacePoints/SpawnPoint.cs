@@ -59,7 +59,11 @@ public class SpawnPoint : RoomActor
         Root.asset.spawnPointNames.RemoveAt(Root.Spawns.IndexOf(this));
         Root.Spawns.Remove(this);
     }
-    public override void OnSave() => Root.asset.spawnPointNames[Root.Spawns.IndexOf(this)] = gameObject.name;
+    public override void OnSave()
+    {
+        if (!Root.Spawns.Contains(this)) return;
+        Root.asset.spawnPointNames[Root.Spawns.IndexOf(this)] = gameObject.name;
+    }
 #endif
 
     [Button]

@@ -6,6 +6,8 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using System;
 using Utilities.Xtensions.VisualElements;
+using EPOOutline;
+
 
 
 
@@ -23,6 +25,7 @@ public class Target : MonoBehaviour
     [SerializeField, RelatedComponent] new Collider collider;
     [SerializeField, RelatedComponent] NavMeshAgent navMeshAgent;
     [SerializeField] CenterComputationType centerComputationType;
+    [SerializeField, RelatedComponent] Outlinable outlinable;
 
     public enum CenterComputationType
     {
@@ -42,17 +45,17 @@ public class Target : MonoBehaviour
     public float GetDistance(TargetingRange range) => Vector3.Distance(range.front.position, position);
     public float GetAngle(TargetingRange range) => Vector3.Angle(range.front.forward, position - range.front.position);
 
-    private void OnEnable() 
-    { 
-        for (int i = 0; i < Types.Count; i++) 
-            if (Types[i] != null) 
-                Types[i].Enabled = true; 
+    private void OnEnable()
+    {
+        for (int i = 0; i < Types.Count; i++)
+            if (Types[i] != null)
+                Types[i].Enabled = true;
     }
-    private void OnDisable() 
-    { 
-        for (int i = 0; i < Types.Count; i++) 
-            if (Types[i] != null) 
-                Types[i].Enabled = false; 
+    private void OnDisable()
+    {
+        for (int i = 0; i < Types.Count; i++)
+            if (Types[i] != null)
+                Types[i].Enabled = false;
     }
 
     public virtual Vector3 PredictFuturePosition(Vector3 projectileInitPos, float projectileSpeed)
@@ -79,6 +82,24 @@ public class Target : MonoBehaviour
     }
 
     public TargetType this[System.Type T] => Types[T];
+    public TargetState GetTargetState(System.Type T) => Types[T] != null ? Types[T].TargetState : TargetState.Inactive;
+
+    public void UpdateTargetedState()
+    {
+        if (outlinable == null) return;
+        int value = GetTargetState(typeof(TargetType.Interactable)) == TargetState.Targeted ? 3
+            : GetTargetState(typeof(TargetType.Melee)) == TargetState.Targeted ? 2
+            : GetTargetState(typeof(TargetType.Ranged)) == TargetState.Targeted ? 1
+            : 0;
+        outlinable.enabled = value != 0;
+        outlinable.OutlineParameters.Color = value switch
+        {
+            3 => Color.green,
+            2 => new(1, .627450980392156862f, 0),
+            1 => Color.whiteSmoke,
+            _ => Color.clear
+        };
+    }
 
 }
 
