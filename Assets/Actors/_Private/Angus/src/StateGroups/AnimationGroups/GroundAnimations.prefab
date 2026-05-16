@@ -72,8 +72,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 5979072417615712909}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   walkingSpeed: 6
 --- !u!114 &2805048379593461663
 MonoBehaviour:
@@ -603,6 +601,12 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 592500146358321391}
   timeline: {fileID: 0}
   events:
+  - time: 0
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 8171670008727634204}
+        _MemberName: Lock
+        _PersistentArguments: []
   - time: 0.1833333
     output:
       _PersistentCalls:
@@ -628,12 +632,6 @@ MonoBehaviour:
           _Z: 0
           _W: 0
           _Object: {fileID: 0}
-  - time: 0.6
-    output:
-      _PersistentCalls:
-      - _Target: {fileID: 0}
-        _MemberName: Unlock
-        _PersistentArguments: []
   - time: 0.3
     output:
       _PersistentCalls:
@@ -648,6 +646,12 @@ MonoBehaviour:
           _Z: 0
           _W: 0
           _Object: {fileID: 0}
+  - time: 0.5
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 6561442296239639007}
+        _MemberName: Unlock
+        _PersistentArguments: []
   - time: 0.8
     output:
       _PersistentCalls:
@@ -677,8 +681,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 592500146358321391}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -1029,8 +1031,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 7594748674704045997}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -1472,8 +1472,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 6063192653884144173}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: 1950655830041821330
   Attack:
@@ -1657,8 +1655,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 7772055570066141359}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -2196,8 +2192,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 7103699631016929}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -2398,8 +2392,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 538145963387661634}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -2490,8 +2482,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 7974572304232093520}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   forwardSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -2579,7 +2569,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  horizontalThreshold: 0.9
+  horizontalThresholdAdjustment: 0.05
   verticalThreshold: 0
   directionalThreshold: 1
   maxAttemptTime: 3
@@ -3523,8 +3513,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 1944005435322958134}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -3898,8 +3886,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 3890259728980585617}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   walkingSpeed: 3
 --- !u!114 &4406334284145146097
 MonoBehaviour:
@@ -4033,8 +4019,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 7718018602217990618}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   walkingSpeed: 4.5
 --- !u!114 &8553592256359087989
 MonoBehaviour:
@@ -4068,8 +4052,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 7718018602217990618}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -4674,8 +4656,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 2212939438660449867}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:

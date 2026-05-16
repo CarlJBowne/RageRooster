@@ -22,7 +22,8 @@ public class PlayerController : PlayerStateBehavior
     #region Data
 
     [HideProperty] public float jumpInput;
-    [HideProperty] public Vector3 camAdjustedMovement
+    [HideProperty]
+    public Vector3 camAdjustedMovement
     {
         get => !overrideMovementControl
           ? Input.Movement.ToXZ().Rotated(Machine.cameraTransform.eulerAngles.y, Vector3.up)
@@ -119,9 +120,9 @@ public class PlayerController : PlayerStateBehavior
     }
     public void MidWallJumpJumpAction() => Player.StateMachine.WallJump.WallJump(transform.forward);
 
-    public void AirJumpAction(bool allowDoubleJump, bool allowGlide)
+    public static void AirJumpAction(bool allowDoubleJump, bool allowGlide)
     {
-        if (Upgrades.Active.wallJump && Player.StateMachine.WallJump.WallJump(transform.forward)) return;
+        if (Upgrades.Active.wallJump && Player.StateMachine.WallJump.WallJump(Player.Transform.forward)) return;
         else if (allowDoubleJump && Upgrades.Active.doubleJump && Player.MovementBody.canDoDoubleJump)
         {
             Player.StateMachine.Jump.BeginJump();
@@ -144,39 +145,33 @@ public class PlayerController : PlayerStateBehavior
 
     private void ActionButtonPressed(CTX c)
     {
-        if (PlayerButtonAction.Current != null || ActionSourceStack.Count == 0) return;
-        if (ActionSourceStack[^1][c.action] is PlayerButtonAction action and not null && !action.active)
+        if (PlayerButtonAction.Current != null || ButtonLocked) return;
+        int i = ActionSourceStack.Count - 1;
+        while(i > -1)
         {
-            ActiveButtonAction = c.action;
-            action.Press();
+            if (i > -1 && ActionSourceStack[i] != null && !ActionSourceStack[i].Locked) break;
+            i--;
         }
+        if (i == -1) return;
+        if (!(ActionSourceStack[i][c.action] is PlayerButtonAction action and not null) || action.active) return;
+        ActiveButtonAction = c.action;
+        action.Press();
     }
     private void ActionButtonReleased(CTX c)
     {
-        if (PlayerButtonAction.Current != null && ActiveButtonAction == c.action)
-        {
-            PlayerButtonAction.Current.Release();
-            ActiveButtonAction = null;
-        }
+        if (PlayerButtonAction.Current == null || ActiveButtonAction != c.action) return;
+        PlayerButtonAction.Current.Release();
+        ActiveButtonAction = null;
     }
 
-    //public static bool ButtonReady = true; Implement later
+    public bool ButtonLocked = false;
     public static InputAction ActiveButtonAction { get; private set; } = null;
     private readonly static List<PlayerButtonActions> ActionSourceStack = new();
 
     public static void RegisterActionSource(PlayerButtonActions source, bool deregister = false)
     {
-        if (!deregister)
-        {
-            if (!ActionSourceStack.Contains(source)) ActionSourceStack.Add(source);
-        }
-        else
-        {
-            if (ActionSourceStack.Count > 0 && ActionSourceStack.Contains(source))
-            {
-                if (ActionSourceStack[^1] == source) ActionSourceStack.RemoveAtLast();
-            }
-        }
+        if (!deregister && !ActionSourceStack.Contains(source)) ActionSourceStack.Add(source);
+        else if (deregister && ActionSourceStack.Contains(source)) ActionSourceStack.Remove(source);
     }
 
 
@@ -281,3 +276,4 @@ public class PlayerController : PlayerStateBehavior
         }
     }
 }
+
