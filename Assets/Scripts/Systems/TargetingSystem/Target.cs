@@ -47,16 +47,43 @@ public class Target : MonoBehaviour
 
     private void OnEnable()
     {
+        // Ensure each sub-component knows its owning Target in case the editor failed to serialize the reference
         for (int i = 0; i < Types.Count; i++)
-            if (Types[i] != null)
-                Types[i].Enabled = true;
+        {
+            if (Types[i] == null) continue;
+            Types[i].Target = this;
+            Types[i].Enabled = true;
+        }
     }
     private void OnDisable()
     {
         for (int i = 0; i < Types.Count; i++)
-            if (Types[i] != null)
-                Types[i].Enabled = false;
+        {
+            if (Types[i] == null) continue;
+            Types[i].Target = this; // keep reference available until fully torn down
+            Types[i].Enabled = false;
+        }
     }
+
+    private void Awake()
+    {
+        // Runtime safety: assign owner to any serialized sub-components
+        for (int i = 0; i < Types.Count; i++)
+            if (Types[i] != null)
+                Types[i].Target = this;
+    }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        // Editor-time: ensure the Target reference is present for each polymorph entry so editor drawers and tools
+        // that expect the back-reference don't observe nulls.
+        if (Types == null) return;
+        for (int i = 0; i < Types.Count; i++)
+            if (Types[i] != null)
+                Types[i].Target = this;
+    }
+#endif
 
     public virtual Vector3 PredictFuturePosition(Vector3 projectileInitPos, float projectileSpeed)
     {
