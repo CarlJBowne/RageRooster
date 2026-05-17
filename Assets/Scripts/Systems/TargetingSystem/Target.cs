@@ -67,6 +67,12 @@ public class Target : MonoBehaviour
 
     private void Awake()
     {
+        if (Gameplay.GameState != Gameplay.GameStates.Active)
+        {
+            this.enabled = false;
+            return;
+        }
+
         // Runtime safety: assign owner to any serialized sub-components
         for (int i = 0; i < Types.Count; i++)
             if (Types[i] != null)
@@ -83,6 +89,16 @@ public class Target : MonoBehaviour
             if (Types[i] != null)
                 Types[i].Target = this;
     }
+
+    [ContextMenu("Add Outlinable")]
+    private void AddOutlinable()
+    {
+        if (outlinable != null) return;
+        outlinable = gameObject.AddComponent<Outlinable>();
+        outlinable.OutlineLayer = 1;
+        outlinable.enabled = false;
+    }
+
 #endif
 
     public virtual Vector3 PredictFuturePosition(Vector3 projectileInitPos, float projectileSpeed)
@@ -113,6 +129,7 @@ public class Target : MonoBehaviour
 
     public void UpdateTargetedState()
     {
+
         if (outlinable == null) return;
         int value = GetTargetState(typeof(TargetType.Interactable)) == TargetState.Targeted ? 3
             : GetTargetState(typeof(TargetType.Melee)) == TargetState.Targeted ? 2

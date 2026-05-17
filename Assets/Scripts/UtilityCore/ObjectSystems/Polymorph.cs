@@ -7,6 +7,8 @@ using UnityEngine.UIElements;
 using System.Collections;
 using Utilities.Xtensions;
 using Utilities.Xtensions.VisualElements;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
+
 
 
 
@@ -49,7 +51,7 @@ public abstract class Polymorph
     }
 
     [System.Serializable]
-    public class UniqueList<T> : IList<T>, ISerializationCallbackReceiver where T : Polymorph
+    public class UniqueList<T> : IList<T> where T : Polymorph
     {
         [SerializeField, SerializeReference]
         public List<T> items = new();
@@ -106,8 +108,6 @@ public abstract class Polymorph
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => ((System.Collections.IEnumerable)items).GetEnumerator();
         #endregion
 
-        [SerializeField] private List<Type> typeKey = new();
-
         // Additional dictionary-like and utility methods:
 
         /// <summary>
@@ -115,7 +115,14 @@ public abstract class Polymorph
         /// </summary>
         /// <param name="I">The type whose associated value to get.</param>
         /// <returns>The value associated with the specified type.</returns>
-        public T this[Type I] => typeKey.Contains(I) ? items[typeKey.IndexOf(I)] : null;
+        public T this[Type I]
+        {
+            get
+            {
+                T found = items.FirstOrDefault(e => e.GetType() == I);
+                return found;
+            }
+        }
 
         /// <summary>
         /// Returns the first stored element whose runtime Type equals the provided Type, or null if none.
@@ -191,14 +198,14 @@ public abstract class Polymorph
             else Add(item);
         }
 
-        public void OnBeforeSerialize()
-        {
-            typeKey.Clear();
-            for (int i = 0; i < items.Count; i++) 
-                if (items[i] != null) 
-                    typeKey.Add(items[i].GetType());
-        }
-        public void OnAfterDeserialize() { }
+        //public void OnBeforeSerialize()
+        //{
+        //    typeKey.Clear();
+        //    for (int i = 0; i < items.Count; i++) 
+        //        if (items[i] != null) 
+        //            typeKey.Add(items[i].GetType());
+        //}
+        //public void OnAfterDeserialize() { }
     }
 
 #if UNITY_EDITOR
