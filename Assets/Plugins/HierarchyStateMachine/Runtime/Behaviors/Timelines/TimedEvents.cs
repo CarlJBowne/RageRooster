@@ -74,6 +74,8 @@ namespace SLS.StateMachineH.Timelines
             Label emptyLabel;
             VisualElement rowsContainer;
             VisualElement root;
+            int selected = -1;
+            List<TimedEventRow> rows;
 
             private string noEventsHelpBoxText = "No timed events have been added. This system will not work without at least one. Click the + button to add one.";
 
@@ -86,69 +88,8 @@ namespace SLS.StateMachineH.Timelines
                 // Top toolbar with add button and loop toggle
 
                 rowsContainer = new();
+                rows = new();
                 root.Add(rowsContainer);
-
-                VisualElement bottomToolbar = new()
-                {
-                    style =
-                    {
-                        flexDirection = FlexDirection.Row,
-                    }
-                };
-
-
-                SerializedProperty currentLoopValue = serializedObject.FindProperty(nameof(TimedEvents.loopAfterLastEvent));
-                Button loopButton = null;
-                loopButton = new(UpdateLoop)
-                {
-                    text = "Loop",
-                    style =
-                    {
-                        backgroundColor = currentLoopValue.boolValue ? Color.gray5 : Color.gray2,
-                        color = currentLoopValue.boolValue ? Color.white : Color.gray4,
-                        width = 80,
-                        height = 18,
-                    }
-                };
-                void UpdateLoop()
-                {
-                    currentLoopValue.boolValue = !currentLoopValue.boolValue;
-                    loopButton.style.backgroundColor = currentLoopValue.boolValue ? Color.gray5 : Color.gray2;
-                    loopButton.style.color = currentLoopValue.boolValue ? Color.white : Color.gray4;
-                    serializedObject.ApplyModifiedProperties();
-                }
-                bottomToolbar.Add(loopButton);
-
-                Button addButton = new(AddElement)
-                {
-                    text = "+",
-                    style =
-                    {
-                        backgroundColor = new StyleColor(new Color(0.2f, 0.6f, 0.2f)),
-                        color = new StyleColor(Color.white),
-                        width = 24,
-                        height = 18,
-                        position = Position.Absolute,
-                        right = -2,
-                        borderBottomRightRadius = 10,
-                        borderBottomLeftRadius = 10,
-                    }
-                };
-                MakeHighlightable(addButton);
-                bottomToolbar.Add(addButton);
-
-                root.Add(bottomToolbar);
-
-                /*Toggle loopToggle = new("Loop?")
-                {
-                    bindingPath = nameof(TimedEvents.loopAfterLastEvent),
-                    style =
-                    {
-                        marginLeft = 6
-                    }
-                };
-                root.Add(addButton);
-                root.Add(loopToggle);*/
 
                 emptyLabel = new Label(noEventsHelpBoxText)
                 {
@@ -162,8 +103,93 @@ namespace SLS.StateMachineH.Timelines
                 };
 
                 RefreshList();
+                Undo.undoRedoPerformed += RefreshList;
 
                 serializedObject.ApplyModifiedProperties();
+
+                VisualElement bottomToolbar = new()
+                {
+                    style =
+                    {
+                        flexDirection = FlexDirection.Row,
+                    }
+                };
+                {
+                    SerializedProperty currentLoopValue = serializedObject.FindProperty(nameof(TimedEvents.loopAfterLastEvent));
+                    Button loopButton = null;
+                    loopButton = new(UpdateLoop)
+                    {
+                        text = "Loop",
+                        style =
+                    {
+                        backgroundColor = currentLoopValue.boolValue ? Color.gray5 : Color.gray2,
+                        color = currentLoopValue.boolValue ? Color.white : Color.gray4,
+                        width = 80,
+                        height = 18,
+                    }
+                    };
+                    void UpdateLoop()
+                    {
+                        currentLoopValue.boolValue = !currentLoopValue.boolValue;
+                        loopButton.style.backgroundColor = currentLoopValue.boolValue ? Color.gray5 : Color.gray2;
+                        loopButton.style.color = currentLoopValue.boolValue ? Color.white : Color.gray4;
+                        serializedObject.ApplyModifiedProperties();
+                    }
+                    bottomToolbar.Add(loopButton);
+
+                    VisualElement buttonpair = new()
+                    {
+                        style =
+                        {
+                            position = Position.Absolute,
+                            width = 42,
+                            height = 18,
+                            right = -2,
+                            flexDirection = FlexDirection.Row,
+                        }
+                    };
+                    {
+                        Button addButton = new(AddElement)
+                        {
+                            text = "+",
+                            style =
+                            {
+                                backgroundColor = new StyleColor(new Color(0.2f, 0.6f, 0.2f)),
+                                color = new StyleColor(Color.white),
+                                marginRight = 0,
+                                borderRightWidth = 0,
+                                borderTopRightRadius = 0,
+                                borderBottomRightRadius = 0,
+                                marginLeft = 0,
+                                flexGrow = 1
+                            }
+                        };
+                        MakeHighlightable(addButton);
+                        buttonpair.Add(addButton);
+
+                        Button deleteButton = new(RemoveElement)
+                        {
+                            text = "-",
+                            style =
+                            {
+                                backgroundColor = new StyleColor(new Color(0.6f, 0.2f, 0.2f)),
+                                color = new StyleColor(Color.white),
+                                marginLeft = 0,
+                                borderLeftWidth = 0,
+                                borderTopLeftRadius = 0,
+                                borderBottomLeftRadius = 0,
+                                marginRight = 0,
+                                flexGrow = 1
+                            }
+                        };
+                        MakeHighlightable(deleteButton);
+                        buttonpair.Add(deleteButton);
+
+                        bottomToolbar.Add(buttonpair);
+                    }
+                    root.Add(bottomToolbar);
+                }
+
                 return root;
             }
 
@@ -171,12 +197,12 @@ namespace SLS.StateMachineH.Timelines
             {
                 FloatField timeField;
                 PropertyField outputField;
-                Button deleteBtn;
+                //Button deleteBtn;
                 int ID = -1;
                 SerializedProperty timeProp;
                 SerializedProperty outputProp;
 
-                public TimedEventRow(int id, SerializedProperty prop, System.Action<int> onTimeChanged, System.Action<int> onDelete)
+                public TimedEventRow(int id, SerializedProperty prop, System.Action<int> onTimeChanged, System.Action<int> onSelect)
                 {
                     ID = id;
                     timeProp = prop.FindPropertyRelative(nameof(TimedEvent.time));
@@ -185,16 +211,30 @@ namespace SLS.StateMachineH.Timelines
                     style.flexDirection = FlexDirection.Row;
                     style.alignItems = Align.Center;
                     style.marginBottom = 2;
+                    style.borderBottomLeftRadius = 4;
+                    style.borderBottomRightRadius = 0;
+                    style.borderTopLeftRadius = 4;
+                    style.borderTopRightRadius = 2;
+                    this.RegisterCallback<MouseDownEvent>(evt => onSelect?.Invoke(ID));
+
+                    Label leftmost = new("≡")
+                    {
+                        style =
+                        {
+                            color = Color.gray4,
+                            marginLeft = 3
+                        },
+                    };
 
                     timeField = new FloatField()
                     {
-                        label = " ",
+                        label = "",
                         pickingMode = PickingMode.Position,
                         style =
                         {
                             flexBasis = new StyleLength(new Length(20, LengthUnit.Percent)),
                             minHeight = 20,
-                            left = -16
+                            alignSelf = Align.FlexStart
                         },
                         isDelayed = true,
                     };
@@ -216,30 +256,20 @@ namespace SLS.StateMachineH.Timelines
                         {
                             flexGrow = 1,
                             flexBasis = new StyleLength(new Length(0, LengthUnit.Percent)),
-                            marginLeft = -20
+                            marginLeft = -14
                         }
                     };
-                    deleteBtn = new(() => onDelete?.Invoke(ID))
-                    {
-                        style =
-                        {
-                            paddingLeft = 0,
-                            paddingRight = 0,
-                            minWidth = 10,
-                            minHeight = 21,
-                            height = 18,
-                            borderBottomLeftRadius = 0,
-                            marginLeft = 0,
-                            marginRight = 0,
-                            flexShrink = 0,
-                            backgroundColor = new UnityEngine.Color(0.85f, 0.2f, 0.2f),
-                        }
-                    };
-                    MakeHighlightable(deleteBtn);
 
+                    Add(leftmost);
                     Add(timeField);
                     Add(outputField);
-                    Add(deleteBtn);
+                    //Add(deleteBtn);
+                }
+
+                public void SetHighlighted(bool value = true)
+                {
+                    Color highlightColor = value ? Color.gray3 : Color.clear;
+                    this.style.backgroundColor = highlightColor;
                 }
             }
 
@@ -248,6 +278,8 @@ namespace SLS.StateMachineH.Timelines
             {
                 if (rowsContainer == null) return;
                 rowsContainer.Clear();
+                rows.Clear();
+                selected = -1;
                 serializedObject.Update();
 
                 eventsListProperty ??= serializedObject.FindProperty(nameof(TimedEvents.events));
@@ -259,7 +291,12 @@ namespace SLS.StateMachineH.Timelines
                 else
                 {
                     for (int i = 0; i < eventsListProperty.arraySize; i++)
-                        rowsContainer.Add(new TimedEventRow(i, eventsListProperty.GetArrayElementAtIndex(i), ReorderElements, RemoveElement));
+                    {
+                        TimedEventRow iRow = new(i, eventsListProperty.GetArrayElementAtIndex(i), ReorderElements, SelectElement);
+                        rowsContainer.Add(iRow);
+                        rows.Add(iRow);
+                    }
+
                 }
                 root.Bind(serializedObject);
             }
@@ -285,11 +322,19 @@ namespace SLS.StateMachineH.Timelines
 
                 serializedObject.ApplyModifiedProperties();
                 RefreshList();
+                SelectElement(eventsListProperty.arraySize - 1);
             }
 
-            void RemoveElement(int index)
+            void SelectElement(int index)
             {
-                if (index < 0) return;
+                if (selected != -1) rows[selected].SetHighlighted(false);
+                selected = index;
+                if (selected != -1) rows[selected].SetHighlighted(true);
+            }
+
+            void RemoveElement()
+            {
+                int index = selected != -1 ? selected : eventsListProperty.arraySize - 1;
                 serializedObject.Update();
                 eventsListProperty ??= serializedObject.FindProperty(nameof(TimedEvents.events));
                 if (eventsListProperty == null || index >= eventsListProperty.arraySize) return;
@@ -302,6 +347,7 @@ namespace SLS.StateMachineH.Timelines
                 }
                 serializedObject.ApplyModifiedProperties();
                 RefreshList();
+                SelectElement(-1);
             }
 
             void ReorderElements(int index)
@@ -337,7 +383,6 @@ namespace SLS.StateMachineH.Timelines
             SerializedProperty TimeFromIndex(int i) => eventsListProperty.GetArrayElementAtIndex(i).FindPropertyRelative(nameof(TimedEvent.time));
             SerializedProperty OutputFromIndex(int i) => eventsListProperty.GetArrayElementAtIndex(i).FindPropertyRelative(nameof(TimedEvent.output));
 
-
             static void MakeHighlightable(VisualElement element)
             {
                 Color color = element.style.color.value;
@@ -355,7 +400,6 @@ namespace SLS.StateMachineH.Timelines
                 });
             }
         }
-#if ULT_EVENTS
         [ContextMenu("Convert Animation Events")]
         void ConvertAnimationEvents()
         {
@@ -411,7 +455,6 @@ namespace SLS.StateMachineH.Timelines
                     remainingEvents.Add(animationEvents[j]);
             AnimationUtility.SetAnimationEvents(clip, remainingEvents.ToArray());
         }
-#endif
 #endif
     }
 }
