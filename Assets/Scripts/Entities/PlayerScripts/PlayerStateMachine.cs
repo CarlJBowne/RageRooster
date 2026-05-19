@@ -99,7 +99,7 @@ public class PlayerStateMachine : StateMachine
     {
         prevState = CurrentState;
         Paused.Enter();
-        Player.MovementBody.velocity.Zero();
+        Player.MovementBody.velocity.ZeroOut();
         Player.Animator.CrossFade("GroundBasic", .2f);
     }
     public void UnCutsceneState()

@@ -39,7 +39,7 @@ public class PlayerLedgeGrab : PlayerMovementEffector
                 if (fwdHit.collider != null)
                 {
                     Machine.SendSignal("EndFall");
-                    Player.MovementBody.velocity.Zero();
+                    Player.MovementBody.velocity.ZeroOut();
 
                     ledged = true;
                     //fallState = null;

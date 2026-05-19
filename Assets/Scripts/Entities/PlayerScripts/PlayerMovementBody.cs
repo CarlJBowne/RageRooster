@@ -10,7 +10,7 @@ using Utilities.Singletons;
 using Utilities.Xtensions.Unity;
 using Utilities.Xtensions;
 using Cinemachine.Utility;
-
+using RageRooster.Physics;
 
 #if UNITY_EDITOR
 using UnityEditor.UIElements;
@@ -41,7 +41,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
     /// </summary>
     [SerializeField] Vector3 defaultGravity = new(0, 1, 0);
     /// <summary>
-    /// Whether Gravity should be automaticall applied or applied by some behavior
+    /// Whether Gravity should be automatically applied or applied by some behavior
     /// </summary>
     [SerializeField] bool autoApplyGravity = false;
     /// <summary>
@@ -70,9 +70,6 @@ public sealed class PlayerMovementBody : MonoBehaviour
     /// </summary>
     [SerializeField] float frontCheckDefaultRadius;
 
-    //public PlatformDetectionMethod platformDetection;
-    //[Tooltip("An unconventional means of hopefully avoiding falling through the floor. If true, the player will check if there is any ground below them before moving, and if not, their velocity will be set to 0 to prevent them from moving further. This is jank, but it might help with some edge cases and it doesn't require any extra components or setup.")]
-    //public PlatformDetectionMethod mario64StyleAntiVoid;
     /// <summary>
     /// The LayerMask used for ground checks. Should be set to anything that can be stood on.
     /// </summary>
@@ -110,7 +107,6 @@ public sealed class PlayerMovementBody : MonoBehaviour
         //NavAgent.updateRotation = false;
         NavAgent.updateUpAxis = false;
         gravity = defaultGravity.y;
-        velocity = new(transform);
     }
 
     /// <summary>
@@ -462,12 +458,12 @@ public sealed class PlayerMovementBody : MonoBehaviour
             else
             {
                 AddDebugText("Hit a ceiling while jumping.");
-                land = true;
+                land = false;
                 velocity.y = -0.1f;
                 UnLand(JumpState.Falling);
             }
 
-            if (hit.normal.y > 0 && WithinSlopeAngle(hit.normal) && stepVelocity.y <= 0) anchorPoint = hit;
+            if (hit.normal.y > 0 && WithinSlopeAngle(hit.normal) ) anchorPoint = hit;
         }
         else
         {
@@ -687,231 +683,16 @@ public sealed class PlayerMovementBody : MonoBehaviour
     #region Velocity
 
     /// <summary>
-    /// Custom Velocity handler that has velocity in both Global and Local spaces.
-    /// </summary>
-    public class BodyVelocityState
-    {
-        public BodyVelocityState(Transform This) => this.transform = This;
-
-        public Transform transform;
-
-        /// <summary>
-        /// Forward Velocity
-        /// <br/> Setting this will rebuild the x and z values to match the new forward velocity.
-        /// </summary>
-        public float f
-        {
-            get => fValue;
-            set
-            {
-                fValue = value;
-                if (!allowBackwards && value < 0) fValue = 0;
-                Vector3 global = transform.TransformVector(Local);
-                zValue = global.z;
-                xValue = global.x;
-            }
-        }
-        float fValue;
-        /// <summary>
-        /// Upward Velocity (Identical to y)
-        /// </summary>
-        public float u { get => yValue; set => yValue = value; }
-        /// <summary>
-        /// Sideways Velocity
-        /// <br/> Setting this will rebuild the x and z values to match the new sideways velocity.
-        /// </summary>
-        public float s
-        {
-            get => sValue;
-            set
-            {
-                sValue = value;
-                Vector3 global = transform.TransformVector(Local);
-                zValue = global.z;
-                xValue = global.x;
-            }
-        }
-        float sValue;
-
-        /// <summary>
-        /// Velocity on the X global direction
-        /// <br/> Setting this will rebuild the f and s values to match the new x velocity.
-        /// </summary>
-        public float x
-        {
-            get => xValue;
-            set
-            {
-                xValue = value;
-                Vector3 local = transform.InverseTransformVector(Global);
-                fValue = local.z;
-                sValue = local.x;
-            }
-        }
-        float xValue;
-        /// <summary>
-        /// Velocity on the Y global direction (Identical to u)
-        /// </summary>
-        public float y
-        {
-            get => yValue; set => yValue = value;
-        }
-        float yValue;
-        /// <summary>
-        /// Velocity on the Z global direction
-        /// <br/> Setting this will rebuild the f and s values to match the new z velocity.
-        /// </summary>
-        public float z
-        {
-            get => zValue;
-            set
-            {
-                zValue = value;
-                Vector3 local = transform.InverseTransformVector(Global);
-                fValue = local.z;
-                sValue = local.x;
-            }
-        }
-        float zValue;
-
-
-
-        public Vector3 Global
-        {
-            get => new(xValue, yValue, zValue);
-            set
-            {
-                xValue = value.x;
-                yValue = value.y;
-                zValue = value.z;
-
-                Vector3 local = transform.InverseTransformVector(Global);
-                fValue = local.z;
-                sValue = local.x;
-            }
-        }
-        public Vector3 Local
-        {
-            get => new(sValue, yValue, fValue);
-            set
-            {
-                sValue = value.x;
-                yValue = value.y;
-                fValue = value.z;
-
-                Vector3 global = transform.TransformVector(Local);
-                zValue = global.z;
-                xValue = global.x;
-            }
-        }
-
-        /// <summary>
-        /// Rotational Velocity, clockwise on the Y/U axis.
-        /// </summary>
-        public float r
-        {
-            get => rValue;
-            set => rValue = value;
-        }
-        float rValue;
-        /// <summary>
-        /// How much Local Velocity is carried over upon rotation. 0-1
-        /// </summary>
-        public float cL
-        {
-            get => cLValue;
-            set
-            {
-                cLValue = Mathf.Clamp01(value);
-                if (cLValue + cGValue > 1) cGValue = 1 - cLValue;
-            }
-        }
-        float cLValue = 1f;
-        /// <summary>
-        /// How much Global Velocity is carried over upon rotation. 0-1
-        /// </summary>
-        public float cG
-        {
-            get => cGValue;
-            set
-            {
-                cLValue = Mathf.Clamp01(value);
-                if (cLValue + cGValue > 1) cGValue = 1 - cLValue;
-            }
-        }
-        float cGValue;
-
-        public bool allowBackwards = true;
-
-        public void CallThisPostRotation()
-        {
-            if (cLValue == 0 && cGValue == 0) { xValue = 0; zValue = 0; fValue = 0; sValue = 0; return; }
-
-            Vector3 adjustedGlobalValues = transform.InverseTransformVector(Global);
-
-            float fFinal = (fValue * cLValue) + (adjustedGlobalValues.z * cGValue),
-                  sFinal = (sValue * cLValue) + (adjustedGlobalValues.x * cGValue);
-
-            Vector3 finalGlobalValues = transform.TransformVector(new(sFinal, 0, fFinal));
-
-            fValue = fFinal;
-            sValue = sFinal;
-            xValue = finalGlobalValues.x;
-            zValue = finalGlobalValues.z;
-        }
-
-        public void Zero(bool horizontal = true, bool vertical = true, bool rotational = true)
-        {
-            if (horizontal)
-            {
-                fValue = 0;
-                sValue = 0;
-                xValue = 0;
-                zValue = 0;
-            }
-            if (vertical) yValue = 0;
-            if (rotational) rValue = 0;
-        }
-
-        public float magnitudeH =>
-            sValue != 0 ? MathF.Sqrt((fValue * fValue) + (sValue * sValue))
-            : fValue;
-        public float sqrMagnitudeH =>
-            sValue != 0 ? (fValue * fValue) + (sValue * sValue)
-            : fValue * fValue;
-        public float magnitude =>
-            fValue != 0 && sValue != 0 && yValue != 0 ? Mathf.Sqrt((fValue * fValue) + (sValue * sValue) + (yValue * yValue)) //All 3 NonZero
-                  : fValue != 0 && sValue == 0 && yValue == 0 ? Mathf.Sqrt(fValue * fValue) //Only F
-                  : fValue == 0 && sValue == 0 && yValue != 0 ? Mathf.Sqrt(yValue * yValue) //Only Y
-                  : fValue == 0 && sValue != 0 && yValue == 0 ? Mathf.Sqrt(sValue * sValue) //Only S
-                  : fValue != 0 && sValue == 0 && yValue != 0 ? Mathf.Sqrt((fValue * fValue) + (yValue * yValue)) // F+Y
-                  : fValue != 0 && sValue != 0 && yValue == 0 ? Mathf.Sqrt((fValue * fValue) + (sValue * sValue)) // F+S
-                  : fValue == 0 && sValue != 0 && yValue != 0 ? Mathf.Sqrt((sValue * sValue) + (yValue * yValue)) // S+Y
-            : 0; //All 3 Zero
-
-        public float sqrMagnitude =>
-            fValue != 0 && sValue != 0 && yValue != 0 ? (fValue * fValue) + (sValue * sValue) + (yValue * yValue) //All 3 NonZero
-                  : fValue != 0 && sValue == 0 && yValue == 0 ? fValue * fValue //Only F
-                  : fValue == 0 && sValue == 0 && yValue != 0 ? yValue * yValue //Only Y
-                  : fValue == 0 && sValue != 0 && yValue == 0 ? sValue * sValue //Only S
-                  : fValue != 0 && sValue == 0 && yValue != 0 ? (fValue * fValue) + (yValue * yValue) // F+Y
-                  : fValue != 0 && sValue != 0 && yValue == 0 ? (fValue * fValue) + (sValue * sValue) // F+S
-                  : fValue == 0 && sValue != 0 && yValue != 0 ? (sValue * sValue) + (yValue * yValue) // S+Y
-            : 0; //All 3 Zero
-    }
-
-    /// <summary>
     /// Specialzed Doubly-Direction Velocity Property. 
     /// <br/>Contains Local and Global velocities and automatically adjusts the other when one is changed.
     /// <br/>Members: x-y-z f-u-s r-cL-cG 
     /// </summary>
-    public BodyVelocityState velocity { get; private set; }
+    public Velocity velocity { get; private set; }
 
     public float movementModifier = 1;
 
     [HideInInspector] public bool baseMovability = true;
     [HideInInspector] public bool canJump = true;
-
 
     #endregion Velocity
 
@@ -1821,4 +1602,3 @@ public sealed class PlayerMovementBody : MonoBehaviour
     #endregion DEBUG
 
 }
-

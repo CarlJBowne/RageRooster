@@ -233,7 +233,7 @@ public class Player : MonoBehaviour
         StateMachine.ResetState();
         Cameras.currentVirtualCamera.PreviousStateIsValid = false;
         Cameras.currentVirtualCamera.OnTargetObjectWarped(Transform, camDelta);
-        MovementBody.velocity.Zero();
+        MovementBody.velocity.ZeroOut();
     }
 
     public static bool IsPlayer(Component C) => Exists && C != null && C.gameObject == GameObject;
@@ -454,7 +454,7 @@ public class Player : MonoBehaviour
         Vector3 targetVelocity = MovementBody.velocity.Global;
         Audio.PlayOneShot("Death");
         StateMachine.Ragdoll.Enter();
-        MovementBody.velocity.Zero();
+        MovementBody.velocity.ZeroOut();
         RagdollHandler.State = RagdollHandler.States.Thrown;
         RagdollHandler.SetVelocity(targetVelocity * 0.75f);
         Animator.enabled = false;

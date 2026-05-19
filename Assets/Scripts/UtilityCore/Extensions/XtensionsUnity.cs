@@ -139,7 +139,13 @@ namespace Utilities.Xtensions.Unity
         public static float ATan(this float F) => Mathf.Atan(F);
 
         public static float Clamp(this float value, float min, float max) => (value < min) ? min : (value > max) ? max : value;
+        /// <summary>
+        /// Clamps the input value to a minimum, returning the minimum if the value is less than it, and the value itself otherwise.
+        /// </summary>
         public static float Min(this float value, float min) => (value < min) ? min : value;
+        /// <summary>
+        /// Clamps the input value to a maximum, returning the maximum if the value is greater than it, and the value itself otherwise.
+        /// </summary>
         public static float Max(this float value, float max) => (value > max) ? max : value;
 
         public static int Int(this float value) => (int)value;
