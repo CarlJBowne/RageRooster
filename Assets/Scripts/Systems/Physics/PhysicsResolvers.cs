@@ -44,7 +44,7 @@ namespace RageRooster.Physics
         /// the current FixedUpdate cycle. Consumers may use this to prevent runaway
         /// recursion when a resolver delegates further movement processing.
         /// </summary>
-        public int step = 0;
+        [NonSerialized] public int step = 0;
 
         /// <summary>
         /// Lifecycle hooks and the main Move contract for resolvers.

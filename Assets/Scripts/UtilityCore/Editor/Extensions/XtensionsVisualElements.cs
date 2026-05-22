@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Utilities.Xtensions.VisualElements
 {
@@ -13,6 +15,25 @@ namespace Utilities.Xtensions.VisualElements
         {
             result = process();
             target.Add(result);
+        }
+        public static void CreateAddAndStore<T>(this VisualElement target, out T result, T input) where T : VisualElement
+        {
+            result = input;
+            target.Add(result);
+        }
+        public static T AddTo<T>(this T input, VisualElement target, Action<T> PostMake = null) where T : VisualElement
+        {
+            if (input == null) return null;
+            target?.Add(input);
+            PostMake?.Invoke(input);
+            return input;
+        }
+        public static T AddTo<T>(this T input, VisualElement.Hierarchy target, Action<T> PostMake = null) where T : VisualElement
+        {
+            if (input == null) return null;
+            target.Add(input);
+            PostMake?.Invoke(input);
+            return input;
         }
 
         public static void SetStyle(this VisualElement v, IStyle input)
@@ -130,8 +151,8 @@ namespace Utilities.Xtensions.VisualElements
             return arrayProperty.GetArrayElementAtIndex(arrayProperty.arraySize - 1);
         }
 
-        public static void DelayedBuild(this VisualElement V, Action result)
-            => V.RegisterCallbackOnce<AttachToPanelEvent>(_ => { V.schedule.Execute(result); });
+        public static void DelayedBuild(this VisualElement V, Action result) =>
+            V.RegisterCallbackOnce<AttachToPanelEvent>(_ => V.schedule.Execute(result));
 
 
         public static bool QCache<T>(this VisualElement V, out T result, string name = null, string className = null) where T : VisualElement
@@ -140,127 +161,189 @@ namespace Utilities.Xtensions.VisualElements
             return result != null;
         }
 
-        public static void Highlighter(this VisualElement V, Color highlightColor)
-        {
-            Color initialColor = V.style.color.value;
-
-            V.RegisterCallback<MouseOverEvent>(Hover);
-            V.RegisterCallback<MouseLeaveEvent>(UnHover);
-
-            void Hover(MouseOverEvent E) => V.style.color = highlightColor;
-            void UnHover(MouseLeaveEvent E) => V.style.color = initialColor;
-        }
-        public static void Highlighter(this VisualElement V, Color highlightColor, Color? backgroundHighlightColor = null, Color? borderHighlightColor = null)
-        {
-            Color initialColor = V.style.color.value;
-            Color initialColorBack = V.style.backgroundColor.value;
-            Color initialColorBorder = V.style.borderTopColor.value;
-
-            V.RegisterCallback<MouseOverEvent>(Hover);
-            V.RegisterCallback<MouseLeaveEvent>(UnHover);
-
-            void Hover(MouseOverEvent E)
-            {
-                V.style.color = highlightColor;
-                if (backgroundHighlightColor != null) V.style.backgroundColor = backgroundHighlightColor.Value;
-                if (borderHighlightColor != null)
-                {
-                    V.style.borderTopColor = borderHighlightColor.Value;
-                    V.style.borderBottomColor = borderHighlightColor.Value;
-                    V.style.borderLeftColor = borderHighlightColor.Value;
-                    V.style.borderRightColor = borderHighlightColor.Value;
-                }
-            }
-            void UnHover(MouseLeaveEvent E)
-            {
-                V.style.color = initialColor;
-                if (backgroundHighlightColor != null) V.style.backgroundColor = initialColorBack;
-                if (borderHighlightColor != null)
-                {
-                    V.style.borderTopColor = initialColorBorder;
-                    V.style.borderBottomColor = initialColorBorder;
-                    V.style.borderLeftColor = initialColorBorder;
-                    V.style.borderRightColor = initialColorBorder;
-                }
-            }
-        }
-        public static void Highlighter(this VisualElement V, float factor, bool clamp = true)
-        {
-            Color initialColor = V.style.color.value;
-            Color initialColorBack = V.style.backgroundColor.value;
-            Color initialColorBorder = V.style.borderTopColor.value;
-
-            V.RegisterCallback<MouseOverEvent>(Hover);
-            V.RegisterCallback<MouseLeaveEvent>(UnHover);
-
-            Color H(Color IN)
-            {
-                IN.r += factor;
-                IN.g += factor;
-                IN.b += factor;
-                if (clamp)
-                {
-                    if (IN.r < 0f) IN.r = 0f; if (IN.r > 1f) IN.r = 1f;
-                    if (IN.g < 0f) IN.g = 0f; if (IN.g > 1f) IN.g = 1f;
-                    if (IN.b < 0f) IN.b = 0f; if (IN.b > 1f) IN.b = 1f;
-                }
-                return IN;
-            }
-            void Hover(MouseOverEvent E)
-            {
-                V.style.color = H(initialColor);
-                V.style.backgroundColor = H(initialColorBack);
-                V.style.borderBottomColor = H(initialColorBorder);
-                V.style.borderLeftColor = H(initialColorBorder);
-                V.style.borderRightColor = H(initialColorBorder);
-                V.style.borderTopColor = H(initialColorBorder);
-            }
-            void UnHover(MouseLeaveEvent E)
-            {
-                V.style.color = initialColor;
-                V.style.backgroundColor = initialColorBack;
-                V.style.borderBottomColor = initialColorBorder;
-                V.style.borderLeftColor = initialColorBorder;
-                V.style.borderRightColor = initialColorBorder;
-                V.style.borderTopColor = initialColorBorder;
-            }
-        }
-        public static void Highlighter(this VisualElement V, Func<Color, Color> Process)
-        {
-            Color initialColor = V.style.color.value;
-            Color initialColorBack = V.style.backgroundColor.value;
-            Color initialColorBorder = V.style.borderTopColor.value;
-
-            V.RegisterCallback<MouseOverEvent>(Hover);
-            V.RegisterCallback<MouseLeaveEvent>(UnHover);
-
-            void Hover(MouseOverEvent E)
-            {
-                V.style.color = Process(initialColor);
-                V.style.backgroundColor = Process(initialColorBack);
-                V.style.borderBottomColor = Process(initialColorBorder);
-                V.style.borderLeftColor = Process(initialColorBorder);
-                V.style.borderRightColor = Process(initialColorBorder);
-                V.style.borderTopColor = Process(initialColorBorder);
-            }
-            void UnHover(MouseLeaveEvent E)
-            {
-                V.style.color = initialColor;
-                V.style.backgroundColor = initialColorBack;
-                V.style.borderBottomColor = initialColorBorder;
-                V.style.borderLeftColor = initialColorBorder;
-                V.style.borderRightColor = initialColorBorder;
-                V.style.borderTopColor = initialColorBorder;
-            }
-
-        }
-
         public static void RegisterHoverEvents(this VisualElement V, Action<bool> hovered)
         {
             V.RegisterCallback<MouseOverEvent>(Do);
             V.RegisterCallback<MouseLeaveEvent>(Do);
             void Do(EventBase E) => hovered?.Invoke(E is MouseOverEvent);
         }
+
+        public static void MoveCallback<E>(this VisualElement From, VisualElement To, TrickleDown trickleDown = TrickleDown.NoTrickleDown, Func<bool> Conditional = null)
+            where E : EventBase<E>, new()
+        {
+            From.RegisterCallback<E>(evt =>
+            {
+                if (Conditional != null && !Conditional()) return;
+                evt.Dispose();
+                E newEvt = EventBase<E>.GetPooled();
+                newEvt.target = To;
+                To.panel.visualTree.SendEvent(evt);
+            }, trickleDown);
+        }
+    }
+
+    public class Highlighter
+    {
+        public Highlighter(VisualElement source)
+        {
+            target = source;
+            Init();
+        }
+        public Highlighter(VisualElement source, Color? setMain = null, Color? setBack = null, Color? setBorder = null,
+            float? raiseMain = null, float? raiseBack = null, float? raiseBorder = null)
+        {
+            target = source;
+            sMain = setMain;
+            sBack = setBack;
+            sBorder = setBorder;
+            rMain = raiseMain;
+            rBack = raiseBack;
+            rBorder = raiseBorder;
+            Init();
+        }
+        public Highlighter(VisualElement source, float? raiseMain = null, float? raiseBack = null, float? raiseBorder = null)
+        {
+            target = source;
+            rMain = raiseMain;
+            rBack = raiseBack;
+            rBorder = raiseBorder;
+            Init();
+        }
+
+        void Init()
+        {
+            target.schedule.Execute(Do);
+            //target.RegisterCallbackOnce<AttachToPanelEvent>(ev => , TrickleDown.TrickleDown);
+            void Do()
+            {
+                iMain = target.resolvedStyle.color;
+                iBack = target.resolvedStyle.backgroundColor;
+                iBorderTop = target.resolvedStyle.borderTopColor;
+                iBorderBottom = target.resolvedStyle.borderBottomColor;
+                iBorderLeft = target.resolvedStyle.borderLeftColor;
+                iBorderRight = target.resolvedStyle.borderRightColor;
+            }
+        }
+
+        VisualElement target;
+
+        public Color iMain { get; private set; }
+        public Color iBack { get; private set; }
+        public Color iBorderTop { get; private set; }
+        public Color iBorderBottom { get; private set; }
+        public Color iBorderLeft { get; private set; }
+        public Color iBorderRight { get; private set; }
+
+        public Color? sMain;
+        public float? rMain;
+
+        public Color? sBack;
+        public float? rBack;
+
+        public Color? sBorder;
+        public float? rBorder;
+
+
+        public void Hover()
+        {
+            target.RegisterCallback<MouseOverEvent>(Hover, TrickleDown.TrickleDown);
+            target.RegisterCallback<MouseLeaveEvent>(UnHover, TrickleDown.TrickleDown);
+
+            void Hover(MouseOverEvent E) => ApplyHighlight();
+            void UnHover(MouseLeaveEvent E) => ResetHighlight();
+        }
+        public void Select()
+        {
+            target.RegisterCallback<FocusEvent>(ev => ApplyHighlight(), TrickleDown.TrickleDown);
+            target.RegisterCallback<BlurEvent>(ev => ResetHighlight(), TrickleDown.TrickleDown);
+            target.focusable = true;
+        }
+        public void Click()
+        {
+            target.RegisterCallback<MouseDownEvent>(Hover, TrickleDown.TrickleDown);
+            target.RegisterCallback<MouseUpEvent>(UnHover, TrickleDown.TrickleDown);
+
+            void Hover(MouseDownEvent E)
+            {
+                if (E.target != target) return;
+                ApplyHighlight();
+            }
+            void UnHover(MouseUpEvent E)
+            {
+                if (E.target != target) return;
+                ResetHighlight();
+            }
+        }
+
+        void ApplyHighlight()
+        {
+            if (sMain.HasValue) target.style.color = sMain.Value;
+            else if (rMain.HasValue) target.style.color = RaiseColor(iMain, rMain.Value);
+
+            if (sBack.HasValue) target.style.backgroundColor = sBack.Value;
+            else if (rBack.HasValue) target.style.backgroundColor = RaiseColor(iBack, rBack.Value);
+
+            if (sBorder.HasValue)
+            {
+                target.style.borderTopColor = sBorder.Value;
+                target.style.borderBottomColor = sBorder.Value;
+                target.style.borderLeftColor = sBorder.Value;
+                target.style.borderRightColor = sBorder.Value;
+            }
+            else if (rBorder.HasValue)
+            {
+                target.style.borderTopColor = RaiseColor(iBorderTop, rBorder.Value);
+                target.style.borderBottomColor = RaiseColor(iBorderBottom, rBorder.Value);
+                target.style.borderLeftColor = RaiseColor(iBorderLeft, rBorder.Value);
+                target.style.borderRightColor = RaiseColor(iBorderRight, rBorder.Value);
+            }
+        }
+        void ResetHighlight()
+        {
+            target.style.color = iMain;
+            target.style.backgroundColor = iBack;
+            target.style.borderTopColor = iBorderTop;
+            target.style.borderBottomColor = iBorderBottom;
+            target.style.borderLeftColor = iBorderLeft;
+            target.style.borderRightColor = iBorderRight;
+        }
+
+        Color RaiseColor(Color input, float r) => new(input.r + r, input.g + r, input.b + r);
+
+        public static float ButtonHoverBackRaise { get; private set; } = .404f - .345f;
+        public static Color ButtonClickedBack { get; private set; } = new(.275f, .376f, .486f);
+        public static Color ButtonSelectedOutline { get; private set; } = new(.482f, .682f, .980f);
+        public static Color ButtonBack { get; private set; } = .345f.Gray();
+        public static Color ButtonBorder { get; private set; } = .188f.Gray();
+        public static Color ButtonBorderBottom { get; private set; } = .141f.Gray();
+        public static Color ButtonText { get; private set; } = .933f.Gray();
+        public static Color Text { get; private set; } = .824f.Gray();
+        public static Color TextSelected { get; private set; } = new(.506f, .706f, 1);
+        public static Color FoldoutArrow { get; private set; } = .408f.Gray();
+        public static Color FoldoutArrowSelected { get; private set; } = new(.282f, .439f, .835f);
+
+        public static void ButtonDefault(VisualElement target)
+        {
+            new Highlighter(target, null, ButtonHoverBackRaise).Hover();
+            new Highlighter(target, null, ButtonClickedBack).Click();
+            new Highlighter(target, null, null, ButtonSelectedOutline).Select();
+        }
+        public static void ButtonStyle(VisualElement target, float? hoverAmount = null, Color? clickColor = null, Color? selectOutline = null)
+        {
+            new Highlighter(target, null, hoverAmount ?? ButtonHoverBackRaise).Hover();
+            new Highlighter(target, null, clickColor ?? ButtonClickedBack).Click();
+            new Highlighter(target, null, null, selectOutline ?? ButtonSelectedOutline).Select();
+        }
+        public static void ButtonStyle(VisualElement target, Color? hoverAmount = null, Color? clickColor = null, Color? selectOutline = null)
+        {
+            (hoverAmount.HasValue
+            ? new Highlighter(target, null, hoverAmount)
+            : new Highlighter(target, null, ButtonHoverBackRaise)
+            ).Hover();
+            new Highlighter(target, null, clickColor ?? ButtonClickedBack).Click();
+            new Highlighter(target, null, null, selectOutline ?? ButtonSelectedOutline).Select();
+        }
+        public static void TextDefault(VisualElement target) => new Highlighter(target, TextSelected).Select();
     }
 
     public static class Xtensions_VisualElements_StyleBuilders
@@ -522,8 +605,10 @@ namespace Utilities.Xtensions.VisualElements
             if (font != null) S.unityFont = font;
             return S;
         }
+        public static Color Gray(this float v) => new(v, v, v, 1);
 
-        static internal Color Gray(this float F) => new(F, F, F);
+
+
 
 
 
@@ -535,5 +620,47 @@ namespace Utilities.Xtensions.VisualElements
     {
 
     }
+
+    /// <summary>
+    /// A simpleish boolean flag class that can be added to SuperListItems to allow for highlight changing based on any number of flags. Default ones include Selected and Invalid. 
+    /// </summary>
+    public class ListItemFlag
+    {
+        public ListItemFlag(Action Callback, bool initValue = false)
+        {
+            this.Callback = Callback;
+            _value = false;
+        }
+        private bool _value;
+        public bool Value
+        {
+            get => _value;
+            set
+            {
+                _value = value;
+                Callback?.Invoke();
+            }
+        }
+        Action Callback;
+        public static implicit operator bool(ListItemFlag L) => L._value;
+        public void SetWithoutNotify(bool val) => _value = val;
+    }
+//#if UNITY_STANDALONE_WIN
+//    public static class User32
+//    {
+//        [DllImport("user32.dll")]
+//        public static extern long GetCursorPos(ref POINT point);
+//
+//        [DllImport("user32.dll")]
+//        public static extern long SetCursorPos(int x, int y);
+//
+//        [StructLayout(LayoutKind.Sequential)]
+//        public struct POINT
+//        {
+//            public int x;
+//            public int y;
+//        }
+//    }
+//#endif
 }
 
