@@ -12,5 +12,5 @@ public class ButtonSound : MonoBehaviour
     {
         GetComponent<Button>().onClick.AddListener(PlaySound);
     }
-    public void PlaySound() => AudioManager.Get.PlayOneShot(!sound.IsNull ? sound : FMODEvents.Get.selectionConfirm, this.transform.position);
+    public void PlaySound() => AudioManager.Get().PlayOneShot(!sound.IsNull ? sound : FMODEvents.Get().selectionConfirm, this.transform.position);
 }

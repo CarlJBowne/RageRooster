@@ -7,7 +7,6 @@ using UnityEngine.Events;
 // This behavior is made to serve as a countdown towards activating an action.
 // The enemy will remain idle while the countdown happens.
 
-[System.Obsolete]
 public class CountdownEB : StateBehavior
 {
     // Timer used for countdown.

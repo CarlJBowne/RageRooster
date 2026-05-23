@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using AYellowpaper;
- 
+using SLS.ISingleton;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;

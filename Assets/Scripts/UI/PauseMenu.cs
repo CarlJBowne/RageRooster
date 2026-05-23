@@ -5,10 +5,13 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using System;
+using SLS.ISingleton;
+using RageRooster.Systems;
+using RageRooster.RoomSystem;
 
 public class PauseMenu : MenuSingleton<PauseMenu>
 {
-    public static bool isPaused => Get.isActive;
+    public static bool isPaused => Get().isActive;
     public static bool canPause = true;
 
     public static System.Action onPause;
@@ -18,14 +21,14 @@ public class PauseMenu : MenuSingleton<PauseMenu>
     {
         base.OnOpen();
         onPause?.Invoke();
-        Services.Gameplay.GameState.Value = Services.Gameplay.GameStates.Paused;
+        Gameplay.GameState = Gameplay.GameStates.Paused;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
     protected override void OnClose()
     {
         base.OnClose();
-        Services.Gameplay.GameState.Value = Services.Gameplay.GameStates.Active;
+        Gameplay.GameState = Gameplay.GameStates.Active;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         onUnPause?.Invoke();
@@ -40,7 +43,9 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
             Time.timeScale = 1f;
             Close();
-            Gameplay.EndGame();
+            Music.StopAllMusic();
+            Player.StateMachine.HaveDestroyed();
+            Gameplay.DESTROY(areYouSure: true);
             SceneManager.LoadScene("MainMenu");
             SceneManager.sceneLoaded += Done;
             void Done(Scene arg0, LoadSceneMode arg1)
@@ -60,7 +65,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
     public void Respawn()
     {
-        Services.RoomManager.TransitionStyle.Value = new()
+        RoomManager.TransitionStyle = new()
         {
             FadeOutRoutine = Overlay.OverMenus.BasicFadeOutWait(1f),
             FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(1f),
@@ -70,7 +75,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
     }
     public void ReloadSave()
     {
-        Services.RoomManager.TransitionStyle.Value = new()
+        RoomManager.TransitionStyle = new()
         {
             FadeOutRoutine = Overlay.OverMenus.BasicFadeOutWait(1.2f),
             FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(1.2f),

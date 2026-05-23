@@ -1,12 +1,10 @@
 using EditorAttributes;
-using RageRooster.Physics;
 using RageRooster.Systems.SaveSystem;
 using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using Utilities.Xtensions.Unity;
 using static SLS.StateMachineH.StateAnimator;
 using static UnityEngine.EventSystems.EventTrigger;
 
@@ -46,14 +44,27 @@ public class PlayerGroundedMovement_Old : PlayerMovementEffector
 
     protected override void OnAwake() => attackCollider = GetComponent<Collider>();
 
-    public override bool ForwardMovement(out float result)
+    public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
-        float currentSpeed = Player.MovementBody.velocity.f;
-        Vector3 currentDirection = Player.MovementBody.DirectionGet;
+        float currentSpeed = playerMovementBody.CurrentSpeed;
+        Vector3 currentDirection = playerMovementBody.direction;
 
+        HorizontalMain(ref currentSpeed, currentDirection, playerController.camAdjustedMovement);
+
+        playerMovementBody.CurrentSpeed = currentSpeed;
+
+        Vector3 literalDirection = transform.forward * currentSpeed;
+
+        resultX = literalDirection.x;
+        resultZ = literalDirection.z;
+
+    }
+
+    private void HorizontalMain(ref float currentSpeed, Vector3 currentDirection, Vector3 control)
+    {
         float deltaTime = Time.deltaTime * 50;
-        Vector3 controlDirection = Player.Controller.camAdjustedMovement.normalized;
-        float controlMag = Player.Controller.camAdjustedMovement.magnitude;
+        Vector3 controlDirection = control.normalized;
+        float controlMag = control.magnitude;
 
         GetConditionals(out bool thisCondition, out bool nextCondition);
 
@@ -61,7 +72,7 @@ public class PlayerGroundedMovement_Old : PlayerMovementEffector
         {
             float Dot = Vector3.Dot(controlDirection, currentDirection);
 
-            if (maxTurnSpeed > 0) Player.MovementBody.DirectionSet(maxTurnSpeed * Time.fixedDeltaTime);
+            if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
 
             if (!outwardTurn) currentSpeed *= Dot;
 
@@ -78,7 +89,7 @@ public class PlayerGroundedMovement_Old : PlayerMovementEffector
             else if (currentSpeed > maxSpeed)
                 currentSpeed = currentSpeed.MoveDown(decceleration * deltaTime, maxSpeed);
         }
-        else currentSpeed = currentSpeed > .01f ? currentSpeed.Move(currentSpeed * stopping * deltaTime, 0) : 0;
+        else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
 
         if (currentSpeed >= nextPhaseThreshold && nextCondition)
             nextPhase.State.Enter();
@@ -88,15 +99,9 @@ public class PlayerGroundedMovement_Old : PlayerMovementEffector
         if (currentSpeed >= 12)
             canRoll = true;
 
-        Player.MovementBody.velocity.f = currentSpeed;
-
-        result = currentSpeed;
-        return true;
     }
-
     
-    
-    void GetConditionals(out bool thisCondition, out bool nextCondition)
+    private void GetConditionals(out bool thisCondition, out bool nextCondition)
     {
         thisCondition = 
             //(!needs1Charge || Input.Charge1.IsPressed() || Input.Charge2.IsPressed()) &&     
@@ -123,9 +128,9 @@ public class PlayerGroundedMovement_Old : PlayerMovementEffector
 
     public void LandInto()
     {
-        bool groundCollide = Player.MovementBody.GroundCheck(out AnchorPoint collideResult);
+        bool groundCollide = playerMovementBody.GroundCheck(out AnchorPoint collideResult);
         if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
-        Player.MovementBody.Land(collideResult);
+        playerMovementBody.Land(collideResult);
         State.Enter();
         canRoll = true;
         if (onEntry == EntryAnimAction.Play) Player.Animator.Play(onEnterName);
@@ -134,9 +139,9 @@ public class PlayerGroundedMovement_Old : PlayerMovementEffector
     }
     public void LandInto(StateAnimator.EntryAnimAction onEntry, string onEnterName, float onEnterTime)
     {
-        bool groundCollide = Player.MovementBody.GroundCheck(out AnchorPoint collideResult);
+        bool groundCollide = playerMovementBody.GroundCheck(out AnchorPoint collideResult);
         if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
-        Player.MovementBody.Land(collideResult);
+        playerMovementBody.Land(collideResult);
         State.Enter();
         canRoll = true;
         if (onEntry == EntryAnimAction.Play) Player.Animator.Play(onEnterName);

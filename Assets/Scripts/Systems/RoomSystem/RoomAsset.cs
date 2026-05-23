@@ -6,10 +6,6 @@ using System.IO;
 using System;
 using System.Linq;
 using UnityEngine.UIElements;
-using Utilities.Xtensions.VisualElements;
-using Highlighter = Utilities.Xtensions.VisualElements.Highlighter;
-
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -275,7 +271,7 @@ namespace RageRooster.RoomSystem
             bool loaded = false;
 
             private AsyncInstantiateOperation currentOP;
-            private Coroutine currentCoroutine;
+            private CoroutinePlus currentCoroutine;
 
 
             public void TurnOn()
@@ -364,7 +360,7 @@ namespace RageRooster.RoomSystem
                             alignSelf = Align.FlexStart,
                         }
                     };
-                    new Highlighter(areaButton, .3f).Hover();
+                    areaButton.Highlighter(.3f);
                     areaButton.RegisterCallback<ClickEvent>(PING);
                     root.Add(areaButton);
 
@@ -592,7 +588,7 @@ namespace RageRooster.RoomSystem
                                     unityTextAlign = TextAnchor.MiddleLeft
                                 }
                             };
-                            new Highlighter(roomLabel, .1f).Hover();
+                            roomLabel.Highlighter(.1f);
                             rootVisualElement.Add(roomLabel);
                             void OpenRoom()
                             {

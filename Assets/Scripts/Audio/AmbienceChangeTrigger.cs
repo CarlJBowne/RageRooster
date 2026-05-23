@@ -14,7 +14,7 @@ public class AmbienceChangeTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             EventReference ambienceEvent = GetAmbienceEvent(ambienceType);
-            AudioManager.Get.SetAmbienceParameter(
+            AudioManager.Get().SetAmbienceParameter(
 #if UNITY_EDITOR
                 ambienceEvent.Path,
 #else
@@ -29,15 +29,15 @@ public class AmbienceChangeTrigger : MonoBehaviour
         switch (type)
         {
             case AmbienceType.IreGorge:
-                return FMODEvents.Get.ireGorgeAmbience;
+                return FMODEvents.instance.ireGorgeAmbience;
             case AmbienceType.RockyFurrows:
-                return FMODEvents.Get.rockyFurrowsAmbience;
+                return FMODEvents.instance.rockyFurrowsAmbience;
             case AmbienceType.WaterSplash:
-                return FMODEvents.Get.waterSplash;
+                return FMODEvents.instance.waterSplash;
             case AmbienceType.Boss:
-                return FMODEvents.Get.bossAmbience;
+                return FMODEvents.instance.bossAmbience;
             case AmbienceType.Transition:
-                return FMODEvents.Get.transitionAmbience;
+                return FMODEvents.instance.transitionAmbience;
             default:
                 return new EventReference();
         }

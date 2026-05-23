@@ -1,13 +1,13 @@
-﻿using System.Collections;
+﻿using SLS.ISingleton;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Utilities.Singletons;
 
 
 [CreateAssetMenu(fileName = "ButtonIcons", menuName = "ScriptableObjects/ButtonIcons")]
-public class ButtonIcons : GlobalAsset<ButtonIcons>
+public class ButtonIcons : SingletonAsset<ButtonIcons>
 {
 
     public Sprite GetKeyboardSprite(string path)
@@ -26,7 +26,7 @@ public class ButtonIcons : GlobalAsset<ButtonIcons>
         return attempt != null ? attempt : null;
     }
 
-    public AYellowpaper.SerializedCollections.SerializedDictionary<string, Sprite> gamepadSprites; 
+    public AYellowpaper.SerializedCollections.SerializedDictionary<string, Sprite> gamepadSprites;
 
     //[SerializeField] 
     //private Sprite

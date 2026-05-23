@@ -3,24 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using EditorAttributes;
 using RageRooster.Systems.SaveSystem;
+using SLS.ISingleton;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
-using Utilities.Singletons;
-using Utilities.Xtensions.Unity;
-using Utilities.Xtensions;
-using Cinemachine.Utility;
-using RageRooster.Physics;
+
 
 #if UNITY_EDITOR
 using UnityEditor.UIElements;
 using UnityEditor;
+using UnityEngine.UIElements;
 using System.Reflection;
 #endif
 
 
 [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider), typeof(NavMeshAgent))]
-public sealed class PlayerMovementBody : MonoBehaviour
+public sealed class PlayerMovementBody : MonoBehaviour, ISingleton<PlayerMovementBody>
 {
     #region Config
 
@@ -41,7 +39,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
     /// </summary>
     [SerializeField] Vector3 defaultGravity = new(0, 1, 0);
     /// <summary>
-    /// Whether Gravity should be automatically applied or applied by some behavior
+    /// Whether Gravity should be automaticall applied or applied by some behavior
     /// </summary>
     [SerializeField] bool autoApplyGravity = false;
     /// <summary>
@@ -70,6 +68,9 @@ public sealed class PlayerMovementBody : MonoBehaviour
     /// </summary>
     [SerializeField] float frontCheckDefaultRadius;
 
+    //public PlatformDetectionMethod platformDetection;
+    //[Tooltip("An unconventional means of hopefully avoiding falling through the floor. If true, the player will check if there is any ground below them before moving, and if not, their velocity will be set to 0 to prevent them from moving further. This is jank, but it might help with some edge cases and it doesn't require any extra components or setup.")]
+    //public PlatformDetectionMethod mario64StyleAntiVoid;
     /// <summary>
     /// The LayerMask used for ground checks. Should be set to anything that can be stood on.
     /// </summary>
@@ -100,13 +101,13 @@ public sealed class PlayerMovementBody : MonoBehaviour
 
         if (InstantSnapToFloor(out RaycastHit hit)) Land(hit);
 
-        Singleton.Register(ref instance, this);
-        DirectionGet = Vector3.forward;
+        direction = Vector3.forward;
+        Interface.Initialize(ref Instance);
 
         NavAgent.enabled = false;
         //NavAgent.updateRotation = false;
         NavAgent.updateUpAxis = false;
-        gravity = defaultGravity.y;
+        gravity = defaultGravity;
     }
 
     /// <summary>
@@ -118,13 +119,14 @@ public sealed class PlayerMovementBody : MonoBehaviour
     /// </summary>
     void OnDisable() => BodyState = BodyStates.OFF;
 
-    void OnDestroy() => Singleton.Deregister(ref instance, this);
+    void OnDestroy() => Interface.DeInitialize(ref Instance);
 
     #region Singleton Stuff
-    static PlayerMovementBody instance;
-    public static PlayerMovementBody Get => Singleton.Get(ref instance);
-    public static bool TryGet(out PlayerMovementBody result) => Singleton.TryGet(Get, out result);
-    public static bool Loaded => instance != null;
+    static PlayerMovementBody Instance;
+    ISingleton<PlayerMovementBody> Interface => this;
+    public static PlayerMovementBody Get() => ISingleton<PlayerMovementBody>.Get(ref Instance);
+    public static bool TryGet(out PlayerMovementBody result) => ISingleton<PlayerMovementBody>.TryGet(Get, out result);
+    public static bool Loaded => Instance != null;
     #endregion
 
     /// <summary>
@@ -191,8 +193,8 @@ public sealed class PlayerMovementBody : MonoBehaviour
     void FixedUpdate()
     {
         sweepsThisPhysUpdate.Clear();
-        Player.Animator.SetFloat("CurrentSpeed", velocity.magnitudeH);
-        if (Upgrades.Active.d_moonJump && Input.Jump.IsPressed()) velocity.u = 10f;
+        Player.Animator.SetFloat("CurrentSpeed", currentSpeed);
+        if (Upgrades.Active.d_moonJump && Input.Jump.IsPressed()) VelocitySet(y: 10f);
 
         //NavAgent.nextPosition = Position;
 
@@ -207,22 +209,18 @@ public sealed class PlayerMovementBody : MonoBehaviour
 
         if (navDestinationDriven)
         {
-            DirectionSet(NavAgent.desiredVelocity, NavAgent.angularSpeed * Time.fixedDeltaTime);
+            DirectionSet(NavAgent.desiredVelocity, NavAgent.angularSpeed);
             NavAgent.velocity = Vector3.zero;
-
-            velocity.Global = (Vector3.Dot(NavAgent.desiredVelocity, DirectionGet) + 1) * NavAgent.desiredVelocity.magnitude * DirectionGet;
+            velocity = (Vector3.Dot(NavAgent.desiredVelocity, direction) + 1) * NavAgent.desiredVelocity.magnitude * direction;
             if (NavAgent.remainingDistance < 0.1f) NavDestination(false);
         }
 
-        if (velocity.r != 0f) Rotation = new(Rotation.x, Rotation.y + (velocity.r * Time.fixedDeltaTime), Rotation.z);
-
-        stepZeroVelocity = velocity.Global * Time.fixedDeltaTime;
+        stepZeroVelocity = velocity * Time.fixedDeltaTime;
         stepZeroAnchor = anchorPoint;
 
         SetupDebugText(false);
 
-        if (stepZeroVelocity.IsNaN() || stepZeroVelocity.sqrMagnitude > 300) stepZeroVelocity = Vector3.zero;
-        if (stepZeroVelocity != Vector3.zero) MoveNext(stepZeroVelocity);
+        if (velocity != Vector3.zero) MoveNext(stepZeroVelocity);
 
         SetupDebugText(true);
 
@@ -403,7 +401,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
         if (stopDistance < 0 || ++step >= movementProjectionSteps) return;
         else if (Vector3.Angle(stepVelocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Player.StateMachine.SendSignal(new("Bonk", 0, true)))
         {
-            this.velocity.Global = Vector3.zero;
+            this.velocity = Vector3.zero;
             return;
         }
 
@@ -458,12 +456,12 @@ public sealed class PlayerMovementBody : MonoBehaviour
             else
             {
                 AddDebugText("Hit a ceiling while jumping.");
-                land = false;
+                land = true;
                 velocity.y = -0.1f;
                 UnLand(JumpState.Falling);
             }
 
-            if (hit.normal.y > 0 && WithinSlopeAngle(hit.normal) ) anchorPoint = hit;
+            if (hit.normal.y > 0 && WithinSlopeAngle(hit.normal) && stepVelocity.y <= 0) anchorPoint = hit;
         }
         else
         {
@@ -488,7 +486,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
         if (stopDistance < 0 || ++step >= movementProjectionSteps) return;
         else if (Vector3.Angle(stepVelocity.XZ(), -nextNormal.XZ()) < bonkThreshold && Player.StateMachine.SendSignal(new("Bonk", 0, true)))
         {
-            this.velocity.Global = Vector3.zero;
+            this.velocity = Vector3.zero;
             return;
         }
 
@@ -574,106 +572,95 @@ public sealed class PlayerMovementBody : MonoBehaviour
 
     #region Direction
 
-    /// <summary>
-    /// The active forward direction of this <see cref="PlayerMovementBody"/>. Simpler controllers can probably avoid using this.
-    /// </summary>
-    public Vector3 DirectionGet { get; private set; }
+    public Vector3 direction
+    {
+        get => _direction;
+        private set
+        {
+            if (_direction == value) return;
+            _direction = value;
+            RotationQ = Quaternion.LookRotation(value, Vector3.up);
+        }
+    }
 
     /// <summary>
-    /// Sets the active forward direction of this <see cref="PlayerMovementBody"/>. 
+    /// The active direction of this <see cref="CharacterMovementBody"/>. Simpler controllers can probably avoid using this.
     /// </summary>
-    public void DirectionSet(Vector3 target, float maxTurnDegrees)
+    public Vector3 _direction = new(0, 0, 1);
+
+
+    public void DirectionSet(Vector3 target, float maxTurnSpeed)
     {
         if (target == Vector3.zero) return;
-        Vector3 res = Vector3.RotateTowards(DirectionGet, target.normalized, maxTurnDegrees * Mathf.PI, 1);
-        DirectionSet(res);
+        direction = Vector3.RotateTowards(direction, target.normalized, maxTurnSpeed * Mathf.PI * Time.deltaTime, 1);
     }
-    /// <summary>
-    /// Sets the active forward direction of this <see cref="PlayerMovementBody"/> to the direction the player's thumbstick is going in.
-    /// </summary>
-    public void DirectionSet(float maxTurnDegrees) => DirectionSet(Player.Controller.camAdjustedMovement, maxTurnDegrees);
-    /// <summary>
-    /// Instantly Sets the active forward direction of this <see cref="PlayerMovementBody"/>.
-    /// </summary>
-    public void DirectionSet(Vector3 target)
+    public void DirectionSet(float maxTurnSpeed) => DirectionSet(Player.Controller.camAdjustedMovement, maxTurnSpeed);
+    public void InstantDirectionChange(Vector3 target)
     {
-        if (DirectionGet == target || target == Vector3.zero) return;
-        DirectionGet = target;
-        RotationQ = Quaternion.LookRotation(target, Vector3.up);
-        velocity.CallThisPostRotation();
+        if (target.sqrMagnitude == 0) return;
+        direction = target;
     }
 
     /// <summary>
     /// Gets or sets the rotation of the Rigidbody as a Quaternion.
     /// </summary>
     public Quaternion RotationQ
-    {
-        get => RB.rotation;
-        set
-        {
-            RB.rotation = value;
-            velocity.CallThisPostRotation();
-        }
-    }
+    { get => RB.rotation; set => RB.rotation = value; }
     /// <summary>
     /// Gets or sets the rotation of the character in Euler angles.
     /// </summary>
     public Vector3 Rotation
     {
         get => transform.eulerAngles;
-        set
-        {
-            transform.eulerAngles = value;
-            velocity.CallThisPostRotation();
-        }
+        set => transform.eulerAngles = value;
     }
 
-    public void QuickTurnTime(Vector3 target, float lengthSeconds)
+    public void QuickTurnTime(Vector3 newForward, float length)
     {
-        target = target.XZ(); //Ensure no weird rotations
+        newForward = newForward.XZ(); //Ensure no weird rotations
 
-        if (lengthSeconds <= 0f)
+        if (length <= 0f)
         {
-            DirectionGet = target;
+            direction = newForward;
             return;
         }
 
         QuickTurnRoutine = Enum().Begin(Player.MovementBody);
         IEnumerator Enum()
         {
-            float deltaRad = Vector3.Angle(DirectionGet, target) * Mathf.Deg2Rad;
-            float rateRadPerSec = deltaRad / lengthSeconds; // radians per second
+            float deltaRad = Vector3.Angle(direction, newForward) * Mathf.Deg2Rad;
+            float rateRadPerSec = deltaRad / length; // radians per second
 
             while (deltaRad > 0f)
             {
-                DirectionGet = Vector3.RotateTowards(DirectionGet, target, rateRadPerSec * Time.fixedDeltaTime, 0f);
+                direction = Vector3.RotateTowards(direction, newForward, rateRadPerSec * Time.fixedDeltaTime, 0f);
                 yield return new WaitForFixedUpdate();
                 deltaRad -= rateRadPerSec * Time.fixedDeltaTime;
             }
-            DirectionGet = target;
+            direction = newForward;
         }
     }
-    public void QuickTurnLimited(Vector3 target, float maxDelta)
+    public void QuickTurnLimited(Vector3 newForward, float maxDelta)
     {
-        target = target.XZ(); //Ensure no weird rotations
+        newForward = newForward.XZ(); //Ensure no weird rotations
         if (maxDelta <= 0f) return;
 
         QuickTurnRoutine = Enum().Begin(Player.MovementBody);
         IEnumerator Enum()
         {
-            float fullDelta = Vector3.Angle(DirectionGet, target) * Mathf.Deg2Rad;
+            float fullDelta = Vector3.Angle(direction, newForward) * Mathf.Deg2Rad;
 
             while (fullDelta > 0f)
             {
-                DirectionGet = Vector3.RotateTowards(DirectionGet, target, maxDelta * Time.fixedDeltaTime, 0f);
+                direction = Vector3.RotateTowards(direction, newForward, maxDelta * Time.fixedDeltaTime, 0f);
                 yield return null;
                 fullDelta -= maxDelta * Time.fixedDeltaTime;
             }
 
-            DirectionGet = target;
+            direction = newForward;
         }
     }
-    private Coroutine QuickTurnRoutine;
+    private CoroutinePlus QuickTurnRoutine;
 
 
 
@@ -683,16 +670,35 @@ public sealed class PlayerMovementBody : MonoBehaviour
     #region Velocity
 
     /// <summary>
-    /// Specialzed Doubly-Direction Velocity Property. 
-    /// <br/>Contains Local and Global velocities and automatically adjusts the other when one is changed.
-    /// <br/>Members: x-y-z f-u-s r-cL-cG 
+    /// Custom velocity value.
     /// </summary>
-    public Velocity velocity { get; private set; }
+    public Vector3 velocity = new(0, 0, 0);
+    /// <summary>
+    /// Custom angular velocity value.
+    /// </summary>
+    [NonSerialized] public Vector3 angularVelocity = new(0, 0, 0);
+
+    public void VelocitySet(float? x = null, float? y = null, float? z = null)
+    {
+        velocity = new Vector3(
+            x ?? velocity.x,
+            y ?? velocity.y,
+            z ?? velocity.z
+            );
+    }
+
+    public float CurrentSpeed
+    {
+        get => currentSpeed;
+        set => currentSpeed = value >= 0 ? value : 0;
+    }
+    [HideInEditMode, DisableInPlayMode, SerializeField] private float currentSpeed;
 
     public float movementModifier = 1;
 
     [HideInInspector] public bool baseMovability = true;
     [HideInInspector] public bool canJump = true;
+
 
     #endregion Velocity
 
@@ -711,15 +717,10 @@ public sealed class PlayerMovementBody : MonoBehaviour
         float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
     {
         Vector3 originalPos = RB.position;
-
-        if (tempOrigin.HasValue && buffer > 0) RB.MovePosition(tempOrigin.Value - (offset.normalized * buffer));
-        else if (tempOrigin.HasValue) RB.MovePosition(tempOrigin.Value);
-        else if (buffer > 0) RB.MovePosition(RB.position - (offset.normalized * buffer));
-
+        if (tempOrigin.HasValue) RB.MovePosition(tempOrigin.Value);
+        if (buffer > 0) RB.MovePosition(RB.position - (offset.normalized * buffer));
         bool result = RB.SweepTest(offset.normalized, out hit, offset.magnitude + buffer, queryTriggerInteraction);
-
-        if (tempOrigin.HasValue || buffer > 0) RB.MovePosition(originalPos);
-
+        RB.MovePosition(originalPos);
         hit.distance = (hit.distance - buffer).Min(0);
         sweepsThisPhysUpdate.Add(new()
         {
@@ -1150,20 +1151,15 @@ public sealed class PlayerMovementBody : MonoBehaviour
     #region Gravity
 
     /// <summary>
-    /// Runs the calculations to automatically apply the current gravity to this body.
-    /// </summary>
-    public void ApplyGravity() => velocity.u -= gravity * Time.fixedDeltaTime;
-
-    /// <summary>
-    /// The active gravity value. (Inverted. y=1 is down.)
-    /// </summary>
-    private float gravity = 9.8f;
-
-    /* 3D Gravity (Not Necessary for this project.)
-    /// <summary>
     /// The active gravity value. (Inverted. y=1 is down.)
     /// </summary>
     [NonSerialized] private Vector3 gravity = new(0, 9.8f, 0);
+
+
+    /// <summary>
+    /// Runs the calculations to automatically apply the current gravity to this body.
+    /// </summary>
+    public void ApplyGravity() => velocity -= gravity * Time.fixedDeltaTime;
 
     /// <summary>
     /// Returns the current gravity vector. (Inverted. y=1 is downwards, y=-1 is upwards.)
@@ -1191,7 +1187,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
     /// <param name="newY"> The new gravity value on the y axis. (1 = down.) </param>
     /// <param name="newZ"> The new gravity value on the z axis. (1 = back.) </param>
     public void SetGravity(float newX, float newY, float newZ) => gravity = new(newX, newY, newZ);
-    */
+
 
 
     #endregion Gravity
@@ -1248,7 +1244,7 @@ public sealed class PlayerMovementBody : MonoBehaviour
         foreach (var sweep in sweepsThisPhysUpdate)
         {
             Color color = sweep.hit ? Color.green : Color.red;
-            Color colorE = color.Changed(a: .5f);
+            Color colorE = color.SetAlpha(.5f);
             Vector3 height = Vector3.up * Collider.height / 2;
 
             DrawWireCapsule(sweep.origin + height, Quaternion.identity, Collider.radius, Collider.height, color);
@@ -1341,8 +1337,8 @@ public sealed class PlayerMovementBody : MonoBehaviour
         private Label _currentVentNameLabel;
 
         // Runtime value labels (cached)
-        private Label _velLabelA;
-        private Label _velLabelB;
+        private Label _velLabel;
+        private Label _speedLabel;
         private Label _jumpStateLabel;
         private Label _onNavMeshLabel;
         private Label _navDestLabel;
@@ -1427,8 +1423,8 @@ public sealed class PlayerMovementBody : MonoBehaviour
             runtimeContainer.style.paddingTop = 4;
 
             // Instantiate value labels
-            _velLabelA = new Label();
-            _velLabelB = new Label();
+            _velLabel = new Label();
+            _speedLabel = new Label();
             _jumpStateLabel = new Label();
             _onNavMeshLabel = new Label();
             _navDestLabel = new Label();
@@ -1464,8 +1460,8 @@ public sealed class PlayerMovementBody : MonoBehaviour
             }
 
             // Add rows
-            runtimeContainer.Add(CreateRow(_velNameLabel, _velLabelA));
-            runtimeContainer.Add(CreateRow(_velNameLabel, _velLabelB));
+            runtimeContainer.Add(CreateRow(_velNameLabel, _velLabel));
+            runtimeContainer.Add(CreateRow(_speedNameLabel, _speedLabel));
             runtimeContainer.Add(CreateRow(_jumpStateNameLabel, _jumpStateLabel));
             runtimeContainer.Add(CreateRow(_onNavMeshNameLabel, _onNavMeshLabel));
 
@@ -1544,8 +1540,8 @@ public sealed class PlayerMovementBody : MonoBehaviour
             // Update textual info; guard with try/catch to avoid throwing during domain reloads
             try
             {
-                _velLabelA.text = pb.velocity.Local.ToString("F3");
-                _velLabelB.text = pb.velocity.Global.ToString("F3");
+                _velLabel.text = pb.velocity.ToString("F3");
+                _speedLabel.text = pb.CurrentSpeed.ToString("F3");
                 _jumpStateLabel.text = pb.JumpStateCurrent.ToString();
                 _onNavMeshLabel.text = pb.OnNavMesh ? "Yes" : "No";
 
@@ -1556,9 +1552,9 @@ public sealed class PlayerMovementBody : MonoBehaviour
                 // Toggle visibility of the nav row
                 _navRow.style.display = showNav ? DisplayStyle.Flex : DisplayStyle.None;
 
-                _gravityLabel.text = pb.gravity.ToString();
+                _gravityLabel.text = pb.Get3DGravity().ToString("F3");
 
-                _directionLabel.text = pb.DirectionGet.ToString("F3");
+                _directionLabel.text = pb.direction.ToString("F3");
 
                 // Anchor reflection: only show when collider is present
                 var anchorObj = typeof(PlayerMovementBody)
@@ -1602,3 +1598,4 @@ public sealed class PlayerMovementBody : MonoBehaviour
     #endregion DEBUG
 
 }
+

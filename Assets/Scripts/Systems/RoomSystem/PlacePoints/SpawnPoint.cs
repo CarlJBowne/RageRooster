@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using EditorAttributes;
 using JetBrains.Annotations;
 using RageRooster.RoomSystem;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using Utilities.Xtensions;
-using static UnityEditor.Recorder.OutputPath;
 
 /// <summary>
 /// A set point in the world where the player can spawn. <br/>
@@ -60,12 +58,7 @@ public class SpawnPoint : RoomActor
         Root.asset.spawnPointNames.RemoveAt(Root.Spawns.IndexOf(this));
         Root.Spawns.Remove(this);
     }
-    public override void OnSave()
-    {
-        if (!Root.Spawns.Contains(this)) return;
-        while (Root.asset.spawnPointNames.Count < Root.Spawns.IndexOf(this)) Root.asset.spawnPointNames.Add("");
-        Root.asset.spawnPointNames[Root.Spawns.IndexOf(this)] = gameObject.name;
-    }
+    public override void OnSave() => Root.asset.spawnPointNames[Root.Spawns.IndexOf(this)] = gameObject.name;
 #endif
 
     [Button]

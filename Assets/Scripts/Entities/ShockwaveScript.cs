@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utilities.ObjectPooling;
 
 public class ShockwaveScript : MonoBehaviour
 {
@@ -11,7 +10,7 @@ public class ShockwaveScript : MonoBehaviour
 
     private new Transform transform;
     private float time = 0;
-    private Vector3 scale = new(1, 0, 1);
+    private Vector3 scale = new Vector3(1, 0, 1);
 
     private void Awake()
     {
@@ -27,7 +26,7 @@ public class ShockwaveScript : MonoBehaviour
         if(time > maxTime)
         {
             time = 0;
-            PoolableObject.DisableOrDestroy(gameObject);
+            PoolableObject_OBSOLETE.DisableOrDestroy(gameObject);
         }
     }
 }

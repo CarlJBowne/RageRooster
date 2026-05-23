@@ -189,15 +189,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4d1d562f1900d4e4b861dfeb148613df,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 4711907134587734600}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4d1d562f1900d4e4b861dfeb148613df,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 6034776936357890609}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4d1d562f1900d4e4b861dfeb148613df,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: -6198255170048922698}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4d1d562f1900d4e4b861dfeb148613df,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: -194446048005094522}
+      addedObject: {fileID: 2808201428926374877}
     - targetCorrespondingSourceObject: {fileID: -7334951474422550414, guid: 4d1d562f1900d4e4b861dfeb148613df,
         type: 3}
       insertIndex: -1
@@ -258,6 +258,45 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6810772, y: 0.41668648, z: 2.3004184}
   m_Center: {x: 0.07793517, y: -0.028492792, z: 0.5378675}
+--- !u!114 &4711907134587734600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5857942692857576766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44ed58beabcca8749bd2e13371ec85c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anchorPoint: {fileID: 0}
+  weight: 0
+  wiggleFreeTime: 0
+  maxHealthToGrab: 0
+  additionalThrowDistance: 0
+  additionalHoldHeight: 0
+  selectIcon: {fileID: 0}
+  GrabStateEvent:
+    _PersistentCalls: []
+  defaultEvent:
+    _PersistentCalls: []
+  grabbedEvent:
+    _PersistentCalls: []
+  thrownEvent:
+    _PersistentCalls: []
+  bounceEvent:
+    _PersistentCalls: []
+  thrownAttack:
+    amount: 1
+    velocity: {x: 0, y: 0, z: 0}
+    tags:
+      intValue: 16
+    oldTags:
+    - name: Thrown
+    _displayName: 
+  grabbed: 0
+  currentState: 0
 --- !u!54 &6034776936357890609
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -285,7 +324,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-6198255170048922698
+--- !u!114 &2808201428926374877
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -294,47 +333,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5857942692857576766}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff959314ab21ec04496ded7c08d36f17, type: 3}
+  m_Script: {fileID: 11500000, guid: 157b62d8004f9f14d8160afc57aae3b5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Target
-  Types:
-    items:
-    - rid: 3995431186106679629
+  m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
   RealPositionOffset: {x: 0, y: 0, z: 0}
-  rigidBody: {fileID: 6034776936357890609}
-  collider: {fileID: 4602253781772559806}
+  rigidBody: {fileID: 0}
+  collider: {fileID: 0}
   navMeshAgent: {fileID: 0}
   centerComputationType: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: 3995431186106679629
-      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
-      data:
-        Target: {fileID: -6198255170048922698}
---- !u!114 &-194446048005094522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5857942692857576766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30ca0b49fe34f03488e5746202eb7638, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Grabbable
-  grabbablePublic: 1
-  grabHealthMax: 0
-  grabRadius: 0.5
-  wiggleFreeTime: 0
-  anchorPoint: {fileID: 0}
-  AdditionalThrowDistance: 0
-  collider: {fileID: 4602253781772559806}
-  target: {fileID: -6198255170048922698}
-  rigidBody: {fileID: 6034776936357890609}
-  ragdollHandler: {fileID: 0}
-  thrownObjectAttack: {fileID: 0}
-  health: {fileID: 0}
-  constantMovement: {fileID: 0}
-  entityActivity: {fileID: 0}
+  grabbable: {fileID: 0}

@@ -1,32 +1,31 @@
 using RageRooster.RoomSystem;
- 
+using SLS.ISingleton;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utilities.Singletons;
 
 [CreateAssetMenu(fileName = "AAAAAA", menuName = "ScriptableObjects/EditorState")]
-public class EditorState : GlobalAsset<EditorState>
+public class EditorState : SingletonAsset<EditorState>
 {
 
     private int loadFromSavePointID = -2;
     public static int LoadFromSavePointID
     {
-        get => Get.loadFromSavePointID;
-        set => Get.loadFromSavePointID = value;
+        get => Get().loadFromSavePointID;
+        set => Get().loadFromSavePointID = value;
     }
 
     private Destination editorDestination = Destination.Null;
     public static Destination EditorDestination
     {
-        get => Get.editorDestination;
-        set => Get.editorDestination = value;
+        get => Get().editorDestination;
+        set => Get().editorDestination = value;
     }
     private AreaAsset editorDestinationArea = null;
     public static AreaAsset EditorDestinationArea
     {
-        get => Get.editorDestinationArea;
-        set => Get.editorDestinationArea = value;
+        get => Get().editorDestinationArea;
+        set => Get().editorDestinationArea = value;
     }
 
     public enum OnBuildStateMachineHandling

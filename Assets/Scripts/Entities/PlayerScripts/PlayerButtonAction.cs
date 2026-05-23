@@ -54,7 +54,7 @@ public abstract class PlayerButtonAction : Polymorph
     /// <returns></returns>
     protected abstract IEnumerator HoldRoutine();
 
-    public void StartRoutine() => Coroutine.Begin(ref ActiveRoutine, HoldRoutine(), Player.Controller);
+    public void StartRoutine() => CoroutinePlus.Begin(ref ActiveRoutine, HoldRoutine(), Player.Controller);
     public void StopRoutine()
     {
         if (ActiveRoutine)
@@ -67,7 +67,7 @@ public abstract class PlayerButtonAction : Polymorph
     //Non Serialized
     public static PlayerButtonAction Current { get; protected set; } = null;
     public bool active { get; protected set; } = false;
-    protected static Coroutine ActiveRoutine = null;
+    protected static CoroutinePlus ActiveRoutine = null;
 
 
 

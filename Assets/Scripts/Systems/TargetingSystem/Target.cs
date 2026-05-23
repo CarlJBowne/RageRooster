@@ -5,10 +5,6 @@ using UnityEngine.AI;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using System;
-using Utilities.Xtensions.VisualElements;
-using EPOOutline;
-
-
 
 
 
@@ -25,7 +21,6 @@ public class Target : MonoBehaviour
     [SerializeField, RelatedComponent] new Collider collider;
     [SerializeField, RelatedComponent] NavMeshAgent navMeshAgent;
     [SerializeField] CenterComputationType centerComputationType;
-    [SerializeField, RelatedComponent] Outlinable outlinable;
 
     public enum CenterComputationType
     {
@@ -45,61 +40,18 @@ public class Target : MonoBehaviour
     public float GetDistance(TargetingRange range) => Vector3.Distance(range.front.position, position);
     public float GetAngle(TargetingRange range) => Vector3.Angle(range.front.forward, position - range.front.position);
 
-    private void OnEnable()
-    {
-        // Ensure each sub-component knows its owning Target in case the editor failed to serialize the reference
-        for (int i = 0; i < Types.Count; i++)
-        {
-            if (Types[i] == null) continue;
-            Types[i].Target = this;
-            Types[i].Enabled = true;
-        }
+    private void OnEnable() 
+    { 
+        for (int i = 0; i < Types.Count; i++) 
+            if (Types[i] != null) 
+                Types[i].Enabled = true; 
     }
-    private void OnDisable()
-    {
-        for (int i = 0; i < Types.Count; i++)
-        {
-            if (Types[i] == null) continue;
-            Types[i].Target = this; // keep reference available until fully torn down
-            Types[i].Enabled = false;
-        }
+    private void OnDisable() 
+    { 
+        for (int i = 0; i < Types.Count; i++) 
+            if (Types[i] != null) 
+                Types[i].Enabled = false; 
     }
-
-    private void Awake()
-    {
-        if (Gameplay.GameState != Gameplay.GameStates.Active)
-        {
-            this.enabled = false;
-            return;
-        }
-
-        // Runtime safety: assign owner to any serialized sub-components
-        for (int i = 0; i < Types.Count; i++)
-            if (Types[i] != null)
-                Types[i].Target = this;
-    }
-
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        // Editor-time: ensure the Target reference is present for each polymorph entry so editor drawers and tools
-        // that expect the back-reference don't observe nulls.
-        if (Types == null) return;
-        for (int i = 0; i < Types.Count; i++)
-            if (Types[i] != null)
-                Types[i].Target = this;
-    }
-
-    [ContextMenu("Add Outlinable")]
-    private void AddOutlinable()
-    {
-        if (outlinable != null) return;
-        outlinable = gameObject.AddComponent<Outlinable>();
-        outlinable.OutlineLayer = 1;
-        outlinable.enabled = false;
-    }
-
-#endif
 
     public virtual Vector3 PredictFuturePosition(Vector3 projectileInitPos, float projectileSpeed)
     {
@@ -125,25 +77,6 @@ public class Target : MonoBehaviour
     }
 
     public TargetType this[System.Type T] => Types[T];
-    public TargetState GetTargetState(System.Type T) => Types[T] != null ? Types[T].TargetState : TargetState.Inactive;
-
-    public void UpdateTargetedState()
-    {
-
-        if (outlinable == null) return;
-        int value = GetTargetState(typeof(TargetType.Interactable)) == TargetState.Targeted ? 3
-            : GetTargetState(typeof(TargetType.Melee)) == TargetState.Targeted ? 2
-            : GetTargetState(typeof(TargetType.Ranged)) == TargetState.Targeted ? 1
-            : 0;
-        outlinable.enabled = value != 0;
-        outlinable.OutlineParameters.Color = value switch
-        {
-            3 => Color.green,
-            2 => new(1, .627450980392156862f, 0),
-            1 => Color.whiteSmoke,
-            _ => Color.clear
-        };
-    }
 
 }
 

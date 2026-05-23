@@ -1,3 +1,4 @@
+using AYellowpaper.SerializedCollections;
 using EditorAttributes;
 using FMODUnity;
 using System;
@@ -79,7 +80,7 @@ namespace RageRooster.Obsolete.Zones
             //Gameplay.musicEmitter.CrossFadeMusic(music);
         }
 
-        public Utilities.SerializedDictionary<WorldChange, UltEvents.UltEvent> worldChangeEvents;
+        public SerializedDictionary<WorldChange, UltEvents.UltEvent> worldChangeEvents;
 
         private void LoadEvents()
         {

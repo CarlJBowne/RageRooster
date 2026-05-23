@@ -2,8 +2,6 @@ using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utilities.JSON;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,7 +10,7 @@ using UnityEditor;
 namespace RageRooster.Systems.SaveSystem.Flags
 {
     [System.Serializable]
-    public abstract class Flag : Polymorph, ICloneable<Flag>
+    public abstract class Flag : ICloneable<Flag>
     {
 
         public bool IsType<T>() => type == TypeEnumFromCType<T>();

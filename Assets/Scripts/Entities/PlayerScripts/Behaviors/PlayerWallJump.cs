@@ -3,7 +3,6 @@ using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utilities.Xtensions.Unity;
 
 public class PlayerWallJump : PlayerMovementEffector
 {
@@ -22,34 +21,34 @@ public class PlayerWallJump : PlayerMovementEffector
     protected Vector3 fixedDirection;
 
 
-    public override bool ForwardMovement(out float resultF)
+    public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
-        resultF = outwardVelocity;
+        resultX = fixedDirection.x * outwardVelocity;
+        resultZ = fixedDirection.z * outwardVelocity;
+
+        playerMovementBody.CurrentSpeed = outwardVelocity;
+        //playerMovementBody.direction = fixedDirection;
 
         float distance = (transform.position - startPoint).XZ().magnitude;
         if (distance >= minDistance) Player.StateMachine.Falling.Enter();
-        return true;
+
     }
-    public override bool VerticalMovement(out float result)
-    {
-        result = ApplyGravity(gravity, terminalVelocity, flatGravity);
-        return true;
-    }
+    public override void VerticalMovement(out float? result) => result = ApplyGravity(gravity, terminalVelocity, flatGravity);
 
     public bool WallJump(Vector3 direction)
     {
-        if (Player.MovementBody.SweepBody(Player.MovementBody.DirectionGet * 0.5f, out RaycastHit hit, Player.MovementBody.GroundCheckBuffer))
+        if (playerMovementBody.SweepBody(playerMovementBody.direction * 0.5f, out RaycastHit hit, playerMovementBody.GroundCheckBuffer))
         {
             if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return false;
 
             if (!State.Active) State.Enter();
             Player.Animator.Play(animationName, -1, 0f);
-            Player.MovementBody.velocity.y = jumpPower;
+            playerMovementBody.VelocitySet(y: jumpPower);
 
             startPoint = transform.position;
             fixedDirection = hit.normal.XZ();
 
-            Player.MovementBody.DirectionSet(fixedDirection);
+            playerMovementBody.InstantDirectionChange(fixedDirection);
 
             State.Enter();
             return true;

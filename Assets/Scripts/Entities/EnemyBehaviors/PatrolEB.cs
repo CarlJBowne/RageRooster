@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-[System.Obsolete]
 public class PatrolEB : StateBehavior
 {
     [SerializeField] float speed;

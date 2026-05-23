@@ -6,8 +6,20 @@ public class NewBehaviourScript : MonoBehaviour
 {
     public float speed;
 
-    void Start() => RenderSettings.skybox.SetFloat("_Rotation", 0);
-    void OnDestroy() => RenderSettings.skybox.SetFloat("_Rotation", 0);
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
 
-    void Update() => RenderSettings.skybox.SetFloat("_Rotation", Time.time * speed);
+    // Update is called once per frame
+    void Update()
+    {
+        RenderSettings.skybox.SetFloat("_Rotation", Time.time * speed);
+    }
+
+    private void OnDestroy()
+    {
+        RenderSettings.skybox.SetFloat("_Rotation", 0);
+    }
 }

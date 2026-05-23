@@ -3,7 +3,6 @@ using System;
 using UnityEngine;
 using UnityEngine.AI;
 
-[System.Obsolete]
 public class FloatingEB : StateBehavior
 {
     public float sineSize;

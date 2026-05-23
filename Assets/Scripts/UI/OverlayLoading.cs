@@ -1,3 +1,4 @@
+using RageRooster.RoomSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ public class OverlayLoading : Overlay
         static IEnumerator Enum()
         {
             yield return new WaitForSecondsRealtime(overlay.showTime);
-            if (Services.RoomManager.CurrentlyTransitioning) SetVisible(true);
+            if (RoomManager.currentlyTransitioning) SetVisible(true);
         }
     }
 

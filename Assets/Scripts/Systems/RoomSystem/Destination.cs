@@ -7,7 +7,6 @@ using UnityEngine.UIElements;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.UIElements;
-using Utilities.Xtensions.VisualElements;
 #endif
 
 namespace RageRooster.RoomSystem

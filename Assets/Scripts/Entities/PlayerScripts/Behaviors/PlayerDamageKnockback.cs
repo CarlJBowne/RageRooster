@@ -17,8 +17,8 @@ public class PlayerDamageKnockback : PlayerMovementEffector
     {
         base.OnEnter(prev, isFinal);
         currentTime = 0;
-        Player.MovementBody.UnLand();
-        Player.MovementBody.velocity.y = upwards.Evaluate(0);
+        playerMovementBody.UnLand();
+        playerMovementBody.VelocitySet(y: upwards.Evaluate(0));
     }
     protected override void OnExit(State next)
     {
@@ -32,15 +32,14 @@ public class PlayerDamageKnockback : PlayerMovementEffector
         base.OnFixedUpdate();
     }
 
-    public override bool ForwardMovement(out float result)
+    public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
-        result = -backwards.Evaluate(currentTime / duration);
-        return true;
+        resultX = backwardsVector.x * backwards.Evaluate(currentTime / duration);
+        resultZ = backwardsVector.z * backwards.Evaluate(currentTime / duration);
     }
 
-    public override bool VerticalMovement(out float result)
+    public override void VerticalMovement(out float? result)
     {
         result = upwards.Evaluate(currentTime / duration);
-        return true;
     }
 }

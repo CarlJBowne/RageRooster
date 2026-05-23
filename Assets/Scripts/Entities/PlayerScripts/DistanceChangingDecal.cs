@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using Utilities.Xtensions.Unity;
 
 [RequireComponent(typeof(DecalProjector)), DefaultExecutionOrder(50)]
 public class DistanceChangingDecal : MonoBehaviour

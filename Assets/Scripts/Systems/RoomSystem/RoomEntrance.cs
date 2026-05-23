@@ -101,7 +101,7 @@ namespace RageRooster.RoomSystem
                 if (worldDirHorizontal.sqrMagnitude <= 1e-6f) return;
                 else
                 {
-                    Vector3 fromVector = -worldDirHorizontal.normalized.Rotated(-90, Vector3.up); // opposite direction on the horizontal plane
+                    Vector3 fromVector = -worldDirHorizontal.normalized.Rotate(-90, Vector3.up); // opposite direction on the horizontal plane
 
                     // Draw filled semicircles using Handles.DrawSolidArc
                     UnityEditor.Handles.color = new Color(gizmoColor.r, gizmoColor.g, gizmoColor.b, .02f);

@@ -19,7 +19,7 @@ public class PlayerLedgeGrab : PlayerMovementEffector
 
     public void LedgeGrab()
     {
-        if (Player.MovementBody.velocity.y < 0)
+        if (playerMovementBody.velocity.y < 0)
         {
             //Debug.Log("Are we passing this?");
             RaycastHit downHit;
@@ -39,7 +39,7 @@ public class PlayerLedgeGrab : PlayerMovementEffector
                 if (fwdHit.collider != null)
                 {
                     Machine.SendSignal("EndFall");
-                    Player.MovementBody.velocity.ZeroOut();
+                    playerMovementBody.velocity = Vector3.zero;
 
                     ledged = true;
                     //fallState = null;

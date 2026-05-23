@@ -12,12 +12,14 @@ public class PlayerStrafingMovement : PlayerMovementEffector
 {
     public float walkingSpeed;
 
-    public override bool HorizontalMovement(out float resultX, out float resultZ)
+    public override void HorizontalMovement(out float? resultX, out float? resultZ)
     {
-        //Vector3 realDirection = Cameras.RealCamera.transform.TransformDirection(Input.Movement.normalized.ToXZ());
-        Vector3 realDirection = Player.Controller.camAdjustedMovement;
+        float deltaTime = Time.fixedDeltaTime / 0.02f;
+        Vector3 controlDirection = Input.Movement.normalized.ToXZ();
+
+        Vector3 realDirection = Cameras.RealCamera.transform.TransformDirection(controlDirection);
         resultX = realDirection.x * walkingSpeed;
         resultZ = realDirection.z * walkingSpeed;
-        return true;
+        playerMovementBody.CurrentSpeed = realDirection.magnitude;
     }
 }
