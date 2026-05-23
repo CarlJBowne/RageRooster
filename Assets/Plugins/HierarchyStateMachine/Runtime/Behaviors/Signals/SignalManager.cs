@@ -15,13 +15,24 @@ namespace SLS.StateMachineH.Signals
     /// Provides functionality for firing signals, queuing signals, and managing signal locks.  
     /// </summary>  
     [RequireComponent(typeof(StateMachine))]
-    public class SignalManager : SignalNode
+    public class SignalManager : StateBehavior
     {
+        /// <summary>  
+        /// The global signals accessible across all states.  
+        /// </summary>  
+        public SignalSet globalSignals = new();
 
         /// <summary>  
         /// Indicates whether signals should be queued if they cannot be fired immediately.  
         /// </summary>  
         public bool queueSignals = true;
+
+        /// <summary>  
+        /// Retrieves the event associated with the specified signal name.  
+        /// </summary>  
+        /// <param name="name">The name of the signal.</param>  
+        /// <returns>The event associated with the signal name.</returns>  
+        public EVENT this[string name] => globalSignals[name];
 
         /// <summary>  
         /// Attempts to get a <see cref="SignalNode"/> from the active state.  
@@ -45,9 +56,9 @@ namespace SLS.StateMachineH.Signals
         {
             bool signalFired = false;
             if (TryCurrentNode(out SignalNode signalNode) && signalNode.FireSignal(signal.name)) signalFired = true;
-            else if (signals.ContainsKey(signal.name))
+            else if (globalSignals.ContainsKey(signal.name))
             {
-                signals[signal]?.Invoke();
+                globalSignals[signal]?.Invoke();
                 signalFired = true;
             }
 
@@ -62,7 +73,7 @@ namespace SLS.StateMachineH.Signals
         /// <summary>  
         /// Locks the current signal node, preventing signals from being fired.  
         /// </summary>  
-        new public void Lock()
+        public void Lock()
         {
             if (TryCurrentNode(out SignalNode signalNode)) signalNode.Lock();
         }
@@ -70,7 +81,7 @@ namespace SLS.StateMachineH.Signals
         /// <summary>  
         /// Unlocks the current signal node, allowing signals to be fired.  
         /// </summary>  
-        new public void Unlock()
+        public void Unlock()
         {
             if (TryCurrentNode(out SignalNode signalNode))
             {
@@ -124,6 +135,6 @@ namespace SLS.StateMachineH.Signals
             }
         }
 
-        new public bool Locked => TryCurrentNode(out SignalNode signalNode) && signalNode.Locked;
+        public bool Locked => TryCurrentNode(out SignalNode signalNode) && signalNode.Locked;
     }
 }

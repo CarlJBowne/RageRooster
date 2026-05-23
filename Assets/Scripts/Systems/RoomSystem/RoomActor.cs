@@ -1,6 +1,5 @@
 using UnityEditor;
 using UnityEngine;
-using Utilities.Xtensions.Unity;
 
 namespace RageRooster.RoomSystem
 {
@@ -13,13 +12,13 @@ namespace RageRooster.RoomSystem
 
 
 
-        public void OnDestroy()
+        public void OnDestroy() => this.OnDestroyDetails(DetailedOnDestroy);
+
+        protected virtual void DetailedOnDestroy(bool unloaded, bool isPlaying, bool isEditor)
         {
 #if UNITY_EDITOR
-            this.GetExecutionDetails(out bool gameIsEditor, out bool gameIsPlaying, out bool objectSceneIsLoaded);
-            if (gameIsEditor && objectSceneIsLoaded && !gameIsPlaying) IRoomActor.DeregisterWithRoot(this);
+            if (isEditor && !unloaded && !isPlaying) IRoomActor.DeregisterWithRoot(this);
 #endif
-
         }
 
 #if UNITY_EDITOR

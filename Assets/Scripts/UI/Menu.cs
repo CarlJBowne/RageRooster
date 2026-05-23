@@ -94,7 +94,7 @@ public class Menu : MonoBehaviour
     protected virtual void OnOpen()
     {
          if (!openSound.IsNull)
-             AudioManager.Get.PlayOneShot(openSound, transform.position);
+             AudioManager.Get().PlayOneShot(openSound, transform.position);
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ public class Menu : MonoBehaviour
     protected virtual void OnClose()
     {
         if (!closeSound.IsNull)
-            AudioManager.Get.PlayOneShot(closeSound, transform.position);
+            AudioManager.Get().PlayOneShot(closeSound, transform.position);
     }
 
     /// <summary>
@@ -113,7 +113,7 @@ public class Menu : MonoBehaviour
     {
         public static void Initialize()
         {
-            Input.Get.RootAsset.FindAction("Navigate").performed += FocusController;
+            Input.Get().Asset.FindAction("Navigate").performed += FocusController;
         }
 
         public static Menu currentMenu => currentMenus[^1];
@@ -169,7 +169,7 @@ public class Menu : MonoBehaviour
         public static void Escape()
         {
             if (PauseMenu.Loaded && !PauseMenu.Active && PauseMenu.canPause)
-                PauseMenu.Get.Open();
+                PauseMenu.Get().Open();
             else if (currentMenus.Count > 0)
                 currentMenus[^1].Close();
         }

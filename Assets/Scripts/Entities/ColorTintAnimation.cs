@@ -12,7 +12,7 @@ public class ColorTintAnimation : MonoBehaviour
     public float defaultFadeInTime = 0f;
     public Color defaultColor = Color.red;
 
-    private Coroutine currentCoroutine;
+    private CoroutinePlus currentCoroutine;
 
     public float TintFactor
     {
@@ -53,7 +53,7 @@ public class ColorTintAnimation : MonoBehaviour
     public void BeginAnimation() => BeginAnimation(defaultFadeOutTime, defaultFadeInTime);
     public void BeginAnimation(float fadeOutTime) => BeginAnimation(fadeOutTime, defaultFadeInTime);
     public void BeginAnimation(float fadeOutTime, float fadeInTime) => 
-        Coroutine.Begin(ref currentCoroutine, AnimationIEnumerator(fadeOutTime, fadeInTime), this);
+        CoroutinePlus.Begin(ref currentCoroutine, AnimationIEnumerator(fadeOutTime, fadeInTime), this);
 
     IEnumerator AnimationIEnumerator(float fadeOutTime, float fadeInTime)
     {
@@ -77,7 +77,7 @@ public class ColorTintAnimation : MonoBehaviour
 
     private void OnDisable()
     {
-        Coroutine.Stop(ref currentCoroutine);
+        CoroutinePlus.Stop(ref currentCoroutine);
         TintFactor = 0f;
     }
 

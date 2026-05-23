@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 using FMODUnity;
 using EditorAttributes;
 using System.Collections.Generic;
-
+using SLS.ISingleton;
 using RageRooster.RoomSystem;
 using RageRooster.Systems.SaveSystem;
-using Utilities.ObjectPooling;
+using RageRooster.Systems.ObjectPooling;
 using RageRooster.Systems;
 
 
@@ -31,19 +31,6 @@ using UnityEditor;
 [DefaultExecutionOrder(ExecutionOrders.Gameplay)]
 public class Gameplay : MonoBehaviour
 {
-    [InitializeOnLoadMethod]
-    static void InitServices()
-    {
-        Services.Gameplay.GameState = new(() => (Services.Gameplay.GameStates)GameState, value => GameState = (GameStates)value)
-        {
-            Getter = () => (Services.Gameplay.GameStates)GameState,
-            Setter = value => GameState = (GameStates)value
-        };
-        Services.Gameplay.ReloadSave = ReloadSave;
-        Services.Gameplay.Respawn = Respawn;
-        Services.Gameplay.EndGame = EndGame;
-    }
-
     public enum GameStates
     {
         Null = -1,
@@ -138,9 +125,9 @@ public class Gameplay : MonoBehaviour
 
     private void Awake()
     {
-        if (Active)
+        if(Active)
         {
-            if (Instance != this) Destroy(gameObject);
+            if(Instance != this) Destroy(gameObject);
             return;
         }
 
@@ -155,13 +142,13 @@ public class Gameplay : MonoBehaviour
         inputUI.Awake();
         inputCams.Awake();
         GlobalPool.poolParent = transform.Find("PooledObjects");
-        GlobalPool.Get.Initialize();
+        GlobalPool.Instance.Initialize();
         Overlay.OverMenus.BasicBlackout = 1;
         Overlay.OverGameplay.Reset();
         Overlay.OverHUD.Reset();
 
         Enum().Begin(this);
-        static IEnumerator Enum()
+        static IEnumerator Enum() 
         {
             yield return null;
             yield return WaitFor.Until(Initialized);
@@ -230,7 +217,7 @@ public class Gameplay : MonoBehaviour
 
         InitializeSaves(0);
 
-        if (!EditorState.EditorDestination.IsValid())
+        if (!EditorState.EditorDestination.IsValid()) 
             EditorState.EditorDestination = CalculateEditorSpawn();
         if (!EditorState.EditorDestination.IsValid()) EditorState.EditorDestination = Destination.StartingDefault();
         RoomManager.destination = EditorState.EditorDestination;
@@ -239,7 +226,12 @@ public class Gameplay : MonoBehaviour
         SceneManager.LoadScene(GAMEPLAY_SCENE);
     }
 
-    public static void InitializeSaves(int fileNo) => SaveData.InitializeSaves(fileNo);
+    public static void InitializeSaves(int fileNo)
+    {
+        SaveData.IO = new(fileNo);
+        SaveData.IO.Load();
+        SaveData.RevertToSaveFile();
+    }
 
     private static Destination CalculateEditorSpawn()
     {
@@ -250,7 +242,7 @@ public class Gameplay : MonoBehaviour
 
         Destination fileDest = SaveData.Current.location;
 
-        if (EditorState.EditorDestinationArea != null && EditorState.EditorDestinationArea != fileDest.area)
+        if(EditorState.EditorDestinationArea != null && EditorState.EditorDestinationArea != fileDest.area)
         {
             target.room ??= EditorState.EditorDestinationArea.rooms[0];
             target.spawnID = 0;
@@ -337,7 +329,7 @@ public class Gameplay : MonoBehaviour
         static List<BoundingSphere> enemyBoundingSpheres = new();
 
         public const float tickTime = 0.1f;
-        static Coroutine activeRoutine;
+        static CoroutinePlus activeRoutine;
         static WaitForSeconds activeTickDelay = new WaitForSeconds(tickTime);
 
         public static void Initialize(MonoBehaviour owner)
@@ -412,20 +404,14 @@ public class Gameplay : MonoBehaviour
     }*/
 
 
-    public static void EndGame()
-    {
-        Music.StopAllMusic();
-        Player.StateMachine.HaveDestroyed();
-        DESTROY(areYouSure: true);
-    }
 
     public static void DESTROY(bool areYouSure = false)
     {
         if (!areYouSure)
         {
-#if UNITY_EDITOR
+            #if UNITY_EDITOR
             Debug.Log("Someone is trying to Destroy the gameplay without realizing the gravity of that situation.");
-#endif
+            #endif
             return;
         }
         Destroy(GameObject);

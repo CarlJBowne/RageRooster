@@ -171,19 +171,10 @@ public class TargetingChannel
         {
             var prevTarget = currentTarget;
             currentTarget = ChosenTarget;
-            if (prevTarget)
-            {
-                prevTarget.TargetState = TargetState.WithinRange;
-                prevTarget.OnDeTargeted(currentTarget);
-                prevTarget.Target.UpdateTargetedState();
-            }
-            if (currentTarget)
-            {
-                currentTarget.TargetState = TargetState.Targeted;
-                currentTarget.OnTargeted(prevTarget);
-                currentTarget.Target.UpdateTargetedState();
-            }
-                
+            if (prevTarget) prevTarget.TargetState = TargetState.WithinRange;
+            if (currentTarget) currentTarget.TargetState = TargetState.Targeted;
+            if (prevTarget) prevTarget.OnDeTargeted(currentTarget);
+            if (currentTarget) currentTarget.OnTargeted(prevTarget);
 
             if (TargetingManager.ShowDebugReticles && debugDisplayReticle != null)
             {

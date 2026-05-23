@@ -26,17 +26,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f95178380088486469864524af1662c1,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.18822408
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f95178380088486469864524af1662c1,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.062019996
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f95178380088486469864524af1662c1,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.14673212
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f95178380088486469864524af1662c1,
         type: 3}
@@ -199,15 +199,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f95178380088486469864524af1662c1,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 8111931605312723819}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f95178380088486469864524af1662c1,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1494856492652451146}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f95178380088486469864524af1662c1,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: -8491509186498207515}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f95178380088486469864524af1662c1,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7282343669059524884}
+      addedObject: {fileID: 1290124960363581460}
   m_SourcePrefab: {fileID: 100100000, guid: f95178380088486469864524af1662c1, type: 3}
 --- !u!1 &7674559674570476249 stripped
 GameObject:
@@ -238,6 +238,45 @@ CapsuleCollider:
   m_Height: 6.1708574
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 2.074633}
+--- !u!114 &8111931605312723819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7674559674570476249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44ed58beabcca8749bd2e13371ec85c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anchorPoint: {fileID: 0}
+  weight: 0
+  wiggleFreeTime: 0
+  maxHealthToGrab: 0
+  additionalThrowDistance: 0
+  additionalHoldHeight: 0
+  selectIcon: {fileID: 0}
+  GrabStateEvent:
+    _PersistentCalls: []
+  defaultEvent:
+    _PersistentCalls: []
+  grabbedEvent:
+    _PersistentCalls: []
+  thrownEvent:
+    _PersistentCalls: []
+  bounceEvent:
+    _PersistentCalls: []
+  thrownAttack:
+    amount: 1
+    velocity: {x: 0, y: 0, z: 0}
+    tags:
+      intValue: 16
+    oldTags:
+    - name: Thrown
+    _displayName: 
+  grabbed: 0
+  currentState: 0
 --- !u!54 &1494856492652451146
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -265,7 +304,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-8491509186498207515
+--- !u!114 &1290124960363581460
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -274,47 +313,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7674559674570476249}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff959314ab21ec04496ded7c08d36f17, type: 3}
+  m_Script: {fileID: 11500000, guid: 157b62d8004f9f14d8160afc57aae3b5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Target
-  Types:
-    items:
-    - rid: 3995431186106679622
+  m_EditorClassIdentifier: Assembly-CSharp::MeleeTarget
   RealPositionOffset: {x: 0, y: 0, z: 0}
-  rigidBody: {fileID: 1494856492652451146}
-  collider: {fileID: 3173304788353200227}
+  rigidBody: {fileID: 0}
+  collider: {fileID: 0}
   navMeshAgent: {fileID: 0}
-  centerComputationType: 1
-  references:
-    version: 2
-    RefIds:
-    - rid: 3995431186106679622
-      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
-      data:
-        Target: {fileID: -8491509186498207515}
---- !u!114 &7282343669059524884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7674559674570476249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30ca0b49fe34f03488e5746202eb7638, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Grabbable
-  grabbablePublic: 1
-  grabHealthMax: 0
-  grabRadius: 0.5
-  wiggleFreeTime: 0
-  anchorPoint: {fileID: 0}
-  AdditionalThrowDistance: 0
-  collider: {fileID: 3173304788353200227}
-  target: {fileID: -8491509186498207515}
-  rigidBody: {fileID: 1494856492652451146}
-  ragdollHandler: {fileID: 0}
-  thrownObjectAttack: {fileID: 0}
-  health: {fileID: 0}
-  constantMovement: {fileID: 0}
-  entityActivity: {fileID: 0}
+  centerComputationType: 0
+  grabbable: {fileID: 0}

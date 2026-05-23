@@ -23,11 +23,13 @@ public class MainMenu : MenuSingleton<MainMenu>
 
     private int currentButtonIndex = 0;
 
-    protected override void OnInitialize()
+    protected override void Awake()
     {
         Menu.Manager.Initialize();
         base.Awake();
         if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+        if (SettingsMenu.brightnessOverlay == null)
+            SettingsMenu.brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
     }
 
     private void Start()

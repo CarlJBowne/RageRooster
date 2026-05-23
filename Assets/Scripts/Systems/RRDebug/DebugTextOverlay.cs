@@ -13,7 +13,7 @@ namespace DebugRR
 
         public static bool Visible { get; private set; }
 
-        //Coroutine coroutine;
+        //CoroutinePlus coroutine;
 
         private void Awake()
         {

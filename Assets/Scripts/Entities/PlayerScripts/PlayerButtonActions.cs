@@ -16,15 +16,14 @@ using UnityEditor.UIElements;
 
 public class PlayerButtonActions : PlayerStateBehavior
 {
+
     [SerializeReference] public PlayerButtonAction Jump;
     [SerializeReference] public PlayerButtonAction Attack;
     [SerializeReference] public PlayerButtonAction Grab;
     [SerializeReference] public PlayerButtonAction Charge;
     [SerializeReference] public PlayerButtonAction Parry;
 
-    public bool Locked { get; private set; }
-
-    public PlayerButtonAction this[InputAction button] =>
+    public PlayerButtonAction this[InputAction button] => 
               button == Input.Jump ? Jump
             : button == Input.Attack ? Attack
             : button == Input.Grab ? Grab
@@ -55,9 +54,6 @@ public class PlayerButtonActions : PlayerStateBehavior
         if (Charge != null && Grab is not PlayerButtonAction.Base_ChooseType && !Charge.persistAcrossStateChange) Charge.Finish();
         if (Parry != null && Grab is not PlayerButtonAction.Base_ChooseType && !Parry.persistAcrossStateChange) Parry.Finish();
     }
-
-    public void Lock() => Locked = true;
-    public void Unlock() => Locked = false;
 
 #if UNITY_EDITOR 
 

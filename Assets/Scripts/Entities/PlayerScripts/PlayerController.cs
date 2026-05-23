@@ -4,8 +4,6 @@ using SLS.StateMachineH;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Utilities.Xtensions;
-using Utilities.Xtensions.Unity;
 using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
@@ -22,13 +20,7 @@ public class PlayerController : PlayerStateBehavior
     #region Data
 
     [HideProperty] public float jumpInput;
-    [HideProperty]
-    public Vector3 camAdjustedMovement
-    {
-        get => !overrideMovementControl
-          ? Input.Movement.ToXZ().Rotated(Machine.cameraTransform.eulerAngles.y, Vector3.up)
-          : overrideMovementVector.ToXZ().Rotated(Machine.cameraTransform.eulerAngles.y, Vector3.up);
-    }
+    [HideProperty] public Vector3 camAdjustedMovement;
     [SerializeField] Upgrades upgradesDisplay;
 
     #endregion
@@ -81,6 +73,9 @@ public class PlayerController : PlayerStateBehavior
     {
         if (!enabled) return;
         if (jumpInput > 0) jumpInput -= Time.deltaTime;
+        camAdjustedMovement = !overrideMovementControl
+            ? Input.Movement.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up)
+            : overrideMovementVector.ToXZ().Rotate(Machine.cameraTransform.eulerAngles.y, Vector3.up);
     }
 
     public bool CheckJumpBuffer()
@@ -106,7 +101,7 @@ public class PlayerController : PlayerStateBehavior
         if (Upgrades.Active.hellcopter)
         {
             Player.StateMachine.AirParry.Enter();
-            if (Player.MovementBody.isOverVent) Machine.SendSignal(new("EnterVent", 0, true));
+            if (playerMovementBody.isOverVent) Machine.SendSignal(new("EnterVent", 0, true));
         }
     }
 
@@ -114,15 +109,15 @@ public class PlayerController : PlayerStateBehavior
     {
         if (!Player.StateMachine.WallJump.WallJump(transform.forward))
         {
-            if (Player.MovementBody.isOverVent) Player.StateMachine.VentGliding.Enter();
+            if (playerMovementBody.isOverVent) Player.StateMachine.VentGliding.Enter();
             else Player.StateMachine.Gliding.Enter();
         }
     }
     public void MidWallJumpJumpAction() => Player.StateMachine.WallJump.WallJump(transform.forward);
 
-    public static void AirJumpAction(bool allowDoubleJump, bool allowGlide)
+    public void AirJumpAction(bool allowDoubleJump, bool allowGlide)
     {
-        if (Upgrades.Active.wallJump && Player.StateMachine.WallJump.WallJump(Player.Transform.forward)) return;
+        if (Upgrades.Active.wallJump && Player.StateMachine.WallJump.WallJump(transform.forward)) return;
         else if (allowDoubleJump && Upgrades.Active.doubleJump && Player.MovementBody.canDoDoubleJump)
         {
             Player.StateMachine.Jump.BeginJump();
@@ -130,7 +125,7 @@ public class PlayerController : PlayerStateBehavior
         }
         else if (allowGlide && Upgrades.Active.glide)
         {
-            if (Player.MovementBody.isOverVent) Player.StateMachine.VentGliding.Enter();
+            if (playerMovementBody.isOverVent) Player.StateMachine.VentGliding.Enter();
             else Player.StateMachine.Gliding.Enter();
         }
     }
@@ -145,33 +140,39 @@ public class PlayerController : PlayerStateBehavior
 
     private void ActionButtonPressed(CTX c)
     {
-        if (PlayerButtonAction.Current != null || ButtonLocked) return;
-        int i = ActionSourceStack.Count - 1;
-        while(i > -1)
+        if (PlayerButtonAction.Current != null || ActionSourceStack.Count == 0) return;
+        if (ActionSourceStack[^1][c.action] is PlayerButtonAction action and not null && !action.active)
         {
-            if (i > -1 && ActionSourceStack[i] != null && !ActionSourceStack[i].Locked) break;
-            i--;
+            ActiveButtonAction = c.action;
+            action.Press();
         }
-        if (i == -1) return;
-        if (!(ActionSourceStack[i][c.action] is PlayerButtonAction action and not null) || action.active) return;
-        ActiveButtonAction = c.action;
-        action.Press();
     }
     private void ActionButtonReleased(CTX c)
     {
-        if (PlayerButtonAction.Current == null || ActiveButtonAction != c.action) return;
-        PlayerButtonAction.Current.Release();
-        ActiveButtonAction = null;
+        if (PlayerButtonAction.Current != null && ActiveButtonAction == c.action)
+        {
+            PlayerButtonAction.Current.Release();
+            ActiveButtonAction = null;
+        }
     }
 
-    public bool ButtonLocked = false;
+    //public static bool ButtonReady = true; Implement later
     public static InputAction ActiveButtonAction { get; private set; } = null;
     private readonly static List<PlayerButtonActions> ActionSourceStack = new();
 
     public static void RegisterActionSource(PlayerButtonActions source, bool deregister = false)
     {
-        if (!deregister && !ActionSourceStack.Contains(source)) ActionSourceStack.Add(source);
-        else if (deregister && ActionSourceStack.Contains(source)) ActionSourceStack.Remove(source);
+        if (!deregister)
+        {
+            if (!ActionSourceStack.Contains(source)) ActionSourceStack.Add(source);
+        }
+        else
+        {
+            if (ActionSourceStack.Count > 0 && ActionSourceStack.Contains(source))
+            {
+                if (ActionSourceStack[^1] == source) ActionSourceStack.RemoveAtLast();
+            }
+        }
     }
 
 
@@ -187,60 +188,60 @@ public class PlayerController : PlayerStateBehavior
             {
                 PlayerButtonActions actionSet = signalNode.GetOrAddComponent<PlayerButtonActions>();
 
-                if (signalNode.ContainsKey("Jump"))
+                if (signalNode.signals.ContainsKey("Jump"))
                 {
                     actionSet.Jump = new PlayerButtonAction.BasicPush()
                     {
-                        pressEvent = signalNode["Jump"]
+                        pressEvent = signalNode.signals["Jump"]
                     };
-                    signalNode.Remove("Jump");
+                    signalNode.signals.Remove("Jump");
                 }
 
 
-                if (signalNode.ContainsKey("AttackTap") && signalNode.ContainsKey("AttackHold"))
+                if (signalNode.signals.ContainsKey("AttackTap") && signalNode.signals.ContainsKey("AttackHold"))
                 {
                     actionSet.Attack = new PlayerButtonAction.TapOrHold()
                     {
-                        tapEvent = signalNode["AttackTap"],
-                        holdEvent = signalNode["AttackHold"]
+                        tapEvent = signalNode.signals["AttackTap"],
+                        holdEvent = signalNode.signals["AttackHold"]
                     };
-                    signalNode.Remove("AttackTap");
-                    signalNode.Remove("AttackHold");
+                    signalNode.signals.Remove("AttackTap");
+                    signalNode.signals.Remove("AttackHold");
                 }
-                else if (signalNode.ContainsKey("AttackTap"))
+                else if (signalNode.signals.ContainsKey("AttackTap"))
                 {
                     actionSet.Jump = new PlayerButtonAction.BasicPush()
                     {
-                        pressEvent = signalNode["AttackTap"]
+                        pressEvent = signalNode.signals["AttackTap"]
                     };
-                    signalNode.Remove("AttackTap");
+                    signalNode.signals.Remove("AttackTap");
                 }
-                else if (signalNode.ContainsKey("AttackHold"))
+                else if (signalNode.signals.ContainsKey("AttackHold"))
                 {
                     actionSet.Jump = new PlayerButtonAction.TapOrHold()
                     {
-                        holdEvent = signalNode["AttackHold"],
+                        holdEvent = signalNode.signals["AttackHold"],
                         autoFinishHold = true
                     };
-                    signalNode.Remove("AttackHold");
+                    signalNode.signals.Remove("AttackHold");
                 }
 
 
-                if (signalNode.ContainsKey("Grab"))
+                if (signalNode.signals.ContainsKey("Grab"))
                 {
                     actionSet.Grab = new PlayerButtonAction.BasicPush()
                     {
-                        pressEvent = signalNode["Grab"]
+                        pressEvent = signalNode.signals["Grab"]
                     };
-                    signalNode.Remove("Grab");
+                    signalNode.signals.Remove("Grab");
                 }
-                if (signalNode.ContainsKey("Charge"))
+                if (signalNode.signals.ContainsKey("Charge"))
                 {
                     actionSet.Charge = new PlayerButtonAction.BasicPush()
                     {
-                        pressEvent = signalNode["Charge"]
+                        pressEvent = signalNode.signals["Charge"]
                     };
-                    signalNode.Remove("Charge");
+                    signalNode.signals.Remove("Charge");
                 }
 
 
@@ -262,13 +263,13 @@ public class PlayerController : PlayerStateBehavior
                 //}
 
 
-                if (signalNode.ContainsKey("Parry"))
+                if (signalNode.signals.ContainsKey("Parry"))
                 {
                     actionSet.Parry = new PlayerButtonAction.BasicPush()
                     {
-                        pressEvent = signalNode["Parry"]
+                        pressEvent = signalNode.signals["Parry"]
                     };
-                    signalNode.Remove("Parry");
+                    signalNode.signals.Remove("Parry");
                 }
 
             }
@@ -276,4 +277,3 @@ public class PlayerController : PlayerStateBehavior
         }
     }
 }
-

@@ -1,0 +1,156 @@
+﻿using EditorAttributes;
+using System;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+
+[System.Serializable, Unity.VisualScripting.Inspectable, System.Obsolete]
+public class ObjectPool_OBSOLETE
+{
+    [Tooltip("The prefab to pool."), Inspectable]
+    public GameObject prefabObject;
+    [Tooltip("The number of prefabs to create on startup."), Inspectable]
+    public int defaultPoolDepth = 1;
+    [Tooltip("Whether or not more prefabs can be created beyond the initial Pool Depth."), Inspectable]
+    public bool canGrow = true;
+    [Tooltip("The transform the Objects will be parented under. (Defaults to the scene.)"), Inspectable]
+    public Transform parent = null;
+    [Tooltip("How long an instance will last until it is automatically disabled, set to -1 to never auto disable."), Inspectable]
+    public float autoDisableTime = -1;
+    [Tooltip("The point where the object will appear when pumped."), Inspectable]
+    public Transform spawnPoint;
+    [Tooltip("Whether the object will match the rotation of its spawnPoint."), Inspectable]
+    public bool rotate;
+    [Tooltip("Whether or not and at what rate the Pool will automatically spawn its charactetrs."), Inspectable]
+    public float autoSpawnRate;
+
+    private readonly List<PoolableObject_OBSOLETE> poolList = new();
+    private int currentActiveObjects = 0;
+    private int currentPooledObjects = 0;
+    private int currentSelection = 0;
+    private bool initialized;
+    private float autoSpawnTimer;
+
+    public Action<PoolableObject_OBSOLETE> onCreateInstance;
+    public Action<PoolableObject_OBSOLETE> onPump;
+    public Action onFailedPump;
+
+    public int ActiveObjects() => currentActiveObjects;
+
+    public void Update()
+    {
+        if(autoSpawnRate > 0)
+        {
+            autoSpawnTimer += Time.deltaTime;
+            if(autoSpawnTimer >= autoSpawnRate)
+            {
+                autoSpawnTimer %= autoSpawnRate;
+                Pump();
+            }
+        }
+        if (autoDisableTime > 0) for (int i = 0; i < poolList.Count; i++)
+            {
+                if (poolList[i].Active) poolList[i].timeExisting += Time.deltaTime;
+                if (poolList[i].timeExisting >= autoDisableTime) poolList[i].gameObject.SetActive(false);
+            }
+    }
+
+    public void Initialize()
+    {
+        if (initialized) return;
+        for (int i = 0; i < defaultPoolDepth; i++) NewInstance();
+        initialized = true;
+    }
+
+
+    public PoolableObject_OBSOLETE Pump()
+    {
+        if (!initialized) Initialize();
+        if (!FindNextInstance())
+        {
+            onFailedPump?.Invoke();
+            return null;
+        }
+        PoolableObject_OBSOLETE instance = ActivateInstance(poolList[currentSelection]);
+        IncrementSelection();
+        onPump?.Invoke(instance);
+        return instance;
+    }
+
+    private void NewInstance()
+    {
+        var pooledObject = GameObject.Instantiate(prefabObject);
+        PoolableObject_OBSOLETE poolable = pooledObject.GetOrAddComponent<PoolableObject_OBSOLETE>();
+        poolable.transform.parent = parent;
+        poolable.pool = this;
+        poolable.onDeactivate += OnDeActivate;
+        poolList.Add(poolable);
+        currentPooledObjects++;
+        //currentActiveObjects++;
+        pooledObject.SetActive(false);
+        onCreateInstance?.Invoke(poolable);
+    }
+
+    private bool FindNextInstance()
+    {
+        if (!poolList[currentSelection].Active) return true;
+        if (currentActiveObjects >= currentPooledObjects)
+        {
+            if (!canGrow) return false;
+
+            NewInstance();
+            currentSelection = currentPooledObjects - 1;
+        }
+        int safetyCounter = 0;
+        while (poolList[currentSelection].Active)
+        {
+            IncrementSelection();
+            safetyCounter++;
+            if (safetyCounter > defaultPoolDepth * 1000) return false;
+        }
+        return true;
+    }
+
+    private void IncrementSelection() => currentSelection = (currentSelection == currentPooledObjects - 1) ? 0 : currentSelection + 1;
+
+    private PoolableObject_OBSOLETE ActivateInstance(PoolableObject_OBSOLETE instance)
+    {
+        instance.gameObject.SetActive(true);
+        instance.Active = true;
+        currentActiveObjects++;
+        instance.onActivate?.Invoke();
+        instance.timeExisting = 0;
+
+        if(spawnPoint != null)
+        {
+            if (rotate) instance.PlaceAtMuzzle(spawnPoint);
+            else
+            {
+                instance.SetPosition(spawnPoint.position);
+                instance.SetRotation(Vector3.zero);
+            }
+        }
+
+        return instance;
+    }
+
+    private void OnDeActivate(PoolableObject_OBSOLETE instance)
+    {
+        currentActiveObjects--;
+        instance.Active = false;
+    }
+
+    
+    private void Destroy()
+    {
+        for (int i = 0; i < poolList.Count; i++)
+        {
+            poolList[i].Disable(false);
+            poolList[i].onDeactivate -= OnDeActivate;
+            GameObject.Destroy(poolList[i].gameObject);
+        }
+        poolList.Clear();
+    }
+    
+
+}

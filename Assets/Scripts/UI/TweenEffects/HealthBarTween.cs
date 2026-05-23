@@ -19,7 +19,7 @@ public class HealthBarTween : MonoBehaviour
         DOTween.Init();
         UpdateTween();
 
-        origin = transform.position;
+        origin = transform.localPosition;
 
     }
 

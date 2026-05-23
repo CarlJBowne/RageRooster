@@ -12,7 +12,7 @@ using UnityEngine.UIElements;
 namespace SLS.StateMachineH
 {
     [CustomEditor(typeof(State), false)]
-    public class StateEditor : UnityEditor.Editor
+    public class StateEditor : Editor
     {
         protected VisualElement root;
         protected VisualElement primaryRow;

@@ -5,12 +5,12 @@ using SLS.StateMachineH;
 using System;
 using Cinemachine;
 using System.Linq;
-using Utilities.Singletons;
+using SLS.ISingleton;
 using AYellowpaper.SerializedCollections;
 using RageRooster.Systems.SaveSystem;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
-public class PlayerStateMachine : StateMachine
+public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 {
     #region Config
 
@@ -39,9 +39,6 @@ public class PlayerStateMachine : StateMachine
     #endregion
 
 
-    static PlayerStateMachine instance;
-    public static PlayerStateMachine Get => Singleton.Get(ref instance);
-    public static bool TryGet(out PlayerStateMachine res) => Singleton.TryGet(Get, out res); 
     
 
     public void HaveDestroyed() { }
@@ -53,7 +50,13 @@ public class PlayerStateMachine : StateMachine
 
     protected override void OnAwake()
     {
-        Singleton.Register(ref instance, this);
+        // Initialize the Cinemachine FreeLook camera
+        //freeLookCamera = FindObjectOfType<CinemachineFreeLook>();
+        //if (freeLookCamera != null)
+        //{
+        //    freeLookCamera.Follow = transform;
+        //    freeLookCamera.LookAt = transform;
+        //}
 
         whenInitializedEvent?.Invoke(this);
 
@@ -64,9 +67,7 @@ public class PlayerStateMachine : StateMachine
     private void OnDestroy()
     {
         PauseMenu.onPause -= Pause;
-        PauseMenu.onUnPause -= UnPause;
-
-        Singleton.Deregister(ref instance, this);
+        PauseMenu.onUnPause -= UnPause; 
     }
 
 
@@ -99,7 +100,8 @@ public class PlayerStateMachine : StateMachine
     {
         prevState = CurrentState;
         Paused.Enter();
-        Player.MovementBody.velocity.ZeroOut();
+        Player.MovementBody.velocity = Vector3.zero;
+        Player.MovementBody.CurrentSpeed = 0;
         Player.Animator.CrossFade("GroundBasic", .2f);
     }
     public void UnCutsceneState()

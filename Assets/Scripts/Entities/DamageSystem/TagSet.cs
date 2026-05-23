@@ -42,108 +42,8 @@ public partial class Attack
     }
 
     [Serializable]
-    public class TagSet : Bitmask
+    public class TagSet : BitwiseEnum
     {
-        #region Operators
-
-        /// <summary>
-        /// Returns a TagSet where any flags from L OR R are true. Equivalent to | or + operators.
-        /// </summary>
-        public static TagSet operator |(TagSet L, TagSet R) => Bitmask.OR(L as Bitmask, R as Bitmask) as TagSet;
-        /// <summary>
-        /// Returns a TagSet where any flags from L OR R are true. Equivalent to | or + operators.
-        /// </summary>
-        public static TagSet operator +(TagSet L, TagSet R) => Bitmask.OR(L as Bitmask, R as Bitmask) as TagSet;
-
-        /// <summary>
-        /// Returns a TagSet where any flags on L AND R are true. 
-        /// </summary>
-        public static TagSet operator &(TagSet L, TagSet R) => Bitmask.AND(L as Bitmask, R as Bitmask) as TagSet;
-        /// <summary>
-        /// Returns a TagSet where any flags on L AND R are true. 
-        /// </summary>
-        public static TagSet operator *(TagSet L, TagSet R) => Bitmask.AND(L as Bitmask, R as Bitmask) as TagSet;
-
-        /// <summary>
-        /// Returns a TagSet where only flags true on one of the two operands, L/R are true. Equivalent to ^ or / operators.
-        /// </summary>
-        public static TagSet operator ^(TagSet L, TagSet R) => Bitmask.XOR(L as Bitmask, R as Bitmask) as TagSet;
-        /// <summary>
-        /// Returns a TagSet where only flags true on one of the two operands, L/R are true. Equivalent to ^ or / operators.
-        /// </summary>
-        public static TagSet operator /(TagSet L, TagSet R) => Bitmask.XOR(L as Bitmask, R as Bitmask) as TagSet;
-
-
-
-        /// <summary>
-        /// Returns a TagSet where the right index is added to the left TagSet.
-        /// </summary>
-        public static TagSet operator +(TagSet L, int R) => Bitmask.ADD(L as Bitmask, R) as TagSet;
-        /// <summary>
-        /// Returns a TagSet where the right indeces are added to the left TagSet.
-        /// </summary>
-        public static TagSet operator +(TagSet L, int[] R) => Bitmask.ADD(L as Bitmask, R) as TagSet;
-        /// <summary>
-        /// Returns a TagSet where the right indeces are added to the left TagSet.
-        /// </summary>
-        public static TagSet operator +(TagSet L, List<int> R) => Bitmask.ADD(L as Bitmask, R) as TagSet;
-
-        /// <summary>
-        /// Returns a TagSet where the right index is removed to the left TagSet.
-        /// </summary>
-        public static TagSet operator -(TagSet L, int R) => Bitmask.REMOVE(L as Bitmask, R) as TagSet;
-        /// <summary>
-        /// Returns a TagSet where the right indeces are removed to the left TagSet.
-        /// </summary>
-        public static TagSet operator -(TagSet L, int[] R) => Bitmask.REMOVE(L as Bitmask, R) as TagSet;
-        /// <summary>
-        /// Returns a TagSet where the right indeces are removed to the left TagSet.
-        /// </summary>
-        public static TagSet operator -(TagSet L, List<int> R) => Bitmask.REMOVE(L as Bitmask, R) as TagSet;
-
-        /// <summary>
-        /// Returns a TagSet where flags true on R are subtracted from L.
-        /// </summary>
-        public static TagSet operator -(TagSet L, TagSet R) => Bitmask.XAND(L as Bitmask, R as Bitmask) as TagSet;
-        /// <summary>
-        /// Returns a TagSet that is inverted from the input. 
-        /// </summary>
-        public static TagSet operator ~(TagSet L) => INVERT(L as Bitmask) as TagSet;
-
-
-        /// <summary>
-        /// Equality operator. True if both are the same reference or both non-null with equal integer masks.
-        /// </summary>
-        public static bool operator ==(TagSet L, TagSet R)
-        {
-            if (ReferenceEquals(L, R)) return true;
-            if (L is null || R is null) return false;
-            return L.intValue == R.intValue;
-        }
-
-        /// <summary>
-        /// Inequality operator.
-        /// </summary>
-        public static bool operator !=(TagSet L, TagSet R) => !(L == R);
-
-        /// <summary>
-        /// Inclusion operator. True if both are the same reference or both non-null with equal integer masks.
-        /// </summary>
-        public static bool operator ==(TagSet L, int R)
-        {
-            if (L == null) return false;
-            if (R is < 0 or > 31) throw new ArgumentOutOfRangeException("Index outside of 0..31 Range");
-            return L[R] == true;
-        }
-
-        /// <summary>
-        /// Uninclusion operator.
-        /// </summary>
-        public static bool operator !=(TagSet L, int R) => !(L == R);
-
-        #endregion
-
-
 
         public bool this[Tags i]
         {
@@ -153,8 +53,7 @@ public partial class Attack
 
         public static bool operator ==(TagSet L, Tags R) => L[R];
         public static bool operator !=(TagSet L, Tags R) => !L[R];
-
-
+        
 
 
         public override bool Equals(object obj) => obj is TagSet set && base.Equals(obj) && intValue == set.intValue;
@@ -235,10 +134,6 @@ public partial class Attack
         for (int i = 0; i < TagNames.Count; i++) dictionary[TagNames[i]] = i;
         TagNameToID = new(dictionary);
     }
-
-    public override bool Equals(object obj) => obj is Attack attack && amount == attack.amount && velocity.Equals(attack.velocity) && EqualityComparer<TagSet>.Default.Equals(tags, attack.tags) && x == attack.x && y == attack.y && z == attack.z && _displayName == attack._displayName;
-    public override int GetHashCode() => HashCode.Combine(amount, velocity, tags, x, y, z, _displayName);
-
     public static ReadOnlyDictionary<string, int> TagNameToID { get; private set; }
     public static IReadOnlyList<string> TagNames { get; private set; }
 

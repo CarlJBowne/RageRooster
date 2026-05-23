@@ -4,21 +4,20 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.SceneManagement;
-using Utilities.Singletons;
+using SLS.ISingleton;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : MonoBehaviour, ISingleton<AudioManager>
 {
-    static Singleton<AudioManager> S = new(() =>
-    {
-        GameObject GO = new("--Audio-Manager--");
-        AudioManager result = GO.AddComponent<AudioManager>();
-        result.Awake();
-        return result;
-    });
 
-    public static AudioManager Get => S.Get;
-    public static bool TryGet(out AudioManager res) => S.TryGet(out res);
-    public static bool Active => S.Active;
+    protected static AudioManager Instance;
+    protected ISingleton<AudioManager> Interface => this;
+    public static AudioManager Get() => ISingleton<AudioManager>.Get(ref Instance, ISingleton<AudioManager>.FromPreloaded);
+    public static bool TryGet(out AudioManager result) => ISingleton<AudioManager>.TryGet(Get, out result);
+    public static bool Active => Instance != null;
+
+
+    // Set up the AudioManager with specific settings
+    //static void Data() => SetData(spawnMethod: InitSavedPrefab, dontDestroyOnLoad: true, spawnOnBoot: true);
 
     // Properties to set the volume for different audio buses
     public float masterVolume { set => masterBus.setVolume(value); }
@@ -30,16 +29,16 @@ public class AudioManager : MonoBehaviour
     private Bus musicBus;
     private Bus sfxBus;
     private Bus ambienceBus;
-    
+
     private List<EventInstance> eventInstances;
     private List<StudioEventEmitter> eventEmitters;
     private EventInstance ambienceEventInstance;
     public EventInstance musicEventInstance;
 
     // Called when the script instance is being loaded
-    protected void Awake()
+    public void Awake()
     {
-        S.Register(this);
+        Interface.Initialize(ref Instance);
         DontDestroyOnLoad(gameObject);
 
         eventInstances = new List<EventInstance>();
@@ -59,10 +58,16 @@ public class AudioManager : MonoBehaviour
     // Called when the script is started
     private void Start()
     {
-        if (FMODEvents.Active)
+        if (FMODEvents.instance != null)
         {
-            if (FMODEvents.Get.HasAmbience()) InitializeAmbience(FMODEvents.Get.GetAmbience());
-            if (FMODEvents.Get.HasMusic()) InitializeMusic(FMODEvents.Get.GetMusic());
+            if (FMODEvents.instance.HasAmbience())
+            {
+                InitializeAmbience(FMODEvents.instance.GetAmbience());
+            }
+            if (FMODEvents.instance.HasMusic())
+            {
+                InitializeMusic(FMODEvents.instance.GetMusic());
+            }
         }
     }
 
@@ -126,13 +131,13 @@ public class AudioManager : MonoBehaviour
     }
 
     // Called when the AudioManager is destroyed
-    protected void OnDestroy()
+    private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
         SceneManager.sceneUnloaded -= OnSceneUnloaded;
         musicEventInstance.setPaused(true);
         CleanUp();
-        S.Deregister(this);
+        Interface.DeInitialize(ref Instance);
     }
 
     // Called when a new scene is loaded
@@ -168,9 +173,15 @@ public class AudioManager : MonoBehaviour
         EventReference musicEvent = new EventReference();
         switch (sceneName)
         {
-            case "MainMenu": musicEvent = FMODEvents.Get.titleScreenMusic; break;
-            case "Forest": musicEvent = FMODEvents.Get.ireGorgeMusic; break;
-            case "FarmHouse": musicEvent = FMODEvents.Get.rockyFurrowsHubMusic; break;
+            case "MainMenu":
+                musicEvent = FMODEvents.instance.titleScreenMusic;
+                break;
+            case "Forest":
+                musicEvent = FMODEvents.instance.ireGorgeMusic;
+                break;
+            case "FarmHouse":
+                musicEvent = FMODEvents.instance.rockyFurrowsHubMusic;
+                break;
             default:
                 return;
         }

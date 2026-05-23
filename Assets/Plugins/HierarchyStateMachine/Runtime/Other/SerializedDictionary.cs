@@ -1,19 +1,12 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using UnityEditor;
-using UnityEditor.UIElements;
-using UnityEditorInternal;
-using UnityEngine;
-using UnityEngine.UIElements;
 using Generics = System.Collections.Generic;
+using UnityEngine;
 
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("SLS.StateMachineH.Editor")]
-namespace SLS.StateMachineH.Utils
+namespace SLS.StateMachineH.SerializedDictionary
 {
     [Serializable]
-    internal class SerializedDictionary<TKey, TValue> : Generics.Dictionary<TKey, TValue>, ISerializationCallbackReceiver, ISerializedDictionaryNonGeneric
+    public class SerializedDictionary<TKey, TValue> : Generics.Dictionary<TKey, TValue>, ISerializationCallbackReceiver, ISerializedDictionaryNonGeneric
     {
         [SerializeField] internal Generics.List<KeyValuePair> serializedList;
         [NonSerialized] private Generics.Dictionary<TKey, Generics.List<int>> occurences;
@@ -122,7 +115,7 @@ namespace SLS.StateMachineH.Utils
             return false;
         }
 
-        public bool[] RecalculateOccurences()
+        public void RecalculateOccurences()
         {
             occurences.Clear();
             for (int i = 0; i < serializedList.Count; i++)
@@ -130,7 +123,6 @@ namespace SLS.StateMachineH.Utils
                 if (!occurences.ContainsKey(serializedList[i].Key)) occurences.Add(serializedList[i].Key, new(i));
                 else occurences[serializedList[i].Key].Add(i);
             }
-            return DuplicateValues;
         }
 
         public void RemoveDuplicates()
@@ -229,7 +221,7 @@ namespace SLS.StateMachineH.Utils
     }
 
     [Serializable]
-    internal class SerializedReferenceDictionary<TKey, TValue> : Generics.Dictionary<TKey, TValue>, ISerializationCallbackReceiver, ISerializedDictionaryNonGeneric
+    public class SerializedReferenceDictionary<TKey, TValue> : Generics.Dictionary<TKey, TValue>, ISerializationCallbackReceiver, ISerializedDictionaryNonGeneric
     {
         [SerializeField] internal Generics.List<KeyValuePair> serializedList;
         [NonSerialized] private Generics.Dictionary<TKey, Generics.List<int>> occurences;
@@ -338,7 +330,7 @@ namespace SLS.StateMachineH.Utils
             return false;
         }
 
-        public bool[] RecalculateOccurences()
+        public void RecalculateOccurences()
         {
             occurences.Clear();
             for (int i = 0; i < serializedList.Count; i++)
@@ -346,7 +338,6 @@ namespace SLS.StateMachineH.Utils
                 if (!occurences.ContainsKey(serializedList[i].Key)) occurences.Add(serializedList[i].Key, new(i));
                 else occurences[serializedList[i].Key].Add(i);
             }
-            return DuplicateValues;
         }
 
         public void RemoveDuplicates()
@@ -445,7 +436,13 @@ namespace SLS.StateMachineH.Utils
     }
 
 
-    internal interface ISerializedDictionaryNonGeneric
+
+
+
+
+
+
+    public interface ISerializedDictionaryNonGeneric
     {
         public System.Collections.IList listAccess { get; }
 
@@ -457,11 +454,11 @@ namespace SLS.StateMachineH.Utils
         public bool Remove(object key);
         public bool TryAdd(object key, object value);
 
-        public bool[] RecalculateOccurences();
+        public void RecalculateOccurences();
         public bool[] DuplicateValues { get; }
         public void RemoveDuplicates();
     }
-    internal interface ILookupTableNonGeneric
+    public interface ILookupTableNonGeneric
     {
         public bool[] DuplicateValues { get; }
         public void RecalculateOccurences();

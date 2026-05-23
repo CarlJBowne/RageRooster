@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using EditorAttributes;
 using RageRooster.Systems.SaveSystem;
+using SLS.ISingleton;
 using SLS.StateMachineH;
 using Unity.VisualScripting;
 using UnityEditor;
