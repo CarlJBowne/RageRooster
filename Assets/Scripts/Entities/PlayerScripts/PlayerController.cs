@@ -187,60 +187,60 @@ public class PlayerController : PlayerStateBehavior
             {
                 PlayerButtonActions actionSet = signalNode.GetOrAddComponent<PlayerButtonActions>();
 
-                if (signalNode.signals.ContainsKey("Jump"))
+                if (signalNode.ContainsKey("Jump"))
                 {
                     actionSet.Jump = new PlayerButtonAction.BasicPush()
                     {
-                        pressEvent = signalNode.signals["Jump"]
+                        pressEvent = signalNode["Jump"]
                     };
-                    signalNode.signals.Remove("Jump");
+                    signalNode.Remove("Jump");
                 }
 
 
-                if (signalNode.signals.ContainsKey("AttackTap") && signalNode.signals.ContainsKey("AttackHold"))
+                if (signalNode.ContainsKey("AttackTap") && signalNode.ContainsKey("AttackHold"))
                 {
                     actionSet.Attack = new PlayerButtonAction.TapOrHold()
                     {
-                        tapEvent = signalNode.signals["AttackTap"],
-                        holdEvent = signalNode.signals["AttackHold"]
+                        tapEvent = signalNode["AttackTap"],
+                        holdEvent = signalNode["AttackHold"]
                     };
-                    signalNode.signals.Remove("AttackTap");
-                    signalNode.signals.Remove("AttackHold");
+                    signalNode.Remove("AttackTap");
+                    signalNode.Remove("AttackHold");
                 }
-                else if (signalNode.signals.ContainsKey("AttackTap"))
+                else if (signalNode.ContainsKey("AttackTap"))
                 {
                     actionSet.Jump = new PlayerButtonAction.BasicPush()
                     {
-                        pressEvent = signalNode.signals["AttackTap"]
+                        pressEvent = signalNode["AttackTap"]
                     };
-                    signalNode.signals.Remove("AttackTap");
+                    signalNode.Remove("AttackTap");
                 }
-                else if (signalNode.signals.ContainsKey("AttackHold"))
+                else if (signalNode.ContainsKey("AttackHold"))
                 {
                     actionSet.Jump = new PlayerButtonAction.TapOrHold()
                     {
-                        holdEvent = signalNode.signals["AttackHold"],
+                        holdEvent = signalNode["AttackHold"],
                         autoFinishHold = true
                     };
-                    signalNode.signals.Remove("AttackHold");
+                    signalNode.Remove("AttackHold");
                 }
 
 
-                if (signalNode.signals.ContainsKey("Grab"))
+                if (signalNode.ContainsKey("Grab"))
                 {
                     actionSet.Grab = new PlayerButtonAction.BasicPush()
                     {
-                        pressEvent = signalNode.signals["Grab"]
+                        pressEvent = signalNode["Grab"]
                     };
-                    signalNode.signals.Remove("Grab");
+                    signalNode.Remove("Grab");
                 }
-                if (signalNode.signals.ContainsKey("Charge"))
+                if (signalNode.ContainsKey("Charge"))
                 {
                     actionSet.Charge = new PlayerButtonAction.BasicPush()
                     {
-                        pressEvent = signalNode.signals["Charge"]
+                        pressEvent = signalNode["Charge"]
                     };
-                    signalNode.signals.Remove("Charge");
+                    signalNode.Remove("Charge");
                 }
 
 
@@ -262,13 +262,13 @@ public class PlayerController : PlayerStateBehavior
                 //}
 
 
-                if (signalNode.signals.ContainsKey("Parry"))
+                if (signalNode.ContainsKey("Parry"))
                 {
                     actionSet.Parry = new PlayerButtonAction.BasicPush()
                     {
-                        pressEvent = signalNode.signals["Parry"]
+                        pressEvent = signalNode["Parry"]
                     };
-                    signalNode.signals.Remove("Parry");
+                    signalNode.Remove("Parry");
                 }
 
             }

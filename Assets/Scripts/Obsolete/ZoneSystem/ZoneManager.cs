@@ -10,7 +10,7 @@ namespace RageRooster.Obsolete.Zones
     public class ZoneManager : Singleton.MonoBehaviour<ZoneManager>
     {
         [SerializeField] ZoneRoot currentZone;
-        [SerializeField] AYellowpaper.SerializedCollections.SerializedDictionary<string, ZoneProxy> proxies = new();
+        [SerializeField] Utilities.SerializedDictionary<string, ZoneProxy> proxies = new();
         public string defaultAreaScene;
         public float minLoadTime;
         public Timer.Loop updateTimer = new(.5f);

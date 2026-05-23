@@ -800,6 +800,8 @@ namespace Utilities.Editor
                 typeof(TK) == typeof(string) ? new TextField().AddTo(content, k =>
                 {
                     k.label = "";
+                    k.style.maxHeight = EditorGUIUtility.singleLineHeight;
+                    k.style.top = 0;
                     k.SetValueWithoutNotify(KeyProp.stringValue);
                     k.BindProperty(KeyProp);
                     k.isDelayed = true;
@@ -807,6 +809,8 @@ namespace Utilities.Editor
                 : typeof(TK) == typeof(int) ? new IntegerField().AddTo(content, k =>
                 {
                     k.label = "";
+                    k.style.maxHeight = EditorGUIUtility.singleLineHeight;
+                    k.style.top = 0;
                     k.SetValueWithoutNotify(KeyProp.intValue);
                     k.BindProperty(KeyProp);
                     k.isDelayed = true;
@@ -814,6 +818,8 @@ namespace Utilities.Editor
                 : typeof(TK) == typeof(float) ? new FloatField().AddTo(content, k =>
                 {
                     k.label = "";
+                    k.style.maxHeight = EditorGUIUtility.singleLineHeight;
+                    k.style.top = 0;
                     k.SetValueWithoutNotify(KeyProp.floatValue);
                     k.BindProperty(KeyProp);
                     k.isDelayed = true;
@@ -821,6 +827,8 @@ namespace Utilities.Editor
                 : typeof(TK) == typeof(double) ? new DoubleField().AddTo(content, k =>
                 {
                     k.label = "";
+                    k.style.maxHeight = EditorGUIUtility.singleLineHeight;
+                    k.style.top = 0;
                     k.SetValueWithoutNotify(KeyProp.doubleValue);
                     k.BindProperty(KeyProp);
                     k.isDelayed = true;
@@ -837,6 +845,7 @@ namespace Utilities.Editor
             {
                 v.style.flexBasis = new Length(70, LengthUnit.Percent);
                 v.style.marginRight = 4;
+                v.style.flexGrow = 1f;
             });
             return content;
         }
