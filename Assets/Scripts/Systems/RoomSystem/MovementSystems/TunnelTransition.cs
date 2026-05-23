@@ -15,7 +15,7 @@ namespace RageRooster.RoomSystem.MovementSystems
         public bool lockCameraRotation;
 
         private bool playerWithin;
-        CoroutinePlus coroutine;
+        Coroutine coroutine;
         Music.Channel activeMusicChannel;
 
         private void OnTriggerEnter(Collider other)

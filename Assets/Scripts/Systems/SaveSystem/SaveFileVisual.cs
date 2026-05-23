@@ -18,11 +18,13 @@ namespace RageRooster.Systems.SaveSystem
         public TMPro.TextMeshProUGUI powerEggsText;
         public TMPro.TextMeshProUGUI hensRescuedText;
 
+        SaveData data;
         SaveData.IOStream file;
 
         private void Awake()
         {
             file = new(ID);
+            data = new();
             UpdateFile();
         }
 
@@ -31,36 +33,36 @@ namespace RageRooster.Systems.SaveSystem
 
         public void DeleteFile()
         {
-            file.Delete();
+            file.DeleteFile();
             UpdateFile();
         }
 
         private void UpdateFile()
         {
-            if (file.doesFileExist)
+            if (file.filesDoExist)
             {
-                file.Load();
+                file.LoadFromFile(data);
 
                 details.SetActive(true);
 
-                Destination location = file.file.location;
+                Destination location = data.location;
                 locationText.text = $"{location.area.displayName} -- {location.room.displayName}";
 
-                var TS = file.file.playerStats.playTime;
+                var TS = data.playerStats.playTime;
                 timeText.text = $"{TS.Hours}:{TS.Minutes}:{TS.Seconds}";
 
                 completionText.text = $"{file.GetCompletionPercentage()}%";
 
-                totalHealthText.text = file.file.playerStats.maxHealth.ToString();
-                powerEggsText.text = file.file.powerEggs.total.ToString();
-                hensRescuedText.text = file.file.hensRescued.total.ToString(); 
+                totalHealthText.text = data.playerStats.maxHealth.ToString();
+                powerEggsText.text = data.powerEggs.total.ToString();
+                hensRescuedText.text = data.hensRescued.total.ToString();
             }
             else
             {
                 details.SetActive(false);
             }
 
-                
+
 
         }
     }

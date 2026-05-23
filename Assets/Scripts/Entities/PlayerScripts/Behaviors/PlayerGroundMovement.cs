@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Utilities.Xtensions.Unity;
 using static SLS.StateMachineH.StateAnimator;
 using static UnityEngine.EventSystems.EventTrigger;
 
@@ -20,34 +21,21 @@ public class PlayerGroundMovement : PlayerMovementEffector
     public bool outwardTurn;
     public float minSpeed;
 
-    public override void HorizontalMovement(out float? resultX, out float? resultZ)
+    public override bool ForwardMovement(out float result)
     {
-        float currentSpeed = playerMovementBody.CurrentSpeed;
-        Vector3 currentDirection = playerMovementBody.direction;
+        float currentSpeed = Player.MovementBody.velocity.f;
+        Vector3 currentDirection = Player.MovementBody.DirectionGet;
 
-        HorizontalMain(ref currentSpeed, currentDirection, playerController.camAdjustedMovement);
-
-        playerMovementBody.CurrentSpeed = currentSpeed;
-
-        Vector3 literalDirection = transform.forward * currentSpeed;
-
-        resultX = literalDirection.x;
-        resultZ = literalDirection.z;
-
-    }
-
-    private void HorizontalMain(ref float currentSpeed, Vector3 currentDirection, Vector3 control)
-    {
         float deltaTime = Time.deltaTime * 50;
-        Vector3 controlDirection = control.normalized;
-        float controlMag = control.magnitude;
+        Vector3 controlDirection = Player.Controller.camAdjustedMovement.normalized;
+        float controlMag = Player.Controller.camAdjustedMovement.magnitude;
 
 
         if (controlMag > 0)
         {
             float Dot = Vector3.Dot(controlDirection, currentDirection);
 
-            if (maxTurnSpeed > 0) playerMovementBody.DirectionSet(maxTurnSpeed);
+            if (maxTurnSpeed > 0) Player.MovementBody.DirectionSet(maxTurnSpeed * Time.fixedDeltaTime);
 
             if (!outwardTurn) currentSpeed *= Dot;
 
@@ -60,9 +48,15 @@ public class PlayerGroundMovement : PlayerMovementEffector
             if (currentSpeed < minSpeed) currentSpeed = currentSpeed.MoveUp(stopping * deltaTime, minSpeed);
             else if (currentSpeed > minSpeed) currentSpeed = currentSpeed.MoveDown(decceleration * deltaTime, minSpeed);
         }
-        else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
+        else currentSpeed = currentSpeed > .01f ? currentSpeed.Move(currentSpeed * stopping * deltaTime, 0) : 0;
+
+
+        Player.MovementBody.velocity.f = currentSpeed;
+
+        result = currentSpeed;
+        return true;
     }
-    
+
     [SerializeField] public string animationName;
 
     private bool DoEnter()
@@ -99,4 +93,18 @@ public class PlayerGroundMovement : PlayerMovementEffector
     }
     public void EnterNoAnimation() => DoEnter();
     public void EnterFadeSynced(float time) => Player.Animator.CrossFade(name, time, 0, Player.Animator.GetCurrentAnimatorStateInfo(-1).normalizedTime);
+}
+
+public static class _________HELPER_PUT_SOMEWHERE_ELSE_LATER
+{
+    public static void Trigger(this Animator anim, string triggerName)
+    {
+        Wait().Begin(anim);
+        IEnumerator Wait()
+        {
+            anim.SetTrigger(triggerName);
+            yield return null;
+            anim.ResetTrigger(triggerName);
+        }
+    }
 }

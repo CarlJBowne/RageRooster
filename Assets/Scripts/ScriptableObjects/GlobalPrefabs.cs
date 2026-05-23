@@ -1,16 +1,16 @@
 ﻿#define AYellowPaper
 
 using EditorAttributes;
-using SLS.ISingleton;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Utilities.Singletons;
 
 [CreateAssetMenu(fileName = "Global Prefabs", menuName = "Global Prefabs", order = 0)]
-public class GlobalPrefabs : SingletonAsset<GlobalPrefabs>
+public class GlobalPrefabs : GlobalAsset<GlobalPrefabs>
 {
 
 #if AYellowPaper
@@ -23,14 +23,13 @@ public class GlobalPrefabs : SingletonAsset<GlobalPrefabs>
 
 #endif
 
-    public GameObject this[string name] => Get().dictionary[name];
-    public static GameObject NamedPrefab(string name) => Get().dictionary[name];
-    public static bool TryNamedPrefab(string name, out GameObject result) => Get().dictionary.TryGetValue(name, out result);
+    public GameObject this[string name] => Get.dictionary[name];
+    public static GameObject NamedPrefab(string name) => Get.dictionary[name];
+    public static bool TryNamedPrefab(string name, out GameObject result) => Get.dictionary.TryGetValue(name, out result);
 
     public List<string> attackTagNames;
-    protected override void OnInitialize()
+    public override void OnInit()
     {
-        base.OnInitialize();
         Attack.InitGlobalData(attackTagNames);
     }
     private void OnValidate() => Attack.InitGlobalData(attackTagNames);

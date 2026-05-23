@@ -1,14 +1,12 @@
 ﻿using FMODUnity;
-using SLS.ISingleton;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities.Singletons;
 
 [CreateAssetMenu(fileName = "FMODEvents", menuName = "ScriptableObjects/FMODEvents")]
-public class FMODEvents : SingletonAsset<FMODEvents>
+public class FMODEvents : GlobalAsset<FMODEvents>
 {
-
-    public static FMODEvents instance => Get();
 
     public bool HasAmbience()
     {

@@ -4,6 +4,7 @@ using SLS.StateMachineH;
 using System.Collections;
 using UltEvents;
 using UnityEngine;
+using Utilities.Xtensions;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerGrabber : MonoBehaviour
@@ -17,7 +18,7 @@ public class PlayerGrabber : MonoBehaviour
 
     // Data
     public Grabbable currentGrabbed { get; private set; }
-    private CoroutinePlus layerFadeCoroutine;
+    private Coroutine layerFadeCoroutine;
 
 
     private void OnEnable() { }
@@ -54,7 +55,7 @@ public class PlayerGrabber : MonoBehaviour
     {
         if (currentGrabbed == null) return;
         Vector3 throwDirection = direction;
-        Vector3 throwVelocity = throwDirection * launchVelocity + Player.MovementBody.velocity;
+        Vector3 throwVelocity = throwDirection * launchVelocity + Player.MovementBody.velocity.Global;
         currentGrabbed?.Throw(throwVelocity);
         currentGrabbed = null;
         GrabStateEvent?.Invoke(false);
@@ -79,7 +80,7 @@ public class PlayerGrabber : MonoBehaviour
 
     public void SetGrabbingLayer(bool value)
     {
-        CoroutinePlus.Begin(ref layerFadeCoroutine, FadeLayers(value.Int(), 3), gameObject.activeInHierarchy ? this : Gameplay.Instance);
+        Coroutine.Begin(ref layerFadeCoroutine, FadeLayers(value.Int(), 3), gameObject.activeInHierarchy ? this : Gameplay.Instance);
         IEnumerator FadeLayers(int target, float rate)
         {
             float current = Player.Animator.GetLayerWeight(2);

@@ -335,26 +335,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 2886849465790298343}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
-  successReturn:
-    _PersistentCalls:
-    - _Target: {fileID: 7793706925814574489}
-      _MemberName: Enter
-      _PersistentArguments: []
-  failMissedReturn:
-    _PersistentCalls:
-    - _Target: {fileID: 1334703871749000343}
-      _MemberName: Enter
-      _PersistentArguments: []
-  failBlockedReturn:
-    _PersistentCalls:
-    - _Target: {fileID: 2251446529033438380}
-      _MemberName: Enter
-      _PersistentArguments: []
-  altSwitchReturn:
+  forwardSpeedCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  forwardSpeedInfluenceCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  turningSpeedCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  verticalShiftCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  horizontalThresholdAdjustment: 0.05
+  verticalThreshold: 0
+  directionalThreshold: 0
+  maxAttemptTime: 9
+  failMissedReturn: {fileID: 0}
+  failBlockedReturn: {fileID: 0}
+  successState: {fileID: 0}
+  grabAnimationTime: 0
+  moveToTargetPosition: 0
+  considerDropLaunch: 0
+  finalSuccessReturn:
     _PersistentCalls: []
-  snapToGrabbed: 0
 --- !u!114 &2367700804448527466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -667,8 +683,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 8256454112717440440}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   walkingSpeed: 6
 --- !u!114 &5898498358072726126
 MonoBehaviour:
@@ -684,8 +698,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 8256454112717440440}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -844,8 +856,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 5784944828220155535}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   walkingSpeed: 4.5
 --- !u!114 &8172011373576296772
 MonoBehaviour:
@@ -879,8 +889,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 5784944828220155535}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -976,8 +984,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 6142764829233176585}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   walkingSpeed: 6
 --- !u!114 &2176363793658933056
 MonoBehaviour:
@@ -1114,8 +1120,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 3324675951119846532}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   walkingSpeed: 1
 --- !u!114 &2849126177773502154
 MonoBehaviour:
@@ -1154,8 +1158,20 @@ MonoBehaviour:
     output:
       _PersistentCalls:
       - _Target: {fileID: 0}
-        _MemberName: Throw
+        _MemberName: get_forward
         _PersistentArguments: []
+      - _Target: {fileID: 0}
+        _MemberName: PlayerGrabber, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null.Throw_Static
+        _PersistentArguments:
+        - _Type: 15
+          _Int: 0
+          _String: 
+          _X: 7
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   - time: 0.3
     output:
       _PersistentCalls:
@@ -1331,8 +1347,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 7793706925814574489}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   walkingSpeed: 4.5
 --- !u!114 &7863535507170721229
 MonoBehaviour:
@@ -1348,8 +1362,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 7793706925814574489}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -1401,7 +1413,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
   <State>k__BackingField: {fileID: 7793706925814574489}
   onEntry: 2
-  onEnterName: Aim
+  onEnterName: Aim_Holding
   onEnterTime: 0.1
   doWhenNotFinal: 0
   animator: {fileID: 0}
@@ -1647,7 +1659,7 @@ MonoBehaviour:
       - _Target: {fileID: 0}
         _MemberName: Unlock
         _PersistentArguments: []
-  - time: 0.8333333
+  - time: 0.4
     output:
       _PersistentCalls:
       - _Target: {fileID: 0}
@@ -1798,8 +1810,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 1739575009564784701}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   walkingSpeed: 3
 --- !u!114 &1495894770743417183
 MonoBehaviour:
@@ -1919,8 +1929,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 5073408008435663567}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   walkingSpeed: 6
 --- !u!114 &7394413076049547985
 MonoBehaviour:

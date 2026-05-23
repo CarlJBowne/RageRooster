@@ -5,6 +5,7 @@ using SLS.StateMachineH;
 using UnityEngine.AI;
 using UnityEngine.Rendering;
 
+[System.Obsolete]
 public class ChargeAttackEB : StateBehavior
 {
     Rigidbody rb;
