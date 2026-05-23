@@ -1,6 +1,6 @@
 using DG.Tweening;
 using EditorAttributes;
-using RageRooster.Systems.ObjectPooling;
+using Utilities.ObjectPooling;
 using RageRooster.Systems.SaveSystem;
 using SLS.StateMachineH;
 using System;
@@ -77,7 +77,7 @@ public class PlayerRanged : MonoBehaviour
                     ? hit.point
                     : Cameras.aimingCamera.transform.position + (Cameras.RealCamera.transform.forward * TargetingManager.RangedChannel.Range.maxDistance);
 
-            Player.MovementBody.DirectionSet((targetPos.position - Player.Position).XZ(), playerRotationSpeed);
+            Player.MovementBody.DirectionSet((targetPos.position - Player.Position).XZ(), playerRotationSpeed * Time.fixedDeltaTime);
         }
         else
         {

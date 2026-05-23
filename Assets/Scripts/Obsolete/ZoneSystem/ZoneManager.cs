@@ -1,16 +1,16 @@
-﻿using SLS.ISingleton;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Utilities.Singletons;
 
 namespace RageRooster.Obsolete.Zones
 {
     [System.Serializable, System.Obsolete]
-    public class ZoneManager : SingletonMonoBasic<ZoneManager>
+    public class ZoneManager : Singleton.MonoBehaviour<ZoneManager>
     {
         [SerializeField] ZoneRoot currentZone;
-        [SerializeField] AYellowpaper.SerializedCollections.SerializedDictionary<string, ZoneProxy> proxies = new();
+        [SerializeField] Utilities.SerializedDictionary<string, ZoneProxy> proxies = new();
         public string defaultAreaScene;
         public float minLoadTime;
         public Timer.Loop updateTimer = new(.5f);
@@ -24,10 +24,10 @@ namespace RageRooster.Obsolete.Zones
         private Vector3Double currentOffset;
         private bool forceMoveNextZone = false;
 
-        public static ZoneRoot CurrentZone => Get().currentZone;
+        public static ZoneRoot CurrentZone => Get.currentZone;
 
         // Called when the ZoneManager is initialized. Sets up references to the player transform and state machine.
-        protected override void OnInitialize()
+        protected override void OnInit()
         {
             playerTransform = Player.Transform;
             playerMachine = Player.StateMachine;
@@ -42,7 +42,7 @@ namespace RageRooster.Obsolete.Zones
         }
 
         // Static method to load a new zone.
-        public static void LoadZone(ZoneRoot zone) { if (Active) Get().LoadZone_(zone); }
+        public static void LoadZone(ZoneRoot zone) { Get.LoadZone_(zone); }
 
         // Loads a new zone and updates the current zone and proxies.
         private void LoadZone_(ZoneRoot zone)
@@ -69,7 +69,7 @@ namespace RageRooster.Obsolete.Zones
         }
 
         // Static method to transition to a different zone.
-        public static void DoTransition(string sceneName) { if (Active) Get().DoTransition_(sceneName); }
+        public static void DoTransition(string sceneName) { if (Active) Get.DoTransition_(sceneName); }
 
         // Transitions to a different zone by updating the current zone.
         private void DoTransition_(string sceneName)
@@ -80,10 +80,10 @@ namespace RageRooster.Obsolete.Zones
         }
 
         // Checks if the given zone proxy is the current zone.
-        public static bool IsCurrent(ZoneProxy zone) => Active && Get().currentZone == zone;
+        public static bool IsCurrent(ZoneProxy zone) => Active && Get.currentZone == zone;
 
         // Static method to add a zone transition.
-        public static void AddTransition(ZoneTransition transition) { if (Active) Get().AddTransition_(transition); }
+        public static void AddTransition(ZoneTransition transition) { if (Active) Get.AddTransition_(transition); }
 
         // Adds a zone transition to the proxies.
         private void AddTransition_(ZoneTransition transition)
@@ -93,7 +93,7 @@ namespace RageRooster.Obsolete.Zones
         }
 
         // Static method to remove a zone transition.
-        public static void RemoveTransition(ZoneTransition transition) { if (Active) Get().RemoveTransition_(transition); }
+        public static void RemoveTransition(ZoneTransition transition) { if (Active) Get.RemoveTransition_(transition); }
 
         // Removes a zone transition from the proxies.
         private void RemoveTransition_(ZoneTransition transition)
@@ -128,12 +128,12 @@ namespace RageRooster.Obsolete.Zones
         }
 
         // Checks if a zone is ready to be loaded.
-        public static bool ZoneIsReady(string name) => Get().proxies.ContainsKey(name) && Get().proxies[name].loaded;
+        public static bool ZoneIsReady(string name) => Get.proxies.ContainsKey(name) && Get.proxies[name].loaded;
 
         // Unloads all zones asynchronously.
         public static IEnumerator UnloadAll()
         {
-            ZoneProxy[] zones = Get().proxies.Values.ToArray();
+            ZoneProxy[] zones = Get.proxies.Values.ToArray();
 
             int unloadsLeft = 0;
             for (int i = 0; i < zones.Length; i++)
@@ -146,7 +146,7 @@ namespace RageRooster.Obsolete.Zones
                 }
 
             yield return new WaitUntil(() => unloadsLeft == 0);
-            Get().proxies.Clear();
+            Get.proxies.Clear();
         }
 
         // Checks if a scene is currently loaded.

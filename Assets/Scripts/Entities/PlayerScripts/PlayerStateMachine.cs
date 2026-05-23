@@ -5,12 +5,12 @@ using SLS.StateMachineH;
 using System;
 using Cinemachine;
 using System.Linq;
-using SLS.ISingleton;
+using Utilities.Singletons;
 using AYellowpaper.SerializedCollections;
 using RageRooster.Systems.SaveSystem;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
-public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
+public class PlayerStateMachine : StateMachine
 {
     #region Config
 
@@ -39,6 +39,9 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     #endregion
 
 
+    static PlayerStateMachine instance;
+    public static PlayerStateMachine Get => Singleton.Get(ref instance);
+    public static bool TryGet(out PlayerStateMachine res) => Singleton.TryGet(Get, out res); 
     
 
     public void HaveDestroyed() { }
@@ -50,13 +53,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
 
     protected override void OnAwake()
     {
-        // Initialize the Cinemachine FreeLook camera
-        //freeLookCamera = FindObjectOfType<CinemachineFreeLook>();
-        //if (freeLookCamera != null)
-        //{
-        //    freeLookCamera.Follow = transform;
-        //    freeLookCamera.LookAt = transform;
-        //}
+        Singleton.Register(ref instance, this);
 
         whenInitializedEvent?.Invoke(this);
 
@@ -67,7 +64,9 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     private void OnDestroy()
     {
         PauseMenu.onPause -= Pause;
-        PauseMenu.onUnPause -= UnPause; 
+        PauseMenu.onUnPause -= UnPause;
+
+        Singleton.Deregister(ref instance, this);
     }
 
 
@@ -100,8 +99,7 @@ public class PlayerStateMachine : StateMachine, ISingleton<PlayerStateMachine>
     {
         prevState = CurrentState;
         Paused.Enter();
-        Player.MovementBody.velocity = Vector3.zero;
-        Player.MovementBody.CurrentSpeed = 0;
+        Player.MovementBody.velocity.ZeroOut();
         Player.Animator.CrossFade("GroundBasic", .2f);
     }
     public void UnCutsceneState()

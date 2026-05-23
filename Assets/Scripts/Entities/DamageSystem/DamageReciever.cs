@@ -2,24 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using AYellowpaper;
 
 public class DamageReciever : MonoBehaviour, IDamagable
 {
-    public IRef<IDamagable> target;
+    public InterfaceReference<IDamagable, Component> target;
     public Attack.TagSet appendedTags;
 
     private void Awake()
     {
-        if (!target) target = GetComponentInParent<IDamagable>() as IRef<IDamagable>;
-        if (!target) Destroy(this);
+        if (target.Value == null) target = new(GetComponentInParent<IDamagable>());
+        if (target.Value == null) Destroy(this);
     }
 
     public bool Damage(Attack attack)
     {
         if (!enabled) return false;
 
-        attack.tags.Add(appendedTags);
+        attack.tags += appendedTags;
 
-        return target.I.Damage(attack);
+        return target.Value.Damage(attack);
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
+using Utilities.Xtensions.Unity;
 
 public class PlayerUppercut : PlayerMovementEffector
 {
@@ -18,12 +19,12 @@ public class PlayerUppercut : PlayerMovementEffector
     public void UppercutJump()
     {
         Debug.Log("Real?(1)");
-        playerMovementBody.VelocitySet(y: ucPower);
+        Player.MovementBody.velocity.y = ucPower;
         targetMinUcHeight = transform.position.y + ucMinHeight;
         targetUcHeight = (transform.position.y + ucHeight) - (ucPower.P()) / (2 * gravity);
         if (targetUcHeight <= transform.position.y)
         {
-            playerMovementBody.VelocitySet(y: Mathf.Sqrt(2 * gravity * ucHeight));
+            Player.MovementBody.velocity.y = Mathf.Sqrt(2 * gravity * ucHeight);
             targetMinUcHeight = transform.position.y;
         }
         Debug.Log("Real?(2)");

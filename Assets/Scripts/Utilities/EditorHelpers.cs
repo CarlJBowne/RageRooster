@@ -6,6 +6,7 @@ using SLS.StateMachineH;
 using SLS.StateMachineH.Signals;
 using SLS.StateMachineH.Timelines;
 using UltEvents;
+using Utilities.Xtensions;
 
 public static class EditorHelpers
 {
@@ -38,7 +39,7 @@ public static class EditorHelpers
         Handles.DrawLine(origin, origin + (Quaternion.AngleAxis(-halfAngle, up) * f) * currentDistance);
         Handles.DrawLine(origin, origin + (Quaternion.AngleAxis(halfAngle, up) * f) * currentDistance);
 
-        Handles.color = color.SetAlpha(.12f);
+        Handles.color = color.Changed(a: .12f);
         Handles.DrawSolidArc(origin, up, startDir, halfAngle * 2f, currentDistance);
 
         // Interactive handles

@@ -1,5 +1,5 @@
 using Newtonsoft.Json.Linq;
-using SLS.ISingleton;
+ 
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using UnityEngine;
 
 /*
 [System.Obsolete]
-public class GlobalState : SingletonMonoBasic<GlobalState>, ICustomSerialized
+public class GlobalState : Singleton.MonoBehaviour<GlobalState>, ICustomSerialized
 {
 
     public ScriptableCollection worldChanges;
