@@ -479,8 +479,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 8455434200384702600}
-  globalSignals:
+  signals:
     serializedList: []
+  lockOnEnter: 0
   queueSignals: 1
 --- !u!114 &6328031082010280587
 MonoBehaviour:
@@ -503,34 +504,53 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2950555048310845610}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40c3d6cd8aa43154aa3119b5010e205a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovementBody
+  <Resolvers>k__BackingField:
+    resolvers:
+      items:
+      - rid: 945612472127848610
+      - rid: 945612472127848609
+      - rid: 945612472127848611
+    <defaultGroundedIndex>k__BackingField: 0
+    <defaultAirIndex>k__BackingField: 2
+  <Velocity>k__BackingField:
+    allowBackwards: 1
+  <Ground>k__BackingField:
+    <groundCheckBuffer>k__BackingField: 0.1
+    <maxSlopeNormalAngle>k__BackingField: 45
+  maxPhysicsSteps: 6
   <RB>k__BackingField: {fileID: 1838944232945776554}
   <Collider>k__BackingField: {fileID: 598530174602593461}
-  <NavAgent>k__BackingField: {fileID: 1755664598433715571}
-  defaultGravity: {x: 0, y: 1, z: 0}
-  autoApplyGravity: 0
-  maxSlopeNormalAngle: 46
-  groundCheckBuffer: 0.1
-  movementProjectionSteps: 3
   bonkThreshold: 15
-  frontCheckDefaultOffset: {x: 0, y: 0.5, z: 1}
-  frontCheckDefaultRadius: 1
-  validGroundMask:
-    serializedVersion: 2
-    m_Bits: 33921
-  platformDetectionFactor: 1.6
-  platformLockRadius: 0.25
-  _useNavMeshIfPossible: 1
-  lockToNavMesh: 0
-  movementModifier: 1
-  baseMovability: 1
-  canJump: 1
-  navMeshDetectionRange: 0.35
-  jumpMarkers: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 945612472127848609
+      type: {class: PhysicsResolver/CollideAndSlide, ns: RageRooster.Physics, asm: Assembly-CSharp}
+      data:
+        checkBuffer: 0.1
+        downSnap: 0.08
+        validGroundMask:
+          serializedVersion: 2
+          m_Bits: 50561
+    - rid: 945612472127848610
+      type: {class: PhysicsResolver/NavMesh, ns: RageRooster.Physics, asm: Assembly-CSharp}
+      data:
+        <NavAgent>k__BackingField: {fileID: 1755664598433715571}
+        lockToNavMesh: 0
+        <detectionRange>k__BackingField: 0.35
+        <nonNavID>k__BackingField: 1
+    - rid: 945612472127848611
+      type: {class: PhysicsResolver/Air, ns: RageRooster.Physics, asm: Assembly-CSharp}
+      data:
+        checkBuffer: 0.1
+        defaultGravity: 9.8
+        autoApplyGravity: 0
+        landResolverID: 0
 --- !u!54 &1838944232945776554
 Rigidbody:
   m_ObjectHideFlags: 0

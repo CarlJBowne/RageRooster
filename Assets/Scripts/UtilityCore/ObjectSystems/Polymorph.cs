@@ -714,6 +714,8 @@ public abstract class Polymorph
             Select(items[newID]);
         }
 
+        public override string nameSource => rootProperty.displayName;
+
     }
     public class ListItemDrawer : SuperListItem<ListDrawer, ListItemDrawer, Polymorph>
     {

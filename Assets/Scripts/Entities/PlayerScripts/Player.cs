@@ -209,11 +209,11 @@ public class Player : MonoBehaviour
     /// <summary>
     /// The current (Local) velocity of the <see cref="Player"/>'s <see cref="PlayerMovementBody"/>.
     /// </summary>
-    public static Vector3 VelocityLocal => MovementBody.velocity.Local;
+    public static Vector3 VelocityLocal => MovementBody.Velocity.Local;
     /// <summary>
     /// The current (Global) velocity of the <see cref="Player"/>'s <see cref="PlayerMovementBody"/>.
     /// </summary>
-    public static Vector3 VelocityGlobal => MovementBody.velocity.Global;
+    public static Vector3 VelocityGlobal => MovementBody.Velocity.Global;
 
     /// <param name="pos">The position to be compared.</param>
     /// <returns>The distance between the <see cref="Player"/> and and a given position, such as an enemy.</returns>
@@ -228,12 +228,12 @@ public class Player : MonoBehaviour
     {
         if (!Exists) return;
         Vector3 camDelta = newPosition - Transform.position;
-        MovementBody.ForceSetPosition(newPosition);
-        if (yRot != null) MovementBody.Rotation = new(0, yRot.Value, 0);
+        MovementBody.PositionForce = newPosition;
+        if (yRot != null) MovementBody.Direction.Rotation = new(0, yRot.Value, 0);
         StateMachine.ResetState();
         Cameras.currentVirtualCamera.PreviousStateIsValid = false;
         Cameras.currentVirtualCamera.OnTargetObjectWarped(Transform, camDelta);
-        MovementBody.velocity.ZeroOut();
+        MovementBody.Velocity.ZeroOut();
     }
 
     public static bool IsPlayer(Component C) => Exists && C != null && C.gameObject == GameObject;
@@ -451,10 +451,10 @@ public class Player : MonoBehaviour
     }
     private static void DeathOrPit()
     {
-        Vector3 targetVelocity = MovementBody.velocity.Global;
+        Vector3 targetVelocity = MovementBody.Velocity.Global;
         Audio.PlayOneShot("Death");
         StateMachine.Ragdoll.Enter();
-        MovementBody.velocity.ZeroOut();
+        MovementBody.Velocity.ZeroOut();
         RagdollHandler.State = RagdollHandler.States.Thrown;
         RagdollHandler.SetVelocity(targetVelocity * 0.75f);
         Animator.enabled = false;

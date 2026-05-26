@@ -19,12 +19,12 @@ public class PlayerUppercut : PlayerMovementEffector
     public void UppercutJump()
     {
         Debug.Log("Real?(1)");
-        Player.MovementBody.velocity.y = ucPower;
+        Player.MovementBody.Velocity.y = ucPower;
         targetMinUcHeight = transform.position.y + ucMinHeight;
         targetUcHeight = (transform.position.y + ucHeight) - (ucPower.P()) / (2 * gravity);
         if (targetUcHeight <= transform.position.y)
         {
-            Player.MovementBody.velocity.y = Mathf.Sqrt(2 * gravity * ucHeight);
+            Player.MovementBody.Velocity.y = Mathf.Sqrt(2 * gravity * ucHeight);
             targetMinUcHeight = transform.position.y;
         }
         Debug.Log("Real?(2)");

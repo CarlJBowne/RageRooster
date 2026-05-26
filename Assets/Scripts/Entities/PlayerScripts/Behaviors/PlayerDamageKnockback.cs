@@ -18,7 +18,7 @@ public class PlayerDamageKnockback : PlayerMovementEffector
         base.OnEnter(prev, isFinal);
         currentTime = 0;
         Player.MovementBody.UnLand();
-        Player.MovementBody.velocity.y = upwards.Evaluate(0);
+        Player.MovementBody.Velocity.y = upwards.Evaluate(0);
     }
     protected override void OnExit(State next)
     {

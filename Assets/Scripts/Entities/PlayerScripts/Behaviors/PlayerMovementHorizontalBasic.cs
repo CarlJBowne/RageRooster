@@ -19,8 +19,8 @@ public class PlayerMovementHorizontalBasic : PlayerMovementEffector
 
     public override bool ForwardMovement(out float resultF)
     {
-        float result = Player.MovementBody.velocity.f;
-        Vector3 currentDirection = Player.MovementBody.DirectionGet;
+        float result = Player.MovementBody.Velocity.f;
+        Vector3 currentDirection = Player.MovementBody.Direction;
 
         if (!forceOutward) HorizontalMain(Time.fixedDeltaTime * 50);
         else HorizontalCharge(Time.fixedDeltaTime * 50);
@@ -34,7 +34,8 @@ public class PlayerMovementHorizontalBasic : PlayerMovementEffector
             {
                 float Dot = Vector3.Dot(controlDirection, currentDirection);
 
-                if (maxTurnSpeed > 0) Player.MovementBody.DirectionSet(maxTurnSpeed * Time.fixedDeltaTime);
+                if (maxTurnSpeed > 0) Player.MovementBody.Direction.Set
+                        (Player.Controller.camAdjustedMovement, maxTurnSpeed * Time.fixedDeltaTime);
 
                 result *= Dot;
                 if (result < maxSpeed)
@@ -65,13 +66,14 @@ public class PlayerMovementHorizontalBasic : PlayerMovementEffector
                     result = result.MoveDown(controlMag * decceleration * deltaTime, maxSpeed);
             }
 
-            if (maxTurnSpeed > 0) Player.MovementBody.DirectionSet(maxTurnSpeed * Time.fixedDeltaTime);
-            Player.MovementBody.velocity.f = result;
+            if (maxTurnSpeed > 0) Player.MovementBody.Direction.Set
+                    (Player.Controller.camAdjustedMovement, maxTurnSpeed * Time.fixedDeltaTime);
+            Player.MovementBody.Velocity.f = result;
 
 
         }
 
-        Player.MovementBody.velocity.f = result;
+        Player.MovementBody.Velocity.f = result;
 
         Vector3 literalDirection = transform.forward * result;
 
@@ -85,7 +87,7 @@ public class PlayerMovementHorizontalBasic : PlayerMovementEffector
     protected override void OnEnter(State prev, bool isFinal)
     {
         if (!isFinal) return;
-        if (forceOutward) Player.MovementBody.velocity.f = maxSpeed;
+        if (forceOutward) Player.MovementBody.Velocity.f = maxSpeed;
     }
 
 

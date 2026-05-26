@@ -77,7 +77,8 @@ public class PlayerGroundMovementComplex : PlayerMovementEffector
         {
             float Dot = Vector3.Dot(controlDirection, currentDirection);
 
-            if (maxTurnSpeed > 0) Player.MovementBody.DirectionSet(maxTurnSpeed * Time.fixedDeltaTime);
+            if (maxTurnSpeed > 0) Player.MovementBody.Direction.Set
+                    (Player.Controller.camAdjustedMovement, maxTurnSpeed * Time.fixedDeltaTime);
 
             if (!outwardTurn) currentSpeed *= Dot;
 
@@ -133,7 +134,7 @@ public class PlayerGroundMovementComplex : PlayerMovementEffector
 
     public void LandInto()
     {
-        bool groundCollide = Player.MovementBody.GroundCheck(out AnchorPoint collideResult);
+        bool groundCollide = Player.MovementBody.Ground.Check(out AnchorPoint collideResult);
         if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
         Player.MovementBody.Land(collideResult);
         State.Enter();
@@ -144,7 +145,7 @@ public class PlayerGroundMovementComplex : PlayerMovementEffector
     }
     public void LandInto(StateAnimator.EntryAnimAction onEntry, string onEnterName, float onEnterTime)
     {
-        bool groundCollide = Player.MovementBody.GroundCheck(out AnchorPoint collideResult);
+        bool groundCollide = Player.MovementBody.Ground.Check(out AnchorPoint collideResult);
         if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
         Player.MovementBody.Land(collideResult);
         State.Enter();

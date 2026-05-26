@@ -9,21 +9,21 @@ public abstract class PlayerMovementEffector : PlayerStateBehavior
     {
         if(this.ForwardMovement(out float FS))
         {
-            Player.MovementBody.velocity.f = FS;
+            Player.MovementBody.Velocity.f = FS;
         }
         else if (this.DirectionalMovement(out float F, out float? S))
         {
-            Player.MovementBody.velocity.f = F;
-            if (S.HasValue) Player.MovementBody.velocity.s = S.Value;
+            Player.MovementBody.Velocity.f = F;
+            if (S.HasValue) Player.MovementBody.Velocity.s = S.Value;
         }
 
         if (this.HorizontalMovement(out float X, out float Z))
         {
-            Player.MovementBody.velocity.x = X;
-            Player.MovementBody.velocity.z = Z;
+            Player.MovementBody.Velocity.x = X;
+            Player.MovementBody.Velocity.z = Z;
         }
 
-        if (this.VerticalMovement(out float Y)) Player.MovementBody.velocity.u = Y;
+        if (this.VerticalMovement(out float Y)) Player.MovementBody.Velocity.u = Y;
     }
 
     public virtual bool ForwardMovement(out float resultF)
@@ -53,13 +53,13 @@ public abstract class PlayerMovementEffector : PlayerStateBehavior
     protected virtual bool HorizontalCast(float vX, float vZ, out RaycastHit hit)
     {
         Vector3 velocity = new(vX, 0, vZ);
-        return Player.MovementBody.SweepBody(velocity, out hit);
+        return Player.MovementBody.Sweep(velocity, out hit);
     }
 
     protected float ApplyGravity(float gravity, float terminalVelocity, bool flatGravity = false)
     {
         return (!flatGravity
-            ? Player.MovementBody.velocity.y - (gravity * Time.deltaTime)
+            ? Player.MovementBody.Velocity.y - (gravity * Time.deltaTime)
             : -gravity * Time.deltaTime
             ).Min(-terminalVelocity);
     }

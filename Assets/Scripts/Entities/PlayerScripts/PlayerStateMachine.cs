@@ -8,6 +8,7 @@ using System.Linq;
 using Utilities.Singletons;
 using AYellowpaper.SerializedCollections;
 using RageRooster.Systems.SaveSystem;
+using RageRooster.RoomSystem;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerStateMachine : StateMachine
@@ -53,6 +54,15 @@ public class PlayerStateMachine : StateMachine
 
     protected override void OnAwake()
     {
+        //if (!Gameplay.Active || RoomManager.currentRoom == null)
+        //{
+        //    enabled = false;
+        //    Gameplay.onFinalAwake += OnAwake;
+        //    return;
+        //}
+        //Gameplay.onFinalAwake -= OnAwake;
+        //enabled = true;
+
         Singleton.Register(ref instance, this);
 
         whenInitializedEvent?.Invoke(this);
@@ -99,7 +109,7 @@ public class PlayerStateMachine : StateMachine
     {
         prevState = CurrentState;
         Paused.Enter();
-        Player.MovementBody.velocity.ZeroOut();
+        Player.MovementBody.Velocity.ZeroOut();
         Player.Animator.CrossFade("GroundBasic", .2f);
     }
     public void UnCutsceneState()

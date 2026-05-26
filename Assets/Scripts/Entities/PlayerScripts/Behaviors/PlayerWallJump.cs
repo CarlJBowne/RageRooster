@@ -38,18 +38,18 @@ public class PlayerWallJump : PlayerMovementEffector
 
     public bool WallJump(Vector3 direction)
     {
-        if (Player.MovementBody.SweepBody(Player.MovementBody.DirectionGet * 0.5f, out RaycastHit hit, Player.MovementBody.GroundCheckBuffer))
+        if (Player.MovementBody.Sweep(Player.MovementBody.Direction.value * 0.5f, out RaycastHit hit, Player.MovementBody.Ground.groundCheckBuffer))
         {
             if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return false;
 
             if (!State.Active) State.Enter();
             Player.Animator.Play(animationName, -1, 0f);
-            Player.MovementBody.velocity.y = jumpPower;
+            Player.MovementBody.Velocity.y = jumpPower;
 
             startPoint = transform.position;
             fixedDirection = hit.normal.XZ();
 
-            Player.MovementBody.DirectionSet(fixedDirection);
+            Player.MovementBody.Direction.Set(fixedDirection);
 
             State.Enter();
             return true;
