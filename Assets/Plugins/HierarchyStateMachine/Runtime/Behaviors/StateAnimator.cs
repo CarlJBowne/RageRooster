@@ -88,6 +88,7 @@ namespace SLS.StateMachineH
                 _ => AnimatorAction.Type.Null,
             };
             N.action.NameID = O.onEnterName;
+            N.action.CacheID();
             if (N.action.type == AnimatorAction.Type.CrossFade) N.action.floatValue1 = O.onEnterTime;
             else if (N.action.type == AnimatorAction.Type.SetTrigger) N.action.boolValue = true;
         }

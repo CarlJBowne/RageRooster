@@ -75,8 +75,8 @@ GameObject:
   - component: {fileID: 8016053911614478484}
   - component: {fileID: 571940914220793852}
   - component: {fileID: 3098193367161952731}
-  - component: {fileID: 1553557195803044641}
   - component: {fileID: 4209902996254429291}
+  - component: {fileID: 5143111720702651143}
   m_Layer: 6
   m_Name: CoyoteWalk
   m_TagString: Untagged
@@ -113,7 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 3098193367161952731}
-  - {fileID: 1553557195803044641}
+  - {fileID: 4209902996254429291}
   - {fileID: 4209902996254429291}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1719738861989955058}
@@ -145,28 +145,6 @@ MonoBehaviour:
   allowDoubleJump: 1
   fallState: {fileID: 0}
   fallStateThreshold: -9
---- !u!114 &1553557195803044641
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 806735589426787925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 571940914220793852}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 1899316317574978938}
-          _MemberName: EnterNoAnimation
-          _PersistentArguments: []
-  lockOnEnter: 0
 --- !u!114 &4209902996254429291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,6 +185,31 @@ MonoBehaviour:
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!114 &5143111720702651143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 806735589426787925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 571940914220793852}
+  signals:
+    serializedNames:
+    - Land
+    serializedKeys: 07466d2d
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 1899316317574978938}
+        _MemberName: EnterNoAnimation
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
 --- !u!1 &1695493184084534939
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,9 +220,9 @@ GameObject:
   m_Component:
   - component: {fileID: 21903789405733780}
   - component: {fileID: 5314189078780984797}
-  - component: {fileID: 1249639751377397145}
-  - component: {fileID: 4583152462653021694}
   - component: {fileID: 8862013132291010902}
+  - component: {fileID: 1870055996183248420}
+  - component: {fileID: 8330623957466607659}
   m_Layer: 6
   m_Name: LedgeGrab
   m_TagString: Untagged
@@ -255,48 +258,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 1249639751377397145}
-  - {fileID: 4583152462653021694}
+  - {fileID: 8862013132291010902}
+  - {fileID: 0}
   - {fileID: 8862013132291010902}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1719738861989955058}
   <Layer>k__BackingField: 1
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &1249639751377397145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1695493184084534939}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 5314189078780984797}
-  signals:
-    serializedList: []
-  lockOnEnter: 0
---- !u!114 &4583152462653021694
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1695493184084534939}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 5314189078780984797}
-  onEntry: 2
-  onEnterName: Fall
-  onEnterTime: 0.2
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &8862013132291010902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,6 +375,50 @@ MonoBehaviour:
           _PersistentCalls: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!114 &1870055996183248420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1695493184084534939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 5314189078780984797}
+  signals:
+    serializedNames: []
+    serializedKeys: 
+    serializedValues: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &8330623957466607659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1695493184084534939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 5314189078780984797}
+  action:
+    type: 3
+    NameID: Fall
+    cachedHash: 1533177906
+    layer: -1
+    floatValue1: 0.2
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &2260822527530590281
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,8 +432,8 @@ GameObject:
   - component: {fileID: 8043602674117208603}
   - component: {fileID: 7243723765169349935}
   - component: {fileID: 1824782525696689979}
-  - component: {fileID: 3427881408879070824}
   - component: {fileID: 3732053788133475738}
+  - component: {fileID: 7053612924575970602}
   m_Layer: 6
   m_Name: Raging Charge
   m_TagString: Untagged
@@ -458,7 +471,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 8043602674117208603}
   - {fileID: 7243723765169349935}
-  - {fileID: 3427881408879070824}
+  - {fileID: 3732053788133475738}
   - {fileID: 3732053788133475738}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1719738861989955058}
@@ -543,34 +556,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &3427881408879070824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2260822527530590281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 2070683833346511381}
-  signals:
-    serializedList:
-    - Key: WalkOff
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 592388666345993873}
-          _MemberName: Enter
-          _PersistentArguments: []
-    - Key: Bonk
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3313942931410860589}
-          _MemberName: Enter
-          _PersistentArguments: []
-  lockOnEnter: 0
 --- !u!114 &3732053788133475738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,6 +602,36 @@ MonoBehaviour:
             _MemberName: Enter
             _PersistentArguments: []
         autoFinishHold: 1
+--- !u!114 &7053612924575970602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2260822527530590281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 2070683833346511381}
+  signals:
+    serializedNames:
+    - WalkOff
+    - Bonk
+    serializedKeys: 84ba6c9bee0e7439
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 592388666345993873}
+        _MemberName: Enter
+        _PersistentArguments: []
+    - _PersistentCalls:
+      - _Target: {fileID: 3313942931410860589}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
 --- !u!1 &7747430917776626352
 GameObject:
   m_ObjectHideFlags: 0
@@ -627,10 +642,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3656243258274067707}
   - component: {fileID: 2157991863056936301}
-  - component: {fileID: 1699496981749475599}
   - component: {fileID: 3308161914284528769}
   - component: {fileID: 7839809009008761680}
   - component: {fileID: 7590866125288820057}
+  - component: {fileID: 676626280669312338}
   m_Layer: 6
   m_Name: Roll
   m_TagString: Untagged
@@ -666,7 +681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 1699496981749475599}
+  - {fileID: 3308161914284528769}
   - {fileID: 3308161914284528769}
   - {fileID: 7839809009008761680}
   - {fileID: 7590866125288820057}
@@ -675,28 +690,6 @@ MonoBehaviour:
   <Layer>k__BackingField: 1
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &1699496981749475599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7747430917776626352}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 2157991863056936301}
-  signals:
-    serializedList:
-    - Key: Bonk
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3313942931410860589}
-          _MemberName: Enter
-          _PersistentArguments: []
-  lockOnEnter: 0
 --- !u!114 &3308161914284528769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -957,6 +950,31 @@ MonoBehaviour:
         _MemberName: Enter
         _PersistentArguments: []
   loopAfterLastEvent: 0
+--- !u!114 &676626280669312338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7747430917776626352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 2157991863056936301}
+  signals:
+    serializedNames:
+    - Bonk
+    serializedKeys: ee0e7439
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 3313942931410860589}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
 --- !u!1 &8017469248050125300
 GameObject:
   m_ObjectHideFlags: 0
@@ -968,8 +986,8 @@ GameObject:
   - component: {fileID: 4044458429107815652}
   - component: {fileID: 7202587913768018711}
   - component: {fileID: 1899316317574978938}
-  - component: {fileID: 9058733192056023888}
   - component: {fileID: 444049789313555850}
+  - component: {fileID: 5318485844570487544}
   m_Layer: 6
   m_Name: IdleWalk
   m_TagString: Untagged
@@ -1006,7 +1024,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 1899316317574978938}
-  - {fileID: 9058733192056023888}
+  - {fileID: 444049789313555850}
   - {fileID: 444049789313555850}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1719738861989955058}
@@ -1035,49 +1053,6 @@ MonoBehaviour:
   outwardTurn: 0
   minSpeed: 0
   animationName: GroundBasic
---- !u!114 &9058733192056023888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8017469248050125300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 7202587913768018711}
-  signals:
-    serializedList:
-    - Key: WalkOff
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 571940914220793852}
-          _MemberName: Enter
-          _PersistentArguments: []
-    - Key: Interact
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: AttemptInteract
-          _PersistentArguments: []
-    - Key: Aim
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: EnterAiming
-          _PersistentArguments:
-          - _Type: 13
-            _Int: 0
-            _String: SLS.StateMachineH.State, SLS.StateMachineH.Runtime, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-  lockOnEnter: 0
 --- !u!114 &444049789313555850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1230,6 +1205,50 @@ MonoBehaviour:
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!114 &5318485844570487544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8017469248050125300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 7202587913768018711}
+  signals:
+    serializedNames:
+    - WalkOff
+    - Interact
+    - Aim
+    serializedKeys: 84ba6c9b100767b085ef4014
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 571940914220793852}
+        _MemberName: Enter
+        _PersistentArguments: []
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: AttemptInteract
+        _PersistentArguments: []
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: EnterAiming
+        _PersistentArguments:
+        - _Type: 13
+          _Int: 0
+          _String: SLS.StateMachineH.State, SLS.StateMachineH.Runtime, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
 --- !u!1 &8202760458025760307
 GameObject:
   m_ObjectHideFlags: 0
@@ -1241,8 +1260,8 @@ GameObject:
   - component: {fileID: 809999542718391148}
   - component: {fileID: 592388666345993873}
   - component: {fileID: 7258456985356664392}
-  - component: {fileID: 4277143527907892841}
   - component: {fileID: 5385567338295996342}
+  - component: {fileID: 3063751053794761734}
   m_Layer: 6
   m_Name: CoyoteCharge
   m_TagString: Untagged
@@ -1279,7 +1298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 7258456985356664392}
-  - {fileID: 4277143527907892841}
+  - {fileID: 5385567338295996342}
   - {fileID: 5385567338295996342}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1719738861989955058}
@@ -1311,28 +1330,6 @@ MonoBehaviour:
   allowDoubleJump: 1
   fallState: {fileID: 0}
   fallStateThreshold: -9
---- !u!114 &4277143527907892841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8202760458025760307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 592388666345993873}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8043602674117208603}
-          _MemberName: EnterNoAnimation
-          _PersistentArguments: []
-  lockOnEnter: 0
 --- !u!114 &5385567338295996342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1373,6 +1370,31 @@ MonoBehaviour:
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!114 &3063751053794761734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8202760458025760307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 592388666345993873}
+  signals:
+    serializedNames:
+    - Land
+    serializedKeys: 07466d2d
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 8043602674117208603}
+        _MemberName: EnterNoAnimation
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
 --- !u!1001 &3306839834855748044
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1389,6 +1411,11 @@ PrefabInstance:
       propertyPath: <Parent>k__BackingField
       value: 
       objectReference: {fileID: 2453523576541958817}
+    - target: {fileID: 789867804549674859, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1001529568253689834, guid: 71084fab85c849a448a24e907f52d954,
         type: 3}
       propertyPath: events.Array.data[1].output._PersistentCalls.Array.data[0]._Target
@@ -1489,6 +1516,101 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].time
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[3].time
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].output._PersistentCalls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[3].output._PersistentCalls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].output._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 602503451799733923}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[3].output._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 602503451799733923}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].output._PersistentCalls.Array.data[0]._MemberName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].output._PersistentCalls.Array.data[1]._MemberName
+      value: currentAttackID=
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[3].output._PersistentCalls.Array.data[0]._MemberName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].output._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].output._PersistentCalls.Array.data[1]._PersistentArguments.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[3].output._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].output._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Int
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].output._PersistentCalls.Array.data[1]._PersistentArguments.Array.data[0]._Int
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].output._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].output._PersistentCalls.Array.data[1]._PersistentArguments.Array.data[0]._Type
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3127680090966005873, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[3].output._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3173302890089524309, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3304159952572019631, guid: 71084fab85c849a448a24e907f52d954,
         type: 3}
       propertyPath: events.Array.data[0].output._PersistentCalls.Array.data[0]._Target
@@ -1503,6 +1625,16 @@ PrefabInstance:
         type: 3}
       propertyPath: Jump
       value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3890259728980585617, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: '<Behaviors>k__BackingField.Array.data[1]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3890259728980585617, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: '<Behaviors>k__BackingField.Array.data[2]'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3982550624124318185, guid: 71084fab85c849a448a24e907f52d954,
         type: 3}
@@ -1539,6 +1671,11 @@ PrefabInstance:
       propertyPath: <State>k__BackingField
       value: 
       objectReference: {fileID: 3697932477478651783}
+    - target: {fileID: 5314198211248385389, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: '<Behaviors>k__BackingField.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6433225889158844298, guid: 71084fab85c849a448a24e907f52d954,
         type: 3}
       propertyPath: signals.serializedList.Array.data[0].Value._PersistentCalls.Array.data[0]._Target
@@ -1614,6 +1751,56 @@ PrefabInstance:
       propertyPath: <Parent>k__BackingField
       value: 
       objectReference: {fileID: 2453523576541958817}
+    - target: {fileID: 7754885272105680280, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].time
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7754885272105680280, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[3].time
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7754885272105680280, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[0].output._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7754885272105680280, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].output._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 8568850692371281939}
+    - target: {fileID: 7754885272105680280, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[3].output._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7754885272105680280, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].output._PersistentCalls.Array.data[0]._MemberName
+      value: Unlock
+      objectReference: {fileID: 0}
+    - target: {fileID: 7754885272105680280, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[3].output._PersistentCalls.Array.data[0]._MemberName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 7754885272105680280, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[2].output._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7754885272105680280, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[3].output._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7754885272105680280, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: events.Array.data[3].output._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Type
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7772055570066141359, guid: 71084fab85c849a448a24e907f52d954,
         type: 3}
       propertyPath: <Layer>k__BackingField
@@ -1639,35 +1826,438 @@ PrefabInstance:
       propertyPath: managedReferences[1950655830041821326].holdEvent._PersistentCalls.Array.size
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8471575633726008516, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      propertyPath: '<Behaviors>k__BackingField.Array.data[0]'
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8201984647828651289, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 3536776006332631258, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 3284159177555047136, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 8171670008727634204, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 4987773722691085585, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 6433225889158844298, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 4926957601215870280, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 8826215202981765275, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 6453295402102442212, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 710733281379643764, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 8377928490601471101, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 6260856678137559525, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 2362684772057022841, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 3561848741809977463, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 3456832706081447242, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 869554692256762856, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 9080227979850299338, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 2022399184418118913, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 936498145652482722, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 8553592256359087989, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 2805048379593461663, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 4406334284145146097, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 6398026129373013685, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+    - {fileID: 5062887101163654036, guid: 71084fab85c849a448a24e907f52d954, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8858941395057933609, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2165036317252724954}
+    - targetCorrespondingSourceObject: {fileID: 8858941395057933609, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5200187658997590128}
+    - targetCorrespondingSourceObject: {fileID: 6871491276097481858, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 263542747860520940}
+    - targetCorrespondingSourceObject: {fileID: 6871491276097481858, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 240785792809804053}
+    - targetCorrespondingSourceObject: {fileID: 2718138967261738863, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6800380258160532952}
+    - targetCorrespondingSourceObject: {fileID: 2718138967261738863, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2438800154173713910}
+    - targetCorrespondingSourceObject: {fileID: 670994958718785364, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 261284773472606892}
+    - targetCorrespondingSourceObject: {fileID: 670994958718785364, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2263146978594259113}
+    - targetCorrespondingSourceObject: {fileID: 789867804549674859, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3788991469505550190}
+    - targetCorrespondingSourceObject: {fileID: 3173302890089524309, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8784766893541366830}
+    - targetCorrespondingSourceObject: {fileID: 7011390158379552018, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3580487477541627228}
+    - targetCorrespondingSourceObject: {fileID: 5955952101318765927, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5355860020130178887}
+    - targetCorrespondingSourceObject: {fileID: 3654854618218296324, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8971794554354933205}
+    - targetCorrespondingSourceObject: {fileID: 3654854618218296324, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 479994514775584442}
+    - targetCorrespondingSourceObject: {fileID: 8472484091436239949, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4505391397737995563}
+    - targetCorrespondingSourceObject: {fileID: 598014059509879011, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4638714371071951084}
+    - targetCorrespondingSourceObject: {fileID: 598014059509879011, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3627852040015397904}
+    - targetCorrespondingSourceObject: {fileID: 8184964976567245005, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5645863338172691148}
+    - targetCorrespondingSourceObject: {fileID: 8184964976567245005, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8485269523069311680}
+    - targetCorrespondingSourceObject: {fileID: 3375737613361932522, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4480439850623783957}
+    - targetCorrespondingSourceObject: {fileID: 3375737613361932522, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4434809641917361716}
+    - targetCorrespondingSourceObject: {fileID: 2921341992611231107, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4272232333366177836}
+    - targetCorrespondingSourceObject: {fileID: 2360898005857778852, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7281905084006433548}
+    - targetCorrespondingSourceObject: {fileID: 2360898005857778852, guid: 71084fab85c849a448a24e907f52d954,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6292829736804478552}
   m_SourcePrefab: {fileID: 100100000, guid: 71084fab85c849a448a24e907f52d954, type: 3}
+--- !u!114 &18377823543162705 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3289048053427259037, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5524007424976108766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+--- !u!1 &138933625129377177 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3173302890089524309, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8784766893541366830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138933625129377177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 6374093656045378824}
+  action:
+    type: 0
+    NameID: Grab
+    cachedHash: -1347921612
+    layer: -1
+    floatValue1: 0
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!114 &151794167796755720 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3458490404699135172, guid: 71084fab85c849a448a24e907f52d954,
     type: 3}
   m_PrefabInstance: {fileID: 3306839834855748044}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6372609052429827457}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
+--- !u!1 &233419955162110246 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3375737613361932522, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4480439850623783957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 233419955162110246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 3313942931410860589}
+  signals:
+    serializedNames: []
+    serializedKeys: 
+    serializedValues: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &4434809641917361716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 233419955162110246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 3313942931410860589}
+  action:
+    type: 0
+    NameID: Bonk
+    cachedHash: 1925987662
+    layer: -1
+    floatValue1: 0
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!1 &391514509727368271 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2921341992611231107, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4272232333366177836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 391514509727368271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 5061942712196088163}
+  signals:
+    serializedNames:
+    - WalkOff
+    serializedKeys: 84ba6c9b
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!1 &602503451799733923 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2718138967261738863, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6800380258160532952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602503451799733923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 8773162531221244897}
+  signals:
+    serializedNames:
+    - WalkOff
+    serializedKeys: 84ba6c9b
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &2438800154173713910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602503451799733923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 8773162531221244897}
+  action:
+    type: 3
+    NameID: Uppercut
+    cachedHash: 1090200292
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!1 &947965345193561448 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2360898005857778852, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7281905084006433548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947965345193561448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 4936427745797883489}
+  signals:
+    serializedNames: []
+    serializedKeys: 
+    serializedValues: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &6292829736804478552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947965345193561448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 4936427745797883489}
+  action:
+    type: 0
+    NameID: DamageLand
+    cachedHash: 884591189
+    layer: -1
+    floatValue1: 0
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!114 &1736344173819534685 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3890259728980585617, guid: 71084fab85c849a448a24e907f52d954,
     type: 3}
   m_PrefabInstance: {fileID: 3306839834855748044}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6661552863526643969}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+--- !u!1 &2259935813404509640 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3654854618218296324, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8971794554354933205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2259935813404509640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 3067973515114716302}
+  signals:
+    serializedNames: []
+    serializedKeys: 
+    serializedValues: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &479994514775584442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2259935813404509640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 3067973515114716302}
+  action:
+    type: 0
+    NameID: Throw
+    cachedHash: -1907200461
+    layer: -1
+    floatValue1: 0
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!114 &2453523576541958817 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1146425584514261869, guid: 71084fab85c849a448a24e907f52d954,
@@ -1680,13 +2270,160 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2642376112645269144 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 670994958718785364, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &261284773472606892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2642376112645269144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 2728261019682877731}
+  signals:
+    serializedNames: []
+    serializedKeys: 
+    serializedValues: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &2263146978594259113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2642376112645269144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 2728261019682877731}
+  action:
+    type: 3
+    NameID: Headbutt
+    cachedHash: 920712421
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!1 &2713651671542964527 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 598014059509879011, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4638714371071951084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2713651671542964527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 9159670594954994497}
+  signals:
+    serializedNames:
+    - LassoPull
+    serializedKeys: 034adf74
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 1736344173819534685}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &3627852040015397904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2713651671542964527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 9159670594954994497}
+  action:
+    type: 3
+    NameID: LassoThrow
+    cachedHash: 1654219483
+    layer: -1
+    floatValue1: 0.05
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!114 &2728261019682877731 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 592500146358321391, guid: 71084fab85c849a448a24e907f52d954,
     type: 3}
   m_PrefabInstance: {fileID: 3306839834855748044}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2642376112645269144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &2815433501741106855 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 789867804549674859, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3788991469505550190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2815433501741106855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 7231534504115559585}
+  action:
+    type: 3
+    NameID: GrabReady
+    cachedHash: -184264645
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &3067973515114716302 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 538145963387661634, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2259935813404509640}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
@@ -1698,7 +2435,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 3306839834855748044}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 233419955162110246}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
@@ -1716,7 +2453,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 3306839834855748044}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6274931603758009573}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
@@ -1728,12 +2465,24 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 3306839834855748044}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 8266411711939763534}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4239101914338839373 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1670855201682651777, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9170326847440329899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
 --- !u!114 &4544501634881249195 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1366017198370811495, guid: 71084fab85c849a448a24e907f52d954,
@@ -1752,7 +2501,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 3306839834855748044}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 947965345193561448}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
@@ -1764,43 +2513,375 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 3306839834855748044}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 391514509727368271}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5115992736805115926 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7718018602217990618, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6372609052429827457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+--- !u!1 &5524007424976108766 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7011390158379552018, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3580487477541627228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5524007424976108766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 18377823543162705}
+  action:
+    type: 3
+    NameID: GrabMiss
+    cachedHash: -21932111
+    layer: -1
+    floatValue1: 0.05
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!1 &6274931603758009573 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8858941395057933609, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2165036317252724954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6274931603758009573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 3697932477478651783}
+  signals:
+    serializedNames:
+    - WalkOff
+    serializedKeys: 84ba6c9b
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
+      - _Target: {fileID: 0}
+        _MemberName: CrossFadeAtCurrentPoint
+        _PersistentArguments:
+        - _Type: 2
+          _Int: 0
+          _String: LightPunchAir1
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+        - _Type: 5
+          _Int: 0
+          _String: 
+          _X: 0.1
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &5200187658997590128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6274931603758009573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 3697932477478651783}
+  action:
+    type: 3
+    NameID: LightPunch1
+    cachedHash: -383597135
+    layer: -1
+    floatValue1: 0.05
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!1 &6372609052429827457 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8472484091436239949, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4505391397737995563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6372609052429827457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 5115992736805115926}
+  action:
+    type: 3
+    NameID: LassoReady
+    cachedHash: 94348867
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &6374093656045378824 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8471575633726008516, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138933625129377177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+--- !u!1 &6661552863526643969 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8184964976567245005, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5645863338172691148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6661552863526643969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 1736344173819534685}
+  signals:
+    serializedNames:
+    - LassoReach
+    - LassoReachMiss
+    serializedKeys: 0fb4e5d01bd1721c
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: EnterFade
+        _PersistentArguments:
+        - _Type: 5
+          _Int: 0
+          _String: 
+          _X: 0.1
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+    - _PersistentCalls:
+      - _Target: {fileID: 1899316317574978938}
+        _MemberName: EnterFade
+        _PersistentArguments:
+        - _Type: 5
+          _Int: 0
+          _String: 
+          _X: 0.1
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &8485269523069311680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6661552863526643969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 1736344173819534685}
+  action:
+    type: 3
+    NameID: LassoRetract
+    cachedHash: 1942446659
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &7231534504115559585 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5314198211248385389, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2815433501741106855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
 --- !u!114 &7649529961253108717 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5173747255915760161, guid: 71084fab85c849a448a24e907f52d954,
     type: 3}
   m_PrefabInstance: {fileID: 3306839834855748044}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6274931603758009573}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
+--- !u!1 &8266411711939763534 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6871491276097481858, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &263542747860520940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8266411711939763534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 3971682203970744570}
+  signals:
+    serializedNames:
+    - WalkOff
+    serializedKeys: 84ba6c9b
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
+      - _Target: {fileID: 0}
+        _MemberName: CrossFadeAtCurrentPoint
+        _PersistentArguments:
+        - _Type: 2
+          _Int: 0
+          _String: LightPunchAir2
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+        - _Type: 5
+          _Int: 0
+          _String: 
+          _X: 0.1
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &240785792809804053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8266411711939763534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 3971682203970744570}
+  action:
+    type: 3
+    NameID: LightPunch2
+    cachedHash: 1881904139
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!114 &8374000418286937237 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6472284321247335769, guid: 71084fab85c849a448a24e907f52d954,
     type: 3}
   m_PrefabInstance: {fileID: 3306839834855748044}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 8266411711939763534}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91662fc3e3f5f614fba3d3542cd97f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SLS.StateMachineH.Timelines.TimedMovementAffector
+--- !u!114 &8568850692371281939 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6561442296239639007, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2642376112645269144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7607ea5bdf1649145a337be6bfc4981a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
 --- !u!114 &8773162531221244897 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6063192653884144173, guid: 71084fab85c849a448a24e907f52d954,
     type: 3}
   m_PrefabInstance: {fileID: 3306839834855748044}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 602503451799733923}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
@@ -1812,9 +2893,39 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 3306839834855748044}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2713651671542964527}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
+--- !u!1 &9170326847440329899 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5955952101318765927, guid: 71084fab85c849a448a24e907f52d954,
+    type: 3}
+  m_PrefabInstance: {fileID: 3306839834855748044}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5355860020130178887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9170326847440329899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 4239101914338839373}
+  action:
+    type: 0
+    NameID: GrabBlocked
+    cachedHash: 924505958
+    layer: -1
+    floatValue1: 0
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}

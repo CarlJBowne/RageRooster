@@ -255,72 +255,76 @@ namespace SLS.StateMachineH
             */
 
 #if UNITY_EDITOR
-            EditorUtility.SetDirty(this);
-
-            var prefabStatus = PrefabUtility.GetPrefabInstanceStatus(gameObject);
-            bool isPartThatCanBeAppliedTo = PrefabUtility.IsPartOfPrefabThatCanBeAppliedTo(gameObject);
-
-            if (prefabStatus is not PrefabInstanceStatus.Connected || !isPartThatCanBeAppliedTo) return;
-            string path = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this);
-
-            // 1) Apply added GameObjects (always applied by default)
-
-            var addedGOs = PrefabUtility.GetAddedGameObjects(gameObject);
-            for (int i = 0; i < addedGOs.Count; i++)
+            try
             {
-                var item = addedGOs[i];
-                item?.Apply();
+                EditorUtility.SetDirty(this);
+
+                var prefabStatus = PrefabUtility.GetPrefabInstanceStatus(gameObject);
+                bool isPartThatCanBeAppliedTo = PrefabUtility.IsPartOfPrefabThatCanBeAppliedTo(gameObject);
+
+                if (prefabStatus is not PrefabInstanceStatus.Connected || !isPartThatCanBeAppliedTo) return;
+                string path = PrefabUtility.GetPrefabAssetPathOfNearestInstanceRoot(this);
+
+                // 1) Apply added GameObjects (always applied by default)
+
+                var addedGOs = PrefabUtility.GetAddedGameObjects(gameObject);
+                for (int i = 0; i < addedGOs.Count; i++)
+                {
+                    var item = addedGOs[i];
+                    item?.Apply();
+                }
+
+                SerializedObject SO = new(this);
+
+                void ApplyPropertyOverride(string name, bool backingField, SerializedObject SO)
+                {
+                    PrefabUtility.ApplyPropertyOverride(SO.FindProperty(backingField ? $"<{name}>k__BackingField" : name),
+                        path, InteractionMode.AutomatedAction);
+                }
+
+                ApplyPropertyOverride(nameof(Behaviors), true, SO);
+                ApplyPropertyOverride(nameof(Machine), true, SO);
+                ApplyPropertyOverride(nameof(Parent), true, SO);
+                ApplyPropertyOverride(nameof(Layer), true, SO);
+                ApplyPropertyOverride(nameof(Children), true, SO);
+                ApplyPropertyOverride(nameof(ChildCount), true, SO);
+                ApplyPropertyOverride(nameof(Behaviors), true, SO);
+                ApplyPropertyOverride(nameof(Behaviors), true, SO);
+
+                for (int i = 0; i < Behaviors.Length; i++)
+                {
+                    SerializedObject behaviorSO = new(Behaviors[i]);
+                    ApplyPropertyOverride(nameof(StateBehavior.State), true, behaviorSO);
+                    if (Behaviors[i] is StateAnimator_Legacy) ApplyPropertyOverride("animator", false, behaviorSO);
+                    if (Behaviors[i] is StateTimeline) ApplyPropertyOverride("timeline", false, behaviorSO);
+                }
+
+                /*
+                 var addedComps = PrefabUtility.GetAddedComponents(gameObject);
+                var removedComps = PrefabUtility.GetRemovedComponents(gameObject);
+                var overrides = PrefabUtility.GetObjectOverrides(gameObject);
+
+
+                for (int i = 0; i < addedComps.Count; i++)
+                {
+                    var item = addedComps[i];
+                    item?.Apply();
+                }
+
+                for (int i = 0; i < removedComps.Count; i++)
+                {
+                    var item = removedComps[i];
+                    item?.Apply();
+                }
+
+                for (int i = 0; i < overrides.Count; i++)
+                {
+                    var item = overrides[i];
+                    item?.Apply();
+                } 
+                */
             }
-
-            SerializedObject SO = new(this);
-
-            void ApplyPropertyOverride(string name, bool backingField, SerializedObject SO)
-            {
-                PrefabUtility.ApplyPropertyOverride(SO.FindProperty(backingField ? $"<{name}>k__BackingField" : name), 
-                    path, InteractionMode.AutomatedAction);
-            }
-
-            ApplyPropertyOverride(nameof(Behaviors), true, SO);
-            ApplyPropertyOverride(nameof(Machine), true, SO);
-            ApplyPropertyOverride(nameof(Parent), true, SO);
-            ApplyPropertyOverride(nameof(Layer), true, SO);
-            ApplyPropertyOverride(nameof(Children), true, SO);
-            ApplyPropertyOverride(nameof(ChildCount), true, SO);
-            ApplyPropertyOverride(nameof(Behaviors), true, SO);
-            ApplyPropertyOverride(nameof(Behaviors), true, SO);
-
-            for (int i = 0; i < Behaviors.Length; i++)
-            {
-                SerializedObject behaviorSO = new(Behaviors[i]);
-                ApplyPropertyOverride(nameof(StateBehavior.State), true, behaviorSO);
-                if (Behaviors[i] is StateAnimator_Legacy) ApplyPropertyOverride("animator", false, behaviorSO);
-                if (Behaviors[i] is StateTimeline) ApplyPropertyOverride("timeline", false, behaviorSO);
-            }
-
-            /*
-             var addedComps = PrefabUtility.GetAddedComponents(gameObject);
-            var removedComps = PrefabUtility.GetRemovedComponents(gameObject);
-            var overrides = PrefabUtility.GetObjectOverrides(gameObject);
-
-
-            for (int i = 0; i < addedComps.Count; i++)
-            {
-                var item = addedComps[i];
-                item?.Apply();
-            }
-
-            for (int i = 0; i < removedComps.Count; i++)
-            {
-                var item = removedComps[i];
-                item?.Apply();
-            }
-
-            for (int i = 0; i < overrides.Count; i++)
-            {
-                var item = overrides[i];
-                item?.Apply();
-            } 
-            */
+            catch { }
 #endif
         }
 
