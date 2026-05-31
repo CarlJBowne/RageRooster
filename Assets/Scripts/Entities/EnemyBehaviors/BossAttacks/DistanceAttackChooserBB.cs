@@ -54,7 +54,7 @@ public class DistanceAttackChooserBB : StateBehavior
 
     public void DoAttack()
     {
-        if (Machine.SignalManager.GetCurrentNode().Locked) return;
+        if (Machine.SignalManager.Locked) return;
 
         float diceRoll = Random.Range(0f, distances[currentDistance].attacksRandLength);
 

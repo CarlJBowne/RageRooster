@@ -9,16 +9,15 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Generics = System.Collections.Generic;
 
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("SLS.StateMachineH.Editor")]
-namespace SLS.StateMachineH.Utils
+namespace ListUtilities
 {
     [Serializable]
-    internal class SerializedDictionary<TKey, TValue> : Generics.Dictionary<TKey, TValue>, ISerializationCallbackReceiver, ISerializedDictionaryNonGeneric
+    public class SerializedDictionary_Legacy<TKey, TValue> : Generics.Dictionary<TKey, TValue>, ISerializationCallbackReceiver, ISerializedDictionaryNonGenericOld
     {
         [SerializeField] internal Generics.List<KeyValuePair> serializedList;
         [NonSerialized] private Generics.Dictionary<TKey, Generics.List<int>> occurences;
 
-        public SerializedDictionary() : base()
+        public SerializedDictionary_Legacy() : base()
         {
             serializedList = new();
             occurences = new();
@@ -167,8 +166,6 @@ namespace SLS.StateMachineH.Utils
         public bool Remove(object key) => Remove((TKey)key);
         public bool TryAdd(object key, object value) => TryAdd((TKey)key, (TValue)value);
 
-        public TKey GetKeyOfIndex(int index) => serializedList[index].Key;
-        public TValue GetValueOfIndex(int index) => serializedList[index].Value;
 
         [Serializable]
         public struct KeyValuePair
@@ -183,7 +180,7 @@ namespace SLS.StateMachineH.Utils
             }
         }
         [Serializable]
-        public class LookupTable : System.Collections.Generic.List<KeyValuePair>, ILookupTableNonGeneric
+        public class LookupTable : System.Collections.Generic.List<KeyValuePair>//, ILookupTableNonGeneric
         {
             public System.Collections.Generic.Dictionary<TKey, System.Collections.Generic.List<int>> occurences = new();
 
@@ -231,12 +228,12 @@ namespace SLS.StateMachineH.Utils
     }
 
     [Serializable]
-    internal class SerializedReferenceDictionary<TKey, TValue> : Generics.Dictionary<TKey, TValue>, ISerializationCallbackReceiver, ISerializedDictionaryNonGeneric
+    public class SerializedReferenceDictionary_Legacy<TKey, TValue> : Generics.Dictionary<TKey, TValue>, ISerializationCallbackReceiver, ISerializedDictionaryNonGenericOld
     {
         [SerializeField] internal Generics.List<KeyValuePair> serializedList;
         [NonSerialized] private Generics.Dictionary<TKey, Generics.List<int>> occurences;
 
-        public SerializedReferenceDictionary() : base()
+        public SerializedReferenceDictionary_Legacy() : base()
         {
             serializedList = new();
             occurences = new();
@@ -385,8 +382,6 @@ namespace SLS.StateMachineH.Utils
         public bool Remove(object key) => Remove((TKey)key);
         public bool TryAdd(object key, object value) => TryAdd((TKey)key, (TValue)value);
 
-        public TKey GetKeyOfIndex(int index) => serializedList[index].Key;
-        public TValue GetValueOfIndex(int index) => serializedList[index].Value;
 
         [Serializable]
         public struct KeyValuePair
@@ -401,7 +396,7 @@ namespace SLS.StateMachineH.Utils
             }
         }
         [Serializable]
-        public class LookupTable : System.Collections.Generic.List<KeyValuePair>, ILookupTableNonGeneric
+        public class LookupTable : System.Collections.Generic.List<KeyValuePair>//, ILookupTableNonGeneric
         {
             public System.Collections.Generic.Dictionary<TKey, System.Collections.Generic.List<int>> occurences = new();
 
@@ -448,8 +443,7 @@ namespace SLS.StateMachineH.Utils
         }
     }
 
-
-    internal interface ISerializedDictionaryNonGeneric
+    public interface ISerializedDictionaryNonGenericOld
     {
         public System.Collections.IList listAccess { get; }
 
@@ -463,12 +457,6 @@ namespace SLS.StateMachineH.Utils
 
         public bool[] RecalculateOccurences();
         public bool[] DuplicateValues { get; }
-        public void RemoveDuplicates();
-    }
-    internal interface ILookupTableNonGeneric
-    {
-        public bool[] DuplicateValues { get; }
-        public void RecalculateOccurences();
         public void RemoveDuplicates();
     }
 }
