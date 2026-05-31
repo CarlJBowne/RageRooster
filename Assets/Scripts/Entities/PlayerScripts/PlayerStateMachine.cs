@@ -9,6 +9,7 @@ using Utilities.Singletons;
 using AYellowpaper.SerializedCollections;
 using RageRooster.Systems.SaveSystem;
 using RageRooster.RoomSystem;
+using SLS.StateMachineH.Signals;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerStateMachine : StateMachine
@@ -42,8 +43,8 @@ public class PlayerStateMachine : StateMachine
 
     static PlayerStateMachine instance;
     public static PlayerStateMachine Get => Singleton.Get(ref instance);
-    public static bool TryGet(out PlayerStateMachine res) => Singleton.TryGet(Get, out res); 
-    
+    public static bool TryGet(out PlayerStateMachine res) => Singleton.TryGet(Get, out res);
+
 
     public void HaveDestroyed() { }
 
@@ -120,17 +121,37 @@ public class PlayerStateMachine : StateMachine
     public void DeathIfAtZero() { if (Player.Health.playerObject.GetCurrentHealth() == 0) Player.Death(); }
 
 #if UNITY_EDITOR
-    protected override void Update()
-    {
-        base.Update();
-        //queuedSignals = signalQueue.ToList();
-    }
-    public List<string> queuedSignals;
-#endif
 
-    protected override void FixedUpdate()
+    [ContextMenu("UpgradeSignals")]
+    public void UpgradeSignals()
     {
-        //DebugRR.DebugTextOverlay.ClearText();
-        base.FixedUpdate();
+        SignalManager_Old OldMan = gameObject.GetComponent<SignalManager_Old>(); //I'm old!
+
+        SignalManager NewMan = gameObject.AddComponent<SignalManager>();
+
+        SignalManager.Transfer(OldMan, NewMan);
+
+        DestroyImmediate(OldMan);
+
+        var oldNodes = gameObject.GetComponentsInChildren<SignalNode_Old>();
+        var states = oldNodes.Select(x => x.State).ToArray();
+        var newNodes = states.Select(x => x.gameObject.AddComponent<SignalNode>()).ToArray();
+
+        for (int i = 0; i < states.Length; i++)
+        {
+            SignalNode.Transfer(oldNodes[i], newNodes[i]);
+            DestroyImmediate(oldNodes[i]);
+        }
+
+        var oldAnims = gameObject.GetComponentsInChildren<StateAnimator_Legacy>();
+        states = oldAnims.Select(x => x.State).ToArray();
+        var newAnims = states.Select(x => x.gameObject.AddComponent<StateAnimator>()).ToArray();
+
+        for (int i = 0; i < states.Length; i++)
+        {
+            StateAnimator.Transfer(oldAnims[i], newAnims[i]);
+            DestroyImmediate(oldAnims[i]);
+        }
     }
+#endif
 }

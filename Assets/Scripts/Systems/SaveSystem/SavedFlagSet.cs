@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using ListUtilities;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,15 +24,18 @@ namespace RageRooster.Systems.SaveSystem.Flags
 
         public void LoadFromJson(JToken json)
         {
-            foreach (var pair in flags)
-                pair.Value.LoadFromJson((JValue)json[pair.Key]);
+            for (int i = 0; i < flags.Count; i++)
+            {
+                flags.ValueFromIndex(i).LoadFromJson(json[flags.NameFromIndex(i)]);
+            }
         }
 
         public JObject SaveToJson()
         {
             var result = new JObject();
 
-            foreach (var pair in flags) result[pair.Key] = pair.Value.SaveToJson();
+            for (int i = 0; i < flags.Count; i++)
+                result[flags.NameFromIndex(i)] = flags.ValueFromIndex(i).SaveToJson();
             return result;
         }
 
@@ -41,8 +45,8 @@ namespace RageRooster.Systems.SaveSystem.Flags
             if (target == null) target = Instantiate(this);
             else
             {
-                foreach (string key in flags.Keys)
-                    flags[key].Clone(target.flags[key]);
+                for (int i = 0; i < flags.Count; i++)
+                    flags.ValueFromIndex(i).Clone(target.flags.ValueFromIndex(i));
             }
             return target;
         }
@@ -58,7 +62,7 @@ namespace RageRooster.Systems.SaveSystem.Flags
         public bool TryGetFlag<T>(string key, out T value)
         {
             value = default;
-            return flags.ContainsKey(key) && flags[key].TryGetValue(out value);
+            return flags.ContainsKey(key.Hash()) && flags[key].TryGetValue(out value);
         }
 
         /// <summary>
@@ -68,11 +72,11 @@ namespace RageRooster.Systems.SaveSystem.Flags
         /// <param name="key">The name identifier of the flag.</param>
         /// <param name="value">The new value to set for the flag.</param>
         /// <returns>Whether setting the flag was a success.</returns>
-        public bool TrySetFlag<T>(string key, T value) => flags.ContainsKey(key) && flags[key].TrySetValue(value);
+        public bool TrySetFlag<T>(string key, T value) => flags.ContainsKey(key.Hash()) && flags[key].TrySetValue(value);
 
 
         [System.Serializable]
-        public class FlagDictionary : SerializedReferenceDictionary<string, Flag>
+        public class FlagDictionary : HashedListS<Flag>
         {
         }
     }

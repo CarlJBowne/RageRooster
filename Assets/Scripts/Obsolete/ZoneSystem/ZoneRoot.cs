@@ -64,7 +64,7 @@ namespace RageRooster.Obsolete.Zones
             */
         }
 
-        private void OnDestroy() => UnloadEvents();
+        //private void OnDestroy() => UnloadEvents();
 
         public void Update_()
         {
@@ -79,19 +79,19 @@ namespace RageRooster.Obsolete.Zones
             //Gameplay.musicEmitter.CrossFadeMusic(music);
         }
 
-        public Utilities.SerializedDictionary<WorldChange, UltEvents.UltEvent> worldChangeEvents;
+        //public Utilities.SerializedDictionary<WorldChange, UltEvents.UltEvent> worldChangeEvents;
 
-        private void LoadEvents()
-        {
-            foreach (KeyValuePair<WorldChange, UltEvents.UltEvent> item in worldChangeEvents)
-                if (item.Key.Enabled) item.Value?.Invoke();
-                else item.Key.Action += item.Value.InvokeSafe;
-        }
-        private void UnloadEvents()
-        {
-            foreach (KeyValuePair<WorldChange, UltEvents.UltEvent> item in worldChangeEvents)
-                item.Key.Action -= item.Value.InvokeSafe;
-        }
+        //private void LoadEvents()
+        //{
+        //    foreach (KeyValuePair<WorldChange, UltEvents.UltEvent> item in worldChangeEvents)
+        //        if (item.Key.Enabled) item.Value?.Invoke();
+        //        else item.Key.Action += item.Value.InvokeSafe;
+        //}
+        //private void UnloadEvents()
+        //{
+        //    foreach (KeyValuePair<WorldChange, UltEvents.UltEvent> item in worldChangeEvents)
+        //        item.Key.Action -= item.Value.InvokeSafe;
+        //}
 
         [Button]
         public void SetupComponents()

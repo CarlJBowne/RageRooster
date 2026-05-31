@@ -60,6 +60,8 @@ namespace SLS.StateMachineH.Signals
         /// <param name="name"></param>
         public void Remove(int ID) => signals.Remove(ID);
 
+        public int Count => signals.Count;
+
         public bool FireEvent(string signalName)
         {
             if (signals.ContainsKey(signalName.Hash()))
@@ -123,6 +125,12 @@ namespace SLS.StateMachineH.Signals
             Locked = false;
         }
 
+        public static void Transfer(SignalNode_Old O, SignalNode N)
+        {
+            N.signals.Clear();
+            for (int i = 0; i < O.signals.Count; i++)
+                N.signals.Add(O.signals.GetKeyOfIndex(i), O.signals.GetValueOfIndex(i));
+        }
     }
 }
  

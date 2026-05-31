@@ -77,6 +77,20 @@ namespace SLS.StateMachineH
         public void CrossFadeAtCurrentPoint(string name, float time = 0f) => animator.CrossFade(name, time, 0, animator.GetCurrentAnimatorStateInfo(-1).normalizedTime);
 
         #endregion
+
+        public static void Transfer(StateAnimator_Legacy O, StateAnimator N)
+        {
+            N.action.type = O.onEntry switch
+            {
+                StateAnimator_Legacy.EntryAnimAction.Play => AnimatorAction.Type.Play,
+                StateAnimator_Legacy.EntryAnimAction.Trigger => AnimatorAction.Type.SetTrigger,
+                StateAnimator_Legacy.EntryAnimAction.CrossFade => AnimatorAction.Type.CrossFade,
+                _ => AnimatorAction.Type.Null,
+            };
+            N.action.NameID = O.onEnterName;
+            if (N.action.type == AnimatorAction.Type.CrossFade) N.action.floatValue1 = O.onEnterTime;
+            else if (N.action.type == AnimatorAction.Type.SetTrigger) N.action.boolValue = true;
+        }
     }
 
     [System.Serializable]
