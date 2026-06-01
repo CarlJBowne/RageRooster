@@ -302,7 +302,11 @@ namespace ListUtilities.Editor
         protected void FinishBind()
         {
             BuildItems();
-            Undo.undoRedoPerformed += BuildItems;
+            Undo.undoRedoPerformed += ()=> 
+            {
+                property.serializedObject.Update();
+                BuildItems();
+            };
         }
 
         /// <summary>

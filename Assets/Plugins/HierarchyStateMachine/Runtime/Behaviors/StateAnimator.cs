@@ -161,5 +161,10 @@ namespace SLS.StateMachineH
             }
         }
         public void CacheID() => cachedHash = NameID.Hash();
+
+        public static implicit operator bool(AnimatorAction A) => A.type != Type.Null;
+        public static implicit operator string(AnimatorAction A) => A.NameID;
+        public static implicit operator int(AnimatorAction A) => A.cachedHash;
+        public static implicit operator Type(AnimatorAction A) => A.type;
     }
 }

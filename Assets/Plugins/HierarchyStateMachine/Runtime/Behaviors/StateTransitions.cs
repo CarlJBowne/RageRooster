@@ -14,12 +14,13 @@ public class StateTransitions : StateTimeline
     [System.Serializable]
     public class Transition
     {
-        [SerializeField] public State TargetState { get; private set; }
-        [SerializeField] public bool TransitionAtEnd { get; private set; }
-        [SerializeField] public EVENT BeginEvent { get; private set; }
-        [SerializeField] public float Length { get; private set; }
-        [SerializeField] public EVENT EndEvent { get; private set; }
-        [SerializeField] public AnimatorAction Animation { get; private set; }
+        [field: SerializeField] public State TargetState { get; private set; }
+        [Tooltip("Wait until the end of the length coroutine to transition officially in the state graph.")]
+        [field: SerializeField] public bool AtEnd { get; private set; }
+        [field: SerializeField] public EVENT BeginEvent { get; private set; }
+        [field: SerializeField] public float Length { get; private set; }
+        [field: SerializeField] public EVENT EndEvent { get; private set; }
+        [field: SerializeField] public AnimatorAction Animation { get; private set; }
     }
 
     public List<Transition> transitions = new();
@@ -37,8 +38,7 @@ public class StateTransitions : StateTimeline
     }
     protected override void OnBegin()
     {
-        if (!activeTransition.TransitionAtEnd && activeTransition.TargetState != null)
-            activeTransition.TargetState.Enter();
+        if (!activeTransition.AtEnd && activeTransition.TargetState != null) DoEnter();
 
         activeTransition.BeginEvent.Invoke();
 
@@ -48,7 +48,7 @@ public class StateTransitions : StateTimeline
             //Disable StateAnimator on Target once disabling is implemented
         }
 
-        if(activeTransition.Length <= 0f) End();
+        if (activeTransition.Length <= 0f) End();
     }
     protected override void OnTick(float delta)
     {
@@ -57,11 +57,16 @@ public class StateTransitions : StateTimeline
     }
     protected override void OnEnd()
     {
-        if (activeTransition.TransitionAtEnd && activeTransition.TargetState != null) 
-            activeTransition.TargetState.Enter();
+        if (activeTransition.AtEnd && activeTransition.TargetState != null) DoEnter();
         activeTransition.EndEvent.Invoke();
         activeTransition = null;
         timer = -1f;
     }
 
+    void DoEnter()
+    {
+        if (activeTransition == null) return;
+        if (activeTransition.Animation && activeTransition.TargetState.TryGetComponent(out StateAnimator anim)) anim.BlockForThisCycle();
+        activeTransition.TargetState.Enter();
+    }
 }

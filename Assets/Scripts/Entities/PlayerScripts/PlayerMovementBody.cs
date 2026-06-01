@@ -138,6 +138,13 @@ public sealed class PlayerMovementBody : PhysicsBody
 
     #endregion Other
 
+    #region Utils
+    public void SetNavMeshLock(bool value)
+    {
+        if (!Resolvers.TryGetResolver(out PhysicsResolver.NavMesh n)) return;
+        n.lockToNavMesh = value;
+    }
+    #endregion
 
 #if UNITY_EDITOR
 

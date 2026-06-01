@@ -15,7 +15,7 @@ namespace RageRooster.Physics
             [Tooltip("The NavMeshAgent component used for movement and pathfinding.")]
             [field: SerializeField] public NavMeshAgent NavAgent { get; private set; }
             [Tooltip("Whether this resolver should attempt to lock movement to the NavMesh surface when navigating off ledges or small platforms. This can help prevent characters from unintentionally walking off of small platforms, but may cause unwanted snapping behavior in some cases.")]
-            [SerializeField] bool lockToNavMesh = true;
+            public bool lockToNavMesh = true;
             [Tooltip("The distance within which the resolver will attempt to snap to the NavMesh if the agent becomes ungrounded. This should generally be set to a value slightly larger than the expected maximum step height of the character.")]
             [field: SerializeField] public float detectionRange { get; private set; } = .35f;
             [field: SerializeField] public int nonNavID { get; private set; } = -1;
