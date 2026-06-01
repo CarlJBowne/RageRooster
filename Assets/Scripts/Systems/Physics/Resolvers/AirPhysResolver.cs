@@ -2,13 +2,11 @@
 
 namespace RageRooster.Physics
 {
-    public abstract partial class PhysicsResolver
-    {
         /// <summary>
         /// A resolver based on the <see cref="CollideAndSlide"/> resolver but with all grounded-movement-related logic removed.
         /// </summary>
         [System.Serializable]
-        public class Air : PhysicsResolver
+        public class AirPhysResolver : PhysicsResolver
         {
             [Tooltip("The distance of the buffer that will be used in sweep checking.")]
             [SerializeField] float checkBuffer = 0.1f;
@@ -16,7 +14,7 @@ namespace RageRooster.Physics
             [SerializeField] float defaultGravity = 9.8f;
             [Tooltip("Whether this resolver should automatically apply gravity each frame. If false, gravity must be applied manually by calling ApplyGravity().")]
             [SerializeField] bool autoApplyGravity = false;
-            [SerializeField] int landResolverID = -1;
+            [field: SerializeField] public PhysicsResolver landResolver { get; private set; }
 
             public override void Move(Vector3 stepVelocity)
             {
@@ -102,16 +100,16 @@ namespace RageRooster.Physics
                 Vector3 newDir = leftover.ProjectAndScale(nextNormal);
                 newDir *= Vector3.Dot(leftover.normalized, nextNormal) + 1;
 
-                if (land && landResolverID != -1) // Don't do landing logic if no ground-based resolvers exist.
+                if (land && landResolver != null) // Don't do landing logic if no ground-based resolvers exist.
                 {
                     leftover.y = 0;
                     Ground.Land(hit);
-                    ChooseNext(landResolverID);
+                    ChooseNext(landResolver);
                 }
                 Next.Move(newDir);
             }
 
-            public override void Start() => gravity = defaultGravity;
+            public override void OnStart() => gravity = defaultGravity;
 
             public override void FixedUpdateLatter() { if (autoApplyGravity) ApplyGravity(); }
 
@@ -160,5 +158,4 @@ namespace RageRooster.Physics
             */
 
         }
-    }
 }

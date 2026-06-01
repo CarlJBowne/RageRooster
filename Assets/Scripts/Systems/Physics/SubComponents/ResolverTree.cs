@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RageRooster.Physics
@@ -6,9 +7,9 @@ namespace RageRooster.Physics
     [System.Serializable]
     public class ResolverTree : PhysicsSubComponent
     {
-        [field: SerializeField] private Polymorph.ListOf<PhysicsResolver> resolvers = new();
-        [field: SerializeField] public int defaultGroundedIndex { get; private set; } = 0;
-        [field: SerializeField] public int defaultAirIndex { get; private set; } = 1;
+        [field: SerializeField] public List<PhysicsResolver> resolvers { get; private set; } = new();
+        [field: SerializeField] public PhysicsResolver defaultGroundedIndex { get; private set; }
+        [field: SerializeField] public PhysicsResolver defaultAirIndex { get; private set; }
 
         public PhysicsResolver Active { get; private set; }
 

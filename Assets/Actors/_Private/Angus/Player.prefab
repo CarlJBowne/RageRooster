@@ -355,6 +355,9 @@ GameObject:
   - component: {fileID: 2472513421387103827}
   - component: {fileID: 6328031082010280587}
   - component: {fileID: 3941225653291784218}
+  - component: {fileID: 4050968043308300902}
+  - component: {fileID: 2069593994508189260}
+  - component: {fileID: 5813673675774806942}
   - component: {fileID: 1838944232945776554}
   - component: {fileID: 598530174602593461}
   - component: {fileID: 8579594802138283692}
@@ -513,13 +516,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovementBody
   <Resolvers>k__BackingField:
-    resolvers:
-      items:
-      - rid: 945612472127848610
-      - rid: 945612472127848609
-      - rid: 945612472127848611
-    <defaultGroundedIndex>k__BackingField: 0
-    <defaultAirIndex>k__BackingField: 2
+    <resolvers>k__BackingField: []
+    <defaultGroundedIndex>k__BackingField: {fileID: 4050968043308300902}
+    <defaultAirIndex>k__BackingField: {fileID: 5813673675774806942}
   <Velocity>k__BackingField:
     allowBackwards: 1
   <Ground>k__BackingField:
@@ -529,31 +528,58 @@ MonoBehaviour:
   <RB>k__BackingField: {fileID: 1838944232945776554}
   <Collider>k__BackingField: {fileID: 598530174602593461}
   bonkThreshold: 15
-  references:
-    version: 2
-    RefIds:
-    - rid: 945612472127848609
-      type: {class: PhysicsResolver/CollideAndSlide, ns: RageRooster.Physics, asm: Assembly-CSharp}
-      data:
-        checkBuffer: 0.1
-        downSnap: 0.08
-        validGroundMask:
-          serializedVersion: 2
-          m_Bits: 50561
-    - rid: 945612472127848610
-      type: {class: PhysicsResolver/NavMesh, ns: RageRooster.Physics, asm: Assembly-CSharp}
-      data:
-        <NavAgent>k__BackingField: {fileID: 1755664598433715571}
-        lockToNavMesh: 0
-        <detectionRange>k__BackingField: 0.35
-        <nonNavID>k__BackingField: 1
-    - rid: 945612472127848611
-      type: {class: PhysicsResolver/Air, ns: RageRooster.Physics, asm: Assembly-CSharp}
-      data:
-        checkBuffer: 0.1
-        defaultGravity: 9.8
-        autoApplyGravity: 0
-        landResolverID: 0
+--- !u!114 &4050968043308300902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83c4dcee11ed9ef4f919bfb1021a72fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RageRooster.Physics.NavMeshPhysResolver
+  <Body>k__BackingField: {fileID: 0}
+  <NavAgent>k__BackingField: {fileID: 0}
+  lockToNavMesh: 1
+  <detectionRange>k__BackingField: 0.35
+  <nonNav>k__BackingField: {fileID: 2069593994508189260}
+--- !u!114 &2069593994508189260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79ed1e901d753b14d93078b218b78011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RageRooster.Physics.CollideAndSlidePhysResolver
+  <Body>k__BackingField: {fileID: 0}
+  checkBuffer: 0.1
+  downSnap: 0.08
+  validGroundMask:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &5813673675774806942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950555048310845610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a850afa037dc90341a42ca9bcd4d0de0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RageRooster.Physics.AirPhysResolver
+  <Body>k__BackingField: {fileID: 0}
+  checkBuffer: 0.1
+  defaultGravity: 9.8
+  autoApplyGravity: 0
+  <landResolver>k__BackingField: {fileID: 4050968043308300902}
 --- !u!54 &1838944232945776554
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5535,7 +5561,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _EnableEvent._PersistentCalls.Array.data[0]._Target
       value: 
-      objectReference: {fileID: 3941225653291784218}
+      objectReference: {fileID: 4050968043308300902}
     - target: {fileID: 1171335048410009474, guid: e2f7aba649dedca4b89f601ebb61b048,
         type: 3}
       propertyPath: _EnableEvent._PersistentCalls.Array.data[1]._Target
@@ -5545,11 +5571,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _DisableEvent._PersistentCalls.Array.data[0]._Target
       value: 
-      objectReference: {fileID: 3941225653291784218}
+      objectReference: {fileID: 4050968043308300902}
     - target: {fileID: 1171335048410009474, guid: e2f7aba649dedca4b89f601ebb61b048,
         type: 3}
       propertyPath: _EnableEvent._PersistentCalls.Array.data[0]._MemberName
-      value: SetNavMeshLock
+      value: lockToNavMesh=
       objectReference: {fileID: 0}
     - target: {fileID: 1171335048410009474, guid: e2f7aba649dedca4b89f601ebb61b048,
         type: 3}
@@ -5559,7 +5585,7 @@ PrefabInstance:
     - target: {fileID: 1171335048410009474, guid: e2f7aba649dedca4b89f601ebb61b048,
         type: 3}
       propertyPath: _DisableEvent._PersistentCalls.Array.data[0]._MemberName
-      value: SetNavMeshLock
+      value: lockToNavMesh=
       objectReference: {fileID: 0}
     - target: {fileID: 1171335048410009474, guid: e2f7aba649dedca4b89f601ebb61b048,
         type: 3}

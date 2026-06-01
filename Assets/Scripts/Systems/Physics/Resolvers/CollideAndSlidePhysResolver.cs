@@ -2,13 +2,10 @@
 
 namespace RageRooster.Physics
 {
-    public abstract partial class PhysicsResolver
-    {
-        /// <summary>
         /// A resolver representing the famed "Collide and Slide" algorithm. This resolver performs a single collision sweep for the proposed movement vector, moves the body to the point of impact (or full distance if no collision), and then delegates remaining movement along the surface normal of the collision.
         /// </summary>
         [System.Serializable]
-        public class CollideAndSlide : PhysicsResolver
+        public class CollideAndSlidePhysResolver : PhysicsResolver
         {
             [Tooltip("The distance of the buffer that will be used in sweep checking.")]
             [SerializeField] float checkBuffer = 0.1f;
@@ -146,5 +143,5 @@ namespace RageRooster.Physics
                 Next.Move(newDir);
             }
         }
-    }
+    
 }

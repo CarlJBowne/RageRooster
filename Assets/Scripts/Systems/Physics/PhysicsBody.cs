@@ -12,7 +12,7 @@ using UnityEngine.AI;
 using UnityEngine.UIElements;
 using Utilities.Xtensions;
 using Utilities.Xtensions.Unity;
-using static UnityEngine.Rendering.DebugUI;
+using ListUtilities;
 
 namespace RageRooster.Physics
 {
@@ -201,15 +201,15 @@ namespace RageRooster.Physics
             for (int i = 0; i < Resolvers.ResolverCount; i++)
             {
                 Resolvers[i]?.Init(this);
-                Resolvers[i]?.Start();
+                Resolvers[i]?.OnStart();
             }
 
-            if (Resolvers.defaultGroundedIndex != -1 && Ground.InstantSnapToFloor(out RaycastHit hit))
+            if (Resolvers.defaultGroundedIndex != null && Ground.InstantSnapToFloor(out RaycastHit hit))
             {
                 Ground.Land(hit);
                 Resolvers.Update(Resolvers.defaultGroundedIndex);
             }
-            else if (Resolvers.defaultAirIndex != -1)
+            else if (Resolvers.defaultAirIndex != null)
             {
                 Resolvers.Update(Resolvers.defaultAirIndex);
             }
@@ -288,7 +288,7 @@ namespace RageRooster.Physics
         public Vector3 Position
         {
             get => BodyState == BodyStates.Enabled
-                ? Resolvers.Active is not PhysicsResolver.NavMesh N
+                ? Resolvers.Active is not NavMeshPhysResolver N
                     ? RB.position
                     : N.NavAgent.nextPosition
                 : transform.position;
@@ -296,7 +296,7 @@ namespace RageRooster.Physics
             {
                 if (BodyState != BodyStates.Enabled) return;
 
-                if (Resolvers.Active is PhysicsResolver.NavMesh N) N.NavAgent.nextPosition = value;
+                if (Resolvers.Active is NavMeshPhysResolver N) N.NavAgent.nextPosition = value;
                 else RB.MovePosition(value);
             }
         }

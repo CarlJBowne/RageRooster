@@ -1,13 +1,19 @@
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.UIElements;
+#endif
 
 namespace RageRooster.Physics
 {
     /// <summary>
     /// Abstract base class for movement resolvers. A resolver is responsible for translating a proposed movement vector into collisions, sliding, landing and other movement effects for its owning <see cref="PhysicsBody"/>.
     /// </summary>
-    [System.Serializable]
-    public abstract partial class PhysicsResolver : Polymorph
+    [System.Serializable, RequireComponent(typeof(PhysicsBody))]
+    public abstract partial class PhysicsResolver : MonoBehaviour
     {
         #region Relations
 
@@ -21,7 +27,7 @@ namespace RageRooster.Physics
         /// <summary>
         /// The owning PhysicsBody instance. Available after <see cref="Init"/> is called.
         /// </summary>
-        public PhysicsBody Body { get; private set; }
+        [field: SerializeField] public PhysicsBody Body { get; private set; }
 
         /// <summary>
         /// Convenience properties that forward to the owning body. These provide quick
@@ -36,11 +42,18 @@ namespace RageRooster.Physics
 
         #endregion
 
+        public virtual void Reset()
+        {
+            if (!TryGetComponent(out PhysicsBody pb))
+            { DestroyImmediate(this); return; }
+            pb.Resolvers.resolvers.Add(this);
+            this.Body = pb;
+        }
+
         /// <summary>
         /// Lifecycle hooks and the main Move contract for resolvers.
         /// </summary>
-        public virtual void Start()
-        { }
+        public virtual void OnStart() { }
         /// <summary>
         /// Called when this resolver becomes the active resolver for a PhysicsBody.
         /// </summary>
@@ -67,7 +80,7 @@ namespace RageRooster.Physics
         /// <param name="stepVelocity">The movement vector to process, typically velocity * deltaTime.</param>
         public abstract void Move(Vector3 stepVelocity);
 
-        public bool ContinueCheck(Vector3 vel) => 
+        public bool ContinueCheck(Vector3 vel) =>
             vel.sqrMagnitude < float.Epsilon || ++Body.Step >= Body.maxPhysicsSteps;
         public bool ContinueCheck(float hitDistance) =>
             hitDistance == -1 || ++Body.Step >= Body.maxPhysicsSteps;
@@ -81,5 +94,26 @@ namespace RageRooster.Physics
             if (!Body.Debug.DisplayDebugString) return;
             Body.Debug.AppendLine(value?.Invoke());
         }
+
+        [ContextMenu("Hide")]
+        public void Hide()
+        {
+            this.hideFlags = HideFlags.HideInInspector;
+        }
     }
+
+#if UNITY_EDITOR
+    //[UnityEditor.CustomPropertyDrawer(typeof(PhysicsResolver), true)]
+    //public class Editor : UnityEditor.PropertyDrawer
+    //{
+    //    Foldout foldout;
+    //    ObjectField objField;
+    //    Button GetButton;
+    //
+    //    public override VisualElement CreatePropertyGUI(SerializedProperty property)
+    //    {
+    //
+    //    }
+    //} Implement this later.
+#endif 
 }

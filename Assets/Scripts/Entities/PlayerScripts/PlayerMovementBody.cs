@@ -47,12 +47,12 @@ public sealed class PlayerMovementBody : PhysicsBody
     private void Start()
     {
         //Do this again because no matter what I tell this system to do nothing ever works correctly.
-        if (Resolvers.defaultGroundedIndex != -1 && Ground.InstantSnapToFloor(out RaycastHit hit))
+        if (Resolvers.defaultGroundedIndex != null && Ground.InstantSnapToFloor(out RaycastHit hit))
         {
             Ground.Land(hit);
             Resolvers.Update(Resolvers.defaultGroundedIndex);
         }
-        else if (Resolvers.defaultAirIndex != -1)
+        else if (Resolvers.defaultAirIndex != null)
         {
             Resolvers.Update(Resolvers.defaultAirIndex);
         }
@@ -137,14 +137,6 @@ public sealed class PlayerMovementBody : PhysicsBody
     public bool isOverVent => currentVent != null;
 
     #endregion Other
-
-    #region Utils
-    public void SetNavMeshLock(bool value)
-    {
-        if (!Resolvers.TryGetResolver(out PhysicsResolver.NavMesh n)) return;
-        n.lockToNavMesh = value;
-    }
-    #endregion
 
 #if UNITY_EDITOR
 
