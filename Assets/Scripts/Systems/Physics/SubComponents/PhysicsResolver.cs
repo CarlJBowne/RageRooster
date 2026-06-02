@@ -227,7 +227,6 @@ namespace RageRooster.Physics
                 .ToArray();
         }
 
-        
     }
 #endif 
 }
