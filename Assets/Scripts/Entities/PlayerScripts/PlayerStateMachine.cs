@@ -119,44 +119,4 @@ public class PlayerStateMachine : StateMachine
     }
 
     public void DeathIfAtZero() { if (Player.Health.playerObject.GetCurrentHealth() == 0) Player.Death(); }
-
-#if UNITY_EDITOR
-
-    [ContextMenu("UpgradeSignals")]
-    public void UpgradeSignals()
-    {
-        SignalManager_Old OldMan = gameObject.GetComponent<SignalManager_Old>(); //I'm old!
-
-        SignalManager NewMan = gameObject.AddComponent<SignalManager>();
-
-        SignalManager.Transfer(OldMan, NewMan);
-
-        DestroyImmediate(OldMan);
-
-        var oldNodes = gameObject.GetComponentsInChildren<SignalNode_Old>(true);
-        var states = oldNodes.Select(x => x.State).ToArray();
-        var newNodes = states.Select(x => x.gameObject.AddComponent<SignalNode>()).ToArray();
-
-        for (int i = 0; i < states.Length; i++)
-        {
-            SignalNode.Transfer(oldNodes[i], newNodes[i]);
-            DestroyImmediate(oldNodes[i]);
-            UnityEditor.EditorUtility.SetDirty(states[i]);
-            UnityEditor.EditorUtility.SetDirty(states[i].gameObject);
-        }
-        
-
-        var oldAnims = gameObject.GetComponentsInChildren<StateAnimator_Legacy>(true);
-        states = oldAnims.Select(x => x.State).ToArray();
-        var newAnims = states.Select(x => x.gameObject.AddComponent<StateAnimator>()).ToArray();
-
-        for (int i = 0; i < states.Length; i++)
-        {
-            StateAnimator.Transfer(oldAnims[i], newAnims[i]);
-            DestroyImmediate(oldAnims[i]);
-            UnityEditor.EditorUtility.SetDirty(states[i]);
-            UnityEditor.EditorUtility.SetDirty(states[i].gameObject);
-        }
-    }
-#endif
 }

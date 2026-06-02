@@ -15,7 +15,7 @@ namespace RageRooster.Physics
     /// <summary>
     /// Abstract base class for movement resolvers. A resolver is responsible for translating a proposed movement vector into collisions, sliding, landing and other movement effects for its owning <see cref="PhysicsBody"/>.
     /// </summary>
-    [System.Serializable, RequireComponent(typeof(PhysicsBody)), ExecuteAlways]
+    [System.Serializable, RequireComponent(typeof(PhysicsBody))]
     public abstract class PhysicsResolver : MonoBehaviour
     {
         #region Relations
@@ -93,12 +93,6 @@ namespace RageRooster.Physics
         public void Hide()
         {
             this.hideFlags = HideFlags.HideInInspector;
-        }
-
-        private void OnDestroy()
-        {
-            this.GetExecutionDetails(out bool gameIsEditor, out bool gameIsPlaying, out bool objectSceneIsLoaded);
-            if (!gameIsEditor || !objectSceneIsLoaded) return;
         }
     }
 

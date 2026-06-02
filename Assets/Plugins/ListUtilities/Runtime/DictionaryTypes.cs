@@ -55,7 +55,7 @@ namespace ListUtilities
         {
             if (!USENAME)
             {
-                int hash = name.GetHashCode();
+                int hash = name.Hash();
                 return SerializedKeys.Contains(hash) ? SerializedValues[SerializedKeys.IndexOf(hash)] : default;
             }
             else
@@ -69,7 +69,7 @@ namespace ListUtilities
             result = default;
             if (!USENAME)
             {
-                int hash = name.GetHashCode();
+                int hash = name.Hash();
                 if (!SerializedKeys.Contains(hash)) return false;
                 result = SerializedValues[SerializedKeys.IndexOf(hash)];
                 return true;
@@ -88,7 +88,7 @@ namespace ListUtilities
             set
             {
                 if (IsReadOnly) return;
-                int hash = name.GetHashCode();
+                int hash = name.Hash();
                 if (SerializedKeys.Contains(hash))
                 {
                     SerializedValues[SerializedKeys.IndexOf(hash)] = value;
@@ -105,7 +105,7 @@ namespace ListUtilities
         public void Add(string name, T value)
         {
             if (IsReadOnly) return;
-            int hash = name.GetHashCode();
+            int hash = name.Hash();
             if (SerializedKeys.Contains(hash)) return;
             SerializedNames.Add(name);
             SerializedKeys.Add(hash);
@@ -118,8 +118,9 @@ namespace ListUtilities
         public void Add(T value)
         {
             if (IsReadOnly) return;
-            SerializedKeys.Add(Guid.NewGuid().ToString().GetHashCode());
-            SerializedNames.Add(SerializedKeys[^1].ToString());
+            Guid G = Guid.NewGuid();
+            SerializedKeys.Add(G.ToString().Hash());
+            SerializedNames.Add(G.ToString());
             SerializedValues.Add(value);
         }
         public void Add(KeyValuePair<string, T> item) => Add(item.Key, item.Value);
@@ -144,7 +145,9 @@ namespace ListUtilities
         }
 
         public bool ContainsName(string i) => SerializedNames.Contains(i);
-        public bool Contains(string i) => ContainsName(i);
+        public bool Contains(string i, bool NAMESPECIFICALLY = false) => !NAMESPECIFICALLY
+            ? ContainsName(i)
+            : ContainsKey(i.Hash());
 
         public int IndexOfName(string i) => SerializedNames.IndexOf(i);
         public int IndexOf(string i) => IndexOfName(i);
@@ -177,7 +180,7 @@ namespace ListUtilities
         {
             if (!USENAME)
             {
-                int hash = name.GetHashCode();
+                int hash = name.Hash();
                 return SerializedKeys.Contains(hash) ? SerializedValues[SerializedKeys.IndexOf(hash)] : default;
             }
             else
@@ -191,7 +194,7 @@ namespace ListUtilities
             result = default;
             if (!USENAME)
             {
-                int hash = name.GetHashCode();
+                int hash = name.Hash();
                 if (!SerializedKeys.Contains(hash)) return false;
                 result = SerializedValues[SerializedKeys.IndexOf(hash)];
                 return true;
@@ -210,7 +213,7 @@ namespace ListUtilities
             set
             {
                 if (IsReadOnly) return;
-                int hash = name.GetHashCode();
+                int hash = name.Hash();
                 if (SerializedKeys.Contains(hash))
                 {
                     SerializedValues[SerializedKeys.IndexOf(hash)] = value;
@@ -227,7 +230,7 @@ namespace ListUtilities
         public void Add(string name, T value)
         {
             if (IsReadOnly) return;
-            int hash = name.GetHashCode();
+            int hash = name.Hash();
             if (SerializedKeys.Contains(hash)) return;
             SerializedNames.Add(name);
             SerializedKeys.Add(hash);
@@ -240,8 +243,9 @@ namespace ListUtilities
         public void Add(T value)
         {
             if (IsReadOnly) return;
-            SerializedKeys.Add(Guid.NewGuid().ToString().GetHashCode());
-            SerializedNames.Add(SerializedKeys[^1].ToString());
+            Guid G = Guid.NewGuid();
+            SerializedKeys.Add(G.ToString().Hash());
+            SerializedNames.Add(G.ToString());
             SerializedValues.Add(value);
         }
         public void Add(KeyValuePair<string, T> item) => Add(item.Key, item.Value);
