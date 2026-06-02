@@ -16,7 +16,7 @@ namespace RageRooster.Physics
             public bool lockToNavMesh = true;
             [Tooltip("The distance within which the resolver will attempt to snap to the NavMesh if the agent becomes ungrounded. This should generally be set to a value slightly larger than the expected maximum step height of the character.")]
             [field: SerializeField] public float detectionRange { get; private set; } = .35f;
-            [field: SerializeField] public PhysicsResolver nonNav { get; private set; }
+            [field: SerializeField] public PhysicsResolver nonNavResolver { get; private set; }
 
             /// <summary>
             /// Moves body via Nav Mesh.
@@ -40,7 +40,7 @@ namespace RageRooster.Physics
                 if (ContinueCheck(hit.distance)) return;
 
                 Vector3 leftover = stepVelocity - snapToSurface;
-                if (lockToNavMesh || nonNav == null)
+                if (lockToNavMesh || nonNavResolver == null)
                 {
                     leftover = leftover.ProjectAndScale(hit.normal);
                     leftover *= Vector3.Dot(leftover.normalized, hit.normal) + 1;
@@ -48,7 +48,7 @@ namespace RageRooster.Physics
                 }
                 else
                 {
-                    ChooseNext(nonNav);
+                    ChooseNext(nonNavResolver);
                     Next.Move(leftover);
                 }
             }
@@ -59,9 +59,9 @@ namespace RageRooster.Physics
                 float dot = Vector3.Dot(Body.Velocity.Global.normalized, (Position - sampleHit.position).normalized);
                 if (!sampled || dot < -.3f)
                 {
-                    if(nonNav != null)
+                    if(nonNavResolver != null)
                     {
-                        ChooseNext(nonNav);
+                        ChooseNext(nonNavResolver);
                         return;
                     }
                     else
