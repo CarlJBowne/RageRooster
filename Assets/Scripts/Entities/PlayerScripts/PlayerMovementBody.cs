@@ -47,14 +47,14 @@ public sealed class PlayerMovementBody : PhysicsBody
     private void Start()
     {
         //Do this again because no matter what I tell this system to do nothing ever works correctly.
-        if (Resolvers.defaultGroundedIndex != null && Ground.InstantSnapToFloor(out RaycastHit hit))
+        if (Resolvers.groundedResolver != null && Ground.InstantSnapToFloor(out RaycastHit hit))
         {
             Ground.Land(hit);
-            Resolvers.Update(Resolvers.defaultGroundedIndex);
+            Resolvers.Update(Resolvers.groundedResolver);
         }
-        else if (Resolvers.defaultAirIndex != null)
+        else if (Resolvers.airborneResolver != null)
         {
-            Resolvers.Update(Resolvers.defaultAirIndex);
+            Resolvers.Update(Resolvers.airborneResolver);
         }
         else enabled = false; //WTF.
 

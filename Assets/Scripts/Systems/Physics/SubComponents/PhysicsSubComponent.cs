@@ -23,7 +23,7 @@ namespace RageRooster.Physics
         /// Initializes the Velocity instance with its owning <see cref="PhysicsBody"/>.
         /// </summary>
         /// <param name="owner">The physics body that owns this velocity container.</param>
-        public void Init(PhysicsBody owner) => body = owner;
+        public virtual void Init(PhysicsBody owner) => body = owner;
 
         /// <summary>
         /// Convenience accessor for the owner's transform.

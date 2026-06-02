@@ -16,16 +16,9 @@ namespace RageRooster.Physics
     /// Abstract base class for movement resolvers. A resolver is responsible for translating a proposed movement vector into collisions, sliding, landing and other movement effects for its owning <see cref="PhysicsBody"/>.
     /// </summary>
     [System.Serializable, RequireComponent(typeof(PhysicsBody)), ExecuteAlways]
-    public abstract partial class PhysicsResolver : MonoBehaviour
+    public abstract class PhysicsResolver : MonoBehaviour
     {
         #region Relations
-
-        /// <summary>
-        /// Initialize this resolver with its owning <see cref="PhysicsBody"/>.
-        /// This must be called by the owner during Awake/Start before using the resolver.
-        /// </summary>
-        /// <param name="body">The owning PhysicsBody.</param>
-        public void Init(PhysicsBody body) => this.Body = body;
 
         /// <summary>
         /// The owning PhysicsBody instance. Available after <see cref="Init"/> is called.
@@ -49,7 +42,6 @@ namespace RageRooster.Physics
         {
             if (!TryGetComponent(out PhysicsBody pb))
             { DestroyImmediate(this); return; }
-            pb.Resolvers.resolvers.Add(this);
             this.Body = pb;
         }
 
@@ -89,7 +81,6 @@ namespace RageRooster.Physics
             hitDistance == -1 || ++Body.Step >= Body.maxPhysicsSteps;
 
         public void ChooseNext() => Body.Resolvers.Update();
-        public void ChooseNext(int target) => Body.Resolvers.Update(target);
         public void ChooseNext(PhysicsResolver target) => Body.Resolvers.Update(target);
 
         protected void Print(Func<string> value)
@@ -108,7 +99,6 @@ namespace RageRooster.Physics
         {
             this.GetExecutionDetails(out bool gameIsEditor, out bool gameIsPlaying, out bool objectSceneIsLoaded);
             if (!gameIsEditor || !objectSceneIsLoaded) return;
-            Body.Resolvers.resolvers.Remove(this);
         }
     }
 
