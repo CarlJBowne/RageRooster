@@ -1,7 +1,10 @@
 using System;
 using UnityEngine;
 using UnityEngine.UIElements;
-
+using Utilities.Xtensions.VisualElements;
+using System.Linq;
+using Unity.VisualScripting;
+using Utilities.Xtensions.Unity;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -12,7 +15,7 @@ namespace RageRooster.Physics
     /// <summary>
     /// Abstract base class for movement resolvers. A resolver is responsible for translating a proposed movement vector into collisions, sliding, landing and other movement effects for its owning <see cref="PhysicsBody"/>.
     /// </summary>
-    [System.Serializable, RequireComponent(typeof(PhysicsBody))]
+    [System.Serializable, RequireComponent(typeof(PhysicsBody)), ExecuteAlways]
     public abstract partial class PhysicsResolver : MonoBehaviour
     {
         #region Relations
@@ -100,20 +103,129 @@ namespace RageRooster.Physics
         {
             this.hideFlags = HideFlags.HideInInspector;
         }
+
+        private void OnDestroy()
+        {
+            this.GetExecutionDetails(out bool gameIsEditor, out bool gameIsPlaying, out bool objectSceneIsLoaded);
+            if (!gameIsEditor || !objectSceneIsLoaded) return;
+            Body.Resolvers.resolvers.Remove(this);
+        }
     }
 
 #if UNITY_EDITOR
-    //[UnityEditor.CustomPropertyDrawer(typeof(PhysicsResolver), true)]
-    //public class Editor : UnityEditor.PropertyDrawer
-    //{
-    //    Foldout foldout;
-    //    ObjectField objField;
-    //    Button GetButton;
-    //
-    //    public override VisualElement CreatePropertyGUI(SerializedProperty property)
-    //    {
-    //
-    //    }
-    //} Implement this later.
+    [UnityEditor.CustomPropertyDrawer(typeof(PhysicsResolver), true)]
+    public class Editor : UnityEditor.PropertyDrawer
+    {
+        SerializedProperty property;
+        VisualElement root;
+        Foldout foldout;
+        Button GetButton;
+    
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        {
+            this.property = property;
+            root = new();
+            foldout = new()
+            {
+                text = property.displayName
+            };
+            foldout.BindProperty(property);
+            root.Add(foldout);
+            GetButton = new(ButtonPress);
+            GetButton.style.width = new Length(40, LengthUnit.Percent);
+            GetButton.style.height = 14;
+            GetButton.style.position = Position.Absolute;
+            GetButton.style.top = 0;
+            GetButton.style.right = 0;
+            root.Add(GetButton);
+
+            Build();
+
+            Undo.undoRedoPerformed += Build;
+
+            return root;
+        }
+
+        void Build()
+        {
+            foldout.contentContainer.Clear();
+            GetButton.text = property.objectReferenceValue != null
+                ? property.objectReferenceValue.GetType().Name.Replace("PhysResolver", "")
+                : "Select";
+            if (property.objectReferenceValue != null)
+                foldout.Add(new InspectorElement(new SerializedObject(property.objectReferenceValue)));
+        }
+
+        void ButtonPress()
+        {
+            GenericMenu Menu = new();
+
+            PhysicsResolver[] existingResolvers = (property.serializedObject.targetObject as Component).GetComponents<PhysicsResolver>();
+
+            for (int i = 0; i < existingResolvers.Length; i++)
+            {
+                int t = i;
+                Menu.AddItem(new($"{i + 1} : {existingResolvers[t].GetType().Name.Replace("PhysResolver", "")}"), 
+                    property.objectReferenceValue == existingResolvers[t], 
+                    () => PostMenuE(existingResolvers[t]));
+            }
+                
+
+            Menu.AddSeparator("");
+
+            Type[] subTypes = GetSubtypes();
+            for (int i = 0; i < subTypes.Length; i++)
+            {
+                int t = i;
+                Menu.AddItem(new($"+ {subTypes[t].Name.Replace("PhysResolver", "")}"), false, () => PostMenuN(subTypes[t]));
+            }
+
+
+            if (property.objectReferenceValue != null)
+            {
+                Menu.AddSeparator("");
+                Menu.AddItem(new("Nullify"), false, PostMenuNull);
+            }
+
+            Menu.ShowAsContext();
+        }
+        void PostMenuE(PhysicsResolver input)
+        {
+            property.objectReferenceValue = input;
+            property.serializedObject.ApplyModifiedProperties();
+            Build();
+        }
+        void PostMenuN(Type targetType)
+        {
+            PhysicsResolver newRes = (property.serializedObject.targetObject as Component).gameObject.AddComponent(targetType) as PhysicsResolver;
+            property.objectReferenceValue = newRes;
+            newRes.hideFlags = HideFlags.HideInInspector;
+            property.serializedObject.ApplyModifiedProperties();
+            Build();
+        }
+        void PostMenuNull()
+        {
+            property.objectReferenceValue = null;
+            property.serializedObject.ApplyModifiedProperties();
+            Build();
+        }
+
+        public static Type[] GetSubtypes()
+        {
+            return AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a =>
+                {
+                    try { return a.GetTypes(); }
+                    catch { return Type.EmptyTypes; }
+                })
+                .Where(t =>
+                    !t.IsAbstract &&
+                    // For interfaces, include implementers; for classes, include strict subclasses only.
+                    t.IsSubclassOf(typeof(PhysicsResolver)) && (t.IsPublic || t.IsNestedPublic || t.IsNestedFamORAssem || t.IsNestedFamily)
+                )
+                .ToArray();
+        }
+
+    }
 #endif 
 }
