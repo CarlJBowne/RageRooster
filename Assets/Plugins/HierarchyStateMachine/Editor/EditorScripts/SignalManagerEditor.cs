@@ -38,6 +38,7 @@ namespace SLS.StateMachineH.Signals
         }
     }
 
+    /*
     [CustomEditor(typeof(SignalManager))]
     public class SignalManagerEditor : UnityEditor.Editor
     {
@@ -136,5 +137,5 @@ namespace SLS.StateMachineH.Signals
             }
         }
     }
-
+    */
 }

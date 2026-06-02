@@ -124,13 +124,6 @@ namespace SLS.StateMachineH.Signals
             manager.Deregister(this);
             Locked = false;
         }
-
-        public static void Transfer(SignalNode_Old O, SignalNode N)
-        {
-            N.signals.Clear();
-            for (int i = 0; i < O.signals.Count; i++)
-                N.signals.Add(O.signals.GetKeyOfIndex(i), O.signals.GetValueOfIndex(i));
-        }
     }
 }
  

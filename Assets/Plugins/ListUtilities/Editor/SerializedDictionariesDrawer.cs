@@ -400,7 +400,7 @@ namespace ListUtilities.Editor
                 CreatePropertySlot(out int newID);
 
                 NamesProperty.GetArrayElementAtIndex(newID).stringValue = value;
-                KeysProperty.GetArrayElementAtIndex(newID).intValue = value.GetHashCode();
+                KeysProperty.GetArrayElementAtIndex(newID).intValue = value.Hash();
                 SerializedProperty valProp = ValuesProperty.GetArrayElementAtIndex(newID);
                 switch (valProp.propertyType)
                 {
@@ -587,7 +587,7 @@ namespace ListUtilities.Editor
                 ContextMenuTarget = NameField;
                 NameField.RegisterValueChangedCallback(ev =>
                 {
-                    KeyField.value = NameField.value.GetHashCode();
+                    KeyField.value = NameField.value.Hash();
                     parent.CallUpdateColors();
                 });
             }

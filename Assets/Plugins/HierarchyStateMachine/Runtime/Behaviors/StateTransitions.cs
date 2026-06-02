@@ -69,4 +69,6 @@ public class StateTransitions : StateTimeline
         if (activeTransition.Animation && activeTransition.TargetState.TryGetComponent(out StateAnimator anim)) anim.BlockForThisCycle();
         activeTransition.TargetState.Enter();
     }
+
+    protected override void OnEnter(State prev, bool isFinal) { }
 }

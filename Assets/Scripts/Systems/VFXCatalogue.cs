@@ -1,4 +1,5 @@
 using AYellowpaper.SerializedCollections;
+using ListUtilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +10,7 @@ public class VFXCatalogue : MonoBehaviour
     /// <summary>
     /// The Dictionary of VFX available.
     /// </summary>
-    public SerializedDictionary<string, ObjectPool> Pools;
+    public HashedListS<ObjectPool> Pools;
 
     /// <summary>
     /// Direct access to this catalogue's ObjectPools via a name.
@@ -23,7 +24,7 @@ public class VFXCatalogue : MonoBehaviour
     /// </summary>
     /// <param name="name">The ID of the VFX. Must be EXACT.</param>
     /// <returns>Returns the PoolableObject of the VFX instance if successful. Use for further logic.</returns>
-    public PoolableObject Pump(string name) => Pools.ContainsKey(name) ? Pools[name].Pump() : null;
+    public PoolableObject Pump(string name) => Pools.TryGet(name, out ObjectPool found) ? found.Pump() : null;
 
     /// <summary>
     /// "Pump" an instance of the desired VFX from the Object Pool, using a name to identify the desired VFX. (Includes Transform Override)
@@ -33,8 +34,8 @@ public class VFXCatalogue : MonoBehaviour
     /// <returns></returns>
     public PoolableObject Pump(string name, Transform at)
     {
-        if(!Pools.ContainsKey(name)) return null;
-        PoolableObject result = Pools[name].Pump();
+        if(!Pools.TryGet(name, out ObjectPool found)) return null;
+        PoolableObject result = found.Pump();
         if (result && at != null)
         {
             result.SetPosition(at.position);
@@ -52,8 +53,8 @@ public class VFXCatalogue : MonoBehaviour
     /// <returns></returns>
     public PoolableObject Pump(string name, Vector3 position, Vector3 rotation = default)
     {
-        if (!Pools.ContainsKey(name)) return null;
-        PoolableObject result = Pools[name].Pump();
+        if (!Pools.TryGet(name, out ObjectPool found)) return null;
+        PoolableObject result = found.Pump();
         if (result)
         {
             result.SetPosition(position);
@@ -67,7 +68,7 @@ public class VFXCatalogue : MonoBehaviour
 
     private void Update()
     {
-        foreach (KeyValuePair<string, ObjectPool> item in Pools)
-            item.Value.Update(Time.deltaTime);
+        for (int i = 0; i < Pools.Count; i++)
+            Pools.ValueFromIndex(i).Update(Time.deltaTime);
     }
 }
