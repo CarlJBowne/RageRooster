@@ -124,6 +124,7 @@ namespace SLS.StateMachineH.Signals
             manager.Deregister(this);
             Locked = false;
         }
+
     }
 }
  

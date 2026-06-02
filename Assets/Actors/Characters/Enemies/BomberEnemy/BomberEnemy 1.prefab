@@ -1743,7 +1743,7 @@ GameObject:
   - component: {fileID: 8398024134655714669}
   - component: {fileID: 1556957864367648040}
   - component: {fileID: 5184049509559812302}
-  - component: {fileID: 3963519380187584082}
+  - component: {fileID: 8078496522515381891}
   m_Layer: 7
   m_Name: Countdown
   m_TagString: Untagged
@@ -1780,7 +1780,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 5184049509559812302}
-  - {fileID: 3963519380187584082}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 255690769701385632}
   <Parent>k__BackingField: {fileID: 255690769701385632}
   <Layer>k__BackingField: 0
@@ -1818,7 +1818,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3963519380187584082
+--- !u!114 &8078496522515381891
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1827,13 +1827,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1663371529739625258}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
   <State>k__BackingField: {fileID: 1556957864367648040}
-  onEntry: 2
-  onEnterName: Punching
-  onEnterTime: 0.2
+  action:
+    type: 3
+    NameID: Punching
+    cachedHash: -217830139
+    layer: -1
+    floatValue1: 0.2
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
   doWhenNotFinal: 0
   animator: {fileID: 3473136968267292163}
 --- !u!1 &1686500306249937576
@@ -7183,11 +7189,11 @@ GameObject:
   - component: {fileID: 8286889519437266281}
   - component: {fileID: 3042019609250107629}
   - component: {fileID: 3335057551916077419}
-  - component: {fileID: 7282141374881328275}
   - component: {fileID: -5626565997039911734}
   - component: {fileID: 2302346554342993742}
   - component: {fileID: 4164844196294852286}
   - component: {fileID: 5909932016510006484}
+  - component: {fileID: 2040197430636609286}
   m_Layer: 7
   m_Name: BomberEnemy 1
   m_TagString: Untagged
@@ -7227,7 +7233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 3042019609250107629}
-  - {fileID: 7282141374881328275}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 0}
   <Layer>k__BackingField: 0
@@ -7237,7 +7243,7 @@ MonoBehaviour:
   <ChildCount>k__BackingField: 2
   <StatesSetup>k__BackingField: 1
   <StateHolder>k__BackingField: {fileID: 167646259101159326}
-  _singalManager: {fileID: 7282141374881328275}
+  _singalManager: {fileID: 0}
 --- !u!136 &287593057092732791
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -7349,7 +7355,6 @@ MonoBehaviour:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
-  immuneTags_Old: []
   immuneTags:
     intValue: 0
   health: 0
@@ -7408,23 +7413,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 6457618748278707287, guid: 4b4f854d76b60394d8c44d23c7f70fb5, type: 3}
-  health: {fileID: 8286889519437266281}
---- !u!114 &7282141374881328275
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6425342840109763559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8e318945a4f6224dad4dd3c599394f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 255690769701385632}
-  globalSignals:
-    serializedList: []
-  queueSignals: 1
 --- !u!114 &-5626565997039911734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7446,17 +7434,18 @@ MonoBehaviour:
   collider: {fileID: 287593057092732791}
   navMeshAgent: {fileID: 987003636535614580}
   centerComputationType: 0
+  outlinable: {fileID: 0}
   references:
     version: 2
     RefIds:
     - rid: 440872388981686272
       type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
       data:
-        Target: {fileID: 0}
+        Target: {fileID: -5626565997039911734}
     - rid: 440872388981686273
       type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
       data:
-        Target: {fileID: 0}
+        Target: {fileID: -5626565997039911734}
 --- !u!114 &2302346554342993742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7547,7 +7536,6 @@ MonoBehaviour:
     velocity: {x: 0, y: 0, z: 0}
     tags:
       intValue: 0
-    oldTags: []
     _displayName: 
   sourceEntity: {fileID: 0}
   onContactEvent:
@@ -7555,6 +7543,27 @@ MonoBehaviour:
     - _Target: {fileID: 3335057551916077419}
       _MemberName: PerformSpawnAndDelete
       _PersistentArguments: []
+--- !u!114 &2040197430636609286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6425342840109763559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab50df3809cbd694b89f4f56cdee59af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalManager
+  <State>k__BackingField: {fileID: 255690769701385632}
+  signals:
+    serializedNames: []
+    serializedKeys: 
+    serializedValues: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+  queueSignals: 1
 --- !u!1 &6444659633783133527
 GameObject:
   m_ObjectHideFlags: 0
@@ -10349,7 +10358,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6423033111755214608}
   - component: {fileID: 5007312227450130214}
-  - component: {fileID: 2895478713366306843}
+  - component: {fileID: 5710867706508935811}
   m_Layer: 7
   m_Name: Idle
   m_TagString: Untagged
@@ -10385,13 +10394,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 2895478713366306843}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 255690769701385632}
   <Parent>k__BackingField: {fileID: 255690769701385632}
   <Layer>k__BackingField: 0
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &2895478713366306843
+--- !u!114 &5710867706508935811
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10400,13 +10409,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8771844971644140426}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
   <State>k__BackingField: {fileID: 5007312227450130214}
-  onEntry: 2
-  onEnterName: Attacking
-  onEnterTime: 0.2
+  action:
+    type: 3
+    NameID: Attacking
+    cachedHash: -2123461723
+    layer: -1
+    floatValue1: 0.2
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
   doWhenNotFinal: 0
   animator: {fileID: 3473136968267292163}
 --- !u!1 &8821387949656344284

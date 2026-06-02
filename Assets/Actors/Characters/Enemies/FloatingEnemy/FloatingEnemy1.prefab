@@ -2448,8 +2448,7 @@ GameObject:
   - component: {fileID: 2820940130030491980}
   - component: {fileID: 2868714309706522240}
   - component: {fileID: 1347906261071004793}
-  - component: {fileID: 4971400543128926430}
-  - component: {fileID: 4064278577796202195}
+  - component: {fileID: 968696573373630394}
   m_Layer: 7
   m_Name: Attacking
   m_TagString: Untagged
@@ -2486,8 +2485,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 1347906261071004793}
-  - {fileID: 4971400543128926430}
-  - {fileID: 4064278577796202195}
+  - {fileID: 0}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 5310199273218309757}
   <Parent>k__BackingField: {fileID: 5310199273218309757}
   <Layer>k__BackingField: 0
@@ -2508,7 +2507,7 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 2868714309706522240}
   sineSize: 0.25
   sineSpeed: 0.5
---- !u!114 &4971400543128926430
+--- !u!114 &968696573373630394
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2517,38 +2516,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2641995060867614448}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bae7993c44668447afe9e92a7cf4735, type: 3}
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
   <State>k__BackingField: {fileID: 2868714309706522240}
-  bulletPool:
-    prefabObject: {fileID: 1536271116400417345, guid: ecd0681902479df4182d2aa655d7ff14,
-      type: 3}
-    defaultPoolDepth: 2
-    canGrow: 1
-    parent: {fileID: 0}
-    autoDisableTime: 10
-    spawnPoint: {fileID: 1948424156029541893}
-    rotate: 1
-    autoSpawnRate: 0
-  rate: 1
-  chanceOfFiringWhenBlocked: 0
---- !u!114 &4064278577796202195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2641995060867614448}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 2868714309706522240}
-  onEntry: 2
-  onEnterName: Attacking
-  onEnterTime: 0.2
+  action:
+    type: 3
+    NameID: Attacking
+    cachedHash: -2123461723
+    layer: -1
+    floatValue1: 0.2
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
   doWhenNotFinal: 0
   animator: {fileID: 3927902439295100161}
 --- !u!1 &2673744444177228503
@@ -3316,11 +3296,11 @@ GameObject:
   - component: {fileID: 1171501913040398372}
   - component: {fileID: 8213563936651183793}
   - component: {fileID: 6973894380732621090}
-  - component: {fileID: 4232153444660359350}
   - component: {fileID: 1120702831640861729}
   - component: {fileID: 185259028397660553}
   - component: {fileID: 8399144936975446557}
   - component: {fileID: 6124407262506827132}
+  - component: {fileID: 922165053459414885}
   m_Layer: 7
   m_Name: FloatingEnemy1
   m_TagString: Untagged
@@ -3361,7 +3341,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 0}
-  - {fileID: 4232153444660359350}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 0}
   <Layer>k__BackingField: 0
@@ -3371,7 +3351,7 @@ MonoBehaviour:
   <ChildCount>k__BackingField: 2
   <StatesSetup>k__BackingField: 1
   <StateHolder>k__BackingField: {fileID: 4185788662303831795}
-  _singalManager: {fileID: 4232153444660359350}
+  _singalManager: {fileID: 0}
 --- !u!95 &3927902439295100161
 Animator:
   serializedVersion: 7
@@ -3500,22 +3480,6 @@ MonoBehaviour:
   - {fileID: 925324475207166938, guid: 8e07c4e22d1e1e544836d1ad9b0252b3, type: 3}
   spawnForce: 5
   itemChance: 0.4
---- !u!114 &4232153444660359350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3500639052055708832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8e318945a4f6224dad4dd3c599394f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 5310199273218309757}
-  globalSignals:
-    serializedList: []
-  queueSignals: 1
 --- !u!114 &1120702831640861729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3537,6 +3501,7 @@ MonoBehaviour:
   collider: {fileID: 7145112600956375108}
   navMeshAgent: {fileID: 0}
   centerComputationType: 0
+  outlinable: {fileID: 0}
   references:
     version: 2
     RefIds:
@@ -3631,6 +3596,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EntityActivity
   disableComponents: []
+--- !u!114 &922165053459414885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3500639052055708832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab50df3809cbd694b89f4f56cdee59af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalManager
+  <State>k__BackingField: {fileID: 5310199273218309757}
+  signals:
+    serializedNames: []
+    serializedKeys: 
+    serializedValues: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+  queueSignals: 1
 --- !u!1 &3607626698313877417
 GameObject:
   m_ObjectHideFlags: 0
@@ -4145,7 +4131,7 @@ GameObject:
   - component: {fileID: 2631683644928377087}
   - component: {fileID: 2014795069692124083}
   - component: {fileID: 5462495818761838655}
-  - component: {fileID: 8492769196140495081}
+  - component: {fileID: 3170738414371811766}
   m_Layer: 7
   m_Name: Floating
   m_TagString: Untagged
@@ -4182,7 +4168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 5462495818761838655}
-  - {fileID: 8492769196140495081}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 5310199273218309757}
   <Parent>k__BackingField: {fileID: 5310199273218309757}
   <Layer>k__BackingField: 0
@@ -4203,7 +4189,7 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 2014795069692124083}
   sineSize: 0.25
   sineSpeed: 0.5
---- !u!114 &8492769196140495081
+--- !u!114 &3170738414371811766
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4212,13 +4198,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 4242566068978263145}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
   <State>k__BackingField: {fileID: 2014795069692124083}
-  onEntry: 2
-  onEnterName: Walking
-  onEnterTime: 0.2
+  action:
+    type: 3
+    NameID: Walking
+    cachedHash: 1744665739
+    layer: -1
+    floatValue1: 0.2
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
   doWhenNotFinal: 0
   animator: {fileID: 3927902439295100161}
 --- !u!1 &4248851303409065686

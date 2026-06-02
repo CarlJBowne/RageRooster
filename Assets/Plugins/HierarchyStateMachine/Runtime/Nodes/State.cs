@@ -295,7 +295,7 @@ namespace SLS.StateMachineH
                 {
                     SerializedObject behaviorSO = new(Behaviors[i]);
                     ApplyPropertyOverride(nameof(StateBehavior.State), true, behaviorSO);
-                    if (Behaviors[i] is StateAnimator_Legacy) ApplyPropertyOverride("animator", false, behaviorSO);
+                    if (Behaviors[i] is StateAnimator) ApplyPropertyOverride("animator", false, behaviorSO);
                     if (Behaviors[i] is StateTimeline) ApplyPropertyOverride("timeline", false, behaviorSO);
                 }
 

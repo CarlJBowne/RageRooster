@@ -256,7 +256,11 @@ namespace SLS.StateMachineH
 
         }
 
-        private void OnDisable() => state.Machine.AfterStateTransition -= UpdateActiveRow;
+        private void OnDisable()
+        {
+            if (state.Machine == null) return;
+            state.Machine.AfterStateTransition -= UpdateActiveRow;
+        }
 
 
         public override void OnInspectorGUI()

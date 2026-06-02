@@ -404,6 +404,11 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -425,6 +430,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -637,9 +643,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4264712486489549120}
   - component: {fileID: 1039329718445696152}
-  - component: {fileID: 548331688421527683}
-  - component: {fileID: 616018993740020326}
-  - component: {fileID: 2257087215960846992}
+  - component: {fileID: 805109843727267373}
+  - component: {fileID: 2059950567302604147}
   m_Layer: 0
   m_Name: Talking
   m_TagString: Untagged
@@ -675,14 +680,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 616018993740020326}
-  - {fileID: 2257087215960846992}
+  - {fileID: 0}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 8705032835185711965}
   <Parent>k__BackingField: {fileID: 8705032835185711965}
   <Layer>k__BackingField: 0
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &548331688421527683
+--- !u!114 &805109843727267373
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -691,33 +696,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1205560365441503824}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  oldState: {fileID: 0}
-  newState: {fileID: 1039329718445696152}
-  children: []
---- !u!114 &616018993740020326
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1205560365441503824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8705032835185711965}
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
   <State>k__BackingField: {fileID: 1039329718445696152}
   signals:
-    serializedList:
-    - Key: OnSpeakerEvent
-      Value:
-        _PersistentCalls: []
-  lockOnEnter: 0
---- !u!114 &2257087215960846992
+    serializedNames:
+    - OnSpeakerEvent
+    serializedKeys: 29cd3ad5
+    serializedValues:
+    - _PersistentCalls: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &2059950567302604147
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -726,14 +718,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1205560365441503824}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8705032835185711965}
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
   <State>k__BackingField: {fileID: 1039329718445696152}
-  onEntry: 2
-  onEnterName: Talking
-  onEnterTime: 0.1
+  action:
+    type: 3
+    NameID: Talking
+    cachedHash: 1444242966
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
   doWhenNotFinal: 0
   animator: {fileID: 5713340764390724968}
 --- !u!1 &1285967677239413581
@@ -2816,10 +2813,9 @@ GameObject:
   - component: {fileID: 6965699761546536269}
   - component: {fileID: 5713340764390724968}
   - component: {fileID: 3444734424889381964}
-  - component: {fileID: 3192361171914779862}
-  - component: {fileID: 7345773605673554308}
+  - component: {fileID: 8790863675259932573}
   m_Layer: 8
-  m_Name: NPC_Froggy
+  m_Name: pf_NPC_Froggy
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2857,7 +2853,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 7345773605673554308}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 0}
   <Layer>k__BackingField: 0
@@ -2867,6 +2863,7 @@ MonoBehaviour:
   <ChildCount>k__BackingField: 2
   <StatesSetup>k__BackingField: 1
   <StateHolder>k__BackingField: {fileID: 7965652468623851697}
+  _singalManager: {fileID: 0}
 --- !u!114 &3810066800691453347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2928,7 +2925,7 @@ MonoBehaviour:
     Path: event:/SFX/NPC/FrogSpeaking
 --- !u!95 &5713340764390724968
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2942,6 +2939,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -2968,7 +2966,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &3192361171914779862
+--- !u!114 &8790863675259932573
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2977,30 +2975,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 6454999864905180250}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Script: {fileID: 11500000, guid: ab50df3809cbd694b89f4f56cdee59af, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  oldState: {fileID: 0}
-  newState: {fileID: 0}
-  children:
-  - {fileID: 1406906463267403306}
-  - {fileID: 548331688421527683}
---- !u!114 &7345773605673554308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6454999864905180250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8e318945a4f6224dad4dd3c599394f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8705032835185711965}
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalManager
   <State>k__BackingField: {fileID: 8705032835185711965}
-  globalSignals:
-    serializedList: []
+  signals:
+    serializedNames: []
+    serializedKeys: 
+    serializedValues: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
   queueSignals: 1
 --- !u!1 &6600183530542937682
 GameObject:
@@ -3891,9 +3876,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7721671574257558559}
   - component: {fileID: 2741041052176548542}
-  - component: {fileID: 1406906463267403306}
-  - component: {fileID: 3868711808145688828}
-  - component: {fileID: 6655575387790592301}
+  - component: {fileID: 4738587074500193024}
+  - component: {fileID: 1330192355693118226}
   m_Layer: 0
   m_Name: Idle
   m_TagString: Untagged
@@ -3929,14 +3913,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 3868711808145688828}
-  - {fileID: 6655575387790592301}
+  - {fileID: 0}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 8705032835185711965}
   <Parent>k__BackingField: {fileID: 8705032835185711965}
   <Layer>k__BackingField: 0
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &1406906463267403306
+--- !u!114 &4738587074500193024
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3945,33 +3929,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 8861284293700644219}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eec9429337bb7e346a07f0a600d9cc91, type: 3}
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  oldState: {fileID: 0}
-  newState: {fileID: 2741041052176548542}
-  children: []
---- !u!114 &3868711808145688828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8861284293700644219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8705032835185711965}
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
   <State>k__BackingField: {fileID: 2741041052176548542}
   signals:
-    serializedList:
-    - Key: 
-      Value:
-        _PersistentCalls: []
-  lockOnEnter: 0
---- !u!114 &6655575387790592301
+    serializedNames:
+    - 
+    serializedKeys: 00000000
+    serializedValues:
+    - _PersistentCalls: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &1330192355693118226
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3980,14 +3951,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 8861284293700644219}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  <Machine>k__BackingField: {fileID: 8705032835185711965}
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
   <State>k__BackingField: {fileID: 2741041052176548542}
-  onEntry: 2
-  onEnterName: Idle
-  onEnterTime: 0.1
+  action:
+    type: 3
+    NameID: Idle
+    cachedHash: 2081823275
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
   doWhenNotFinal: 0
   animator: {fileID: 5713340764390724968}
 --- !u!1 &8900264931066353175
@@ -4070,6 +4046,11 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 3
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4091,6 +4072,7 @@ SkinnedMeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
