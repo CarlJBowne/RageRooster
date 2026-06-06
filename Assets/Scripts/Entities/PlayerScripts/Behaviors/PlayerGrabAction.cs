@@ -7,6 +7,7 @@ using SLS.StateMachineH.Timelines;
 using TMPro;
 using UltEvents;
 using UnityEngine;
+using Utilities.Xtensions.Unity;
 
 public class PlayerGrabAction : PlayerStateBehavior
 {
@@ -86,34 +87,32 @@ public class PlayerGrabAction : PlayerStateBehavior
             SampleCurve(turningSpeedCurve, out float turningSpeed);
             SampleCurve(verticalShiftCurve, out float verticalShift);
 
-            if (turningSpeed > 0) Player.MovementBody.DirectionSet((storedTargetPosition - Player.Center).XZ(), turningSpeed);
+            if (turningSpeed > 0) Player.MovementBody.Direction.Set
+                    ((storedTargetPosition - Player.Center).XZ(), turningSpeed * Time.fixedDeltaTime);
 
-            Vector3 targetVelocity = Player.MovementBody.velocity;
-            float targetForwardSpeed = Player.MovementBody.CurrentSpeed;
+            Vector3 targetVelocity = Player.MovementBody.Velocity.Local;
 
 
-            if (forwardSpeedInfluence > 0f) targetForwardSpeed = horizontalDistance > horizontalThreshold
-                    ? Mathf.Lerp(targetForwardSpeed, forwardSpeed, forwardSpeedInfluence)
+            if (forwardSpeedInfluence > 0f) targetVelocity.z = horizontalDistance > horizontalThreshold
+                    ? Mathf.Lerp(targetVelocity.z, forwardSpeed, forwardSpeedInfluence)
                     : 0;
 
-            Player.MovementBody.CurrentSpeed = targetForwardSpeed;
-            targetVelocity.x = Player.Forward.x * targetForwardSpeed;
-            targetVelocity.z = Player.Forward.z * targetForwardSpeed;
-
-            //Simpsons Comic Book Guy voice: "This is a big fat steaming Hack, but I'm strapped for time and don't want to deal with deltaTime nonsense."
+            //Simpsons Comic Book Guy voice:
+            //"This is a big fat steaming Hack, but I'm strapped for time and don't want to deal with deltaTime nonsense."
 
             if (verticalShift > 0f && verticalDistance > 0)
             {
                 //targetVelocity.y used as holder for Position calculations
                 targetVelocity.y = Player.Transform.position.y;
-                targetVelocity.y = targetVelocity.y.MoveTowards(verticalShift * Time.fixedDeltaTime, storedTargetPosition.y - Player.Collider.center.y);
+                targetVelocity.y = targetVelocity.y.Move(verticalShift * Time.fixedDeltaTime, storedTargetPosition.y - Player.Collider.center.y);
                 Player.MovementBody.Position = new(Player.Position.x, targetVelocity.y, Player.Position.z);
                 targetVelocity.y = 0;
             }
 
 
 
-            Player.MovementBody.velocity = new(targetVelocity.x, targetVelocity.y, targetVelocity.z);
+            Player.MovementBody.Velocity.f = targetVelocity.z;
+            Player.MovementBody.Velocity.u = targetVelocity.y;
 
 
             if (elapsedTime > maxAttemptTime || (horizontalDistance <= horizontalThreshold && angleDifference <= directionalThreshold && (verticalDistance <= verticalThreshold || verticalShift == 0))) //CHANGE PHASE

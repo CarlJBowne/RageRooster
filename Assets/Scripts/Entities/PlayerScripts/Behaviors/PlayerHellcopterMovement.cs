@@ -1,14 +1,16 @@
-using EditorAttributes;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using EditorAttributes;
+using RageRooster.Physics;
 using SLS.StateMachineH;
+using UnityEngine;
+using Utilities.Xtensions.Unity;
 
 public class PlayerHellcopterMovement : PlayerAirborneMovement
 {
 
     //public new PlayerHellcopterMovement fallState;
-    VolcanicVent currentVent = null; 
+    VolcanicVent currentVent = null;
 
     /*
      Parameters inherited from PlayerAirborneMovement that are irrelevant and should be hidden:
@@ -20,28 +22,29 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
      */
 
 
-    public override void VerticalMovement(out float? result)
+    public override bool VerticalMovement(out float result)
     {
         result = ApplyGravity(gravity, terminalVelocity, flatGravity);
         VerticalUpwards(ref result);
-        if (playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref result);
+        if (Player.MovementBody.Velocity.y <= fallStateThreshold) Fall(ref result);
+        return true;
     }
 
-    protected override void VerticalUpwards(ref float? Y)
+    protected override void VerticalUpwards(ref float Y)
     {
-        if (playerMovementBody.JumpStateCurrent == PlayerMovementBody.JumpState.Decelerating)
+        if (Player.MovementBody.Ground.value == GroundState.Values.Decelerating)
         {
             Y = currentVent.hellcopterSpeed;
-            if (transform.position.y >= targetHeight) playerMovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
-        } 
-        else if (playerMovementBody.JumpStateCurrent == PlayerMovementBody.JumpState.Falling && playerMovementBody.velocity.y <= fallStateThreshold) Fall(ref Y);
+            if (transform.position.y >= targetHeight) Player.MovementBody.UnLand(GroundState.Values.Falling);
+        }
+        else if (Player.MovementBody.Ground.value == GroundState.Values.Falling && Player.MovementBody.Velocity.y <= fallStateThreshold) Fall(ref Y);
 
     }
 
-    protected override void Fall(ref float? Y)
+    protected override void Fall(ref float Y)
     {
-        if (playerMovementBody.velocity.y > fallStateThreshold) Y = fallStateThreshold;
-        playerMovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
+        if (Player.MovementBody.Velocity.y > fallStateThreshold) Y = fallStateThreshold;
+        Player.MovementBody.UnLand(GroundState.Values.Falling);
         if (fallState != null) fallState.Enter();
     }
 
@@ -50,36 +53,32 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
     {
         if (!isUpward) return;
 
-        currentVent = playerMovementBody.CurrentVent;
+        currentVent = Player.MovementBody.CurrentVent;
         targetHeight = currentVent.transform.position.y + currentVent.hellcopterTargetHeight;
 
-        playerMovementBody.VelocitySet(y: currentVent.hellcopterSpeed);
+        Player.MovementBody.Velocity.y = currentVent.hellcopterSpeed;
         targetHeight -= (currentVent.hellcopterSpeed.P()) / (2 * gravity * Time.deltaTime);
         if (targetHeight <= transform.position.y)
         {
-            playerMovementBody.VelocitySet(y: Mathf.Sqrt(2 * gravity * currentVent.hellcopterTargetHeight));
+            Player.MovementBody.Velocity.y = Mathf.Sqrt(2 * gravity * currentVent.hellcopterTargetHeight);
         }
 
 #if UNITY_EDITOR
-        playerMovementBody.jumpMarkers = new()
-                {
-                    transform.position,
-                    transform.position + Vector3.up * targetHeight
-                };
+        Player.MovementBody.Debug.PlaceJumpMarker(targetHeight, 0);
 #endif
     }
 
     protected override void StartFrom_Decel()
     {
-        
+
     }
 
     protected override void StartFrom_Falling()
     {
-        playerMovementBody.VelocitySet(y: playerMovementBody.velocity.y.Max(0));
+        Player.MovementBody.Velocity.y = Player.MovementBody.Velocity.y.Max(0);
     }
 
     public override void BeginJump() => throw new System.Exception("Don't Use This Method.");
     public override void BeginJump(float power, float height, float minHeight) => throw new System.Exception("Don't Use This Method.");
-    public override void BeginJump(PlayerMovementBody.JumpState newState) => throw new System.Exception("Don't Use This Method.");
+    public override void BeginJump(GroundState.Values newState) => throw new System.Exception("Don't Use This Method.");
 }

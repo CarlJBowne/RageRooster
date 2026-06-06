@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
+using Utilities.Xtensions.Unity;
 
 
 namespace SLS.StateMachineH.Timelines
@@ -86,36 +87,29 @@ namespace SLS.StateMachineH.Timelines
             setVerticalInfluence *= exitFadeFactor;
 
             //Horizontal Movement
-            Vector3 output = Player.MovementBody.velocity;
             Vector3 controlVector = Player.Controller.camAdjustedMovement;
-
-            float targetSpeed = Player.MovementBody.CurrentSpeed;
 
             // Only set direction if we have meaningful input and turnability is non-zero
             if (turnability > 0f && controlVector.sqrMagnitude > 0.000001f)
-                Player.MovementBody.DirectionSet(controlVector.normalized, turnability);
+                Player.MovementBody.Direction.Set(controlVector.normalized, turnability * Time.fixedDeltaTime);
 
-            Vector3 forwardDirection = Player.Transform.forward;
-            Vector3 rightDirection = Player.Transform.right;
-            targetSpeed = controlVector.sqrMagnitude > 0f
-                ? targetSpeed.MoveTowards(controlVector.magnitude * speedChange * (delta * 50f), maxForwardMovement)
-                : targetSpeed.MoveTowards(speedChange * (delta * 50f), minForwardMovement);
+            Player.MovementBody.Velocity.f = controlVector.sqrMagnitude > 0f && Vector3.Dot(controlVector, Player.Forward) > 0f
+                ? Player.MovementBody.Velocity.f.Move(speedChange * (delta * 50f), maxForwardMovement)
+                : Player.MovementBody.Velocity.f.Move(speedChange * (delta * 50f), minForwardMovement);
 
-            Player.MovementBody.CurrentSpeed = targetSpeed;
-            output = (forwardDirection * targetSpeed) + (rightDirection * sidewaysMovement) + (Vector3.up * output.y);
+            Player.MovementBody.Velocity.s = sidewaysMovement;
 
             // Vertical Movement
-            float Y = Player.MovementBody.velocity.y;
+            float Y = Player.MovementBody.Velocity.y;
             if (!Mathf.Approximately(0f, verticalAcceleration))
                 Y += verticalAcceleration * delta;
             if (setVerticalInfluence > 0f)
                 Y = Mathf.Lerp(Y, setVerticalVelocity, setVerticalInfluence);
-            if (Player.MovementBody.isGrounded && Y < 0) Y = 0;
-            if (Player.MovementBody.isGrounded && Y > 0) Player.MovementBody.UnLand();
-            output.y = Y;
+            if (Player.MovementBody.Ground && Y < 0) Y = 0;
+            if (Player.MovementBody.Ground && Y > 0) Player.MovementBody.UnLand();
+            Player.MovementBody.Velocity.y = Y;
 
             //DebugRR.DebugTextOverlay.AppendNewLine($"TMA : Output: {output}");
-            Player.MovementBody.VelocitySet(output.x, output.y, output.z);
         }
 
         private static AnimationCurve Curve(float input) => new(new Keyframe(0, input));

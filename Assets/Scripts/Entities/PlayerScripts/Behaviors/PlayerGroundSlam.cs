@@ -13,7 +13,7 @@ public class PlayerGroundSlam : PlayerMovementEffector
 
     protected override void OnAwake() => attackCollider = GetComponent<SphereCollider>();
 
-    protected override void OnFixedUpdate() => attackCollider.center = Vector3.up * (.6f + (playerMovementBody.velocity.y * Time.fixedDeltaTime * 2));
+    protected override void OnFixedUpdate() => attackCollider.center = Vector3.up * (.6f + (Player.MovementBody.Velocity.y * Time.fixedDeltaTime * 2));
 
     //public override void VerticalMovement(out float? result)
     //{

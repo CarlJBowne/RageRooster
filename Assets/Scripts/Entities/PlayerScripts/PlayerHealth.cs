@@ -17,7 +17,7 @@ public class PlayerHealth : Health
     public float inFallDownPitTime = 1;
     public float inDeathTime = 2;
 
-    private CoroutinePlus invincibility;
+    private Coroutine invincibility;
     private new Collider collider;
 
     #endregion Instance Variables
@@ -49,7 +49,7 @@ public class PlayerHealth : Health
         if (health != 0)
         {
             if (Player.StateMachine.Aiming) Player.Ranged.ExitAimingAux();
-            CoroutinePlus.Begin(ref invincibility, InvinceEnum(invincibilityTime), this);
+            Coroutine.Begin(ref invincibility, InvinceEnum(invincibilityTime), this);
             damagable = false;
             if (attack == Attack.Tags.Pit)
             {
@@ -60,7 +60,7 @@ public class PlayerHealth : Health
             {
                 damageStateWham.Enter();
                 Player.MovementBody.UnLand();
-                Player.MovementBody.VelocitySet(y: 14);
+                Player.MovementBody.Velocity.y = 14;
             }
             else damageState.Enter();
         }
@@ -75,7 +75,7 @@ public class PlayerHealth : Health
         {
             damageStateWham.Enter();
             Player.MovementBody.UnLand();
-            Player.MovementBody.VelocitySet(y: 14);
+            Player.MovementBody.Velocity.y = 14;
         }
         else Player.Death();
     }
