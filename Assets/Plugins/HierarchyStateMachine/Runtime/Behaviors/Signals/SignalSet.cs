@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using SLS.StateMachineH.Utils;
 
 #if ULT_EVENTS
 using EVENT = UltEvents.UltEvent;
@@ -9,15 +10,13 @@ using EVENT = UltEvents.UltEvent;
 using EVENT = UnityEngine.Events.UnityEvent;
 #endif
 
-using SLS.StateMachineH.SerializedDictionary;
-
 namespace SLS.StateMachineH.Signals
 {
     /// <summary>  
     /// Represents a dictionary of signals, where each signal is associated with a unique string key.  
     /// </summary>  
     [Serializable]
-    public class SignalSet : SerializedDictionary<string, EVENT> { }
+    internal class SignalSet : SerializedDictionary<string, EVENT> { }
 
     /// <summary>  
     /// Represents a signal with properties for queue time, lock behavior, and duplicate allowance.  

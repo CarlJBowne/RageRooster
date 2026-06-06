@@ -20,7 +20,7 @@ public class AttackSourceMulti : MonoBehaviour, IAttackSource
     {
         Attack result = attacks[currentAttackID];
         result.velocity = transform.TransformDirection(result.velocity);
-        result.tags.Combine(additionalTags);
+        result.tags += additionalTags;
         return result;
     }
 

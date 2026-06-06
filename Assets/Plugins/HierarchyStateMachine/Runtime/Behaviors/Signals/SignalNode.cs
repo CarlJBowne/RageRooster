@@ -18,7 +18,7 @@ namespace SLS.StateMachineH.Signals
         /// <summary>  
         /// The signals associated with this node.  
         /// </summary>  
-        public SignalSet signals = new();
+        [SerializeField] internal SignalSet signals = new();
 
         /// <summary>  
         /// Indicates whether the node should lock itself upon entering a state.  
@@ -36,6 +36,19 @@ namespace SLS.StateMachineH.Signals
         /// <param name="name">The name of the signal.</param>  
         /// <returns>The event associated with the signal name.</returns>  
         public EVENT this[string name] => signals[name];
+        /// <summary>
+        /// Attempts to retrieve an event associated with the specified signal name.
+        /// </summary>
+        public bool TryGet(string name, out EVENT Result) => signals.TryGetValue(name, out Result);
+        /// <summary>
+        /// Returns whether this Signal Node contains an event with the specified name.
+        /// </summary>
+        public bool ContainsKey(string name) => signals.ContainsKey(name);
+        /// <summary>
+        /// Removes the event with the specified name.
+        /// </summary>
+        /// <param name="name"></param>
+        public void Remove(string name) => signals.Remove(name); 
 
         /// <summary>  
         /// Fires a signal if it exists and meets the conditions for invocation.  

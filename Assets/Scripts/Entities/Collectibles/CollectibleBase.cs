@@ -27,6 +27,17 @@ namespace RageRooster.Entities.Collectibles
 
         protected virtual void Awake()
         {
+            if (string.IsNullOrEmpty(ID))
+            {
+#if UNITY_EDITOR
+                Debug.LogWarning($"This {this.GetType().Name} Collectible ({gameObject.name}) is not regsitered. It will work for the time being, but it will disable itself in the final build and in testing will not permanently disappear once collected.");
+                return;
+#else
+            gameObject.SetActive(false);
+            return;
+#endif
+            }
+
             if (targetSavedCollectible.isCollected[targetRegistryList.IndexOf(ID)])
                 gameObject.SetActive(false);
         }
@@ -53,7 +64,7 @@ namespace RageRooster.Entities.Collectibles
             else
                 targetRegistryList.Add(input);
             ID = input;
-            EditorUtility.SetDirty(SavedValueRegistry.Get());
+            EditorUtility.SetDirty(SavedValueRegistry.Get);
             EditorUtility.SetDirty(this);
         }
 

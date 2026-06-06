@@ -13,7 +13,7 @@ namespace RageRooster.Obsolete.Zones
         public ZoneRoot root;
 
         public List<ZoneTransition> transitionsTo;
-        public CoroutinePlus task;
+        public Coroutine task;
         public AsyncOperation async;
 
         private readonly ZoneManager manager;
