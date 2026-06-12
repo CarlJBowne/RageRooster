@@ -12,7 +12,7 @@ using UnityEngine.AI;
 using UnityEngine.UIElements;
 using Utilities.Xtensions;
 using Utilities.Xtensions.Unity;
-using static UnityEngine.Rendering.DebugUI;
+using ListUtilities;
 
 namespace RageRooster.Physics
 {
@@ -198,20 +198,15 @@ namespace RageRooster.Physics
             Velocity.Init(this);
             Debug.Init(this);
             Resolvers.Init(this);
-            for (int i = 0; i < Resolvers.ResolverCount; i++)
-            {
-                Resolvers[i]?.Init(this);
-                Resolvers[i]?.Start();
-            }
 
-            if (Resolvers.defaultGroundedIndex != -1 && Ground.InstantSnapToFloor(out RaycastHit hit))
+            if (Resolvers.groundedResolver != null && Ground.InstantSnapToFloor(out RaycastHit hit))
             {
                 Ground.Land(hit);
-                Resolvers.Update(Resolvers.defaultGroundedIndex);
+                Resolvers.Update(Resolvers.groundedResolver);
             }
-            else if (Resolvers.defaultAirIndex != -1)
+            else if (Resolvers.airborneResolver != null)
             {
-                Resolvers.Update(Resolvers.defaultAirIndex);
+                Resolvers.Update(Resolvers.airborneResolver);
             }
             else enabled = false; //WTF.
         }
@@ -288,7 +283,7 @@ namespace RageRooster.Physics
         public Vector3 Position
         {
             get => BodyState == BodyStates.Enabled
-                ? Resolvers.Active is not PhysicsResolver.NavMesh N
+                ? Resolvers.Active is not NavMeshPhysResolver N
                     ? RB.position
                     : N.NavAgent.nextPosition
                 : transform.position;
@@ -296,7 +291,7 @@ namespace RageRooster.Physics
             {
                 if (BodyState != BodyStates.Enabled) return;
 
-                if (Resolvers.Active is PhysicsResolver.NavMesh N) N.NavAgent.nextPosition = value;
+                if (Resolvers.Active is NavMeshPhysResolver N) N.NavAgent.nextPosition = value;
                 else RB.MovePosition(value);
             }
         }
@@ -473,8 +468,8 @@ namespace RageRooster.Physics
                 TabView.Add(ConfigTab);
 
                 ResolverField = new(serializedObject.FindProperty(nameof(PhysicsBody.Resolvers).BackingField()).FindPropertyRelative("resolvers"));
-                GroundResolverField = new(serializedObject.FindProperty(nameof(PhysicsBody.Resolvers).BackingField()).FindPropertyRelative(nameof(ResolverTree.defaultGroundedIndex).BackingField()));
-                AirResolverField = new(serializedObject.FindProperty(nameof(PhysicsBody.Resolvers).BackingField()).FindPropertyRelative(nameof(ResolverTree.defaultAirIndex).BackingField()));
+                GroundResolverField = new(serializedObject.FindProperty(nameof(PhysicsBody.Resolvers).BackingField()).FindPropertyRelative(nameof(ResolverTree.groundedResolver).BackingField()));
+                AirResolverField = new(serializedObject.FindProperty(nameof(PhysicsBody.Resolvers).BackingField()).FindPropertyRelative(nameof(ResolverTree.airborneResolver).BackingField()));
 
                 GroundCheckBufferField = new(serializedObject.FindProperty
                     (nameof(Ground).BackingField()).FindPropertyRelative(nameof(GroundState.groundCheckBuffer).BackingField()));
@@ -566,7 +561,7 @@ namespace RageRooster.Physics
                 // Update textual info; guard with try/catch to avoid throwing during domain reloads
                 try
                 {
-                    ResolverLabel.text = $"{This.Resolvers.IndexOf(This.Resolvers.Active)} ({This.Resolvers.Active.GetType().Name})";
+                    ResolverLabel.text = This.Resolvers.Active.GetType().Name.Replace("PhysResolver", "");
                     LVelocityLabel.text = $" F:{This.Velocity.f}, U:{This.Velocity.u}, S:{This.Velocity.s}";
                     GVelocityLabel.text = $" X:{This.Velocity.x}, Y:{This.Velocity.y}, Z:{This.Velocity.z}";
                     DirectionLabel.text = This.Direction.value.ToString("F3");

@@ -139,21 +139,21 @@ public class PlayerGroundMovementComplex : PlayerMovementEffector
         Player.MovementBody.Land(collideResult);
         State.Enter();
         canRoll = true;
-        if (onEntry == EntryAnimAction.Play) Player.Animator.Play(onEnterName);
-        if (onEntry == EntryAnimAction.CrossFade) Player.Animator.CrossFade(onEnterName, onEnterTime);
-        if (onEntry == EntryAnimAction.Trigger) Player.Animator.SetTrigger(onEnterName);
+        //if (onEntry == EntryAnimAction.Play) Player.Animator.Play(onEnterName);
+        //if (onEntry == EntryAnimAction.CrossFade) Player.Animator.CrossFade(onEnterName, onEnterTime);
+        //if (onEntry == EntryAnimAction.Trigger) Player.Animator.SetTrigger(onEnterName);
     }
-    public void LandInto(StateAnimator.EntryAnimAction onEntry, string onEnterName, float onEnterTime)
-    {
-        bool groundCollide = Player.MovementBody.Ground.Check(out AnchorPoint collideResult);
-        if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
-        Player.MovementBody.Land(collideResult);
-        State.Enter();
-        canRoll = true;
-        if (onEntry == EntryAnimAction.Play) Player.Animator.Play(onEnterName);
-        if (onEntry == EntryAnimAction.CrossFade) Player.Animator.CrossFade(onEnterName, onEnterTime);
-        if (onEntry == EntryAnimAction.Trigger) Player.Animator.SetTrigger(onEnterName);
-    }
+    //public void LandInto(StateAnimator.EntryAnimAction onEntry, string onEnterName, float onEnterTime)
+    //{
+    //    bool groundCollide = Player.MovementBody.Ground.Check(out AnchorPoint collideResult);
+    //    if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
+    //    Player.MovementBody.Land(collideResult);
+    //    State.Enter();
+    //    canRoll = true;
+    //    if (onEntry == EntryAnimAction.Play) Player.Animator.Play(onEnterName);
+    //    if (onEntry == EntryAnimAction.CrossFade) Player.Animator.CrossFade(onEnterName, onEnterTime);
+    //    if (onEntry == EntryAnimAction.Trigger) Player.Animator.SetTrigger(onEnterName);
+    //}
 
         public void StartRoll()
     {
@@ -194,13 +194,13 @@ public class PlayerGroundMovementComplex : PlayerMovementEffector
 
 
 
-    public StateAnimator.EntryAnimAction onEntry;
-    [SerializeField, ShowField(nameof(__showOnEnterName))] public string onEnterName;
-    [SerializeField, ShowField(nameof(__showOnEnterTime))] public float onEnterTime;
+    //public StateAnimator.EntryAnimAction onEntry;
+    //[SerializeField, ShowField(nameof(__showOnEnterName))] public string onEnterName;
+    //[SerializeField, ShowField(nameof(__showOnEnterTime))] public float onEnterTime;
 
-    #region Edtior
-    private bool __showOnEnterName => onEntry != EntryAnimAction.None;
-    private bool __showOnEnterTime => onEntry == EntryAnimAction.CrossFade;
-
-    #endregion 
+    //#region Edtior
+    //private bool __showOnEnterName => onEntry != EntryAnimAction.None;
+    //private bool __showOnEnterTime => onEntry == EntryAnimAction.CrossFade;
+    //
+    //#endregion 
 }

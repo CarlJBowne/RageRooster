@@ -9,6 +9,7 @@ using Utilities.Singletons;
 using AYellowpaper.SerializedCollections;
 using RageRooster.Systems.SaveSystem;
 using RageRooster.RoomSystem;
+using SLS.StateMachineH.Signals;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerStateMachine : StateMachine
@@ -42,8 +43,8 @@ public class PlayerStateMachine : StateMachine
 
     static PlayerStateMachine instance;
     public static PlayerStateMachine Get => Singleton.Get(ref instance);
-    public static bool TryGet(out PlayerStateMachine res) => Singleton.TryGet(Get, out res); 
-    
+    public static bool TryGet(out PlayerStateMachine res) => Singleton.TryGet(Get, out res);
+
 
     public void HaveDestroyed() { }
 
@@ -118,19 +119,4 @@ public class PlayerStateMachine : StateMachine
     }
 
     public void DeathIfAtZero() { if (Player.Health.playerObject.GetCurrentHealth() == 0) Player.Death(); }
-
-#if UNITY_EDITOR
-    protected override void Update()
-    {
-        base.Update();
-        //queuedSignals = signalQueue.ToList();
-    }
-    public List<string> queuedSignals;
-#endif
-
-    protected override void FixedUpdate()
-    {
-        //DebugRR.DebugTextOverlay.ClearText();
-        base.FixedUpdate();
-    }
 }

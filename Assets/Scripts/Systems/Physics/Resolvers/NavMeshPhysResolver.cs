@@ -4,21 +4,19 @@ using UnityEngine.Rendering;
 
 namespace RageRooster.Physics
 {
-    public abstract partial class PhysicsResolver
-    {
         /// <summary>
         /// A resolver specifically for use in NavMeshes. This resolver uses a NavMeshAgent to perform movement and pathfinding, and is designed to be used as the final resolver in the chain for characters that should be fully NavMesh-driven. It includes logic to attempt to snap to the NavMesh if the agent becomes ungrounded, and can optionally lock movement to the NavMesh surface when navigating off ledges or small platforms.
         /// </summary>
         [System.Serializable]
-        public class NavMesh : PhysicsResolver
+        public class NavMeshPhysResolver : PhysicsResolver
         {
             [Tooltip("The NavMeshAgent component used for movement and pathfinding.")]
             [field: SerializeField] public NavMeshAgent NavAgent { get; private set; }
             [Tooltip("Whether this resolver should attempt to lock movement to the NavMesh surface when navigating off ledges or small platforms. This can help prevent characters from unintentionally walking off of small platforms, but may cause unwanted snapping behavior in some cases.")]
-            [SerializeField] bool lockToNavMesh = true;
+            public bool lockToNavMesh = true;
             [Tooltip("The distance within which the resolver will attempt to snap to the NavMesh if the agent becomes ungrounded. This should generally be set to a value slightly larger than the expected maximum step height of the character.")]
             [field: SerializeField] public float detectionRange { get; private set; } = .35f;
-            [field: SerializeField] public int nonNavID { get; private set; } = -1;
+            [field: SerializeField] public PhysicsResolver nonNavResolver { get; private set; }
 
             /// <summary>
             /// Moves body via Nav Mesh.
@@ -42,7 +40,7 @@ namespace RageRooster.Physics
                 if (ContinueCheck(hit.distance)) return;
 
                 Vector3 leftover = stepVelocity - snapToSurface;
-                if (lockToNavMesh || nonNavID == -1)
+                if (lockToNavMesh || nonNavResolver == null)
                 {
                     leftover = leftover.ProjectAndScale(hit.normal);
                     leftover *= Vector3.Dot(leftover.normalized, hit.normal) + 1;
@@ -50,7 +48,7 @@ namespace RageRooster.Physics
                 }
                 else
                 {
-                    ChooseNext(nonNavID);
+                    ChooseNext(nonNavResolver);
                     Next.Move(leftover);
                 }
             }
@@ -61,9 +59,9 @@ namespace RageRooster.Physics
                 float dot = Vector3.Dot(Body.Velocity.Global.normalized, (Position - sampleHit.position).normalized);
                 if (!sampled || dot < -.3f)
                 {
-                    if(nonNavID != -1)
+                    if(nonNavResolver != null)
                     {
-                        ChooseNext(nonNavID);
+                        ChooseNext(nonNavResolver);
                         return;
                     }
                     else
@@ -152,5 +150,5 @@ namespace RageRooster.Physics
                 }
             }
         }
-    }
+    
 }

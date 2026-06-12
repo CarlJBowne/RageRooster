@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 4140700992279950009}
   - component: {fileID: 3890390003912943964}
   - component: {fileID: 4458029115474544742}
-  - component: {fileID: 2009997312073649833}
-  - component: {fileID: 8015339088891556772}
   - component: {fileID: 7068535974428181853}
+  - component: {fileID: 3550344578505701829}
+  - component: {fileID: 6629368088483672917}
   m_Layer: 6
   m_Name: Gliding
   m_TagString: Untagged
@@ -53,8 +53,8 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 4140700992279950009}
   - {fileID: 3890390003912943964}
-  - {fileID: 2009997312073649833}
-  - {fileID: 8015339088891556772}
+  - {fileID: 7068535974428181853}
+  - {fileID: 0}
   - {fileID: 7068535974428181853}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 376499432679914711}
@@ -140,52 +140,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &2009997312073649833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 230917182557546898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 8395760873617269010}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: EnterTrigger
-          _PersistentArguments: []
-    - Key: EnterVent
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 4637717981930095470}
-          _MemberName: Enter
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &8015339088891556772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 230917182557546898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 8395760873617269010}
-  onEntry: 2
-  onEnterName: Gliding
-  onEnterTime: 0.1
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &7068535974428181853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,6 +180,60 @@ MonoBehaviour:
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!114 &3550344578505701829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230917182557546898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 8395760873617269010}
+  signals:
+    serializedNames:
+    - Land
+    - EnterVent
+    serializedKeys: 07466d2d25d58963
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: EnterTrigger
+        _PersistentArguments: []
+    - _PersistentCalls:
+      - _Target: {fileID: 4637717981930095470}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &6629368088483672917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230917182557546898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 8395760873617269010}
+  action:
+    type: 3
+    NameID: Gliding
+    cachedHash: 742288573
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &439532856085778822
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,9 +246,9 @@ GameObject:
   - component: {fileID: 1501509694756331304}
   - component: {fileID: 869347193428945785}
   - component: {fileID: 5711956843680236850}
-  - component: {fileID: 1298379307855554650}
-  - component: {fileID: 4967734220834973205}
   - component: {fileID: 4131485229137905776}
+  - component: {fileID: 1356533900990347494}
+  - component: {fileID: 1479714461525533560}
   m_Layer: 6
   m_Name: Jump
   m_TagString: Untagged
@@ -278,8 +286,8 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 869347193428945785}
   - {fileID: 5711956843680236850}
-  - {fileID: 1298379307855554650}
-  - {fileID: 4967734220834973205}
+  - {fileID: 0}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 2559980278779774860}
   <Layer>k__BackingField: 2
@@ -331,46 +339,6 @@ MonoBehaviour:
   allowDoubleJump: 1
   fallState: {fileID: 1795561309536884184}
   fallStateThreshold: 200
---- !u!114 &1298379307855554650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 439532856085778822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 1501509694756331304}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: EnterTrigger
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &4967734220834973205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 439532856085778822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 1501509694756331304}
-  onEntry: 2
-  onEnterName: Jump
-  onEnterTime: 0.01
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &4131485229137905776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,6 +370,55 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!114 &1356533900990347494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439532856085778822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 1501509694756331304}
+  signals:
+    serializedNames:
+    - Land
+    serializedKeys: 07466d2d
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: EnterTrigger
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &1479714461525533560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 439532856085778822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 1501509694756331304}
+  action:
+    type: 3
+    NameID: Jump
+    cachedHash: 125937960
+    layer: -1
+    floatValue1: 0.01
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &617782207937767042
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,9 +431,9 @@ GameObject:
   - component: {fileID: 4637717981930095470}
   - component: {fileID: 4907217696194596790}
   - component: {fileID: 2819107032129936681}
-  - component: {fileID: 365022774918449469}
-  - component: {fileID: 6515289853621532855}
   - component: {fileID: 8715591140808397076}
+  - component: {fileID: 1469115620322854215}
+  - component: {fileID: 2771600591314206733}
   m_Layer: 6
   m_Name: VentGliding
   m_TagString: Untagged
@@ -454,8 +471,8 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 4907217696194596790}
   - {fileID: 2819107032129936681}
-  - {fileID: 365022774918449469}
-  - {fileID: 6515289853621532855}
+  - {fileID: 8715591140808397076}
+  - {fileID: 0}
   - {fileID: 8715591140808397076}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 376499432679914711}
@@ -510,52 +527,6 @@ MonoBehaviour:
   fallStateThreshold: 0
   isVentGlide: 1
   raiseRate: 4
---- !u!114 &365022774918449469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 617782207937767042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 4637717981930095470}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: EnterTrigger
-          _PersistentArguments: []
-    - Key: ExitVent
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8395760873617269010}
-          _MemberName: Enter
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &6515289853621532855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 617782207937767042}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 4637717981930095470}
-  onEntry: 2
-  onEnterName: Falling
-  onEnterTime: 0.1
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &8715591140808397076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -596,6 +567,60 @@ MonoBehaviour:
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!114 &1469115620322854215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617782207937767042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 4637717981930095470}
+  signals:
+    serializedNames:
+    - Land
+    - ExitVent
+    serializedKeys: 07466d2d499a1c22
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: EnterTrigger
+        _PersistentArguments: []
+    - _PersistentCalls:
+      - _Target: {fileID: 8395760873617269010}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &2771600591314206733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617782207937767042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 4637717981930095470}
+  action:
+    type: 3
+    NameID: Falling
+    cachedHash: 998495048
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &816272236132542090
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,8 +825,8 @@ GameObject:
   - component: {fileID: 1011226270160650039}
   - component: {fileID: 3681164061191086705}
   - component: {fileID: 1795561309536884184}
-  - component: {fileID: 2278875909710501799}
-  - component: {fileID: 1261668324824787779}
+  - component: {fileID: 713094118763280448}
+  - component: {fileID: 8365462211113000279}
   m_Layer: 6
   m_Name: Falling
   m_TagString: Untagged
@@ -839,8 +864,8 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 3681164061191086705}
   - {fileID: 1795561309536884184}
-  - {fileID: 2278875909710501799}
-  - {fileID: 1261668324824787779}
+  - {fileID: 0}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 2559980278779774860}
   <Layer>k__BackingField: 2
@@ -892,7 +917,7 @@ MonoBehaviour:
   allowDoubleJump: 1
   fallState: {fileID: 1795561309536884184}
   fallStateThreshold: 0
---- !u!114 &2278875909710501799
+--- !u!114 &713094118763280448
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -901,26 +926,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 1991543879446514239}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
   <State>k__BackingField: {fileID: 1011226270160650039}
   signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: EnterTrigger
-          _PersistentArguments: []
-    - Key: EndFall
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: Enter
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &1261668324824787779
+    serializedNames:
+    - Land
+    - EndFall
+    serializedKeys: 07466d2dae71efde
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: EnterTrigger
+        _PersistentArguments: []
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &8365462211113000279
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -929,13 +956,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1991543879446514239}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
   <State>k__BackingField: {fileID: 1011226270160650039}
-  onEntry: 2
-  onEnterName: Fall
-  onEnterTime: 0.2
+  action:
+    type: 3
+    NameID: Fall
+    cachedHash: 1533177906
+    layer: -1
+    floatValue1: 0.2
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
   doWhenNotFinal: 0
   animator: {fileID: 0}
 --- !u!1 &2916739586709754898
@@ -948,11 +981,11 @@ GameObject:
   m_Component:
   - component: {fileID: 3078071744637740653}
   - component: {fileID: 7024526740484287390}
-  - component: {fileID: 3363945339383193770}
-  - component: {fileID: 86812193137366626}
   - component: {fileID: 7450670032593670054}
   - component: {fileID: 5234660518598623586}
   - component: {fileID: 702657104520136719}
+  - component: {fileID: 7819357202922401416}
+  - component: {fileID: 6210140739433462981}
   m_Layer: 6
   m_Name: DamageWhamAir
   m_TagString: Untagged
@@ -988,8 +1021,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 3363945339383193770}
-  - {fileID: 86812193137366626}
+  - {fileID: 7450670032593670054}
+  - {fileID: 5234660518598623586}
   - {fileID: 7450670032593670054}
   - {fileID: 5234660518598623586}
   - {fileID: 702657104520136719}
@@ -998,49 +1031,6 @@ MonoBehaviour:
   <Layer>k__BackingField: 1
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &3363945339383193770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2916739586709754898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 7024526740484287390}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: Land
-          _PersistentArguments: []
-        - _Target: {fileID: 0}
-          _MemberName: Enter
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &86812193137366626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2916739586709754898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 7024526740484287390}
-  onEntry: 1
-  onEnterName: DamageFall
-  onEnterTime: 0
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &7450670032593670054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1319,6 +1309,58 @@ MonoBehaviour:
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!114 &7819357202922401416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2916739586709754898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 7024526740484287390}
+  signals:
+    serializedNames:
+    - Land
+    serializedKeys: 07466d2d
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Land
+        _PersistentArguments: []
+      - _Target: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &6210140739433462981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2916739586709754898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 7024526740484287390}
+  action:
+    type: 0
+    NameID: DamageFall
+    cachedHash: 1743372417
+    layer: -1
+    floatValue1: 0
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &3113314633541517961
 GameObject:
   m_ObjectHideFlags: 0
@@ -1330,8 +1372,8 @@ GameObject:
   - component: {fileID: 3251314967643340313}
   - component: {fileID: 3529526253282525060}
   - component: {fileID: 3486287240934408023}
-  - component: {fileID: 8831839492774550951}
   - component: {fileID: 1100576927170574783}
+  - component: {fileID: 6121732997847841409}
   m_Layer: 6
   m_Name: WallJump
   m_TagString: Untagged
@@ -1368,7 +1410,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 3486287240934408023}
-  - {fileID: 8831839492774550951}
+  - {fileID: 1100576927170574783}
   - {fileID: 1100576927170574783}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 376499432679914711}
@@ -1397,28 +1439,6 @@ MonoBehaviour:
   minDistance: 5
   maxAngleDifference: 0.1
   animationName: WallJump
---- !u!114 &8831839492774550951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3113314633541517961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 3529526253282525060}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: Enter
-          _PersistentArguments: []
-  lockOnEnter: 0
 --- !u!114 &1100576927170574783
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1475,6 +1495,31 @@ MonoBehaviour:
               _Object: {fileID: 0}
         releaseEvent:
           _PersistentCalls: []
+--- !u!114 &6121732997847841409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3113314633541517961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 3529526253282525060}
+  signals:
+    serializedNames:
+    - Land
+    serializedKeys: 07466d2d
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
 --- !u!1 &3790663332190546319
 GameObject:
   m_ObjectHideFlags: 0
@@ -1490,7 +1535,7 @@ GameObject:
   - component: {fileID: 3219155473855513990}
   - component: {fileID: 6285745273891015681}
   - component: {fileID: 5374830324173488577}
-  - component: {fileID: 5278555031438060890}
+  - component: {fileID: 3359915548492288397}
   m_Layer: 6
   m_Name: Bounce
   m_TagString: Untagged
@@ -1528,7 +1573,7 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 4577874557203126276}
   - {fileID: 7700020771029328771}
-  - {fileID: 5278555031438060890}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 376499432679914711}
   <Layer>k__BackingField: 1
@@ -1651,7 +1696,7 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &5278555031438060890
+--- !u!114 &3359915548492288397
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1660,13 +1705,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 3790663332190546319}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
   <State>k__BackingField: {fileID: 1247436238169980682}
-  onEntry: 2
-  onEnterName: Jump
-  onEnterTime: 0.1
+  action:
+    type: 3
+    NameID: Jump
+    cachedHash: 125937960
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
   doWhenNotFinal: 0
   animator: {fileID: 0}
 --- !u!1 &7005226038824116130
@@ -1684,9 +1735,9 @@ GameObject:
   - component: {fileID: 1656403314222405301}
   - component: {fileID: 2729970758968223703}
   - component: {fileID: 2909500379867055991}
-  - component: {fileID: 4858474362670200390}
-  - component: {fileID: 8477816163409128}
   - component: {fileID: 6837469434590797707}
+  - component: {fileID: 1073798156617235353}
+  - component: {fileID: 2544028973326734298}
   m_Layer: 6
   m_Name: AirChargeFall
   m_TagString: Untagged
@@ -1724,8 +1775,8 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 9051108310267793475}
   - {fileID: 4761408725412078312}
-  - {fileID: 4858474362670200390}
-  - {fileID: 8477816163409128}
+  - {fileID: 6837469434590797707}
+  - {fileID: 0}
   - {fileID: 6837469434590797707}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 376499432679914711}
@@ -1845,52 +1896,6 @@ MonoBehaviour:
       intValue: 2097157
     _displayName: 
   sourceEntity: {fileID: 0}
---- !u!114 &4858474362670200390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7005226038824116130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 2405825106197238307}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: LandInto
-          _PersistentArguments: []
-    - Key: Bonk
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3421851082030742018}
-          _MemberName: Enter
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &8477816163409128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7005226038824116130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 2405825106197238307}
-  onEntry: 2
-  onEnterName: Somersault
-  onEnterTime: 0.01
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &6837469434590797707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1948,6 +1953,60 @@ MonoBehaviour:
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!114 &1073798156617235353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7005226038824116130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 2405825106197238307}
+  signals:
+    serializedNames:
+    - Land
+    - Bonk
+    serializedKeys: 07466d2dee0e7439
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: LandInto
+        _PersistentArguments: []
+    - _PersistentCalls:
+      - _Target: {fileID: 3421851082030742018}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &2544028973326734298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7005226038824116130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 2405825106197238307}
+  action:
+    type: 3
+    NameID: Somersault
+    cachedHash: 386617574
+    layer: -1
+    floatValue1: 0.01
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &7834614901570998682
 GameObject:
   m_ObjectHideFlags: 0
@@ -1960,12 +2019,12 @@ GameObject:
   - component: {fileID: 724050107024081372}
   - component: {fileID: 7307604225670985682}
   - component: {fileID: 3358475940652032766}
-  - component: {fileID: 7239944440006359403}
   - component: {fileID: 6158241304072882191}
   - component: {fileID: 1994699422370228295}
   - component: {fileID: 8944842294468627015}
-  - component: {fileID: 5815639621226970365}
   - component: {fileID: 9006506135391044947}
+  - component: {fileID: 180739350432454943}
+  - component: {fileID: 4174250643556223638}
   m_Layer: 6
   m_Name: AirCharge
   m_TagString: Untagged
@@ -2003,8 +2062,8 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 7307604225670985682}
   - {fileID: 3358475940652032766}
-  - {fileID: 7239944440006359403}
-  - {fileID: 5815639621226970365}
+  - {fileID: 9006506135391044947}
+  - {fileID: 0}
   - {fileID: 9006506135391044947}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 376499432679914711}
@@ -2057,34 +2116,6 @@ MonoBehaviour:
   allowDoubleJump: 1
   fallState: {fileID: 4761408725412078312}
   fallStateThreshold: 0
---- !u!114 &7239944440006359403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7834614901570998682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 724050107024081372}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: EnterTrigger
-          _PersistentArguments: []
-    - Key: Bonk
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 3421851082030742018}
-          _MemberName: Enter
-          _PersistentArguments: []
-  lockOnEnter: 0
 --- !u!135 &6158241304072882191
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2152,24 +2183,6 @@ MonoBehaviour:
       intValue: 2097157
     _displayName: 
   sourceEntity: {fileID: 0}
---- !u!114 &5815639621226970365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7834614901570998682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 724050107024081372}
-  onEntry: 2
-  onEnterName: Somersault
-  onEnterTime: 0.01
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &9006506135391044947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2227,6 +2240,60 @@ MonoBehaviour:
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!114 &180739350432454943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7834614901570998682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 724050107024081372}
+  signals:
+    serializedNames:
+    - Land
+    - Bonk
+    serializedKeys: 07466d2dee0e7439
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: EnterTrigger
+        _PersistentArguments: []
+    - _PersistentCalls:
+      - _Target: {fileID: 3421851082030742018}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &4174250643556223638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7834614901570998682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 724050107024081372}
+  action:
+    type: 3
+    NameID: Somersault
+    cachedHash: 386617574
+    layer: -1
+    floatValue1: 0.01
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &8324690027597384102
 GameObject:
   m_ObjectHideFlags: 0
@@ -2308,16 +2375,6 @@ PrefabInstance:
       propertyPath: <Parent>k__BackingField
       value: 
       objectReference: {fileID: 376499432679914711}
-    - target: {fileID: 1240914359256471248, guid: 8277e19a7a2db4b46839df848adbc826,
-        type: 3}
-      propertyPath: '<Children>k__BackingField.Array.data[10]'
-      value: 
-      objectReference: {fileID: 3742497595162634006}
-    - target: {fileID: 2258655886150682165, guid: 8277e19a7a2db4b46839df848adbc826,
-        type: 3}
-      propertyPath: attack.tags.intValue
-      value: 4194309
-      objectReference: {fileID: 0}
     - target: {fileID: 2305499323867276782, guid: 8277e19a7a2db4b46839df848adbc826,
         type: 3}
       propertyPath: events.Array.data[1].output._PersistentCalls.Array.data[0]._Target
@@ -2328,16 +2385,11 @@ PrefabInstance:
       propertyPath: bouncingState
       value: 
       objectReference: {fileID: 7700020771029328771}
-    - target: {fileID: 3496320805565519492, guid: 8277e19a7a2db4b46839df848adbc826,
-        type: 3}
-      propertyPath: signals.serializedList.Array.data[0].Value._PersistentCalls.Array.data[0]._Target
-      value: 
-      objectReference: {fileID: 1011226270160650039}
     - target: {fileID: 4059923005625944773, guid: 8277e19a7a2db4b46839df848adbc826,
         type: 3}
-      propertyPath: events.Array.data[0].time
-      value: 0.4
-      objectReference: {fileID: 0}
+      propertyPath: events.Array.data[0].output._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 1011226270160650039}
     - target: {fileID: 4945723595789684522, guid: 8277e19a7a2db4b46839df848adbc826,
         type: 3}
       propertyPath: events.Array.data[2].output._PersistentCalls.Array.data[0]._Target
@@ -2353,11 +2405,6 @@ PrefabInstance:
       propertyPath: fallState
       value: 
       objectReference: {fileID: 1795561309536884184}
-    - target: {fileID: 7527315008399973723, guid: 8277e19a7a2db4b46839df848adbc826,
-        type: 3}
-      propertyPath: verticalThreshold
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 8110135924380990025, guid: 8277e19a7a2db4b46839df848adbc826,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2408,21 +2455,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8543019558285714254, guid: 8277e19a7a2db4b46839df848adbc826,
+        type: 3}
+      propertyPath: events.Array.data[0].output._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 1011226270160650039}
     - target: {fileID: 8789526045061471104, guid: 8277e19a7a2db4b46839df848adbc826,
         type: 3}
       propertyPath: m_Name
       value: AirAnimations
       objectReference: {fileID: 0}
-    - target: {fileID: 9136615076610149191, guid: 8277e19a7a2db4b46839df848adbc826,
-        type: 3}
-      propertyPath: <Layer>k__BackingField
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9136615076610149191, guid: 8277e19a7a2db4b46839df848adbc826,
-        type: 3}
-      propertyPath: <Parent>k__BackingField
-      value: 
-      objectReference: {fileID: 6630248294840171137}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2467,18 +2509,6 @@ MonoBehaviour:
 --- !u!114 &3661044008919410724 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9220388631842718837, guid: 8277e19a7a2db4b46839df848adbc826,
-    type: 3}
-  m_PrefabInstance: {fileID: 5565255872671624273}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3742497595162634006 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9136615076610149191, guid: 8277e19a7a2db4b46839df848adbc826,
     type: 3}
   m_PrefabInstance: {fileID: 5565255872671624273}
   m_PrefabAsset: {fileID: 0}

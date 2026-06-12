@@ -109,6 +109,7 @@ namespace RageRooster.Physics
 
         public void DisplayGizmos()
         {
+            if (!Application.isPlaying) return;
             if (DisplaySweeps)
             {
                 foreach (var sweep in SweepsThisUpdate)

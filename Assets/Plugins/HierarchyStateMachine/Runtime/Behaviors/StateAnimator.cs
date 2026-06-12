@@ -1,5 +1,6 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using ListUtilities;
 using UnityEngine;
 
 namespace SLS.StateMachineH
@@ -9,25 +10,7 @@ namespace SLS.StateMachineH
     /// </summary>  
     public class StateAnimator : StateBehavior
     {
-        /// <summary>  
-        /// Defines the type of animation action to perform when entering a state.  
-        /// </summary>  
-        public enum EntryAnimAction { None, Play, CrossFade, Trigger }
-
-        /// <summary>  
-        /// The animation action to perform when entering a state.  
-        /// </summary>  
-        public EntryAnimAction onEntry;
-
-        /// <summary>  
-        /// The name of the animation to play, crossfade, or trigger.  
-        /// </summary>  
-        public string onEnterName;
-
-        /// <summary>  
-        /// The duration of the crossfade animation.  
-        /// </summary>  
-        public float onEnterTime;
+        public AnimatorAction action = new();
 
         /// <summary>  
         /// Indicates whether the animation should be performed when the state is not final.  
@@ -41,7 +24,7 @@ namespace SLS.StateMachineH
         public Animator Animator => animator;
 
         /// <summary>  
-        /// Sets up the <see cref="StateAnimator"/> by attempting to retrieve the <see cref="Animator"/> component.  
+        /// Sets up the <see cref="StateAnimator_Legacy"/> by attempting to retrieve the <see cref="Animator"/> component.  
         /// </summary>  
         protected override void OnSetup()
         {
@@ -57,11 +40,10 @@ namespace SLS.StateMachineH
         protected override void OnEnter(State prev, bool isFinal)
         {
             if (!isFinal && !doWhenNotFinal) return;
-            if (onEntry == EntryAnimAction.Play) Play(onEnterName);
-            if (onEntry == EntryAnimAction.CrossFade) CrossFade(onEnterName, onEnterTime);
-            if (onEntry == EntryAnimAction.Trigger) Trigger(onEnterName);
+            action.Do(animator);
         }
 
+        #region Auxilary Alternatives
         /// <summary>  
         /// Plays the specified animation.  
         /// </summary>  
@@ -93,6 +75,82 @@ namespace SLS.StateMachineH
         /// <param name="name">The name of the animation to crossfade to.</param>  
         /// <param name="time">The duration of the crossfade.</param>  
         public void CrossFadeAtCurrentPoint(string name, float time = 0f) => animator.CrossFade(name, time, 0, animator.GetCurrentAnimatorStateInfo(-1).normalizedTime);
+
+        #endregion
+
     }
 
+    [System.Serializable]
+    public class AnimatorAction
+    {
+        public enum Type
+        {
+            Play,
+            PlayAtPoint,
+            PlaySynced,
+            CrossFade,
+            CrossFadeAtPoint,
+            CrossFadeSynced,
+            SetTrigger,
+            SetBool,
+            SetFloat,
+            SetInt,
+            Null,
+        }
+        public Type type;
+        public string NameID;
+        public int cachedHash = -1;
+        public int layer = -1;
+
+        public float floatValue1;
+        public float floatValue2;
+        public int intValue;
+        public bool boolValue;
+
+        public void Do(Animator animator)
+        {
+            if (cachedHash == -1) CacheID();
+            switch (type)
+            {
+                case Type.Play:
+                    animator.Play(cachedHash);
+                    break;
+                case Type.PlayAtPoint:
+                    animator.Play(cachedHash, layer, floatValue1);
+                    break;
+                case Type.PlaySynced:
+                    animator.Play(cachedHash, layer, animator.GetCurrentAnimatorStateInfo(layer).normalizedTime);
+                    break;
+                case Type.CrossFade:
+                    animator.CrossFade(cachedHash, floatValue1, layer);
+                    break;
+                case Type.CrossFadeAtPoint:
+                    animator.CrossFade(cachedHash, floatValue1, layer, floatValue2);
+                    break;
+                case Type.CrossFadeSynced:
+                    animator.CrossFade(cachedHash, floatValue1, layer, animator.GetCurrentAnimatorStateInfo(layer).normalizedTime);
+                    break;
+                case Type.SetTrigger:
+                    if (boolValue) animator.SetTrigger(cachedHash);
+                    else animator.ResetTrigger(cachedHash);
+                    break;
+                case Type.SetFloat:
+                    animator.SetFloat(cachedHash, floatValue1);
+                    break;
+                case Type.SetInt:
+                    animator.SetInteger(cachedHash, intValue);
+                    break;
+                case Type.SetBool:
+                    animator.SetBool(cachedHash, boolValue);
+                    break;
+                default: break;
+            }
+        }
+        public void CacheID() => cachedHash = NameID.Hash();
+
+        public static implicit operator bool(AnimatorAction A) => A.type != Type.Null;
+        public static implicit operator string(AnimatorAction A) => A.NameID;
+        public static implicit operator int(AnimatorAction A) => A.cachedHash;
+        public static implicit operator Type(AnimatorAction A) => A.type;
+    }
 }

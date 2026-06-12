@@ -47,14 +47,14 @@ public sealed class PlayerMovementBody : PhysicsBody
     private void Start()
     {
         //Do this again because no matter what I tell this system to do nothing ever works correctly.
-        if (Resolvers.defaultGroundedIndex != -1 && Ground.InstantSnapToFloor(out RaycastHit hit))
+        if (Resolvers.groundedResolver != null && Ground.InstantSnapToFloor(out RaycastHit hit))
         {
             Ground.Land(hit);
-            Resolvers.Update(Resolvers.defaultGroundedIndex);
+            Resolvers.Update(Resolvers.groundedResolver);
         }
-        else if (Resolvers.defaultAirIndex != -1)
+        else if (Resolvers.airborneResolver != null)
         {
-            Resolvers.Update(Resolvers.defaultAirIndex);
+            Resolvers.Update(Resolvers.airborneResolver);
         }
         else enabled = false; //WTF.
 
@@ -137,7 +137,6 @@ public sealed class PlayerMovementBody : PhysicsBody
     public bool isOverVent => currentVent != null;
 
     #endregion Other
-
 
 #if UNITY_EDITOR
 

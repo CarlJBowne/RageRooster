@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5545295255108583660}
+  - component: {fileID: 2303100544689829376}
   m_Layer: 0
   m_Name: FeatherFall
   m_TagString: Untagged
@@ -32,6 +33,18 @@ Transform:
   - {fileID: 7456760412011879760}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2303100544689829376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8873900655475276376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11dd5e2eafeaaee49be5a582c7094c6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Utilities::Utilities.ObjectPooling.PoolableObject
 --- !u!1001 &8474676325401620509
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -717,7 +730,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7863529020448517975, guid: f4464008e5bef6c4d81d3f92790e718d,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 8286cd0d81e4b05438aeb99bbe78620e, type: 2}
     m_RemovedComponents: []

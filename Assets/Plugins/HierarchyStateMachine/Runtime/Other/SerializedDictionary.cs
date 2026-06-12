@@ -167,6 +167,8 @@ namespace SLS.StateMachineH.Utils
         public bool Remove(object key) => Remove((TKey)key);
         public bool TryAdd(object key, object value) => TryAdd((TKey)key, (TValue)value);
 
+        public TKey GetKeyOfIndex(int index) => serializedList[index].Key;
+        public TValue GetValueOfIndex(int index) => serializedList[index].Value;
 
         [Serializable]
         public struct KeyValuePair
@@ -383,6 +385,8 @@ namespace SLS.StateMachineH.Utils
         public bool Remove(object key) => Remove((TKey)key);
         public bool TryAdd(object key, object value) => TryAdd((TKey)key, (TValue)value);
 
+        public TKey GetKeyOfIndex(int index) => serializedList[index].Key;
+        public TValue GetValueOfIndex(int index) => serializedList[index].Value;
 
         [Serializable]
         public struct KeyValuePair

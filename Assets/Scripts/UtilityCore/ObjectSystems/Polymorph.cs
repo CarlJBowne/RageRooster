@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UIElements;
+using ListUtilities.Editor;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -687,18 +689,16 @@ public abstract class Polymorph
             }
             catch { baseType = null; }
             ShowTypeChooser = () => { Polymorph.ShowChooseTypeMenu(baseType, false, TypeChosen); };
+
+            BuildBasicElements();
+            BindProperty(rootProperty);
         }
 
-        public override void InitializeProperty(SerializedProperty input)
+        new public void BindProperty(SerializedProperty input)
         {
             rootProperty = input;
             property = input.FindPropertyRelative("items");
-        }
-        public override Header HeaderDefinition()
-        {
-            header = new(this, disableCounter: true);
-            header.AddTo(this);
-            return header;
+            header.Bind(rootProperty);
         }
 
         protected override void AddButtonPressed() => ShowTypeChooser();
@@ -714,12 +714,10 @@ public abstract class Polymorph
             Select(items[newID]);
         }
 
-        public override string nameSource => rootProperty.displayName;
-
     }
     public class ListItemDrawer : SuperListItem<ListDrawer, ListItemDrawer, Polymorph>
     {
-        public ListItemDrawer(ListDrawer parentList, SerializedProperty thisProperty) : base(parentList, thisProperty)
+        public ListItemDrawer(ListDrawer parentList, int Index) : base(parentList, Index)
         {
         }
 
