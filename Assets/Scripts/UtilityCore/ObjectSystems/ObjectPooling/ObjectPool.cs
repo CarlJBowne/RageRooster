@@ -75,6 +75,7 @@ namespace Utilities.ObjectPooling
             newInstance.Initialize(this);
             poolList.Add(newInstance);
             onCreateInstance?.Invoke(newInstance);
+            //UnityEngine.Object.DontDestroyOnLoad(newInstance);
         }
 
 

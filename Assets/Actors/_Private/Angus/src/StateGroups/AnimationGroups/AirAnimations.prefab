@@ -10,14 +10,14 @@ GameObject:
   m_Component:
   - component: {fileID: 8298101237391634890}
   - component: {fileID: 3011604142039414598}
-  - component: {fileID: 7493877865882684514}
+  - component: {fileID: 7204531243560765301}
   m_Layer: 6
   m_Name: Success
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8298101237391634890
 Transform:
   m_ObjectHideFlags: 0
@@ -46,13 +46,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
   <Behaviors>k__BackingField:
-  - {fileID: 7493877865882684514}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 2377060701463017047}
   <Layer>k__BackingField: 3
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &7493877865882684514
+--- !u!114 &7204531243560765301
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -61,13 +61,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 32556659853057787}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
   <State>k__BackingField: {fileID: 3011604142039414598}
-  onEntry: 1
-  onEnterName: Grab
-  onEnterTime: 0
+  action:
+    type: 0
+    NameID: Grab
+    cachedHash: -1347921612
+    layer: -1
+    floatValue1: 0
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
   doWhenNotFinal: 0
   animator: {fileID: 0}
 --- !u!1 &77060564305961655
@@ -81,10 +87,10 @@ GameObject:
   - component: {fileID: 4355461183557771069}
   - component: {fileID: 4013964010397517232}
   - component: {fileID: 7480665489456482996}
-  - component: {fileID: 2287129866375311486}
-  - component: {fileID: 5314307773985429491}
   - component: {fileID: 5854373079976201164}
   - component: {fileID: 2172773124327044178}
+  - component: {fileID: 3113712089088083698}
+  - component: {fileID: 163258902978876044}
   m_Layer: 6
   m_Name: AirChargeWindup
   m_TagString: Untagged
@@ -120,10 +126,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 2287129866375311486}
-  - {fileID: 5314307773985429491}
   - {fileID: 5854373079976201164}
   - {fileID: 2172773124327044178}
+  - {fileID: 3113712089088083698}
+  - {fileID: 163258902978876044}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -160,46 +166,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &2287129866375311486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 77060564305961655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 4013964010397517232}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: EnterFade
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &5314307773985429491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 77060564305961655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 4013964010397517232}
-  onEntry: 2
-  onEnterName: SomersaultWindup
-  onEnterTime: 0.2
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &5854373079976201164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,8 +202,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 4013964010397517232}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -253,6 +217,55 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+--- !u!114 &3113712089088083698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77060564305961655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 4013964010397517232}
+  signals:
+    serializedNames:
+    - Land
+    serializedKeys: 07466d2d
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &163258902978876044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 77060564305961655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 4013964010397517232}
+  action:
+    type: 3
+    NameID: SomersaultWindup
+    cachedHash: -1805150669
+    layer: -1
+    floatValue1: 0.2
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &666090841383921340
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,12 +276,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8397270973356141893}
   - component: {fileID: 1596455508646601812}
-  - component: {fileID: 2006179223144230625}
-  - component: {fileID: 4315509717341845461}
   - component: {fileID: 8422455139397599670}
   - component: {fileID: 8705723442505678076}
   - component: {fileID: 5518502353883561843}
   - component: {fileID: 9129278314642407266}
+  - component: {fileID: 8250698587917999455}
+  - component: {fileID: 2363731144651042008}
   m_Layer: 6
   m_Name: AirKick
   m_TagString: Untagged
@@ -304,65 +317,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 2006179223144230625}
-  - {fileID: 4315509717341845461}
   - {fileID: 8422455139397599670}
   - {fileID: 8705723442505678076}
   - {fileID: 5518502353883561843}
   - {fileID: 9129278314642407266}
+  - {fileID: 8250698587917999455}
+  - {fileID: 2363731144651042008}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &2006179223144230625
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 666090841383921340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 1596455508646601812}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: EnterFade
-          _PersistentArguments:
-          - _Type: 5
-            _Int: 0
-            _String: 
-            _X: 0.2
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-  lockOnEnter: 1
---- !u!114 &4315509717341845461
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 666090841383921340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 1596455508646601812}
-  onEntry: 2
-  onEnterName: AirKick
-  onEnterTime: 0.1
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &8422455139397599670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -674,6 +639,12 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 1596455508646601812}
   timeline: {fileID: 0}
   events:
+  - time: 0
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Lock
+        _PersistentArguments: []
   - time: 0.26666668
     output:
       _PersistentCalls:
@@ -728,8 +699,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 1596455508646601812}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -756,6 +725,55 @@ MonoBehaviour:
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!114 &8250698587917999455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666090841383921340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 1596455508646601812}
+  signals:
+    serializedNames:
+    - Land
+    serializedKeys: 07466d2d
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &2363731144651042008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666090841383921340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 1596455508646601812}
+  action:
+    type: 3
+    NameID: AirKick
+    cachedHash: 1281024937
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &671571177675067526
 GameObject:
   m_ObjectHideFlags: 0
@@ -766,9 +784,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1514200461783032082}
   - component: {fileID: 2678385689852321563}
-  - component: {fileID: 1586340562860794997}
   - component: {fileID: 3963804732520028507}
   - component: {fileID: 4059923005625944773}
+  - component: {fileID: 4300116182078365104}
   m_Layer: 0
   m_Name: GrabMiss
   m_TagString: Untagged
@@ -804,32 +822,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
   <Behaviors>k__BackingField:
-  - {fileID: 1586340562860794997}
   - {fileID: 3963804732520028507}
   - {fileID: 4059923005625944773}
+  - {fileID: 4300116182078365104}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 2377060701463017047}
   <Layer>k__BackingField: 3
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &1586340562860794997
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 671571177675067526}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
-  <State>k__BackingField: {fileID: 2678385689852321563}
-  onEntry: 2
-  onEnterName: GrabMiss
-  onEnterTime: 0.1
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &3963804732520028507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -992,27 +992,37 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 2678385689852321563}
   timeline: {fileID: 0}
   events:
-  - time: 0.3
+  - time: 0.4
     output:
       _PersistentCalls:
       - _Target: {fileID: 0}
-        _MemberName: Unlock
+        _MemberName: Enter
         _PersistentArguments: []
-  - time: 0.8333333
-    output:
-      _PersistentCalls:
-      - _Target: {fileID: 0}
-        _MemberName: ReturnToNeutral
-        _PersistentArguments:
-        - _Type: 1
-          _Int: 1
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
   loopAfterLastEvent: 0
+--- !u!114 &4300116182078365104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671571177675067526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 2678385689852321563}
+  action:
+    type: 3
+    NameID: GrabMiss
+    cachedHash: -21932111
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &1352869033436450034
 GameObject:
   m_ObjectHideFlags: 0
@@ -1024,12 +1034,13 @@ GameObject:
   - component: {fileID: 3169872570508957267}
   - component: {fileID: 7940821063771917098}
   - component: {fileID: 5774851998441132305}
-  - component: {fileID: 4740187380939244751}
-  - component: {fileID: 149644084737824236}
   - component: {fileID: 2357885435015564703}
   - component: {fileID: 6642739891644216852}
   - component: {fileID: 1274625630210408939}
   - component: {fileID: 3201469588153593305}
+  - component: {fileID: 437669567245186492}
+  - component: {fileID: 8219193433287476025}
+  - component: {fileID: 1671532480621118245}
   m_Layer: 6
   m_Name: LightPunch2
   m_TagString: Untagged
@@ -1065,12 +1076,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 4740187380939244751}
-  - {fileID: 149644084737824236}
   - {fileID: 2357885435015564703}
   - {fileID: 6642739891644216852}
   - {fileID: 1274625630210408939}
   - {fileID: 3201469588153593305}
+  - {fileID: 437669567245186492}
+  - {fileID: 8219193433287476025}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -1107,65 +1118,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &4740187380939244751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1352869033436450034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 7940821063771917098}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: Enter
-          _PersistentArguments: []
-        - _Target: {fileID: 0}
-          _MemberName: CrossFadeAtCurrentPoint
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: LightPunch2
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-          - _Type: 5
-            _Int: 0
-            _String: 
-            _X: 0.2
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-  lockOnEnter: 1
---- !u!114 &149644084737824236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1352869033436450034}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 7940821063771917098}
-  onEntry: 2
-  onEnterName: LightPunch2
-  onEnterTime: 0.1
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &2357885435015564703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1459,6 +1411,12 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 7940821063771917098}
   timeline: {fileID: 0}
   events:
+  - time: 0
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Lock
+        _PersistentArguments: []
   - time: 0.3
     output:
       _PersistentCalls:
@@ -1494,8 +1452,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 7940821063771917098}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -1542,6 +1498,95 @@ MonoBehaviour:
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!114 &437669567245186492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352869033436450034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 7940821063771917098}
+  signals:
+    serializedNames:
+    - Land
+    serializedKeys: 07466d2d
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 1671532480621118245}
+        _MemberName: FireTransition
+        _PersistentArguments:
+        - _Type: 3
+          _Int: 0
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &8219193433287476025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352869033436450034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 7940821063771917098}
+  action:
+    type: 3
+    NameID: LightPunch2
+    cachedHash: 1881904139
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &1671532480621118245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352869033436450034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cecfe66424e9bf4cb9090caa83f51c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::StateTransitions
+  <State>k__BackingField: {fileID: 7940821063771917098}
+  timeline: {fileID: 0}
+  transitions:
+  - <TargetState>k__BackingField: {fileID: 0}
+    <AtEnd>k__BackingField: 0
+    <BeginEvent>k__BackingField:
+      _PersistentCalls: []
+    <Length>k__BackingField: 0.1
+    <EndEvent>k__BackingField:
+      _PersistentCalls: []
+    <Animation>k__BackingField:
+      type: 5
+      NameID: LightPunch2
+      cachedHash: -1
+      layer: -1
+      floatValue1: 0.1
+      floatValue2: 0
+      intValue: 0
+      boolValue: 0
+  animator: {fileID: 0}
 --- !u!1 &1488830519560627706
 GameObject:
   m_ObjectHideFlags: 0
@@ -1552,15 +1597,15 @@ GameObject:
   m_Component:
   - component: {fileID: 8318261483835635308}
   - component: {fileID: 7337055026775649160}
-  - component: {fileID: 1430001114344810051}
   - component: {fileID: 3156319708820385117}
   - component: {fileID: 2258655886150682165}
   - component: {fileID: 6753688002641044095}
-  - component: {fileID: 3822855882850443765}
   - component: {fileID: 524671071138202855}
   - component: {fileID: 3726902049917664516}
   - component: {fileID: 7410677789220254902}
   - component: {fileID: 558305279784127179}
+  - component: {fileID: 6122063834584822665}
+  - component: {fileID: 2695815491313806318}
   m_Layer: 6
   m_Name: GroundSlam
   m_TagString: Untagged
@@ -1596,63 +1641,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 1430001114344810051}
   - {fileID: 3156319708820385117}
-  - {fileID: 3822855882850443765}
   - {fileID: 7410677789220254902}
   - {fileID: 558305279784127179}
+  - {fileID: 6122063834584822665}
+  - {fileID: 2695815491313806318}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &1430001114344810051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488830519560627706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 7337055026775649160}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: Land
-          _PersistentArguments: []
-        - _Target: {fileID: 0}
-          _MemberName: Enter
-          _PersistentArguments: []
-        - _Target: {fileID: 0}
-          _MemberName: Play
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: GroundSlam_Impact
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-        - _Target: {fileID: 0}
-          _MemberName: Pump
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: GroundSlam
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-  lockOnEnter: 0
 --- !u!114 &3156319708820385117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1667,8 +1665,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 7337055026775649160}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   bouncingState: {fileID: 0}
 --- !u!114 &2258655886150682165
 MonoBehaviour:
@@ -1687,10 +1683,6 @@ MonoBehaviour:
     velocity: {x: 0, y: -15, z: 0}
     tags:
       intValue: 4194309
-    oldTags:
-    - name: FromPlayer
-    - name: GroundSlam
-    - name: Wham
     _displayName: 
   sourceEntity: {fileID: 0}
 --- !u!114 &6753688002641044095
@@ -1724,24 +1716,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &3822855882850443765
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1488830519560627706}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 7337055026775649160}
-  onEntry: 2
-  onEnterName: GroundSlam_Start
-  onEnterTime: 0.1
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!135 &524671071138202855
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1915,8 +1889,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 7337055026775649160}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -1943,6 +1915,69 @@ MonoBehaviour:
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!114 &6122063834584822665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488830519560627706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 7337055026775649160}
+  signals:
+    serializedNames:
+    - Land
+    serializedKeys: e67a3208
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Land
+        _PersistentArguments: []
+      - _Target: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
+      - _Target: {fileID: 0}
+        _MemberName: Pump
+        _PersistentArguments:
+        - _Type: 2
+          _Int: 0
+          _String: GroundSlam
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &2695815491313806318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488830519560627706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 7337055026775649160}
+  action:
+    type: 3
+    NameID: GroundSlam_Start
+    cachedHash: -1240697524
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &2549990567691232858
 GameObject:
   m_ObjectHideFlags: 0
@@ -1954,10 +1989,10 @@ GameObject:
   - component: {fileID: 6085693502157551463}
   - component: {fileID: 7081657350339548755}
   - component: {fileID: 4418998661789656379}
-  - component: {fileID: 8009914028543508673}
-  - component: {fileID: 4166950754799812384}
   - component: {fileID: 6002171360735996087}
   - component: {fileID: 3124737419329290273}
+  - component: {fileID: 8668112073897778042}
+  - component: {fileID: 277926962365706455}
   m_Layer: 6
   m_Name: AirBonk
   m_TagString: Untagged
@@ -1993,10 +2028,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 8009914028543508673}
-  - {fileID: 4166950754799812384}
   - {fileID: 6002171360735996087}
   - {fileID: 3124737419329290273}
+  - {fileID: 8668112073897778042}
+  - {fileID: 277926962365706455}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -2033,49 +2068,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &8009914028543508673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2549990567691232858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 7081657350339548755}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: Enter
-          _PersistentArguments: []
-        - _Target: {fileID: 0}
-          _MemberName: Land
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &4166950754799812384
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2549990567691232858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 7081657350339548755}
-  onEntry: 1
-  onEnterName: BonkAir
-  onEnterTime: 0
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &6002171360735996087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2318,8 +2310,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 7081657350339548755}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -2335,6 +2325,55 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+--- !u!114 &8668112073897778042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2549990567691232858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 7081657350339548755}
+  signals:
+    serializedNames:
+    - Land
+    serializedKeys: 07466d2d
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &277926962365706455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2549990567691232858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 7081657350339548755}
+  action:
+    type: 0
+    NameID: BonkAir
+    cachedHash: 101947526
+    layer: -1
+    floatValue1: 0
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &2659994982637481428
 GameObject:
   m_ObjectHideFlags: 0
@@ -2345,14 +2384,14 @@ GameObject:
   m_Component:
   - component: {fileID: 5005137079389380807}
   - component: {fileID: 3505493481800076146}
-  - component: {fileID: 6500677886512003649}
+  - component: {fileID: 2735635226896895482}
   m_Layer: 6
   m_Name: Initial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5005137079389380807
 Transform:
   m_ObjectHideFlags: 0
@@ -2381,13 +2420,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
   <Behaviors>k__BackingField:
-  - {fileID: 6500677886512003649}
+  - {fileID: 0}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 2377060701463017047}
   <Layer>k__BackingField: 3
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &6500677886512003649
+--- !u!114 &2735635226896895482
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2396,13 +2435,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2659994982637481428}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
   <State>k__BackingField: {fileID: 3505493481800076146}
-  onEntry: 2
-  onEnterName: GrabReady
-  onEnterTime: 0.1
+  action:
+    type: 3
+    NameID: GrabReady
+    cachedHash: -184264645
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
   doWhenNotFinal: 0
   animator: {fileID: 0}
 --- !u!1 &3528915973223463332
@@ -2415,9 +2460,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8578826884364825311}
   - component: {fileID: 3562878954532282011}
-  - component: {fileID: 4177561465425889262}
   - component: {fileID: 6395627174072938690}
   - component: {fileID: 8543019558285714254}
+  - component: {fileID: 5431954312059196572}
   m_Layer: 0
   m_Name: GrabBlocked
   m_TagString: Untagged
@@ -2453,32 +2498,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
   <Behaviors>k__BackingField:
-  - {fileID: 4177561465425889262}
   - {fileID: 6395627174072938690}
   - {fileID: 8543019558285714254}
+  - {fileID: 5431954312059196572}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 2377060701463017047}
   <Layer>k__BackingField: 3
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
---- !u!114 &4177561465425889262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3528915973223463332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
-  <State>k__BackingField: {fileID: 3562878954532282011}
-  onEntry: 1
-  onEnterName: GrabBlocked
-  onEnterTime: 0
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &6395627174072938690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2654,17 +2681,33 @@ MonoBehaviour:
     output:
       _PersistentCalls:
       - _Target: {fileID: 0}
-        _MemberName: ReturnToNeutral
-        _PersistentArguments:
-        - _Type: 1
-          _Int: 1
-          _String: 
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
   loopAfterLastEvent: 0
+--- !u!114 &5431954312059196572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3528915973223463332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 3562878954532282011}
+  action:
+    type: 0
+    NameID: GrabBlocked
+    cachedHash: 924505958
+    layer: -1
+    floatValue1: 0
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &4455649396155297584
 GameObject:
   m_ObjectHideFlags: 0
@@ -2678,9 +2721,9 @@ GameObject:
   - component: {fileID: 4352082223274014327}
   - component: {fileID: 7483014765755114567}
   - component: {fileID: 8124401093494964817}
-  - component: {fileID: 5293022077158188796}
-  - component: {fileID: 1495146948802109046}
   - component: {fileID: 2305499323867276782}
+  - component: {fileID: 7841021961926407248}
+  - component: {fileID: 7950676355505666289}
   m_Layer: 6
   m_Name: DropLaunch
   m_TagString: Untagged
@@ -2718,12 +2761,12 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 4352082223274014327}
   - {fileID: 7483014765755114567}
-  - {fileID: 5293022077158188796}
-  - {fileID: 1495146948802109046}
   - {fileID: 2305499323867276782}
+  - {fileID: 7841021961926407248}
+  - {fileID: 7950676355505666289}
   <Machine>k__BackingField: {fileID: 0}
-  <Parent>k__BackingField: {fileID: 0}
-  <Layer>k__BackingField: 1
+  <Parent>k__BackingField: {fileID: 1240914359256471248}
+  <Layer>k__BackingField: 2
   <Children>k__BackingField: []
   <ChildCount>k__BackingField: 0
 --- !u!114 &4352082223274014327
@@ -2740,8 +2783,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 9136615076610149191}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   acceleration: 0.35
   decceleration: 0.5
   maxSpeed: 10
@@ -2763,8 +2804,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 9136615076610149191}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   defaultPhase: 1
   jumpHeight: 4
   jumpPower: 14
@@ -2807,46 +2846,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &5293022077158188796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4455649396155297584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 9136615076610149191}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: EnterTrigger
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &1495146948802109046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4455649396155297584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 9136615076610149191}
-  onEntry: 2
-  onEnterName: DropLaunch
-  onEnterTime: 0.01
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &2305499323867276782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2884,6 +2883,55 @@ MonoBehaviour:
         _MemberName: Enter
         _PersistentArguments: []
   loopAfterLastEvent: 0
+--- !u!114 &7841021961926407248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455649396155297584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 9136615076610149191}
+  signals:
+    serializedNames:
+    - Land
+    serializedKeys: 07466d2d
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &7950676355505666289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4455649396155297584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 9136615076610149191}
+  action:
+    type: 3
+    NameID: DropLaunch
+    cachedHash: -2131446365
+    layer: -1
+    floatValue1: 0.01
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &4740896802998860751
 GameObject:
   m_ObjectHideFlags: 0
@@ -2895,12 +2943,13 @@ GameObject:
   - component: {fileID: 4413823325044038589}
   - component: {fileID: 9220388631842718837}
   - component: {fileID: 7721737828282604010}
-  - component: {fileID: 8051173283703068358}
-  - component: {fileID: 787887870931963313}
   - component: {fileID: 4082322391070217788}
   - component: {fileID: 2235148857308771486}
   - component: {fileID: 1818697774432629862}
   - component: {fileID: 4820975360378628061}
+  - component: {fileID: 4947821799873870587}
+  - component: {fileID: 4987595326159343220}
+  - component: {fileID: 6332639777965021169}
   m_Layer: 6
   m_Name: LightPunch1
   m_TagString: Untagged
@@ -2936,12 +2985,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 8051173283703068358}
-  - {fileID: 787887870931963313}
   - {fileID: 4082322391070217788}
   - {fileID: 2235148857308771486}
   - {fileID: 1818697774432629862}
   - {fileID: 4820975360378628061}
+  - {fileID: 4947821799873870587}
+  - {fileID: 4987595326159343220}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -2978,65 +3027,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &8051173283703068358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4740896802998860751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 9220388631842718837}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: Enter
-          _PersistentArguments: []
-        - _Target: {fileID: 0}
-          _MemberName: CrossFadeAtCurrentPoint
-          _PersistentArguments:
-          - _Type: 2
-            _Int: 0
-            _String: LightPunch1
-            _X: 0
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-          - _Type: 5
-            _Int: 0
-            _String: 
-            _X: 0.2
-            _Y: 0
-            _Z: 0
-            _W: 0
-            _Object: {fileID: 0}
-  lockOnEnter: 1
---- !u!114 &787887870931963313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4740896802998860751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 9220388631842718837}
-  onEntry: 2
-  onEnterName: LightPunch1
-  onEnterTime: 0.05
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &4082322391070217788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3330,6 +3320,12 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 9220388631842718837}
   timeline: {fileID: 0}
   events:
+  - time: 0
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Lock
+        _PersistentArguments: []
   - time: 0.3
     output:
       _PersistentCalls:
@@ -3365,8 +3361,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 9220388631842718837}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -3413,6 +3407,95 @@ MonoBehaviour:
             _PersistentArguments: []
         releaseEvent:
           _PersistentCalls: []
+--- !u!114 &4947821799873870587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4740896802998860751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 9220388631842718837}
+  signals:
+    serializedNames:
+    - Land
+    serializedKeys: 07466d2d
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 6332639777965021169}
+        _MemberName: FireTransition
+        _PersistentArguments:
+        - _Type: 3
+          _Int: 0
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &4987595326159343220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4740896802998860751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 9220388631842718837}
+  action:
+    type: 3
+    NameID: LightPunch1
+    cachedHash: -383597135
+    layer: -1
+    floatValue1: 0.05
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &6332639777965021169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4740896802998860751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cecfe66424e9bf4cb9090caa83f51c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::StateTransitions
+  <State>k__BackingField: {fileID: 9220388631842718837}
+  timeline: {fileID: 0}
+  transitions:
+  - <TargetState>k__BackingField: {fileID: 0}
+    <AtEnd>k__BackingField: 0
+    <BeginEvent>k__BackingField:
+      _PersistentCalls: []
+    <Length>k__BackingField: 0.1
+    <EndEvent>k__BackingField:
+      _PersistentCalls: []
+    <Animation>k__BackingField:
+      type: 5
+      NameID: LightPunch1
+      cachedHash: -1
+      layer: -1
+      floatValue1: 0.1
+      floatValue2: 0
+      intValue: 0
+      boolValue: 0
+  animator: {fileID: 0}
 --- !u!1 &5683792416682321264
 GameObject:
   m_ObjectHideFlags: 0
@@ -3488,8 +3571,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 2377060701463017047}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   forwardSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -3581,13 +3662,22 @@ MonoBehaviour:
       outSlope: 0
       tangentMode: 136
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 3
+      value: 20
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   horizontalThresholdAdjustment: 0.05
-  verticalThreshold: 0.01
+  verticalThreshold: 0.1
   directionalThreshold: 1
   maxAttemptTime: 3
   failMissedReturn: {fileID: 3963804732520028507}
@@ -3643,12 +3733,12 @@ GameObject:
   - component: {fileID: 1652433871933845568}
   - component: {fileID: 305372263694839032}
   - component: {fileID: 8982191095646137420}
-  - component: {fileID: 5110984072805170276}
-  - component: {fileID: 1316113402806293667}
   - component: {fileID: 4945723595789684522}
   - component: {fileID: 9073209158844073788}
-  - component: {fileID: 5440792583322738497}
   - component: {fileID: 5812798475129713075}
+  - component: {fileID: 1524893660133839036}
+  - component: {fileID: 2712038716329245935}
+  - component: {fileID: 2207906068232020068}
   m_Layer: 6
   m_Name: AirThrow
   m_TagString: Untagged
@@ -3684,12 +3774,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 5110984072805170276}
-  - {fileID: 1316113402806293667}
   - {fileID: 4945723595789684522}
   - {fileID: 9073209158844073788}
-  - {fileID: 5440792583322738497}
   - {fileID: 5812798475129713075}
+  - {fileID: 1524893660133839036}
+  - {fileID: 2712038716329245935}
+  - {fileID: 2712038716329245935}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -3726,46 +3816,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &5110984072805170276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7445540337320547508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 305372263694839032}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: EnterFade
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &1316113402806293667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7445540337320547508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 305372263694839032}
-  onEntry: 1
-  onEnterName: AirThrow
-  onEnterTime: 0
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &4945723595789684522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3781,6 +3831,12 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 305372263694839032}
   timeline: {fileID: 0}
   events:
+  - time: 0
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Lock
+        _PersistentArguments: []
   - time: 0.1666667
     output:
       _PersistentCalls:
@@ -3826,8 +3882,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 305372263694839032}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -3843,22 +3897,6 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
---- !u!114 &5440792583322738497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7445540337320547508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
-  <State>k__BackingField: {fileID: 305372263694839032}
-  signals:
-    serializedList: []
-  lockOnEnter: 0
 --- !u!114 &5812798475129713075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4033,6 +4071,95 @@ MonoBehaviour:
   loopTime: 0
   influenceFadeTime: 0.1
   overrideOff: 0
+--- !u!114 &1524893660133839036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7445540337320547508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 305372263694839032}
+  signals:
+    serializedNames:
+    - Land
+    serializedKeys: 07466d2d
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 2207906068232020068}
+        _MemberName: FireTransition
+        _PersistentArguments:
+        - _Type: 3
+          _Int: 0
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &2712038716329245935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7445540337320547508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 305372263694839032}
+  action:
+    type: 0
+    NameID: AirThrow
+    cachedHash: -1868488248
+    layer: -1
+    floatValue1: 0
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &2207906068232020068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7445540337320547508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cecfe66424e9bf4cb9090caa83f51c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::StateTransitions
+  <State>k__BackingField: {fileID: 305372263694839032}
+  timeline: {fileID: 0}
+  transitions:
+  - <TargetState>k__BackingField: {fileID: 0}
+    <AtEnd>k__BackingField: 0
+    <BeginEvent>k__BackingField:
+      _PersistentCalls: []
+    <Length>k__BackingField: 0.1
+    <EndEvent>k__BackingField:
+      _PersistentCalls: []
+    <Animation>k__BackingField:
+      type: 5
+      NameID: Throw
+      cachedHash: -1907200461
+      layer: -1
+      floatValue1: 0.1
+      floatValue2: 0
+      intValue: 0
+      boolValue: 0
+  animator: {fileID: 0}
 --- !u!1 &8789526045061471104
 GameObject:
   m_ObjectHideFlags: 0

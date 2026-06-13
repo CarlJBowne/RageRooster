@@ -87,9 +87,10 @@ public class PlayerGrabAction : PlayerStateBehavior
             SampleCurve(turningSpeedCurve, out float turningSpeed);
             SampleCurve(verticalShiftCurve, out float verticalShift);
 
-            if (turningSpeed > 0) Player.MovementBody.DirectionSet((storedTargetPosition - Player.Center).XZ(), turningSpeed * Time.fixedDeltaTime);
+            if (turningSpeed > 0) Player.MovementBody.Direction.Set
+                    ((storedTargetPosition - Player.Center).XZ(), turningSpeed * Time.fixedDeltaTime);
 
-            Vector3 targetVelocity = Player.MovementBody.velocity.Local;
+            Vector3 targetVelocity = Player.MovementBody.Velocity.Local;
 
 
             if (forwardSpeedInfluence > 0f) targetVelocity.z = horizontalDistance > horizontalThreshold
@@ -110,8 +111,8 @@ public class PlayerGrabAction : PlayerStateBehavior
 
 
 
-            Player.MovementBody.velocity.f = targetVelocity.z;
-            Player.MovementBody.velocity.u = targetVelocity.y;
+            Player.MovementBody.Velocity.f = targetVelocity.z;
+            Player.MovementBody.Velocity.u = targetVelocity.y;
 
 
             if (elapsedTime > maxAttemptTime || (horizontalDistance <= horizontalThreshold && angleDifference <= directionalThreshold && (verticalDistance <= verticalThreshold || verticalShift == 0))) //CHANGE PHASE

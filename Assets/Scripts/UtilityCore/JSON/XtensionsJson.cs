@@ -29,8 +29,9 @@ namespace Utilities.JSON
         /// </summary>
         /// <typeparam name="T">The Type to Deserialize into.</typeparam>
         /// <returns>The Deserialized Value.</returns>
-        public static T Deserialize<T>(this JToken THIS)
+        public static T Deserialized<T>(this JToken THIS)
         {
+            if (THIS == null) return default;
             if (typeof(ICustomSerialized).IsAssignableFrom(typeof(T)))
             {
                 var Result = Activator.CreateInstance<T>() as ICustomSerialized;
@@ -48,6 +49,7 @@ namespace Utilities.JSON
         /// <returns>Whether the Deserialization was succesful.</returns>
         public static bool TryDeserialize<T>(this JToken THIS, out T result)
         {
+            if (THIS == null) { result = default; return false; }
             if (typeof(ICustomSerialized).IsAssignableFrom(typeof(T)))
             {
                 var IResult = Activator.CreateInstance<T>() as ICustomSerialized;
@@ -63,13 +65,85 @@ namespace Utilities.JSON
         /// <br />For when you're unsure if the target object is an ICustomSerialized or not.
         /// </summary>
         /// <param name="target">The Target object.</param>
-        public static void DeserializeInto(this JToken THIS, object target)
+        public static bool DeserializeInto<T>(this JToken THIS, ref T target)
         {
-            var Custom = target as ICustomSerialized;
-            if (Custom != null) Custom.Deserialize(THIS);
+            if (THIS == null) return false;
+            target ??= Activator.CreateInstance<T>();
+            if (target is ICustomSerialized Custom) Custom.Deserialize(THIS);
             else
                 using (JsonReader sr = THIS.CreateReader())
                     JsonSerializer.CreateDefault().Populate(sr, target);
+            return true;
+        }
+        /// <summary>
+        /// Populates an existing object using this Token.
+        /// <br />For when you're unsure if the target object is an ICustomSerialized or not.
+        /// </summary>
+        /// <param name="target">The Target object.</param>
+        public static bool DeserializeInto<T>(this JToken THIS, T target)
+        {
+            if (THIS == null) return false;
+            target ??= Activator.CreateInstance<T>();
+            if (target is ICustomSerialized Custom) Custom.Deserialize(THIS);
+            else
+                using (JsonReader sr = THIS.CreateReader())
+                    JsonSerializer.CreateDefault().Populate(sr, target);
+            return true;
+        }
+
+        /// <summary>
+        /// Deserializes the JToken to the specified type and invokes the provided action with the result.
+        /// </summary>
+        /// <typeparam name="T">The type to deserialize the JToken to.</typeparam>
+        /// <param name="THIS">The JToken to deserialize.</param>
+        /// <param name="Process">The action to invoke with the deserialized object.</param>
+        /// <returns>true if deserialization was successful; otherwise, false.</returns>
+        public static bool Deserializer<T>(this JToken THIS, Action<T> Process)
+        {
+            if (THIS != null)
+            {
+                Process(THIS.ToObject<T>());
+                return true;
+            }
+            else return false;
+        }
+        /// <summary>
+        /// Deserializes the JToken to the specified type and invokes the provided action with the result, or with the
+        /// default value if the token is null.
+        /// </summary>
+        /// <typeparam name="T">The type to deserialize the JToken to.</typeparam>
+        /// <param name="THIS">The JToken to deserialize.</param>
+        /// <param name="Process">The action to invoke with the deserialized value.</param>
+        /// <param name="defaultValue">The value to use if the JToken is null.</param>
+        /// <returns>true if deserialization was successful; otherwise, false.</returns>
+        public static bool Deserializer<T>(this JToken THIS, Action<T> Process, T defaultValue)
+        {
+            if (THIS != null)
+            {
+                Process(THIS.ToObject<T>());
+                return true;
+            }
+            else
+            {
+                Process(defaultValue);
+                return false;
+            }
+        }
+        /// <summary>
+        /// Executes the specified action on the object if it is not null.
+        /// </summary>
+        /// <typeparam name="T">The type of JToken to process.</typeparam>
+        /// <param name="THIS">The JToken instance to process.</param>
+        /// <param name="Process">The action to perform on the JToken.</param>
+        /// <returns>true if the action was executed; otherwise, false.</returns>
+        public static bool Process<T>(this T THIS, Action<T> Process) where T : JToken
+        {
+            if (THIS != null)
+            {
+                Process(THIS.ToObject<T>());
+                return true;
+            }
+            else return false;
         }
     }
 

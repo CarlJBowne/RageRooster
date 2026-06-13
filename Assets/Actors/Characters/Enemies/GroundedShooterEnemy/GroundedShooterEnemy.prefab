@@ -4968,13 +4968,14 @@ GameObject:
   - component: {fileID: 4339660178794021585}
   - component: {fileID: 838323740284995032}
   - component: {fileID: 2813074546204450206}
+  - component: {fileID: 2666689870643536537}
   m_Layer: 7
   m_Name: GroundedShooterEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2505213574692443504
 Transform:
   m_ObjectHideFlags: 0
@@ -5008,7 +5009,7 @@ MonoBehaviour:
   _data:
     _json: '{"nest":{"source":"Macro","macro":0,"embed":null}}'
     _objectReferences:
-    - {fileID: 11400000, guid: c9f2c5ae06aa550489fcfd206a1db786, type: 2}
+    - {fileID: 11400000, guid: 01426219b23812c41b039f4533242740, type: 2}
 --- !u!114 &7292519513144575382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5022,15 +5023,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"PlayerRange","value":{"$content":0.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
-      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"FollowRange","value":{"$content":15.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
-      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"AttackRange","value":{"$content":8.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
-      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"BackupRange","value":{"$content":3.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
-      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"Player","value":null,"typeHandle":{"Identification":"UnityEngine.Transform,
-      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"AttackCooldown","value":{"$content":2.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
+    _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"AttackCooldown","value":{"$content":2.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"AttackReady","value":{"$content":true,"$type":"System.Boolean"},"typeHandle":{"Identification":"System.Boolean,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"ERM","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"EntityRangeManager,
+      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"SpeedEnum","value":{"$content":[2.0,0.0],"$type":"System.Collections.Generic.List`1[[System.Single,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"typeHandle":{"Identification":"System.Collections.Generic.List`1[[System.Single,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]],
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
-    _objectReferences: []
+    _objectReferences:
+    - {fileID: 2666689870643536537}
 --- !u!95 &1628104581712334922
 Animator:
   serializedVersion: 7
@@ -5142,7 +5143,6 @@ MonoBehaviour:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
-  immuneTags_Old: []
   immuneTags:
     intValue: 0
   health: 0
@@ -5217,11 +5217,11 @@ MonoBehaviour:
     - rid: 440872388981686359
       type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
       data:
-        Target: {fileID: 0}
+        Target: {fileID: 2371090980624060258}
     - rid: 440872388981686360
       type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
       data:
-        Target: {fileID: 0}
+        Target: {fileID: 2371090980624060258}
 --- !u!114 &226772296267759708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5310,10 +5310,6 @@ MonoBehaviour:
     velocity: {x: 0, y: 0, z: 0}
     tags:
       intValue: 17
-    oldTags:
-    - name: Thrown
-    - name: ThrownEnemy
-    - name: FromPlayer
     _displayName: 
   sourceEntity: {fileID: 0}
   onContactEvent:
@@ -5331,6 +5327,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBasicBulletSource
   muzzle: {fileID: 4646624316971525324}
+--- !u!114 &2666689870643536537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4906831177318307996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7242c640d1a9884581a01a912275038, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EntityRangeManager
+  ranges:
+  - name: Backup
+    outerThreshold: 3
+    lineOfSightReq: 180
+    E_displayColor_EDITOR: {r: 0.09433961, g: 0.07431469, b: 0.07431469, a: 1}
+    openInEditor_EDITOR: 1
+  - name: Attacking
+    outerThreshold: 8
+    lineOfSightReq: 180
+    E_displayColor_EDITOR: {r: 0.8, g: 0.7882353, b: 0.101960786, a: 1}
+    openInEditor_EDITOR: 1
+  - name: Following
+    outerThreshold: 15
+    lineOfSightReq: 180
+    E_displayColor_EDITOR: {r: 0.36862746, g: 0.90588236, b: 0.21568628, a: 1}
+    openInEditor_EDITOR: 1
+  updateInterval: 0.25
+  targetOverride: {fileID: 0}
+  sendVisualEvents: 1
+  ultEvents:
+    _PersistentCalls: []
+  sendUltEvents: 0
+  outerMostRangeName: Wandering
+  showGizmos: 0
 --- !u!1 &4909045370384413027
 GameObject:
   m_ObjectHideFlags: 0

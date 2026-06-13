@@ -7,6 +7,8 @@ using System;
 using System.Linq;
 using UnityEngine.UIElements;
 using Utilities.Xtensions.VisualElements;
+using Highlighter = Utilities.Xtensions.VisualElements.Highlighter;
+
 
 
 #if UNITY_EDITOR
@@ -362,7 +364,7 @@ namespace RageRooster.RoomSystem
                             alignSelf = Align.FlexStart,
                         }
                     };
-                    areaButton.Highlighter(.3f);
+                    new Highlighter(areaButton, .3f).Hover();
                     areaButton.RegisterCallback<ClickEvent>(PING);
                     root.Add(areaButton);
 
@@ -590,7 +592,7 @@ namespace RageRooster.RoomSystem
                                     unityTextAlign = TextAnchor.MiddleLeft
                                 }
                             };
-                            roomLabel.Highlighter(.1f);
+                            new Highlighter(roomLabel, .1f).Hover();
                             rootVisualElement.Add(roomLabel);
                             void OpenRoom()
                             {

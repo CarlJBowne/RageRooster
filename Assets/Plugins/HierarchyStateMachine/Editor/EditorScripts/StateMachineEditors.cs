@@ -12,7 +12,7 @@ using UnityEngine.UIElements;
 namespace SLS.StateMachineH
 {
     [CustomEditor(typeof(State), false)]
-    public class StateEditor : Editor
+    public class StateEditor : UnityEditor.Editor
     {
         protected VisualElement root;
         protected VisualElement primaryRow;
@@ -256,7 +256,11 @@ namespace SLS.StateMachineH
 
         }
 
-        private void OnDisable() => state.Machine.AfterStateTransition -= UpdateActiveRow;
+        private void OnDisable()
+        {
+            if (state.Machine == null) return;
+            state.Machine.AfterStateTransition -= UpdateActiveRow;
+        }
 
 
         public override void OnInspectorGUI()

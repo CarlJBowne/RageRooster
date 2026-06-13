@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using SLS.StateMachineH.Utils;
+using ListUtilities;
+
 
 #if ULT_EVENTS
 using EVENT = UltEvents.UltEvent;
@@ -9,15 +12,13 @@ using EVENT = UltEvents.UltEvent;
 using EVENT = UnityEngine.Events.UnityEvent;
 #endif
 
-using SLS.StateMachineH.SerializedDictionary;
-
 namespace SLS.StateMachineH.Signals
 {
     /// <summary>  
-    /// Represents a dictionary of signals, where each signal is associated with a unique string key.  
+    /// Represents a dictionary of signals, where each signal is associated with a unique string name and int key 
     /// </summary>  
     [Serializable]
-    public class SignalSet : SerializedDictionary<string, EVENT> { }
+    internal class SignalSet : HashedListS<EVENT> { }
 
     /// <summary>  
     /// Represents a signal with properties for queue time, lock behavior, and duplicate allowance.  
@@ -89,10 +90,9 @@ namespace SLS.StateMachineH.Signals
         /// Serves as the default hash function.  
         /// </summary>  
         /// <returns>A hash code for the current <see cref="Signal"/>.</returns>  
-        public override int GetHashCode() => name?.GetHashCode() ?? 0;
+        public override int GetHashCode() => string.IsNullOrEmpty(name) ? Animator.StringToHash(name) : 0;
 
         public const float DEFAULT_QUEUE_TIME = 0.5f;
 
     }
-
 }

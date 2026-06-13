@@ -10,7 +10,7 @@ namespace RageRooster.Obsolete.Zones
     public class ZoneManager : Singleton.MonoBehaviour<ZoneManager>
     {
         [SerializeField] ZoneRoot currentZone;
-        [SerializeField] AYellowpaper.SerializedCollections.SerializedDictionary<string, ZoneProxy> proxies = new();
+        //[SerializeField] Utilities.SerializedDictionary<string, ZoneProxy> proxies = new();
         public string defaultAreaScene;
         public float minLoadTime;
         public Timer.Loop updateTimer = new(.5f);
@@ -36,7 +36,7 @@ namespace RageRooster.Obsolete.Zones
         // Updates all zone proxies and ticks the offset timer.
         public void Update()
         {
-            updateTimer.Tick(() => { foreach (ZoneProxy area in proxies.Values) area.Update(); });
+            //updateTimer.Tick(() => { foreach (ZoneProxy area in proxies.Values) area.Update(); });
 
             offsetSetTimer.Tick(UpdateOffset);
         }
@@ -50,14 +50,14 @@ namespace RageRooster.Obsolete.Zones
             if (currentZone == null)
             {
                 currentZone = zone;
-                proxies.Add(zone, new(zone));
+                //proxies.Add(zone, new(zone));
                 OnFirstLoad?.Invoke();
                 currentZone.OnTransition();
             }
             else
             {
-                proxies[zone.name].root = zone;
-                proxies[zone.name].loaded = true;
+                //proxies[zone.name].root = zone;
+                //proxies[zone.name].loaded = true;
             }
 
             zone.transform.position = zone.originOffset + currentOffset;
@@ -75,7 +75,7 @@ namespace RageRooster.Obsolete.Zones
         private void DoTransition_(string sceneName)
         {
             if (sceneName == currentZone.name) return;
-            currentZone = proxies[sceneName].GetRoot();
+            //currentZone = proxies[sceneName].GetRoot();
             currentZone.OnTransition();
         }
 
@@ -88,8 +88,8 @@ namespace RageRooster.Obsolete.Zones
         // Adds a zone transition to the proxies.
         private void AddTransition_(ZoneTransition transition)
         {
-            if (!proxies.ContainsKey(transition)) proxies.Add(transition, new(transition));
-            else proxies[transition].transitionsTo.Add(transition);
+            //if (!proxies.ContainsKey(transition)) proxies.Add(transition, new(transition));
+            //else proxies[transition].transitionsTo.Add(transition);
         }
 
         // Static method to remove a zone transition.
@@ -98,14 +98,14 @@ namespace RageRooster.Obsolete.Zones
         // Removes a zone transition from the proxies.
         private void RemoveTransition_(ZoneTransition transition)
         {
-            if (!proxies.TryGetValue(transition, out ZoneProxy proxy))
-                throw new System.Exception("How are you trying to remove a Transition from a zone that has no Proxy loaded?");
-            proxy.transitionsTo.Remove(transition);
-            if (currentZone != proxy && proxy.transitionsTo.Count == 0)
-            {
-                if (proxy.loaded && IsSceneLoaded(proxy)) SceneManager.UnloadSceneAsync(proxy.name);
-                proxies.Remove(transition);
-            }
+            //if (!proxies.TryGetValue(transition, out ZoneProxy proxy))
+            //    throw new System.Exception("How are you trying to remove a Transition from a zone that has no Proxy loaded?");
+            //proxy.transitionsTo.Remove(transition);
+            //if (currentZone != proxy && proxy.transitionsTo.Count == 0)
+            //{
+            //    if (proxy.loaded && IsSceneLoaded(proxy)) SceneManager.UnloadSceneAsync(proxy.name);
+            //    proxies.Remove(transition);
+            //}
         }
 
         // Updates the offset of the current zone and proxies based on the player's position.
@@ -128,25 +128,26 @@ namespace RageRooster.Obsolete.Zones
         }
 
         // Checks if a zone is ready to be loaded.
-        public static bool ZoneIsReady(string name) => Get.proxies.ContainsKey(name) && Get.proxies[name].loaded;
+        public static bool ZoneIsReady(string name) => false;// Get.proxies.ContainsKey(name) && Get.proxies[name].loaded;
 
         // Unloads all zones asynchronously.
         public static IEnumerator UnloadAll()
         {
-            ZoneProxy[] zones = Get.proxies.Values.ToArray();
-
-            int unloadsLeft = 0;
-            for (int i = 0; i < zones.Length; i++)
-                if (IsSceneLoaded(zones[i]))
-                {
-                    unloadsLeft++;
-                    zones[i].task = null;
-                    SceneManager.UnloadSceneAsync(zones[i]).completed += _ =>
-                    { unloadsLeft--; };
-                }
-
-            yield return new WaitUntil(() => unloadsLeft == 0);
-            Get.proxies.Clear();
+            yield return new WaitForSeconds(300000000000);
+            //ZoneProxy[] zones = Get.proxies.Values.ToArray();
+            //
+            //int unloadsLeft = 0;
+            //for (int i = 0; i < zones.Length; i++)
+            //    if (IsSceneLoaded(zones[i]))
+            //    {
+            //        unloadsLeft++;
+            //        zones[i].task = null;
+            //        SceneManager.UnloadSceneAsync(zones[i]).completed += _ =>
+            //        { unloadsLeft--; };
+            //    }
+            //
+            //yield return new WaitUntil(() => unloadsLeft == 0);
+            //Get.proxies.Clear();
         }
 
         // Checks if a scene is currently loaded.

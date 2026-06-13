@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
 using Utilities.Xtensions.Unity;
+using RageRooster.Physics;
 
 public class PlayerGlidingMovement : PlayerAirborneMovement
 {
@@ -27,12 +28,12 @@ public class PlayerGlidingMovement : PlayerAirborneMovement
         if (!isVentGlide || transform.position.y > targetHeight)
         {
             result = ApplyGravity(gravity, terminalVelocity, flatGravity);
-            Player.MovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
+            Player.MovementBody.Ground.UnLand(GroundState.Values.Falling);
         }
         else if (transform.position.y < targetHeight)
         {
             result = raiseRate/* * currentVent.transform.up.y*/;
-            Player.MovementBody.UnLand(PlayerMovementBody.JumpState.Hangtime);
+            Player.MovementBody.Ground.UnLand(GroundState.Values.Hangtime);
         }
         else result = 0;
 
@@ -46,7 +47,7 @@ public class PlayerGlidingMovement : PlayerAirborneMovement
     {
         Y = Y.Max(0);
 
-        Player.MovementBody.UnLand(PlayerMovementBody.JumpState.Falling);
+        Player.MovementBody.Ground.UnLand(GroundState.Values.Falling);
         if (fallState != null) fallState.Enter();
     }
 
@@ -55,9 +56,9 @@ public class PlayerGlidingMovement : PlayerAirborneMovement
         base.OnEnter(prev, isFinal);
         if (!isFinal) return;
 
-        Player.MovementBody.UnLand();
+        Player.MovementBody.Ground.UnLand();
 
-        Player.MovementBody.velocity.y = Player.MovementBody.velocity.y.Max(0);
+        Player.MovementBody.Velocity.y = Player.MovementBody.Velocity.y.Max(0);
 
         if (isVentGlide)
         {
@@ -68,5 +69,5 @@ public class PlayerGlidingMovement : PlayerAirborneMovement
 
     public override void BeginJump() => throw new System.Exception("Don't Use This Method.");
     public override void BeginJump(float power, float height, float minHeight) => throw new System.Exception("Don't Use This Method.");
-    public override void BeginJump(PlayerMovementBody.JumpState newState) => throw new System.Exception("Don't Use This Method.");
+    public override void BeginJump(GroundState.Values newState) => throw new System.Exception("Don't Use This Method.");
 }

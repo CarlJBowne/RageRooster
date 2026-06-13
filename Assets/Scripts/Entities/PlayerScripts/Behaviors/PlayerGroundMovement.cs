@@ -23,8 +23,8 @@ public class PlayerGroundMovement : PlayerMovementEffector
 
     public override bool ForwardMovement(out float result)
     {
-        float currentSpeed = Player.MovementBody.velocity.f;
-        Vector3 currentDirection = Player.MovementBody.DirectionGet;
+        float currentSpeed = Player.MovementBody.Velocity.f;
+        Vector3 currentDirection = Player.MovementBody.Direction;
 
         float deltaTime = Time.deltaTime * 50;
         Vector3 controlDirection = Player.Controller.camAdjustedMovement.normalized;
@@ -35,7 +35,8 @@ public class PlayerGroundMovement : PlayerMovementEffector
         {
             float Dot = Vector3.Dot(controlDirection, currentDirection);
 
-            if (maxTurnSpeed > 0) Player.MovementBody.DirectionSet(maxTurnSpeed * Time.fixedDeltaTime);
+            if (maxTurnSpeed > 0) Player.MovementBody.Direction.Set
+                    (Player.Controller.camAdjustedMovement, maxTurnSpeed * Time.fixedDeltaTime);
 
             if (!outwardTurn) currentSpeed *= Dot;
 
@@ -51,7 +52,7 @@ public class PlayerGroundMovement : PlayerMovementEffector
         else currentSpeed = currentSpeed > .01f ? currentSpeed.Move(currentSpeed * stopping * deltaTime, 0) : 0;
 
 
-        Player.MovementBody.velocity.f = currentSpeed;
+        Player.MovementBody.Velocity.f = currentSpeed;
 
         result = currentSpeed;
         return true;

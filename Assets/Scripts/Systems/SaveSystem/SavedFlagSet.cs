@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
-using SLS.StateMachineH.SerializedDictionary;
+﻿using ListUtilities;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +8,7 @@ using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using Utilities;
 
 namespace RageRooster.Systems.SaveSystem.Flags
 {
@@ -23,15 +24,18 @@ namespace RageRooster.Systems.SaveSystem.Flags
 
         public void LoadFromJson(JToken json)
         {
-            foreach (var pair in flags)
-                pair.Value.LoadFromJson((JValue)json[pair.Key]);
+            for (int i = 0; i < flags.Count; i++)
+            {
+                flags.ValueFromIndex(i).LoadFromJson(json[flags.NameFromIndex(i)]);
+            }
         }
 
         public JObject SaveToJson()
         {
             var result = new JObject();
 
-            foreach (var pair in flags) result[pair.Key] = pair.Value.SaveToJson();
+            for (int i = 0; i < flags.Count; i++)
+                result[flags.NameFromIndex(i)] = flags.ValueFromIndex(i).SaveToJson();
             return result;
         }
 
@@ -41,8 +45,8 @@ namespace RageRooster.Systems.SaveSystem.Flags
             if (target == null) target = Instantiate(this);
             else
             {
-                foreach (string key in flags.Keys)
-                    flags[key].Clone(target.flags[key]);
+                for (int i = 0; i < flags.Count; i++)
+                    flags.ValueFromIndex(i).Clone(target.flags.ValueFromIndex(i));
             }
             return target;
         }
@@ -58,7 +62,7 @@ namespace RageRooster.Systems.SaveSystem.Flags
         public bool TryGetFlag<T>(string key, out T value)
         {
             value = default;
-            return flags.ContainsKey(key) && flags[key].TryGetValue(out value);
+            return flags.ContainsKey(key.Hash()) && flags[key].TryGetValue(out value);
         }
 
         /// <summary>
@@ -68,93 +72,12 @@ namespace RageRooster.Systems.SaveSystem.Flags
         /// <param name="key">The name identifier of the flag.</param>
         /// <param name="value">The new value to set for the flag.</param>
         /// <returns>Whether setting the flag was a success.</returns>
-        public bool TrySetFlag<T>(string key, T value) => flags.ContainsKey(key) && flags[key].TrySetValue(value);
+        public bool TrySetFlag<T>(string key, T value) => flags.ContainsKey(key.Hash()) && flags[key].TrySetValue(value);
 
 
         [System.Serializable]
-        public class FlagDictionary : SerializedReferenceDictionary<string, Flag>
+        public class FlagDictionary : HashedListS<Flag>
         {
-            [CustomPropertyDrawer(typeof(FlagDictionary), true)]
-            public class FlagDictionaryDrawer : SerializedDictionaryDrawer
-            {
-                float enumWidth = 70f;
-                float spacing = 2f;
-                float rowHeight => EditorGUIUtility.singleLineHeight;
-
-                protected override void KeyValuePairDrawer(SerializedProperty item, Rect position, int id, bool isDupe)
-                {
-                    if (isDupe) GUI.color = redWarning;
-
-                    Rect keyRect = new(position.x, position.y + 1, position.width, rowHeight);
-                    Rect enumRect = new(position.x, position.y + rowHeight + spacing, enumWidth, rowHeight);
-                    Rect valueRect = new(position.x + enumWidth + spacing, position.y + rowHeight + spacing, position.width - enumWidth - spacing, rowHeight);
-
-                    EditorGUI.PropertyField(keyRect, item.FindPropertyRelative("Key"), GUIContent.none);
-
-                    EditorGUI.BeginChangeCheck();
-
-                    var flagProp = item.FindPropertyRelative("Value");
-                    Flag flagObj = flagProp.managedReferenceValue as Flag;
-
-                    Enum prevEnum = flagObj.type;
-                    Enum enumOutput = EditorGUI.EnumPopup(enumRect, prevEnum);
-                    if (!Equals(enumOutput, prevEnum))
-                    {
-                        flagProp.managedReferenceValue = Flag.CreateInstanceFromEnum((Flag.Type)enumOutput);
-                        flagObj = flagProp.managedReferenceValue as Flag;
-                        flagProp.serializedObject.ApplyModifiedProperties();
-                        EditorUtility.SetDirty(flagProp.serializedObject.targetObject);
-                    }
-
-                    object existingValue = flagObj.valueObject;
-                    object inputValue = existingValue;
-
-                    inputValue = flagObj.type switch
-                    {
-                        Flag.Type.Bool => EditorGUI.Toggle(valueRect, GUIContent.none, (bool)existingValue),
-                        Flag.Type.Int => EditorGUI.DelayedIntField(valueRect, GUIContent.none, (int)existingValue),
-                        Flag.Type.Float => EditorGUI.DelayedFloatField(valueRect, GUIContent.none, (float)existingValue),
-                        Flag.Type.Vector3 => EditorGUI.Vector3Field(valueRect, GUIContent.none, (Vector3)existingValue),
-                        Flag.Type.String => EditorGUI.DelayedTextField(valueRect, GUIContent.none, (string)existingValue),
-                        _ => throw new System.Exception("Invalid Type.")
-                    };
-
-                    if (!Equals(inputValue, existingValue))
-                    {
-                        flagObj.TrySetValue(inputValue);
-                        flagProp.managedReferenceValue = flagObj;
-                    }
-
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        flagProp.serializedObject.ApplyModifiedProperties();
-                        EditorUtility.SetDirty(flagProp.serializedObject.targetObject);
-                    }
-
-                    if (isDupe) GUI.color = Color.white;
-                }
-                protected override float KeyValuePairHeight(SerializedProperty serializedListProperty, int index)
-                    => EditorGUIUtility.singleLineHeight * 2 + EditorGUIUtility.standardVerticalSpacing + spacing;
-
-                protected override void AddNewItem(SerializedProperty serializedListProperty, ReorderableList list)
-                {
-                    int place = serializedListProperty.arraySize > 0 ? serializedListProperty.arraySize - 1 : 0;
-
-                    serializedListProperty.InsertArrayElementAtIndex(place);
-                    serializedListProperty.serializedObject.ApplyModifiedProperties(); // <-- Ensure property tree is updated
-
-                    var elementValue = serializedListProperty.GetArrayElementAtIndex(place).FindPropertyRelative("Value");
-                    if (elementValue == null)
-                    {
-                        Debug.LogError("Could not find 'Value' property. Check your SerializedKeyValuePair definition and serialization attributes.");
-                        return;
-                    }
-                    elementValue.managedReferenceValue = new Flag.Boolean();
-
-                    serializedListProperty.serializedObject.ApplyModifiedProperties();
-                    MakeReorderableList();
-                }
-            }
         }
     }
 }

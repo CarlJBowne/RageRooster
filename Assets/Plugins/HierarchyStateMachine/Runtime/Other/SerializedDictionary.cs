@@ -1,12 +1,19 @@
 using System;
 using System.Collections;
-using Generics = System.Collections.Generic;
+using System.Collections.Generic;
+using System.Reflection;
+using UnityEditor;
+using UnityEditor.UIElements;
+using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UIElements;
+using Generics = System.Collections.Generic;
 
-namespace SLS.StateMachineH.SerializedDictionary
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("SLS.StateMachineH.Editor")]
+namespace SLS.StateMachineH.Utils
 {
     [Serializable]
-    public class SerializedDictionary<TKey, TValue> : Generics.Dictionary<TKey, TValue>, ISerializationCallbackReceiver, ISerializedDictionaryNonGeneric
+    internal class SerializedDictionary<TKey, TValue> : Generics.Dictionary<TKey, TValue>, ISerializationCallbackReceiver, ISerializedDictionaryNonGeneric
     {
         [SerializeField] internal Generics.List<KeyValuePair> serializedList;
         [NonSerialized] private Generics.Dictionary<TKey, Generics.List<int>> occurences;
@@ -115,7 +122,7 @@ namespace SLS.StateMachineH.SerializedDictionary
             return false;
         }
 
-        public void RecalculateOccurences()
+        public bool[] RecalculateOccurences()
         {
             occurences.Clear();
             for (int i = 0; i < serializedList.Count; i++)
@@ -123,6 +130,7 @@ namespace SLS.StateMachineH.SerializedDictionary
                 if (!occurences.ContainsKey(serializedList[i].Key)) occurences.Add(serializedList[i].Key, new(i));
                 else occurences[serializedList[i].Key].Add(i);
             }
+            return DuplicateValues;
         }
 
         public void RemoveDuplicates()
@@ -159,6 +167,8 @@ namespace SLS.StateMachineH.SerializedDictionary
         public bool Remove(object key) => Remove((TKey)key);
         public bool TryAdd(object key, object value) => TryAdd((TKey)key, (TValue)value);
 
+        public TKey GetKeyOfIndex(int index) => serializedList[index].Key;
+        public TValue GetValueOfIndex(int index) => serializedList[index].Value;
 
         [Serializable]
         public struct KeyValuePair
@@ -221,7 +231,7 @@ namespace SLS.StateMachineH.SerializedDictionary
     }
 
     [Serializable]
-    public class SerializedReferenceDictionary<TKey, TValue> : Generics.Dictionary<TKey, TValue>, ISerializationCallbackReceiver, ISerializedDictionaryNonGeneric
+    internal class SerializedReferenceDictionary<TKey, TValue> : Generics.Dictionary<TKey, TValue>, ISerializationCallbackReceiver, ISerializedDictionaryNonGeneric
     {
         [SerializeField] internal Generics.List<KeyValuePair> serializedList;
         [NonSerialized] private Generics.Dictionary<TKey, Generics.List<int>> occurences;
@@ -330,7 +340,7 @@ namespace SLS.StateMachineH.SerializedDictionary
             return false;
         }
 
-        public void RecalculateOccurences()
+        public bool[] RecalculateOccurences()
         {
             occurences.Clear();
             for (int i = 0; i < serializedList.Count; i++)
@@ -338,6 +348,7 @@ namespace SLS.StateMachineH.SerializedDictionary
                 if (!occurences.ContainsKey(serializedList[i].Key)) occurences.Add(serializedList[i].Key, new(i));
                 else occurences[serializedList[i].Key].Add(i);
             }
+            return DuplicateValues;
         }
 
         public void RemoveDuplicates()
@@ -374,6 +385,8 @@ namespace SLS.StateMachineH.SerializedDictionary
         public bool Remove(object key) => Remove((TKey)key);
         public bool TryAdd(object key, object value) => TryAdd((TKey)key, (TValue)value);
 
+        public TKey GetKeyOfIndex(int index) => serializedList[index].Key;
+        public TValue GetValueOfIndex(int index) => serializedList[index].Value;
 
         [Serializable]
         public struct KeyValuePair
@@ -436,13 +449,7 @@ namespace SLS.StateMachineH.SerializedDictionary
     }
 
 
-
-
-
-
-
-
-    public interface ISerializedDictionaryNonGeneric
+    internal interface ISerializedDictionaryNonGeneric
     {
         public System.Collections.IList listAccess { get; }
 
@@ -454,11 +461,11 @@ namespace SLS.StateMachineH.SerializedDictionary
         public bool Remove(object key);
         public bool TryAdd(object key, object value);
 
-        public void RecalculateOccurences();
+        public bool[] RecalculateOccurences();
         public bool[] DuplicateValues { get; }
         public void RemoveDuplicates();
     }
-    public interface ILookupTableNonGeneric
+    internal interface ILookupTableNonGeneric
     {
         public bool[] DuplicateValues { get; }
         public void RecalculateOccurences();

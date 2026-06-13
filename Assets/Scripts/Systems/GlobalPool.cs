@@ -26,12 +26,13 @@ namespace Utilities.ObjectPooling
         public ObjectPool<AttackProjectile> basicEnemyBullet;
         public static ObjectPool<AttackProjectile> BasicEnemyBullet;
 
-        public override void OnInit() => Initialize();
-
         public void Initialize()
         {
             if (initialized && Active) return;
-            if (!Application.isPlaying) return;
+            if (!Application.isPlaying || !Gameplay.Active) return;
+
+            ObjectPool.DefaultPoolParent = poolParent;
+            UnityEngine.Object.DontDestroyOnLoad(ObjectPool.DefaultPoolParent);
 
             InitPoolGlobally(basicEnemyBullet);
             BasicEnemyBullet = basicEnemyBullet;
@@ -40,8 +41,6 @@ namespace Utilities.ObjectPooling
 
             Gameplay.onUpdate += Update;
             Gameplay.onDestroy += OnDeInit;
-
-            ObjectPool.DefaultPoolParent = poolParent;
 
             initialized = true;
         }

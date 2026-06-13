@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 1978831967936605215}
   - component: {fileID: 5813825388865048165}
   - component: {fileID: 3938139639593417024}
-  - component: {fileID: 7522692023340703892}
-  - component: {fileID: 7208542330799166710}
   - component: {fileID: 8002669189030430031}
   - component: {fileID: 218258871158497918}
+  - component: {fileID: 5570056411073408287}
+  - component: {fileID: 3014609648909492689}
   m_Layer: 6
   m_Name: HellcopterFall
   m_TagString: Untagged
@@ -54,10 +54,10 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 1978831967936605215}
   - {fileID: 5813825388865048165}
-  - {fileID: 7522692023340703892}
-  - {fileID: 7208542330799166710}
   - {fileID: 8002669189030430031}
   - {fileID: 218258871158497918}
+  - {fileID: 5570056411073408287}
+  - {fileID: 3014609648909492689}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 64949434001181475}
   <Layer>k__BackingField: 1
@@ -77,8 +77,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 1075301280742415455}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   acceleration: 0.35
   decceleration: 0.5
   maxSpeed: 7.5
@@ -100,8 +98,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 1075301280742415455}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   defaultPhase: 3
   jumpHeight: 0
   jumpPower: 0
@@ -144,52 +140,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &7522692023340703892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1109638797890743037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 1075301280742415455}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: EnterTrigger
-          _PersistentArguments: []
-    - Key: EnterVent
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8461839931617156215}
-          _MemberName: Enter
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &7208542330799166710
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1109638797890743037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 1075301280742415455}
-  onEntry: 2
-  onEnterName: Hellcopter
-  onEnterTime: 0.1
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &8002669189030430031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,8 +179,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 1075301280742415455}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: 1950655830041821339
   Attack:
@@ -263,6 +211,60 @@ MonoBehaviour:
             _MemberName: Enter
             _PersistentArguments: []
         autoFinishHold: 1
+--- !u!114 &5570056411073408287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109638797890743037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 1075301280742415455}
+  signals:
+    serializedNames:
+    - Land
+    - EnterVent
+    serializedKeys: e67a3208a8930d78
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: EnterTrigger
+        _PersistentArguments: []
+    - _PersistentCalls:
+      - _Target: {fileID: 8461839931617156215}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &3014609648909492689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109638797890743037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 1075301280742415455}
+  action:
+    type: 3
+    NameID: Hellcopter
+    cachedHash: -1207629274
+    layer: -1
+    floatValue1: 0.1
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &1506567694756651440
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,10 +276,10 @@ GameObject:
   - component: {fileID: 319494389863809142}
   - component: {fileID: 6616579841475748961}
   - component: {fileID: 7517355483673619797}
-  - component: {fileID: 2234175367040417086}
-  - component: {fileID: 2427246234681744960}
   - component: {fileID: 7905189856447170246}
   - component: {fileID: 2618352552455956089}
+  - component: {fileID: 6758045286273081980}
+  - component: {fileID: 6390480323142845225}
   m_Layer: 6
   m_Name: ParrySpinG
   m_TagString: Untagged
@@ -313,10 +315,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 2234175367040417086}
-  - {fileID: 2427246234681744960}
   - {fileID: 7905189856447170246}
   - {fileID: 2618352552455956089}
+  - {fileID: 6758045286273081980}
+  - {fileID: 6390480323142845225}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 64949434001181475}
   <Layer>k__BackingField: 1
@@ -353,40 +355,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &2234175367040417086
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1506567694756651440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 6616579841475748961}
-  signals:
-    serializedList: []
-  lockOnEnter: 0
---- !u!114 &2427246234681744960
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1506567694756651440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 6616579841475748961}
-  onEntry: 2
-  onEnterName: Parry
-  onEnterTime: 0.02
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &7905189856447170246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,6 +370,12 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 6616579841475748961}
   timeline: {fileID: 0}
   events:
+  - time: 0
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Lock
+        _PersistentArguments: []
   - time: 1.0333333
     output:
       _PersistentCalls:
@@ -429,8 +403,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 6616579841475748961}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -446,6 +418,50 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+--- !u!114 &6758045286273081980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506567694756651440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 6616579841475748961}
+  signals:
+    serializedNames: []
+    serializedKeys: 
+    serializedValues: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &6390480323142845225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506567694756651440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 6616579841475748961}
+  action:
+    type: 3
+    NameID: Parry
+    cachedHash: 504284770
+    layer: -1
+    floatValue1: 0.02
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &2526124837761571134
 GameObject:
   m_ObjectHideFlags: 0
@@ -459,10 +475,10 @@ GameObject:
   - component: {fileID: 3434667236439157037}
   - component: {fileID: 6586997675408760311}
   - component: {fileID: 8700941003197232983}
-  - component: {fileID: 8770582372822988111}
-  - component: {fileID: 2841964747064235240}
   - component: {fileID: 2669685365816681903}
   - component: {fileID: 3362417081802816702}
+  - component: {fileID: 473312156850437970}
+  - component: {fileID: 453165492400596087}
   m_Layer: 6
   m_Name: Hellcopter
   m_TagString: Untagged
@@ -500,10 +516,10 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 3434667236439157037}
   - {fileID: 6586997675408760311}
-  - {fileID: 8770582372822988111}
-  - {fileID: 2841964747064235240}
   - {fileID: 2669685365816681903}
   - {fileID: 3362417081802816702}
+  - {fileID: 473312156850437970}
+  - {fileID: 453165492400596087}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 64949434001181475}
   <Layer>k__BackingField: 1
@@ -523,8 +539,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 8461839931617156215}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   acceleration: 0.35
   decceleration: 0.5
   maxSpeed: 7.5
@@ -546,8 +560,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 8461839931617156215}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   defaultPhase: 1
   jumpHeight: 0
   jumpPower: 0
@@ -590,46 +602,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &8770582372822988111
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2526124837761571134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 8461839931617156215}
-  signals:
-    serializedList:
-    - Key: Land
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 0}
-          _MemberName: EnterTrigger
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &2841964747064235240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2526124837761571134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 8461839931617156215}
-  onEntry: 1
-  onEnterName: Hellcopter
-  onEnterTime: 0.1
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &2669685365816681903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -669,8 +641,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 8461839931617156215}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -686,6 +656,55 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+--- !u!114 &473312156850437970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2526124837761571134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 8461839931617156215}
+  signals:
+    serializedNames:
+    - Land
+    serializedKeys: e67a3208
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: EnterTrigger
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &453165492400596087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2526124837761571134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 8461839931617156215}
+  action:
+    type: 0
+    NameID: Hellcopter
+    cachedHash: -1207629274
+    layer: -1
+    floatValue1: 0
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &2719082022442923091
 GameObject:
   m_ObjectHideFlags: 0
@@ -697,11 +716,11 @@ GameObject:
   - component: {fileID: 5107936426409278637}
   - component: {fileID: 8562058668068276381}
   - component: {fileID: 3575861286515710763}
-  - component: {fileID: 3828952635903725142}
-  - component: {fileID: 6792805793765375815}
   - component: {fileID: 2977361335044287924}
   - component: {fileID: 2155963791571696259}
   - component: {fileID: 5952747723236487527}
+  - component: {fileID: 8313939065051208469}
+  - component: {fileID: 8379591985288678376}
   m_Layer: 6
   m_Name: ParrySpinA
   m_TagString: Untagged
@@ -737,11 +756,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
-  - {fileID: 3828952635903725142}
-  - {fileID: 6792805793765375815}
   - {fileID: 2977361335044287924}
   - {fileID: 2155963791571696259}
   - {fileID: 5952747723236487527}
+  - {fileID: 8313939065051208469}
+  - {fileID: 8379591985288678376}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 64949434001181475}
   <Layer>k__BackingField: 1
@@ -778,46 +797,6 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
---- !u!114 &3828952635903725142
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2719082022442923091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec9ab63313df730499988d00094fdc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 8562058668068276381}
-  signals:
-    serializedList:
-    - Key: EnterVent
-      Value:
-        _PersistentCalls:
-        - _Target: {fileID: 8461839931617156215}
-          _MemberName: Enter
-          _PersistentArguments: []
-  lockOnEnter: 0
---- !u!114 &6792805793765375815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2719082022442923091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa3070a473c63934382ece0799821eb1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <State>k__BackingField: {fileID: 8562058668068276381}
-  onEntry: 2
-  onEnterName: ParryAir
-  onEnterTime: 0.02
-  doWhenNotFinal: 0
-  animator: {fileID: 0}
 --- !u!114 &2977361335044287924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1061,6 +1040,12 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 8562058668068276381}
   timeline: {fileID: 0}
   events:
+  - time: 0
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Lock
+        _PersistentArguments: []
   - time: 1.0333333
     output:
       _PersistentCalls:
@@ -1088,8 +1073,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 8562058668068276381}
   Machine: {fileID: 0}
-  playerMovementBody: {fileID: 0}
-  playerController: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -1105,6 +1088,55 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+--- !u!114 &8313939065051208469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2719082022442923091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
+  <State>k__BackingField: {fileID: 8562058668068276381}
+  signals:
+    serializedNames:
+    - EnterVent
+    serializedKeys: a8930d78
+    serializedValues:
+    - _PersistentCalls:
+      - _Target: {fileID: 8461839931617156215}
+        _MemberName: Enter
+        _PersistentArguments: []
+  blockParentNodes: 0
+  blockGlobalNode: 0
+  manager: {fileID: 0}
+--- !u!114 &8379591985288678376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2719082022442923091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 8562058668068276381}
+  action:
+    type: 3
+    NameID: ParryAir
+    cachedHash: -1251558268
+    layer: -1
+    floatValue1: 0.02
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &3389446310549623285
 GameObject:
   m_ObjectHideFlags: 0
@@ -1185,14 +1217,12 @@ MonoBehaviour:
     velocity: {x: 1, y: 0, z: 0}
     tags:
       intValue: 0
-    oldTags: []
     _displayName: 
   hellUpgradedAttack:
     amount: 5
     velocity: {x: 3, y: 0, z: 0}
     tags:
       intValue: 0
-    oldTags: []
     _displayName: 
   collider: {fileID: 6100152611311494838}
 --- !u!54 &8410295175668056917

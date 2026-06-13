@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RageRooster.Physics;
 using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour, IMovablePlatform
@@ -8,7 +9,7 @@ public class MovingPlatform : MonoBehaviour, IMovablePlatform
     public float speed = 2.0f;
 
     private Vector3 target;
-    public List<CharacterMovementBody> bodies { get; } = new();
+    public List<PhysicsBody> bodies { get; } = new();
     public bool MovePlayer { get; set; } = false;
 
     void Start()
@@ -21,7 +22,7 @@ public class MovingPlatform : MonoBehaviour, IMovablePlatform
         Vector3 offset = speed * Time.fixedDeltaTime * (target - transform.position).normalized;
 
         transform.position = transform.position + offset;
-        IMovablePlatform.DoAnchorMove(this, offset);
+        IMovablePlatform.DoMove(this, offset);
 
         if (Vector3.Distance(transform.position, target) < 0.1f)
         {

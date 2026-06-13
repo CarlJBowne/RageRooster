@@ -3,10 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities.Singletons;
 
 [DefaultExecutionOrder(ExecutionOrders.GameplaySystems)]
-public class Overlay : MonoBehaviour
+public class Overlay : MonoBehaviour, IGlobalPrefab
 {
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void Init()
+    {
+        var This = IGlobalPrefab.Instantiate<Overlay>();
+        DontDestroyOnLoad(This);
+    }
+
     public enum OverlayLayer
     {
         OverGameplay,

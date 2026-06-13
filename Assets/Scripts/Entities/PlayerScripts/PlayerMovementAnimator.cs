@@ -47,14 +47,14 @@ public class PlayerMovementAnimator : PlayerMovementEffector
         }
         
 
-        result = Player.MovementBody.velocity.f;
+        result = Player.MovementBody.Velocity.f;
 
         if (influence > 0)
         {
             Vector3 controlVector = Player.Controller.camAdjustedMovement;
 
-            Vector3 targetDirection = Player.MovementBody.DirectionGet;
-            float targetSpeed = Player.MovementBody.velocity.f;
+            Vector3 targetDirection = Player.MovementBody.Direction;
+            float targetSpeed = Player.MovementBody.Velocity.f;
 
             if (turnability > 0) targetDirection = Vector3.RotateTowards(targetDirection, controlVector.normalized, turnability * Mathf.PI * Time.fixedDeltaTime, 0);
 
@@ -64,13 +64,13 @@ public class PlayerMovementAnimator : PlayerMovementEffector
 
             if (influence == 1)
             {
-                Player.MovementBody.velocity.f = targetSpeed;
-                Player.MovementBody.DirectionSet(targetDirection);
+                Player.MovementBody.Velocity.f = targetSpeed;
+                Player.MovementBody.Direction.Set(targetDirection);
             }
             else
             {
-                Player.MovementBody.velocity.f = Mathf.Lerp(Player.MovementBody.velocity.f, targetSpeed, influence);
-                Player.MovementBody.DirectionSet(Vector3.Lerp(Player.MovementBody.DirectionGet, targetDirection, influence));
+                Player.MovementBody.Velocity.f = Mathf.Lerp(Player.MovementBody.Velocity.f, targetSpeed, influence);
+                Player.MovementBody.Direction.Set(Vector3.Lerp(Player.MovementBody.Direction, targetDirection, influence));
             }
 
         }
@@ -90,11 +90,11 @@ public class PlayerMovementAnimator : PlayerMovementEffector
     {
         if (locked)
         {
-            result = Player.MovementBody.velocity.y - defaultGravity * .02f;
+            result = Player.MovementBody.Velocity.y - defaultGravity * .02f;
             return true;
         }
 
-        result = Player.MovementBody.velocity.y;
+        result = Player.MovementBody.Velocity.y;
 
         if (influence > 0 && !Mathf.Approximately(verticalAddSpeed, 0)) result = (result + verticalAddSpeed * Time.fixedDeltaTime * influence).Min(-terminalVelocity);
         if (setVerticalInfluence > 0)
