@@ -59,6 +59,7 @@ public class EntityRangeManager : MonoBehaviour
 
     public void UpdateRange(bool doEvenIfSame = false)
     {
+        if (!Gameplay.Active) return;
         GetDistance();
         GetDOT();
 

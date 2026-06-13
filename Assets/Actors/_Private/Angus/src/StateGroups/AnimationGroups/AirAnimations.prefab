@@ -128,8 +128,8 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 5854373079976201164}
   - {fileID: 2172773124327044178}
-  - {fileID: 5854373079976201164}
-  - {fileID: 2172773124327044178}
+  - {fileID: 3113712089088083698}
+  - {fileID: 163258902978876044}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -237,7 +237,7 @@ MonoBehaviour:
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 0}
-        _MemberName: EnterFade
+        _MemberName: Enter
         _PersistentArguments: []
   blockParentNodes: 0
   blockGlobalNode: 0
@@ -319,10 +319,10 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 8422455139397599670}
   - {fileID: 8705723442505678076}
-  - {fileID: 8422455139397599670}
-  - {fileID: 8705723442505678076}
   - {fileID: 5518502353883561843}
   - {fileID: 9129278314642407266}
+  - {fileID: 8250698587917999455}
+  - {fileID: 2363731144651042008}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -639,6 +639,12 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 1596455508646601812}
   timeline: {fileID: 0}
   events:
+  - time: 0
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Lock
+        _PersistentArguments: []
   - time: 0.26666668
     output:
       _PersistentCalls:
@@ -739,16 +745,8 @@ MonoBehaviour:
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 0}
-        _MemberName: EnterFade
-        _PersistentArguments:
-        - _Type: 5
-          _Int: 0
-          _String: 
-          _X: 0.2
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
+        _MemberName: Enter
+        _PersistentArguments: []
   blockParentNodes: 0
   blockGlobalNode: 0
   manager: {fileID: 0}
@@ -825,8 +823,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
   <Behaviors>k__BackingField:
   - {fileID: 3963804732520028507}
-  - {fileID: 3963804732520028507}
   - {fileID: 4059923005625944773}
+  - {fileID: 4300116182078365104}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 2377060701463017047}
   <Layer>k__BackingField: 3
@@ -1042,6 +1040,7 @@ GameObject:
   - component: {fileID: 3201469588153593305}
   - component: {fileID: 437669567245186492}
   - component: {fileID: 8219193433287476025}
+  - component: {fileID: 1671532480621118245}
   m_Layer: 6
   m_Name: LightPunch2
   m_TagString: Untagged
@@ -1079,10 +1078,10 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 2357885435015564703}
   - {fileID: 6642739891644216852}
-  - {fileID: 2357885435015564703}
-  - {fileID: 6642739891644216852}
   - {fileID: 1274625630210408939}
   - {fileID: 3201469588153593305}
+  - {fileID: 437669567245186492}
+  - {fileID: 8219193433287476025}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -1412,6 +1411,12 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 7940821063771917098}
   timeline: {fileID: 0}
   events:
+  - time: 0
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Lock
+        _PersistentArguments: []
   - time: 0.3
     output:
       _PersistentCalls:
@@ -1512,24 +1517,13 @@ MonoBehaviour:
     serializedKeys: 07466d2d
     serializedValues:
     - _PersistentCalls:
-      - _Target: {fileID: 0}
-        _MemberName: Enter
-        _PersistentArguments: []
-      - _Target: {fileID: 0}
-        _MemberName: CrossFadeAtCurrentPoint
+      - _Target: {fileID: 1671532480621118245}
+        _MemberName: FireTransition
         _PersistentArguments:
-        - _Type: 2
-          _Int: 0
-          _String: LightPunch2
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-        - _Type: 5
+        - _Type: 3
           _Int: 0
           _String: 
-          _X: 0.2
+          _X: 0
           _Y: 0
           _Z: 0
           _W: 0
@@ -1560,6 +1554,38 @@ MonoBehaviour:
     intValue: 0
     boolValue: 0
   doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &1671532480621118245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352869033436450034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cecfe66424e9bf4cb9090caa83f51c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::StateTransitions
+  <State>k__BackingField: {fileID: 7940821063771917098}
+  timeline: {fileID: 0}
+  transitions:
+  - <TargetState>k__BackingField: {fileID: 0}
+    <AtEnd>k__BackingField: 0
+    <BeginEvent>k__BackingField:
+      _PersistentCalls: []
+    <Length>k__BackingField: 0.1
+    <EndEvent>k__BackingField:
+      _PersistentCalls: []
+    <Animation>k__BackingField:
+      type: 5
+      NameID: LightPunch2
+      cachedHash: -1
+      layer: -1
+      floatValue1: 0.1
+      floatValue2: 0
+      intValue: 0
+      boolValue: 0
   animator: {fileID: 0}
 --- !u!1 &1488830519560627706
 GameObject:
@@ -1616,10 +1642,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Behaviors>k__BackingField:
   - {fileID: 3156319708820385117}
-  - {fileID: 3156319708820385117}
-  - {fileID: 558305279784127179}
   - {fileID: 7410677789220254902}
   - {fileID: 558305279784127179}
+  - {fileID: 6122063834584822665}
+  - {fileID: 2695815491313806318}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -1905,7 +1931,7 @@ MonoBehaviour:
   signals:
     serializedNames:
     - Land
-    serializedKeys: 07466d2d
+    serializedKeys: e67a3208
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 0}
@@ -1914,17 +1940,6 @@ MonoBehaviour:
       - _Target: {fileID: 0}
         _MemberName: Enter
         _PersistentArguments: []
-      - _Target: {fileID: 0}
-        _MemberName: Play
-        _PersistentArguments:
-        - _Type: 2
-          _Int: 0
-          _String: GroundSlam_Impact
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
       - _Target: {fileID: 0}
         _MemberName: Pump
         _PersistentArguments:
@@ -2015,8 +2030,8 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 6002171360735996087}
   - {fileID: 3124737419329290273}
-  - {fileID: 6002171360735996087}
-  - {fileID: 3124737419329290273}
+  - {fileID: 8668112073897778042}
+  - {fileID: 277926962365706455}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -2332,9 +2347,6 @@ MonoBehaviour:
       - _Target: {fileID: 0}
         _MemberName: Enter
         _PersistentArguments: []
-      - _Target: {fileID: 0}
-        _MemberName: Land
-        _PersistentArguments: []
   blockParentNodes: 0
   blockGlobalNode: 0
   manager: {fileID: 0}
@@ -2487,8 +2499,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.State
   <Behaviors>k__BackingField:
   - {fileID: 6395627174072938690}
-  - {fileID: 6395627174072938690}
   - {fileID: 8543019558285714254}
+  - {fileID: 5431954312059196572}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 2377060701463017047}
   <Layer>k__BackingField: 3
@@ -2750,8 +2762,8 @@ MonoBehaviour:
   - {fileID: 4352082223274014327}
   - {fileID: 7483014765755114567}
   - {fileID: 2305499323867276782}
-  - {fileID: 0}
-  - {fileID: 2305499323867276782}
+  - {fileID: 7841021961926407248}
+  - {fileID: 7950676355505666289}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -2891,7 +2903,7 @@ MonoBehaviour:
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 0}
-        _MemberName: EnterTrigger
+        _MemberName: Enter
         _PersistentArguments: []
   blockParentNodes: 0
   blockGlobalNode: 0
@@ -2937,6 +2949,7 @@ GameObject:
   - component: {fileID: 4820975360378628061}
   - component: {fileID: 4947821799873870587}
   - component: {fileID: 4987595326159343220}
+  - component: {fileID: 6332639777965021169}
   m_Layer: 6
   m_Name: LightPunch1
   m_TagString: Untagged
@@ -2974,10 +2987,10 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 4082322391070217788}
   - {fileID: 2235148857308771486}
-  - {fileID: 4082322391070217788}
-  - {fileID: 2235148857308771486}
   - {fileID: 1818697774432629862}
   - {fileID: 4820975360378628061}
+  - {fileID: 4947821799873870587}
+  - {fileID: 4987595326159343220}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -3307,6 +3320,12 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 9220388631842718837}
   timeline: {fileID: 0}
   events:
+  - time: 0
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Lock
+        _PersistentArguments: []
   - time: 0.3
     output:
       _PersistentCalls:
@@ -3407,24 +3426,13 @@ MonoBehaviour:
     serializedKeys: 07466d2d
     serializedValues:
     - _PersistentCalls:
-      - _Target: {fileID: 0}
-        _MemberName: Enter
-        _PersistentArguments: []
-      - _Target: {fileID: 0}
-        _MemberName: CrossFadeAtCurrentPoint
+      - _Target: {fileID: 6332639777965021169}
+        _MemberName: FireTransition
         _PersistentArguments:
-        - _Type: 2
-          _Int: 0
-          _String: LightPunch1
-          _X: 0
-          _Y: 0
-          _Z: 0
-          _W: 0
-          _Object: {fileID: 0}
-        - _Type: 5
+        - _Type: 3
           _Int: 0
           _String: 
-          _X: 0.2
+          _X: 0
           _Y: 0
           _Z: 0
           _W: 0
@@ -3455,6 +3463,38 @@ MonoBehaviour:
     intValue: 0
     boolValue: 0
   doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &6332639777965021169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4740896802998860751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cecfe66424e9bf4cb9090caa83f51c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::StateTransitions
+  <State>k__BackingField: {fileID: 9220388631842718837}
+  timeline: {fileID: 0}
+  transitions:
+  - <TargetState>k__BackingField: {fileID: 0}
+    <AtEnd>k__BackingField: 0
+    <BeginEvent>k__BackingField:
+      _PersistentCalls: []
+    <Length>k__BackingField: 0.1
+    <EndEvent>k__BackingField:
+      _PersistentCalls: []
+    <Animation>k__BackingField:
+      type: 5
+      NameID: LightPunch1
+      cachedHash: -1
+      layer: -1
+      floatValue1: 0.1
+      floatValue2: 0
+      intValue: 0
+      boolValue: 0
   animator: {fileID: 0}
 --- !u!1 &5683792416682321264
 GameObject:
@@ -3697,8 +3737,8 @@ GameObject:
   - component: {fileID: 9073209158844073788}
   - component: {fileID: 5812798475129713075}
   - component: {fileID: 1524893660133839036}
-  - component: {fileID: 4526310020652337609}
   - component: {fileID: 2712038716329245935}
+  - component: {fileID: 2207906068232020068}
   m_Layer: 6
   m_Name: AirThrow
   m_TagString: Untagged
@@ -3736,10 +3776,10 @@ MonoBehaviour:
   <Behaviors>k__BackingField:
   - {fileID: 4945723595789684522}
   - {fileID: 9073209158844073788}
-  - {fileID: 4945723595789684522}
-  - {fileID: 9073209158844073788}
-  - {fileID: 0}
   - {fileID: 5812798475129713075}
+  - {fileID: 1524893660133839036}
+  - {fileID: 2712038716329245935}
+  - {fileID: 2712038716329245935}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1240914359256471248}
   <Layer>k__BackingField: 2
@@ -3791,6 +3831,12 @@ MonoBehaviour:
   <State>k__BackingField: {fileID: 305372263694839032}
   timeline: {fileID: 0}
   events:
+  - time: 0
+    output:
+      _PersistentCalls:
+      - _Target: {fileID: 0}
+        _MemberName: Lock
+        _PersistentArguments: []
   - time: 0.1666667
     output:
       _PersistentCalls:
@@ -4044,29 +4090,17 @@ MonoBehaviour:
     serializedKeys: 07466d2d
     serializedValues:
     - _PersistentCalls:
-      - _Target: {fileID: 0}
-        _MemberName: EnterFade
-        _PersistentArguments: []
-  blockParentNodes: 0
-  blockGlobalNode: 0
-  manager: {fileID: 0}
---- !u!114 &4526310020652337609
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7445540337320547508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6461c48bf3174cc469453680d6118bff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
-  <State>k__BackingField: {fileID: 305372263694839032}
-  signals:
-    serializedNames: []
-    serializedKeys: 
-    serializedValues: []
+      - _Target: {fileID: 2207906068232020068}
+        _MemberName: FireTransition
+        _PersistentArguments:
+        - _Type: 3
+          _Int: 0
+          _String: 
+          _X: 0
+          _Y: 0
+          _Z: 0
+          _W: 0
+          _Object: {fileID: 0}
   blockParentNodes: 0
   blockGlobalNode: 0
   manager: {fileID: 0}
@@ -4093,6 +4127,38 @@ MonoBehaviour:
     intValue: 0
     boolValue: 0
   doWhenNotFinal: 0
+  animator: {fileID: 0}
+--- !u!114 &2207906068232020068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7445540337320547508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cecfe66424e9bf4cb9090caa83f51c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::StateTransitions
+  <State>k__BackingField: {fileID: 305372263694839032}
+  timeline: {fileID: 0}
+  transitions:
+  - <TargetState>k__BackingField: {fileID: 0}
+    <AtEnd>k__BackingField: 0
+    <BeginEvent>k__BackingField:
+      _PersistentCalls: []
+    <Length>k__BackingField: 0.1
+    <EndEvent>k__BackingField:
+      _PersistentCalls: []
+    <Animation>k__BackingField:
+      type: 5
+      NameID: Throw
+      cachedHash: -1907200461
+      layer: -1
+      floatValue1: 0.1
+      floatValue2: 0
+      intValue: 0
+      boolValue: 0
   animator: {fileID: 0}
 --- !u!1 &8789526045061471104
 GameObject:

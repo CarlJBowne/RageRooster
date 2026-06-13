@@ -45,7 +45,7 @@ public class StateTransitions : StateTimeline
         if (activeTransition.Animation != null && activeTransition.Animation.type is not AnimatorAction.Type.Null)
         {
             activeTransition.Animation.Do(animator);
-            //Disable StateAnimator on Target once disabling is implemented
+            activeTransition.TargetState.GetComponent<StateAnimator>().BlockForThisCycle();
         }
 
         if (activeTransition.Length <= 0f) End();

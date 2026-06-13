@@ -44,6 +44,11 @@ namespace SLS.StateMachineH
         }
 
         #region Auxilary Alternatives
+        public void EnterBeforeCustom()
+        {
+            this.BlockForThisCycle();
+            State.Enter();
+        }
         /// <summary>  
         /// Plays the specified animation.  
         /// </summary>  

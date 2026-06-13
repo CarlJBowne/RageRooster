@@ -1612,6 +1612,7 @@ GameObject:
   - component: {fileID: 6582296487860853402}
   - component: {fileID: 3250556400427331045}
   - component: {fileID: 87391789168012028}
+  - component: {fileID: 8671835582315110474}
   m_Layer: 6
   m_Name: GroundSlamImpact
   m_TagString: Untagged
@@ -1650,6 +1651,7 @@ MonoBehaviour:
   - {fileID: 6582296487860853402}
   - {fileID: 3250556400427331045}
   - {fileID: 87391789168012028}
+  - {fileID: 8671835582315110474}
   <Machine>k__BackingField: {fileID: 0}
   <Parent>k__BackingField: {fileID: 1146425584514261869}
   <Layer>k__BackingField: 2
@@ -1762,6 +1764,30 @@ MonoBehaviour:
   blockParentNodes: 0
   blockGlobalNode: 0
   manager: {fileID: 0}
+--- !u!114 &8671835582315110474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2921341992611231107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f27a4585274abd14a8641a4f40afbb14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.StateAnimator
+  <State>k__BackingField: {fileID: 7772055570066141359}
+  action:
+    type: 0
+    NameID: GroundSlam_Impact
+    cachedHash: -968022483
+    layer: -1
+    floatValue1: 0
+    floatValue2: 0
+    intValue: 0
+    boolValue: 0
+  doWhenNotFinal: 0
+  animator: {fileID: 0}
 --- !u!1 &3173302890089524309
 GameObject:
   m_ObjectHideFlags: 0

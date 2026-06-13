@@ -8,18 +8,16 @@ public class EnemyBasicBulletSource : MonoBehaviour
     public Transform muzzle;
     bool initialized = false;
 
-    //private void Awake() => Initialize();
-
-    public void Initialize()
+    private void Awake()
     {
-        if (initialized) return;
+        if (!Gameplay.Active) return;
         GlobalPool.BasicEnemyBullet.Initialize();
-        initialized = true;
     }
 
     public PoolableObject Pump(bool autoEnable = true)
     {
-        if (!initialized) Initialize();
+        if (!Gameplay.Active) return null;
+        if (!GlobalPool.BasicEnemyBullet.initialized) GlobalPool.BasicEnemyBullet.Initialize();
         PoolableObject res = null;
         GlobalPool.BasicEnemyBullet.Pump(Success);
 

@@ -86,5 +86,9 @@ namespace Utilities.ObjectPooling
                 return false;
             }
         }
+        private void OnDestroy()
+        {
+            
+        }
     }
 }
