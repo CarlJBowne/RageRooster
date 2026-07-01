@@ -10,7 +10,11 @@ public class AttackSourceSingle : MonoBehaviour, IAttackSource
     public Attack attack;
     public MonoBehaviour sourceEntity;
 
-    protected virtual void OnTriggerEnter(Collider other) => Contact(other.gameObject);
+    protected virtual void OnTriggerEnter(Collider other)
+    {
+        if (other.isTrigger) return;
+        Contact(other.gameObject);
+    }
     protected virtual void OnCollisionEnter(Collision collision) => Contact(collision.gameObject);
 
     public virtual Attack GetAttack()

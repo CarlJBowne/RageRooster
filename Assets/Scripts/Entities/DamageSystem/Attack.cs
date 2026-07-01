@@ -20,7 +20,7 @@ public partial class Attack
     public int amount;
 
     public Vector3 velocity = Vector3.zero;
-    public TagSet tags;
+    public TagSet tags = new();
 
     public Attack(int damage, Vector3 velocity = default, TagSet tags = default)
     {

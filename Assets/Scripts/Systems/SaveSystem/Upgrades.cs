@@ -48,6 +48,8 @@ namespace RageRooster.Systems.SaveSystem
             Active.lasso = true;
             Active.d_invincibility = true;
             Active.d_moonJump = true;
+            Player.Ammo.Max = 30;
+            Player.Ammo.Current = 30;
         }
 
         public static void Clone(Upgrades source, Upgrades target)=> source.Clone(target);
