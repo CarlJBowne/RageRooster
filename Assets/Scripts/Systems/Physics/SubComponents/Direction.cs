@@ -135,5 +135,7 @@ namespace RageRooster.Physics
             }
         }
         private Coroutine QuickTurnRoutine;
+
+        public Transform PointTarget { get; set; }
     }
 }
