@@ -222,19 +222,19 @@ public abstract class TargetType : Polymorph
 
     }
 
-    public override bool OverrideBody(VisualElement container, SerializedProperty property)
-    {
-        SerializedProperty ThisProp = property.FindPropertyRelative(nameof(Target));
-        ThisProp.objectReferenceValue = property.serializedObject.targetObject;
-
-        container.DelayedBuild(() =>
-        {
-            PropertyField ThisField;
-            if (container.QCache(out ThisField)) ThisField.style.display = DisplayStyle.None;
-        });
-
-        return false;
-    }
+    //public override bool OverrideBody(VisualElement container, SerializedProperty property)
+    //{
+    //    SerializedProperty ThisProp = property.FindPropertyRelative(nameof(Target));
+    //    ThisProp.objectReferenceValue = property.serializedObject.targetObject;
+    //
+    //    container.DelayedBuild(() =>
+    //    {
+    //        PropertyField ThisField;
+    //        if (container.QCache(out ThisField)) ThisField.style.display = DisplayStyle.None;
+    //    });
+    //
+    //    return false;
+    //}
 
     public static implicit operator bool(TargetType @in) => @in != null && @in.Enabled;
 }
