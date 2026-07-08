@@ -13,7 +13,7 @@ namespace Utilities.ObjectPooling
     public class ObjectPool
     {
         [field: SerializeField] public string name { private set; get; }
-        [field: SerializeField] public PoolableObject prefab { private set; get; }
+        [field: SerializeField] public Spawnable prefab { private set; get; }
         [field: SerializeField] public int initialSize { private set; get; } = 5;
         [field: SerializeField] public bool canGrow { private set; get; } = true;
         [field: SerializeField] public bool autoEnable { private set; get; } = true;
@@ -22,7 +22,7 @@ namespace Utilities.ObjectPooling
         [field: SerializeField] public bool orphanOnDestroy { private set; get; } = false;
 
         //Data
-        [field: NonSerialized] public readonly List<PoolableObject> poolList = new();
+        [field: NonSerialized] public readonly List<Spawnable> poolList = new();
         [field: NonSerialized] public int activeObjects { get; protected set; } = 0;
         [field: NonSerialized] public int currentIndex { get; protected set; } = 0;
         [field: NonSerialized] public bool initialized { get; protected set; } = false;
@@ -33,9 +33,9 @@ namespace Utilities.ObjectPooling
 
         //Customizable Callbacks
         public Action<ObjectPool> onInitialize;
-        public Action<PoolableObject> onCreateInstance;
-        public Action<PoolableObject> onPreInstanceEnable;
-        public Action<PoolableObject> onInstanceDisable;
+        public Action<Spawnable> onCreateInstance;
+        public Action<Spawnable> onPreInstanceEnable;
+        public Action<Spawnable> onInstanceDisable;
         public Action onFailedPump;
 
         public virtual void Initialize()
@@ -56,21 +56,21 @@ namespace Utilities.ObjectPooling
 
         protected virtual void NewInstance()
         {
-            PoolableObject poolable = PoolableObject.Instantiate(prefab, poolParent);
+            Spawnable poolable = Spawnable.Instantiate(prefab, poolParent);
             AfterNewInstance(poolable);
         }
 
         protected virtual IEnumerator NewInstanceEnum(int count = 1)
         {
-            AsyncInstantiateOperation<PoolableObject> op = UnityEngine.Object.InstantiateAsync(prefab, count, poolParent);
+            AsyncInstantiateOperation<Spawnable> op = UnityEngine.Object.InstantiateAsync(prefab, count, poolParent);
             while (!op.isDone) yield return null;
             for (int i = 0; i < op.Result.Length; i++)
             {
-                PoolableObject poolable = op.Result[i];
+                Spawnable poolable = op.Result[i];
                 AfterNewInstance(poolable);
             }
         }
-        protected virtual void AfterNewInstance(PoolableObject newInstance)
+        protected virtual void AfterNewInstance(Spawnable newInstance)
         {
             newInstance.Initialize(this);
             poolList.Add(newInstance);
@@ -88,14 +88,14 @@ namespace Utilities.ObjectPooling
                         poolList[i].Active = false;
         }
 
-        public PoolableObject Pump()
+        public Spawnable Pump()
         {
             if (!initialized) Initialize();
 
             IncrementSelection();
 
             //FindNext Instance
-            PoolableObject instance = null;
+            Spawnable instance = null;
             if (!poolList[currentIndex].Active) instance = poolList[currentIndex];
             else if (activeObjects >= pooledObjects)
             {
@@ -133,13 +133,13 @@ namespace Utilities.ObjectPooling
             }
 
         }
-        public bool Pump(out PoolableObject result)
+        public bool Pump(out Spawnable result)
         {
             result = Pump();
             return result != null;
         }
 
-        public void Pump(Action<PoolableObject> result)
+        public void Pump(Action<Spawnable> result)
         {
             Enum().Begin();
             IEnumerator Enum()
@@ -149,7 +149,7 @@ namespace Utilities.ObjectPooling
                 IncrementSelection();
 
                 //FindNext Instance
-                PoolableObject instance = null;
+                Spawnable instance = null;
                 if (!poolList[currentIndex].Active) instance = poolList[currentIndex];
                 else if (activeObjects >= pooledObjects)
                 {
@@ -198,7 +198,7 @@ namespace Utilities.ObjectPooling
         /// Callback for when an instance in this pool has been disabled. Do not call outside of PoolableObject.
         /// </summary>
         /// <param name="obj"></param>
-        public virtual void OnInstanceDisable(PoolableObject obj)
+        public virtual void OnInstanceDisable(Spawnable obj)
         {
             activeObjects--;
             onInstanceDisable?.Invoke(obj);
@@ -206,7 +206,7 @@ namespace Utilities.ObjectPooling
 
         public virtual void DisableAll()
         {
-            foreach (PoolableObject item in poolList) item.Active = false;
+            foreach (Spawnable item in poolList) item.Active = false;
             activeObjects = 0;
             currentIndex = 0;
         }
@@ -240,18 +240,18 @@ namespace Utilities.ObjectPooling
     {
         [NonSerialized] private List<T> componentList = new();
 
-        protected override void AfterNewInstance(PoolableObject newInstance)
+        protected override void AfterNewInstance(Spawnable newInstance)
         {
             base.AfterNewInstance(newInstance);
             if (newInstance.TryGetComponent(out T comp)) componentList.Add(comp);
         }
 
         public new T Pump() => base.Pump() ? componentList[currentIndex] : null;
-        public PoolableObject PumpBase() => base.Pump();
+        public Spawnable PumpBase() => base.Pump();
 
         public bool Pump(out T result)
         {
-            if (Pump(out PoolableObject p))
+            if (Pump(out Spawnable p))
             {
                 result = componentList[currentIndex];
                 return true;
@@ -262,7 +262,7 @@ namespace Utilities.ObjectPooling
                 return false;
             }
         }
-        public bool Pump(out PoolableObject resultP, out T resultT)
+        public bool Pump(out Spawnable resultP, out T resultT)
         {
             if (Pump(out resultP))
             {
@@ -276,7 +276,7 @@ namespace Utilities.ObjectPooling
             }
         }
 
-        public void Pump(Action<PoolableObject, T> result) => base.Pump(P => { result?.Invoke(P, componentList[currentIndex]); });
+        public void Pump(Action<Spawnable, T> result) => base.Pump(P => { result?.Invoke(P, componentList[currentIndex]); });
 
         public T GetCurrentIndexComponent() => componentList[currentIndex];
     }
@@ -294,7 +294,7 @@ namespace Utilities.ObjectPooling
         [NonSerialized] private List<T2> componentList2 = new();
 
 
-        protected override void AfterNewInstance(PoolableObject newInstance)
+        protected override void AfterNewInstance(Spawnable newInstance)
         {
             base.AfterNewInstance(newInstance);
             if (newInstance.TryGetComponent(out T1 comp1)) componentList1.Add(comp1);
@@ -303,11 +303,11 @@ namespace Utilities.ObjectPooling
 
         public T1 Pump1() => base.Pump() ? componentList1[currentIndex] : null;
         public T2 Pump2() => base.Pump() ? componentList2[currentIndex] : null;
-        public PoolableObject PumpBase() => base.Pump();
+        public Spawnable PumpBase() => base.Pump();
 
         public bool Pump(out T1 result)
         {
-            if (Pump(out PoolableObject p))
+            if (Pump(out Spawnable p))
             {
                 result = componentList1[currentIndex];
                 return true;
@@ -320,7 +320,7 @@ namespace Utilities.ObjectPooling
         }
         public bool Pump(out T2 result)
         {
-            if (Pump(out PoolableObject p))
+            if (Pump(out Spawnable p))
             {
                 result = componentList2[currentIndex];
                 return true;
@@ -333,7 +333,7 @@ namespace Utilities.ObjectPooling
         }
         public bool Pump(out T1 result1, out T2 result2)
         {
-            if (Pump(out PoolableObject p))
+            if (Pump(out Spawnable p))
             {
                 result1 = componentList1[currentIndex];
                 result2 = componentList2[currentIndex];
@@ -346,7 +346,7 @@ namespace Utilities.ObjectPooling
                 return false;
             }
         }
-        public bool Pump(out PoolableObject resultP, out T1 result1, out T2 result2)
+        public bool Pump(out Spawnable resultP, out T1 result1, out T2 result2)
         {
             if (Pump(out resultP))
             {
@@ -362,7 +362,7 @@ namespace Utilities.ObjectPooling
             }
         }
 
-        public void Pump(Action<PoolableObject, T1, T2> result) => base.Pump(P => { result?.Invoke(P, componentList1[currentIndex], componentList2[currentIndex]); });
+        public void Pump(Action<Spawnable, T1, T2> result) => base.Pump(P => { result?.Invoke(P, componentList1[currentIndex], componentList2[currentIndex]); });
 
         public T1 GetCurrentIndexComponent1() => componentList1[currentIndex];
         public T2 GetCurrentIndexComponent2() => componentList2[currentIndex];

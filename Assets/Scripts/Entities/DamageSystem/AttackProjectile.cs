@@ -55,7 +55,7 @@ public class AttackProjectile : AttackSourceSingle
     public void Disable()
     {
         successfulHitEvent?.Invoke();
-        PoolableObject.DisableOrDestroy(gameObject);
+        Spawnable.DisableOrDestroy(gameObject);
     }
 
     public void Reflect(bool backAt = false)

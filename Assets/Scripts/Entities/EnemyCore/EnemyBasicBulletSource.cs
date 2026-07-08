@@ -14,14 +14,14 @@ public class EnemyBasicBulletSource : MonoBehaviour
         GlobalPool.BasicEnemyBullet.Initialize();
     }
 
-    public PoolableObject Pump(bool autoEnable = true)
+    public Spawnable Pump(bool autoEnable = true)
     {
         if (!Gameplay.Active) return null;
         if (!GlobalPool.BasicEnemyBullet.initialized) GlobalPool.BasicEnemyBullet.Initialize();
-        PoolableObject res = null;
+        Spawnable res = null;
         GlobalPool.BasicEnemyBullet.Pump(Success);
 
-        void Success(PoolableObject obj, AttackProjectile proj)
+        void Success(Spawnable obj, AttackProjectile proj)
         {
             if (muzzle != null) obj.PlaceAtMuzzle(muzzle);
             //proj.Send();

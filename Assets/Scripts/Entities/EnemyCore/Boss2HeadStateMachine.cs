@@ -217,7 +217,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
 
         if (headID == FinalBossHead.Pecky && Random.Range(0f, 1f) <= projectileChance)
         {
-            PoolableObject projectile = projectilePool.Pump();
+            Spawnable projectile = projectilePool.Pump();
             if (projectile != null)
             {
                 projectile.transform.position -= Direction.front;
@@ -226,7 +226,7 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
         }
         else if (headID == FinalBossHead.Slasher)
         {
-            PoolableObject projectile = projectilePool.Pump();
+            Spawnable projectile = projectilePool.Pump();
             projectile.transform.localScale = .1f * Direction.one;
         }
         else if (headID == FinalBossHead.Stumpy)

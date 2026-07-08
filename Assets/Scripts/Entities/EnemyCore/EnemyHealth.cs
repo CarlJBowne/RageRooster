@@ -43,7 +43,7 @@ public class EnemyHealth : Health
     {
         base.Awake();
         startPosition = transform.position;
-        if (TryGetComponent(out PoolableObject pool))
+        if (TryGetComponent(out Spawnable pool))
         {
             pool.onDeactivate += Respawn;
             respawnTime = 0;
@@ -131,7 +131,7 @@ public class EnemyHealth : Health
             gameObject.SetActive(false);
             Invoke(nameof(Respawn), respawnTime);
         }
-        else if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Active = false;
+        else if (Spawnable.Is(gameObject)) Spawnable.Is(gameObject).Active = false;
         else Destroy(gameObject);
     }
 

@@ -39,7 +39,7 @@ public class WaveController : MonoBehaviour
     {
         if (!Gameplay.Active) return; 
 
-        enemyPool.onCreateInstance += (PoolableObject O) =>
+        enemyPool.onCreateInstance += (Spawnable O) =>
             {
                 O.GetComponent<EnemyHealth>().depleteEvent += () =>
                 { activeEnemies--; };
@@ -129,7 +129,7 @@ public class WaveController : MonoBehaviour
 
         for (int i = 0; i < spawnPoints.Count; i++)
         {
-            enemyPool.Pump(out PoolableObject pooledEnemy, out _);
+            enemyPool.Pump(out Spawnable pooledEnemy, out _);
             activeEnemies++;
 
             pooledEnemy.SetPosition(spawnPoints[i]);

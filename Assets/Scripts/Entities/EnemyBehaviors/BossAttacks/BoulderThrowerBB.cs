@@ -43,7 +43,7 @@ public class BoulderThrowerBB : MonoBehaviour
         PhysicsPro.ThrowAt.WithTimeAndMinVelocity(targetDistanceXY, throwTime, -Physics.gravity.y, minVelocity, out float initialVelocity, out float angle);
 
         trueMuzzle.eulerAngles = trueMuzzle.eulerAngles - (Vector3.right * angle);
-        PoolableObject boulder = projectiles.Pump();
+        Spawnable boulder = projectiles.Pump();
         boulder.SetPosition(trueMuzzle.position);
         boulder.GetComponent<Rigidbody>().linearVelocity = initialVelocity * trueMuzzle.forward;
 

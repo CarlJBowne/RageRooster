@@ -19,7 +19,7 @@ namespace Utilities.ObjectPooling
         public static Transform poolParent;
 
         static Dictionary<string, ObjectPool> dictionary_string = new();
-        static Dictionary<PoolableObject, ObjectPool> dictionary_prefab = new();
+        static Dictionary<Spawnable, ObjectPool> dictionary_prefab = new();
 
         public List<ObjectPool> serializedPools = new();
 
@@ -80,7 +80,7 @@ namespace Utilities.ObjectPooling
             if (dictionary_string.TryGetValue(poolName, out ObjectPool pool)) return pool;
             return null;
         }
-        public static ObjectPool GetPool(PoolableObject prefab)
+        public static ObjectPool GetPool(Spawnable prefab)
         {
             if (!initialized) return null;
             if (dictionary_prefab.TryGetValue(prefab, out ObjectPool pool)) return pool;
@@ -105,13 +105,13 @@ namespace Utilities.ObjectPooling
         public class Client
         {
             [SerializeField, Unity.VisualScripting.Inspectable] MonoBehaviour owner;
-            [SerializeField, Unity.VisualScripting.Inspectable] PoolableObject prefab;
+            [SerializeField, Unity.VisualScripting.Inspectable] Spawnable prefab;
             [SerializeField, Unity.VisualScripting.Inspectable] Transform muzzle;
             private bool initialized;
             private ObjectPool pool;
-            public Action<PoolableObject> onPumpInstance;
+            public Action<Spawnable> onPumpInstance;
 
-            public Client(MonoBehaviour Owner = null, PoolableObject Prefab = null, ObjectPool Pool = null)
+            public Client(MonoBehaviour Owner = null, Spawnable Prefab = null, ObjectPool Pool = null)
             {
                 if (Pool != null)
                 {
@@ -130,7 +130,7 @@ namespace Utilities.ObjectPooling
                 initialized = true;
             }
 
-            public PoolableObject Pump(bool autoEnable = true)
+            public Spawnable Pump(bool autoEnable = true)
             {
                 if (!initialized) Initialize();
                 var res = pool.Pump();
