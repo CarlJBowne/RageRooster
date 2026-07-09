@@ -61,22 +61,28 @@ namespace Utilities
         }
 
 
-        void OnActivate()
+        public void Activate()
         {
             if (State is States.Active) return;
+            State = States.Active;
             spawnTime = Time.time;
+            gameObject.SetActive(true);
             onActivate?.Invoke();
         }
         public event Action onActivate;
-        void OnDeactivate()
+        public void Deactivate()
         {
             if (State is States.Inactive) return;
+            State = States.Inactive;
+            gameObject.SetActive(false);
             onDeactivate?.Invoke();
         }
         public event Action onDeactivate;
-        void OnLeaveScreen()
+        public void LeaveScreen()
         {
             if (State is States.Offscreen) return;
+            State = States.Offscreen;
+            gameObject.SetActive(false);
             onLeaveScreen?.Invoke();
         }
         public event Action onLeaveScreen;
