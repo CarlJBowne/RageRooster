@@ -161,6 +161,7 @@ public class Gameplay : MonoBehaviour
         Overlay.OverMenus.BasicBlackout = 1;
         Overlay.OverGameplay.Reset();
         Overlay.OverHUD.Reset();
+        UpdateDelayer.Setup();
 
         Enum().Begin(this);
         static IEnumerator Enum()
@@ -204,8 +205,7 @@ public class Gameplay : MonoBehaviour
     /// <param name="fileNo"></param>
     public static void BeginSaveFile(int fileNo)
     {
-        if (Active) return;
-
+        if (Active) retur
         Enum().Begin(Overlay.OverMenus);
         IEnumerator Enum()
         {

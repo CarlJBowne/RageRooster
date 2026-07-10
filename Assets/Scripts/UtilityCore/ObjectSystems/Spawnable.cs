@@ -65,6 +65,7 @@ namespace Utilities
         {
             if (State is States.Active) return;
             State = States.Active;
+
             spawnTime = Time.time;
             gameObject.SetActive(true);
             onActivate?.Invoke();
