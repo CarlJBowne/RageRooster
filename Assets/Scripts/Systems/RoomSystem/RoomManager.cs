@@ -149,7 +149,13 @@ namespace RageRooster.RoomSystem
             Player.ActivityState = Player.ActivityStates.Active;
 
 
-            if (fullTransition) Music.BeginPrimaryMusic(currentArea.music);
+            try { if (fullTransition) Music.BeginPrimaryMusic(currentArea.music); }
+            catch (Exception e)
+            {
+#if UNITY_EDITOR
+                Debug.LogException(e);
+#endif
+            }
 
             PreFadeInAction?.Invoke();
             if (FadeInRoutine != null)
