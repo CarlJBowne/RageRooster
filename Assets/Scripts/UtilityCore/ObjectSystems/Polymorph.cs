@@ -699,6 +699,7 @@ public abstract class Polymorph
             rootProperty = input;
             property = input.FindPropertyRelative("items");
             header.Bind(rootProperty);
+            FinishBind();
         }
 
         protected override void AddButtonPressed() => ShowTypeChooser();

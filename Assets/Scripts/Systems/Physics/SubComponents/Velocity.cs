@@ -160,6 +160,16 @@ namespace RageRooster.Physics
         }
         float cGValue;
 
+        /// <summary>
+        /// The angular velocity around the vertical axis (Y) that the <see cref="PhysicsBody"/> automatically uses to look towards the <see cref="Direction"/>'s <see cref="Direction.PointTarget"/>.
+        /// </summary>
+        public float l
+        {
+            get => lValue;
+            set => lValue = value;
+        }
+        float lValue;
+
 
         /// <summary>
         /// Call this after the transform or direction has been rotated. This method

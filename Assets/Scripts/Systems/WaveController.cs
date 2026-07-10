@@ -37,6 +37,8 @@ public class WaveController : MonoBehaviour
 
     private void Start()
     {
+        if (!Gameplay.Active) return; 
+
         enemyPool.onCreateInstance += (PoolableObject O) =>
             {
                 O.GetComponent<EnemyHealth>().depleteEvent += () =>
