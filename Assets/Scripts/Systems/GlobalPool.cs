@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using Utilities.Singletons;
+using Utilities.Xtensions.Unity;
 
 namespace Utilities.ObjectPooling
 {
@@ -134,10 +135,10 @@ namespace Utilities.ObjectPooling
             {
                 if (!initialized) Initialize();
                 var res = pool.Pump();
-                if (muzzle != null) res.PlaceAtMuzzle(muzzle);
+                if (muzzle != null) res.transform.CopyFrom(muzzle);
                 onPumpInstance?.Invoke(res);
                 res.currentClient = owner;
-                if (autoEnable) res.Active = true;
+                if (autoEnable) res.Activate();
                 return res;
             }
 

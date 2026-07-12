@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Utilities.ObjectPooling;
 using UnityEngine;
+using Utilities;
+using Utilities.Xtensions.Unity;
 
 public class EnemyBasicBulletSource : MonoBehaviour
 {
@@ -23,10 +25,10 @@ public class EnemyBasicBulletSource : MonoBehaviour
 
         void Success(Spawnable obj, AttackProjectile proj)
         {
-            if (muzzle != null) obj.PlaceAtMuzzle(muzzle);
+            if (muzzle != null) obj.transform.CopyFrom(muzzle);
             //proj.Send();
             obj.currentClient = this;
-            if (autoEnable) obj.Active = true;
+            if (autoEnable) obj.Activate();
             res = obj;
         }
         return res;

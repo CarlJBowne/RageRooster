@@ -5723,6 +5723,7 @@ GameObject:
   - component: {fileID: 9177222470484513295}
   - component: {fileID: 8073722270089541327}
   - component: {fileID: 6928868531156243767}
+  - component: {fileID: -3097921049069292220}
   m_Layer: 7
   m_Name: FirstEnemy
   m_TagString: Untagged
@@ -5979,6 +5980,7 @@ MonoBehaviour:
   collider: {fileID: 982579509626493083}
   navMeshAgent: {fileID: 6738454064187818541}
   centerComputationType: 0
+  outlinable: {fileID: 0}
   references:
     version: 2
     RefIds:
@@ -6113,6 +6115,19 @@ MonoBehaviour:
   sendUltEvents: 0
   outerMostRangeName: Wandering
   showGizmos: 0
+--- !u!114 &-3097921049069292220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811522196661094151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11dd5e2eafeaaee49be5a582c7094c6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Utilities::Spawnable
+  <Type>k__BackingField: 0
 --- !u!1 &4858683810890698992
 GameObject:
   m_ObjectHideFlags: 0

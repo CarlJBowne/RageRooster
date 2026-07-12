@@ -8,18 +8,20 @@ namespace Utilities.ObjectPooling
 {
     /// <summary>
     /// An active <see cref="ObjectPool"/> in the game's memory, can be attached directly to a behavior or the GlobalPool.
+    /// Updated to work with the new Utilities.Spawnable API.
     /// </summary>
     [System.Serializable, Inspectable]
     public class ObjectPool
     {
-        [field: SerializeField] public string name { private set; get; }
-        [field: SerializeField] public Spawnable prefab { private set; get; }
-        [field: SerializeField] public int initialSize { private set; get; } = 5;
-        [field: SerializeField] public bool canGrow { private set; get; } = true;
-        [field: SerializeField] public bool autoEnable { private set; get; } = true;
-        [field: SerializeField] public float autoDisableTime { private set; get; } = -1;
-        [field: SerializeField] public Transform poolParentOverride { private set; get; }
-        [field: SerializeField] public bool orphanOnDestroy { private set; get; } = false;
+        [field: SerializeField] public string name { protected set; get; }
+        [field: SerializeField] public Spawnable prefab { protected set; get; }
+        [field: SerializeField] public int initialSize { protected set; get; } = 5;
+        [field: SerializeField] public bool canGrow { protected set; get; } = true;
+        [field: SerializeField] public bool autoEnable { protected set; get; } = true;
+        [field: SerializeField] public float autoDisableTime { protected set; get; } = -1;
+        [field: SerializeField] public Spawnable.Types entityType { protected set; get; } = Spawnable.Types.Entity;
+        [field: SerializeField] public Transform poolParentOverride { protected set; get; }
+        [field: SerializeField] public bool orphanOnDestroy { protected set; get; } = false;
 
         //Data
         [field: NonSerialized] public readonly List<Spawnable> poolList = new();
@@ -38,11 +40,25 @@ namespace Utilities.ObjectPooling
         public Action<Spawnable> onInstanceDisable;
         public Action onFailedPump;
 
+        public static ObjectPool NEW(Spawnable prefab, int initialSize = 5, bool canGrow = true, bool autoEnable = true, float autoDisableTime = -1, Spawnable.Types entityType = Spawnable.Types.Entity, Transform poolParentOverride = null, bool orphanOnDestroy = false)
+        {
+            ObjectPool This = new();
+            This.prefab = prefab;
+            This.initialSize = initialSize;
+            This.canGrow = canGrow;
+            This.autoEnable = autoEnable;
+            This.autoDisableTime = autoDisableTime;
+            This.entityType = entityType;
+            This.poolParentOverride = poolParentOverride;
+            This.orphanOnDestroy = orphanOnDestroy;
+            return This;
+        }
+
         public virtual void Initialize()
         {
             if (initialized || initializing) return;
             initializing = true;
-            InitializeEnum().Begin(); 
+            InitializeEnum().Begin();
         }
 
         protected virtual IEnumerator InitializeEnum()
@@ -56,26 +72,53 @@ namespace Utilities.ObjectPooling
 
         protected virtual void NewInstance()
         {
-            Spawnable poolable = Spawnable.Instantiate(prefab, poolParent);
+            if (prefab == null) return;
+            // Use the Spawnable.Instantiate API which expects a GameObject and a client (we pass poolParent as client)
+            Spawnable poolable = Spawnable.Instantiate(prefab.gameObject, poolParent, entityType);
             AfterNewInstance(poolable);
         }
 
         protected virtual IEnumerator NewInstanceEnum(int count = 1)
         {
-            AsyncInstantiateOperation<Spawnable> op = UnityEngine.Object.InstantiateAsync(prefab, count, poolParent);
-            while (!op.isDone) yield return null;
-            for (int i = 0; i < op.Result.Length; i++)
+            if (prefab == null) yield break;
+
+            for (int i = 0; i < count; i++)
             {
-                Spawnable poolable = op.Result[i];
+                Spawnable poolable = Spawnable.Instantiate(prefab.gameObject, poolParent);
                 AfterNewInstance(poolable);
+                // Spread creations across frames to avoid hitches
+                if (i % 4 == 1) yield return null;
             }
+
+            yield return null;
         }
+
         protected virtual void AfterNewInstance(Spawnable newInstance)
         {
-            newInstance.Initialize(this);
+            if (newInstance == null) return;
+
+            // Register with pool list
             poolList.Add(newInstance);
             onCreateInstance?.Invoke(newInstance);
-            //UnityEngine.Object.DontDestroyOnLoad(newInstance);
+
+            // Maintain activeObjects count via spawnable's events.
+            // onActivate increments, onDeactivate decrements and notifies onInstanceDisable.
+            newInstance.onActivate += () =>
+            {
+                activeObjects++;
+            };
+
+            newInstance.onDeactivate += () =>
+            {
+                activeObjects = Math.Max(0, activeObjects - 1);
+                onInstanceDisable?.Invoke(newInstance);
+            };
+
+            // If the spawnable starts as Prefab, ensure it's set to Inactive so pool can reuse it.
+            if (newInstance.State == Spawnable.States.Prefab)
+            {
+                newInstance.Deactivate();
+            }
         }
 
 
@@ -83,9 +126,23 @@ namespace Utilities.ObjectPooling
         public void Update(float delta)
         {
             if (autoDisableTime > 0)
+            {
                 for (int i = 0; i < poolList.Count; i++)
-                    if (poolList[i].Active && poolList[i].spawnTime + autoDisableTime <= delta)
-                        poolList[i].Active = false;
+                {
+                    var s = poolList[i];
+                    if (s == null) continue;
+                    if (s.State == Spawnable.States.Active && s.spawnTime + autoDisableTime <= delta)
+                    {
+                        s.Deactivate();
+                    }
+                }
+            }
+        }
+
+        protected void IncrementSelection()
+        {
+            currentIndex++;
+            if (currentIndex >= pooledObjects) currentIndex = 0;
         }
 
         public Spawnable Pump()
@@ -96,34 +153,48 @@ namespace Utilities.ObjectPooling
 
             //FindNext Instance
             Spawnable instance = null;
-            if (!poolList[currentIndex].Active) instance = poolList[currentIndex];
-            else if (activeObjects >= pooledObjects)
+            if (poolList.Count == 0)
             {
                 if (canGrow)
                 {
                     NewInstance();
                     currentIndex = pooledObjects - 1;
-                    instance = poolList[currentIndex];
                 }
             }
-            else
+
+            if (poolList.Count > 0)
             {
-                int safetyCounter = 0;
-                while (poolList[currentIndex].Active)
+                if (poolList[currentIndex].State != Spawnable.States.Active) instance = poolList[currentIndex];
+                else if (activeObjects >= pooledObjects)
                 {
-                    IncrementSelection();
-                    safetyCounter++;
-                    if (safetyCounter > initialSize * 1000) break;
+                    if (canGrow)
+                    {
+                        NewInstance();
+                        currentIndex = pooledObjects - 1;
+                        instance = poolList[currentIndex];
+                    }
+                }
+                else
+                {
+                    int safetyCounter = 0;
+                    int maxSafety = Math.Max(1, initialSize) * 1000;
+                    while (poolList[currentIndex].State == Spawnable.States.Active)
+                    {
+                        IncrementSelection();
+                        safetyCounter++;
+                        if (safetyCounter > maxSafety) break;
+                    }
+
+                    if (poolList[currentIndex].State != Spawnable.States.Active)
+                        instance = poolList[currentIndex];
                 }
             }
 
-            if (instance != null && !instance.Active)
+            if (instance != null && instance.State != Spawnable.States.Active)
             {
-                instance.Active = true;
-                activeObjects++;
-
                 onPreInstanceEnable?.Invoke(instance);
-                if (autoEnable) instance.Active = true;
+                if (autoEnable)
+                    instance.Activate();
                 return instance;
             }
             else
@@ -131,7 +202,6 @@ namespace Utilities.ObjectPooling
                 onFailedPump?.Invoke();
                 return null;
             }
-
         }
         public bool Pump(out Spawnable result)
         {
@@ -150,63 +220,67 @@ namespace Utilities.ObjectPooling
 
                 //FindNext Instance
                 Spawnable instance = null;
-                if (!poolList[currentIndex].Active) instance = poolList[currentIndex];
-                else if (activeObjects >= pooledObjects)
+                if (poolList.Count == 0)
                 {
                     if (canGrow)
                     {
-                        yield return NewInstanceEnum();
+                        yield return NewInstanceEnum(1);
                         currentIndex = pooledObjects - 1;
                         instance = poolList[currentIndex];
                     }
                 }
                 else
                 {
-                    int safetyCounter = 0;
-                    while (poolList[currentIndex].Active)
+                    if (poolList[currentIndex].State != Spawnable.States.Active) instance = poolList[currentIndex];
+                    else if (activeObjects >= pooledObjects)
                     {
-                        IncrementSelection();
-                        safetyCounter++;
-                        if (safetyCounter > initialSize * 1000) break;
+                        if (canGrow)
+                        {
+                            yield return NewInstanceEnum(1);
+                            currentIndex = pooledObjects - 1;
+                            instance = poolList[currentIndex];
+                        }
+                    }
+                    else
+                    {
+                        int safetyCounter = 0;
+                        int maxSafety = Math.Max(1, initialSize) * 1000;
+                        while (poolList[currentIndex].State == Spawnable.States.Active)
+                        {
+                            IncrementSelection();
+                            safetyCounter++;
+                            if (safetyCounter > maxSafety) break;
+                        }
+
+                        if (poolList[currentIndex].State != Spawnable.States.Active)
+                            instance = poolList[currentIndex];
                     }
                 }
 
-                if (instance != null && !instance.Active)
+                if (instance != null && instance.State != Spawnable.States.Active)
                 {
-                    instance.Active = true;
-                    activeObjects++;
-
                     onPreInstanceEnable?.Invoke(instance);
-                    if (autoEnable) instance.Active = true;
-                    result.Invoke(instance);
+                    if (autoEnable) instance.Activate();
+                    result?.Invoke(instance);
                 }
-                else onFailedPump?.Invoke();
+                else
+                {
+                    onFailedPump?.Invoke();
+                    result?.Invoke(null);
+                }
             }
         }
 
-        protected virtual void IncrementSelection()
+        // Utility to destroy or disable through Spawnable API
+        public static void DestroyOrDisable(GameObject subject)
         {
-            currentIndex++;
-            if (currentIndex >= pooledObjects) currentIndex = 0;
-            if (currentIndex > poolList.Count)
-                Debug.Break();
+            Spawnable.DestroyOrDisable(subject);
         }
 
-
-
-        /// <summary>
-        /// Callback for when an instance in this pool has been disabled. Do not call outside of PoolableObject.
-        /// </summary>
-        /// <param name="obj"></param>
-        public virtual void OnInstanceDisable(Spawnable obj)
-        {
-            activeObjects--;
-            onInstanceDisable?.Invoke(obj);
-        }
 
         public virtual void DisableAll()
         {
-            foreach (Spawnable item in poolList) item.Active = false;
+            foreach (Spawnable item in poolList) item.Deactivate();
             activeObjects = 0;
             currentIndex = 0;
         }
@@ -222,12 +296,13 @@ namespace Utilities.ObjectPooling
                 if (orphanOnDestroy) UnityEngine.Object.Destroy(poolList[i]);
                 else
                 {
-                    poolList[i].Active = false;
-                    if(poolList[i].gameObject != null) UnityEngine.Object.Destroy(poolList[i].gameObject);
+                    poolList[i].Deactivate();
+                    if (poolList[i].gameObject != null) UnityEngine.Object.Destroy(poolList[i].gameObject);
+                    onFailedPump?.Invoke();
+                    //result?.Invoke(null); //Not sure what the hell this is.
                 }
             }
         }
-
     }
 
     /// <summary>
@@ -239,6 +314,20 @@ namespace Utilities.ObjectPooling
     public class ObjectPool<T> : ObjectPool where T : MonoBehaviour
     {
         [NonSerialized] private List<T> componentList = new();
+
+        public static ObjectPool<T> NEW(Spawnable prefab, int initialSize = 5, bool canGrow = true, bool autoEnable = true, float autoDisableTime = -1, Spawnable.Types entityType = Spawnable.Types.Entity, Transform poolParentOverride = null, bool orphanOnDestroy = false)
+        {
+            ObjectPool<T> This = new();
+            This.prefab = prefab;
+            This.initialSize = initialSize;
+            This.canGrow = canGrow;
+            This.autoEnable = autoEnable;
+            This.autoDisableTime = autoDisableTime;
+            This.entityType = entityType;
+            This.poolParentOverride = poolParentOverride;
+            This.orphanOnDestroy = orphanOnDestroy;
+            return This;
+        }
 
         protected override void AfterNewInstance(Spawnable newInstance)
         {
@@ -264,108 +353,49 @@ namespace Utilities.ObjectPooling
         }
         public bool Pump(out Spawnable resultP, out T resultT)
         {
-            if (Pump(out resultP))
-            {
-                resultT = componentList[currentIndex];
-                return true;
-            }
-            else
-            {
-                resultT = null;
-                return false;
-            }
+            var result = base.Pump(out resultP);
+            resultT = componentList[currentIndex];
+            return result;
         }
-
         public void Pump(Action<Spawnable, T> result) => base.Pump(P => { result?.Invoke(P, componentList[currentIndex]); });
-
         public T GetCurrentIndexComponent() => componentList[currentIndex];
+
     }
 
-    /// <summary>
-    /// An active <see cref="ObjectPool"/> in the game's memory, with additional tracking for two <see cref="MonoBehaviour"/> <see cref="Type"/>s, <see cref="T1"/> and <see cref="T2"/>.
-    /// <br/> Can be attached directly to a behavior or the <see cref="GlobalPool"/>.
-    /// </summary>
-    /// <typeparam name="T1">The first <see cref="Type"/> to be tracked.</typeparam>
-    /// <typeparam name="T2">The second <see cref="Type"/> to be tracked.</typeparam>
-    [System.Serializable, Inspectable]
-    public class ObjectPool<T1, T2> : ObjectPool where T1 : MonoBehaviour where T2 : MonoBehaviour
+    // Minimal helper to start IEnumerator from non-MonoBehaviour contexts like original code used .Begin()
+    static class IEnumeratorExtensions
     {
-        [NonSerialized] private List<T1> componentList1 = new();
-        [NonSerialized] private List<T2> componentList2 = new();
-
-
-        protected override void AfterNewInstance(Spawnable newInstance)
+        public static void Begin(this IEnumerator routine)
         {
-            base.AfterNewInstance(newInstance);
-            if (newInstance.TryGetComponent(out T1 comp1)) componentList1.Add(comp1);
-            if (newInstance.TryGetComponent(out T2 comp2)) componentList2.Add(comp2);
+#if UNITY_EDITOR
+            // In editor or runtime we can use a global runner. Attempt to find one; otherwise use EditorApplication update loop is out of scope.
+#endif
+            CoroutineRunner.Instance.Run(routine);
         }
+    }
 
-        public T1 Pump1() => base.Pump() ? componentList1[currentIndex] : null;
-        public T2 Pump2() => base.Pump() ? componentList2[currentIndex] : null;
-        public Spawnable PumpBase() => base.Pump();
-
-        public bool Pump(out T1 result)
+    // Simple runner to run coroutines from non-MonoBehaviour code.
+    // Place this in the same file for convenience; if a different runner already exists in the project, this can be removed.
+    public class CoroutineRunner : MonoBehaviour
+    {
+        private static CoroutineRunner _instance;
+        public static CoroutineRunner Instance
         {
-            if (Pump(out Spawnable p))
+            get
             {
-                result = componentList1[currentIndex];
-                return true;
-            }
-            else
-            {
-                result = null;
-                return false;
-            }
-        }
-        public bool Pump(out T2 result)
-        {
-            if (Pump(out Spawnable p))
-            {
-                result = componentList2[currentIndex];
-                return true;
-            }
-            else
-            {
-                result = null;
-                return false;
-            }
-        }
-        public bool Pump(out T1 result1, out T2 result2)
-        {
-            if (Pump(out Spawnable p))
-            {
-                result1 = componentList1[currentIndex];
-                result2 = componentList2[currentIndex];
-                return true;
-            }
-            else
-            {
-                result1 = null;
-                result2 = null;
-                return false;
-            }
-        }
-        public bool Pump(out Spawnable resultP, out T1 result1, out T2 result2)
-        {
-            if (Pump(out resultP))
-            {
-                result1 = componentList1[currentIndex];
-                result2 = componentList2[currentIndex];
-                return true;
-            }
-            else
-            {
-                result1 = null;
-                result2 = null;
-                return false;
+                if (_instance == null)
+                {
+                    var go = new GameObject("___ObjectPoolCoroutineRunner");
+                    DontDestroyOnLoad(go);
+                    _instance = go.AddComponent<CoroutineRunner>();
+                }
+                return _instance;
             }
         }
 
-        public void Pump(Action<Spawnable, T1, T2> result) => base.Pump(P => { result?.Invoke(P, componentList1[currentIndex], componentList2[currentIndex]); });
-
-        public T1 GetCurrentIndexComponent1() => componentList1[currentIndex];
-        public T2 GetCurrentIndexComponent2() => componentList2[currentIndex];
+        public void Run(IEnumerator routine)
+        {
+            StartCoroutine(routine);
+        }
     }
 }
-

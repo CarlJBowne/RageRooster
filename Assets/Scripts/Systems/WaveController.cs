@@ -37,7 +37,7 @@ public class WaveController : MonoBehaviour
 
     private void Start()
     {
-        if (!Gameplay.Active) return; 
+        if (!Gameplay.Active) return;
 
         enemyPool.onCreateInstance += (Spawnable O) =>
             {
@@ -132,8 +132,8 @@ public class WaveController : MonoBehaviour
             enemyPool.Pump(out Spawnable pooledEnemy, out _);
             activeEnemies++;
 
-            pooledEnemy.SetPosition(spawnPoints[i]);
-            pooledEnemy.SetRotation((Player.Transform.position - spawnPoints[i]).DirToRot());
+            pooledEnemy.transform.position = spawnPoints[i];
+            pooledEnemy.transform.eulerAngles = (Player.Transform.position - spawnPoints[i]).DirToRot();
         }
     }
 

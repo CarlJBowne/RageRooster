@@ -27,7 +27,7 @@ public class ShockwaveScript : MonoBehaviour
         if(time > maxTime)
         {
             time = 0;
-            Spawnable.DisableOrDestroy(gameObject);
+            Spawnable.DestroyOrDisable(gameObject);
         }
     }
 }

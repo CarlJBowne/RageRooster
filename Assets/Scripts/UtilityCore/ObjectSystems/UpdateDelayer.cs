@@ -15,26 +15,27 @@ public class UpdateDelayer : MonoBehaviour
         public float maxUpdatesPerFrame = 4;
         public List<Action> updateQueue = new();
 
+        public int updatesDone = 0;
         public void Update()
         {
-            int updatesThisFrame = 0;
-            while (updateQueue.Count > 0 && updatesThisFrame < maxUpdatesPerFrame)
+            while (updateQueue.Count > 0 && updatesDone < maxUpdatesPerFrame)
             {
                 updateQueue[0]?.Invoke();
                 updateQueue.RemoveAt(0);
-                updatesThisFrame++;
+                updatesDone++;
             }
+            updatesDone = 0;
         }
     }
 
     private void Update()
     {
-        foreach (var item in updateChannels) 
+        foreach (var item in updateChannels)
             item.Value.Update();
     }
     private void FixedUpdate()
     {
-        foreach (var item in fixedUpdateChannels) 
+        foreach (var item in fixedUpdateChannels)
             item.Value.Update();
     }
 
@@ -47,11 +48,14 @@ public class UpdateDelayer : MonoBehaviour
 
     public static void QueueUpdate(Action updateAction, string channelName, bool isFixedUpdate = false)
     {
-        var channels = isFixedUpdate ? fixedUpdateChannels : updateChannels;
-        if (channels.ContainsKey(channelName))
-            channels[channelName].updateQueue.Add(updateAction);
-        else
-            Debug.LogWarning($"Channel '{channelName}' not found. Please register the channel before queuing updates.");
+        Dictionary<string, Channel> channels = isFixedUpdate ? fixedUpdateChannels : updateChannels;
+        if (!channels.ContainsKey(channelName)) RegisterChannel(channelName, 4, isFixedUpdate);
+        if (channels[channelName].updatesDone < channels[channelName].maxUpdatesPerFrame)
+        {
+            updateAction?.Invoke();
+            channels[channelName].updatesDone++;
+        }
+        else channels[channelName].updateQueue.Add(updateAction);
     }
 
     private static UpdateDelayer instance;

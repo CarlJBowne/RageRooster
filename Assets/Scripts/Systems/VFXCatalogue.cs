@@ -3,7 +3,9 @@ using ListUtilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities;
 using Utilities.ObjectPooling;
+using Utilities.Xtensions.Unity;
 
 public class VFXCatalogue : MonoBehaviour
 {
@@ -34,13 +36,9 @@ public class VFXCatalogue : MonoBehaviour
     /// <returns></returns>
     public Spawnable Pump(string name, Transform at)
     {
-        if(!Pools.TryGet(name, out ObjectPool found)) return null;
+        if (!Pools.TryGet(name, out ObjectPool found)) return null;
         Spawnable result = found.Pump();
-        if (result && at != null)
-        {
-            result.SetPosition(at.position);
-            result.SetRotation(at.position);
-        } 
+        if (result && at != null) result.transform.CopyFrom(at);
         return result;
     }
 
@@ -57,8 +55,8 @@ public class VFXCatalogue : MonoBehaviour
         Spawnable result = found.Pump();
         if (result)
         {
-            result.SetPosition(position);
-            result.SetRotation(rotation);
+            result.transform.position = position;
+            result.transform.eulerAngles = rotation;
         }
         return result;
     }

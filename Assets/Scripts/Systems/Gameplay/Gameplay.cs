@@ -161,7 +161,6 @@ public class Gameplay : MonoBehaviour
         Overlay.OverMenus.BasicBlackout = 1;
         Overlay.OverGameplay.Reset();
         Overlay.OverHUD.Reset();
-        UpdateDelayer.Setup();
 
         Enum().Begin(this);
         static IEnumerator Enum()
@@ -173,9 +172,9 @@ public class Gameplay : MonoBehaviour
                 && Player.Active
                 && RoomManager.Active;
 
-            EntitySpawn.PlayerPosition = Player.Transform;
-
             RoomManager.ResetTransitionData(false);
+            UpdateDelayer.Setup();
+            EntitySpawn.PlayerPosition = Player.Transform;
 
             RoomManager.TransitionStyle = new()
             {
@@ -205,7 +204,8 @@ public class Gameplay : MonoBehaviour
     /// <param name="fileNo"></param>
     public static void BeginSaveFile(int fileNo)
     {
-        if (Active) retur
+        if (Active) return;
+
         Enum().Begin(Overlay.OverMenus);
         IEnumerator Enum()
         {
