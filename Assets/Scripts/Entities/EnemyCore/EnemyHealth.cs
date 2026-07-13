@@ -24,14 +24,9 @@ public class EnemyHealth : Health
     [RelatedComponent, SerializeField] ColorTintAnimation tintAnimator;
     [RelatedComponent, SerializeField] RagdollHandler ragdoll;
 
-    public float respawnTime = 0;
     public UltEvents.UltEvent onDamageEvent;
 
-
-    #endregion Config
-    #region Data
-
-    private Vector3 startPosition;
+    private bool damaged;
 
 
     #endregion Config
@@ -42,11 +37,9 @@ public class EnemyHealth : Health
     protected override void Awake()
     {
         base.Awake();
-        startPosition = transform.position;
-        if (TryGetComponent(out PoolableObject pool))
+        if (TryGetComponent(out Spawnable pool))
         {
-            pool.onDeactivate += Respawn;
-            respawnTime = 0;
+            pool.onDeactivate += OnSpawn;
         }
         enemyLootSpawner = GetComponent<EnemyLootSpawner>();
     }
@@ -64,6 +57,17 @@ public class EnemyHealth : Health
         {
             Stun(attack);
             if (tintAnimator) tintAnimator.BeginAnimation();
+        }
+
+        if (!damaged)
+        {
+            damaged = true;
+            if(Spawnable.IsASpawnable(gameObject, out Spawnable spawnable)) 
+                spawnable.SetAlterations(()=>
+                {
+                    damagable = false;
+                    health = maxHealth;
+                });
         }
     }
 
@@ -86,7 +90,7 @@ public class EnemyHealth : Health
             Stun(attack);
             if (tintAnimator) tintAnimator.BeginAnimation();
         }
-
+        damaged = false;
     }
 
     void Stun(Attack attack)
@@ -125,24 +129,15 @@ public class EnemyHealth : Health
 
     public override void Destroy()
     {
+        Spawnable.DestroyOrDisable(gameObject);
         if (poofPrefab) Instantiate(poofPrefab);
-        if (respawnTime > 0)
-        {
-            gameObject.SetActive(false);
-            Invoke(nameof(Respawn), respawnTime);
-        }
-        else if (PoolableObject.Is(gameObject)) PoolableObject.Is(gameObject).Active = false;
-        else Destroy(gameObject);
     }
 
-    private void Respawn()
+    private void OnSpawn()
     {
-        gameObject.SetActive(true);
-        transform.position = startPosition;
         if (hierarchicalMachine) hierarchicalMachine[0].Enter();
         if (visualMachine) visualMachine.enabled = true;
         entityActivity.enabled = true;
-        transform.rotation = Quaternion.identity;
         health = maxHealth;
         if (ragdoll) ragdoll.State = RagdollHandler.States.Off;
     }
