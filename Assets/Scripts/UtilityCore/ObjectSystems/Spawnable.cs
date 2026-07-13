@@ -34,7 +34,7 @@ public class Spawnable : MonoBehaviour
     /// This is only to be used within Spawner Clients (Object Pools, Entity Spawns, etc.)
     /// </summary>
     /// <returns></returns>
-    public static Spawnable Instantiate(GameObject prefab)
+    public static Spawnable Instantiate(GameObject prefab, Transform parent)
     {
         GameObject instance = GameObject.Instantiate(prefab);
         if (!instance.TryGetComponent(out Spawnable result))

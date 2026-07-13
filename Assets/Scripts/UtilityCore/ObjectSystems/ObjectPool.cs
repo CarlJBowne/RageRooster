@@ -71,7 +71,7 @@ namespace Utilities.ObjectPooling
         {
             if (prefab == null) return;
             // Use the Spawnable.Instantiate API which expects a GameObject and a client (we pass poolParent as client)
-            Spawnable poolable = Spawnable.Instantiate(prefab.gameObject);
+            Spawnable poolable = Spawnable.Instantiate(prefab.gameObject, poolParent);
             AfterNewInstance(poolable);
         }
 
@@ -81,7 +81,7 @@ namespace Utilities.ObjectPooling
 
             for (int i = 0; i < count; i++)
             {
-                Spawnable poolable = Spawnable.Instantiate(prefab.gameObject);
+                Spawnable poolable = Spawnable.Instantiate(prefab.gameObject, poolParent);
                 AfterNewInstance(poolable);
                 // Spread creations across frames to avoid hitches
                 if (i % 4 == 1) yield return null;

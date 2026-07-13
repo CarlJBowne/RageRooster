@@ -98,7 +98,7 @@ namespace Utilities
                     }
                     else
                     {
-                        active = Spawnable.Instantiate(prefab.gameObject);
+                        active = Spawnable.Instantiate(prefab.gameObject, transform);
                         active.Spawn(transform);
                     }
                     active.SendMessage("OnSpawn");
