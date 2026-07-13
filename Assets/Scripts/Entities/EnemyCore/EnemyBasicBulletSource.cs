@@ -28,7 +28,7 @@ public class EnemyBasicBulletSource : MonoBehaviour
             if (muzzle != null) obj.transform.CopyFrom(muzzle);
             //proj.Send();
             obj.currentClient = this;
-            if (autoEnable) obj.Activate();
+            if (autoEnable) obj.SetActive(true);
             res = obj;
         }
         return res;

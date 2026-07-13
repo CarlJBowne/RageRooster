@@ -129,7 +129,6 @@ public class EnemyHealth : Health
 
     private void OnSpawn()
     {
-        gameObject.SetActive(true);
         transform.position = startPosition;
         if (hierarchicalMachine) hierarchicalMachine[0].Enter();
         if (visualMachine) visualMachine.enabled = true;

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Services;
 using UnityEngine;
 using Utilities.ObjectPooling;
+using Utilities.Xtensions.Unity;
 
 namespace Utilities
 {
@@ -16,13 +17,16 @@ namespace Utilities
 
         Spawnable active;
         bool actionDelayed = false;
-        private ObjectPool pool;
+        public bool hidden = false;
+        ObjectPool pool;
 
         private void Awake() 
         {
             if (Gameplay.GameState != Gameplay.GameStates.Active) return;
+            actionDelayed = true;
             UpdateDelayer.QueueUpdate(() =>
             {
+                actionDelayed = false;
                 if (usePool)
                 {
                     if (!activePools.TryGetValue(prefab.gameObject, out pool))
@@ -38,9 +42,10 @@ namespace Utilities
 
         private void FixedUpdate()
         {
+            if (actionDelayed) return;
             float distance = Distance;
 
-            if (active == null || active.State is Spawnable.States.Inactive)
+            if (active == null || active.Ready)
             {
                 if(distance < loadDistance)
                 {
@@ -48,32 +53,40 @@ namespace Utilities
                     AttemptLoad();
                 }
             }
-            else if (active.State is Spawnable.States.Active)
+            else if (active.Active)
             {
                 if (distance > unloadDistance)
                 {
                     Debug.Log("Exited Range");
-                    active.Deactivate();
+                    PlaceAndActivate();
                 }
                 else if (distance > offScreenDistance)
                 {
                     Debug.Log("Went Off Screen");
-                    active.LeaveScreen();
+                    active.SetActive(false);
+                    hidden = true;
                 }
             }
-            else if (active.State is Spawnable.States.Offscreen)
+            else if (hidden)
             {
                 if (distance < loadDistance)
                 {
                     Debug.Log("Entered From Off Screen");
-                    active.Activate();
+                    PlaceAndActivate();
+                    hidden = false;
                 }
                 else if (distance > unloadDistance)
                 {
                     Debug.Log("Exited Range");
-                    active.Deactivate();
+                    hidden = false;
                 }
             }
+        }
+
+        public void PlaceAndActivate()
+        {
+            active.SetActive(true);
+            active.transform.CopyFrom(transform);
         }
 
         float Distance => Vector3.Distance(PlayerPosition.position,
@@ -81,23 +94,15 @@ namespace Utilities
 
         void AttemptLoad()
         {
+            actionDelayed = true;
             UpdateDelayer.QueueUpdate(() =>
             {
-                if (active == null || active.State is Spawnable.States.Inactive)
+                actionDelayed = false;
+                if (active == null || active.Active)
                 {
-                    if (usePool)
-                    {
-                        active = pool.Pump();
-                        active.SendMessage("OnSpawn");
-                        active.transform.SetPositionAndRotation(transform.position, transform.rotation);
-                    }
-                    else
-                    {
-                        active = Spawnable.Instantiate(prefab.gameObject, this);
-                        active.SendMessage("OnSpawn");
-                        active.transform.SetPositionAndRotation(transform.position, transform.rotation);
-                    }
-                    active.Activate();
+                    active = usePool ? pool.Pump() : Spawnable.Instantiate(prefab.gameObject); 
+                    PlaceAndActivate();
+                    active.SendMessage("OnSpawn");
                 }
             }, "EntitySpawn", true);
         }

@@ -138,7 +138,7 @@ namespace Utilities.ObjectPooling
                 if (muzzle != null) res.transform.CopyFrom(muzzle);
                 onPumpInstance?.Invoke(res);
                 res.currentClient = owner;
-                if (autoEnable) res.Activate();
+                if (autoEnable) res.SetActive(true);
                 return res;
             }
 

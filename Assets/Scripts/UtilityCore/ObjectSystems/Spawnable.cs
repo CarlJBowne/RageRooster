@@ -8,88 +8,65 @@ using UnityEngine;
 /// </summary>
 public class Spawnable : MonoBehaviour
 {
-    public enum States
-    {
-        Not = -2,
-        Prefab = -1,
-        Active = 0,
-        Inactive = 1,
-        Offscreen = 2,
-    }
+    #region State Data
+    /// <summary> Whether this <see cref="Spawnable"/> is currently active in the game. </summary>
+    public bool Active => gameObject.activeSelf && !IsPrefab;
+    /// <summary> Whether this <see cref="Spawnable"/> is inactive, isn't a prefab, and hasn't been labeled as Altered. </summary>
+    public bool Ready => !Active && !IsPrefab && IsAltered();
+    /// <summary> If this is true, this <see cref="Spawnable"/> is a prefab and should not be used for anything besides instantiation. </summary>
+    public bool IsPrefab { get; private set; } = true;
 
-    public enum Types
-    {
-        Not = -1,
-        Entity = 0,
-        Projectile = 1,
-        HordeEntity = 2,
-        Particle = 3,
-    }
+    /// <summary> The current active script client for this <see cref="Spawnable"/></summary>
+    public object currentClient { set; get; }
+    ///// <summary>If this Spawnable has an active association with a client. </summary>
+    //public bool HasClient => currentClient != null;
 
-    public States State
-    { get; private set; } = States.Prefab;
-    [field: SerializeField] public Types Type { get; private set; } = Types.Entity;
+    public float spawnTime { private set; get; }
+    #endregion
 
-    public object currentClient
-    { set; get; }
-
-    //May stay here, may end up being tied to SpawnerClients or a different system. This is for the purpose of having a single update handler for all spawnables, so that they can be updated in a single loop instead of each having their own update loop.
-    //public class UpdateHandler
-    //{
-    //    public float maxExistenceTime = -1;
-    //    public float loadDistance = 30;
-    //    public float offScreenDistance = 50;
-    //    public float unloadDistance = 70;
-    //    public bool stateChanged = false;
-    //    public int handlerPriority = 0;
-    //}
 
     /// <summary>
     /// This is only to be used within Spawner Clients (Object Pools, Entity Spawns, etc.)
     /// </summary>
     /// <returns></returns>
-    public static Spawnable Instantiate(GameObject prefab, object client, Types intendedType = Types.Entity)
+    public static Spawnable Instantiate(GameObject prefab)
     {
-        GameObject instance = Instantiate(prefab);
+        GameObject instance = GameObject.Instantiate(prefab);
         if (!instance.TryGetComponent(out Spawnable result))
             result = instance.AddComponent<Spawnable>();
-        result.currentClient = client;
-        result.State = States.Inactive;
+        result.IsPrefab = false;
         return result;
     }
 
 
-    public void Activate()
+    private void OnEnable()
     {
-        if (State is States.Active) return;
-        State = States.Active;
-
-        spawnTime = Time.time;
-        gameObject.SetActive(true);
         onActivate?.Invoke();
+        spawnTime = Time.time;
     }
+    private void OnDisable() => onDeactivate?.Invoke();
+
     public event Action onActivate;
-    public void Deactivate()
-    {
-        if (State is States.Inactive) return;
-        State = States.Inactive;
-        gameObject.SetActive(false);
-        onDeactivate?.Invoke();
-    }
     public event Action onDeactivate;
-    public void LeaveScreen()
+
+    #region Alterations Management
+    public void SetAlterations(Action addedUnoder)
     {
-        if (State is States.Offscreen) return;
-        State = States.Offscreen;
-        gameObject.SetActive(false);
-        onLeaveScreen?.Invoke();
+        if (addedUnoder is null) return;
+        alterationsUndoer += addedUnoder;
     }
-    public event Action onLeaveScreen;
+    public void ResetAlterations()
+    {
+        alterationsUndoer?.Invoke();
+        alterationsUndoer = null;
+    }
+    public bool IsAltered() => alterationsUndoer is not null;
+    private event Action alterationsUndoer;
+    #endregion
 
-    public float spawnTime { private set; get; }
+    #region Helpers
 
-
-    //Above is used functionality.
+    public void SetActive(bool value) => gameObject.SetActive(value);
 
     /// <summary>
     /// Simple function for if this <see cref="GameObject"/> is a <see cref="Spawnable"/>. <br/>
@@ -107,26 +84,20 @@ public class Spawnable : MonoBehaviour
     /// Use <see cref="IsASpawnable(GameObject)"/> if you only want to check if the object is a <see cref="Spawnable"/>.
     /// </summary>
     public static bool IsSpawnable(GameObject subject) =>
-        subject.TryGetComponent(out Spawnable spawnable) && spawnable.State is States.Inactive;
+        subject.TryGetComponent(out Spawnable spawnable) && spawnable.Ready;
     /// <summary>
     /// Function that checks if this <see cref="GameObject"/> is a <see cref="Spawnable"/> and if it is available for reuse. <br/>
     /// Use <see cref="IsASpawnable(GameObject, out Spawnable)"/> if you only want to check if the object is a <see cref="Spawnable"/>.
     /// </summary>
     public static bool IsSpawnable(GameObject subject, out Spawnable spawnable) =>
-        subject.TryGetComponent(out spawnable) && spawnable.State is States.Inactive;
-
-    /// <summary>
-    /// Returns if this object is a prefab with a <see cref="Spawnable"/> component attached. <br/>
-    /// Cannot properly detect prefabs that add the component after instantiation.
-    /// </summary>
-    public static bool IsSpawnablePrefab(GameObject subject) =>
-        subject.TryGetComponent(out Spawnable spawnable) && spawnable.State is States.Prefab;
+        subject.TryGetComponent(out spawnable) && spawnable.Ready;
 
     public static void DestroyOrDisable(GameObject subject)
     {
         if (!IsASpawnable(subject, out Spawnable spawnable)) Destroy(subject);
-        else spawnable.State = States.Inactive;
+        else spawnable.SetActive(false);
     }
+    #endregion
 }
 
 public static class Xtensions_Spawnables

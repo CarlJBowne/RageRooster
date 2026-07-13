@@ -19,7 +19,6 @@ namespace Utilities.ObjectPooling
         [field: SerializeField] public bool canGrow { protected set; get; } = true;
         [field: SerializeField] public bool autoEnable { protected set; get; } = true;
         [field: SerializeField] public float autoDisableTime { protected set; get; } = -1;
-        [field: SerializeField] public Spawnable.Types entityType { protected set; get; } = Spawnable.Types.Entity;
         [field: SerializeField] public Transform poolParentOverride { protected set; get; }
         [field: SerializeField] public bool orphanOnDestroy { protected set; get; } = false;
 
@@ -40,7 +39,7 @@ namespace Utilities.ObjectPooling
         public Action<Spawnable> onInstanceDisable;
         public Action onFailedPump;
 
-        public static ObjectPool NEW(Spawnable prefab, int initialSize = 5, bool canGrow = true, bool autoEnable = true, float autoDisableTime = -1, Spawnable.Types entityType = Spawnable.Types.Entity, Transform poolParentOverride = null, bool orphanOnDestroy = false)
+        public static ObjectPool NEW(Spawnable prefab, int initialSize = 5, bool canGrow = true, bool autoEnable = true, float autoDisableTime = -1, Transform poolParentOverride = null, bool orphanOnDestroy = false)
         {
             ObjectPool This = new();
             This.prefab = prefab;
@@ -48,7 +47,6 @@ namespace Utilities.ObjectPooling
             This.canGrow = canGrow;
             This.autoEnable = autoEnable;
             This.autoDisableTime = autoDisableTime;
-            This.entityType = entityType;
             This.poolParentOverride = poolParentOverride;
             This.orphanOnDestroy = orphanOnDestroy;
             return This;
@@ -74,7 +72,7 @@ namespace Utilities.ObjectPooling
         {
             if (prefab == null) return;
             // Use the Spawnable.Instantiate API which expects a GameObject and a client (we pass poolParent as client)
-            Spawnable poolable = Spawnable.Instantiate(prefab.gameObject, poolParent, entityType);
+            Spawnable poolable = Spawnable.Instantiate(prefab.gameObject);
             AfterNewInstance(poolable);
         }
 
@@ -84,7 +82,7 @@ namespace Utilities.ObjectPooling
 
             for (int i = 0; i < count; i++)
             {
-                Spawnable poolable = Spawnable.Instantiate(prefab.gameObject, poolParent);
+                Spawnable poolable = Spawnable.Instantiate(prefab.gameObject);
                 AfterNewInstance(poolable);
                 // Spread creations across frames to avoid hitches
                 if (i % 4 == 1) yield return null;
@@ -115,10 +113,7 @@ namespace Utilities.ObjectPooling
             };
 
             // If the spawnable starts as Prefab, ensure it's set to Inactive so pool can reuse it.
-            if (newInstance.State == Spawnable.States.Prefab)
-            {
-                newInstance.Deactivate();
-            }
+            if (newInstance.IsPrefab) newInstance.SetActive(false);
         }
 
 
@@ -131,9 +126,9 @@ namespace Utilities.ObjectPooling
                 {
                     var s = poolList[i];
                     if (s == null) continue;
-                    if (s.State == Spawnable.States.Active && s.spawnTime + autoDisableTime <= delta)
+                    if (!s.Ready && s.spawnTime + autoDisableTime <= delta)
                     {
-                        s.Deactivate();
+                        s.SetActive(false);
                     }
                 }
             }
@@ -164,7 +159,7 @@ namespace Utilities.ObjectPooling
 
             if (poolList.Count > 0)
             {
-                if (poolList[currentIndex].State != Spawnable.States.Active) instance = poolList[currentIndex];
+                if (poolList[currentIndex].Ready) instance = poolList[currentIndex];
                 else if (activeObjects >= pooledObjects)
                 {
                     if (canGrow)
@@ -178,23 +173,23 @@ namespace Utilities.ObjectPooling
                 {
                     int safetyCounter = 0;
                     int maxSafety = Math.Max(1, initialSize) * 1000;
-                    while (poolList[currentIndex].State == Spawnable.States.Active)
+                    while (!poolList[currentIndex].Ready)
                     {
                         IncrementSelection();
                         safetyCounter++;
                         if (safetyCounter > maxSafety) break;
                     }
 
-                    if (poolList[currentIndex].State != Spawnable.States.Active)
+                    if (poolList[currentIndex].Ready)
                         instance = poolList[currentIndex];
                 }
             }
 
-            if (instance != null && instance.State != Spawnable.States.Active)
+            if (instance != null && instance.Ready)
             {
                 onPreInstanceEnable?.Invoke(instance);
                 if (autoEnable)
-                    instance.Activate();
+                    instance.SetActive(true);
                 return instance;
             }
             else
@@ -231,7 +226,7 @@ namespace Utilities.ObjectPooling
                 }
                 else
                 {
-                    if (poolList[currentIndex].State != Spawnable.States.Active) instance = poolList[currentIndex];
+                    if (poolList[currentIndex].Ready) instance = poolList[currentIndex];
                     else if (activeObjects >= pooledObjects)
                     {
                         if (canGrow)
@@ -245,22 +240,22 @@ namespace Utilities.ObjectPooling
                     {
                         int safetyCounter = 0;
                         int maxSafety = Math.Max(1, initialSize) * 1000;
-                        while (poolList[currentIndex].State == Spawnable.States.Active)
+                        while (!poolList[currentIndex].Ready)
                         {
                             IncrementSelection();
                             safetyCounter++;
                             if (safetyCounter > maxSafety) break;
                         }
 
-                        if (poolList[currentIndex].State != Spawnable.States.Active)
+                        if (poolList[currentIndex].Ready)
                             instance = poolList[currentIndex];
                     }
                 }
 
-                if (instance != null && instance.State != Spawnable.States.Active)
+                if (instance != null && instance.Ready)
                 {
                     onPreInstanceEnable?.Invoke(instance);
-                    if (autoEnable) instance.Activate();
+                    if (autoEnable) instance.SetActive(true);
                     result?.Invoke(instance);
                 }
                 else
@@ -280,7 +275,7 @@ namespace Utilities.ObjectPooling
 
         public virtual void DisableAll()
         {
-            foreach (Spawnable item in poolList) item.Deactivate();
+            foreach (Spawnable item in poolList) item.SetActive(false);
             activeObjects = 0;
             currentIndex = 0;
         }
@@ -296,7 +291,7 @@ namespace Utilities.ObjectPooling
                 if (orphanOnDestroy) UnityEngine.Object.Destroy(poolList[i]);
                 else
                 {
-                    poolList[i].Deactivate();
+                    poolList[i].SetActive(false);
                     if (poolList[i].gameObject != null) UnityEngine.Object.Destroy(poolList[i].gameObject);
                     onFailedPump?.Invoke();
                     //result?.Invoke(null); //Not sure what the hell this is.
@@ -315,7 +310,7 @@ namespace Utilities.ObjectPooling
     {
         [NonSerialized] private List<T> componentList = new();
 
-        public static ObjectPool<T> NEW(Spawnable prefab, int initialSize = 5, bool canGrow = true, bool autoEnable = true, float autoDisableTime = -1, Spawnable.Types entityType = Spawnable.Types.Entity, Transform poolParentOverride = null, bool orphanOnDestroy = false)
+        public static new ObjectPool<T> NEW(Spawnable prefab, int initialSize = 5, bool canGrow = true, bool autoEnable = true, float autoDisableTime = -1, Transform poolParentOverride = null, bool orphanOnDestroy = false)
         {
             ObjectPool<T> This = new();
             This.prefab = prefab;
@@ -323,7 +318,6 @@ namespace Utilities.ObjectPooling
             This.canGrow = canGrow;
             This.autoEnable = autoEnable;
             This.autoDisableTime = autoDisableTime;
-            This.entityType = entityType;
             This.poolParentOverride = poolParentOverride;
             This.orphanOnDestroy = orphanOnDestroy;
             return This;
