@@ -12,9 +12,14 @@ public class Spawnable : MonoBehaviour
     /// <summary> Whether this <see cref="Spawnable"/> is currently active in the game. </summary>
     public bool Active => gameObject.activeSelf && !IsPrefab;
     /// <summary> Whether this <see cref="Spawnable"/> is inactive, isn't a prefab, and hasn't been labeled as Altered. </summary>
-    public bool Ready => !Active && !IsPrefab && IsAltered();
+    public bool Ready => !Active && !IsAltered() && !Reserved;
     /// <summary> If this is true, this <see cref="Spawnable"/> is a prefab and should not be used for anything besides instantiation. </summary>
     public bool IsPrefab { get; private set; } = true;
+
+    /// <summary>
+    /// Set this to true if you want to set this <see cref="Spawnable"/> as reserved for a specific function despite being disabled, preventing it from being reused.
+    /// </summary>
+    public bool Reserved;
 
     /// <summary> The current active script client for this <see cref="Spawnable"/></summary>
     public object currentClient { set; get; }
@@ -38,6 +43,13 @@ public class Spawnable : MonoBehaviour
         return result;
     }
 
+    public void Spawn(PlacementSource placement)
+    {
+        transform.SetPositionAndRotation(placement.Position, placement.Rotation);
+        gameObject.SetActive(true);
+    }
+
+    public void Despawn() => gameObject.SetActive(false);
 
     private void OnEnable()
     {
@@ -66,8 +78,6 @@ public class Spawnable : MonoBehaviour
 
     #region Helpers
 
-    public void SetActive(bool value) => gameObject.SetActive(value);
-
     /// <summary>
     /// Simple function for if this <see cref="GameObject"/> is a <see cref="Spawnable"/>. <br/>
     /// Not to be confused with <see cref="IsSpawnable(GameObject)"/>, which also checks if the object instance is available for reuse.
@@ -95,7 +105,7 @@ public class Spawnable : MonoBehaviour
     public static void DestroyOrDisable(GameObject subject)
     {
         if (!IsASpawnable(subject, out Spawnable spawnable)) Destroy(subject);
-        else spawnable.SetActive(false);
+        else spawnable.Despawn();
     }
     #endregion
 }

@@ -129,11 +129,9 @@ public class WaveController : MonoBehaviour
 
         for (int i = 0; i < spawnPoints.Count; i++)
         {
-            enemyPool.Pump(out Spawnable pooledEnemy, out _);
+            enemyPool.Pump(out Spawnable pooledEnemy, out _, 
+                (spawnPoints[i], (Player.Transform.position - spawnPoints[i]).DirToRot()));
             activeEnemies++;
-
-            pooledEnemy.transform.position = spawnPoints[i];
-            pooledEnemy.transform.eulerAngles = (Player.Transform.position - spawnPoints[i]).DirToRot();
         }
     }
 

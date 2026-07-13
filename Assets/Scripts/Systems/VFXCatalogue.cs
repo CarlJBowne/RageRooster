@@ -26,7 +26,7 @@ public class VFXCatalogue : MonoBehaviour
     /// </summary>
     /// <param name="name">The ID of the VFX. Must be EXACT.</param>
     /// <returns>Returns the PoolableObject of the VFX instance if successful. Use for further logic.</returns>
-    public Spawnable Pump(string name) => Pools.TryGet(name, out ObjectPool found) ? found.Pump() : null;
+    public Spawnable Pump(string name) => Pools.TryGet(name, out ObjectPool found) ? found.Pump(transform) : null;
 
     /// <summary>
     /// "Pump" an instance of the desired VFX from the Object Pool, using a name to identify the desired VFX. (Includes Transform Override)
@@ -37,8 +37,7 @@ public class VFXCatalogue : MonoBehaviour
     public Spawnable Pump(string name, Transform at)
     {
         if (!Pools.TryGet(name, out ObjectPool found)) return null;
-        Spawnable result = found.Pump();
-        if (result && at != null) result.transform.CopyFrom(at);
+        Spawnable result = found.Pump(at);
         return result;
     }
 
@@ -52,12 +51,7 @@ public class VFXCatalogue : MonoBehaviour
     public Spawnable Pump(string name, Vector3 position, Vector3 rotation = default)
     {
         if (!Pools.TryGet(name, out ObjectPool found)) return null;
-        Spawnable result = found.Pump();
-        if (result)
-        {
-            result.transform.position = position;
-            result.transform.eulerAngles = rotation;
-        }
+        Spawnable result = found.Pump((position, rotation));
         return result;
     }
 

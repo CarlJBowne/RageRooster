@@ -26,11 +26,7 @@ public class EnemyHealth : Health
 
     public UltEvents.UltEvent onDamageEvent;
 
-
-    #endregion Config
-    #region Data
-
-    private Vector3 startPosition;
+    private bool damaged;
 
 
     #endregion Config
@@ -41,7 +37,6 @@ public class EnemyHealth : Health
     protected override void Awake()
     {
         base.Awake();
-        startPosition = transform.position;
         if (TryGetComponent(out Spawnable pool))
         {
             pool.onDeactivate += OnSpawn;
@@ -62,6 +57,17 @@ public class EnemyHealth : Health
         {
             Stun(attack);
             if (tintAnimator) tintAnimator.BeginAnimation();
+        }
+
+        if (!damaged)
+        {
+            damaged = true;
+            if(Spawnable.IsASpawnable(gameObject, out Spawnable spawnable)) 
+                spawnable.SetAlterations(()=>
+                {
+                    damagable = false;
+                    health = maxHealth;
+                });
         }
     }
 
@@ -84,7 +90,7 @@ public class EnemyHealth : Health
             Stun(attack);
             if (tintAnimator) tintAnimator.BeginAnimation();
         }
-
+        damaged = false;
     }
 
     void Stun(Attack attack)
@@ -129,11 +135,9 @@ public class EnemyHealth : Health
 
     private void OnSpawn()
     {
-        transform.position = startPosition;
         if (hierarchicalMachine) hierarchicalMachine[0].Enter();
         if (visualMachine) visualMachine.enabled = true;
         entityActivity.enabled = true;
-        transform.rotation = Quaternion.identity;
         health = maxHealth;
         if (ragdoll) ragdoll.State = RagdollHandler.States.Off;
     }

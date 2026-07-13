@@ -38,13 +38,12 @@ public class BoulderThrowerBB : MonoBehaviour
         trueMuzzle.eulerAngles = targetDistance.XZ().DirToRot();
         Vector2 targetDistanceXY = new(targetDistance.XZ().magnitude, targetDistance.y);
 
-        warnings.Pump().transform.position = trueTarget;
+        warnings.Pump(trueTarget);
 
         PhysicsPro.ThrowAt.WithTimeAndMinVelocity(targetDistanceXY, throwTime, -Physics.gravity.y, minVelocity, out float initialVelocity, out float angle);
 
         trueMuzzle.eulerAngles -= Vector3.right * angle;
-        Spawnable boulder = projectiles.Pump();
-        boulder.transform.position = trueMuzzle.position;
+        Spawnable boulder = projectiles.Pump(trueMuzzle);
         boulder.GetComponent<Rigidbody>().linearVelocity = initialVelocity * trueMuzzle.forward;
 
     }

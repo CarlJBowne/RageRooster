@@ -131,14 +131,13 @@ namespace Utilities.ObjectPooling
                 initialized = true;
             }
 
-            public Spawnable Pump(bool autoEnable = true)
+            public Spawnable Pump(PlacementSource? placement = null)
             {
                 if (!initialized) Initialize();
-                var res = pool.Pump();
-                if (muzzle != null) res.transform.CopyFrom(muzzle);
+                if (!placement.HasValue) placement = muzzle;
+                var res = pool.Pump(placement.Value);
                 onPumpInstance?.Invoke(res);
                 res.currentClient = owner;
-                if (autoEnable) res.SetActive(true);
                 return res;
             }
 

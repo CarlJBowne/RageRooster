@@ -20,7 +20,7 @@ namespace Utilities
         public bool hidden = false;
         ObjectPool pool;
 
-        private void Awake() 
+        private void Awake()
         {
             if (Gameplay.GameState != Gameplay.GameStates.Active) return;
             actionDelayed = true;
@@ -31,7 +31,7 @@ namespace Utilities
                 {
                     if (!activePools.TryGetValue(prefab.gameObject, out pool))
                     {
-                        pool = ObjectPool<Spawnable>.NEW(prefab, 3, true, false);
+                        pool = ObjectPool<Spawnable>.NEW(prefab, 3, true);
                         activePools.Add(prefab.gameObject, pool);
                         pool.Initialize();
                     }
@@ -45,25 +45,21 @@ namespace Utilities
             if (actionDelayed) return;
             float distance = Distance;
 
-            if (active == null || active.Ready)
+            if ((active == null || active.Ready || (!active.Active && usePool)) && !hidden)
             {
-                if(distance < loadDistance)
-                {
-                    Debug.Log("Entered Range");
-                    AttemptLoad();
-                }
+                if (distance < loadDistance) AttemptLoad();
             }
-            else if (active.Active)
+            else if (active.Active) 
             {
                 if (distance > unloadDistance)
                 {
-                    Debug.Log("Exited Range");
-                    PlaceAndActivate();
+                    active.Despawn();
+                    active.ResetAlterations();
                 }
                 else if (distance > offScreenDistance)
                 {
-                    Debug.Log("Went Off Screen");
-                    active.SetActive(false);
+                    active.gameObject.SetActive(false);
+                    active.Reserved = true;
                     hidden = true;
                 }
             }
@@ -71,26 +67,21 @@ namespace Utilities
             {
                 if (distance < loadDistance)
                 {
-                    Debug.Log("Entered From Off Screen");
-                    PlaceAndActivate();
+                    active.gameObject.SetActive(true);
+                    active.Reserved = false;
                     hidden = false;
                 }
                 else if (distance > unloadDistance)
                 {
-                    Debug.Log("Exited Range");
+                    active.ResetAlterations();
+                    active.Reserved = false;
                     hidden = false;
                 }
             }
         }
 
-        public void PlaceAndActivate()
-        {
-            active.SetActive(true);
-            active.transform.CopyFrom(transform);
-        }
-
         float Distance => Vector3.Distance(PlayerPosition.position,
-                (measureFromSpawn || active == null) ? transform.position : active.transform.position); 
+                (measureFromSpawn || active == null) ? transform.position : active.transform.position);
 
         void AttemptLoad()
         {
@@ -98,13 +89,31 @@ namespace Utilities
             UpdateDelayer.QueueUpdate(() =>
             {
                 actionDelayed = false;
-                if (active == null || active.Active)
+                if (active == null || active.Ready || (!active.Active && usePool))
                 {
-                    active = usePool ? pool.Pump() : Spawnable.Instantiate(prefab.gameObject); 
-                    PlaceAndActivate();
+                    if (active != null && active.Ready) active.Spawn(transform);
+                    else if (usePool)
+                    {
+                        active = pool.Pump(transform);
+                    }
+                    else
+                    {
+                        active = Spawnable.Instantiate(prefab.gameObject);
+                        active.Spawn(transform);
+                    }
                     active.SendMessage("OnSpawn");
                 }
             }, "EntitySpawn", true);
+        }
+
+        private void OnDestroy()
+        {
+            if (active != null)
+            {
+                active.Despawn();
+                active.Reserved = false;
+                active.ResetAlterations();
+            }
         }
 
 

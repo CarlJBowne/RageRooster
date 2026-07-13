@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Utilities.ObjectPooling
@@ -17,7 +18,6 @@ namespace Utilities.ObjectPooling
         [field: SerializeField] public Spawnable prefab { protected set; get; }
         [field: SerializeField] public int initialSize { protected set; get; } = 5;
         [field: SerializeField] public bool canGrow { protected set; get; } = true;
-        [field: SerializeField] public bool autoEnable { protected set; get; } = true;
         [field: SerializeField] public float autoDisableTime { protected set; get; } = -1;
         [field: SerializeField] public Transform poolParentOverride { protected set; get; }
         [field: SerializeField] public bool orphanOnDestroy { protected set; get; } = false;
@@ -39,13 +39,12 @@ namespace Utilities.ObjectPooling
         public Action<Spawnable> onInstanceDisable;
         public Action onFailedPump;
 
-        public static ObjectPool NEW(Spawnable prefab, int initialSize = 5, bool canGrow = true, bool autoEnable = true, float autoDisableTime = -1, Transform poolParentOverride = null, bool orphanOnDestroy = false)
+        public static ObjectPool NEW(Spawnable prefab, int initialSize = 5, bool canGrow = true, float autoDisableTime = -1, Transform poolParentOverride = null, bool orphanOnDestroy = false)
         {
             ObjectPool This = new();
             This.prefab = prefab;
             This.initialSize = initialSize;
             This.canGrow = canGrow;
-            This.autoEnable = autoEnable;
             This.autoDisableTime = autoDisableTime;
             This.poolParentOverride = poolParentOverride;
             This.orphanOnDestroy = orphanOnDestroy;
@@ -113,7 +112,7 @@ namespace Utilities.ObjectPooling
             };
 
             // If the spawnable starts as Prefab, ensure it's set to Inactive so pool can reuse it.
-            if (newInstance.IsPrefab) newInstance.SetActive(false);
+            if (newInstance.IsPrefab) newInstance.Despawn();
         }
 
 
@@ -128,7 +127,7 @@ namespace Utilities.ObjectPooling
                     if (s == null) continue;
                     if (!s.Ready && s.spawnTime + autoDisableTime <= delta)
                     {
-                        s.SetActive(false);
+                        s.Despawn();
                     }
                 }
             }
@@ -140,7 +139,7 @@ namespace Utilities.ObjectPooling
             if (currentIndex >= pooledObjects) currentIndex = 0;
         }
 
-        public Spawnable Pump()
+        public Spawnable Pump(PlacementSource placement)
         {
             if (!initialized) Initialize();
 
@@ -188,8 +187,7 @@ namespace Utilities.ObjectPooling
             if (instance != null && instance.Ready)
             {
                 onPreInstanceEnable?.Invoke(instance);
-                if (autoEnable)
-                    instance.SetActive(true);
+                instance.Spawn(placement);
                 return instance;
             }
             else
@@ -198,13 +196,13 @@ namespace Utilities.ObjectPooling
                 return null;
             }
         }
-        public bool Pump(out Spawnable result)
+        public bool Pump(out Spawnable result, PlacementSource placement)
         {
-            result = Pump();
+            result = Pump(placement);
             return result != null;
         }
 
-        public void Pump(Action<Spawnable> result)
+        public void Pump(Action<Spawnable> result, PlacementSource placement)
         {
             Enum().Begin();
             IEnumerator Enum()
@@ -255,7 +253,7 @@ namespace Utilities.ObjectPooling
                 if (instance != null && instance.Ready)
                 {
                     onPreInstanceEnable?.Invoke(instance);
-                    if (autoEnable) instance.SetActive(true);
+                    instance.Spawn(placement);
                     result?.Invoke(instance);
                 }
                 else
@@ -275,7 +273,7 @@ namespace Utilities.ObjectPooling
 
         public virtual void DisableAll()
         {
-            foreach (Spawnable item in poolList) item.SetActive(false);
+            foreach (Spawnable item in poolList) item.Despawn();
             activeObjects = 0;
             currentIndex = 0;
         }
@@ -291,7 +289,7 @@ namespace Utilities.ObjectPooling
                 if (orphanOnDestroy) UnityEngine.Object.Destroy(poolList[i]);
                 else
                 {
-                    poolList[i].SetActive(false);
+                    poolList[i].Despawn();
                     if (poolList[i].gameObject != null) UnityEngine.Object.Destroy(poolList[i].gameObject);
                     onFailedPump?.Invoke();
                     //result?.Invoke(null); //Not sure what the hell this is.
@@ -310,13 +308,12 @@ namespace Utilities.ObjectPooling
     {
         [NonSerialized] private List<T> componentList = new();
 
-        public static new ObjectPool<T> NEW(Spawnable prefab, int initialSize = 5, bool canGrow = true, bool autoEnable = true, float autoDisableTime = -1, Transform poolParentOverride = null, bool orphanOnDestroy = false)
+        public static new ObjectPool<T> NEW(Spawnable prefab, int initialSize = 5, bool canGrow = true, float autoDisableTime = -1, Transform poolParentOverride = null, bool orphanOnDestroy = false)
         {
             ObjectPool<T> This = new();
             This.prefab = prefab;
             This.initialSize = initialSize;
             This.canGrow = canGrow;
-            This.autoEnable = autoEnable;
             This.autoDisableTime = autoDisableTime;
             This.poolParentOverride = poolParentOverride;
             This.orphanOnDestroy = orphanOnDestroy;
@@ -329,12 +326,12 @@ namespace Utilities.ObjectPooling
             if (newInstance.TryGetComponent(out T comp)) componentList.Add(comp);
         }
 
-        public new T Pump() => base.Pump() ? componentList[currentIndex] : null;
-        public Spawnable PumpBase() => base.Pump();
+        public new T Pump(PlacementSource placement) => base.Pump(placement) ? componentList[currentIndex] : null;
+        public Spawnable PumpBase(PlacementSource placement) => base.Pump(placement);
 
-        public bool Pump(out T result)
+        public bool Pump(out T result, PlacementSource placement)
         {
-            if (Pump(out Spawnable p))
+            if (Pump(out Spawnable p, placement))
             {
                 result = componentList[currentIndex];
                 return true;
@@ -345,13 +342,13 @@ namespace Utilities.ObjectPooling
                 return false;
             }
         }
-        public bool Pump(out Spawnable resultP, out T resultT)
+        public bool Pump(out Spawnable resultP, out T resultT, PlacementSource placement)
         {
-            var result = base.Pump(out resultP);
+            var result = base.Pump(out resultP, placement);
             resultT = componentList[currentIndex];
             return result;
         }
-        public void Pump(Action<Spawnable, T> result) => base.Pump(P => { result?.Invoke(P, componentList[currentIndex]); });
+        public void Pump(Action<Spawnable, T> result, PlacementSource placement) => base.Pump(P => { result?.Invoke(P, componentList[currentIndex]); }, placement);
         public T GetCurrentIndexComponent() => componentList[currentIndex];
 
     }

@@ -16,19 +16,17 @@ public class EnemyBasicBulletSource : MonoBehaviour
         GlobalPool.BasicEnemyBullet.Initialize();
     }
 
-    public Spawnable Pump(bool autoEnable = true)
+    public Spawnable Pump()
     {
         if (!Gameplay.Active) return null;
         if (!GlobalPool.BasicEnemyBullet.initialized) GlobalPool.BasicEnemyBullet.Initialize();
         Spawnable res = null;
-        GlobalPool.BasicEnemyBullet.Pump(Success);
+        GlobalPool.BasicEnemyBullet.Pump(Success, muzzle);
 
         void Success(Spawnable obj, AttackProjectile proj)
         {
             if (muzzle != null) obj.transform.CopyFrom(muzzle);
-            //proj.Send();
             obj.currentClient = this;
-            if (autoEnable) obj.SetActive(true);
             res = obj;
         }
         return res;
