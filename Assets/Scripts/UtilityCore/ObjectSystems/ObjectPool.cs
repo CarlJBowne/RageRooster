@@ -2,8 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
+using Utilities.Xtensions.VisualElements;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.UIElements;
+#endif
 
 namespace Utilities.ObjectPooling
 {
@@ -19,7 +26,7 @@ namespace Utilities.ObjectPooling
         [field: SerializeField] public int initialSize { protected set; get; } = 5;
         [field: SerializeField] public bool canGrow { protected set; get; } = true;
         [field: SerializeField] public float autoDisableTime { protected set; get; } = -1;
-        [field: SerializeField] public Transform poolParentOverride { protected set; get; }
+        [field: SerializeField] public Transform parentOverride { protected set; get; }
         [field: SerializeField] public bool orphanOnDestroy { protected set; get; } = false;
 
         //Data
@@ -29,7 +36,7 @@ namespace Utilities.ObjectPooling
         [field: NonSerialized] public bool initialized { get; protected set; } = false;
         [field: NonSerialized] public bool initializing { get; protected set; } = false;
         public int pooledObjects => poolList.Count;
-        public Transform poolParent => poolParentOverride != null ? poolParentOverride : DefaultPoolParent;
+        public Transform poolParent => parentOverride != null ? parentOverride : DefaultPoolParent;
         public static Transform DefaultPoolParent;
 
         //Customizable Callbacks
@@ -46,7 +53,7 @@ namespace Utilities.ObjectPooling
             This.initialSize = initialSize;
             This.canGrow = canGrow;
             This.autoDisableTime = autoDisableTime;
-            This.poolParentOverride = poolParentOverride;
+            This.parentOverride = poolParentOverride;
             This.orphanOnDestroy = orphanOnDestroy;
             return This;
         }
@@ -296,6 +303,85 @@ namespace Utilities.ObjectPooling
                 }
             }
         }
+
+
+#if UNITY_EDITOR
+        [CustomPropertyDrawer(typeof(ObjectPool), true)]
+        private class Editor : UnityEditor.PropertyDrawer
+        {
+
+            Foldout primaryFoldout;
+            Label label;
+
+            public override VisualElement CreatePropertyGUI(SerializedProperty property)
+            {
+                VisualElement root = new();
+
+                SerializedProperty initSizeProp = property.FindBackingFieldRelative(nameof(initialSize));
+
+
+                primaryFoldout = new Foldout().AddTo(root, primaryFoldout =>
+                {
+                    primaryFoldout.text = property.displayName;
+                    primaryFoldout.BindProperty(property);
+                    label = primaryFoldout.Q<Label>(className: Foldout.textUssClassName);
+                    label.style.unityTextAlign = TextAnchor.MiddleLeft;
+                });
+
+                new PropertyField(property.FindBackingFieldRelative(nameof(prefab)), "").AddTo(label, t =>
+                {
+                    t.style.unityTextAlign = TextAnchor.UpperLeft;
+                    t.style.minWidth = Length.Percent(75);
+                    t.style.alignSelf = Align.FlexEnd;
+                });
+
+                new TextField("Title").AddTo(primaryFoldout, t =>
+                {
+                    t.BindProperty(property.FindBackingFieldRelative(nameof(ObjectPool.name)));
+                });
+                new VisualElement().AddTo(primaryFoldout, t =>
+                {
+                    t.style.flexDirection = FlexDirection.Row;
+
+                    new IntegerField("Initial Size").AddTo(t, t2 =>
+                    {
+                        t2.BindProperty(initSizeProp);
+                        t2.style.flexGrow = 1;
+                    });
+
+                    SerializedProperty canGrowProp = property.FindBackingFieldRelative(nameof(canGrow));
+                    Button toggle = null; toggle = new Button(() => UpdateCanGrow(!canGrowProp.boolValue)).AddTo(t);
+                    {
+                        toggle.text = "+";
+                        toggle.style.flexShrink = 1;
+                        toggle.style.width = 20;
+                        toggle.style.unityTextAlign = TextAnchor.MiddleCenter;
+                        toggle.style.marginRight = -2.5f;
+                        //toggle.BindProperty(canGrowProp);
+                        toggle.style.backgroundColor = canGrowProp.boolValue ? new(.4f, .6f, .4f) : Color.clear;
+                    }
+                    void UpdateCanGrow(bool value)
+                    {
+                        canGrowProp.boolValue = value;
+                        canGrowProp.serializedObject.ApplyModifiedProperties();
+                        toggle.style.backgroundColor = value ? new(.4f, .8f, .4f) : Color.clear;
+                    }
+
+                });
+
+                new FloatField("Auto Disable Time").AddTo(primaryFoldout, t =>
+                {
+                    t.BindProperty(property.FindBackingFieldRelative(nameof(parentOverride)));
+                });
+                new Toggle("Orphan On Pool Death").AddTo(primaryFoldout, t =>
+                {
+                    t.BindProperty(property.FindBackingFieldRelative(nameof(orphanOnDestroy)));
+                });
+
+                return root;
+            }
+        }
+#endif
     }
 
     /// <summary>
@@ -315,7 +401,7 @@ namespace Utilities.ObjectPooling
             This.initialSize = initialSize;
             This.canGrow = canGrow;
             This.autoDisableTime = autoDisableTime;
-            This.poolParentOverride = poolParentOverride;
+            This.parentOverride = poolParentOverride;
             This.orphanOnDestroy = orphanOnDestroy;
             return This;
         }
@@ -352,6 +438,9 @@ namespace Utilities.ObjectPooling
         public T GetCurrentIndexComponent() => componentList[currentIndex];
 
     }
+
+
+    //EVERYTHING BELOW HERE SHOULD BE REMOVED ONCE THE PACKAGE UPDATES ARE ACCOMPLISHED.
 
     // Minimal helper to start IEnumerator from non-MonoBehaviour contexts like original code used .Begin()
     static class IEnumeratorExtensions
