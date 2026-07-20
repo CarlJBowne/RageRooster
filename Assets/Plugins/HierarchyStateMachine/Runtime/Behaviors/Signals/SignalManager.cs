@@ -94,6 +94,7 @@ namespace SLS.StateMachineH.Signals
             if (!queueSignals || signal.queueTime <= 0f || (!signal.allowDuplicates && SignalQueue.Count > 0 && SignalQueue.Peek() == signal)) return;
 
             SignalQueue.Enqueue(signal);
+            onSignalQueueUpdate?.Invoke();
             if (SignalQueue.Count == 1) QueueNext();
         }
         private void QueueNext()
@@ -115,12 +116,17 @@ namespace SLS.StateMachineH.Signals
                 {
                     ActiveSignalLength = 0;
                     FireSignal(SignalQueue.Dequeue(), true);
+                    onSignalQueueUpdate?.Invoke();
                 }
+                onUpdate?.Invoke();
             }
         }
 
         private List<SignalNode> NodeStack = new();     
         public void Register(SignalNode node) => NodeStack.Add(node);
         public void Deregister(SignalNode node) => NodeStack.Remove(node);
+
+        public Action onSignalQueueUpdate;
+        public Action onUpdate;
     }
 }
