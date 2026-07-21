@@ -46,13 +46,14 @@ namespace SLS.StateMachineH.Signals
     {
         Foldout activityDisplay;
         new SignalManager target;
-        List<SignalVis> signals;
+        List<SignalVis> signals = new();
 
         public override VisualElement CreateInspectorGUI()
         {
             VisualElement root = new();
 
             root.Add(new PropertyField(serializedObject.FindProperty("signals")));
+            root.Add(new PropertyField(serializedObject.FindProperty("queueSignals")));
 
             activityDisplay = new Foldout();
             activityDisplay.text = "Activity Display";
@@ -73,12 +74,13 @@ namespace SLS.StateMachineH.Signals
         public void QueueUpdate()
         {
             activityDisplay.Clear();
+            signals.Clear();
             bool first = true;
             foreach (Signal signal in target.SignalQueue)
             {
                 signals.Add(new SignalVis(signal, first));
                 activityDisplay.Add(signals[^1]);
-                signals[^1].Update(target.SignalQueueTimer);
+                signals[^1].Update(0);
                 first = false;
             }
                 
@@ -87,27 +89,6 @@ namespace SLS.StateMachineH.Signals
 
         public class SignalVis : VisualElement
         {
-            // Plan (pseudocode):
-            // - Store endTime, timerText, meterBack, meterFill as fields.
-            // - In constructor:
-            //   - Create name label and notes label as before.
-            //   - If this is the first (active) signal:
-            //       - Record endTime from signal.queueTime.
-            //       - Create a meter background element (meterBack) and style it to be relative.
-            //       - Create a meter fill element (meterFill) positioned absolute, full height, left=0,
-            //         width representing progress percent, and a semi-transparent color.
-            //       - Create timerText label and ensure it has a higher z-index than meterFill so it
-            //         renders on top (appearing "above" the meter).
-            //       - Add meterBack (with meterFill) and timerText to this VisualElement.
-            //   - Else (not first): create a simple timerText and add it (no meter).
-            // - In Update(time):
-            //   - Update timerText.text to show "time / endTime".
-            //   - If meterFill exists, compute percentage = clamp(time / endTime, 0..1)*100 and set
-            //     meterFill.style.width = Length.Percent(percentage).
-            //   - Guard against endTime <= 0.
-            //
-            // Implementation follows using UIElements styles (Position, z-index, StyleColor, Length.Percent).
-
             float endTime;
             
             Label timerText;
@@ -124,67 +105,67 @@ namespace SLS.StateMachineH.Signals
                 if (s.ignoreLock) notesS += "L";
                 if (s.allowDuplicates) notesS += "D";
                 Label notes = new(notesS); this.Add(notes);
-                notes.style.width = 15;
+                notes.style.width = 18;
 
                 if (first)
                 {
                     endTime = s.queueTime;
 
                     // Create meter background container (relative) so fill can be absolute inside it.
-                    meterBack = new VisualElement();
-                    meterBack.style.position = Position.Relative;
-                    meterBack.style.flexGrow = 1;
-                    // set a reasonable height for the meter area
-                    meterBack.style.minHeight = 18;
-                    meterBack.style.marginLeft = 4;
-                    meterBack.style.marginRight = 4;
-                    meterBack.style.alignSelf = Align.Center;
-                    meterBack.style.backgroundColor = new StyleColor(new Color(0f, 0f, 0f, 0.12f));
+                    meterBack = new VisualElement()
+                    {
+                        style =
+                        {
+                            position = Position.Relative,
+                            flexGrow = 1,
+                            height = 12,
+                            marginLeft = 4,
+                            marginRight = 4,
+                            alignSelf = Align.Center,
+                            backgroundColor = new Color(0f, 0f, 0f, 0.12f),
+                        }
+                    };
+                    this.Add(meterBack);
 
                     // Create the actual fill bar (absolute positioned)
-                    meterFill = new VisualElement();
-                    meterFill.style.position = Position.Absolute;
-                    meterFill.style.left = 0;
-                    meterFill.style.top = 0;
-                    meterFill.style.bottom = 0;
-                    meterFill.style.width = Length.Percent(0); // start empty
-                    meterFill.style.backgroundColor = new StyleColor(new Color(0.2f, 0.6f, 1f, 0.35f));
-
+                    meterFill = new VisualElement()
+                    {
+                        style =
+                        {
+                            position = Position.Absolute,
+                            left = 0,
+                            top = 0,
+                            bottom = 0,
+                            width = Length.Percent(0),
+                            backgroundColor = new Color(0.2f, 0.6f, 1f, 0.35f),
+                        }
+                    };
                     meterBack.Add(meterFill);
 
                     // Timer text sits above the fill (higher z-index)
-                    timerText = new Label(s.queueTime.ToString());
-                    timerText.style.position = Position.Relative;
-                    timerText.style.unityTextAlign = TextAnchor.MiddleCenter;
-                    timerText.style.alignSelf = Align.Center;
-                    timerText.style.width = Length.Percent(100);
-                    timerText.style.unityFontStyleAndWeight = FontStyle.Bold;
-
-                    // Add meter and timer to the row. Add meter first so it stretches,
-                    // then timerText overlays it visually due to z-index.
-                    this.Add(meterBack);
-                    this.Add(timerText);
-                }
-                else
-                {
-                    timerText = new Label(s.queueTime.ToString());
-                    this.Add(timerText);
+                    timerText = new Label(s.queueTime.ToString())
+                    {
+                        style =
+                        {
+                            position = Position.Relative,
+                            unityTextAlign = TextAnchor.MiddleCenter,
+                            alignSelf = Align.Center,
+                            width = Length.Percent(100),
+                            unityFontStyleAndWeight = FontStyle.Bold,
+                        }
+                    };
+                    meterBack.Add(timerText);
+                     
                 }
             }
 
             public void Update(float time)
             {
-                if (timerText != null)
-                {
-                    timerText.text = $"{time} / {endTime}";
-                }
+                if (timerText != null) timerText.text = $"{time} / {endTime}";
 
                 if (meterFill != null)
                 {
-                    float pct = 100f;
-                    if (endTime > 0f)
-                        pct = Mathf.Clamp01(time / endTime) * 100f;
-                    pct = Mathf.Clamp(pct, 0f, 100f);
+                    float pct = Mathf.Clamp01((endTime - time) / endTime) * 100f;
                     meterFill.style.width = Length.Percent(pct);
                 }
             }
