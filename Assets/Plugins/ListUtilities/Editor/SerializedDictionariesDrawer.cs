@@ -366,9 +366,13 @@ namespace ListUtilities.Editor
 
             public override int CurrentSize
             {
-                get => ValuesProperty.arraySize;
+                get => ValuesProperty != null ? ValuesProperty.arraySize
+                    : KeysProperty != null ? KeysProperty.arraySize
+                    : NamesProperty != null ? NamesProperty.arraySize
+                    : 0;
                 set
                 {
+                    if (NamesProperty is null || KeysProperty is null || ValuesProperty is null) return;
                     bool isBigger = value > NamesProperty.arraySize;
                     NamesProperty.arraySize = value;
                     KeysProperty.arraySize = value;
@@ -397,6 +401,7 @@ namespace ListUtilities.Editor
             private InsertKeyPopup<string> NewItemInput;
             void PostItemNaming(string value)
             {
+                if (string.IsNullOrEmpty(value)) return;
                 CreatePropertySlot(out int newID);
 
                 NamesProperty.GetArrayElementAtIndex(newID).stringValue = value;
@@ -437,6 +442,7 @@ namespace ListUtilities.Editor
                 CreateItemElement(newID);
                 Select(items[newID]);
                 NewItemInput.style.display = DisplayStyle.None;
+                header.UpdateCounter(true);
             }
             #endregion
             public override void DeletePropertySlotAt(int index)
@@ -451,19 +457,19 @@ namespace ListUtilities.Editor
 
                 // If the array still has an element at this index and it's an object reference that is null,
                 // delete it again to fully remove the slot.
-                if (prevNamesCount < NamesProperty.arraySize)
+                if (prevNamesCount == NamesProperty.arraySize)
                 {
                     SerializedProperty maybeElem = NamesProperty.GetArrayElementAtIndex(index);
                     if (maybeElem != null && maybeElem.propertyType == SerializedPropertyType.ObjectReference && maybeElem.objectReferenceValue == null)
                         NamesProperty.DeleteArrayElementAtIndex(index);
                 }
-                if (prevKeysCount < KeysProperty.arraySize)
+                if (prevKeysCount == KeysProperty.arraySize)
                 {
                     SerializedProperty maybeElem = KeysProperty.GetArrayElementAtIndex(index);
                     if (maybeElem != null && maybeElem.propertyType == SerializedPropertyType.ObjectReference && maybeElem.objectReferenceValue == null)
                         KeysProperty.DeleteArrayElementAtIndex(index);
                 }
-                if (prevValuesCount < ValuesProperty.arraySize)
+                if (prevValuesCount == ValuesProperty.arraySize)
                 {
                     SerializedProperty maybeElem = ValuesProperty.GetArrayElementAtIndex(index);
                     if (maybeElem != null && maybeElem.propertyType == SerializedPropertyType.ObjectReference && maybeElem.objectReferenceValue == null)
@@ -471,6 +477,7 @@ namespace ListUtilities.Editor
                 }
 
                 header.UpdateExpanded(false);
+                header.UpdateCounter(false);
                 property.serializedObject.ApplyModifiedProperties();
             }
 

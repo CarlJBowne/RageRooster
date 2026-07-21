@@ -302,11 +302,14 @@ namespace ListUtilities.Editor
         protected void FinishBind()
         {
             BuildItems();
-            Undo.undoRedoPerformed += ()=> 
-            {
-                property.serializedObject.Update();
-                BuildItems();
-            };
+            Undo.undoRedoPerformed += UndoRedoPerformed;
+            this.RegisterCallbackOnce<DetachFromPanelEvent>(_ => Undo.undoRedoPerformed -= UndoRedoPerformed);
+        }
+
+        protected void UndoRedoPerformed()
+        {
+            property.serializedObject.Update();
+            BuildItems();
         }
 
         /// <summary>
