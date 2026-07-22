@@ -5,7 +5,7 @@ using SLS.StateMachineH;
 using System;
 using Cinemachine;
 using System.Linq;
-using Utilities.Singletons;
+using SLS.Singletons;
 using AYellowpaper.SerializedCollections;
 using RageRooster.Systems.SaveSystem;
 using RageRooster.RoomSystem;

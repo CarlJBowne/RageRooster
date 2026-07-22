@@ -9,7 +9,7 @@ namespace RageRooster.Obsolete
 {
     [System.Serializable]
     [System.Obsolete]
-    public class WorldChange : ScriptableObject, ICustomSerialized
+    public class WorldChange : ScriptableObject
     {
         [SerializeField, DisableInEditMode, DisableInPlayMode] private bool _enabled;
 

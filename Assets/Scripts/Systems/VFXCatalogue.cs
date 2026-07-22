@@ -1,11 +1,10 @@
 using AYellowpaper.SerializedCollections;
-using ListUtilities;
+using SLS.ListUtilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utilities;
 using Utilities.ObjectPooling;
-using Utilities.Xtensions.Unity;
 
 public class VFXCatalogue : MonoBehaviour
 {

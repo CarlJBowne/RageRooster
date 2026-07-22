@@ -1,12 +1,11 @@
 using EditorAttributes;
-using RageRooster.Physics;
 using RageRooster.Systems.SaveSystem;
 using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using Utilities.Xtensions.Unity;
+
 using static SLS.StateMachineH.StateAnimator;
 using static UnityEngine.EventSystems.EventTrigger;
 
@@ -95,7 +94,7 @@ public class PlayerGroundMovementComplex : PlayerMovementEffector
             else if (currentSpeed > maxSpeed)
                 currentSpeed = currentSpeed.MoveDown(decceleration * deltaTime, maxSpeed);
         }
-        else currentSpeed = currentSpeed > .01f ? currentSpeed.Move(currentSpeed * stopping * deltaTime, 0) : 0;
+        else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
 
         if (currentSpeed >= nextPhaseThreshold && nextCondition)
             nextPhase.State.Enter();
@@ -134,7 +133,7 @@ public class PlayerGroundMovementComplex : PlayerMovementEffector
 
     public void LandInto()
     {
-        bool groundCollide = Player.MovementBody.Ground.Check(out AnchorPoint collideResult);
+        bool groundCollide = Player.MovementBody.Ground.Check(out SLS.Physics3D.AnchorPoint collideResult);
         if (!groundCollide && Machine.SendSignal(new("WalkOff", 0, true))) return;
         Player.MovementBody.Land(collideResult);
         State.Enter();

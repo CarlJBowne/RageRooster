@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using Utilities.Singletons;
+using SLS.Singletons;
 
 [CreateAssetMenu(fileName = "Global Prefabs", menuName = "Global Prefabs", order = 0)]
 public class GlobalPrefabs : GlobalAsset<GlobalPrefabs>

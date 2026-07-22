@@ -6,12 +6,12 @@ using RageRooster.Systems.SaveSystem;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
-using Utilities.Singletons;
-using Utilities.Xtensions.Unity;
+using SLS.Singletons;
 using Utilities.Xtensions;
 using Cinemachine.Utility;
-using RageRooster.Physics;
 using RageRooster.RoomSystem;
+using SLS.Physics3D;
+
 
 
 #if UNITY_EDITOR
@@ -46,17 +46,17 @@ public sealed class PlayerMovementBody : PhysicsBody
     }
     private void Start()
     {
-        //Do this again because no matter what I tell this system to do nothing ever works correctly.
-        if (Resolvers.groundedResolver != null && Ground.InstantSnapToFloor(out RaycastHit hit))
-        {
-            Ground.Land(hit);
-            Resolvers.Update(Resolvers.groundedResolver);
-        }
-        else if (Resolvers.airborneResolver != null)
-        {
-            Resolvers.Update(Resolvers.airborneResolver);
-        }
-        else enabled = false; //WTF.
+        ////Do this again because no matter what I tell this system to do nothing ever works correctly.
+        //if (Resolvers.groundedResolver != null && Ground.InstantSnapToFloor(out RaycastHit hit))
+        //{
+        //    Ground.Land(hit);
+        //    Resolvers.Update(Resolvers.groundedResolver);
+        //}
+        //else if (Resolvers.airborneResolver != null)
+        //{
+        //    Resolvers.Update(Resolvers.airborneResolver);
+        //}
+        //else enabled = false; //WTF.
 
     }
 
@@ -88,19 +88,19 @@ public sealed class PlayerMovementBody : PhysicsBody
 
         base.FixedUpdate();
 
-        if (prePos != Position) _movingUpdateActionTimer.Tick(MovingUpdateAction);
+        if (prePos != Position) _movingUpdateActionTimer.Tick();
     }
 
 
 
     public override void OnLand(bool wasntGrounded, bool objectChange)
     {
-        Resolvers.Update();
+        UpdateResolver();
         Player.StateMachine.SendSignal(new("Land", ignoreLock: true));
         canDoDoubleJump = true; //I still don't like this being part of this script of all things.
         if (Player.Controller.CheckJumpBuffer()) Player.StateMachine.SendSignal("Jump");
     }
-    public override void OnUnLand(GroundState.Values newValue) => Resolvers.Update();
+    public override void OnUnLand(GroundState.Values newValue) => UpdateResolver();
 
     public override void WalkOff()
     {
@@ -122,7 +122,7 @@ public sealed class PlayerMovementBody : PhysicsBody
     #region Other
 
     public static System.Action MovingUpdateAction;
-    private Timer.Loop _movingUpdateActionTimer = new(0.2f);
+    private Timer _movingUpdateActionTimer = new(0.2f, true, MovingUpdateAction);
 
     public VolcanicVent CurrentVent
     {

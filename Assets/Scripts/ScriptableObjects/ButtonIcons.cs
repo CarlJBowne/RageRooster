@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Utilities.Singletons;
+using SLS.Singletons;
 
 
 [CreateAssetMenu(fileName = "ButtonIcons", menuName = "ScriptableObjects/ButtonIcons")]

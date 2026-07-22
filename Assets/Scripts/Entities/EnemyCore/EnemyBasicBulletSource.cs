@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Utilities.ObjectPooling;
 using UnityEngine;
 using Utilities;
-using Utilities.Xtensions.Unity;
 
 public class EnemyBasicBulletSource : MonoBehaviour
 {

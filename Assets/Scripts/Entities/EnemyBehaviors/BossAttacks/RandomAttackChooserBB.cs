@@ -5,13 +5,16 @@ using SLS.StateMachineH;
 public class RandomAttackChooserBB : StateBehavior
 {
 
-    public Timer.OneTime chooseTimer;
+    public float chooseTimer;
     public State[] choiceStates;
     public float[] choiceChances;
+    private Timer timer;
 
-    protected override void OnFixedUpdate()
+    protected override void OnFixedUpdate() => timer.Tick();
+
+    protected override void OnAwake()
     {
-        chooseTimer.Tick(() =>
+        timer = new Timer(chooseTimer, true, () =>
         {
             float combinedChance = 0;
             for (int i = 0; i < choiceChances.Length; i++) combinedChance += choiceChances[i];
@@ -20,9 +23,9 @@ public class RandomAttackChooserBB : StateBehavior
 
             int choice = 0;
             float passedChoiced = 0;
-            for (; choice < choiceChances.Length-1;)
+            for (; choice < choiceChances.Length - 1;)
             {
-                if(diceRoll < choiceChances[choice + 1] + passedChoiced)
+                if (diceRoll < choiceChances[choice + 1] + passedChoiced)
                 {
                     break;
                 }
@@ -31,14 +34,8 @@ public class RandomAttackChooserBB : StateBehavior
                 passedChoiced += choiceChances[choice];
             }
             choiceStates[choice].Enter();
-        });
+        }).StartUpdate();
     }
-
-    protected override void OnEnter(State prev, bool isFinal)
-    {
-        chooseTimer.Begin();
-    }
-
 
 
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using Utilities.Xtensions.Unity;
+
 
 public class PlayerMovementHorizontalBasic : PlayerMovementEffector
 {
@@ -44,7 +44,7 @@ public class PlayerMovementHorizontalBasic : PlayerMovementEffector
                     result = result.MoveDown(controlMag * decceleration * deltaTime, maxSpeed);
 
             }
-            else result = result > .01f ? result.Move(result * stopping * deltaTime, 0) : 0;
+            else result = result > .01f ? result.MoveTowards(result * stopping * deltaTime, 0) : 0;
 
         }
         void HorizontalCharge(float deltaTime)

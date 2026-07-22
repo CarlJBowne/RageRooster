@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
-using Utilities.Singletons;
-using Utilities.Xtensions.Unity;
+using SLS.Singletons;
+
 
 namespace Utilities.ObjectPooling
 {
@@ -131,7 +131,7 @@ namespace Utilities.ObjectPooling
                 initialized = true;
             }
 
-            public Spawnable Pump(PlacementSource? placement = null)
+            public Spawnable Pump(Placement? placement = null)
             {
                 if (!initialized) Initialize();
                 if (!placement.HasValue) placement = muzzle;

@@ -64,7 +64,7 @@ public class PlayerButtonActions : PlayerStateBehavior
     [CustomEditor(typeof(PlayerButtonActions)), CanEditMultipleObjects]
     public class PlayerButtonActionsEditor : Editor
     {
-        Polymorph.TabbedDrawer drawer;
+        PolymorphEditors.TabbedDrawer drawer;
 
         public override VisualElement CreateInspectorGUI()
         {

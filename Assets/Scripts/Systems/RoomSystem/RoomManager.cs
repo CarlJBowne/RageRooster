@@ -2,11 +2,11 @@ using RageRooster.RoomSystem;
 using RageRooster.Systems;
 using Utilities.ObjectPooling;
 using RageRooster.Systems.SaveSystem;
-using Utilities.Singletons;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SLS.Singletons;
 
 namespace RageRooster.RoomSystem
 {
@@ -83,7 +83,7 @@ namespace RageRooster.RoomSystem
         /// Begins a Room transition to the specified <see cref="Destination"/>.
         /// </summary>
         public static void StartTransition(Destination destination = default)
-            => Transition(destination).Begin(Overlay.OverMenus);
+            => Transition(destination).Begin(Overlay.OverALL);
 
         /// <summary>
         /// The central Transition Routine run when the player transitions between Rooms/Areas.
@@ -97,10 +97,11 @@ namespace RageRooster.RoomSystem
 
             bool fullTransition = currentArea != destination.area || forceFullTransition;
 
-            if (FadeOutRoutine == Overlay.OverGameplay.BasicFadeOutWait(0.5f) && FadeInRoutine == Overlay.OverGameplay.BasicFadeInWait(0.5f) && fullTransition)
+            if (FadeOutRoutine == Overlay.UnderHUD.FadeAlpha(1, 0.5f) 
+                && FadeInRoutine == Overlay.BetweenUI.FadeAlpha(0, 0.5f) && fullTransition)
             {
-                FadeOutRoutine = Overlay.OverHUD.BasicFadeOutWait(0.5f);
-                FadeInRoutine = Overlay.OverHUD.BasicFadeInWait(0.5f);
+                FadeOutRoutine = Overlay.BetweenUI.FadeAlpha(1, 0.5f);
+                FadeInRoutine = Overlay.BetweenUI.FadeAlpha(0, 0.5f);
             }
 
             if (fullTransition) Music.FadeOutBothMusic();

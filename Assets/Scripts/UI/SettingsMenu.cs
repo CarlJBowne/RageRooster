@@ -1,6 +1,6 @@
 using UnityEngine.UI;
 using RageRooster.Settings;
-using Utilities.Singletons;
+using SLS.Singletons;
 
 public class SettingsMenu : MenuSingleton<SettingsMenu>, IGlobalPrefab
 {

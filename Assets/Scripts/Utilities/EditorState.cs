@@ -3,7 +3,7 @@ using RageRooster.RoomSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utilities.Singletons;
+using SLS.Singletons;
 
 [CreateAssetMenu(fileName = "AAAAAA", menuName = "ScriptableObjects/EditorState")]
 public class EditorState : GlobalAsset<EditorState>

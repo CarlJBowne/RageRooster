@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using Utilities.Xtensions.Unity;
+
 using static SLS.StateMachineH.StateAnimator;
 using static UnityEngine.EventSystems.EventTrigger;
 
@@ -49,7 +49,7 @@ public class PlayerGroundMovement : PlayerMovementEffector
             if (currentSpeed < minSpeed) currentSpeed = currentSpeed.MoveUp(stopping * deltaTime, minSpeed);
             else if (currentSpeed > minSpeed) currentSpeed = currentSpeed.MoveDown(decceleration * deltaTime, minSpeed);
         }
-        else currentSpeed = currentSpeed > .01f ? currentSpeed.Move(currentSpeed * stopping * deltaTime, 0) : 0;
+        else currentSpeed = currentSpeed > .01f ? currentSpeed.MoveTowards(currentSpeed * stopping * deltaTime, 0) : 0;
 
 
         Player.MovementBody.Velocity.f = currentSpeed;

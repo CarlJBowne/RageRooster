@@ -1,7 +1,7 @@
 ﻿using EditorAttributes;
 using SLS.StateMachineH;
 using UnityEngine;
-using Utilities.Xtensions.Unity;
+
 
 public abstract class PlayerMovementEffector : PlayerStateBehavior
 {

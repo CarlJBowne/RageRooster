@@ -19,14 +19,16 @@ public class DistanceAttackChooserBB : StateBehavior
         }
         [HideInInspector] public float attacksRandLength;
     }
-    public Timer.Loop distanceCheckTimer = new(1f);
+    public Timer distanceCheckTimer = new(1f, true);
 
     private int currentDistance;
-    private Timer.Loop attackTimer = new(100f);
+    private Timer attackTimer = new(100f, true);
     private Transform playerTransform;
 
     protected override void OnAwake()
     {
+        distanceCheckTimer.action = UpdateDistance;
+        attackTimer.action = DoAttack;
         playerTransform = Player.Transform;
         for (int i1 = 0; i1 < distances.Length; i1++)
             for (int i2 = 0; i2 < distances[i1].attacks.Length; i2++)
@@ -35,8 +37,8 @@ public class DistanceAttackChooserBB : StateBehavior
 
     protected override void OnFixedUpdate()
     {
-        distanceCheckTimer.Tick(UpdateDistance);
-        attackTimer.Tick(DoAttack);
+        distanceCheckTimer.Tick();
+        attackTimer.Tick();
     }
 
     protected override void OnEnter(State prev, bool isFinal) => UpdateDistance();
@@ -49,7 +51,7 @@ public class DistanceAttackChooserBB : StateBehavior
             if (checkDistance < distances[i].higherDistance) 
                 break;
         currentDistance = i;
-        attackTimer.rate = distances[currentDistance].timerTime;
+        attackTimer.length = distances[currentDistance].timerTime;
     }
 
     public void DoAttack()
