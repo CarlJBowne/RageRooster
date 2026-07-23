@@ -43,6 +43,7 @@ public sealed class PlayerMovementBody : PhysicsBody
     {
         base.Awake();
         Singleton.Register(this);
+        _movingUpdateActionTimer.Start(MovingUpdateAction);
     }
     private void Start()
     {
@@ -122,7 +123,7 @@ public sealed class PlayerMovementBody : PhysicsBody
     #region Other
 
     public static System.Action MovingUpdateAction;
-    private Timer _movingUpdateActionTimer = new(0.2f, true, MovingUpdateAction);
+    private Timer _movingUpdateActionTimer = new(0.2f, true);
 
     public VolcanicVent CurrentVent
     {

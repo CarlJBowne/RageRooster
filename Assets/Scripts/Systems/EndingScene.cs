@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using SLS.MenuCore;
 
 public class EndingScene : MonoBehaviour
 {
@@ -52,14 +53,14 @@ public class EndingScene : MonoBehaviour
     public void Return(InputAction.CallbackContext no)
     {
         continueToTitle.action.performed -= Return;
-        Enum().Begin(Overlay.OverMenus);
+        Enum().Begin(Overlay.OverALL);
         IEnumerator Enum()
         {
-            yield return Overlay.OverMenus.BasicFadeOutWait(2f);
+            yield return Overlay.OverALL.FadeAlpha(1, 2f);
             AsyncOperation S = SceneManager.LoadSceneAsync("MainMenu", LoadSceneMode.Single);
             yield return new WaitUntil(() => S.isDone);
             yield return new WaitForSecondsRealtime(.5f);
-            yield return Overlay.OverMenus.BasicFadeInWait(1f);
+            yield return Overlay.OverALL.FadeAlpha(0, 1f);
         }
     }
 

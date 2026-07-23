@@ -13,8 +13,8 @@ namespace RageRooster.Obsolete.Zones
         //[SerializeField] Utilities.SerializedDictionary<string, ZoneProxy> proxies = new();
         public string defaultAreaScene;
         public float minLoadTime;
-        public Timer updateTimer = new(.5f, true);
-        public Timer offsetSetTimer = new(15f, true);
+        public Timer.Loop updateTimer = new(.5f);
+        public Timer.Loop offsetSetTimer = new(15f);
         public float distanceToOriginShift;
 
         public static System.Action OnFirstLoad;
@@ -38,7 +38,7 @@ namespace RageRooster.Obsolete.Zones
         {
             //updateTimer.Tick(() => { foreach (ZoneProxy area in proxies.Values) area.Update(); });
 
-            offsetSetTimer.Tick();
+            offsetSetTimer.Tick(null);
         }
 
         // Static method to load a new zone.

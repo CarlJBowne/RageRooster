@@ -9,22 +9,16 @@ namespace Utilities.JSON
     /// </summary>
     public abstract class JsonStream<T> where T : class, new()
     {
-        public JsonStream(int fileID)
+        public virtual void Init()
         {
-            this.fileID = fileID;
-            saveRootPath = Path.Combine(UnityEngine.Application.persistentDataPath, "Saves");
-            InitFiles();
-        }
-        public virtual void InitFiles()
-        {
-            RootFile = new(saveRootPath, $"Save{fileID}");
+            saveRootPath = UnityEngine.Application.persistentDataPath;
+            RootFile = new(saveRootPath, $"Save");
             SecondaryFiles = new JsonFile[0];
         }
         protected JsonFile[] SecondaryFiles;
         protected JsonFile RootFile;
 
-        public readonly string saveRootPath;
-        public int fileID = -1;
+        public string saveRootPath;
         public bool filesDoExist
         {
             get
@@ -38,7 +32,7 @@ namespace Utilities.JSON
 
         public JsonFile.LoadResult LoadFromFile(T ResultingData)
         {
-            if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
+            PreCheck();
             if (!RootFile.FileExists) return JsonFile.LoadResult.FileNotFound;
             for (int i = 0; i < SecondaryFiles.Length; i++)
                 if (!SecondaryFiles[i].FileExists)
@@ -58,7 +52,7 @@ namespace Utilities.JSON
 
             ResultingData = new();
 
-            return ReadData(RootFile.Data as JObject, ResultingData);
+            return ReadData(ResultingData);
         }
 
         public virtual JsonFile.LoadResult FileVersionBehavior()
@@ -70,12 +64,12 @@ namespace Utilities.JSON
             return JsonFile.LoadResult.Success;
         }
 
-        protected abstract JsonFile.LoadResult ReadData(JObject RootFileData, T ResultingData);
+        protected abstract JsonFile.LoadResult ReadData(T ResultingData);
 
 
         public JsonFile.FileState SaveToFile(T sourceData)
         {
-            if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
+            PreCheck();
 
             JsonFile.FileState writeResult = WriteData(sourceData);
             if (writeResult != JsonFile.FileState.Valid) return writeResult;
@@ -97,7 +91,7 @@ namespace Utilities.JSON
 
         public JsonFile.FileState DeleteFile()
         {
-            if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
+            PreCheck();
             RootFile.DeleteFile();
             for (int i = 0; i < SecondaryFiles.Length; i++) SecondaryFiles[i].DeleteFile();
             return JsonFile.FileState.Null;
@@ -105,7 +99,7 @@ namespace Utilities.JSON
 
         public float GetCompletionPercentage()
         {
-            if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
+            PreCheck();
             int totalCollectibles = 1; // Replace with actual total collectible count later
             if (totalCollectibles == 0) return 100f;
             int collected = 0;
@@ -113,5 +107,6 @@ namespace Utilities.JSON
             return (collected / (float)totalCollectibles) * 100f;
         }
 
+        public virtual JsonFile.FileState PreCheck() => JsonFile.FileState.Valid;
     }
 }

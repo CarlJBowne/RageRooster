@@ -10,7 +10,7 @@ using UnityEngine;
 namespace RageRooster.Obsolete
 {
     [System.Obsolete]
-    public class Upgrade : ScriptableObject, ICustomSerialized
+    public class Upgrade : ScriptableObject
     {
         [SerializeField, DisableInEditMode, DisableInPlayMode]
         public bool value;

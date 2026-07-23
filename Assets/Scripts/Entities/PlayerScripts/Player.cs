@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using SLS.MenuCore;
 
 /// <summary>
 /// A global Singleton representing the Player entity in the game. Provides static access to commonly used components and systems related to the player.
@@ -58,10 +59,7 @@ public class Player : MonoBehaviour
             Visible = value != ActivityStates.Invisible;
             StateMachine.enabled = value is ActivityStates.Active;
 
-            MovementBody.BodyState =
-                value is ActivityStates.Active ? PlayerMovementBody.BodyStates.Enabled
-                : value is ActivityStates.Dying ? PlayerMovementBody.BodyStates.Ragdoll
-                : PlayerMovementBody.BodyStates.OFF;
+            MovementBody.enabled = value is ActivityStates.Active;
 
             MovementBody.enabled = value is ActivityStates.Active or ActivityStates.Dying;
             Controller.enabled = value is ActivityStates.Active;
@@ -228,7 +226,7 @@ public class Player : MonoBehaviour
     {
         if (!Exists) return;
         Vector3 camDelta = newPosition - Transform.position;
-        MovementBody.PositionForce = newPosition;
+        MovementBody.Position = newPosition;
         if (yRot != null) MovementBody.Direction.Rotation = new(0, yRot.Value, 0);
         StateMachine.ResetState();
         Cameras.currentVirtualCamera.PreviousStateIsValid = false;
@@ -412,17 +410,17 @@ public class Player : MonoBehaviour
         static IEnumerator Enum()
         {
             yield return WaitFor.SecondsRealtime(fallDownPitTime + 1);
-            yield return Overlay.OverGameplay.GameOverAnim();
+            yield return Overlay.UnderHUD.GameOverAnim();
             yield return WaitFor.SecondsRealtime(deathTime);
 
             RoomManager.TransitionStyle = new()
             {
-                FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(1f),
-                FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(1f),
-                //PreFadeInAction = Overlay.OverGameplay.Reset
+                FadeOutRoutine = Overlay.UnderHUD.FadeAlpha(1, 1f),
+                FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 1f),
+                //PreFadeInAction = Overlay.UnderHUD.Reset
             };
 
-            //Note "Overlay.OverGameplay.Reset() used to be called just after the FadeOut. Not sure why. If necessary, uncomment the above line."
+            //Note "Overlay.UnderHUD.Reset() used to be called just after the FadeOut. Not sure why. If necessary, uncomment the above line."
 
             Gameplay.Death();
         }
@@ -440,11 +438,11 @@ public class Player : MonoBehaviour
 
             RoomManager.TransitionStyle = new()
             {
-                FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(1f),
-                FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(1f),
-                //PreFadeInAction = Overlay.OverGameplay.Reset
+                FadeOutRoutine = Overlay.UnderHUD.FadeAlpha(1, 1f),
+                FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 1f),
+                //PreFadeInAction = Overlay.UnderHUD.Reset
             };
-            //Note "Overlay.OverGameplay.Reset() used to be called just after the FadeOut. Not sure why. If necessary, uncomment the above line."
+            //Note "Overlay.UnderHUD.Reset() used to be called just after the FadeOut. Not sure why. If necessary, uncomment the above line."
 
             Gameplay.Respawn();
         }

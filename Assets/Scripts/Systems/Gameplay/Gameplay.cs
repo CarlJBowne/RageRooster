@@ -6,23 +6,14 @@ using UnityEngine.SceneManagement;
 using FMODUnity;
 using EditorAttributes;
 using System.Collections.Generic;
-
+using SLS.MenuCore;
 using RageRooster.RoomSystem;
 using RageRooster.Systems.SaveSystem;
 using Utilities.ObjectPooling;
 using RageRooster.Systems;
 using Utilities;
 
-
-
-
-
-
-
-
-
 #if UNITY_EDITOR
-using UnityEditor;
 #endif
 
 /// <summary>
@@ -33,7 +24,7 @@ using UnityEditor;
 [DefaultExecutionOrder(ExecutionOrders.Gameplay)]
 public class Gameplay : MonoBehaviour
 {
-    [InitializeOnLoadMethod]
+    [RuntimeInitializeOnLoadMethod]
     static void InitServices()
     {
         Services.Gameplay.GameState = new(() => (Services.Gameplay.GameStates)GameState, value => GameState = (GameStates)value)
@@ -151,16 +142,16 @@ public class Gameplay : MonoBehaviour
         Instance = this;
         _gameState = GameStates.Active;
         GameObject = gameObject;
-        if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+        Instantiate(overlayPrefab);
         DontDestroyOnLoad(gameObject);
         inputPlayer.Awake();
         inputUI.Awake();
         inputCams.Awake();
         GlobalPool.poolParent = transform.Find("PooledObjects");
         GlobalPool.Get.Initialize();
-        Overlay.OverMenus.BasicBlackout = 1;
-        Overlay.OverGameplay.Reset();
-        Overlay.OverHUD.Reset();
+        Overlay.OverALL.Alpha = 1;
+        Overlay.UnderHUD.Reset();
+        Overlay.BetweenUI.Reset();
 
         Enum().Begin(this);
         static IEnumerator Enum()
@@ -173,18 +164,18 @@ public class Gameplay : MonoBehaviour
                 && RoomManager.Active;
 
             RoomManager.ResetTransitionData(false);
-            UpdateDelayer.Setup();
             EntitySpawn.PlayerPosition = Player.Transform;
 
             RoomManager.TransitionStyle = new()
             {
                 forceFullTransition = true,
                 FadeOutRoutine = null,
-                FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(0.5f),
+                FadeInRoutine = Overlay.OverALL.FadeAlpha(0, 0.5f),
                 PreFadeInAction = () =>
                 {
                     UpdateGameTime();
-                    Input.Pause.performed += c => { Menu.Manager.Escape(); };
+                    Input.Pause.performed += c => { Menu.Escape(); };
+                    Menu.EscapeCallbackMenuless += PauseMenu.Get.Open;
                 },
             };
             yield return RoomManager.Transition();
@@ -206,11 +197,11 @@ public class Gameplay : MonoBehaviour
     {
         if (Active) return;
 
-        Enum().Begin(Overlay.OverMenus);
+        Enum().Begin(Overlay.OverALL);
         IEnumerator Enum()
         {
 
-            yield return Overlay.OverMenus.BasicFadeOutWait();
+            yield return Overlay.OverALL.FadeAlpha(1);
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -218,7 +209,7 @@ public class Gameplay : MonoBehaviour
             InitializeSaves(fileNo);
             RoomManager.destination = SaveData.Current.location;
 
-            Menu.Manager.CloseAllMenus();
+            Menu.CloseAllMenus();
             var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE);
 
             yield return WaitFor.Until(() => Load.isDone && Active);
@@ -445,7 +436,7 @@ public class Gameplay : MonoBehaviour
 
 
 #if UNITY_EDITOR
-    [CustomEditor(typeof(Gameplay))]
+    [UnityEditor.CustomEditor(typeof(Gameplay))]
     public class Editor : UnityEditor.Editor
     {
     }

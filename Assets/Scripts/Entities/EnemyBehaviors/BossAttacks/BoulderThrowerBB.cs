@@ -40,7 +40,7 @@ public class BoulderThrowerBB : MonoBehaviour
 
         warnings.Pump(trueTarget);
 
-        PhysicsPro.ThrowAt.WithTimeAndMinVelocity(targetDistanceXY, throwTime, -Physics.gravity.y, minVelocity, out float initialVelocity, out float angle);
+        SLS.Physics3D.Helpers.ThrowAt.WithTimeAndMinVelocity(targetDistanceXY, throwTime, -Physics.gravity.y, minVelocity, out float initialVelocity, out float angle);
 
         trueMuzzle.eulerAngles -= Vector3.right * angle;
         Spawnable boulder = projectiles.Pump(trueMuzzle);

@@ -295,6 +295,19 @@ public static class Xtensions_Unity_Transform
         Rightward = 5,
         Leftward = 6
     };
+
+    public static void CopyFrom(this Transform target, Transform source, bool position = true, bool rotation = true, bool scale = false)
+    {
+        if (position) target.localPosition = source.localPosition;
+        if (rotation) target.localRotation = source.localRotation;
+        if (scale) target.localScale = source.localScale;
+    }
+    public static void CopyTo(this Transform source, Transform target, bool position = true, bool rotation = true, bool scale = false)
+    {
+        if (position) target.localPosition = source.localPosition;
+        if (rotation) target.localRotation = source.localRotation;
+        if (scale) target.localScale = source.localScale;
+    }
 }
 
 public static class Xtensions_UnityColliders

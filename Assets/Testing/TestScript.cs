@@ -12,6 +12,7 @@ using RageRooster.Systems;
 using UnityEngine.UIElements;
 using UnityEditor;
 using UnityEditor.UIElements;
+using SLS.MenuCore;
 
 public class TestScript : MonoBehaviour
 {
@@ -24,8 +25,8 @@ public class TestScript : MonoBehaviour
         {
             Cameras.LockPrimary(true, false);
             yield return WaitFor.Seconds(0.4f);
-            Cameras.LockPrimary(true, true); 
-            Overlay.OverHUD.BasicFadeOut(1f);
+            Cameras.LockPrimary(true, true);
+            Overlay.BetweenUI.DoFadeAlpha(1, 1f);
         }
     }
 

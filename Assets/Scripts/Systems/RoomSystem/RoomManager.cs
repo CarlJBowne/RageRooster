@@ -7,6 +7,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.Singletons;
+using SLS.MenuCore;
+using SLS.MenuCore;
 
 namespace RageRooster.RoomSystem
 {
@@ -177,8 +179,8 @@ namespace RageRooster.RoomSystem
             PostFadeInAction = null;
             PreFadeOutAction = null;
             PostFadeOutAction = null;
-            FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(0.5f);
-            FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(0.5f);
+            FadeOutRoutine = Overlay.UnderHUD.FadeAlpha(1, 0.5f);
+            FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 0.5f);
             forceFullTransition = false;
         }
 
@@ -221,11 +223,11 @@ namespace RageRooster.RoomSystem
         {
             public bool forceFullTransition = false;
             public Action PreFadeOutAction = null;
-            public IEnumerator FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(0.5f);
+            public IEnumerator FadeOutRoutine = Overlay.UnderHUD.FadeAlpha(1, 0.5f);
             public Action PostFadeOutAction = null;
             public IEnumerator MidTransitionRoutine = null;
             public Action PreFadeInAction = null;
-            public IEnumerator FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(0.5f);
+            public IEnumerator FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 0.5f);
             public Action PostFadeInAction = null;
 
             public static implicit operator TransitionData(Services.RoomManager.TransitionData input)

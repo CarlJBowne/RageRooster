@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.SceneManagement;
+using SLS.MenuCore;
 
 public class Boss2CentralController : Health
 {
@@ -54,7 +55,7 @@ public class Boss2CentralController : Health
 
     public void Death()
     {
-        Enum().Begin(Overlay.OverMenus);
+        Enum().Begin(Overlay.OverALL);
         IEnumerator Enum()
         {
             Pecky.SetState("Dead");
@@ -71,7 +72,7 @@ public class Boss2CentralController : Health
 
             yield return new WaitForSecondsRealtime(3f);
 
-            yield return Overlay.OverMenus.BasicFadeOutWait(2f);
+            yield return Overlay.OverALL.FadeAlpha(1, 2f);
 
             //yield return ZoneManager.UnloadAll();
             yield return new WaitForSecondsRealtime(.1f);
@@ -80,7 +81,7 @@ public class Boss2CentralController : Health
             AsyncOperation S = SceneManager.LoadSceneAsync("EndingScene", LoadSceneMode.Single);
             yield return new WaitUntil(() => S.isDone);
 
-            yield return Overlay.OverMenus.BasicFadeInWait(1.5f);
+            yield return Overlay.OverALL.FadeAlpha(0, 1.5f);
         }
 
     }

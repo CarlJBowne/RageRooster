@@ -138,33 +138,31 @@ namespace RageRooster.Systems.SaveSystem
         /// <summary>
         /// An Input Output stream for Saving/Loading Save Data to/from disk. Also used to display save files in UI.
         /// </summary>
-        public class IOStream : JsonSaveStream<SaveData>
+        public class IOStream : JsonStream<SaveData>
         {
             public IOStream(int fileID)
             {
                 this.fileID = fileID;
-                savePath = $"{savePath}/Save{fileID}";
+                saveRootPath = $"{Application.persistentDataPath}/Save{fileID}";
 
-                File = new(savePath, $"playerData");
-                WorldChangesFile = new(savePath, $"worldChanges");
+                RootFile = new(saveRootPath, $"playerData");
+                WorldChangesFile = new(saveRootPath, $"worldChanges");
                 areaChangesFiles = new();
-                foreach (var area in AreaRegistry.GetAll())
-                {
-                    areaChangesFiles.Add(area, new JsonFile(savePath, $"flags_{area.name}"));
-                }
+                foreach (AreaAsset area in AreaRegistry.GetAll())
+                    areaChangesFiles.Add(area, new JsonFile(saveRootPath, $"flags_{area.name}"));
                 SecondaryFiles = areaChangesFiles.Values.Append(WorldChangesFile).ToArray();
             }
 
             int fileID;
 
-            public JsonFile PlayerFile => File;
+            public JsonFile PlayerFile => RootFile;
 
             //Contains powerEggs, hensRescued, and globalChanges
             public JsonFile WorldChangesFile;
 
             public Dictionary<AreaAsset, JsonFile> areaChangesFiles;
 
-            protected override JsonFile.LoadResult ReadFromData(SaveData ResultingData)
+            protected override JsonFile.LoadResult ReadData(SaveData ResultingData)
             {
                 ResultingData.location = (Destination)(DestinationBasic)PlayerFile.Data[nameof(ResultingData.location)];
                 ResultingData.playerStats.maxHealth = (int)PlayerFile.Data[nameof(SavedPlayerStats.maxHealth)];
@@ -199,7 +197,7 @@ namespace RageRooster.Systems.SaveSystem
 
                 return JsonFile.LoadResult.Success;
             }
-            protected override JsonFile.FileState WriteToData(SaveData sourceData)
+            protected override JsonFile.FileState WriteData(SaveData sourceData)
             {
 
                 PlayerFile.Data = new JObject

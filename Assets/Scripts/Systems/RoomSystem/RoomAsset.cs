@@ -350,7 +350,7 @@ namespace RageRooster.RoomSystem
                 var root = new VisualElement();
 
                 // Area link or orphan warning
-                SerializedProperty areaProp = serializedObject.FindProperty(nameof(RoomAsset.area), backingField: true);
+                SerializedProperty areaProp = serializedObject.FindBackingField(nameof(RoomAsset.area));
                 AreaAsset areaAsset = areaProp != null ? areaProp.objectReferenceValue as AreaAsset : null;
 
                 if (areaAsset != null)
@@ -391,9 +391,9 @@ namespace RageRooster.RoomSystem
                 root.Add(spacer);
 
                 // Editable properties
-                var displayNameProp = serializedObject.FindProperty(nameof(RoomAsset.displayName), backingField: true);
-                var sceneProp = serializedObject.FindProperty(nameof(RoomAsset.scene), backingField: true);
-                var lodProp = serializedObject.FindProperty(nameof(RoomAsset.lod), backingField: true);
+                var displayNameProp = serializedObject.FindBackingField(nameof(RoomAsset.displayName));
+                var sceneProp = serializedObject.FindBackingField(nameof(RoomAsset.scene));
+                var lodProp = serializedObject.FindBackingField(nameof(RoomAsset.lod));
 
                 if (displayNameProp != null)
                     root.Add(new PropertyField(displayNameProp, "Display Name"));
@@ -403,7 +403,7 @@ namespace RageRooster.RoomSystem
                     root.Add(new PropertyField(lodProp, "LOD"));
 
                 // Entrances foldout (read-only)
-                SerializedProperty transitionsProp = serializedObject.FindProperty(nameof(RoomAsset.entrances), backingField: true);
+                SerializedProperty transitionsProp = serializedObject.FindBackingField(nameof(RoomAsset.entrances));
                 bool transitionsFoldoutState = EditorPrefs.GetBool("RoomAsset_EntrancesFoldout", true);
                 var entrancesFoldout = new Foldout
                 {
@@ -459,7 +459,7 @@ namespace RageRooster.RoomSystem
                 root.Add(spawnFoldout);
 
                 // Spawn point names display (editable)
-                SerializedProperty spawnNamesProp = serializedObject.FindProperty(nameof(RoomAsset.spawnPointNames), backingField: true);
+                SerializedProperty spawnNamesProp = serializedObject.FindBackingField(nameof(RoomAsset.spawnPointNames));
                 for (int i = 0; i < spawnNamesProp.arraySize; i++)
                     spawnFoldout.Add(new Label($"{i} : {spawnNamesProp.GetArrayElementAtIndex(i).stringValue}"));
                 
