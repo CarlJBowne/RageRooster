@@ -28,9 +28,10 @@ namespace SLS.MenuCore
             }
         }
 
-        [SerializeField] protected Canvas canvas;
         [SerializeField] protected Image image;
         [SerializeField] protected Animator animator;
+
+        protected static int NullAnimationHash = Animator.StringToHash("Null");
 
         protected virtual void Awake()
         {
@@ -98,21 +99,15 @@ namespace SLS.MenuCore
 
 
 
-        //public IEnumerator GameOverAnim(float duration = 1f)
-        //{
-        //    SetAnimated(true);
-        //    animator.Play("GameOverAnim", -1, 0f);
-        //    animator.SetFloat("DurationSpeed", 1 / duration);
-        //    yield return new WaitForSecondsRealtime(duration);
-        //}
+        
 
         public void SetAnimated(bool value) => animator.enabled = value;
 
-        public void Reset()
+        public virtual void ResetState()
         {
             if (animator)
             {
-                animator.Play("Null");
+                animator.Play(NullAnimationHash);
                 animator.enabled = false;
             }
             Alpha = 0f;

@@ -150,8 +150,8 @@ public class Gameplay : MonoBehaviour
         GlobalPool.poolParent = transform.Find("PooledObjects");
         GlobalPool.Get.Initialize();
         Overlay.OverALL.Alpha = 1;
-        Overlay.UnderHUD.Reset();
-        Overlay.BetweenUI.Reset();
+        Overlay.UnderHUD.ResetState();
+        Overlay.BetweenUI.ResetState();
 
         Enum().Begin(this);
         static IEnumerator Enum()

@@ -51,7 +51,7 @@ namespace RageRooster.RoomSystem.MovementSystems
                 forceFullTransition = forceFullTransition,
                 FadeOutRoutine = Overlay.BetweenUI.FadeAlpha(1, .1f),
                 FadeInRoutine = Overlay.BetweenUI.FadeAlpha(0, .5f),
-                PostFadeOutAction = Overlay.UnderHUD.Reset,
+                PostFadeOutAction = Overlay.UnderHUD.ResetState,
             };
             RoomManager.StartTransition(destination);
         }

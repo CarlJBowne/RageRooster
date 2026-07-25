@@ -410,7 +410,7 @@ public class Player : MonoBehaviour
         static IEnumerator Enum()
         {
             yield return WaitFor.SecondsRealtime(fallDownPitTime + 1);
-            yield return Overlay.UnderHUD.GameOverAnim();
+            yield return OverlayTopPlus.Get.GameOverAnim();
             yield return WaitFor.SecondsRealtime(deathTime);
 
             RoomManager.TransitionStyle = new()
