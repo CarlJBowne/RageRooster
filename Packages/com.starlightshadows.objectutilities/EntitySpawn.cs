@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Utilities.ObjectPooling;
 
-namespace Utilities
+namespace SLS.ObjectUtilities
 {
     public class EntitySpawn : MonoBehaviour
     {

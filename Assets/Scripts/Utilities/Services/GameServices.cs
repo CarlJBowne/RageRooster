@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Services
 {
+    /*
     public static class RoomManager
     {
         public static Service<bool> CurrentlyTransitioning;
@@ -32,4 +33,5 @@ namespace Services
         public static Action Respawn;
         public static Action EndGame;
     }
+    */
 }

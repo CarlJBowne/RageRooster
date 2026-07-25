@@ -1,11 +1,12 @@
 ﻿using EditorAttributes;
+using SLS.EditorUtilities.ComponentHeaders;
 using SLS.StateMachineH;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Utilities.ObjectPooling;
+using SLS.ObjectUtilities;
 using static UnityEngine.Rendering.DebugUI;
 
 public class EnemyHealth : Health
@@ -16,13 +17,13 @@ public class EnemyHealth : Health
     public GameObject poofPrefab;
     [System.Obsolete]
     public Behaviour[] stunComponents;
-    [SerializeField, RelatedComponent(true)] EntityActivity entityActivity;
-    [SerializeField, RelatedComponent()] SLS.StateMachineH.StateMachine hierarchicalMachine;
-    [SerializeField, RelatedComponent()] Unity.VisualScripting.StateMachine visualMachine;
-    [SerializeField, RelatedComponent(true)] EnemyLootSpawner enemyLootSpawner;
+    [SerializeField, HeaderItem(true)] EntityActivity entityActivity;
+    [SerializeField, HeaderItem()] SLS.StateMachineH.StateMachine hierarchicalMachine;
+    [SerializeField, HeaderItem()] Unity.VisualScripting.StateMachine visualMachine;
+    [SerializeField, HeaderItem(true)] EnemyLootSpawner enemyLootSpawner;
 
-    [RelatedComponent, SerializeField] ColorTintAnimation tintAnimator;
-    [RelatedComponent, SerializeField] RagdollHandler ragdoll;
+    [HeaderItem, SerializeField] ColorTintAnimation tintAnimator;
+    [HeaderItem, SerializeField] RagdollHandler ragdoll;
 
     public UltEvents.UltEvent onDamageEvent;
 
@@ -32,7 +33,7 @@ public class EnemyHealth : Health
     #endregion Config
 
 
-    private void Reset() => ComponentConfig.Reset(this);
+    private void Reset() => HeaderItemAttribute.Reset(this);
 
     protected override void Awake()
     {

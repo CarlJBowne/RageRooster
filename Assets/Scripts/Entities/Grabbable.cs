@@ -1,7 +1,8 @@
-using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
+using SLS.EditorUtilities.ComponentHeaders;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 
@@ -43,16 +44,16 @@ public class Grabbable : MonoBehaviour
     public System.Action ForceRelease { get; set; }
 
     //Required Components
-    [RelatedComponent(true)] public new Collider collider;
-    [RelatedComponent(true)] public Target target;
+    [HeaderItem(true)] public new Collider collider;
+    [HeaderItem(true)] public Target target;
 
     //Potential Components
-    [SerializeField, RelatedComponent] Rigidbody rigidBody;
-    [SerializeField, RelatedComponent] RagdollHandler ragdollHandler;
-    [SerializeField, RelatedComponent] ThrownObjectAttack thrownObjectAttack;
-    [SerializeField, RelatedComponent] Health health;
-    [SerializeField, RelatedComponent] ConstantMovement constantMovement;
-    [SerializeField, RelatedComponent] EntityActivity entityActivity;
+    [SerializeField, HeaderItem] Rigidbody rigidBody;
+    [SerializeField, HeaderItem] RagdollHandler ragdollHandler;
+    [SerializeField, HeaderItem] ThrownObjectAttack thrownObjectAttack;
+    [SerializeField, HeaderItem] Health health;
+    [SerializeField, HeaderItem] ConstantMovement constantMovement;
+    [SerializeField, HeaderItem] EntityActivity entityActivity;
 
     #endregion
     #region Data
@@ -114,7 +115,7 @@ public class Grabbable : MonoBehaviour
     }
 
 
-    void Reset() => ComponentConfig.Reset(this);// Auto-fill common components in editor
+    void Reset() => HeaderItemAttribute.Reset(this);// Auto-fill common components in editor
 
     void Awake() => rigidbodyProfile = rigidBody != null ? new(rigidBody) : null;
 

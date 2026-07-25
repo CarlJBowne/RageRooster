@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Utilities.ObjectPooling;
+using SLS.ObjectUtilities;
 using UnityEngine;
 
+[RequireComponent(typeof(Projectile))]
 public class AttackProjectile : AttackSourceSingle
 {
     public bool disableOnHit;

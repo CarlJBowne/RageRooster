@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using TMPro;
-using Utilities.ObjectPooling;
+using SLS.ObjectUtilities;
 
 public class WaveController : MonoBehaviour
 {

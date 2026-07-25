@@ -18,7 +18,7 @@ public class PlayerTargetPursuer : StateTimeline
 
     private Target target;
     private Vector3 targetPosition;
-    [SerializeField, Hide] private SLS.StateMachineH.Timelines.TimedMovementAffector failedBackup;
+    [SerializeField] private SLS.StateMachineH.Timelines.TimedMovementAffector failedBackup;
 
     protected override void OnSetup()
     {

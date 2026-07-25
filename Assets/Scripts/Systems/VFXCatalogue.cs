@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utilities;
-using Utilities.ObjectPooling;
+using SLS.ObjectUtilities;
 
 public class VFXCatalogue : MonoBehaviour
 {

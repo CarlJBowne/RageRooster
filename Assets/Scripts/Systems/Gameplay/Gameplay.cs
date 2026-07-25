@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using RageRooster.RoomSystem;
 using RageRooster.Systems;
 using RageRooster.Systems.SaveSystem;
@@ -10,6 +9,7 @@ using SLS.MenuCore;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities;
+using SLS.ObjectUtilities;
 
 public class Gameplay : GameStateSingle<Gameplay>
 {
@@ -28,13 +28,19 @@ public class Gameplay : GameStateSingle<Gameplay>
             yield return null;
 
             for (int i = 0; i < rootObjects.Length; i++) DontDestroyOnLoad(rootObjects[i]);
-            rootObjects[0].GetComponent<GameplayObject>().Awake();
-            rootObjects[1].GetComponent<Player>().Awake();
-            rootObjects[2].GetComponent<Cameras>().Awake();
+            //rootObjects[1].GetComponent<Player>().Awake();
+            //rootObjects[2].GetComponent<Cameras>().Awake();
 
             PostAction();
 
             yield return null;
+
+            GlobalPool.poolParent = rootObjects[0].transform.Find("PooledObjects");
+            GlobalPool.Get.Initialize();
+            Overlay.OverALL.Alpha = 1;
+            Overlay.UnderHUD.ResetState();
+            Overlay.BetweenUI.ResetState();
+
             yield return WaitFor.Until(Initialized);
 
             static bool Initialized() => Active
@@ -63,14 +69,14 @@ public class Gameplay : GameStateSingle<Gameplay>
 
 
 
-    [RuntimeInitializeOnLoadMethod]
-    static void InitServices()
-    {
-        Services.Gameplay.Active = new(() => Active);
-        Services.Gameplay.ReloadSave = ReloadSave;
-        Services.Gameplay.Respawn = Respawn;
-        Services.Gameplay.EndGame = EndGame;
-    }
+    //[RuntimeInitializeOnLoadMethod]
+    //static void InitServices()
+    //{
+    //    Services.Gameplay.Active = new(() => Active);
+    //    Services.Gameplay.ReloadSave = ReloadSave;
+    //    Services.Gameplay.Respawn = Respawn;
+    //    Services.Gameplay.EndGame = EndGame;
+    //}
 
     /// <summary>
     /// The Script instance of the Gameplay system. Not truly relevant to much. Null if not active.
@@ -125,8 +131,8 @@ public class Gameplay : GameStateSingle<Gameplay>
 
             yield return Overlay.OverALL.FadeAlpha(1);
 
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+            UnityEngine.Cursor.visible = false;
 
             InitializeSaves(fileNo);
             RoomManager.destination = SaveData.Current.location;

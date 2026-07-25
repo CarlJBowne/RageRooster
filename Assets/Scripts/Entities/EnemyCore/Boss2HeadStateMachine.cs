@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EditorAttributes;
 using UnityEngine.Animations.Rigging;
-using Utilities.ObjectPooling;
+using SLS.ObjectUtilities;
 
 public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
 {

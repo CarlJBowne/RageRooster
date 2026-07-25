@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SLS.MenuCore;
 using SLS.Singletons;
+using RageRooster.RoomSystem;
 
 
 public class OverlayTopPlus : Overlay
@@ -35,7 +36,7 @@ public class OverlayTopPlus : Overlay
         static IEnumerator Enum()
         {
             yield return new WaitForSecondsRealtime(Get.showTime);
-            if (Services.RoomManager.CurrentlyTransitioning)
+            if (RoomManager.CurrentlyTransitioning)
             {
                 Get.SetAnimated(true);
                 Get.animator.Play(LoadingAnimationHash, -1, 0f);

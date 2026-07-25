@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using System;
 using SLS.Singletons;
 using SLS.MenuCore;
+using RageRooster.RoomSystem;
 
 public class PauseMenu : Menu
 {
@@ -76,7 +77,7 @@ public class PauseMenu : Menu
 
     public void Respawn()
     {
-        Services.RoomManager.TransitionStyle.Value = new()
+        RoomManager.TransitionStyle = new()
         {
             FadeOutRoutine = Overlay.OverALL.FadeAlpha(1, 1f),
             FadeInRoutine = Overlay.OverALL.FadeAlpha(0, 1f),
@@ -86,7 +87,7 @@ public class PauseMenu : Menu
     }
     public void ReloadSave()
     {
-        Services.RoomManager.TransitionStyle.Value = new()
+        RoomManager.TransitionStyle = new()
         {
             FadeOutRoutine = Overlay.OverALL.FadeAlpha(1, 1.2f),
             FadeInRoutine = Overlay.OverALL.FadeAlpha(0, 1.2f),

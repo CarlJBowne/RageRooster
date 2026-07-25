@@ -1,6 +1,6 @@
 using RageRooster.RoomSystem;
 using RageRooster.Systems;
-using Utilities.ObjectPooling;
+using SLS.ObjectUtilities;
 using RageRooster.Systems.SaveSystem;
 using System;
 using System.Collections;
@@ -70,15 +70,15 @@ namespace RageRooster.RoomSystem
         /// </summary>
         public static Action PostFadeInAction;
 
-        [RuntimeInitializeOnLoadMethod]
-        static void InitStaticServices()
-        {
-            Services.RoomManager.CurrentlyTransitioning = new(() => CurrentlyTransitioning);
-            Services.RoomManager.TransitionStyle = new()
-            {
-                Setter = value => TransitionStyle = value
-            };
-        }
+        //[RuntimeInitializeOnLoadMethod]
+        //static void InitStaticServices()
+        //{
+        //    Services.RoomManager.CurrentlyTransitioning = new(() => CurrentlyTransitioning);
+        //    Services.RoomManager.TransitionStyle = new()
+        //    {
+        //        Setter = value => TransitionStyle = value
+        //    };
+        //}
 
 
         /// <summary>
@@ -230,20 +230,20 @@ namespace RageRooster.RoomSystem
             public IEnumerator FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 0.5f);
             public Action PostFadeInAction = null;
 
-            public static implicit operator TransitionData(Services.RoomManager.TransitionData input)
-            {
-                TransitionData res = new();
-                res.forceFullTransition = input.forceFullTransition;
-                res.PreFadeOutAction = input.PreFadeOutAction;
-                res.FadeOutRoutine = input.FadeOutRoutine;
-                res.PostFadeOutAction = input.PostFadeOutAction;
-                res.MidTransitionRoutine = input.MidTransitionRoutine;
-                res.PreFadeInAction = input.PreFadeInAction;
-                res.FadeInRoutine = input.FadeInRoutine;
-                res.PostFadeInAction = input.PostFadeInAction;
-
-                return res;
-            }
+            //public static implicit operator TransitionData(Services.RoomManager.TransitionData input)
+            //{
+            //    TransitionData res = new();
+            //    res.forceFullTransition = input.forceFullTransition;
+            //    res.PreFadeOutAction = input.PreFadeOutAction;
+            //    res.FadeOutRoutine = input.FadeOutRoutine;
+            //    res.PostFadeOutAction = input.PostFadeOutAction;
+            //    res.MidTransitionRoutine = input.MidTransitionRoutine;
+            //    res.PreFadeInAction = input.PreFadeInAction;
+            //    res.FadeInRoutine = input.FadeInRoutine;
+            //    res.PostFadeInAction = input.PostFadeInAction;
+            //
+            //    return res;
+            //}
         }
     }
 }

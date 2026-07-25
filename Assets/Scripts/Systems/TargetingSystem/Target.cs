@@ -6,6 +6,8 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using System;
 using EPOOutline;
+using SLS.EditorUtilities.ComponentHeaders;
+
 
 
 
@@ -20,11 +22,11 @@ public class Target : MonoBehaviour
     public Polymorph.UniqueList<TargetType> Types;
 
     [SerializeField] Vector3 RealPositionOffset;
-    [SerializeField, RelatedComponent] Rigidbody rigidBody;
-    [SerializeField, RelatedComponent] new Collider collider;
-    [SerializeField, RelatedComponent] NavMeshAgent navMeshAgent;
+    [SerializeField, HeaderItem] Rigidbody rigidBody;
+    [SerializeField, HeaderItem] new Collider collider;
+    [SerializeField, HeaderItem] NavMeshAgent navMeshAgent;
     [SerializeField] CenterComputationType centerComputationType;
-    [SerializeField, RelatedComponent] Outlinable outlinable;
+    [SerializeField, HeaderItem] Outlinable outlinable;
 
     public enum CenterComputationType
     {

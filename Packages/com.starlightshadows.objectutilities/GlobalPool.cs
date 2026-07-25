@@ -6,8 +6,7 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using SLS.Singletons;
 
-
-namespace Utilities.ObjectPooling
+namespace SLS.ObjectUtilities
 {
     /// <summary>
     /// A global pool for pooled objects shared between multiple entities. Use a <see cref="GlobalPool.Client"/> to interface with this.
@@ -24,13 +23,13 @@ namespace Utilities.ObjectPooling
 
         public List<ObjectPool> serializedPools = new();
 
-        public ObjectPool<AttackProjectile> basicEnemyBullet;
-        public static ObjectPool<AttackProjectile> BasicEnemyBullet;
+        public ObjectPool<Projectile> basicEnemyBullet;
+        public static ObjectPool<Projectile> BasicEnemyBullet;
 
         public void Initialize()
         {
             if (initialized && Active) return;
-            if (!Application.isPlaying || !Gameplay.Active) return;
+            if (!Application.isPlaying) return;
 
             ObjectPool.DefaultPoolParent = poolParent;
             UnityEngine.Object.DontDestroyOnLoad(ObjectPool.DefaultPoolParent);
@@ -40,9 +39,7 @@ namespace Utilities.ObjectPooling
 
             foreach (var item in serializedPools) InitPoolGlobally(item);
 
-            Gameplay.onUpdate += Update;
-            Gameplay.onDestroy += OnDeInit;
-
+            UpdateProxy.OnUpdate += Update;
             initialized = true;
         }
 
@@ -55,8 +52,7 @@ namespace Utilities.ObjectPooling
         public override void OnDeInit()
         {
             initialized = false;
-            Gameplay.onUpdate -= Update;
-            Gameplay.onDestroy -= OnDeInit;
+            UpdateProxy.OnUpdate -= Update;
             foreach (var pool in serializedPools) pool.Cleanup();
         }
 
@@ -305,4 +301,3 @@ namespace Utilities.ObjectPooling
         }*/
     }
 }
-

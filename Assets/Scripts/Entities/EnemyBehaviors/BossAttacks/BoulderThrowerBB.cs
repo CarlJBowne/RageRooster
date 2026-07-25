@@ -2,7 +2,7 @@ using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utilities.ObjectPooling;
+using SLS.ObjectUtilities;
 
 public class BoulderThrowerBB : MonoBehaviour
 {
