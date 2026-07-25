@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace SLS.MenuCore
 {
+    [RequireComponent(typeof(Image))]
     public class Overlay : MonoBehaviour
     {
         public static Overlay UnderHUD { get; private set; }

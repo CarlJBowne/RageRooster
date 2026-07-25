@@ -308,6 +308,17 @@ public static class Xtensions_Unity_Transform
         if (rotation) target.localRotation = source.localRotation;
         if (scale) target.localScale = source.localScale;
     }
+
+    public static void CopyFrom(this Transform target, Placement P, bool position = true, bool rotation = true)
+    {
+        if(position) target.position = P;
+        if(rotation) target.rotation = P;
+    }
+    public static void CopyTo(this Placement P, Transform target, bool position = true, bool rotation = true)
+    {
+        if(position) target.position = P;
+        if(rotation) target.rotation = P;
+    }
 }
 
 public static class Xtensions_UnityColliders

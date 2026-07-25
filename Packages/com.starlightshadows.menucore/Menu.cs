@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 namespace SLS.MenuCore
 {
+    [RequireComponent(typeof(CanvasGroup))]
     public class Menu : MonoBehaviour
     {
         #region Config

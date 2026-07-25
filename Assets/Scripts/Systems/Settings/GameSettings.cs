@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using SLS.MenuCore;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -51,9 +52,9 @@ namespace RageRooster.Settings
             public static void EstablishBrightnessOverlay()
             {
                 if (brightnessOverlay != null) return;
-                //if (Overlay.ActiveOverlays.ContainsKey(Overlay.OverlayLayer.OverMenus))
-                //    brightnessOverlay = Overlay.OverALL.transform.Find("BrightnessOverlay").GetComponent<Image>();
-                //Brightness.onChanged = value => brightnessOverlay.color = new(0, 0, 0, 1 - value);
+                if (Overlay.ActiveOverlays > 0)
+                    brightnessOverlay = Overlay.OverALL.transform.parent.Find("BrightnessOverlay").GetComponent<Image>();
+                Brightness.onChanged = value => brightnessOverlay.color = new(0, 0, 0, 1 - value);
             }
         }
 

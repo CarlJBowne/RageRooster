@@ -11,6 +11,7 @@ public class Boot : GameStateSingle<Boot>
 
     private void OnBoot()
     {
+        var d = AudioManager.Get;
         Overlay.Instantiate();
         // Insert Boot functionality here.
     }

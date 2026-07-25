@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using SLS.Singletons;
+using SLS.ObjectUtilities.Projectiles;
 
 namespace SLS.ObjectUtilities
 {
@@ -23,8 +24,8 @@ namespace SLS.ObjectUtilities
 
         public List<ObjectPool> serializedPools = new();
 
-        public ObjectPool<Projectile> basicEnemyBullet;
-        public static ObjectPool<Projectile> BasicEnemyBullet;
+        public ObjectPool basicEnemyBullet;
+        public static ObjectPool BasicEnemyBullet;
 
         public void Initialize()
         {

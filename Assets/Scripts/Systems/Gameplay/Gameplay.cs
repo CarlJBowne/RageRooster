@@ -24,7 +24,8 @@ public class Gameplay : GameStateSingle<Gameplay>
             SetCurrent();
             SceneManager.LoadScene(Scene, LoadSceneMode.Single);
             var s = SceneManager.GetSceneByName(Scene);
-            rootObjects = s.GetRootGameObjects();
+            yield return null;
+            rootObjects = s.GetRootGameObjects(); 
             yield return null;
 
             for (int i = 0; i < rootObjects.Length; i++) DontDestroyOnLoad(rootObjects[i]);
@@ -57,6 +58,9 @@ public class Gameplay : GameStateSingle<Gameplay>
                 FadeInRoutine = Overlay.OverALL.FadeAlpha(0, 0.5f),
                 PreFadeInAction = () =>
                 {
+                    Overlay.UnderHUD.ResetState();
+                    Overlay.BetweenUI.ResetState();
+                    OverlayTopPlus.Get.ResetState();
                     UpdateGameTime();
                     Input.Pause.performed += c => { Menu.Escape(); };
                     Menu.EscapeCallbackMenuless += PauseMenu.Get.Open;

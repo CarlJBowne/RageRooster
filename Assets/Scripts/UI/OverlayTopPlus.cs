@@ -24,8 +24,10 @@ public class OverlayTopPlus : Overlay
 
     protected override void Awake()
     {
-        base.Awake();
         self.Register(this);
+
+        if (animator == null) animator = GetComponent<Animator>();
+        if (image == null) image = GetComponent<Image>();
         ResetState();
     }
 

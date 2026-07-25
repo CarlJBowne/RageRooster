@@ -77,8 +77,9 @@ namespace SLS.ObjectUtilities
             }
         }
 
-        float Distance => Vector3.Distance(PlayerPosition.position,
-                (measureFromSpawn || active == null) ? transform.position : active.transform.position);
+        float Distance => PlayerPosition != null ? Vector3.Distance(PlayerPosition.position,
+                (measureFromSpawn || active == null) ? transform.position : active.transform.position)
+            : float.PositiveInfinity;
 
         void AttemptLoad()
         {

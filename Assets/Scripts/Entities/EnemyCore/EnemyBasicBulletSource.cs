@@ -22,7 +22,7 @@ public class EnemyBasicBulletSource : MonoBehaviour
         Spawnable res = null;
         GlobalPool.BasicEnemyBullet.Pump(Success, muzzle);
 
-        void Success(Spawnable obj, Projectile proj)
+        void Success(Spawnable obj)
         {
             if (muzzle != null) obj.transform.CopyFrom(muzzle);
             obj.currentClient = this;

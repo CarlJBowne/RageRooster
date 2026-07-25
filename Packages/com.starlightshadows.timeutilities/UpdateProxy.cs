@@ -49,8 +49,10 @@ public class UpdateProxy : MonoBehaviour
     public static void RegisterChannel(string channelName, float maxUpdatesPerFrame = 4)
     {
         if (!updateChannelKeys.Contains(channelName))
-            updateChannels[updateChannelKeys.IndexOf(channelName)] 
-                = new Channel { maxUpdatesPerFrame = maxUpdatesPerFrame };
+        {
+            updateChannelKeys.Add(channelName);
+            updateChannels.Add(new Channel { maxUpdatesPerFrame = maxUpdatesPerFrame });
+        }
     }
 
     public static void QueueUpdate(Action updateAction, string channelName, bool isFixedUpdate = false)

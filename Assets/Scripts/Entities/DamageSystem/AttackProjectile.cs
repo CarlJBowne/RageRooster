@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using SLS.ObjectUtilities;
 using UnityEngine;
 
-[RequireComponent(typeof(Projectile))]
 public class AttackProjectile : AttackSourceSingle
 {
     public bool disableOnHit;
