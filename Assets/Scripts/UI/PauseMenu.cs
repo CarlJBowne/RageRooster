@@ -36,14 +36,12 @@ public class PauseMenu : Menu
     {
         base.OnOpen();
         onPause?.Invoke();
-        Services.Gameplay.GameState.Value = Services.Gameplay.GameStates.Paused;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
     protected override void OnClose()
     {
         base.OnClose();
-        Services.Gameplay.GameState.Value = Services.Gameplay.GameStates.Active;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         onUnPause?.Invoke();

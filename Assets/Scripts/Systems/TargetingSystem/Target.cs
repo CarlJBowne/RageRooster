@@ -66,7 +66,7 @@ public class Target : MonoBehaviour
 
     private void Awake()
     {
-        if (Gameplay.GameState != Gameplay.GameStates.Active)
+        if (!Gameplay.Active)
         {
             this.enabled = false;
             return;
