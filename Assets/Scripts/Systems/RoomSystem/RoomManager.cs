@@ -117,7 +117,7 @@ namespace RageRooster.RoomSystem
             Player.ActivityState = Player.ActivityStates.Invisible;
             yield return null;
             CurrentlyTransitioning = true;
-            OverlayTopPlus.LoadingScreenIfLong();
+            OverlayTopPlus.LoadingPopup();
 
             if (fullTransition)
             {
@@ -148,7 +148,7 @@ namespace RageRooster.RoomSystem
             yield return MidTransitionRoutine;
 
             CurrentlyTransitioning = false;
-            OverlayTopPlus.Get.ResetState();
+            OverlayTopPlus.EndLoadingPopup();
             Player.ActivityState = Player.ActivityStates.Active;
 
 

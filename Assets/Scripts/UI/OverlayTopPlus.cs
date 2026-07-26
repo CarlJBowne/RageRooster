@@ -31,34 +31,28 @@ public class OverlayTopPlus : Overlay
         ResetState();
     }
 
-    public static void LoadingScreenIfLong()
+    public static void LoadingPopup()
     {
         if (!Active) return;
-        Coroutine.Begin(ref activeAnimationRoutine, Enum(), true);
+        Coroutine.Begin(ref Get.activeRoutine, Enum(), true);
         static IEnumerator Enum()
         {
             yield return new WaitForSecondsRealtime(Get.showTime);
-            if (RoomManager.CurrentlyTransitioning)
-            {
-                Get.SetAnimated(true);
-                Get.animator.Play(LoadingAnimationHash, -1, 0f);
-            }
+            if (RoomManager.CurrentlyTransitioning) Get.PlayAnimation(LoadingAnimationHash);
         }
     }
-    static Coroutine activeAnimationRoutine;
+    public static void EndLoadingPopup()
+    {
+        Coroutine.Stop(ref Get.activeRoutine);
+        Get.ResetState();
+        Get.transform.Find("CORN").gameObject.SetActive(false);
+    }
 
     public IEnumerator GameOverAnim(float duration = 1f)
     {
-        SetAnimated(true);
-        animator.Play(GameOverAnimationHash, -1, 0f);
+        PlayAnimation(GameOverAnimationHash);
         animator.SetFloat(DurationSpeedParamHash, 1 / duration);
         yield return new WaitForSecondsRealtime(duration);
-    }
-
-    public override void ResetState()
-    {
-        base.ResetState();
-        Coroutine.Stop(ref activeAnimationRoutine);
     }
 
 }

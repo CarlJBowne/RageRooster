@@ -43,6 +43,7 @@ namespace SLS.MenuCore
 
             if (animator == null) animator = GetComponent<Animator>();
             if (image == null) image = GetComponent<Image>();
+            image.color = Color.clear;
         }
 
         public float Alpha
@@ -60,7 +61,7 @@ namespace SLS.MenuCore
             set => image.color = value;
         }
 
-        Coroutine activeRoutine; public Coroutine ActiveRoutine => activeRoutine;
+        protected Coroutine activeRoutine; public Coroutine ActiveRoutine => activeRoutine;
 
         public IEnumerator FadeAlpha(float dest, float time = 1f, bool adjustByCloseness = true)
         {
@@ -102,18 +103,28 @@ namespace SLS.MenuCore
 
         
 
-        public void SetAnimated(bool value) => animator.enabled = value;
+        public void PlayAnimation(string name)
+        {
+            animator.enabled = true;
+            animator.Play(name);
+        }
+        public void PlayAnimation(int hash)
+        {
+            animator.enabled = true;
+            animator.Play(hash);
+        }
+        public void DisableAnimation()
+        {
+            animator.Play(NullAnimationHash);
+            animator.enabled = false;
+        }
 
         public virtual void ResetState()
         {
-            if (animator)
-            {
-                animator.Play(NullAnimationHash);
-                animator.enabled = false;
-            }
+            if (animator && animator.enabled) DisableAnimation();
             Alpha = 0f;
-            Color = Color.black;
-            Coroutine.Stop(ref activeRoutine);
+            Color = Color.clear;
+            Coroutine.Stop(ref activeRoutine); 
         }
     }
 
