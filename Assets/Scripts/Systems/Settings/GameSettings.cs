@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using SLS.MenuCore;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -51,41 +52,41 @@ namespace RageRooster.Settings
             public static void EstablishBrightnessOverlay()
             {
                 if (brightnessOverlay != null) return;
-                if (Overlay.ActiveOverlays.ContainsKey(Overlay.OverlayLayer.OverMenus))
-                    brightnessOverlay = Overlay.OverMenus.transform.Find("BrightnessOverlay").GetComponent<Image>();
+                if (Overlay.ActiveOverlays > 0)
+                    brightnessOverlay = Overlay.OverALL.transform.parent.Find("BrightnessOverlay").GetComponent<Image>();
                 Brightness.onChanged = value => brightnessOverlay.color = new(0, 0, 0, 1 - value);
             }
         }
 
         static IOStream stream;
-        public class IOStream : JsonSaveStream<GameSettings>
+        public class IOStream : JsonStream<GameSettings>
         {
             public IOStream()
             {
-                savePath = $"{Application.persistentDataPath}";
-                File = new JsonFile(savePath, "Config");
+                saveRootPath = $"{Application.persistentDataPath}";
+                base.RootFile = new JsonFile(saveRootPath, "Config");
                 SecondaryFiles = new JsonFile[0];
             }
 
-            protected override JsonFile.LoadResult ReadFromData(GameSettings ResultingData)
+            protected override JsonFile.LoadResult ReadData(GameSettings ResultingData)
             {
                 Debug.Log("Reading Config Data");
-                float version = File.Data["FileVersion"] != null ? File.Data["FileVersion"].ToObject<float>() : 1.0f;
+                float version = RootFile.Data["FileVersion"] != null ? RootFile.Data["FileVersion"].ToObject<float>() : 1.0f;
                 JToken ControlsJ;
 
                 if (version < 2.0f)
                 {
-                    Volume.Master.TakeSaveInput(File["V_Master"]);
-                    Volume.Music.TakeSaveInput(File["V_Music"]);
-                    Volume.SFX.TakeSaveInput(File["V_SFX"]);
-                    Volume.Ambience.TakeSaveInput(File["V_Amb"]);
-                    Graphics.Brightness.TakeSaveInput(File["G_Brightness"]);
-                    if (File.Data.TryGetValue("Controls", out ControlsJ))
+                    Volume.Master.TakeSaveInput(RootFile["V_Master"]);
+                    Volume.Music.TakeSaveInput(RootFile["V_Music"]);
+                    Volume.SFX.TakeSaveInput(RootFile["V_SFX"]);
+                    Volume.Ambience.TakeSaveInput(RootFile["V_Amb"]);
+                    Graphics.Brightness.TakeSaveInput(RootFile["G_Brightness"]);
+                    if (RootFile.Data.TryGetValue("Controls", out ControlsJ))
                         Remapping.Deserialize(ControlsJ);
                     return JsonFile.LoadResult.Success;
                 }
 
-                if (File.Data.TryGetValue("Volume", out JToken VolumeJ))
+                if (RootFile.Data.TryGetValue("Volume", out JToken VolumeJ))
                 {
                     Volume.Master.TakeSaveInput(VolumeJ["Master"]);
                     Volume.Music.TakeSaveInput(VolumeJ["Music"]);
@@ -93,19 +94,19 @@ namespace RageRooster.Settings
                     Volume.Ambience.TakeSaveInput(VolumeJ["Ambience"]);
                 }
 
-                if (File.Data.TryGetValue("Graphics", out JToken GraphicsJ))
+                if (RootFile.Data.TryGetValue("Graphics", out JToken GraphicsJ))
                     Graphics.Brightness.TakeSaveInput(GraphicsJ["Brightness"]);
 
-                if (File.Data.TryGetValue("Controls", out ControlsJ))
+                if (RootFile.Data.TryGetValue("Controls", out ControlsJ))
                     Remapping.Deserialize(ControlsJ);
 
                 return JsonFile.LoadResult.Success;
             }
-            protected override JsonFile.FileState WriteToData(GameSettings sourceData)
+            protected override JsonFile.FileState WriteData(GameSettings sourceData)
             {
                 Debug.Log("Writing Config Data");
 
-                File.Data = new()
+                RootFile.Data = new()
                 {
                     ["FileVersion"] = 2.0f,
                     ["Volume"] = new JObject()

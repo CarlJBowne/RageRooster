@@ -28,7 +28,7 @@ public class DebugToolWindow : EditorWindow
         rootVisualElement.Add(onlyInGameMessage);
         rootVisualElement.Add(actualWindowRoot);
 
-        if (Gameplay.GameState is Gameplay.GameStates.Active)
+        if (Gameplay.Active)
         {
             onlyInGameMessage.SetEnabled(false);
             BeginWindow();

@@ -5,8 +5,9 @@ using UnityEngine.AI;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using System;
-using Utilities.Xtensions.VisualElements;
 using EPOOutline;
+using SLS.EditorUtilities.ComponentHeaders;
+
 
 
 
@@ -21,11 +22,11 @@ public class Target : MonoBehaviour
     public Polymorph.UniqueList<TargetType> Types;
 
     [SerializeField] Vector3 RealPositionOffset;
-    [SerializeField, RelatedComponent] Rigidbody rigidBody;
-    [SerializeField, RelatedComponent] new Collider collider;
-    [SerializeField, RelatedComponent] NavMeshAgent navMeshAgent;
+    [SerializeField, HeaderItem] Rigidbody rigidBody;
+    [SerializeField, HeaderItem] new Collider collider;
+    [SerializeField, HeaderItem] NavMeshAgent navMeshAgent;
     [SerializeField] CenterComputationType centerComputationType;
-    [SerializeField, RelatedComponent] Outlinable outlinable;
+    [SerializeField, HeaderItem] Outlinable outlinable;
 
     public enum CenterComputationType
     {
@@ -67,7 +68,7 @@ public class Target : MonoBehaviour
 
     private void Awake()
     {
-        if (Gameplay.GameState != Gameplay.GameStates.Active)
+        if (!Gameplay.Active)
         {
             this.enabled = false;
             return;

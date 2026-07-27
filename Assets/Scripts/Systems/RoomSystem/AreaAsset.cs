@@ -140,14 +140,14 @@ namespace RageRooster.RoomSystem
                 serializedObject.Update();
                 EditorGUI.BeginChangeCheck();
 
-                EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AreaAsset.displayName), true));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AreaAsset.shellScene), true), true);
+                EditorGUILayout.PropertyField(serializedObject.FindBackingField(nameof(AreaAsset.displayName)));
+                EditorGUILayout.PropertyField(serializedObject.FindBackingField(nameof(AreaAsset.shellScene)), true);
 
-                SerializedProperty roomsProperty = serializedObject.FindProperty("Rooms", backingField: true);
+                SerializedProperty roomsProperty = serializedObject.FindBackingField("Rooms");
                 roomsList.DoLayoutList();
 
                 EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AreaAsset.music).BackingField()));
-                var flagSetProp = serializedObject.FindProperty(nameof(AreaAsset.flagDefaults), true);
+                var flagSetProp = serializedObject.FindBackingField(nameof(AreaAsset.flagDefaults));
                 EditorGUILayout.PropertyField(flagSetProp);
                 if (flagSetProp.objectReferenceValue == null && GUILayout.Button("Create and Attach FlagSet")) CreateFlagSet(areaAsset);
 
@@ -166,7 +166,7 @@ namespace RageRooster.RoomSystem
 
             private ReorderableList CreateRoomsList()
             {
-                SerializedProperty roomsProperty = serializedObject.FindProperty(nameof(AreaAsset.rooms), backingField: true);
+                SerializedProperty roomsProperty = serializedObject.FindBackingField(nameof(AreaAsset.rooms));
                 ReorderableList list = new ReorderableList(serializedObject, roomsProperty, true, true, true, true);
                 list.draggable = true;
                 list.drawHeaderCallback = (Rect rect) => { EditorGUI.LabelField(rect, "Rooms"); };
@@ -420,20 +420,20 @@ namespace RageRooster.RoomSystem
 
             protected void RegisterRoom(SerializedObject room, SerializedObject area, SerializedProperty listSlot)
             {
-                room.FindProperty(nameof(RoomAsset.area), backingField: true).objectReferenceValue = area.targetObject;
+                room.FindBackingField(nameof(RoomAsset.area)).objectReferenceValue = area.targetObject;
                 room.ApplyModifiedProperties(); // Ensure changes are applied to the SerializedObject  
                 listSlot.objectReferenceValue = room.targetObject;
             }
             protected void UnregisterRoom(SerializedObject room, SerializedProperty listProperty, int index, bool deleteSlot = false, bool deleteFile = false)
             {
                 listProperty.GetArrayElementAtIndex(index).objectReferenceValue = null;
-                room.FindProperty(nameof(RoomAsset.area), backingField: true).objectReferenceValue = null;
+                room.FindBackingField(nameof(RoomAsset.area)).objectReferenceValue = null;
                 room.ApplyModifiedProperties();
                 if (deleteSlot) listProperty.DeleteArrayElementAtIndex(index);
             }
             protected void UnregisterRoom(SerializedObject room)
             {
-                SerializedProperty areaProp = room.FindProperty(nameof(RoomAsset.area), backingField: true);
+                SerializedProperty areaProp = room.FindBackingField(nameof(RoomAsset.area));
                 var area = areaProp.objectReferenceValue as AreaAsset;
                 int ID = area.rooms.IndexOf(room.targetObject as RoomAsset);
 

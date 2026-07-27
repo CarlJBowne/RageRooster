@@ -7,7 +7,7 @@ using SLS.StateMachineH.Timelines;
 using TMPro;
 using UltEvents;
 using UnityEngine;
-using Utilities.Xtensions.Unity;
+
 
 public class PlayerGrabAction : PlayerStateBehavior
 {
@@ -104,7 +104,7 @@ public class PlayerGrabAction : PlayerStateBehavior
             {
                 //targetVelocity.y used as holder for Position calculations
                 targetVelocity.y = Player.Transform.position.y;
-                targetVelocity.y = targetVelocity.y.Move(verticalShift * Time.fixedDeltaTime, storedTargetPosition.y - Player.Collider.center.y);
+                targetVelocity.y = targetVelocity.y.MoveTowards(verticalShift * Time.fixedDeltaTime, storedTargetPosition.y - Player.Collider.center.y);
                 Player.MovementBody.Position = new(Player.Position.x, targetVelocity.y, Player.Position.z);
                 targetVelocity.y = 0;
             }

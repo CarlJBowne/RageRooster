@@ -5,13 +5,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Serialization;
 using System.Collections.ObjectModel;
-using Utilities.Xtensions.VisualElements;
-
 
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using SLS.EditorUtilities.Editor;
 #endif
 
 [System.Serializable]

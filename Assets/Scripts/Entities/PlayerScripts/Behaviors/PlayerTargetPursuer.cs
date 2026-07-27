@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utilities.Xtensions;
-using Utilities.Xtensions.Unity;
+
 
 public class PlayerTargetPursuer : StateTimeline
 {
@@ -18,7 +18,7 @@ public class PlayerTargetPursuer : StateTimeline
 
     private Target target;
     private Vector3 targetPosition;
-    [SerializeField, Hide] private SLS.StateMachineH.Timelines.TimedMovementAffector failedBackup;
+    [SerializeField] private SLS.StateMachineH.Timelines.TimedMovementAffector failedBackup;
 
     protected override void OnSetup()
     {

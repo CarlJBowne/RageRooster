@@ -1,6 +1,7 @@
 using System.Collections;
+using SLS.EditorUtilities.ComponentHeaders;
 using UnityEngine;
-using Utilities.Xtensions.Unity;
+
 
 [RequireComponent(typeof(Collider))]
 public class RagdollHandler : MonoBehaviour
@@ -10,17 +11,17 @@ public class RagdollHandler : MonoBehaviour
     [SerializeField] float maxRagdollTime;
     [SerializeField] float minRagdollVelocity;
 
-    [SerializeField, RelatedComponent(true)] Collider rootBoneCollider;
+    [SerializeField, HeaderItem(true)] Collider rootBoneCollider;
     [SerializeField] Collider[] ragDollColliders = new Collider[11];
-    [SerializeField, RelatedComponent(true)] Rigidbody rootRigidBody;
+    [SerializeField, HeaderItem(true)] Rigidbody rootRigidBody;
     [SerializeField] Rigidbody[] ragDollRigidBodies = new Rigidbody[11];
 
-    [SerializeField, RelatedComponent(true)] Collider defaultCollider;
-    [SerializeField, RelatedComponent] Rigidbody defaultRigidBody;
+    [SerializeField, HeaderItem(true)] Collider defaultCollider;
+    [SerializeField, HeaderItem] Rigidbody defaultRigidBody;
 
-    [SerializeField, RelatedComponent] EntityActivity entityActivity;
-    [SerializeField, RelatedComponent] Grabbable grabbable;
-    [SerializeField, RelatedComponent] Health health;
+    [SerializeField, HeaderItem] EntityActivity entityActivity;
+    [SerializeField, HeaderItem] Grabbable grabbable;
+    [SerializeField, HeaderItem] Health health;
 
     public enum States
     {
@@ -37,7 +38,7 @@ public class RagdollHandler : MonoBehaviour
 
     private void Reset()
     {
-        ComponentConfig.Reset(this);
+        HeaderItemAttribute.Reset(this);
         enabled = false;
     }
 

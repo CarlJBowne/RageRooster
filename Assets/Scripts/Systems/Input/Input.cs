@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
-using Utilities.Singletons;
+using SLS.Singletons;
 using Button = UnityEngine.InputSystem.InputAction;
 using Ref = UnityEngine.InputSystem.InputActionReference;
 

@@ -1,5 +1,5 @@
-﻿using ListUtilities;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
+using SLS.ListUtilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace RageRooster.Systems.SaveSystem.Flags
     public class SavedFlagSet : ScriptableObject, ICloneable<SavedFlagSet>
     {
         [SerializeField]
-        private FlagDictionary flags = new();
+        private HashedListSReference<Flag> flags = new();
 
         public void LoadFromJson(JToken json)
         {
@@ -73,11 +73,5 @@ namespace RageRooster.Systems.SaveSystem.Flags
         /// <param name="value">The new value to set for the flag.</param>
         /// <returns>Whether setting the flag was a success.</returns>
         public bool TrySetFlag<T>(string key, T value) => flags.ContainsKey(key.Hash()) && flags[key].TrySetValue(value);
-
-
-        [System.Serializable]
-        public class FlagDictionary : HashedListS<Flag>
-        {
-        }
     }
 }

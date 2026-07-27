@@ -241,7 +241,7 @@ public abstract class PlayerButtonAction : Polymorph
         public override PlayerButtonAction Choose() => Upgrades.Active.HasUpgrade(upgrade) ? hasUpgrade : noUpgrade;
 
 #if UNITY_EDITOR
-        public override bool OverrideBody(VisualElement container, SerializedProperty property)
+        public override void OverrideBody(VisualElement container, SerializedProperty property)
         {
             container.hierarchy.Clear();
 
@@ -251,13 +251,11 @@ public abstract class PlayerButtonAction : Polymorph
             container.Add(persistField);
             container.Add(upgradeField);
 
-            TabbedDrawer tabDrawer = new();
+            PolymorphEditors.TabbedDrawer tabDrawer = new();
             container.Add(tabDrawer);
 
             tabDrawer.Add("Has Upgrade", property.FindPropertyRelative(nameof(hasUpgrade)));
             tabDrawer.Add("Lacks Upgrade", property.FindPropertyRelative(nameof(noUpgrade)));
-
-            return true;
         }
 #endif
     }
@@ -274,18 +272,16 @@ public abstract class PlayerButtonAction : Polymorph
             : noTarget;
 
 #if UNITY_EDITOR
-        public override bool OverrideBody(VisualElement container, SerializedProperty property)
+        public override void OverrideBody(VisualElement container, SerializedProperty property)
         {
             container.hierarchy.Clear();
 
-            var root = new Polymorph.TabbedDrawer();
+            var root = new PolymorphEditors.TabbedDrawer();
             container.Add(root);
 
             root.Add("Melee Target", property.FindPropertyRelative(nameof(hasMeleeTarget)));
             root.Add("Ranged Target", property.FindPropertyRelative(nameof(hasRangedTarget)));
             root.Add("No Target", property.FindPropertyRelative(nameof(noTarget)));
-
-            return true;
         }
 #endif
     }

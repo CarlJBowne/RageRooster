@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Utilities.Singletons;
+using SLS.Singletons;
 
 namespace RageRooster.Obsolete.Zones
 {
@@ -38,7 +38,7 @@ namespace RageRooster.Obsolete.Zones
         {
             //updateTimer.Tick(() => { foreach (ZoneProxy area in proxies.Values) area.Update(); });
 
-            offsetSetTimer.Tick(UpdateOffset);
+            offsetSetTimer.Tick(null);
         }
 
         // Static method to load a new zone.

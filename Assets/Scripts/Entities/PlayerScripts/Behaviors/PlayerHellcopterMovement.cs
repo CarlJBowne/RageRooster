@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using EditorAttributes;
-using RageRooster.Physics;
+using SLS.Physics3D;
 using SLS.StateMachineH;
 using UnityEngine;
-using Utilities.Xtensions.Unity;
 
 public class PlayerHellcopterMovement : PlayerAirborneMovement
 {

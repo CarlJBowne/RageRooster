@@ -1,12 +1,14 @@
 using RageRooster.RoomSystem;
 using RageRooster.Systems;
-using Utilities.ObjectPooling;
+using SLS.ObjectUtilities;
 using RageRooster.Systems.SaveSystem;
-using Utilities.Singletons;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SLS.Singletons;
+using SLS.MenuCore;
+using SLS.MenuCore;
 
 namespace RageRooster.RoomSystem
 {
@@ -68,22 +70,22 @@ namespace RageRooster.RoomSystem
         /// </summary>
         public static Action PostFadeInAction;
 
-        [RuntimeInitializeOnLoadMethod]
-        static void InitStaticServices()
-        {
-            Services.RoomManager.CurrentlyTransitioning = new(() => CurrentlyTransitioning);
-            Services.RoomManager.TransitionStyle = new()
-            {
-                Setter = value => TransitionStyle = value
-            };
-        }
+        //[RuntimeInitializeOnLoadMethod]
+        //static void InitStaticServices()
+        //{
+        //    Services.RoomManager.CurrentlyTransitioning = new(() => CurrentlyTransitioning);
+        //    Services.RoomManager.TransitionStyle = new()
+        //    {
+        //        Setter = value => TransitionStyle = value
+        //    };
+        //}
 
 
         /// <summary>
         /// Begins a Room transition to the specified <see cref="Destination"/>.
         /// </summary>
         public static void StartTransition(Destination destination = default)
-            => Transition(destination).Begin(Overlay.OverMenus);
+            => Transition(destination).Begin(Overlay.OverALL);
 
         /// <summary>
         /// The central Transition Routine run when the player transitions between Rooms/Areas.
@@ -97,10 +99,11 @@ namespace RageRooster.RoomSystem
 
             bool fullTransition = currentArea != destination.area || forceFullTransition;
 
-            if (FadeOutRoutine == Overlay.OverGameplay.BasicFadeOutWait(0.5f) && FadeInRoutine == Overlay.OverGameplay.BasicFadeInWait(0.5f) && fullTransition)
+            if (FadeOutRoutine == Overlay.UnderHUD.FadeAlpha(1, 0.5f) 
+                && FadeInRoutine == Overlay.BetweenUI.FadeAlpha(0, 0.5f) && fullTransition)
             {
-                FadeOutRoutine = Overlay.OverHUD.BasicFadeOutWait(0.5f);
-                FadeInRoutine = Overlay.OverHUD.BasicFadeInWait(0.5f);
+                FadeOutRoutine = Overlay.BetweenUI.FadeAlpha(1, 0.5f);
+                FadeInRoutine = Overlay.BetweenUI.FadeAlpha(0, 0.5f);
             }
 
             if (fullTransition) Music.FadeOutBothMusic();
@@ -114,7 +117,7 @@ namespace RageRooster.RoomSystem
             Player.ActivityState = Player.ActivityStates.Invisible;
             yield return null;
             CurrentlyTransitioning = true;
-            OverlayLoading.ShowIfLong();
+            OverlayTopPlus.LoadingPopup();
 
             if (fullTransition)
             {
@@ -145,7 +148,7 @@ namespace RageRooster.RoomSystem
             yield return MidTransitionRoutine;
 
             CurrentlyTransitioning = false;
-            OverlayLoading.SetVisible(false);
+            OverlayTopPlus.EndLoadingPopup();
             Player.ActivityState = Player.ActivityStates.Active;
 
 
@@ -176,8 +179,8 @@ namespace RageRooster.RoomSystem
             PostFadeInAction = null;
             PreFadeOutAction = null;
             PostFadeOutAction = null;
-            FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(0.5f);
-            FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(0.5f);
+            FadeOutRoutine = Overlay.UnderHUD.FadeAlpha(1, 0.5f);
+            FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 0.5f);
             forceFullTransition = false;
         }
 
@@ -220,27 +223,27 @@ namespace RageRooster.RoomSystem
         {
             public bool forceFullTransition = false;
             public Action PreFadeOutAction = null;
-            public IEnumerator FadeOutRoutine = Overlay.OverGameplay.BasicFadeOutWait(0.5f);
+            public IEnumerator FadeOutRoutine = Overlay.UnderHUD.FadeAlpha(1, 0.5f);
             public Action PostFadeOutAction = null;
             public IEnumerator MidTransitionRoutine = null;
             public Action PreFadeInAction = null;
-            public IEnumerator FadeInRoutine = Overlay.OverGameplay.BasicFadeInWait(0.5f);
+            public IEnumerator FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 0.5f);
             public Action PostFadeInAction = null;
 
-            public static implicit operator TransitionData(Services.RoomManager.TransitionData input)
-            {
-                TransitionData res = new();
-                res.forceFullTransition = input.forceFullTransition;
-                res.PreFadeOutAction = input.PreFadeOutAction;
-                res.FadeOutRoutine = input.FadeOutRoutine;
-                res.PostFadeOutAction = input.PostFadeOutAction;
-                res.MidTransitionRoutine = input.MidTransitionRoutine;
-                res.PreFadeInAction = input.PreFadeInAction;
-                res.FadeInRoutine = input.FadeInRoutine;
-                res.PostFadeInAction = input.PostFadeInAction;
-
-                return res;
-            }
+            //public static implicit operator TransitionData(Services.RoomManager.TransitionData input)
+            //{
+            //    TransitionData res = new();
+            //    res.forceFullTransition = input.forceFullTransition;
+            //    res.PreFadeOutAction = input.PreFadeOutAction;
+            //    res.FadeOutRoutine = input.FadeOutRoutine;
+            //    res.PostFadeOutAction = input.PostFadeOutAction;
+            //    res.MidTransitionRoutine = input.MidTransitionRoutine;
+            //    res.PreFadeInAction = input.PreFadeInAction;
+            //    res.FadeInRoutine = input.FadeInRoutine;
+            //    res.PostFadeInAction = input.PostFadeInAction;
+            //
+            //    return res;
+            //}
         }
     }
 }

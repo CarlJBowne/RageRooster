@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
-using Utilities.Xtensions.Unity;
+
 
 
 namespace SLS.StateMachineH.Timelines
@@ -94,8 +94,8 @@ namespace SLS.StateMachineH.Timelines
                 Player.MovementBody.Direction.Set(controlVector.normalized, turnability * Time.fixedDeltaTime);
 
             Player.MovementBody.Velocity.f = controlVector.sqrMagnitude > 0f && Vector3.Dot(controlVector, Player.Forward) > 0f
-                ? Player.MovementBody.Velocity.f.Move(speedChange * (delta * 50f), maxForwardMovement)
-                : Player.MovementBody.Velocity.f.Move(speedChange * (delta * 50f), minForwardMovement);
+                ? Player.MovementBody.Velocity.f.MoveTowards(speedChange * (delta * 50f), maxForwardMovement)
+                : Player.MovementBody.Velocity.f.MoveTowards(speedChange * (delta * 50f), minForwardMovement);
 
             Player.MovementBody.Velocity.s = sidewaysMovement;
 

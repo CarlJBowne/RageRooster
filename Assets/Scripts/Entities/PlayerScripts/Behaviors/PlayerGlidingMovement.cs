@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
-using Utilities.Xtensions.Unity;
-using RageRooster.Physics;
+using SLS.Physics3D;
 
 public class PlayerGlidingMovement : PlayerAirborneMovement
 {

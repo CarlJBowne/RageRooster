@@ -2,6 +2,7 @@ using RageRooster.Systems;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SLS.MenuCore;
 
 namespace RageRooster.RoomSystem.MovementSystems
 {
@@ -43,20 +44,20 @@ namespace RageRooster.RoomSystem.MovementSystems
 
         private IEnumerator TransitionEnum()
         {
-            yield return Overlay.OverGameplay.BasicFadeOutWait(fadeoutTime);
+            yield return Overlay.UnderHUD.FadeAlpha(1, fadeoutTime);
 
             RoomManager.TransitionStyle = new()
             {
                 forceFullTransition = forceFullTransition,
-                FadeOutRoutine = Overlay.OverHUD.BasicFadeOutWait(.1f),
-                FadeInRoutine = Overlay.OverHUD.BasicFadeInWait(.5f),
-                PostFadeOutAction = Overlay.OverGameplay.Reset,
+                FadeOutRoutine = Overlay.BetweenUI.FadeAlpha(1, .1f),
+                FadeInRoutine = Overlay.BetweenUI.FadeAlpha(0, .5f),
+                PostFadeOutAction = Overlay.UnderHUD.ResetState,
             };
             RoomManager.StartTransition(destination);
         }
         private IEnumerator CancelEnum()
         {
-            yield return Overlay.OverGameplay.BasicFadeInWait(fadeoutTime);
+            yield return Overlay.UnderHUD.FadeAlpha(0, fadeoutTime);
             activeMusicChannel = null;
         }
 

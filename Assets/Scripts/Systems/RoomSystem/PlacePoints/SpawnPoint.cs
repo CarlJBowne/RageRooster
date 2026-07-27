@@ -52,7 +52,7 @@ public class SpawnPoint : RoomActor
 #if UNITY_EDITOR
     public override void OnRegister()
     {
-        Root.Spawns.AddUnique(this);
+        Root.Spawns.Add(this, true);
         Root.asset.spawnPointNames.Add(gameObject.name);
     }
     public override void OnDeregister()

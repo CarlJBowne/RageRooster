@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
-using Utilities.Xtensions.Unity;
+
 
 [System.Obsolete("PlayerMovementAnimator is deprecated, please use TimedMovementAffector instead.")]
 public class PlayerMovementAnimator : PlayerMovementEffector
@@ -59,8 +59,8 @@ public class PlayerMovementAnimator : PlayerMovementEffector
             if (turnability > 0) targetDirection = Vector3.RotateTowards(targetDirection, controlVector.normalized, turnability * Mathf.PI * Time.fixedDeltaTime, 0);
 
             targetSpeed = controlVector.sqrMagnitude > 0
-                ? targetSpeed.Move(controlVector.magnitude * speedChangeRate * (Time.deltaTime * 50), maxSpeed)
-                : targetSpeed.Move(speedChangeRate * (Time.deltaTime * 50), minSpeed);
+                ? targetSpeed.MoveTowards(controlVector.magnitude * speedChangeRate * (Time.deltaTime * 50), maxSpeed)
+                : targetSpeed.MoveTowards(speedChangeRate * (Time.deltaTime * 50), minSpeed);
 
             if (influence == 1)
             {

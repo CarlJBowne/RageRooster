@@ -5,27 +5,44 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using System;
+using SLS.Singletons;
+using SLS.MenuCore;
+using RageRooster.RoomSystem;
 
-public class PauseMenu : MenuSingleton<PauseMenu>
+public class PauseMenu : Menu
 {
-    public static bool isPaused => Get.isActive;
+    static Singleton<PauseMenu> S;
+    public static PauseMenu Get => S.Get;
+    public static bool TryGet(out PauseMenu instance) => S.TryGet(out instance);
+    public static bool Present => S.Active;
+
+    public static bool isPaused => S.Get.isActive;
     public static bool canPause = true;
 
     public static System.Action onPause;
     public static System.Action onUnPause;
 
+    protected override void Awake()
+    {
+        S.Register(this);
+        base.Awake();
+    }
+    protected override void OnDestroy()
+    {
+        S.Deregister(this);
+        base.OnDestroy();
+    }
+
     protected override void OnOpen()
     {
         base.OnOpen();
         onPause?.Invoke();
-        Services.Gameplay.GameState.Value = Services.Gameplay.GameStates.Paused;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
     protected override void OnClose()
     {
         base.OnClose();
-        Services.Gameplay.GameState.Value = Services.Gameplay.GameStates.Active;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         onUnPause?.Invoke();
@@ -33,10 +50,10 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
     public void QuitGame()
     {
-        Enum().Begin(Overlay.OverMenus);
+        Enum().Begin();
         IEnumerator Enum()
         {
-            yield return Overlay.OverMenus.BasicFadeOutWait();
+            yield return Overlay.OverALL.FadeAlpha(1);
 
             Time.timeScale = 1f;
             Close();
@@ -45,7 +62,7 @@ public class PauseMenu : MenuSingleton<PauseMenu>
             SceneManager.sceneLoaded += Done;
             void Done(Scene arg0, LoadSceneMode arg1)
             {
-                Overlay.OverMenus.BasicFadeIn();
+                Overlay.OverALL.FadeAlpha(0);
                 SceneManager.sceneLoaded -= Done;
             }
         }
@@ -60,20 +77,20 @@ public class PauseMenu : MenuSingleton<PauseMenu>
 
     public void Respawn()
     {
-        Services.RoomManager.TransitionStyle.Value = new()
+        RoomManager.TransitionStyle = new()
         {
-            FadeOutRoutine = Overlay.OverMenus.BasicFadeOutWait(1f),
-            FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(1f),
+            FadeOutRoutine = Overlay.OverALL.FadeAlpha(1, 1f),
+            FadeInRoutine = Overlay.OverALL.FadeAlpha(0, 1f),
             PreFadeInAction = TrueClose,
         };
         Gameplay.Respawn();
     }
     public void ReloadSave()
     {
-        Services.RoomManager.TransitionStyle.Value = new()
+        RoomManager.TransitionStyle = new()
         {
-            FadeOutRoutine = Overlay.OverMenus.BasicFadeOutWait(1.2f),
-            FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(1.2f),
+            FadeOutRoutine = Overlay.OverALL.FadeAlpha(1, 1.2f),
+            FadeInRoutine = Overlay.OverALL.FadeAlpha(0, 1.2f),
             PreFadeInAction = TrueClose
         };
         Gameplay.ReloadSave();

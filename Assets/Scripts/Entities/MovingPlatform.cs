@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using RageRooster.Physics;
+using SLS.Physics3D;
 using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour, IMovablePlatform

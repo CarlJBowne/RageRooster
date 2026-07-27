@@ -5,7 +5,7 @@ using SLS.StateMachineH;
 public class RandomAttackChooserBB : StateBehavior
 {
 
-    public Timer.OneTime chooseTimer;
+    public Timer.Loop chooseTimer;
     public State[] choiceStates;
     public float[] choiceChances;
 
@@ -20,9 +20,9 @@ public class RandomAttackChooserBB : StateBehavior
 
             int choice = 0;
             float passedChoiced = 0;
-            for (; choice < choiceChances.Length-1;)
+            for (; choice < choiceChances.Length - 1;)
             {
-                if(diceRoll < choiceChances[choice + 1] + passedChoiced)
+                if (diceRoll < choiceChances[choice + 1] + passedChoiced)
                 {
                     break;
                 }
@@ -32,11 +32,6 @@ public class RandomAttackChooserBB : StateBehavior
             }
             choiceStates[choice].Enter();
         });
-    }
-
-    protected override void OnEnter(State prev, bool isFinal)
-    {
-        chooseTimer.Begin();
     }
 
 

@@ -1,9 +1,15 @@
 using UnityEngine.UI;
 using RageRooster.Settings;
-using Utilities.Singletons;
+using SLS.Singletons;
+using SLS.MenuCore;
 
-public class SettingsMenu : MenuSingleton<SettingsMenu>, IGlobalPrefab
+public class SettingsMenu : Menu
 {
+    static Singleton<SettingsMenu> S;
+    public static SettingsMenu Get => S.Get;
+    public static bool TryGet(out SettingsMenu instance) => S.TryGet(out instance);
+    public static bool Present => S.Active;
+
     public RemappingMenu remap;
 
     public Slider volumeMasterSlider;
@@ -12,8 +18,11 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, IGlobalPrefab
     public Slider volumeAmbSlider;
     public Slider brightnessSlider;
 
-    protected override void OnInitialize()
+    protected override void Awake()
     {
+        S.Register(this);
+        base.Awake();
+
         GameSettings.Volume.Master.SetupSlider(volumeMasterSlider);
         GameSettings.Volume.Music.SetupSlider(volumeMusicSlider);
         GameSettings.Volume.SFX.SetupSlider(volumeSFXSlider);
@@ -21,7 +30,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, IGlobalPrefab
 
         GameSettings.Graphics.Brightness.SetupSlider(brightnessSlider);
         GameSettings.Graphics.EstablishBrightnessOverlay();
-        
+
 
         remap.UpdateAllIcons();
     }
@@ -30,7 +39,7 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, IGlobalPrefab
     public void ConfirmChanges()
     {
         GameSettings.SaveSettings();
-        TrueClose();
+        Close(false);
     }
 
     // Reverts any changes made to the settings and reloads the saved settings from a file
@@ -39,7 +48,13 @@ public class SettingsMenu : MenuSingleton<SettingsMenu>, IGlobalPrefab
         GameSettings.LoadSettings();
         remap.UpdateAllIcons();
 
-        TrueClose();
+        Close(false);
+    }
+
+    protected override void OnDestroy()
+    {
+        S.Deregister(this);
+        base.OnDestroy();
     }
 
 }

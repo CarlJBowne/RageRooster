@@ -1,9 +1,9 @@
 ﻿using AYellowpaper.SerializedCollections;
 using RageRooster.Systems.SaveSystem;
+using SLS.Singletons;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utilities.Singletons;
 
 namespace RageRooster.Systems.SaveSystem
 {

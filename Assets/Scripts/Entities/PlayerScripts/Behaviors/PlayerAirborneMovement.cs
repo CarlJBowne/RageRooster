@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
 using RageRooster.Obsolete.Zones;
-using Utilities.Xtensions.Unity;
-using RageRooster.Physics;
+using SLS.Physics3D;
 
 public class PlayerAirborneMovement : PlayerMovementEffector
 {

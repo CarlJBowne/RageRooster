@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using RageRooster.Systems.SaveSystem;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using SLS.EditorUtilities.ComponentHeaders;
+
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Rendering;
@@ -43,7 +45,7 @@ namespace RageRooster.RoomSystem
         /// </summary>
         public bool ignoreVerticalAngle = true;
 
-        [RelatedComponent(true)] public new Collider collider;
+        [HeaderItem(true)] public new Collider collider;
 
         /// <summary>
         /// An optional <see cref="SpawnPoint"/> this entrance can set the player's respawn location to when entered.

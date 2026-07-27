@@ -4,7 +4,7 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.SceneManagement;
-using Utilities.Singletons;
+using SLS.Singletons;
 
 public class AudioManager : MonoBehaviour
 {

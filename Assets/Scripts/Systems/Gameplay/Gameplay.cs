@@ -1,84 +1,86 @@
-﻿using Cinemachine;
-using System;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using RageRooster.RoomSystem;
+using RageRooster.Systems;
+using RageRooster.Systems.SaveSystem;
+using SLS.GameStateMachine;
+using SLS.MenuCore;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using FMODUnity;
-using EditorAttributes;
-using System.Collections.Generic;
-
-using RageRooster.RoomSystem;
-using RageRooster.Systems.SaveSystem;
-using Utilities.ObjectPooling;
-using RageRooster.Systems;
 using Utilities;
+using SLS.ObjectUtilities;
 
-
-
-
-
-
-
-
-
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-/// <summary>
-/// A Global System managing the core gameplay systems and lifecycle. A singleton that persists as long as gameplay is running. <br/>
-/// Provides static access to important gameplay-related properties and methods. <br/>
-/// To begin gameplay, use methods such as <see cref="BeginSaveFile(int)"/> or <see cref="BeginEditor()"/>.
-/// </summary>
-[DefaultExecutionOrder(ExecutionOrders.Gameplay)]
-public class Gameplay : MonoBehaviour
+public class Gameplay : GameStateSingle<Gameplay>
 {
-    [InitializeOnLoadMethod]
-    static void InitServices()
+    public override bool Additive => false;
+    public static GameObject[] rootObjects;
+
+    protected override void TransitionLogic(Action SetCurrent, Action PostAction)
     {
-        Services.Gameplay.GameState = new(() => (Services.Gameplay.GameStates)GameState, value => GameState = (GameStates)value)
+        E().Begin();
+        IEnumerator E()
         {
-            Getter = () => (Services.Gameplay.GameStates)GameState,
-            Setter = value => GameState = (GameStates)value
-        };
-        Services.Gameplay.ReloadSave = ReloadSave;
-        Services.Gameplay.Respawn = Respawn;
-        Services.Gameplay.EndGame = EndGame;
-    }
+            SetCurrent();
+            SceneManager.LoadScene(Scene, LoadSceneMode.Single);
+            var s = SceneManager.GetSceneByName(Scene);
+            yield return null;
+            rootObjects = s.GetRootGameObjects(); 
+            yield return null;
 
-    public enum GameStates
-    {
-        Null = -1,
-        Active = 0,
-        Paused = 1,
-        Processing = 2,
-    }
-    private static GameStates _gameState = GameStates.Null;
-    public static GameStates GameState
-    {
-        get => _gameState;
-        set
-        {
-            if (_gameState == value
-                || _gameState is GameStates.Null
-                || value is GameStates.Null
-                ) return;
+            for (int i = 0; i < rootObjects.Length; i++) DontDestroyOnLoad(rootObjects[i]);
+            //rootObjects[1].GetComponent<Player>().Awake();
+            //rootObjects[2].GetComponent<Cameras>().Awake();
 
-            _gameState = value;
+            PostAction();
 
-            Time.timeScale = value is GameStates.Paused ? 0 : 1;
+            yield return null;
 
+            GlobalPool.poolParent = rootObjects[0].transform.Find("PooledObjects");
+            GlobalPool.Get.Initialize();
+            Overlay.OverALL.Alpha = 1;
+            Overlay.UnderHUD.ResetState();
+            Overlay.BetweenUI.ResetState();
+
+            yield return WaitFor.Until(Initialized);
+
+            static bool Initialized() => Active
+                && Player.Active
+                && RoomManager.Active;
+
+            RoomManager.ResetTransitionData(false);
+            EntitySpawn.PlayerPosition = Player.Transform;
+
+            RoomManager.TransitionStyle = new()
+            {
+                forceFullTransition = true,
+                FadeOutRoutine = null,
+                FadeInRoutine = Overlay.OverALL.FadeAlpha(0, 0.5f),
+                PreFadeInAction = () =>
+                {
+                    Overlay.UnderHUD.ResetState();
+                    Overlay.BetweenUI.ResetState();
+                    OverlayTopPlus.Get.ResetState();
+                    UpdateGameTime();
+                    Input.Pause.performed += c => { Menu.Escape(); };
+                    Menu.EscapeCallbackMenuless += PauseMenu.Get.Open;
+                },
+            };
+            yield return RoomManager.Transition();
+            onFinalAwake?.Invoke();
         }
     }
 
-    /// <summary>
-    /// Whether Gameplay is currently active.
-    /// <br/> Reads <see cref="GameState"/>, true if not <see cref="GameStates.Null"/>.
-    /// </summary>
-    public static bool Active => GameState is not GameStates.Null;
 
 
-
+    //[RuntimeInitializeOnLoadMethod]
+    //static void InitServices()
+    //{
+    //    Services.Gameplay.Active = new(() => Active);
+    //    Services.Gameplay.ReloadSave = ReloadSave;
+    //    Services.Gameplay.Respawn = Respawn;
+    //    Services.Gameplay.EndGame = EndGame;
+    //}
 
     /// <summary>
     /// The Script instance of the Gameplay system. Not truly relevant to much. Null if not active.
@@ -89,11 +91,6 @@ public class Gameplay : MonoBehaviour
     /// The <see cref="UnityEngine.GameObject"/> that this script is attached to. Null if not active."/>
     /// </summary>
     public static GameObject GameObject { get; private set; }
-
-    /// <summary>
-    /// A reference to the Scene for this system.
-    /// </summary>
-    public static SceneReference GAMEPLAY_SCENE = new("GameplayScene");
 
     /// <summary>
     /// The Emitter that plays gameplay music. 
@@ -123,80 +120,6 @@ public class Gameplay : MonoBehaviour
     /// </summary>
     public static double lastSaveInteractionTime;
 
-    #region Instance Fields
-
-    [SerializeField] Transform cameraTransform;
-    [SerializeField] PauseMenu pauseMenu;
-    [SerializeField] UIHUDSystem uI;
-    [SerializeField] SettingsMenu settingsMenu;
-    [SerializeField] DontDestroyMeOnLoad overlayPrefab;
-    [SerializeField] Player inputPlayer;
-    [SerializeField] UIHUDSystem inputUI;
-    [SerializeField] Cameras inputCams;
-    [SerializeField] StudioEventEmitter musicEmitter;
-    [SerializeField] StudioEventEmitter musicEmitter2;
-
-    #endregion Instance Fields
-
-    private void Awake()
-    {
-        if (Active)
-        {
-            if (Instance != this) Destroy(gameObject);
-            return;
-        }
-
-        DontDestroyOnLoad(gameObject);
-
-        Instance = this;
-        _gameState = GameStates.Active;
-        GameObject = gameObject;
-        if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
-        DontDestroyOnLoad(gameObject);
-        inputPlayer.Awake();
-        inputUI.Awake();
-        inputCams.Awake();
-        GlobalPool.poolParent = transform.Find("PooledObjects");
-        GlobalPool.Get.Initialize();
-        Overlay.OverMenus.BasicBlackout = 1;
-        Overlay.OverGameplay.Reset();
-        Overlay.OverHUD.Reset();
-
-        Enum().Begin(this);
-        static IEnumerator Enum()
-        {
-            yield return null;
-            yield return WaitFor.Until(Initialized);
-
-            static bool Initialized() => Active
-                && Player.Active
-                && RoomManager.Active;
-
-            RoomManager.ResetTransitionData(false);
-            UpdateDelayer.Setup();
-            EntitySpawn.PlayerPosition = Player.Transform;
-
-            RoomManager.TransitionStyle = new()
-            {
-                forceFullTransition = true,
-                FadeOutRoutine = null,
-                FadeInRoutine = Overlay.OverMenus.BasicFadeInWait(0.5f),
-                PreFadeInAction = () =>
-                {
-                    UpdateGameTime();
-                    Input.Pause.performed += c => { Menu.Manager.Escape(); };
-                },
-            };
-            yield return RoomManager.Transition();
-            onFinalAwake?.Invoke();
-        }
-    }
-
-    private void Update()
-    {
-        onUpdate?.Invoke();
-    }
-
 
     /// <summary>
     /// Begins The Gameplay Phase using the specified Save File on Disk.
@@ -206,22 +129,23 @@ public class Gameplay : MonoBehaviour
     {
         if (Active) return;
 
-        Enum().Begin(Overlay.OverMenus);
+        Enum().Begin(Overlay.OverALL);
         IEnumerator Enum()
         {
 
-            yield return Overlay.OverMenus.BasicFadeOutWait();
+            yield return Overlay.OverALL.FadeAlpha(1);
 
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+            UnityEngine.Cursor.visible = false;
 
             InitializeSaves(fileNo);
             RoomManager.destination = SaveData.Current.location;
 
-            Menu.Manager.CloseAllMenus();
-            var Load = SceneManager.LoadSceneAsync(GAMEPLAY_SCENE);
+            Menu.CloseAllMenus();
 
-            yield return WaitFor.Until(() => Load.isDone && Active);
+            Get.Enter();
+
+            yield return WaitFor.Until(() => Get.isActive);
             yield return WaitFor.SecondsRealtime(0.2f);
         }
     }
@@ -240,7 +164,7 @@ public class Gameplay : MonoBehaviour
         RoomManager.destination = EditorState.EditorDestination;
         EditorState.EditorDestination = Destination.Null;
 
-        SceneManager.LoadScene(GAMEPLAY_SCENE);
+        Get.Enter();
     }
 
     public static void InitializeSaves(int fileNo) => SaveData.InitializeSaves(fileNo);
@@ -311,8 +235,7 @@ public class Gameplay : MonoBehaviour
         return Time.timeAsDouble - previousSaveInteractionTime;
     }
 
-
-
+    
 
 
     //protected override void OnDeInitialize() => EnemyCullingGroup.DeInitialize();
@@ -433,21 +356,10 @@ public class Gameplay : MonoBehaviour
             return;
         }
         Destroy(GameObject);
-        _gameState = GameStates.Null;
 
     }
 
-    private void OnDestroy()
-    {
-        onDestroy?.Invoke();
-        //EnemyCullingGroup.DeInitialize();
-    }
 
+    
 
-#if UNITY_EDITOR
-    [CustomEditor(typeof(Gameplay))]
-    public class Editor : UnityEditor.Editor
-    {
-    }
-#endif
 }
