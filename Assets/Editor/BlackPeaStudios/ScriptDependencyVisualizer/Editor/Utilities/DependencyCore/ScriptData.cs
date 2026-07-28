@@ -87,9 +87,9 @@ namespace BPS
                     continue;
                 }
 
-                if(typeof(UnityEditor.Editor).IsAssignableFrom(result[i]) || 
-                    typeof(UnityEditor.PropertyDrawer).IsAssignableFrom(result[i])||
-                    typeof(PlayerStateBehavior).IsAssignableFrom(result[i])
+                if(typeof(UnityEditor.Editor).IsAssignableFrom(result[i]) 
+                    ||  typeof(UnityEditor.PropertyDrawer).IsAssignableFrom(result[i])
+                    //|| typeof(PlayerStateBehavior).IsAssignableFrom(result[i])
                     )
                 {
                     result.RemoveAt(i);

@@ -3,7 +3,7 @@ using SLS.StateMachineH;
 using UnityEngine;
 
 
-public abstract class PlayerMovementEffector : PlayerStateBehavior
+public abstract class PlayerMovementEffector : StateBehavior
 {
     protected override void OnFixedUpdate()
     {

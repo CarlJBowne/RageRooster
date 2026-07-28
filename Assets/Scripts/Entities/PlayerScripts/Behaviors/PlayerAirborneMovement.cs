@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
-using RageRooster.Obsolete.Zones;
 using SLS.Physics3D;
 
 public class PlayerAirborneMovement : PlayerMovementEffector

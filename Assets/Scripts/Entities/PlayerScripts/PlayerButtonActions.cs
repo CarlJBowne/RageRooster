@@ -14,7 +14,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 #endif
 
-public class PlayerButtonActions : PlayerStateBehavior
+public class PlayerButtonActions : StateBehavior
 {
     [SerializeReference] public PlayerButtonAction Jump;
     [SerializeReference] public PlayerButtonAction Attack;

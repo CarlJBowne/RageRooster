@@ -36,14 +36,14 @@ namespace RageRooster.Obsolete
 
         public int GetID()
         {
-            Zones.ZoneRoot Root = GetComponentInParent<Zones.ZoneRoot>();
+            //Zones.ZoneRoot Root = GetComponentInParent<Zones.ZoneRoot>();
             int ID = -1;
-            for (int i = 0; i < Root.spawns.Length; i++)
-                if (Root.spawns[i] == this)
-                {
-                    ID = i;
-                    break;
-                }
+            //for (int i = 0; i < Root.spawns.Length; i++)
+            //    if (Root.spawns[i] == this)
+            //    {
+            //        ID = i;
+            //        break;
+            //    }
             return ID;
         }
 

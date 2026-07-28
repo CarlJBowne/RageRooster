@@ -9,7 +9,7 @@ using Utilities.Xtensions;
 using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
-public class PlayerController : PlayerStateBehavior
+public class PlayerController : StateBehavior
 {
     #region Config
 
@@ -26,8 +26,8 @@ public class PlayerController : PlayerStateBehavior
     public Vector3 camAdjustedMovement
     {
         get => !overrideMovementControl
-          ? Input.Movement.ToXZ().Rotated(Machine.cameraTransform.eulerAngles.y, Vector3.up)
-          : overrideMovementVector.ToXZ().Rotated(Machine.cameraTransform.eulerAngles.y, Vector3.up);
+          ? Input.Movement.ToXZ().Rotated(Cameras.RealCamera.transform.eulerAngles.y, Vector3.up)
+          : overrideMovementVector.ToXZ().Rotated(Cameras.RealCamera.transform.eulerAngles.y, Vector3.up);
     }
     [SerializeField] Upgrades upgradesDisplay;
 

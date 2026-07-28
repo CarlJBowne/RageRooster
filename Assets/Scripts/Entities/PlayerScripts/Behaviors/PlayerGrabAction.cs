@@ -9,7 +9,7 @@ using UltEvents;
 using UnityEngine;
 
 
-public class PlayerGrabAction : PlayerStateBehavior
+public class PlayerGrabAction : StateBehavior
 {
     //[SerializeReference] public AnimationAction initialAnimation;
     public AnimationCurve forwardSpeedCurve;
