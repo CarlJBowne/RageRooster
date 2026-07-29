@@ -1,6 +1,6 @@
 ﻿using EditorAttributes;
 using FMOD.Studio;
-using RageRooster.RoomSystem;
+using RageRooster.World;
 using System;
 using System.Collections;
 using System.Collections.Generic;

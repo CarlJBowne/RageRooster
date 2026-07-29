@@ -149,6 +149,7 @@ PlayerSettings:
   - {fileID: 11400000, guid: 38c6823d535be3240b816210a178b5f6, type: 2}
   - {fileID: 8158829022644922960, guid: bf146f24bcafe5c40862da99ae5be398, type: 3}
   - {fileID: 11400000, guid: 13ec1a8319a50bb4d86765b3d12ee827, type: 2}
+  - {fileID: -944628639613478452, guid: 1a8a75698b4c4104ab50e02fbc6a0598, type: 3}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -540,7 +541,10 @@ PlayerSettings:
       m_Height: 1024
       m_Kind: 0
       m_SubKind: 
-  m_BuildTargetBatching: []
+  m_BuildTargetBatching:
+  - m_BuildTarget: Standalone
+    m_StaticBatching: 1
+    m_DynamicBatching: 1
   m_BuildTargetShaderSettings: []
   m_BuildTargetGraphicsJobs: []
   m_BuildTargetGraphicsJobMode: []
