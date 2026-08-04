@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace RageRooster.Systems
+namespace Audio
 {
     /// <summary>
     /// A management classes for handling in-game music.
@@ -88,7 +88,7 @@ namespace RageRooster.Systems
             {
                 if (!playing || paused) return;
 
-                Enum().Begin(Gameplay.Instance);
+                Enum().Begin();
                 IEnumerator Enum()
                 {
                     float V = 1f;
@@ -109,7 +109,7 @@ namespace RageRooster.Systems
             {
                 if (!playing || !paused) return;
 
-                Enum().Begin(Gameplay.Instance);
+                Enum().Begin();
                 IEnumerator Enum()
                 {
                     float V = 0f;
@@ -166,7 +166,7 @@ namespace RageRooster.Systems
 
         public static void BeginSecondaryMusic(EventReference input)
         {
-            Routine().Begin(Gameplay.Instance);
+            Routine().Begin();
             IEnumerator Routine()
             {
                 bool existingSameSecondary = Secondary != null && Secondary.description == input.description;
@@ -205,7 +205,7 @@ namespace RageRooster.Systems
 
         public static void ReturnToPrimaryMusic()
         {
-            Routine().Begin(Gameplay.Instance);
+            Routine().Begin();
             IEnumerator Routine()
             {
                 if (Secondary == null) yield break;

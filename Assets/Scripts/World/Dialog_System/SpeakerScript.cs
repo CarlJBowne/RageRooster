@@ -13,6 +13,7 @@ using TMPro;
 using DG.Tweening;
 using Cinemachine;
 using System;
+using static RageRooster.Services;
 
 [RequireComponent(typeof(DialogueAudio))]
 [RequireComponent(typeof(Animator))]

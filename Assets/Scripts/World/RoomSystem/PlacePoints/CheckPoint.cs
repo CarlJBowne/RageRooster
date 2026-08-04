@@ -2,6 +2,7 @@ using RageRooster.SaveSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static RageRooster.Services;
 
 /// <summary>
 /// CheckPoint that updates the player's spawn location upon contact.
@@ -13,9 +14,9 @@ public class CheckPoint : MonoBehaviour
     /// </summary>
     public SpawnPoint spawnPoint;
     /// <summary>
-    /// Whether this CheckPoint only updates the spawn location for death respawns.
+    /// Whether this CheckPoint updates the spawn location for death respawns.
     /// </summary>
-    public bool forDeathOnly = false;
+    public bool deathCheckpoint = false;
 
     private void Reset()
     {
@@ -31,9 +32,9 @@ public class CheckPoint : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other != Player.Collider) return;
+        if (Player.Owns(other)) return;
 
-        if(!forDeathOnly) SaveData.Current.location = spawnPoint.GetDestination();
-        SaveData.DeathReloadData.location = spawnPoint.GetDestination();
+        SaveSystem.CurrentDestination.Set(spawnPoint.GetDestination());
+        if (deathCheckpoint) SaveSystem.SaveToDeathData();
     }
 }

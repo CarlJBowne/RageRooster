@@ -22,7 +22,7 @@ namespace RageRooster.World
     /// A Development-Time Asset defining a Room in the game world. <br/>
     /// </summary>
     [CreateAssetMenu(fileName = "Room", menuName = "ScriptableObjects/Room")]
-    public class RoomAsset : ScriptableObject, IRoomAsset
+    public class RoomAsset : SceneSO//, IRoomAsset
     {
         #region Serialized Data
 
@@ -38,7 +38,7 @@ namespace RageRooster.World
         /// <summary>
         /// The Scene Asset containing the contents of this Room.
         /// </summary>
-        [field: SerializeField] public SceneReference scene { get; protected set; }
+        [field: SerializeField, Obsolete] public SceneReference scene { get; protected set; } //Replace Later.
         [field: SerializeField] public RoomLOD lod { get; protected set; }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace RageRooster.World
             }
             else
             {
-                if (stripScore == 3) SceneLoad().Begin(area.root);
+                if (stripScore == 3) LoadRoutine().Begin(area.root);
                 else if (state is RoomState.Lowest && stripScore > 0)
                 {
                     state = RoomState.LODS;
@@ -172,7 +172,7 @@ namespace RageRooster.World
         /// </summary>
         public IEnumerator PrepEnter()
         {
-            yield return SceneLoad();
+            yield return LoadRoutine();
             state = RoomState.Current;
         }
         /// <summary>
@@ -187,7 +187,7 @@ namespace RageRooster.World
 
             if (stripScore > 2)
             {
-                yield return SceneLoad();
+                yield return LoadRoutine();
                 state = RoomState.Present;
             }
             else
@@ -209,12 +209,13 @@ namespace RageRooster.World
         /// <summary>
         /// Loads the full scene for this room. 
         /// </summary>
-        public IEnumerator SceneLoad()
+        public override IEnumerator LoadRoutine()
         {
             if (state >= RoomState.Loading) yield break;
             state = RoomState.Loading;
 
-            yield return SceneOperationRoutine.Load(scene);
+            yield return base.LoadRoutine();
+
             if (root == null) yield return new WaitUntil(() => root != null);
 
             if (shellLodPiece && shellLodPiece.activeSelf) shellLodPiece.SetActive(false);
@@ -228,7 +229,7 @@ namespace RageRooster.World
             if (state <= RoomState.Unloading) yield break;
             state = RoomState.Unloading;
 
-            yield return SceneOperationRoutine.Unload(scene);
+            yield return UnloadRoutine();
 
             state = RoomState.LODS;
         }

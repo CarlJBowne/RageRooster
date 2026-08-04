@@ -30,7 +30,7 @@ namespace Utilities.JSON
             }
         }
 
-        public JsonFile.LoadResult LoadFromFile(ref string resultToken, string defaultToken)
+        public JsonFile.LoadResult LoadFromFile()
         {
             PreCheck();
             if (!RootFile.FileExists) return JsonFile.LoadResult.FileNotFound;
@@ -50,12 +50,7 @@ namespace Utilities.JSON
                 if (iFileResult != JsonFile.LoadResult.Success) return iFileResult;
             }
 
-            JToken token = JToken.Parse(defaultToken);
-            JsonFile.LoadResult result = ReadData();
-            if (result != JsonFile.LoadResult.Success) return result;
-            resultToken = token.ToString();
-
-            return result;
+            return ReadData();
         }
 
         public virtual JsonFile.LoadResult FileVersionBehavior()

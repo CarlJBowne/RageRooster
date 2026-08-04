@@ -1,144 +1,60 @@
-﻿using Newtonsoft.Json.Linq;
-using RageRooster.World;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Utilities.JSON;
+using System.Linq;
+using Newtonsoft.Json.Linq;
+using RageRooster.Core;
+using RageRooster.Player;
+using RageRooster.World;
+using SLS.SaveData;
 using Unity.VisualScripting;
 using UnityEngine;
-using System.Linq;
+using Utilities.JSON;
 
 namespace RageRooster.SaveSystem
 {
     /// <summary>
     /// A class tracking saved values across the game.
     /// </summary>
-    public class SaveData
+    public class SaveData : Saveable<SaveData>
     {
-        /// <summary>
-        /// The currently active Save Data during Gameplay.
-        /// </summary>
-        public static SaveData Current;
-        /// <summary>
-        /// The Save Data used to reload data after the player experiences a death.    
-        /// </summary>
-        /// <remarks> See <see cref="RevertToDeathData"/></remarks>
-        public static SaveData DeathReloadData;
+        #region Top Systems
 
-        #region Actual Data
-
-        public const string targetFileVersion = "1.0.0";
-        public DestinationMap location;
-
-        public SavedPlayerStats playerStats = new();
-        public class SavedPlayerStats
+        public static void InitializeSystem(SaveData defaultInput)
         {
-            /// <summary>
-            /// Don't access this directly outside of the SaveFile System. Use <see cref="Player.Health.MaxHealth"/> instead.
-            /// </summary>
-            public int maxHealth = 3;
-            /// <summary>
-            /// Don't access this directly outside of the SaveFile System. Use <see cref="Player.Ammo.MaxAmmo"/> instead.
-            /// </summary>
-            public int maxAmmo = 0;
-            /// <summary>
-            /// Don't access this directly outside of the SaveFile System. Use <see cref="Player.Currency.Amount"/> instead.
-            /// </summary>
-            public int currency = 0;
-            public TimeSpan playTime = TimeSpan.Zero;
-            public ISaveable upgrades;
-        }
-
-
-        public SavedCollectible powerEggs = new();
-        public SavedCollectible wishbones = new();
-        public SavedCollectible hensRescued = new();
-        /// <summary>
-        /// A Basic Saved Collectible class, tracking the amount and specific collected instances of a collectible. <br/>
-        /// Used for <see cref="powerEggs"/>, <see cref="wishbones"/>, and <see cref="hensRescued"/>.
-        /// </summary>
-        public class SavedCollectible : ICloneable<SavedCollectible>
-        {
-            /// <summary>
-            /// The total amount of this collectible that has been collected, only for easy access.
-            /// </summary>
-            public int total = 0;
-            /// <summary>
-            /// A list of individual collectibles and whether they are collected or not.<br/>
-            /// </summary>
-            public List<bool> isCollected;
-
-            public SavedCollectible Clone(SavedCollectible target = null)
-            {
-                target ??= new SavedCollectible();
-                target.total = total;
-                target.isCollected = new List<bool>(isCollected);
-                return target;
-            }
-        }
-
-
-        public Flags.SavedFlagSet globalChanges;
-        public Dictionary<IAreaAsset, Flags.SavedFlagSet> areaChanges = new();
-
-        #endregion Actual Data 
-
-
-
-        /// <summary>
-        /// Default Constructor, Clones data from default assets.
-        /// </summary>
-        /// <remarks>Remarks: For the love of god, if the <see cref="SavedValueRegistry"/> Scriptable Object is missing from the project, we have a problem.</remarks>
-        public SaveData()
-        {
-            location = DestinationMap.Default;
-            playerStats.upgrades = SavedValueRegistry.Upgrades.Clone();
-            powerEggs.isCollected = new(new bool[SavedValueRegistry.PowerEggs.Count]);
-            hensRescued.isCollected = new(new bool[SavedValueRegistry.HensRescued.Count]);
-            wishbones.isCollected = new(new bool[SavedValueRegistry.Wishbones.Count]);
-            globalChanges = SavedValueRegistry.GlobalFlagDefaults.Clone();
-            foreach (var area in DestinationMap.AllAreas)
-                areaChanges.Add(area, area.flagDefaults.Clone());
-        }
-
-        public static void InitializeSaves(int fileNo)
-        {
-            IO = new(fileNo);
-            Current = new();
+            Default = defaultInput;
+            Active = new();
             DeathReloadData = new();
-            RevertToSaveFile();
+            IO.LoadOperator = new();
+
+            Services.SaveSystem.CurrentDestination = new(
+                () => Active.playerStats.location, 
+                input => Active.playerStats.location = input as Destination
+            );
+            Services.SaveSystem.DeathDestination = new(
+                () => DeathReloadData.location, 
+                input => DeathReloadData.location = input as Destination
+            );
+            Services.SaveSystem.SaveToDeathData = SaveToDeathData;
+            Services.SaveSystem.RevertToDeathData = RevertToDeathData;
+            Services.SaveSystem.SaveToSaveFile = SaveToSaveFile;
+            Services.SaveSystem.RevertToSaveFile = RevertToSaveFile;
         }
 
-        public static void Clone(SaveData source, SaveData target)
-        {
-            source ??= new SaveData();
-            target ??= new SaveData();
+        public static SaveData Default { get; private set; }
+        /// <summary> The currently active Save Data during Gameplay. </summary>
+        public static SaveData Active { get; private set; }
+        /// <summary> The Save Data used to reload data after the player experiences a death. </summary>
+        /// <remarks> See <see cref="RevertToDeathData"/></remarks>
+        public static SaveData DeathReloadData { get; private set; }
 
-            target.location = source.location;
-
-            target.playerStats.maxHealth = source.playerStats.maxHealth;
-            target.playerStats.maxAmmo = source.playerStats.maxAmmo;
-            target.playerStats.currency = source.playerStats.currency;
-            target.playerStats.playTime = source.playerStats.playTime;
-            source.playerStats.upgrades.Transfer(target.playerStats.upgrades);
-
-            source.powerEggs.Clone(target.powerEggs);
-            source.wishbones.Clone(target.wishbones);
-            source.hensRescued.Clone(target.hensRescued);
-            source.globalChanges.Clone(target.globalChanges);
-            foreach (IAreaAsset area in DestinationMap.AllAreas)
-                target.areaChanges[area].CloneFrom(source.areaChanges[area]);
-        }
-
-        /// <summary>
-        /// The active IO Stream for saving data during gameplay.
-        /// </summary>
+        /// <summary> The active IO Stream for saving data during gameplay. </summary>
         public static IOStream IO;
 
         /// <summary>
         /// An Input Output stream for Saving/Loading Save Data to/from disk. Also used to display save files in UI.
         /// </summary>
-        public class IOStream : JsonStream<SaveData>
+        public class IOStream : JsonStream
         {
             public IOStream(int fileID)
             {
@@ -160,9 +76,9 @@ namespace RageRooster.SaveSystem
             //Contains powerEggs, hensRescued, and globalChanges
             public JsonFile WorldChangesFile;
 
-            public Dictionary<IAreaAsset, JsonFile> areaChangesFiles;
+            public Dictionary<AreaAsset, JsonFile> areaChangesFiles;
 
-            protected override JsonFile.LoadResult ReadData(SaveData ResultingData)
+            protected override JsonFile.LoadResult ReadData()
             {
                 ResultingData.location = (DestinationMap)PlayerFile.Data[nameof(ResultingData.location)];
                 ResultingData.playerStats.maxHealth = (int)PlayerFile.Data[nameof(SavedPlayerStats.maxHealth)];
@@ -197,7 +113,7 @@ namespace RageRooster.SaveSystem
 
                 return JsonFile.LoadResult.Success;
             }
-            protected override JsonFile.FileState WriteData(SaveData sourceData)
+            protected override JsonFile.FileState WriteData()
             {
 
                 PlayerFile.Data = new JObject
@@ -263,48 +179,128 @@ namespace RageRooster.SaveSystem
                 return (collected / (float)totalCollectibles) * 100f;
             }
 
+            public SaveData LoadOperator;
         }
 
+        public static void SaveToDeathData() => Clone(Active, DeathReloadData);
+        public static void RevertToDeathData() => Clone(DeathReloadData, Active);
 
-        /// <summary>
-        /// Reverts the current save data to its state at the time of the last Death Checkpoint. <br/>
-        /// See <see cref="DeathReloadData"/>
-        /// </summary>
-        public static void RevertToDeathData()
+        public static void SaveToSaveFile()
         {
-            Clone(DeathReloadData, Current);
-            Player.Health.Max = Current.playerStats.maxHealth;
-            Player.Health.Current = Player.Health.Max;
-            Player.Ammo.Max = Current.playerStats.maxAmmo;
-            Player.Ammo.Current = Player.Ammo.Max;
-            Player.Currency.Current = Current.playerStats.currency;
+            Active.progress.playTime += TimeSpan.FromSeconds(Progress.UpdateGameTime());
+            Clone(Active, DeathReloadData);
+            Clone(Active, IO.LoadOperator);
+            IO.SaveToFile();
         }
-        /// <summary>
-        /// Reverts the current save data to the data last saved to disk.
-        /// </summary>
-        /// <remarks>See <see cref="IO"/>.</remarks>
         public static void RevertToSaveFile()
         {
-            IO.LoadFromFile(Current);
-            Clone(Current, DeathReloadData);
-            Player.Health.Max = Current.playerStats.maxHealth;
-            Player.Health.Current = Player.Health.Max;
-            Player.Ammo.Max = Current.playerStats.maxAmmo;
-            Player.Ammo.Current = Player.Ammo.Max;
-            Player.Currency.Current = Current.playerStats.currency;
+            Progress.UpdateGameTime();
+            IO.LoadFromFile();
+            Clone(IO.LoadOperator, Active);
+            Clone(Active, DeathReloadData);
         }
-        /// <summary>
-        /// Saves the current Data to disk.
-        /// </summary>
-        /// <param name="destination">The current location of the player, as will be applied to all active SaveData objects.</param>
-        public static void SaveFileToDisk(DestinationMap destination)
+
+        public static void InitializeSaves(int fileNo)
         {
-            Current.location = destination;
-
-            Current.playerStats.playTime += TimeSpan.FromSeconds(Gameplay.UpdateGameTime());
-
-            IO.SaveToFile(Current);
+            IO = new(fileNo);
+            Active = new();
+            DeathReloadData = new();
+            RevertToSaveFile();
         }
+
+
+
+        #endregion
+
+        #region Actual Data
+
+        public const string targetFileVersion = "1.0.0";
+
+        public PlayerStats playerStats = new();
+        public Progress progress = new();
+        public class Progress : Saveable<Progress>
+        {
+            public TimeSpan playTime = TimeSpan.Zero;
+            public int currency = 0;
+            public SavedCollectible powerEggs = new();
+            public SavedCollectible wishbones = new();
+            public SavedCollectible hensRescued = new();
+
+            /// <summary>
+            /// The last written time (in seconds) since the game been started that the player interacted with a save point. <br/>
+            /// See <see cref="UpdateGameTime"/>
+            /// </summary>
+            public static double lastSaveInteractionTime;
+            /// <summary>
+            /// Updates the <see cref="lastSaveInteractionTime"/> to the current time, returning the time (in seconds) since the last update. <br/>
+            /// </summary>
+            /// <returns></returns>
+            public static double UpdateGameTime()
+            {
+                var previousSaveInteractionTime = lastSaveInteractionTime;
+                lastSaveInteractionTime = Time.timeAsDouble;
+                return Time.timeAsDouble - previousSaveInteractionTime;
+            }
+
+            public override void Clone(Progress source)
+            {
+                playTime = source.playTime;
+                currency = source.currency;
+                powerEggs.Clone(source.powerEggs);
+                wishbones.Clone(source.wishbones);
+                hensRescued.Clone(source.hensRescued);
+            }
+        }
+
+        /// <summary>
+        /// A Basic Saved Collectible class, tracking the amount and specific collected instances of a collectible. <br/>
+        /// Used for <see cref="powerEggs"/>, <see cref="wishbones"/>, and <see cref="hensRescued"/>.
+        /// </summary>
+        public class SavedCollectible : Saveable<SavedCollectible>
+        {
+            /// <summary>
+            /// The total amount of this collectible that has been collected, only for easy access.
+            /// </summary>
+            public int total = 0;
+            /// <summary>
+            /// A list of individual collectibles and whether they are collected or not.<br/>
+            /// </summary>
+            public List<bool> isCollected;
+
+            public override void Clone(SavedCollectible source)
+            {
+                total = source.total;
+                isCollected ??= new List<bool>(source.isCollected);
+            }
+        }
+
+
+        public Flags.SavedFlagSet globalChanges;
+        public Dictionary<AreaAsset, Flags.SavedFlagSet> areaChanges = new();
+
+        #endregion Actual Data 
+
+        #region Self Functionality
+
+        /// <summary>
+        /// Default Constructor, Clones data from default assets.
+        /// </summary>
+        /// <remarks>Remarks: For the love of god, if the <see cref="SavedValueRegistry"/> Scriptable Object is missing from the project, we have a problem.</remarks>
+        public SaveData(SaveData source = null)
+        {
+            if (source != null) Clone(source);
+            else if (Default != null) Clone(Default);
+        }
+
+        public override void Clone(SaveData source)
+        {
+            playerStats.Clone(source.playerStats);
+            progress.Clone(source.progress);
+        }
+
+        #endregion
+
+
 
     }
 }

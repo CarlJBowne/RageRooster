@@ -45,7 +45,7 @@ public class UIHUDSystem : MonoBehaviour, IHUDService
 
         SetCurrencyText();
 
-        if (IPlayer.Player != null) SubscribePlayer(IPlayer.Player);
+        if (IPlayer.Self != null) SubscribePlayer(IPlayer.Self);
     }
 
     private void SubscribePlayer(IPlayer player)
@@ -69,7 +69,7 @@ public class UIHUDSystem : MonoBehaviour, IHUDService
     protected void OnDestroy()
     {
         Services.DeregisterHUD(this);
-        if (IPlayer.Player != null) UnsubscribePlayer(IPlayer.Player);
+        if (IPlayer.Self != null) UnsubscribePlayer(IPlayer.Self);
     }
 
     // Called every frame to update the HUD
@@ -214,8 +214,8 @@ public class UIHUDSystem : MonoBehaviour, IHUDService
     // Sets the currency text on the HUD
     public void SetCurrencyText()
     {
-        if (IPlayer.Player == null) return;
-        currencyText.text = IPlayer.Player.CurrencyCurrent.ToString();
+        if (IPlayer.Self == null) return;
+        currencyText.text = IPlayer.Self.CurrencyCurrent.ToString();
     }
 
 

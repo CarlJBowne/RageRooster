@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json.Linq;
-using RageRooster.SaveSystem.Flags;
 using UnityEditor.VersionControl;
 
 namespace RageRooster.World
@@ -50,24 +49,24 @@ namespace RageRooster.World
         public static implicit operator JToken(DestinationMap i) => new JArray(i.area, i.room, i.spawn);
 
         public static DestinationMap Default;
-        public static IAreaAsset[] AllAreas;
-        public static IAreaAsset GetArea(string name)
-        {
-            for (int i = 0; i < AllAreas.Length; i++)
-                if (AllAreas[i].name == name)
-                    return AllAreas[i];
-            return null;
-        }
+        //public static IAreaAsset[] AllAreas;
+        //public static IAreaAsset GetArea(string name)
+        //{
+        //    for (int i = 0; i < AllAreas.Length; i++)
+        //        if (AllAreas[i].name == name)
+        //            return AllAreas[i];
+        //    return null;
+        //}
     }
-    public interface IAreaAsset
-    {
-        public SavedFlagSet flagDefaults { get; }
-        public string name { get; }
-        public List<IRoomAsset> rooms { get; }
-    }
-    public interface IRoomAsset
-    {
-        public string name { get; }
-        public List<string> spawnPointNames { get; }
-    }
+    //public interface IAreaAsset
+    //{
+    //    public SavedFlagSet flagDefaults { get; }
+    //    public string name { get; }
+    //    public List<IRoomAsset> rooms { get; }
+    //}
+    //public interface IRoomAsset
+    //{
+    //    public string name { get; }
+    //    public List<string> spawnPointNames { get; }
+    //}
 }

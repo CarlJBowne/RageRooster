@@ -1,5 +1,8 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RageRooster.Core;
+using RageRooster.World;
+using SLS.SaveData;
 using Utilities.JSON;
 
 namespace RageRooster.Player
@@ -8,8 +11,12 @@ namespace RageRooster.Player
     /// A container for the active data of all player upgrades.
     /// </summary>
     [System.Serializable]
-    public class Upgrades : ICloneable<Upgrades>
+    public class PlayerStats : Saveable<PlayerStats>, IPlayerStats
     {
+        public int maxHealth = 3;
+        public int maxAmmo = 0;
+        public Destination location;
+
         /// <summary> The ability to throw a grabbable object downwards while in midair, launching the player upwards. </summary>
         public bool dropLaunch;
         /// <summary> The ability to kick off flat walls mid air to gain extra height and reach new areas. </summary>
@@ -29,41 +36,37 @@ namespace RageRooster.Player
         /// <summary> A debug-privilege upgrade that makes the player go infinitely upwards as long as the jump button is held. </summary>
         [JsonIgnore] public bool d_moonJump;
 
-        /// <summary>
-        /// A convenient accessor for the currently active upgrades of the player.
-        /// </summary>
-        public static Upgrades Active => SaveData.Current.playerStats.upgrades;
-
-        /// <returns>A clone of the default upgrades as defined in the <see cref="SavedValueRegistry"/>.</returns>
-        public static Upgrades Default => SavedValueRegistry.Upgrades.Clone();
-
-        /// <returns>A new instance of <see cref="Upgrades"/> with all upgrades active, including debug-privilege upgrades</returns>
-        public static void ActivateDebug()
+        public override void Clone(PlayerStats source)
         {
-            Active.dropLaunch = true;
-            Active.wallJump = true;
-            Active.hellcopter = true;
-            Active.ragingCharge = true;
-            Active.glide = true;
-            Active.doubleJump = true;
-            Active.lasso = true;
-            Active.d_invincibility = true;
-            Active.d_moonJump = true;
-            Player.Ammo.Max = 30;
-            Player.Ammo.Current = 30;
+            maxHealth = source.maxHealth;
+            maxAmmo = source.maxAmmo;
+            dropLaunch = source.dropLaunch;
+            wallJump = source.wallJump;
+            hellcopter = source.hellcopter;
+            ragingCharge = source.ragingCharge;
+            glide = source.glide;
+            doubleJump = source.doubleJump;
+            lasso = source.lasso;
+            location = source.location;
         }
 
-        public static void Clone(Upgrades source, Upgrades target)=> source.Clone(target);
-        public Upgrades Clone(Upgrades target = null)
+
+
+
+        /// <returns>A new instance of <see cref="PlayerStats"/> with all upgrades active, including debug-privilege upgrades</returns>
+        public static void ActivateDebug()
         {
-            target ??= new Upgrades();
-            target.dropLaunch = dropLaunch;
-            target.wallJump = wallJump;
-            target.hellcopter = hellcopter;
-            target.ragingCharge = ragingCharge;
-            target.d_invincibility = d_invincibility;
-            target.d_moonJump = d_moonJump;
-            return target;
+            Current.dropLaunch = true;
+            Current.wallJump = true;
+            Current.hellcopter = true;
+            Current.ragingCharge = true;
+            Current.glide = true;
+            Current.doubleJump = true;
+            Current.lasso = true;
+            Current.d_invincibility = true;
+            Current.d_moonJump = true;
+            Current.maxHealth = 10;
+            Current.maxAmmo = 40;
         }
 
         public enum Upgrade
@@ -102,5 +105,6 @@ namespace RageRooster.Player
 
             return false;
         }
+
     }
 }

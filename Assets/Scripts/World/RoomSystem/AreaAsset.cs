@@ -6,6 +6,8 @@ using System.IO;
 using RageRooster.SaveSystem;
 using RageRooster.SaveSystem.Flags;
 using FMODUnity;
+using System;
+
 
 
 #if UNITY_EDITOR
@@ -20,7 +22,7 @@ namespace RageRooster.World
     /// A Development-Time Asset defining an Area in the game world. <br/>
     /// </summary>
     [CreateAssetMenu(fileName = "Area", menuName = "ScriptableObjects/Area")]
-    public class AreaAsset : ScriptableObject, IAreaAsset
+    public class AreaAsset : SceneSO//, IAreaAsset
     {
         #region Config Fields
         /// <summary>
@@ -30,7 +32,7 @@ namespace RageRooster.World
         /// <summary>
         /// The Scene containing a basic shell of the area, functioning as a 0th level-of-detail for every room in the area.
         /// </summary>
-        [field: SerializeField] public SceneReference shellScene { get; protected set; }
+        [field: SerializeField, Obsolete] public SceneReference shellScene { get; protected set; }
         /// <summary>
         /// The <see cref="RoomAsset"/>s that make up this Area.
         /// </summary>
@@ -44,7 +46,7 @@ namespace RageRooster.World
         /// <summary>
         /// The Dev-Defined default flags for this area. These are cloned into the active <see cref="SaveData"/> when a new game is started.
         /// </summary>
-        [field: SerializeField] public SavedFlagSet flagDefaults { get; protected set; }
+        [field: SerializeField] public SavedFlagSet flagDefaults { get; protected set; } = new();
         #endregion
 
         #region Active Data
@@ -54,31 +56,16 @@ namespace RageRooster.World
         public AreaRoot root { get; protected set; }
 
         /// <summary>
-        /// Gets the current state of this Area's <see cref="shellScene"/>
-        /// </summary>
-        public SceneState state { get; protected set; } = SceneState.Valid;
-
-        /// <summary>
         /// Is this the currently loaded area?
         /// </summary>
         public bool isCurrent { get; protected set; }
         #endregion
 
-
-        /// <summary>
-        /// Loads this area's <see cref="shellScene"/> and prepares all rooms for use.
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator LoadArea()
+        protected override void OnFinishLoad()
         {
-            state = SceneState.Loading;
-
-            yield return SceneOperationRoutine.Load(shellScene, UnityEngine.SceneManagement.LoadSceneMode.Single);
-            if (root == null) yield return new WaitUntil(() => root != null);
-
-            state = SceneState.Loaded;
             for (int i = 0; i < rooms.Count; i++)
                 PlayerMovementBody.MovingUpdateAction += rooms[i].Update;
+
         }
 
         /// <summary>
@@ -99,25 +86,23 @@ namespace RageRooster.World
         /// Unloads this area's <see cref="shellScene"/> and all rooms within it.
         /// </summary>
         /// <returns></returns>
-        public IEnumerator UnloadArea()
+        public override IEnumerator UnloadRoutine()
         {
-            state = SceneState.Unloading;
+            // Unsubscribe and fully unload contained rooms, then unload the shell scene using SceneSO.
             foreach (RoomAsset room in rooms)
             {
                 PlayerMovementBody.MovingUpdateAction -= room.Update;
                 yield return room.CompleteUnload();
             }
 
-            yield return SceneOperationRoutine.Unload(shellScene);
-
-            state = SceneState.Valid;
+            yield return base.UnloadRoutine();
         }
 
 
         public RoomAsset GetRoom(string name)
         {
             for (int i = 0; i < rooms.Count; i++)
-                if(rooms[i].name == name)
+                if (rooms[i].name == name)
                     return rooms[i];
             return null;
         }
@@ -158,7 +143,6 @@ namespace RageRooster.World
                 EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(AreaAsset.music).BackingField()));
                 var flagSetProp = serializedObject.FindBackingField(nameof(AreaAsset.flagDefaults));
                 EditorGUILayout.PropertyField(flagSetProp);
-                if (flagSetProp.objectReferenceValue == null && GUILayout.Button("Create and Attach FlagSet")) CreateFlagSet(areaAsset);
 
                 if (EditorGUI.EndChangeCheck())
                 {
@@ -471,7 +455,6 @@ namespace RageRooster.World
                 // Set up AreaAsset properties
                 area.displayName = name;
                 area.shellScene = new SceneReference(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(scenePath));
-                CreateFlagSet(area);
                 EditorUtility.SetDirty(area);
 
                 // Open, attach, save, and close scene
@@ -485,20 +468,6 @@ namespace RageRooster.World
                 AssetDatabase.Refresh();
 
                 Debug.Log($"Successfully created new Area: {name}. Note that its Scene cannot be automatically registered in the build settings, YOU have to do that.");
-            }
-
-            public static void CreateFlagSet(AreaAsset This)
-            {
-                // Create new SavedFlagSet asset in the same folder as AreaAsset
-                string flagSetPath = System.IO.Path.Combine("Assets/World/Areas/AreaFlags", $"{This.name}_FlagDefaults.asset");
-
-                var flagSet = ScriptableObject.CreateInstance<SavedFlagSet>();
-                AssetDatabase.CreateAsset(flagSet, flagSetPath);
-                AssetDatabase.SaveAssets();
-
-                This.flagDefaults = flagSet;
-                Undo.RegisterCreatedObjectUndo(flagSet, "Create FlagSet");
-                EditorUtility.SetDirty(This);
             }
 
             private class CreateAreaPopupWindow : EditorWindow

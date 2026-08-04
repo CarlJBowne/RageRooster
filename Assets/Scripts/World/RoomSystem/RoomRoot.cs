@@ -35,13 +35,9 @@ namespace RageRooster.World
         {
             if (!RoomManager.Active)
             {
-                if (Boot.EditorDestination.IsNull())
-                    Boot.EditorDestination = new()
-                    {
-                        room = asset,
-                        spawnID = -1
-                    };
-                Gameplay.BeginEditor();
+                if (!AreaRegistry.EditorDestination)
+                    AreaRegistry.EditorDestination = new Destination(asset, 0);
+                Boot.BeginEditor();
                 return;
             }
 

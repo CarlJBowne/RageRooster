@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using RageRooster.World;
 using SLS.GameStateMachine;
 using SLS.MenuCore;
 
 
 public class Boot : GameStateSingle<Boot>
 {
+    public GameState MainMenuState;
+    public GameState GameplayState;
+
     private int loadFromSavePointID = -2;
     public static int LoadFromSavePointID
     {
@@ -31,6 +35,7 @@ public class Boot : GameStateSingle<Boot>
     {
         var d = AudioManager.Get;
         Overlay.Instantiate();
-        // Insert Boot functionality here.
     }
+
+    public static void BeginEditor() => Get.GameplayState.Enter();
 }

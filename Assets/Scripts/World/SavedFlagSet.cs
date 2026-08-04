@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using SLS.ListUtilities;
+using SLS.SaveData;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,40 +18,12 @@ namespace RageRooster.SaveSystem.Flags
     /// One exists for each area and one globally.
     /// </summary>
     [CreateAssetMenu(fileName = "SerializedFlagSet", menuName = "ScriptableObjects/SerializedFlagSet")]
-    public class SavedFlagSet : ScriptableObject, ICloneable<SavedFlagSet>
+    public class SavedFlagSet : Saveable<SavedFlagSet>
     {
         [SerializeField]
-        private HashedListSReference<Flag> flags = new();
+        private Polymorph.Dictionary<Flag> flags;
 
-        public void LoadFromJson(JToken json)
-        {
-            for (int i = 0; i < flags.Count; i++)
-            {
-                flags.ValueFromIndex(i).LoadFromJson(json[flags.NameFromIndex(i)]);
-            }
-        }
-
-        public JObject SaveToJson()
-        {
-            var result = new JObject();
-
-            for (int i = 0; i < flags.Count; i++)
-                result[flags.NameFromIndex(i)] = flags.ValueFromIndex(i).SaveToJson();
-            return result;
-        }
-
-
-        public SavedFlagSet Clone(SavedFlagSet target = null)
-        {
-            if (target == null) target = Instantiate(this);
-            else
-            {
-                for (int i = 0; i < flags.Count; i++)
-                    flags.ValueFromIndex(i).Clone(target.flags.ValueFromIndex(i));
-            }
-            return target;
-        }
-
+        public override void Clone(SavedFlagSet source) => flags.Clone(source.flags);
 
         /// <summary>
         /// Tries to get a flag value from the dictionary.

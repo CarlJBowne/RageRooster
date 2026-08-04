@@ -1,17 +1,19 @@
-using RageRooster.World;
-using RageRooster.SaveSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RageRooster;
+using RageRooster.Core;
+using RageRooster.SaveSystem;
+using RageRooster.World;
+using SLS.MenuCore;
 using UnityEngine;
 using UnityEngine.AI;
-using SLS.MenuCore;
 
 /// <summary>
 /// A global Singleton representing the Player entity in the game. Provides static access to commonly used components and systems related to the player.
 /// </summary>
 [DefaultExecutionOrder(ExecutionOrders.Player), RequireComponent(typeof(PlayerStateMachine))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IPlayer
 {
     #region GameplayState
 
@@ -250,6 +252,7 @@ public class Player : MonoBehaviour
     public void Awake()
     {
         DontDestroyOnLoad(this);
+        Services.Register.Player(this);
         GameObject = gameObject;
         Transform = transform;
         StateMachine = GetComponent<PlayerStateMachine>();
@@ -270,11 +273,19 @@ public class Player : MonoBehaviour
         _activeState = ActivityStates.Active;
 
 #if UNITY_EDITOR
-        Input.Debug.GodMode.performed += (_) => { Upgrades.ActivateDebug(); };
+        Input.Debug.Godmod.performed += (_) => { Upgrades.ActivateDebug(); };
 #endif
         fallDownPitTime = Health.playerObject.inFallDownPitTime;
         deathTime = Health.playerObject.inDeathTime;
     }
+
+
+    void OnDestroy()
+    {
+        Services.Register.Player(null);
+        _activeState = ActivityStates.Null;
+    }
+
     #endregion
 
     #region Models (Health / Ammo / Currency)
@@ -459,9 +470,4 @@ public class Player : MonoBehaviour
     }
     #endregion
 
-    void OnDestroy()
-    {
-        Services.DeregisterPlayer(this);
-        _activeState = ActivityStates.Null;
-    }
 }

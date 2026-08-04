@@ -18,24 +18,7 @@ namespace RageRooster.World
 
         [field: SerializeField] public GameObject[] roomLowestLods { get; private set; }
 
-        private void Awake()
-        {
-            if (!RoomManager.Active)
-            {
-                if (EditorState.EditorDestination.IsNull())
-                {
-                    EditorState.EditorDestinationArea = asset;
-                    EditorState.EditorDestination = new()
-                    {
-                        room = null,
-                        spawnID = -1
-                    }; Gameplay.BeginEditor();
-                }   
-                return;
-            }
-
-            asset.Connect(this);
-        }
+        private void Awake() => asset.Connect(this);
 
 #if UNITY_EDITOR
         public class Editor : UnityEditor.Editor

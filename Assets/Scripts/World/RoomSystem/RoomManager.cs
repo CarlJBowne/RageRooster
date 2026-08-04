@@ -1,5 +1,4 @@
 using RageRooster.World;
-using RageRooster.Systems;
 using SLS.ObjectUtilities;
 using RageRooster.SaveSystem;
 using System;
@@ -8,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SLS.Singletons;
 using SLS.MenuCore;
-using SLS.MenuCore;
+using static RageRooster.Services;
 
 namespace RageRooster.World
 {
@@ -93,8 +92,7 @@ namespace RageRooster.World
         public static IEnumerator Transition(Destination destination = default)
         {
             if (!destination) destination = RoomManager.destination;
-            if (!destination) destination = SaveData.Current.location;
-            if (!destination) destination = SaveData.DeathReloadData.location;
+            if (!destination) destination = Services.SaveSystem.CurrentDestination.Get as Destination;
             if (!destination) destination = new();
 
             bool fullTransition = currentArea != destination.area || forceFullTransition;
@@ -121,12 +119,12 @@ namespace RageRooster.World
 
             if (fullTransition)
             {
-                if (currentArea != null) yield return currentArea.UnloadArea();
+                if (currentArea != null) yield return currentArea.UnloadRoutine();
                 currentArea = null;
                 currentRoom = null;
                 currentArea = destination.area;
                 GlobalPool.UnloadAllPools();
-                yield return currentArea.LoadArea();
+                yield return currentArea.LoadRoutine();
             }
 
             yield return destination.room.PrepEnter();

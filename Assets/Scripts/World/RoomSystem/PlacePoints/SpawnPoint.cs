@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using RageRooster.World;
 using UnityEngine;
 using Utilities.Xtensions;
-using static UnityEditor.Recorder.OutputPath;
+using static RageRooster.Services;
 
 /// <summary>
 /// A set point in the world where the player can spawn. <br/>
@@ -43,11 +43,7 @@ public class SpawnPoint : RoomActor
     }
 
     /// <returns>The <see cref="Destination"/> this <see cref="SpawnPoint"/> goes to.</returns>
-    public Destination GetDestination() => new()
-    {
-        room = Root.asset,
-        spawnID = ID
-    };
+    public Destination GetDestination() => new(Root.asset, ID);
 
 #if UNITY_EDITOR
     public override void OnRegister()
@@ -68,18 +64,11 @@ public class SpawnPoint : RoomActor
     }
 #endif
 
-    [Button]
-    void AAAAAAAA() => Reset();
-
 #if UNITY_EDITOR
     [Button("Play from here.")]
     private void BeginFromHere()
     {
-        EditorState.EditorDestination = new()
-        {
-            room = Root.asset,
-            spawnID = ID
-        };
+        AreaRegistry.EditorDestination = new Destination(Root.asset, ID);
         UnityEditor.EditorApplication.isPlaying = true;
     }
 

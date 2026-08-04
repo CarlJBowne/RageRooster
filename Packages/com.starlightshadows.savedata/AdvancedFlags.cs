@@ -9,7 +9,7 @@ using Utilities.JSON;
 using UnityEditor;
 #endif
 
-namespace SaveSystem.Flags
+namespace SLS.SaveData
 {
     [System.Serializable]
     public abstract class Flag : Polymorph
@@ -56,7 +56,7 @@ namespace SaveSystem.Flags
             return false;
         }
 
-        public abstract Flag Clone(Flag target = null);
+        public abstract Flag Clone(Flag source = null);
 
         public abstract void LoadFromJson(JToken input);
         public abstract JToken SaveToJson();

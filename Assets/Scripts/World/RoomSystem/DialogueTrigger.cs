@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Cinemachine;
-using UnityEngine.Assertions.Must;
-using Unity.VisualScripting;
 
 [System.Obsolete]
 public class DialogueTrigger : MonoBehaviour

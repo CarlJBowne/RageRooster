@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities;
 using SLS.ObjectUtilities;
+using RageRooster;
 
 public class Gameplay : GameStateSingle<Gameplay>
 {
@@ -25,7 +26,7 @@ public class Gameplay : GameStateSingle<Gameplay>
             SceneManager.LoadScene(Scene, LoadSceneMode.Single);
             var s = SceneManager.GetSceneByName(Scene);
             yield return null;
-            rootObjects = s.GetRootGameObjects(); 
+            rootObjects = s.GetRootGameObjects();
             yield return null;
 
             for (int i = 0; i < rootObjects.Length; i++) DontDestroyOnLoad(rootObjects[i]);
@@ -102,7 +103,7 @@ public class Gameplay : GameStateSingle<Gameplay>
 
     /// <summary>
     /// The <see cref="UnityEngine.GameObject"/> that this script is attached to. Null if not active."/>
-/// </summary>
+    /// </summary>
     public static GameObject GameObject { get; private set; }
 
     /// <summary>
@@ -128,13 +129,6 @@ public class Gameplay : GameStateSingle<Gameplay>
     public static System.Action onDestroy;
 
     /// <summary>
-    /// The last written time (in seconds) since the game been started that the player interacted with a save point. <br/>
-    /// See <see cref="UpdateGameTime"/>
-    /// </summary>
-    public static double lastSaveInteractionTime;
-
-
-    /// <summary>
     /// Begins The Gameplay Phase using the specified Save File on Disk.
     /// </summary>
     /// <param name="fileNo"></param>
@@ -152,7 +146,7 @@ public class Gameplay : GameStateSingle<Gameplay>
             UnityEngine.Cursor.visible = false;
 
             InitializeSaves(fileNo);
-            RoomManager.destination = SaveData.Current.location;
+            RoomManager.destination = SaveData.Active.location;
 
             Menu.CloseAllMenus();
 
@@ -162,23 +156,6 @@ public class Gameplay : GameStateSingle<Gameplay>
             yield return WaitFor.SecondsRealtime(0.2f);
         }
     }
-    /// <summary>
-    /// Begins the Gameplay Phase in Editor Mode, using the settings in <see cref="EditorState"/> to determine spawn location. <br/>
-    /// </summary>
-    public static void BeginEditor()
-    {
-        if (Active) return;
-
-        InitializeSaves(0);
-
-        if (!EditorState.EditorDestination.IsValid())
-            EditorState.EditorDestination = CalculateEditorSpawn();
-        if (!EditorState.EditorDestination.IsValid()) EditorState.EditorDestination = Destination.StartingDefault();
-        RoomManager.destination = EditorState.EditorDestination;
-        EditorState.EditorDestination = Destination.Null;
-
-        Get.Enter();
-    }
 
     public static void InitializeSaves(int fileNo) => SaveData.InitializeSaves(fileNo);
 
@@ -187,9 +164,9 @@ public class Gameplay : GameStateSingle<Gameplay>
         Destination target = EditorState.EditorDestination;
 
         // If target is default, use the save file location
-        if (target.IsNull()) return SaveData.Current.location;
+        if (target.IsNull()) return SaveData.Active.location;
 
-        Destination fileDest = SaveData.Current.location;
+        Destination fileDest = SaveData.Active.location;
 
         if (EditorState.EditorDestinationArea != null && EditorState.EditorDestinationArea != fileDest.area)
         {
@@ -222,33 +199,24 @@ public class Gameplay : GameStateSingle<Gameplay>
     public static void Respawn()
     {
         RoomManager.PostFadeOutAction = () => { Player.onRespawn?.Invoke(); };
-        RoomManager.StartTransition(Destination.Current);
+        RoomManager.StartTransition(Services.SaveSystem.CurrentDestination.GetAs<Destination>());
     }
 
     public static void Death()
     {
         SaveData.RevertToDeathData();
-        RoomManager.StartTransition(Destination.Current);
+        RoomManager.StartTransition(Services.SaveSystem.CurrentDestination.GetAs<Destination>());
     }
 
     public static void ReloadSave()
     {
         SaveData.RevertToSaveFile();
-        RoomManager.StartTransition(Destination.Current);
+        RoomManager.StartTransition(Services.SaveSystem.CurrentDestination.GetAs<Destination>());
     }
 
-    /// <summary>
-    /// Updates the <see cref="lastSaveInteractionTime"/> to the current time, returning the time (in seconds) since the last update. <br/>
-    /// </summary>
-    /// <returns></returns>
-    public static double UpdateGameTime()
-    {
-        var previousSaveInteractionTime = lastSaveInteractionTime;
-        lastSaveInteractionTime = Time.timeAsDouble;
-        return Time.timeAsDouble - previousSaveInteractionTime;
-    }
 
-    
+
+
 
 
     //protected override void OnDeInitialize() => EnemyCullingGroup.DeInitialize();
@@ -373,6 +341,6 @@ public class Gameplay : GameStateSingle<Gameplay>
     }
 
 
-    
+
 
 }

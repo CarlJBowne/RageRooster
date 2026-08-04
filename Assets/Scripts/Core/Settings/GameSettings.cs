@@ -32,10 +32,10 @@ namespace RageRooster.Settings
                 Volume.Ambience.Value = 1f;
                 Graphics.Brightness.Value = 1f;
             }
-            stream.LoadFromFile(null);
+            stream.LoadFromFile();
         }
-        public static void LoadSettings() => stream.LoadFromFile(null);
-        public static void SaveSettings() => stream.SaveToFile(null);
+        public static void LoadSettings() => stream.LoadFromFile();
+        public static void SaveSettings() => stream.SaveToFile();
 
         public static class Volume
         {
@@ -59,7 +59,7 @@ namespace RageRooster.Settings
         }
 
         static IOStream stream;
-        public class IOStream : JsonStream<GameSettings>
+        public class IOStream : JsonStream
         {
             public IOStream()
             {
@@ -68,7 +68,7 @@ namespace RageRooster.Settings
                 SecondaryFiles = new JsonFile[0];
             }
 
-            protected override JsonFile.LoadResult ReadData(GameSettings ResultingData)
+            protected override JsonFile.LoadResult ReadData()
             {
                 Debug.Log("Reading Config Data");
                 float version = RootFile.Data["FileVersion"] != null ? RootFile.Data["FileVersion"].ToObject<float>() : 1.0f;
@@ -102,7 +102,7 @@ namespace RageRooster.Settings
 
                 return JsonFile.LoadResult.Success;
             }
-            protected override JsonFile.FileState WriteData(GameSettings sourceData)
+            protected override JsonFile.FileState WriteData()
             {
                 Debug.Log("Writing Config Data");
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SLS.Singletons;
 using System.Linq;
+using RageRooster.SaveSystem.Flags;
 
 namespace RageRooster.World
 {
@@ -16,21 +17,17 @@ namespace RageRooster.World
 
 
 
-        private static bool dictionarybuilt = false;
         private static Dictionary<string, AreaAsset> dictionary;
+        private static Dictionary<AreaAsset, SavedFlagSet> savedFlagDictionary;
 
         public override void OnInit()
         {
-            if (Application.isPlaying && !dictionarybuilt) BuildDictionary();
+            dictionary = new();
+            foreach (AreaAsset item in areaAssets) dictionary.Add(item.name, item);
+            savedFlagDictionary = new();
+            foreach (AreaAsset item in areaAssets) savedFlagDictionary.Add(item, item.flagDefaults);
             DestinationMap.Default = (DestinationMap)new Destination();
-            DestinationMap.AllAreas = GetAll();
-        }
-
-        static void BuildDictionary()
-        {
-            dictionary = new Dictionary<string, AreaAsset>();
-            foreach (var item in Get.areaAssets) dictionary.Add(item.name, item);
-            dictionarybuilt = true;
+            //DestinationMap.AllAreas = GetAll();
         }
 
         /// <summary>
@@ -38,7 +35,7 @@ namespace RageRooster.World
         /// </summary>
         public static AreaAsset GetArea(string name)
         {
-            if (!dictionarybuilt) BuildDictionary();
+            if(dictionary is null) Get.OnInit();
             return dictionary[name];
         }
 
@@ -47,9 +44,15 @@ namespace RageRooster.World
         /// <returns>All areas in the registry.</returns>
         public static AreaAsset[] GetAll() => Get.areaAssets;
 
+        public static Dictionary<AreaAsset, SavedFlagSet> SavedFlagsDictionary()
+        {
+            if (savedFlagDictionary is null) Get.OnInit();
+            return savedFlagDictionary;
+        }
 
-        private IDestination editorDestination = null;
-        public static IDestination EditorDestination
+
+        private Destination editorDestination = null;
+        public static Destination EditorDestination
         {
             get => Get.editorDestination;
             set => Get.editorDestination = value;

@@ -1,8 +1,8 @@
-using RageRooster.Systems;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.MenuCore;
+using static RageRooster.Services;
 
 namespace RageRooster.World.MovementSystems
 {
@@ -17,23 +17,22 @@ namespace RageRooster.World.MovementSystems
 
         private bool playerWithin;
         Coroutine coroutine;
-        Music.Channel activeMusicChannel;
+        Audio.Music.Channel activeMusicChannel;
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!playerWithin && other == Player.Collider)
-            {
-                playerWithin = true;
-                if (lockCameraPosition || lockCameraRotation) Cameras.LockPrimary(lockCameraPosition, lockCameraRotation);
-                coroutine?.StopAuto();
-                coroutine = new(TransitionEnum(), this);
-                activeMusicChannel = Music.Primary;
-            }
+            if (!(!playerWithin && Player.Owns(other))) return;
+
+            playerWithin = true;
+            if (lockCameraPosition || lockCameraRotation) Cameras.LockPrimary(lockCameraPosition, lockCameraRotation);
+            coroutine?.StopAuto();
+            coroutine = new(TransitionEnum(), this);
+            activeMusicChannel = Audio.Music.Primary;
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if(playerWithin && other == Player.Collider && cancellable)
+            if(playerWithin && Player.Owns(other) && cancellable)
             {
                 playerWithin = false;
                 if (lockCameraPosition || lockCameraRotation) Cameras.LockPrimary(false, false);
