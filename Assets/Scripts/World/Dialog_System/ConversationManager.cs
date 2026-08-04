@@ -17,6 +17,7 @@ using UnityEngine.Rendering;
 using Cinemachine;
 using UnityEngine.InputSystem;
 using System;
+using static RageRooster.Services;
 
 public class ConversationManager : MonoBehaviour
 {
@@ -44,7 +45,7 @@ public class ConversationManager : MonoBehaviour
 
     public Volume dialogueDof;
     bool isAdvancingText;
-    
+
     private void Awake()
     {
         instance = this;
@@ -60,21 +61,21 @@ public class ConversationManager : MonoBehaviour
 
     private void TryAdvanceText(InputAction.CallbackContext context)
     {
-        if(!inDialogue)
+        if (!inDialogue)
         {
             return;
         }
-        if(nextDialogue)
+        if (nextDialogue)
         {
             FinishDialogue();
         }
 
-            isAdvancingText = true;
-            Debug.Log("Trying to advance text");
+        isAdvancingText = true;
+        Debug.Log("Trying to advance text");
 
 
 
-        
+
 
     }
 
@@ -84,7 +85,7 @@ public class ConversationManager : MonoBehaviour
     }
     private void Update()
     {
-        
+
         if (isAdvancingText && inDialogue)
         {
             if (canExit)
@@ -103,12 +104,12 @@ public class ConversationManager : MonoBehaviour
             }
 
             if (nextDialogue)
-            {   
+            {
                 animatedText.ReadText(currentSpeaker.dialogue.conversationBlock[dialogueIndex]);
             }
         }
         isAdvancingText = false;
-        
+
     }
 
     public void FadeUI(bool show, float time, float delay)
@@ -137,7 +138,7 @@ public class ConversationManager : MonoBehaviour
 
         //Depth of field modifier
         float dofWeight = dialogueCamera.activeSelf ? 1 : 0;
-//        DOVirtual.Float(dialogueDof.weight, dofWeight, .8f, DialogueDOF);
+        //        DOVirtual.Float(dialogueDof.weight, dofWeight, .8f, DialogueDOF);
     }
 
     public void DialogueDOF(float x)
@@ -154,7 +155,7 @@ public class ConversationManager : MonoBehaviour
     {
         currentSpeaker.Reset();
         //Interface to stop player movement while in dialogue by disabling the component for movement
-        Player.StateMachine.UnCutsceneState();
+        Player?.StateMachine.UnCutsceneState();
         inDialogue = false;
         PauseMenu.canPause = true;
         canExit = false;

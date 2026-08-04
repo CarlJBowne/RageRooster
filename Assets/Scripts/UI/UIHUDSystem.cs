@@ -6,6 +6,7 @@ using TMPro;
 using System.Linq;
 using DG.Tweening;
 using RageRooster.Core;
+using static RageRooster.Services;
 
 [DefaultExecutionOrder(ExecutionOrders.GameplaySystems)]
 public class UIHUDSystem : MonoBehaviour, IHUDService
@@ -212,10 +213,10 @@ public class UIHUDSystem : MonoBehaviour, IHUDService
 
 
     // Sets the currency text on the HUD
-    public void SetCurrencyText()
+    public void SetCurrencyText(int amount)
     {
         if (IPlayer.Self == null) return;
-        currencyText.text = IPlayer.Self.CurrencyCurrent.ToString();
+        currencyText.text = amount.ToString();
     }
 
 

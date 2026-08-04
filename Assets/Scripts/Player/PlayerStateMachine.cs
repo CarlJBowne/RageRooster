@@ -10,9 +10,10 @@ using AYellowpaper.SerializedCollections;
 using RageRooster.SaveSystem;
 using RageRooster.World;
 using SLS.StateMachineH.Signals;
+using RageRooster.Core;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
-public class PlayerStateMachine : StateMachine
+public class PlayerStateMachine : StateMachine, IPlayerStateMachine
 {
     #region Config
 
@@ -119,4 +120,6 @@ public class PlayerStateMachine : StateMachine
     }
 
     public void DeathIfAtZero() { if (Player.Health.playerObject.GetCurrentHealth() == 0) Player.Death(); }
+
+    public bool SendSignal(string signal) => this.SendSignal(signal);
 }

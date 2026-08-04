@@ -9,22 +9,30 @@ namespace RageRooster.Core
         public static bool Present => Self != null;
 
         Transform Transform { get; }
+        GameObject GameObject { get; }
         Vector3 Position { get; }
         Vector3 Center { get; }
+        CapsuleCollider Collider { get; }
 
-        // Currency
+        ActivityStates ActivityState { get; set; }
+        IPlayerStateMachine StateMachine { get; }
+
         int CurrencyCurrent { get; }
-        event Action OnUpdateCurrency;
+        event Action<int> OnUpdateCurrency;
 
         void InstantMove(Vector3 position, float? yRot = null);
-
+        void Death();
+        void PitFall();
         bool Owns(Component C);
 
-        public IPlayerStats Stats { get; set; }
+        IPlayerStats Stats { get; }
+
+        event Action OnMovingUpdate;
     }
 
     public interface IPlayerStats
     {
-        
+        int MaxHealth { get; set; }
+        int MaxAmmo { get; set; }
     }
 }

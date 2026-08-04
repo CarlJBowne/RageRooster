@@ -30,16 +30,19 @@ public class PlayerHealth : Health
     {
         base.Awake();
         collider = GetComponent<Collider>();
-        Player.Health.updateHealth += HealthChangeCallback;
-        Player.Health.updateMaxHealth += MaxHealthChangeCallback;
+        Self.Health.updateHealth += HealthChangeCallback;
+        Self.Health.updateMaxHealth += MaxHealthChangeCallback;
 
         //Global.playerObject = this;
     }
 
     private void OnDestroy()
     {
-        Player.Health.updateHealth -= HealthChangeCallback;
-        Player.Health.updateMaxHealth -= MaxHealthChangeCallback;
+        if (Self.Present)
+        {
+            Self.Health.updateHealth -= HealthChangeCallback;
+            Self.Health.updateMaxHealth -= MaxHealthChangeCallback;
+        }
     }
 
     protected override void OnDamage(Attack attack)
@@ -48,36 +51,36 @@ public class PlayerHealth : Health
         if (tintAnimator) tintAnimator.BeginAnimation();
         if (health != 0)
         {
-            if (Player.StateMachine.Aiming) Player.Ranged.ExitAimingAux();
+            if (Self.StateMachine.Aiming) Self.Ranged.ExitAimingAux();
             Coroutine.Begin(ref invincibility, InvinceEnum(invincibilityTime), this);
             damagable = false;
             if (attack == Attack.Tags.Pit)
             {
-                Player.PitFall();
+                Self.PitFall();
                 damagable = true;
             }
             else if (attack == Attack.Tags.Wham)
             {
                 damageStateWham.Enter();
-                Player.MovementBody.UnLand();
-                Player.MovementBody.Velocity.y = 14;
+                Self.MovementBody.UnLand();
+                Self.MovementBody.Velocity.y = 14;
             }
             else damageState.Enter();
         }
-        Player.Health.Current = health;
+        Self.Health.Current = health;
     }
 
-    protected override void OnHeal(int amount) => Player.Health.Current = health;
+    protected override void OnHeal(int amount) => Self.Health.Current = health;
 
     protected override void OnDeplete(Attack attack)
     {
         if (attack == Attack.Tags.Wham)
         {
             damageStateWham.Enter();
-            Player.MovementBody.UnLand();
-            Player.MovementBody.Velocity.y = 14;
+            Self.MovementBody.UnLand();
+            Self.MovementBody.Velocity.y = 14;
         }
-        else Player.Death();
+        else Self.Death();
     }
 
     private IEnumerator InvinceEnum(float time)

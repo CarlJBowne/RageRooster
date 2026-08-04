@@ -1,5 +1,6 @@
 using RageRooster.World;
 using SLS.ObjectUtilities;
+using RageRooster.Core;
 using RageRooster.SaveSystem;
 using System;
 using System.Collections;
@@ -112,7 +113,7 @@ namespace RageRooster.World
             PostFadeOutAction?.Invoke();
 
 
-            Player.ActivityState = Player.ActivityStates.Invisible;
+            if (IPlayer.Present) IPlayer.Self.ActivityState = ActivityStates.Invisible;
             yield return null;
             CurrentlyTransitioning = true;
             OverlayTopPlus.LoadingPopup();
@@ -136,8 +137,8 @@ namespace RageRooster.World
 
             if (fullTransition)
             {
-                SaveData.Current.location = destination;
-                SaveData.DeathReloadData.location = destination;
+                Services.SaveSystem.CurrentDestination.Value = destination;
+                Services.SaveSystem.DeathDestination.Value = destination;
             }
 
             foreach (RoomAsset room in currentArea.rooms)
@@ -147,7 +148,7 @@ namespace RageRooster.World
 
             CurrentlyTransitioning = false;
             OverlayTopPlus.EndLoadingPopup();
-            Player.ActivityState = Player.ActivityStates.Active;
+            if (IPlayer.Present) IPlayer.Self.ActivityState = ActivityStates.Active;
 
 
             try { if (fullTransition) Music.BeginPrimaryMusic(currentArea.music); }

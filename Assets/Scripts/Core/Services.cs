@@ -17,6 +17,7 @@ namespace RageRooster
         public static IGameplay Gameplay { get; internal set; }
         public static IMusicService Music { get; internal set; }
         public static IHUDService HUD { get; internal set; }
+        public static IPauseMenu PauseMenu { get; internal set; }
         #endregion
 
         #region Static Services
@@ -51,6 +52,7 @@ namespace RageRooster
             public static void Gameplay(IGameplay input) => Services.Gameplay = input;
             public static void Music(IMusicService input) => Services.Music = input;
             public static void HUD(IHUDService input) => Services.HUD = input;
+            public static void PauseMenu(IPauseMenu input) => Services.PauseMenu = input;
         }
     }
 }

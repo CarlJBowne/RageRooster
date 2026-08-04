@@ -80,7 +80,7 @@ public class SpeakerScript : MonoBehaviour
 
     public void TurnToPlayer(Vector3 playerPos)
     {
-        playerPos = Player.Position;
+        playerPos = Player?.Position ?? Vector3.zero;
         transform.DOLookAt(playerPos, Vector3.Distance(transform.position, playerPos) / 5);
         string turnMotion = isRightSide(transform.forward, playerPos, Vector3.up) ? "rturn" : "lturn";
         animator.SetTrigger(turnMotion);
@@ -104,8 +104,8 @@ public class SpeakerScript : MonoBehaviour
         {
             UI.currentSpeaker = this;
 
-            targetGroup.m_Targets[1].target = Player.Transform;
-            Player.StateMachine.CutsceneState();
+            targetGroup.m_Targets[1].target = Player?.Transform;
+            Player?.StateMachine.CutsceneState();
             //UI.dialogueCamera.GetComponent<CinemachineVirtualCamera>().Follow = targetGroup.transform;
             UI.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
             UI.SetCharNameAndColor();
@@ -114,7 +114,7 @@ public class SpeakerScript : MonoBehaviour
             UI.CameraChange(true);
             UI.ClearText();
             UI.FadeUI(true, .2f, .65f);
-            TurnToPlayer(Player.Transform.position);
+            TurnToPlayer(Player?.Position ?? Vector3.zero);
             animator.SetTrigger("talking");
         }
 

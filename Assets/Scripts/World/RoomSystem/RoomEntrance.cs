@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using RageRooster.Core;
 using RageRooster.SaveSystem;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -76,10 +77,10 @@ namespace RageRooster.World
 
         public void OnTriggerEnter(Collider other)
         {
-            if (other != Player.Collider || Root.asset == RoomManager.currentRoom) return;
+            if (other != IPlayer.Self?.Collider || Root.asset == RoomManager.currentRoom) return;
             RoomManager.EnterRoom(Root.asset);
             if (spawnPoint != null)
-                (forDeathOnly ? SaveData.DeathReloadData : SaveData.Current).location = spawnPoint.GetDestination();
+                if (forDeathOnly) Services.SaveSystem.DeathDestination.Value = spawnPoint.GetDestination(); else Services.SaveSystem.CurrentDestination.Value = spawnPoint.GetDestination();
         }
 
         private void OnDrawGizmosSelected()
@@ -215,10 +216,10 @@ namespace RageRooster.World
 
             public void UpdateDistance()
             {
-                Vector3 player = IgnoreVertical(Player.Position);
+                Vector3 player = IgnoreVertical(IPlayer.Self?.Position ?? Vector3.zero);
 
-                float DOT = Vector3.Dot(point - Player.Position, direction);
-                distanceSquared = Vector3.SqrMagnitude(Player.Position - point);
+                float DOT = Vector3.Dot(point - (IPlayer.Self?.Position ?? Vector3.zero), direction);
+                distanceSquared = Vector3.SqrMagnitude((IPlayer.Self?.Position ?? Vector3.zero) - point);
 
                 if (DOT > 0)
                 {

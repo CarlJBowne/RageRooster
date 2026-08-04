@@ -105,33 +105,33 @@ public class PlayerController : StateBehavior
     {
         if (Upgrades.Active.hellcopter)
         {
-            Player.StateMachine.AirParry.Enter();
-            if (Player.MovementBody.isOverVent) Machine.SendSignal(new("EnterVent", 0, true));
+            Self.StateMachine.AirParry.Enter();
+            if (Self.MovementBody.isOverVent) Machine.SendSignal(new("EnterVent", 0, true));
         }
     }
 
     public void MidJumpJumpAction()
     {
-        if (!Player.StateMachine.WallJump.WallJump(transform.forward))
+        if (!Self.StateMachine.WallJump.WallJump(transform.forward))
         {
-            if (Player.MovementBody.isOverVent) Player.StateMachine.VentGliding.Enter();
-            else Player.StateMachine.Gliding.Enter();
+            if (Self.MovementBody.isOverVent) Self.StateMachine.VentGliding.Enter();
+            else Self.StateMachine.Gliding.Enter();
         }
     }
-    public void MidWallJumpJumpAction() => Player.StateMachine.WallJump.WallJump(transform.forward);
+    public void MidWallJumpJumpAction() => Self.StateMachine.WallJump.WallJump(transform.forward);
 
     public static void AirJumpAction(bool allowDoubleJump, bool allowGlide)
     {
-        if (Upgrades.Active.wallJump && Player.StateMachine.WallJump.WallJump(Player.Transform.forward)) return;
-        else if (allowDoubleJump && Upgrades.Active.doubleJump && Player.MovementBody.canDoDoubleJump)
+        if (Upgrades.Active.wallJump && Self.StateMachine.WallJump.WallJump(Self.Transform.forward)) return;
+        else if (allowDoubleJump && Upgrades.Active.doubleJump && Self.MovementBody.canDoDoubleJump)
         {
-            Player.StateMachine.Jump.BeginJump();
-            Player.MovementBody.canDoDoubleJump = false;
+            Self.StateMachine.Jump.BeginJump();
+            Self.MovementBody.canDoDoubleJump = false;
         }
         else if (allowGlide && Upgrades.Active.glide)
         {
-            if (Player.MovementBody.isOverVent) Player.StateMachine.VentGliding.Enter();
-            else Player.StateMachine.Gliding.Enter();
+            if (Self.MovementBody.isOverVent) Self.StateMachine.VentGliding.Enter();
+            else Self.StateMachine.Gliding.Enter();
         }
     }
 

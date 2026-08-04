@@ -1,8 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Cinemachine;
+using static RageRooster.Services;
 
 [System.Obsolete]
 public class DialogueTrigger : MonoBehaviour
@@ -64,17 +65,17 @@ public class DialogueTrigger : MonoBehaviour
             
             if(targetGroup != null)
             {
-                targetGroup.m_Targets[1].target = Player.Transform;
+                targetGroup.m_Targets[1].target = Player?.Transform;
                 ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().Follow = targetGroup.transform;
                 ui.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
             }
-            Player.StateMachine.CutsceneState();
+            Player?.StateMachine.CutsceneState();
             ui.SetCharNameAndColor();
             ui.inDialogue = true;
             ui.CameraChange(true);
             ui.ClearText();
             ui.FadeUI(true, .2f, .65f);
-            currentSpeaker.TurnToPlayer(Player.Position);
+            currentSpeaker.TurnToPlayer(Player?.Position ?? Vector3.zero);
         }
     }
 }

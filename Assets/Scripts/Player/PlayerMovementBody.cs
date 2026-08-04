@@ -74,15 +74,15 @@ public sealed class PlayerMovementBody : PhysicsBody
     {
         if (Ground.Check(out _))
         {
-            Player.StateMachine.IdleWalk.State.Enter();
-            if (doCrossFade) Player.Animator.CrossFade("GroundBasic", .1f);
+            Self.StateMachine.IdleWalk.State.Enter();
+            if (doCrossFade) Self.Animator.CrossFade("GroundBasic", .1f);
         }
-        else Player.StateMachine.Airborne.Enter();
+        else Self.StateMachine.Airborne.Enter();
     }
 
     protected override void FixedUpdate()
     {
-        Player.Animator.SetFloat("CurrentSpeed", Velocity.magnitudeH);
+        Self.Animator.SetFloat("CurrentSpeed", Velocity.magnitudeH);
         if (Upgrades.Active.d_moonJump && Input.Jump.IsPressed()) Velocity.u = 10f;
 
         Vector3 prePos = Position;
@@ -97,21 +97,21 @@ public sealed class PlayerMovementBody : PhysicsBody
     public override void OnLand(bool wasntGrounded, bool objectChange)
     {
         UpdateResolver();
-        Player.StateMachine.SendSignal(new("Land", ignoreLock: true));
+        Self.StateMachine.SendSignal(new("Land", ignoreLock: true));
         canDoDoubleJump = true; //I still don't like this being part of this script of all things.
-        if (Player.Controller.CheckJumpBuffer()) Player.StateMachine.SendSignal("Jump");
+        if (Self.Controller.CheckJumpBuffer()) Self.StateMachine.SendSignal("Jump");
     }
     public override void OnUnLand(GroundState.Values newValue) => UpdateResolver();
 
     public override void WalkOff()
     {
         Ground.UnLand(GroundState.Values.Hangtime);
-        Player.StateMachine.SendSignal(new("WalkOff", ignoreLock: true));
+        Self.StateMachine.SendSignal(new("WalkOff", ignoreLock: true));
     }
 
     public override bool LastChanceStopper(Vector3 velocity, Vector3 normal)
     {
-        if (Vector3.Angle(velocity, -normal) < bonkThreshold && Player.StateMachine.SendSignal(new("Bonk", 0, true)))
+        if (Vector3.Angle(velocity, -normal) < bonkThreshold && Self.StateMachine.SendSignal(new("Bonk", 0, true)))
         {
             this.Velocity.ZeroOut();
             return true;
@@ -131,10 +131,10 @@ public sealed class PlayerMovementBody : PhysicsBody
         set
         {
             currentVent = value;
-            Player.StateMachine.SendSignal(new(value != null ? "EnterVent" : "ExitVent", 0, true));
+            Self.StateMachine.SendSignal(new(value != null ? "EnterVent" : "ExitVent", 0, true));
         }
     }
-    VolcanicVent currentVent;
+VolcanicVent currentVent;
     public bool isOverVent => currentVent != null;
 
     #endregion Other

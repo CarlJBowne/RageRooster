@@ -1,8 +1,9 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.IO;
+using RageRooster.Core;
 using RageRooster.SaveSystem;
 using RageRooster.SaveSystem.Flags;
 using FMODUnity;
@@ -64,7 +65,7 @@ namespace RageRooster.World
         protected override void OnFinishLoad()
         {
             for (int i = 0; i < rooms.Count; i++)
-                PlayerMovementBody.MovingUpdateAction += rooms[i].Update;
+                if (IPlayer.Present) IPlayer.Self.OnMovingUpdate += rooms[i].Update;
 
         }
 
@@ -91,7 +92,7 @@ namespace RageRooster.World
             // Unsubscribe and fully unload contained rooms, then unload the shell scene using SceneSO.
             foreach (RoomAsset room in rooms)
             {
-                PlayerMovementBody.MovingUpdateAction -= room.Update;
+                if (IPlayer.Present) IPlayer.Self.OnMovingUpdate -= room.Update;
                 yield return room.CompleteUnload();
             }
 

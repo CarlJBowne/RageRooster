@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using System;
 using SLS.Singletons;
 using SLS.MenuCore;
 using RageRooster.World;
+using RageRooster.Core;
+using RageRooster;
 
-public class PauseMenu : Menu
+public class PauseMenu : Menu, IPauseMenu
 {
     static Singleton<PauseMenu> S;
     public static PauseMenu Get => S.Get;
@@ -17,7 +18,8 @@ public class PauseMenu : Menu
     public static bool Present => S.Active;
 
     public static bool isPaused => S.Get.isActive;
-    public static bool canPause = true;
+
+    public bool canPause { get; set; } = true;
 
     public static System.Action onPause;
     public static System.Action onUnPause;
@@ -25,11 +27,13 @@ public class PauseMenu : Menu
     protected override void Awake()
     {
         S.Register(this);
+        Services.Register.PauseMenu(this);
         base.Awake();
     }
     protected override void OnDestroy()
     {
         S.Deregister(this);
+        Services.Register.PauseMenu(null);
         base.OnDestroy();
     }
 
@@ -95,4 +99,6 @@ public class PauseMenu : Menu
         };
         Gameplay.ReloadSave();
     }
+
+    public void Pause() => Open();
 }
