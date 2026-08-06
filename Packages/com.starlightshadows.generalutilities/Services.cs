@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// A near instant way to create Services! <br/>
@@ -96,5 +97,39 @@ public interface IService<T> where T : class, IService<T>
         if (SInstance != item) return OperationMessage.NotRegisteredInstance;
         SInstance = null;
         return OperationMessage.Success;
+    }
+}
+
+namespace Syncables //A theorized system by which "serivces" might be made less horrifically confusing.
+{
+    public interface ISyncable
+    {
+        public void Sync(ISyncable sync);
+        public List<ISyncable> Others { get; }
+        public enum SyncState
+        {
+            Invalid = -1,
+            Synced = 0,
+            Root = 1
+        }
+        public bool AllowGet { get; }
+        public bool AllowSet { get; }
+    }
+    public interface ISyncable<T> : ISyncable
+    {
+        public void Sync(ISyncable<T> sync);
+        public new List<ISyncable<T>> Others { get; }
+    }
+    public interface IGettable<T> : ISyncable<T>
+    {
+        public T Get();
+    }
+    public interface ISettable<T> : ISyncable<T>
+    {
+        public void Set(T value);
+    }
+    public interface IGetSettable<T> : IGettable<T>, ISettable<T>, ISyncable<T>
+    {
+
     }
 }

@@ -13,11 +13,11 @@ namespace RageRooster
     public class Services
     {
         #region Main Services
-        public static IPlayer Player { get; internal set; }
-        public static IGameplay Gameplay { get; internal set; }
-        public static IMusicService Music { get; internal set; }
-        public static IHUDService HUD { get; internal set; }
-        public static IPauseMenu PauseMenu { get; internal set; }
+        public static IPlayer Player;
+        public static IGameplay Gameplay;
+        public static IMusicService Music;
+        public static IHUDService HUD;
+        public static IOverlayTopPlus OverlayTopPlus;
         #endregion
 
         #region Static Services
@@ -33,6 +33,15 @@ namespace RageRooster
             public static Action RevertToSaveFile;
 
             public static Action<IDestination> GetEditorDestination;
+
+            public static ISaveData Active;
+        }
+
+        public static class UI
+        {
+            public static bool canPause;
+            public static Action<bool> SetPause;
+            public static Action<bool> LoadingPopup;
         }
 
         #endregion
@@ -41,18 +50,5 @@ namespace RageRooster
 
 
         #endregion
-
-        /// <summary>
-        /// Registration Center for Static Services.
-        /// <br/> Be sure to Deregister when services stop existing by calling the Register function with null input.
-        /// </summary>
-        public static class Register
-        {
-            public static void Player(IPlayer input) => Services.Player = input;
-            public static void Gameplay(IGameplay input) => Services.Gameplay = input;
-            public static void Music(IMusicService input) => Services.Music = input;
-            public static void HUD(IHUDService input) => Services.HUD = input;
-            public static void PauseMenu(IPauseMenu input) => Services.PauseMenu = input;
-        }
     }
 }

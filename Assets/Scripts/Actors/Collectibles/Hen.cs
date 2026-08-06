@@ -17,10 +17,7 @@ namespace RageRooster.Entities.Collectibles
         public int ammoCount = 1;
         public string hintString;
 
-
-        protected override List<string> targetRegistryList => SavedValueRegistry.HensRescued;
-
-        protected override SaveData.SavedCollectible targetSavedCollectible => SaveData.Current.hensRescued;
+        protected override SavedCollectible targetSavedCollectible => SavedCollectible.Hens;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -30,6 +27,9 @@ namespace RageRooster.Entities.Collectibles
         }
 
         [CustomEditor(typeof(Hen))]
-        public new class Editor : CollectibleBase.Editor { }
+        public class Editor : CollectibleBase.Editor
+        {
+            protected override List<string> targetRegistryList => SavedValueRegistry.HensRescued;
+        }
     }
 }

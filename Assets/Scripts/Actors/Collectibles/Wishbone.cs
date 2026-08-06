@@ -12,9 +12,7 @@ namespace RageRooster.Entities.Collectibles
 {
     public class Wishbone : CollectibleBase
     {
-        protected override List<string> targetRegistryList => SavedValueRegistry.Wishbones;
-
-        protected override SaveData.SavedCollectible targetSavedCollectible => SaveData.Current.wishbones;
+        protected override SavedCollectible targetSavedCollectible => SavedCollectible.Wishbones;
 
 
         private void OnTriggerEnter(Collider other)
@@ -23,6 +21,9 @@ namespace RageRooster.Entities.Collectibles
         }
 
         [CustomEditor(typeof(Wishbone))]
-        public new class Editor : CollectibleBase.Editor { }
+        public new class Editor : CollectibleBase.Editor
+        {
+            protected override List<string> targetRegistryList => SavedValueRegistry.Wishbones;
+        }
     }
 }

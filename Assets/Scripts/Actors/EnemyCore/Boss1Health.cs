@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using SLS.StateMachineH;
 using EditorAttributes;
+using static RageRooster.Services;
 
 public class Boss1Health : Health, IDamagable
 {
@@ -15,7 +16,7 @@ public class Boss1Health : Health, IDamagable
 
     public UltEvents.UltEvent ResetBossEvent;
     public UltEvents.UltEvent FinishBossEvent;
-    public RageRooster.Obsolete.WorldChange finishedBossWorldChange;
+    //public RageRooster.Obsolete.WorldChange finishedBossWorldChange;
 
     [HideInEditMode] public int bossPhase = 1;
     private bool phase2TriggerTriggered;
@@ -33,16 +34,16 @@ public class Boss1Health : Health, IDamagable
         TryGetComponent(out moveAnim);
         TryGetComponent(out machine);
         respawnPoint = transform.position;
-        if (finishedBossWorldChange.Enabled) FinishBossEvent?.Invoke();
+        //if (finishedBossWorldChange.Enabled) FinishBossEvent?.Invoke();
     }
 
     private void OnEnable()
     {
-        Player.onRespawn += ResetBoss;
+        Player.OnRespawn += ResetBoss;
     }
     private void OnDestroy()
     {
-        Player.onRespawn -= ResetBoss;
+        Player.OnRespawn -= ResetBoss;
     }
 
     protected override bool OverrideDamageable(Attack attack)
@@ -133,7 +134,7 @@ public class Boss1Health : Health, IDamagable
         bossPhase = 1;
         damagable = true;
         ResetBossEvent?.Invoke();
-        Player.onRespawn -= ResetBoss;
+        Player.OnRespawn -= ResetBoss;
     }
 
     public void FinishBoss()

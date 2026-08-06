@@ -5,7 +5,7 @@ namespace RageRooster.Core
 {
     public interface IPlayer
     {
-        public static IPlayer Self => Services.Player;
+        public static IPlayer Self => RageRooster.Services.Player;
         public static bool Present => Self != null;
 
         Transform Transform { get; }
@@ -28,6 +28,7 @@ namespace RageRooster.Core
         IPlayerStats Stats { get; }
 
         event Action OnMovingUpdate;
+        event Action OnRespawn;
     }
 
     public interface IPlayerStats

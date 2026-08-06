@@ -5,7 +5,7 @@ namespace RageRooster.Core
 {
     public interface IMusicService
     {
-        public static IMusicService Self => Services.Music;
+        public static IMusicService Self => RageRooster.Services.Music;
         public static bool Present => Self != null;
 
         void StopAllMusic();

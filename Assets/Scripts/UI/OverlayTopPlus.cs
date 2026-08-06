@@ -1,14 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+using RageRooster;
+using RageRooster.Core;
+using RageRooster.World;
 using SLS.MenuCore;
 using SLS.Singletons;
-using RageRooster.World;
+using UnityEngine;
+using UnityEngine.UI;
 
 
-public class OverlayTopPlus : Overlay
+public class OverlayTopPlus : Overlay, IOverlayTopPlus
 {
     static Singleton<OverlayTopPlus> self;
 
@@ -25,27 +27,36 @@ public class OverlayTopPlus : Overlay
     protected override void Awake()
     {
         self.Register(this);
+        Services.OverlayTopPlus = this;
 
         if (animator == null) animator = GetComponent<Animator>();
         if (image == null) image = GetComponent<Image>();
         ResetState();
     }
+    private void OnDestroy()
+    {
+        self.Deregister(this);
+        Services.OverlayTopPlus = null;
+    }
 
-    public static void LoadingPopup()
+    public void LoadingPopup(bool value = true)
     {
         if (!Active) return;
-        Coroutine.Begin(ref Get.activeRoutine, Enum(), true);
-        static IEnumerator Enum()
+        if (value)
         {
-            yield return new WaitForSecondsRealtime(Get.showTime);
-            if (RoomManager.CurrentlyTransitioning) Get.PlayAnimation(LoadingAnimationHash);
+            Coroutine.Begin(ref activeRoutine, Enum(), true);
+            static IEnumerator Enum()
+            {
+                yield return new WaitForSecondsRealtime(Get.showTime);
+                if (RoomManager.CurrentlyTransitioning) Get.PlayAnimation(LoadingAnimationHash);
+            }
         }
-    }
-    public static void EndLoadingPopup()
-    {
-        Coroutine.Stop(ref Get.activeRoutine);
-        Get.ResetState();
-        Get.transform.Find("CORN").gameObject.SetActive(false);
+        else
+        {
+            Coroutine.Stop(ref activeRoutine);
+            Get.ResetState();
+            Get.transform.Find("CORN").gameObject.SetActive(false);
+        }
     }
 
     public IEnumerator GameOverAnim(float duration = 1f)

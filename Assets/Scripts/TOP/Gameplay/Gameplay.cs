@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using RageRooster.World;
-using RageRooster.Systems;
 using RageRooster.SaveSystem;
 using SLS.GameStateMachine;
 using SLS.MenuCore;
@@ -11,6 +10,7 @@ using UnityEngine.SceneManagement;
 using Utilities;
 using SLS.ObjectUtilities;
 using RageRooster;
+using RageRooster.Core;
 
 public class Gameplay : GameStateSingle<Gameplay>
 {
@@ -92,12 +92,12 @@ public class Gameplay : GameStateSingle<Gameplay>
     protected override void OnEnterLogic()
     {
         Instance = this;
-        Services.RegisterGameplay(this);
+        Services.Gameplay = this as IGameplay;
     }
 
     protected override void OnExitLogic()
     {
-        Services.DeregisterGameplay(this);
+        Services.Gameplay = null;
         Instance = null;
     }
 

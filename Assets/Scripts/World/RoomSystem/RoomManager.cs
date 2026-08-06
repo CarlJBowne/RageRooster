@@ -147,7 +147,7 @@ namespace RageRooster.World
             yield return MidTransitionRoutine;
 
             CurrentlyTransitioning = false;
-            OverlayTopPlus.EndLoadingPopup();
+            OverlayTopPlus.LoadingPopup(false);
             if (IPlayer.Present) IPlayer.Self.ActivityState = ActivityStates.Active;
 
 

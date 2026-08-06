@@ -15,8 +15,7 @@ namespace RageRooster.Entities.Collectibles
     {
         protected override List<string> targetRegistryList => SavedValueRegistry.PowerEggs;
 
-        protected override SaveData.SavedCollectible targetSavedCollectible => SaveData.Current.powerEggs;
-
+        protected override SavedCollectible targetSavedCollectible => SavedCollectible.PowerEggs;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -24,6 +23,9 @@ namespace RageRooster.Entities.Collectibles
         }
 
         [CustomEditor(typeof(PowerEgg))]
-        public new class Editor : CollectibleBase.Editor { }
+        public new class Editor : CollectibleBase.Editor
+        {
+            protected override List<string> targetRegistryList => SavedValueRegistry.PowerEggs;
+        }
     }
 }

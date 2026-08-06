@@ -14,6 +14,7 @@ using DG.Tweening;
 using Cinemachine;
 using System;
 using static RageRooster.Services;
+using RageRooster;
 
 [RequireComponent(typeof(DialogueAudio))]
 [RequireComponent(typeof(Animator))]
@@ -110,7 +111,7 @@ public class SpeakerScript : MonoBehaviour
             UI.dialogueCamera.GetComponent<CinemachineVirtualCamera>().LookAt = targetGroup.transform;
             UI.SetCharNameAndColor();
             UI.inDialogue = true;
-            PauseMenu.canPause = false;
+            Services.UI.canPause = false;
             UI.CameraChange(true);
             UI.ClearText();
             UI.FadeUI(true, .2f, .65f);

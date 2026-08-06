@@ -19,7 +19,11 @@ public class PauseMenu : Menu, IPauseMenu
 
     public static bool isPaused => S.Get.isActive;
 
-    public bool canPause { get; set; } = true;
+    public static bool canPause
+    {
+        get => Services.UI.canPause;
+        set => Services.UI.canPause = value;
+    }
 
     public static System.Action onPause;
     public static System.Action onUnPause;
@@ -27,13 +31,13 @@ public class PauseMenu : Menu, IPauseMenu
     protected override void Awake()
     {
         S.Register(this);
-        Services.Register.PauseMenu(this);
+        Services.UI.SetPause += SetPause;
         base.Awake();
     }
     protected override void OnDestroy()
     {
         S.Deregister(this);
-        Services.Register.PauseMenu(null);
+        Services.UI.SetPause -= SetPause;
         base.OnDestroy();
     }
 
@@ -100,5 +104,9 @@ public class PauseMenu : Menu, IPauseMenu
         Gameplay.ReloadSave();
     }
 
-    public void Pause() => Open();
+    private void SetPause(bool value)
+    {
+        if (value) Open();
+        else Close();
+    }
 }
