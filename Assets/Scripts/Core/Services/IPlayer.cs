@@ -25,15 +25,7 @@ namespace RageRooster.Core
         void PitFall();
         bool Owns(Component C);
 
-        IPlayerStats Stats { get; }
-
         event Action OnMovingUpdate;
         event Action OnRespawn;
-    }
-
-    public interface IPlayerStats
-    {
-        int MaxHealth { get; set; }
-        int MaxAmmo { get; set; }
     }
 }

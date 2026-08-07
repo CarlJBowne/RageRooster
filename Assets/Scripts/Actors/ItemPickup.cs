@@ -43,7 +43,7 @@ public class ItemPickup : MonoBehaviour
         if (type == ItemType.Coin)
         {
             //GlobalState.AddCurrency(addAmount);
-            SaveData.Current.playerStats.currency += addAmount;
+            SaveData.Active.playerStats.currency += addAmount;
         }
         else if (type == ItemType.Health)
         {

@@ -17,7 +17,8 @@ namespace SLS.SaveData
 
         public static void Clone(T from, T to) => to.Clone(from);
 
-        public void EstablishActive() => Current = this as T;
-        public static T Current { get; private set; }
+        public virtual void Establish(string context) { }
+        public static T Default { get; protected set; }
+        public static T Active { get; protected set; }
     }
 }

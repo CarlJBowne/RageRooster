@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RageRooster.Core;
+using RageRooster.SaveSystem;
 using RageRooster.World;
 using SLS.SaveData;
 using Utilities.JSON;
@@ -11,11 +12,11 @@ namespace RageRooster.Player
     /// A container for the active data of all player upgrades.
     /// </summary>
     [System.Serializable]
-    public class PlayerStats : Saveable<PlayerStats>, IPlayerStats
+    public class PlayerStats : Saveable<PlayerStats>
     {
         public int maxHealth = 3;
         public int maxAmmo = 0;
-        public Destination location;
+        public IDestination location;
 
         /// <summary> The ability to throw a grabbable object downwards while in midair, launching the player upwards. </summary>
         public bool dropLaunch;
@@ -50,23 +51,27 @@ namespace RageRooster.Player
             location = source.location;
         }
 
-
+        public override void Establish(string context)
+        {
+            if (context == SaveData.EstablishmentContexts.Active) Active = this;
+            else if (context == SaveData.EstablishmentContexts.Default) Default = this;
+        }
 
 
         /// <returns>A new instance of <see cref="PlayerStats"/> with all upgrades active, including debug-privilege upgrades</returns>
         public static void ActivateDebug()
         {
-            Current.dropLaunch = true;
-            Current.wallJump = true;
-            Current.hellcopter = true;
-            Current.ragingCharge = true;
-            Current.glide = true;
-            Current.doubleJump = true;
-            Current.lasso = true;
-            Current.d_invincibility = true;
-            Current.d_moonJump = true;
-            Current.maxHealth = 10;
-            Current.maxAmmo = 40;
+            Active.dropLaunch = true;
+            Active.wallJump = true;
+            Active.hellcopter = true;
+            Active.ragingCharge = true;
+            Active.glide = true;
+            Active.doubleJump = true;
+            Active.lasso = true;
+            Active.d_invincibility = true;
+            Active.d_moonJump = true;
+            Active.maxHealth = 10;
+            Active.maxAmmo = 40;
         }
 
         public enum Upgrade

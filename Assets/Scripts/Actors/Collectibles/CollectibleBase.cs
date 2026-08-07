@@ -37,7 +37,7 @@ namespace RageRooster.Entities.Collectibles
 #endif
             }
 
-            if (targetSavedCollectible.isCollected[targetRegistryList.IndexOf(ID)])
+            if (targetSavedCollectible.GetValue(ID))
                 gameObject.SetActive(false);
         }
 
@@ -46,7 +46,7 @@ namespace RageRooster.Entities.Collectibles
         /// </summary>
         protected virtual void Acquire()
         {
-            targetSavedCollectible.isCollected[targetRegistryList.IndexOf(ID)] = true;
+            targetSavedCollectible.SetValue(ID, true);
             gameObject.SetActive(false);
         }
 

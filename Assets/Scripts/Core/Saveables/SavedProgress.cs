@@ -1,0 +1,46 @@
+using System;
+using SLS.SaveData;
+using UnityEngine;
+
+namespace RageRooster.SaveSystem
+{
+    public class SavedProgress : Saveable<SavedProgress>
+    {
+        public TimeSpan playTime = TimeSpan.Zero;
+        public int currency = 0;
+        public SavedCollectible powerEggs = new();
+        public SavedCollectible wishbones = new();
+        public SavedCollectible hensRescued = new();
+
+        /// <summary>
+        /// The last written time (in seconds) since the game been started that the player interacted with a save point. <br/>
+        /// See <see cref="UpdateGameTime"/>
+        /// </summary>
+        public static double lastSaveInteractionTime;
+        /// <summary>
+        /// Updates the <see cref="lastSaveInteractionTime"/> to the current time, returning the time (in seconds) since the last update. <br/>
+        /// </summary>
+        /// <returns></returns>
+        public static double UpdateGameTime()
+        {
+            var previousSaveInteractionTime = lastSaveInteractionTime;
+            lastSaveInteractionTime = Time.timeAsDouble;
+            return Time.timeAsDouble - previousSaveInteractionTime;
+        }
+
+        public override void Establish(string context)
+        {
+            if (context == SaveData.EstablishmentContexts.Active) Active = this;
+            else if (context == SaveData.EstablishmentContexts.Default) Default = this;
+        }
+
+        public override void Clone(SavedProgress source)
+        {
+            playTime = source.playTime;
+            currency = source.currency;
+            powerEggs.Clone(source.powerEggs);
+            wishbones.Clone(source.wishbones);
+            hensRescued.Clone(source.hensRescued);
+        }
+    }
+}

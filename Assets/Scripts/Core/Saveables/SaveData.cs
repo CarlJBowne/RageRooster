@@ -22,9 +22,13 @@ namespace RageRooster.SaveSystem
 
         public static void InitializeSystem(SaveData defaultInput)
         {
-            Default = defaultInput;
+            defaultInput.Establish(EstablishmentContexts.Default);
             Active = new();
+            Active.Establish(EstablishmentContexts.Active);
+            //Initialize Actives
             {
+                PlayerStats.Active = Active.playerStats;
+                SavedProgress.Active = Active.progress;
                 SavedCollectible.Hens = Active.progress.hensRescued;
                 SavedCollectible.Wishbones = Active.progress.wishbones;
                 SavedCollectible.PowerEggs = Active.progress.powerEggs;
@@ -33,23 +37,39 @@ namespace RageRooster.SaveSystem
             DeathReloadData = new();
             IO.LoadOperator = new();
 
-            Services.SaveSystem.CurrentDestination = new(
-                () => Active.playerStats.location, 
-                input => Active.playerStats.location = input as Destination
+            //Initialize Save System Services.
+            {
+                Services.SaveSystem.CurrentDestination = new(
+                () => Active.playerStats.location,
+                input => Active.playerStats.location = input
             );
-            Services.SaveSystem.DeathDestination = new(
-                () => DeathReloadData.playerStats.location, 
-                input => DeathReloadData.playerStats.location = input as Destination
-            );
-            Services.SaveSystem.SaveToDeathData = SaveToDeathData;
-            Services.SaveSystem.RevertToDeathData = RevertToDeathData;
-            Services.SaveSystem.SaveToSaveFile = SaveToSaveFile;
-            Services.SaveSystem.RevertToSaveFile = RevertToSaveFile;
+                Services.SaveSystem.DeathDestination = new(
+                    () => DeathReloadData.playerStats.location,
+                    input => DeathReloadData.playerStats.location = input
+                );
+                Services.SaveSystem.SaveToDeathData = SaveToDeathData;
+                Services.SaveSystem.RevertToDeathData = RevertToDeathData;
+                Services.SaveSystem.SaveToSaveFile = SaveToSaveFile;
+                Services.SaveSystem.RevertToSaveFile = RevertToSaveFile;
+            }
         }
 
-        public static SaveData Default { get; private set; }
-        /// <summary> The currently active Save Data during Gameplay. </summary>
-        public static SaveData Active { get; private set; }
+        public override void Establish(string context)
+        {
+            if(context == EstablishmentContexts.Active) Active = this;
+            else if(context == EstablishmentContexts.Default) Default = this;
+
+            playerStats.Establish(context);
+            progress.Establish(context);
+            globalChanges.Establish(context);
+        }
+
+        public static class EstablishmentContexts
+        {
+            public const string Default = "Default";
+            public const string Active = "Active";  
+        }
+
         /// <summary> The Save Data used to reload data after the player experiences a death. </summary>
         /// <remarks> See <see cref="RevertToDeathData"/></remarks>
         public static SaveData DeathReloadData { get; private set; }
@@ -60,14 +80,14 @@ namespace RageRooster.SaveSystem
 
         public static void SaveToSaveFile()
         {
-            Active.progress.playTime += TimeSpan.FromSeconds(Progress.UpdateGameTime());
+            Active.progress.playTime += TimeSpan.FromSeconds(SavedProgress.UpdateGameTime());
             Clone(Active, DeathReloadData);
             Clone(Active, IO.LoadOperator);
             IO.SaveToFile();
         }
         public static void RevertToSaveFile()
         {
-            Progress.UpdateGameTime();
+            SavedProgress.UpdateGameTime();
             IO.LoadFromFile();
             Clone(IO.LoadOperator, Active);
             Clone(Active, DeathReloadData);
@@ -88,44 +108,11 @@ namespace RageRooster.SaveSystem
         public const string targetFileVersion = "1.0.0";
 
         public PlayerStats playerStats = new();
-        public Progress progress = new();
-        public class Progress : Saveable<Progress>
-        {
-            public TimeSpan playTime = TimeSpan.Zero;
-            public int currency = 0;
-            public SavedCollectible powerEggs = new();
-            public SavedCollectible wishbones = new();
-            public SavedCollectible hensRescued = new();
-
-            /// <summary>
-            /// The last written time (in seconds) since the game been started that the player interacted with a save point. <br/>
-            /// See <see cref="UpdateGameTime"/>
-            /// </summary>
-            public static double lastSaveInteractionTime;
-            /// <summary>
-            /// Updates the <see cref="lastSaveInteractionTime"/> to the current time, returning the time (in seconds) since the last update. <br/>
-            /// </summary>
-            /// <returns></returns>
-            public static double UpdateGameTime()
-            {
-                var previousSaveInteractionTime = lastSaveInteractionTime;
-                lastSaveInteractionTime = Time.timeAsDouble;
-                return Time.timeAsDouble - previousSaveInteractionTime;
-            }
-
-            public override void Clone(Progress source)
-            {
-                playTime = source.playTime;
-                currency = source.currency;
-                powerEggs.Clone(source.powerEggs);
-                wishbones.Clone(source.wishbones);
-                hensRescued.Clone(source.hensRescued);
-            }
-        }
+        public SavedProgress progress = new();
 
 
         public Flags.SavedFlagSet globalChanges;
-        public Dictionary<AreaAsset, Flags.SavedFlagSet> areaChanges = new();
+        public Dictionary<string, Flags.SavedFlagSet> areaChanges = new();
 
         #endregion Actual Data 
 
@@ -145,6 +132,10 @@ namespace RageRooster.SaveSystem
         {
             playerStats.Clone(source.playerStats);
             progress.Clone(source.progress);
+            globalChanges.Clone(source.globalChanges);
+            if (areaChanges.Count == 0) areaChanges = new Dictionary<string, Flags.SavedFlagSet>(source.areaChanges);
+            foreach (KeyValuePair<string, Flags.SavedFlagSet> pair in areaChanges)
+                pair.Value.Clone(source.areaChanges[pair.Key]);
         }
 
         #endregion
@@ -167,8 +158,8 @@ namespace RageRooster.SaveSystem
                 RootFile = new(saveRootPath, $"playerData");
                 WorldChangesFile = new(saveRootPath, $"worldChanges");
                 areaChangesFiles = new();
-                foreach (IAreaAsset area in DestinationMap.AllAreas)
-                    areaChangesFiles.Add(area, new JsonFile(saveRootPath, $"flags_{area.name}"));
+                foreach (string area in IDestination.AllAreas)
+                    areaChangesFiles.Add(area, new JsonFile(saveRootPath, $"flags_{area}"));
                 SecondaryFiles = areaChangesFiles.Values.Append(WorldChangesFile).ToArray();
             }
 
@@ -179,7 +170,7 @@ namespace RageRooster.SaveSystem
             //Contains powerEggs, hensRescued, and globalChanges
             public JsonFile WorldChangesFile;
 
-            public Dictionary<AreaAsset, JsonFile> areaChangesFiles;
+            public Dictionary<string, JsonFile> areaChangesFiles;
 
             protected override JsonFile.LoadResult ReadData()
             {
@@ -272,7 +263,8 @@ namespace RageRooster.SaveSystem
             public float GetCompletionPercentage()
             {
                 if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
-                int totalCollectibles = SavedValueRegistry.PowerEggs.Count + SavedValueRegistry.Wishbones.Count + SavedValueRegistry.HensRescued.Count;
+                int totalCollectibles = 0 // SavedValueRegistry.PowerEggs.Count + SavedValueRegistry.Wishbones.Count + SavedValueRegistry.HensRescued.Count
+                                          ;
                 if (totalCollectibles == 0) return 100f;
                 int collected = 0;
                 //collected += WorldChangesFile[nameof(powerEggs)][nameof(SavedCollectible.total)].ToObject<int>();

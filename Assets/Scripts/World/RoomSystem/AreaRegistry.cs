@@ -27,7 +27,7 @@ namespace RageRooster.World
             savedFlagDictionary = new();
             foreach (AreaAsset item in areaAssets) savedFlagDictionary.Add(item, item.flagDefaults);
             DestinationMap.Default = (DestinationMap)new Destination();
-            //DestinationMap.AllAreas = GetAll();
+            IDestination.AllAreas = areaAssets.Select(x => x.name).ToArray();
         }
 
         /// <summary>

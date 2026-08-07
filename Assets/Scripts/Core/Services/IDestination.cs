@@ -11,6 +11,8 @@ namespace RageRooster.World
         public object iArea { get; }
         public object iSpawn { get; }
         public object iRoom { get; }
+
+        public static string[] AllAreas;
     }
 
     /// <summary>
@@ -49,24 +51,5 @@ namespace RageRooster.World
         public static implicit operator JToken(DestinationMap i) => new JArray(i.area, i.room, i.spawn);
 
         public static DestinationMap Default;
-        //public static IAreaAsset[] AllAreas;
-        //public static IAreaAsset GetArea(string name)
-        //{
-        //    for (int i = 0; i < AllAreas.Length; i++)
-        //        if (AllAreas[i].name == name)
-        //            return AllAreas[i];
-        //    return null;
-        //}
     }
-    //public interface IAreaAsset
-    //{
-    //    public SavedFlagSet flagDefaults { get; }
-    //    public string name { get; }
-    //    public List<IRoomAsset> rooms { get; }
-    //}
-    //public interface IRoomAsset
-    //{
-    //    public string name { get; }
-    //    public List<string> spawnPointNames { get; }
-    //}
 }

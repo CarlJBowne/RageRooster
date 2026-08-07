@@ -17,6 +17,10 @@ namespace RageRooster.SaveSystem
         /// A list of individual collectibles and whether they are collected or not.<br/>
         /// </summary>
         public List<bool> isCollected;
+        /// <summary>
+        /// A list of string IDs for each collectible, used for saving and loading, and editor management.
+        /// </summary>
+        public List<string> IDs;
 
         public override void Clone(SavedCollectible source)
         {
@@ -24,6 +28,23 @@ namespace RageRooster.SaveSystem
             total = source.total;
             isCollected ??= new List<bool>(source.isCollected);
         }
+
+        public bool GetValue(string id)
+        {
+            int index = IDs.IndexOf(id);
+            if (index == -1) return false;
+            return isCollected[index];
+        }
+        public bool SetValue(string id, bool value)
+        {
+            int index = IDs.IndexOf(id);
+            if (index == -1) return false;
+            isCollected[index] = value;
+            return true;
+        }
+
+
+
 
         public static SavedCollectible Wishbones;
         public static SavedCollectible PowerEggs;

@@ -29,7 +29,7 @@ public class PlayerRoot : MonoBehaviour, IPlayer, IPlayerRoot
         remove => currency.updateCurrency -= value; 
     }
 
-    IPlayerStats IPlayer.Stats => PlayerStats.Current;
+    IPlayerStats IPlayer.Stats => PlayerStats.Active;
 
     event Action IPlayer.OnMovingUpdate 
     { 
