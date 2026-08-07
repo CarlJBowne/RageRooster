@@ -18,14 +18,14 @@ namespace RageRooster.World
 
 
         private static Dictionary<string, AreaAsset> dictionary;
-        private static Dictionary<AreaAsset, SavedFlagSet> savedFlagDictionary;
+        private static Dictionary<string, SavedFlagSet> savedFlagDictionary;
 
         public override void OnInit()
         {
             dictionary = new();
             foreach (AreaAsset item in areaAssets) dictionary.Add(item.name, item);
             savedFlagDictionary = new();
-            foreach (AreaAsset item in areaAssets) savedFlagDictionary.Add(item, item.flagDefaults);
+            foreach (AreaAsset item in areaAssets) savedFlagDictionary.Add(item.name, item.flagDefaults);
             DestinationMap.Default = (DestinationMap)new Destination();
             IDestination.AllAreas = areaAssets.Select(x => x.name).ToArray();
         }
@@ -44,7 +44,7 @@ namespace RageRooster.World
         /// <returns>All areas in the registry.</returns>
         public static AreaAsset[] GetAll() => Get.areaAssets;
 
-        public static Dictionary<AreaAsset, SavedFlagSet> SavedFlagsDictionary()
+        public static Dictionary<string, SavedFlagSet> SavedFlagsDictionary()
         {
             if (savedFlagDictionary is null) Get.OnInit();
             return savedFlagDictionary;

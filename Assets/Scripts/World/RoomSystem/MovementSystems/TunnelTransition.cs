@@ -21,7 +21,7 @@ namespace RageRooster.World.MovementSystems
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!(!playerWithin && Player.Owns(other))) return;
+            if (!(!playerWithin && Services.Player.Owns(other))) return;
 
             playerWithin = true;
             if (lockCameraPosition || lockCameraRotation) Cameras.LockPrimary(lockCameraPosition, lockCameraRotation);
@@ -32,7 +32,7 @@ namespace RageRooster.World.MovementSystems
 
         private void OnTriggerExit(Collider other)
         {
-            if(playerWithin && Player.Owns(other) && cancellable)
+            if(playerWithin && Services.Player.Owns(other) && cancellable)
             {
                 playerWithin = false;
                 if (lockCameraPosition || lockCameraRotation) Cameras.LockPrimary(false, false);

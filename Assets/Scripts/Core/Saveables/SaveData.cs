@@ -20,19 +20,11 @@ namespace RageRooster.SaveSystem
     {
         #region Top Systems
 
-        public static void InitializeSystem(SaveData defaultInput)
+        public static void InitializeSystem(SaveData defaultInput, bool EditorOnly)
         {
             defaultInput.Establish(EstablishmentContexts.Default);
             Active = new();
             Active.Establish(EstablishmentContexts.Active);
-            //Initialize Actives
-            {
-                PlayerStats.Active = Active.playerStats;
-                SavedProgress.Active = Active.progress;
-                SavedCollectible.Hens = Active.progress.hensRescued;
-                SavedCollectible.Wishbones = Active.progress.wishbones;
-                SavedCollectible.PowerEggs = Active.progress.powerEggs;
-            }
 
             DeathReloadData = new();
             IO.LoadOperator = new();

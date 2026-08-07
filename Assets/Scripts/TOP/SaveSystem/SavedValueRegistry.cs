@@ -17,15 +17,11 @@ namespace RageRooster.SaveSystem
     public class SavedValueRegistry : GlobalAsset<SavedValueRegistry>
     {
         [SerializeField] private PlayerStats playerStatsDef = new();
-        [SerializeField] private List<string> powerEggs = new();
-        [SerializeField] private List<string> wishbones = new();
-        [SerializeField] private List<string> hensRescued = new();
+        [SerializeField] private SavedCollectible powerEggs = new();
+        [SerializeField] private SavedCollectible wishbones = new();
+        [SerializeField] private SavedCollectible hensRescued = new();
         [SerializeField] private Flags.SavedFlagSet globalFlagDefs;
 
-        public static List<string> PowerEggs => Get.powerEggs;
-        public static List<string> Wishbones => Get.wishbones;
-        public static List<string> HensRescued => Get.hensRescued;
-        public static Flags.SavedFlagSet GlobalFlagDefs => Get.globalFlagDefs;
 
         public override void OnInit()
         {
@@ -34,14 +30,15 @@ namespace RageRooster.SaveSystem
                 playerStats = playerStatsDef,
                 progress = new()
                 {
-                    powerEggs = { isCollected = new bool[powerEggs.Count].ToList() },
-                    wishbones = { isCollected = new bool[wishbones.Count].ToList() },
-                    hensRescued = { isCollected = new bool[hensRescued.Count].ToList() },
+                    powerEggs = powerEggs,
+                    wishbones = wishbones,
+                    hensRescued = hensRescued,
                 },
                 globalChanges = globalFlagDefs,
                 areaChanges = AreaRegistry.SavedFlagsDictionary()
             };
-            SaveData.InitializeSystem(defs);
+            this.GetExecutionDetails(out bool gameIsEditor, out bool gameIsPlaying);
+            SaveData.InitializeSystem(defs, gameIsEditor && !gameIsPlaying);
         }
     }
 }

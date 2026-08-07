@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using RageRooster.Obsolete;
+using RageRooster.Player;
 using RageRooster.SaveSystem;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -21,7 +22,7 @@ namespace RageRooster.Entities.Collectibles
 
         private void OnTriggerEnter(Collider other)
         {
-            Player.Ammo.Max++;
+            PlayerStats.Active.maxAmmo++;
             Acquire();
             UIHUDSystem.Instance.ShowHint(hintString);
         }

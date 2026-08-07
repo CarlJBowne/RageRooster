@@ -1,8 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RageRooster.Core;
 using RageRooster.SaveSystem;
 using RageRooster.World;
+using SLS.GeneralUtilities;
 using SLS.SaveData;
 using Utilities.JSON;
 
@@ -14,8 +16,29 @@ namespace RageRooster.Player
     [System.Serializable]
     public class PlayerStats : Saveable<PlayerStats>
     {
-        public int maxHealth = 3;
-        public int maxAmmo = 0;
+        private int maxHealth = 3;
+        public int MaxHealth
+        {
+            get => maxHealth;
+            set
+            {
+                maxHealth = value;
+                if(this == Active) OnMaxHealthChanged?.Invoke(value);
+            }
+        }
+        public static event Action<int> OnMaxHealthChanged;
+
+        private int maxAmmo = 3;
+        public int MaxAmmo
+        {
+            get => maxAmmo;
+            set
+            {
+                maxAmmo = value;
+                if (this == Active) OnMaxAmmoChanged?.Invoke(value);
+            }
+        }
+        public static event Action<int> OnMaxAmmoChanged;
         public IDestination location;
 
         /// <summary> The ability to throw a grabbable object downwards while in midair, launching the player upwards. </summary>
@@ -39,8 +62,8 @@ namespace RageRooster.Player
 
         public override void Clone(PlayerStats source)
         {
-            maxHealth = source.maxHealth;
-            maxAmmo = source.maxAmmo;
+            MaxHealth = source.maxHealth;
+            MaxAmmo = source.maxAmmo;
             dropLaunch = source.dropLaunch;
             wallJump = source.wallJump;
             hellcopter = source.hellcopter;

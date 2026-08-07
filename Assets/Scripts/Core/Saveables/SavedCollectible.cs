@@ -27,13 +27,13 @@ namespace RageRooster.SaveSystem
             if (this.GetType() != source.GetType()) return;
             total = source.total;
             isCollected ??= new List<bool>(source.isCollected);
+            IDs ??= new List<string>(source.IDs);
         }
 
         public bool GetValue(string id)
         {
             int index = IDs.IndexOf(id);
-            if (index == -1) return false;
-            return isCollected[index];
+            return index != -1 && isCollected[index];
         }
         public bool SetValue(string id, bool value)
         {
