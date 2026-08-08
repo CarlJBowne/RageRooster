@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 namespace RageRooster.Core
 {
@@ -9,6 +10,9 @@ namespace RageRooster.Core
         public static IGameplay Self => RageRooster.Services.Gameplay;
         public static bool Present => Self != null;
 
-        public bool Active { get; }
+        public List<MonoBehaviour> bobAndTurnList { get; }
+
+        public bool Active
+        { get; }
     }
 }

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using RageRooster.World;
-using RageRooster.SaveSystem;
+using RageRooster.Core.Save;
 using SLS.GameStateMachine;
 using SLS.MenuCore;
 using UnityEngine;
@@ -12,10 +12,17 @@ using SLS.ObjectUtilities;
 using RageRooster;
 using RageRooster.Core;
 
-public class Gameplay : GameStateSingle<Gameplay>
+public class Gameplay : GameStateSingle<Gameplay>, IGameplay
 {
     public override bool Additive => false;
     public static GameObject[] rootObjects;
+
+    public override void OnEnable()
+    {
+        RageRooster.Services.GameplayRunning = new(() => this.isActive);
+        RageRooster.Services.Gameplay = this;
+        base.OnEnable();
+    }
 
     protected override void TransitionLogic(Action SetCurrent, Action PostAction)
     {
@@ -128,6 +135,8 @@ public class Gameplay : GameStateSingle<Gameplay>
     /// </summary>
     public static System.Action onDestroy;
 
+    bool IGameplay.Active => isActive;
+
     /// <summary>
     /// Begins The Gameplay Phase using the specified Save File on Disk.
     /// </summary>
@@ -146,7 +155,7 @@ public class Gameplay : GameStateSingle<Gameplay>
             UnityEngine.Cursor.visible = false;
 
             InitializeSaves(fileNo);
-            RoomManager.destination = SaveData.Active.location;
+            RoomManager.queuedDestination = SaveData.Active.location;
 
             Menu.CloseAllMenus();
 
@@ -199,19 +208,19 @@ public class Gameplay : GameStateSingle<Gameplay>
     public static void Respawn()
     {
         RoomManager.PostFadeOutAction = () => { Player.onRespawn?.Invoke(); };
-        RoomManager.StartTransition(Services.SaveSystem.CurrentDestination.GetAs<Destination>());
+        RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
     }
 
     public static void Death()
     {
         SaveData.RevertToDeathData();
-        RoomManager.StartTransition(Services.SaveSystem.CurrentDestination.GetAs<Destination>());
+        RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
     }
 
     public static void ReloadSave()
     {
         SaveData.RevertToSaveFile();
-        RoomManager.StartTransition(Services.SaveSystem.CurrentDestination.GetAs<Destination>());
+        RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
     }
 
 

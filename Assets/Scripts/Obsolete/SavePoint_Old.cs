@@ -8,14 +8,15 @@ using UnityEngine.SceneManagement;
 namespace RageRooster.Obsolete
 {
     [System.Obsolete]
-    public class SavePoint_Old : MonoBehaviour, IInteractable
+    public class SavePoint_Old : MonoBehaviour//, IInteractable
     {
         public Transform SpawnPoint;
         public UltEvents.UltEvent onSpawnEvent;
 
         bool canInteract = true;
+        /*
         bool IInteractable.canInteract => canInteract;
-
+        
         public void Checkpoint()
         {
             //Gameplay.spawnSceneName = gameObject.scene.name;
@@ -69,5 +70,6 @@ namespace RageRooster.Obsolete
         }
 
         public Vector3 PopupPosition => transform.position + Vector3.up * 2;
+    */
     }
 }

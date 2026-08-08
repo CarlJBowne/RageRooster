@@ -1,4 +1,4 @@
-﻿using RageRooster.SaveSystem;
+﻿using RageRooster.Core.Save;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +8,11 @@ using UnityEditor.SceneManagement;
 using UnityEditor;
 using UnityEngine;
 
-namespace RageRooster.Entities.Collectibles
+namespace RageRooster.Actors.Save.Collectibles
 {
     public class Wishbone : CollectibleBase
     {
-        protected override SavedCollectible targetSavedCollectible => SavedCollectible.Wishbones;
+        protected override SavedCollectible targetSavedCollectible => SaveData.Default.progress.wishbones;
 
 
         private void OnTriggerEnter(Collider other)
@@ -23,7 +23,7 @@ namespace RageRooster.Entities.Collectibles
         [CustomEditor(typeof(Wishbone))]
         public new class Editor : CollectibleBase.Editor
         {
-            protected override List<string> targetRegistryList => SavedValueRegistry.Wishbones;
+            protected override List<string> targetRegistryList => SaveData.Default.progress.wishbones.IDs;
         }
     }
 }

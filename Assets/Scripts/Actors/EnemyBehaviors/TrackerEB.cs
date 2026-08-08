@@ -3,7 +3,7 @@ using UnityEngine;
 using SLS.StateMachineH;
 using EditorAttributes;
 using UnityEngine.Events;
-
+using static RageRooster.Services;
 
 [System.Obsolete]
 public class TrackerEB : StateBehavior
@@ -61,12 +61,13 @@ public class TrackerEB : StateBehavior
 
         if(target == null)
         {
-            PlayerStateMachine attempt = Player.StateMachine;
-            if (attempt != null) target = attempt.transform; 
-            else PlayerStateMachine.whenInitializedEvent += player => 
-            { 
-                target = player.transform; 
-            };
+            target = Player.Transform;
+            //PlayerStateMachine attempt = Player.StateMachine;
+            //if (attempt != null) target = attempt.transform; 
+            //else PlayerStateMachine.whenInitializedEvent += player => 
+            //{ 
+            //    target = player.transform; 
+            //};
         }
     }
 

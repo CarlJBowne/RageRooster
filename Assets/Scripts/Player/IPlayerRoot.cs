@@ -5,6 +5,8 @@ namespace RageRooster.Player
 {
     public interface IPlayerRoot : IPlayer
     {
+        public static IPlayerRoot Player;
+
         PlayerMovementBody MovementBody { get; }
         PlayerController Controller { get; }
         PlayerRanged Ranged { get; }

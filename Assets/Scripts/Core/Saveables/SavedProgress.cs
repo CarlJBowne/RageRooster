@@ -2,10 +2,13 @@ using System;
 using SLS.SaveData;
 using UnityEngine;
 
-namespace RageRooster.SaveSystem
+namespace RageRooster.Core.Save
 {
     public class SavedProgress : Saveable<SavedProgress>
     {
+        public static SavedProgress Active { get; private set; }
+        public void Establish() => Active = this;
+
         public TimeSpan playTime = TimeSpan.Zero;
         public int currency = 0;
         public SavedCollectible powerEggs = new();
@@ -26,12 +29,6 @@ namespace RageRooster.SaveSystem
             var previousSaveInteractionTime = lastSaveInteractionTime;
             lastSaveInteractionTime = Time.timeAsDouble;
             return Time.timeAsDouble - previousSaveInteractionTime;
-        }
-
-        public override void Establish(string context)
-        {
-            if (context == SaveData.EstablishmentContexts.Active) Active = this;
-            else if (context == SaveData.EstablishmentContexts.Default) Default = this;
         }
 
         public override void Clone(SavedProgress source)

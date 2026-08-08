@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SLS.Singletons;
 using System.Linq;
-using RageRooster.SaveSystem.Flags;
+using RageRooster.Core.Save;
 
 namespace RageRooster.World
 {

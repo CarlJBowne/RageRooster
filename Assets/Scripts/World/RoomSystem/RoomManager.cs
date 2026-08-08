@@ -1,7 +1,7 @@
 using RageRooster.World;
 using SLS.ObjectUtilities;
 using RageRooster.Core;
-using RageRooster.SaveSystem;
+using RageRooster.Core.Save;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,11 +31,19 @@ namespace RageRooster.World
         /// </summary>
         public static bool CurrentlyTransitioning;
 
+        /// <summary>
+        /// A redirection to the Active SaveData's PlayerStats's location value.
+        /// </summary>
+        public static IDestination ReturnDestination
+        {
+            get => SaveData.Active.playerStats.location;
+            set => SaveData.Active.playerStats.location = value;
+        }
 
         /// <summary>
         /// The target Destination for the next Room transition. <br/>
         /// </summary>
-        public static Destination destination;
+        public static IDestination queuedDestination;
         /// <summary>
         /// Manual override to force a full Deload & Load transition even if too/from the same area or room.
         /// </summary>
@@ -92,8 +100,8 @@ namespace RageRooster.World
         /// </summary>
         public static IEnumerator Transition(Destination destination = default)
         {
-            if (!destination) destination = RoomManager.destination;
-            if (!destination) destination = Services.SaveSystem.CurrentDestination.Get as Destination;
+            if (!destination) destination = RoomManager.queuedDestination as Destination;
+            if (!destination) destination = ReturnDestination as Destination;
             if (!destination) destination = new();
 
             bool fullTransition = currentArea != destination.area || forceFullTransition;
@@ -137,8 +145,8 @@ namespace RageRooster.World
 
             if (fullTransition)
             {
-                Services.SaveSystem.CurrentDestination.Value = destination;
-                Services.SaveSystem.DeathDestination.Value = destination;
+                SaveData.Active.playerStats.location = destination;
+                SaveData.DeathReloadData.playerStats.location = destination;
             }
 
             foreach (RoomAsset room in currentArea.rooms)
@@ -173,7 +181,7 @@ namespace RageRooster.World
         /// <param name="resetDestination"></param>
         public static void ResetTransitionData(bool resetDestination = true)
         {
-            if (resetDestination) destination = null;
+            if (resetDestination) queuedDestination = null;
             PreFadeInAction = null;
             PostFadeInAction = null;
             PreFadeOutAction = null;

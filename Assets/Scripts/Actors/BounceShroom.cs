@@ -4,18 +4,14 @@ using UnityEngine;
 
 public class BounceShroom : MonoBehaviour
 {
-    [SerializeField] float bouncePower;
-    [SerializeField] float bounceHeight;
-    [SerializeField] float bounceMinHeight;
+    public float bouncePower;
+    public float bounceHeight;
+    public float bounceMinHeight;
 
     private Animator anim;
 
-    public static void AttemptBounce(GameObject G, PlayerAirborneMovement bouncingState)
-    {if (G.TryGetComponent(out BounceShroom I)) I.Bounce(bouncingState);}
-
-    public void Bounce(PlayerAirborneMovement bouncingState)
+    public void BounceReaction()
     {
-        bouncingState.BeginJump(bouncePower, bounceHeight, bounceMinHeight != 0 ? bounceMinHeight : bounceHeight);
         if (anim || transform.parent.TryGetComponent(out anim)) anim.Play("Bounce");
     }
 }

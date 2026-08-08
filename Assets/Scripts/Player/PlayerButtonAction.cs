@@ -4,9 +4,9 @@ using UltEvents;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
-using RageRooster.SaveSystem;
-
-
+using RageRooster.Core.Save;
+using RageRooster.Player;
+using static RageRooster.Player.IPlayerRoot;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -237,8 +237,8 @@ public abstract class PlayerButtonAction : Polymorph
     {
         [SerializeReference] public PlayerButtonAction hasUpgrade;
         [SerializeReference] public PlayerButtonAction noUpgrade;
-        [SerializeField] Upgrades.Upgrade upgrade;
-        public override PlayerButtonAction Choose() => Upgrades.Active.HasUpgrade(upgrade) ? hasUpgrade : noUpgrade;
+        [SerializeField] PlayerStats.Upgrade upgrade;
+        public override PlayerButtonAction Choose() => PlayerStats.Active.HasUpgrade(upgrade) ? hasUpgrade : noUpgrade;
 
 #if UNITY_EDITOR
         public override void OverrideBody(VisualElement container, SerializedProperty property)

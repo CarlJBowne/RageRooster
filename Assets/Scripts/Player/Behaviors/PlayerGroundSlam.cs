@@ -28,6 +28,13 @@ public class PlayerGroundSlam : PlayerMovementEffector
     //    playerMovementBody.VelocitySet(y: playerMovementBody.velocity.y > gravity ? gravity : playerMovementBody.velocity.y); 
     //}
 
-    private void OnTriggerEnter(Collider other) => BounceShroom.AttemptBounce(other.gameObject, bouncingState);
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent(out BounceShroom I))
+        {
+            bouncingState.BeginJump(I.bouncePower, I.bounceHeight, I.bounceMinHeight != 0 ? I.bounceMinHeight : I.bounceHeight);
+            I.BounceReaction();
+        }
+    }
 
 }

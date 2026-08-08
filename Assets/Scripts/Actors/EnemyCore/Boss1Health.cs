@@ -2,6 +2,7 @@
 using SLS.StateMachineH;
 using EditorAttributes;
 using static RageRooster.Services;
+using RageRooster.Core.Save;
 
 public class Boss1Health : Health, IDamagable
 {
@@ -16,7 +17,7 @@ public class Boss1Health : Health, IDamagable
 
     public UltEvents.UltEvent ResetBossEvent;
     public UltEvents.UltEvent FinishBossEvent;
-    //public RageRooster.Obsolete.WorldChange finishedBossWorldChange;
+    public FlagClient<bool> finishedBossWorldChange;
 
     [HideInEditMode] public int bossPhase = 1;
     private bool phase2TriggerTriggered;
@@ -34,7 +35,7 @@ public class Boss1Health : Health, IDamagable
         TryGetComponent(out moveAnim);
         TryGetComponent(out machine);
         respawnPoint = transform.position;
-        //if (finishedBossWorldChange.Enabled) FinishBossEvent?.Invoke();
+        if (finishedBossWorldChange.TryGet(out bool res) && res) FinishBossEvent?.Invoke();
     }
 
     private void OnEnable()
@@ -122,7 +123,7 @@ public class Boss1Health : Health, IDamagable
 
     public void ResetBoss()
     {
-        if (finishedBossWorldChange.Enabled) return;
+        if (finishedBossWorldChange.TryGet(out bool res) && res) return;
         if (!gameObject.activeSelf) return;
         transform.position = respawnPoint;
         GetComponent<Rigidbody>().MovePosition(respawnPoint);
@@ -139,7 +140,7 @@ public class Boss1Health : Health, IDamagable
 
     public void FinishBoss()
     {
-        finishedBossWorldChange.Enable();
+        finishedBossWorldChange.TrySet(true);
         FinishBossEvent?.Invoke();
     }
 

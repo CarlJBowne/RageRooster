@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.ObjectUtilities;
+using static RageRooster.Services;
 
 public class ShockwaveScript : MonoBehaviour
 {

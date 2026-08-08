@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RageRooster.Core;
-using RageRooster.SaveSystem;
+using RageRooster.Core.Save;
 using RageRooster.World;
 using SLS.GeneralUtilities;
 using SLS.SaveData;
@@ -16,6 +16,9 @@ namespace RageRooster.Player
     [System.Serializable]
     public class PlayerStats : Saveable<PlayerStats>
     {
+        public static PlayerStats Active { get; private set; }
+        public void Establish() => Active = this;
+
         private int maxHealth = 3;
         public int MaxHealth
         {
@@ -73,13 +76,6 @@ namespace RageRooster.Player
             lasso = source.lasso;
             location = source.location;
         }
-
-        public override void Establish(string context)
-        {
-            if (context == SaveData.EstablishmentContexts.Active) Active = this;
-            else if (context == SaveData.EstablishmentContexts.Default) Default = this;
-        }
-
 
         /// <returns>A new instance of <see cref="PlayerStats"/> with all upgrades active, including debug-privilege upgrades</returns>
         public static void ActivateDebug()

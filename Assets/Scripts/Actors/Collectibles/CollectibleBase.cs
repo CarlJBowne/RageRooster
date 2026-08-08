@@ -1,13 +1,11 @@
-﻿
-
-using RageRooster.SaveSystem;
+﻿using RageRooster.Core.Save;
 using UnityEditor.SceneManagement;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 using RageRooster.World;
 
-namespace RageRooster.Entities.Collectibles
+namespace RageRooster.Actors.Save.Collectibles
 {
     /// <summary>
     /// A base class for all collectible items in the game. Interfaces with <see cref="SaveData.SavedCollectible"/> and <see cref="SavedValueRegistry"/> to manage collectible state.
@@ -98,7 +96,7 @@ namespace RageRooster.Entities.Collectibles
                 else
                     targetRegistryList.Add(input);
                 ID = input;
-                EditorUtility.SetDirty(SavedValueRegistry.Get);
+                EditorUtility.SetDirty(SaveData.SavedValueManagerAsset);
                 EditorUtility.SetDirty(this);
             }
 

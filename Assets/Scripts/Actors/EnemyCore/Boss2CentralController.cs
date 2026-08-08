@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.SceneManagement;
 using SLS.MenuCore;
+using static RageRooster.Services;
 
 public class Boss2CentralController : Health
 {
@@ -19,12 +20,12 @@ public class Boss2CentralController : Health
 
     void Start() => gameObject.SetActive(false);
 
-    private void OnEnable() => Player.onRespawn += ResetBoss;
+    private void OnEnable() => Player.OnRespawn += ResetBoss;
 
     public void ResetBoss()
     {
         ResetBossEvent?.Invoke();
-        Player.onRespawn -= ResetBoss;
+        Player.OnRespawn -= ResetBoss;
     }
 
     [Button]
@@ -76,7 +77,7 @@ public class Boss2CentralController : Health
 
             //yield return ZoneManager.UnloadAll();
             yield return new WaitForSecondsRealtime(.1f);
-            Gameplay.DESTROY(areYouSure: true);
+            //Gameplay.DESTROY(areYouSure: true);
 
             AsyncOperation S = SceneManager.LoadSceneAsync("EndingScene", LoadSceneMode.Single);
             yield return new WaitUntil(() => S.isDone);

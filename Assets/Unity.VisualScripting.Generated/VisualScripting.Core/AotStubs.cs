@@ -1120,33 +1120,33 @@ namespace Unity.VisualScripting.Generated.Aot
 	// RageRooster.World.MovementSystems.TunnelTransition.op_Implicit
 	// RageRooster.World.MovementSystems.TunnelTransition.op_Equality
 	// RageRooster.World.MovementSystems.TunnelTransition.op_Inequality
-	// RageRooster.SaveSystem.SavedValueRegistry.op_Implicit
-	// RageRooster.SaveSystem.SavedValueRegistry.op_Equality
-	// RageRooster.SaveSystem.SavedValueRegistry.op_Inequality
-	// RageRooster.SaveSystem.SaveFileVisual.op_Implicit
-	// RageRooster.SaveSystem.SaveFileVisual.op_Equality
-	// RageRooster.SaveSystem.SaveFileVisual.op_Inequality
-	// RageRooster.SaveSystem.SavePoint.op_Implicit
-	// RageRooster.SaveSystem.SavePoint.op_Equality
-	// RageRooster.SaveSystem.SavePoint.op_Inequality
-	// RageRooster.SaveSystem.Variables.SavedVariableSet.op_Implicit
-	// RageRooster.SaveSystem.Variables.SavedVariableSet.op_Equality
-	// RageRooster.SaveSystem.Variables.SavedVariableSet.op_Inequality
-	// RageRooster.SaveSystem.Flags.SavedFlagSet.op_Implicit
-	// RageRooster.SaveSystem.Flags.SavedFlagSet.op_Equality
-	// RageRooster.SaveSystem.Flags.SavedFlagSet.op_Inequality
-	// RageRooster.Entities.Collectibles.CollectibleBase.op_Implicit
-	// RageRooster.Entities.Collectibles.CollectibleBase.op_Equality
-	// RageRooster.Entities.Collectibles.CollectibleBase.op_Inequality
-	// RageRooster.Entities.Collectibles.Hen.op_Implicit
-	// RageRooster.Entities.Collectibles.Hen.op_Equality
-	// RageRooster.Entities.Collectibles.Hen.op_Inequality
-	// RageRooster.Entities.Collectibles.PowerEgg.op_Implicit
-	// RageRooster.Entities.Collectibles.PowerEgg.op_Equality
-	// RageRooster.Entities.Collectibles.PowerEgg.op_Inequality
-	// RageRooster.Entities.Collectibles.Wishbone.op_Implicit
-	// RageRooster.Entities.Collectibles.Wishbone.op_Equality
-	// RageRooster.Entities.Collectibles.Wishbone.op_Inequality
+	// RageRooster.Core.Save.SavedValueRegistry.op_Implicit
+	// RageRooster.Core.Save.SavedValueRegistry.op_Equality
+	// RageRooster.Core.Save.SavedValueRegistry.op_Inequality
+	// RageRooster.Core.Save.SaveFileVisual.op_Implicit
+	// RageRooster.Core.Save.SaveFileVisual.op_Equality
+	// RageRooster.Core.Save.SaveFileVisual.op_Inequality
+	// RageRooster.Core.Save.SavePoint.op_Implicit
+	// RageRooster.Core.Save.SavePoint.op_Equality
+	// RageRooster.Core.Save.SavePoint.op_Inequality
+	// RageRooster.Core.Save.Variables.SavedVariableSet.op_Implicit
+	// RageRooster.Core.Save.Variables.SavedVariableSet.op_Equality
+	// RageRooster.Core.Save.Variables.SavedVariableSet.op_Inequality
+	// RageRooster.Core.Save.SavedFlagSet.op_Implicit
+	// RageRooster.Core.Save.SavedFlagSet.op_Equality
+	// RageRooster.Core.Save.SavedFlagSet.op_Inequality
+	// RageRooster.Actors.Save.Collectibles.CollectibleBase.op_Implicit
+	// RageRooster.Actors.Save.Collectibles.CollectibleBase.op_Equality
+	// RageRooster.Actors.Save.Collectibles.CollectibleBase.op_Inequality
+	// RageRooster.Actors.Save.Collectibles.Hen.op_Implicit
+	// RageRooster.Actors.Save.Collectibles.Hen.op_Equality
+	// RageRooster.Actors.Save.Collectibles.Hen.op_Inequality
+	// RageRooster.Actors.Save.Collectibles.PowerEgg.op_Implicit
+	// RageRooster.Actors.Save.Collectibles.PowerEgg.op_Equality
+	// RageRooster.Actors.Save.Collectibles.PowerEgg.op_Inequality
+	// RageRooster.Actors.Save.Collectibles.Wishbone.op_Implicit
+	// RageRooster.Actors.Save.Collectibles.Wishbone.op_Equality
+	// RageRooster.Actors.Save.Collectibles.Wishbone.op_Inequality
 	// PlayerButtonActions.PlayerButtonActionsEditor.op_Implicit
 	// PlayerButtonActions.PlayerButtonActionsEditor.op_Equality
 	// PlayerButtonActions.PlayerButtonActionsEditor.op_Inequality
@@ -1165,18 +1165,18 @@ namespace Unity.VisualScripting.Generated.Aot
 	// RageRooster.World.RoomRoot.Editor.op_Implicit
 	// RageRooster.World.RoomRoot.Editor.op_Equality
 	// RageRooster.World.RoomRoot.Editor.op_Inequality
-	// RageRooster.Entities.Collectibles.CollectibleBase.Editor.op_Implicit
-	// RageRooster.Entities.Collectibles.CollectibleBase.Editor.op_Equality
-	// RageRooster.Entities.Collectibles.CollectibleBase.Editor.op_Inequality
-	// RageRooster.Entities.Collectibles.Hen.Editor.op_Implicit
-	// RageRooster.Entities.Collectibles.Hen.Editor.op_Equality
-	// RageRooster.Entities.Collectibles.Hen.Editor.op_Inequality
-	// RageRooster.Entities.Collectibles.PowerEgg.Editor.op_Implicit
-	// RageRooster.Entities.Collectibles.PowerEgg.Editor.op_Equality
-	// RageRooster.Entities.Collectibles.PowerEgg.Editor.op_Inequality
-	// RageRooster.Entities.Collectibles.Wishbone.Editor.op_Implicit
-	// RageRooster.Entities.Collectibles.Wishbone.Editor.op_Equality
-	// RageRooster.Entities.Collectibles.Wishbone.Editor.op_Inequality
+	// RageRooster.Actors.Save.Collectibles.CollectibleBase.Editor.op_Implicit
+	// RageRooster.Actors.Save.Collectibles.CollectibleBase.Editor.op_Equality
+	// RageRooster.Actors.Save.Collectibles.CollectibleBase.Editor.op_Inequality
+	// RageRooster.Actors.Save.Collectibles.Hen.Editor.op_Implicit
+	// RageRooster.Actors.Save.Collectibles.Hen.Editor.op_Equality
+	// RageRooster.Actors.Save.Collectibles.Hen.Editor.op_Inequality
+	// RageRooster.Actors.Save.Collectibles.PowerEgg.Editor.op_Implicit
+	// RageRooster.Actors.Save.Collectibles.PowerEgg.Editor.op_Equality
+	// RageRooster.Actors.Save.Collectibles.PowerEgg.Editor.op_Inequality
+	// RageRooster.Actors.Save.Collectibles.Wishbone.Editor.op_Implicit
+	// RageRooster.Actors.Save.Collectibles.Wishbone.Editor.op_Equality
+	// RageRooster.Actors.Save.Collectibles.Wishbone.Editor.op_Inequality
 	// CinemachineCameraOffset.op_Implicit
 	// CinemachineCameraOffset.op_Equality
 	// CinemachineCameraOffset.op_Inequality
@@ -14618,7 +14618,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.SavedValueRegistry.op_Implicit
+		// RageRooster.Core.Save.SavedValueRegistry.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_SavedValueRegistry_op_Implicit()
 		{
@@ -14629,7 +14629,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.SavedValueRegistry.op_Equality
+		// RageRooster.Core.Save.SavedValueRegistry.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_SavedValueRegistry_op_Equality()
 		{
@@ -14641,7 +14641,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.SavedValueRegistry.op_Inequality
+		// RageRooster.Core.Save.SavedValueRegistry.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_SavedValueRegistry_op_Inequality()
 		{
@@ -14653,7 +14653,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.SaveFileVisual.op_Implicit
+		// RageRooster.Core.Save.SaveFileVisual.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_SaveFileVisual_op_Implicit()
 		{
@@ -14664,7 +14664,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.SaveFileVisual.op_Equality
+		// RageRooster.Core.Save.SaveFileVisual.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_SaveFileVisual_op_Equality()
 		{
@@ -14676,7 +14676,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.SaveFileVisual.op_Inequality
+		// RageRooster.Core.Save.SaveFileVisual.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_SaveFileVisual_op_Inequality()
 		{
@@ -14688,7 +14688,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.SavePoint.op_Implicit
+		// RageRooster.Core.Save.SavePoint.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_SavePoint_op_Implicit()
 		{
@@ -14699,7 +14699,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.SavePoint.op_Equality
+		// RageRooster.Core.Save.SavePoint.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_SavePoint_op_Equality()
 		{
@@ -14711,7 +14711,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.SavePoint.op_Inequality
+		// RageRooster.Core.Save.SavePoint.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_SavePoint_op_Inequality()
 		{
@@ -14723,7 +14723,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.Variables.SavedVariableSet.op_Implicit
+		// RageRooster.Core.Save.Variables.SavedVariableSet.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_Variables_SavedVariableSet_op_Implicit()
 		{
@@ -14734,7 +14734,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.Variables.SavedVariableSet.op_Equality
+		// RageRooster.Core.Save.Variables.SavedVariableSet.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_Variables_SavedVariableSet_op_Equality()
 		{
@@ -14746,7 +14746,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.Variables.SavedVariableSet.op_Inequality
+		// RageRooster.Core.Save.Variables.SavedVariableSet.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_Variables_SavedVariableSet_op_Inequality()
 		{
@@ -14758,7 +14758,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.Flags.SavedFlagSet.op_Implicit
+		// RageRooster.Core.Save.SavedFlagSet.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_Flags_SavedFlagSet_op_Implicit()
 		{
@@ -14769,7 +14769,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.Flags.SavedFlagSet.op_Equality
+		// RageRooster.Core.Save.SavedFlagSet.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_Flags_SavedFlagSet_op_Equality()
 		{
@@ -14781,7 +14781,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.SaveSystem.Flags.SavedFlagSet.op_Inequality
+		// RageRooster.Core.Save.SavedFlagSet.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Systems_SaveSystem_Flags_SavedFlagSet_op_Inequality()
 		{
@@ -14793,7 +14793,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.CollectibleBase.op_Implicit
+		// RageRooster.Actors.Save.Collectibles.CollectibleBase.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_CollectibleBase_op_Implicit()
 		{
@@ -14804,7 +14804,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.CollectibleBase.op_Equality
+		// RageRooster.Actors.Save.Collectibles.CollectibleBase.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_CollectibleBase_op_Equality()
 		{
@@ -14816,7 +14816,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.CollectibleBase.op_Inequality
+		// RageRooster.Actors.Save.Collectibles.CollectibleBase.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_CollectibleBase_op_Inequality()
 		{
@@ -14828,7 +14828,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.Hen.op_Implicit
+		// RageRooster.Actors.Save.Collectibles.Hen.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_Hen_op_Implicit()
 		{
@@ -14839,7 +14839,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.Hen.op_Equality
+		// RageRooster.Actors.Save.Collectibles.Hen.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_Hen_op_Equality()
 		{
@@ -14851,7 +14851,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.Hen.op_Inequality
+		// RageRooster.Actors.Save.Collectibles.Hen.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_Hen_op_Inequality()
 		{
@@ -14863,7 +14863,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.PowerEgg.op_Implicit
+		// RageRooster.Actors.Save.Collectibles.PowerEgg.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_PowerEgg_op_Implicit()
 		{
@@ -14874,7 +14874,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.PowerEgg.op_Equality
+		// RageRooster.Actors.Save.Collectibles.PowerEgg.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_PowerEgg_op_Equality()
 		{
@@ -14886,7 +14886,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.PowerEgg.op_Inequality
+		// RageRooster.Actors.Save.Collectibles.PowerEgg.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_PowerEgg_op_Inequality()
 		{
@@ -14898,7 +14898,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.Wishbone.op_Implicit
+		// RageRooster.Actors.Save.Collectibles.Wishbone.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_Wishbone_op_Implicit()
 		{
@@ -14909,7 +14909,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.Wishbone.op_Equality
+		// RageRooster.Actors.Save.Collectibles.Wishbone.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_Wishbone_op_Equality()
 		{
@@ -14921,7 +14921,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.Wishbone.op_Inequality
+		// RageRooster.Actors.Save.Collectibles.Wishbone.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_Wishbone_op_Inequality()
 		{
@@ -15143,7 +15143,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.CollectibleBase.Editor.op_Implicit
+		// RageRooster.Actors.Save.Collectibles.CollectibleBase.Editor.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_CollectibleBase_Editor_op_Implicit()
 		{
@@ -15154,7 +15154,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.CollectibleBase.Editor.op_Equality
+		// RageRooster.Actors.Save.Collectibles.CollectibleBase.Editor.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_CollectibleBase_Editor_op_Equality()
 		{
@@ -15166,7 +15166,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.CollectibleBase.Editor.op_Inequality
+		// RageRooster.Actors.Save.Collectibles.CollectibleBase.Editor.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_CollectibleBase_Editor_op_Inequality()
 		{
@@ -15178,7 +15178,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.Hen.Editor.op_Implicit
+		// RageRooster.Actors.Save.Collectibles.Hen.Editor.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_Hen_Editor_op_Implicit()
 		{
@@ -15189,7 +15189,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.Hen.Editor.op_Equality
+		// RageRooster.Actors.Save.Collectibles.Hen.Editor.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_Hen_Editor_op_Equality()
 		{
@@ -15201,7 +15201,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.Hen.Editor.op_Inequality
+		// RageRooster.Actors.Save.Collectibles.Hen.Editor.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_Hen_Editor_op_Inequality()
 		{
@@ -15213,7 +15213,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.PowerEgg.Editor.op_Implicit
+		// RageRooster.Actors.Save.Collectibles.PowerEgg.Editor.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_PowerEgg_Editor_op_Implicit()
 		{
@@ -15224,7 +15224,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.PowerEgg.Editor.op_Equality
+		// RageRooster.Actors.Save.Collectibles.PowerEgg.Editor.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_PowerEgg_Editor_op_Equality()
 		{
@@ -15236,7 +15236,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.PowerEgg.Editor.op_Inequality
+		// RageRooster.Actors.Save.Collectibles.PowerEgg.Editor.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_PowerEgg_Editor_op_Inequality()
 		{
@@ -15248,7 +15248,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.Wishbone.Editor.op_Implicit
+		// RageRooster.Actors.Save.Collectibles.Wishbone.Editor.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_Wishbone_Editor_op_Implicit()
 		{
@@ -15259,7 +15259,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.Wishbone.Editor.op_Equality
+		// RageRooster.Actors.Save.Collectibles.Wishbone.Editor.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_Wishbone_Editor_op_Equality()
 		{
@@ -15271,7 +15271,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.Entities.Collectibles.Wishbone.Editor.op_Inequality
+		// RageRooster.Actors.Save.Collectibles.Wishbone.Editor.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_Entities_Collectibles_Wishbone_Editor_op_Inequality()
 		{

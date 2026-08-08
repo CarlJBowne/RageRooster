@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using SLS.ObjectUtilities;
 using UnityEngine;
 using Utilities;
+using static RageRooster.Services;
 
 public class EnemyBasicBulletSource : MonoBehaviour
 {

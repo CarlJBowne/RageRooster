@@ -1,13 +1,14 @@
 ﻿using RageRooster.Player;
-using RageRooster.SaveSystem;
+using RageRooster.Core.Save;
 using RageRooster.World;
 using SLS.Singletons;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using RageRooster.Core.Save;
 
-namespace RageRooster.SaveSystem
+namespace RageRooster.TOP.Save
 {
     /// <summary>
     /// A Globally acessible registry for all saved values in the game. <br/>
@@ -20,11 +21,12 @@ namespace RageRooster.SaveSystem
         [SerializeField] private SavedCollectible powerEggs = new();
         [SerializeField] private SavedCollectible wishbones = new();
         [SerializeField] private SavedCollectible hensRescued = new();
-        [SerializeField] private Flags.SavedFlagSet globalFlagDefs;
+        [SerializeField] private SavedFlagSet globalFlagDefs;
 
 
         public override void OnInit()
         {
+            SaveData.SavedValueManagerAsset = this;
             SaveData defs = new()
             {
                 playerStats = playerStatsDef,

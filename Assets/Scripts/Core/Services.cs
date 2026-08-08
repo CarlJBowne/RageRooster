@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using RageRooster.Core;
 using RageRooster.World;
+using UnityEngine;
 
 namespace RageRooster
 {
@@ -22,33 +23,29 @@ namespace RageRooster
 
         #region Static Services
 
-        public static class SaveSystem
-        {
-            public static GSService<IDestination> CurrentDestination;
-            public static GSService<IDestination> DeathDestination;
-
-            public static Action SaveToDeathData;
-            public static Action RevertToDeathData;
-            public static Action SaveToSaveFile;
-            public static Action RevertToSaveFile;
-
-            public static Action<IDestination> GetEditorDestination;
-
-            public static ISaveData Active;
-        }
-
         public static class UI
         {
             public static bool canPause;
             public static Action<bool> SetPause;
             public static Action<bool> LoadingPopup;
+            public static Action<string> ShowHint;
         }
 
         #endregion
 
         #region Single Services.
 
+        public static GetService<bool> GameplayRunning;
 
         #endregion
+
+#if UNITY_EDITOR
+        public static class Editor
+        {
+            public static Action<IDestination> SetEditorDestination;
+            public static ScriptableObject SavedValueRegistry;
+        }
+
+#endif
     }
 }

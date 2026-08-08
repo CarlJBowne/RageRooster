@@ -27,5 +27,7 @@ namespace RageRooster.Core
 
         event Action OnMovingUpdate;
         event Action OnRespawn;
+
+        public MonoBehaviour CurrentVent { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using DG.Tweening;
-using RageRooster.SaveSystem;
+using RageRooster.Core.Save;
 using UnityEngine;
 
 public class ItemPickup : MonoBehaviour
@@ -20,13 +20,13 @@ public class ItemPickup : MonoBehaviour
     [TextArea]
     public string hintString;
     public int addAmount = 1;
-    public RageRooster.Obsolete.WorldChange oneTime;
+    //public RageRooster.Obsolete.WorldChange oneTime;
 
 
     private void Awake()
     {
-        if(oneTime != null && oneTime.Enabled) gameObject.SetActive(false);
-        if(type == ItemType.Wishbone && oneTime == null)
+        //if(oneTime != null && oneTime.Enabled) gameObject.SetActive(false);
+        //if(type == ItemType.Wishbone && oneTime == null)
         {
 #if UNITY_EDITOR
             Debug.LogError($"This wishbone {gameObject.name} does not have a world change.");
@@ -37,44 +37,44 @@ public class ItemPickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag != "Player") return;
-        PlayerHealth health = other.GetComponent<PlayerHealth>();
-
-        if (type == ItemType.Coin)
-        {
-            //GlobalState.AddCurrency(addAmount);
-            SaveData.Active.playerStats.currency += addAmount;
-        }
-        else if (type == ItemType.Health)
-        {
-            health.Heal(1);
-            
-        }
-        else if (type == ItemType.Hint)
-        {
-            UIHUDSystem.Instance.ShowHint(hintString);
-        }
-        else if (type == ItemType.Wishbone)
-        {
-            //PlayerHealth.Global.UpdateMax(PlayerHealth.Global.maxHealth + addAmount);
-            UIHUDSystem.Instance.ShowHint(hintString);
-        }
-        else if(type == ItemType.Hen)
-        {
-            UIHUDSystem.Instance.ShowHint(hintString);
-        }
-
-        if (type != ItemType.Hint) 
-        {
-            DOTween.Kill(this.gameObject.transform);
-            Destroy(gameObject);
-        }
-
-
-        if (oneTime != null && oneTime)
-        {
-            oneTime.Enable();
-        }
+        //if (other.tag != "Player") return;
+        //PlayerHealth health = other.GetComponent<PlayerHealth>();
+        //
+        //if (type == ItemType.Coin)
+        //{
+        //    //GlobalState.AddCurrency(addAmount);
+        //    SaveData.Active.playerStats.currency += addAmount;
+        //}
+        //else if (type == ItemType.Health)
+        //{
+        //    health.Heal(1);
+        //    
+        //}
+        //else if (type == ItemType.Hint)
+        //{
+        //    UIHUDSystem.Instance.ShowHint(hintString);
+        //}
+        //else if (type == ItemType.Wishbone)
+        //{
+        //    //PlayerHealth.Global.UpdateMax(PlayerHealth.Global.maxHealth + addAmount);
+        //    UIHUDSystem.Instance.ShowHint(hintString);
+        //}
+        //else if(type == ItemType.Hen)
+        //{
+        //    UIHUDSystem.Instance.ShowHint(hintString);
+        //}
+        //
+        //if (type != ItemType.Hint) 
+        //{
+        //    DOTween.Kill(this.gameObject.transform);
+        //    Destroy(gameObject);
+        //}
+        //
+        //
+        //if (oneTime != null && oneTime)
+        //{
+        //    oneTime.Enable();
+        //}
     }
 
 

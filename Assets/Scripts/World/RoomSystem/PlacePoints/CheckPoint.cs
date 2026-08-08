@@ -1,4 +1,4 @@
-using RageRooster.SaveSystem;
+using RageRooster.Core.Save;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,7 +34,7 @@ public class CheckPoint : MonoBehaviour
     {
         if (Player.Owns(other)) return;
 
-        SaveSystem.CurrentDestination.Set(spawnPoint.GetDestination());
-        if (deathCheckpoint) SaveSystem.SaveToDeathData();
+        spawnPoint.SetAsReturnLocation();
+        if (deathCheckpoint) SaveData.SaveToDeathData();
     }
 }

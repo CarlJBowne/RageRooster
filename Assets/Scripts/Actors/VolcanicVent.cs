@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static RageRooster.Services;
 
 public class VolcanicVent : MonoBehaviour
 {
@@ -10,12 +11,12 @@ public class VolcanicVent : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out PlayerMovementBody player)) 
-            player.CurrentVent = this;
+        if(Player.Owns(other))
+            Player.CurrentVent = this;
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent(out PlayerMovementBody player) && player.CurrentVent == this) 
-            player.CurrentVent = null;
+        if (Player.Owns(other) && Player.CurrentVent == this)
+            Player.CurrentVent = null;
     }
 }

@@ -10,7 +10,7 @@ using SLS.MenuCore;
 public class EndingScene : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI endingText;
-    public RageRooster.Obsolete.WorldChange[] hens;
+    //public RageRooster.Obsolete.WorldChange[] hens;
     public EndingValue[] possibleEndings;
     public InputActionReference continueToTitle;
     public Animator animator;
@@ -36,8 +36,8 @@ public class EndingScene : MonoBehaviour
     public int HensCollected()
     {
         int result = 0;
-        for (int i = 0; i < hens.Length; i++)
-            if (hens[i].Enabled) result++;
+        //for (int i = 0; i < hens.Length; i++)
+        //    if (hens[i].Enabled) result++;
         return result;
     }
 

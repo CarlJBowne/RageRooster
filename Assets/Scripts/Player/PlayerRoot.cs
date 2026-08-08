@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using RageRooster;
 using RageRooster.Core;
 using RageRooster.Player;
-using RageRooster.SaveSystem;
+using RageRooster.Core.Save;
 using RageRooster.World;
 using SLS.MenuCore;
 using UnityEngine;
@@ -116,7 +116,8 @@ public class PlayerRoot : MonoBehaviour, IPlayer, IPlayerRoot
         DontDestroyOnLoad(this);
         
         Self.Instance = this;
-        Services.Register.Player(this);
+        Services.Player = this;
+        IPlayerRoot.Player = this;
 
         StateMachine = GetComponent<PlayerStateMachine>();
         MovementBody = GetComponent<PlayerMovementBody>();

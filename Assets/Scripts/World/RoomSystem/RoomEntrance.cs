@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using RageRooster.Core;
-using RageRooster.SaveSystem;
+using RageRooster.Core.Save;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using SLS.EditorUtilities.ComponentHeaders;
@@ -56,7 +56,7 @@ namespace RageRooster.World
         /// <summary>
         /// Whether the <see cref="spawnPoint"/> should only be set on death reloads, and not normal transitions."/>
         /// </summary>
-        public bool forDeathOnly = false;
+        public bool deathCheckpoint = false;
 
 
 
@@ -80,7 +80,10 @@ namespace RageRooster.World
             if (other != IPlayer.Self?.Collider || Root.asset == RoomManager.currentRoom) return;
             RoomManager.EnterRoom(Root.asset);
             if (spawnPoint != null)
-                if (forDeathOnly) Services.SaveSystem.DeathDestination.Value = spawnPoint.GetDestination(); else Services.SaveSystem.CurrentDestination.Value = spawnPoint.GetDestination();
+            {
+                spawnPoint.SetAsReturnLocation();
+                if (deathCheckpoint) SaveData.SaveToDeathData();
+            }
         }
 
         private void OnDrawGizmosSelected()

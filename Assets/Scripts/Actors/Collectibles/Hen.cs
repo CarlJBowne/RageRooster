@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RageRooster.Obsolete;
 using RageRooster.Player;
-using RageRooster.SaveSystem;
+using RageRooster.Core.Save;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using static RageRooster.Services;
 
-namespace RageRooster.Entities.Collectibles
+namespace RageRooster.Actors.Save.Collectibles
 {
     public class Hen : CollectibleBase
     {
@@ -18,19 +18,19 @@ namespace RageRooster.Entities.Collectibles
         public int ammoCount = 1;
         public string hintString;
 
-        protected override SavedCollectible targetSavedCollectible => SavedCollectible.Hens;
+        protected override SavedCollectible targetSavedCollectible => SaveData.Active.progress.hensRescued;
 
         private void OnTriggerEnter(Collider other)
         {
-            PlayerStats.Active.maxAmmo++;
+            PlayerStats.Active.MaxAmmo++;
             Acquire();
-            UIHUDSystem.Instance.ShowHint(hintString);
+            UI.ShowHint(hintString);
         }
 
         [CustomEditor(typeof(Hen))]
-        public class Editor : CollectibleBase.Editor
+        new public class Editor : CollectibleBase.Editor
         {
-            protected override List<string> targetRegistryList => SavedValueRegistry.HensRescued;
+            protected override List<string> targetRegistryList => SaveData.Default.progress.hensRescued.IDs;
         }
     }
 }

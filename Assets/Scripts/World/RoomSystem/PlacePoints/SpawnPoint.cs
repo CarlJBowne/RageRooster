@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using EditorAttributes;
 using JetBrains.Annotations;
+using RageRooster.Core.Save;
 using RageRooster.World;
 using UnityEngine;
 using Utilities.Xtensions;
@@ -41,6 +42,8 @@ public class SpawnPoint : RoomActor
         Player.InstantMove(target, rotate ? transform.eulerAngles.y : null);
         //Player.MovementBody.InstantSnapToFloor();
     }
+
+    public void SetAsReturnLocation() => RoomManager.ReturnDestination = GetDestination();
 
     /// <returns>The <see cref="Destination"/> this <see cref="SpawnPoint"/> goes to.</returns>
     public Destination GetDestination() => new(Root.asset, ID);

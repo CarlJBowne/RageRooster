@@ -5,6 +5,7 @@ using DG.Tweening;
 using SLS.EditorUtilities.ComponentHeaders;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
+using static RageRooster.Services;
 
 [RequireComponent(typeof(Collider), typeof(Target))]
 public class Grabbable : MonoBehaviour

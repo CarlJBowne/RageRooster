@@ -2,7 +2,7 @@ using EditorAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using static RageRooster.Services;
 public class MovementAnimator : MonoBehaviour
 {
     [Header("Only touch if animating.")]

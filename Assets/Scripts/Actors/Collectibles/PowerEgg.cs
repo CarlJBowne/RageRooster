@@ -1,5 +1,5 @@
 using RageRooster;
-using RageRooster.SaveSystem;
+using RageRooster.Core.Save;
 using UnityEngine;
 using UnityEditor.SceneManagement;
 using System.Collections.Generic;
@@ -9,13 +9,11 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 
-namespace RageRooster.Entities.Collectibles
+namespace RageRooster.Actors.Save.Collectibles
 {
     public class PowerEgg : CollectibleBase
     {
-        protected override List<string> targetRegistryList => SavedValueRegistry.PowerEggs;
-
-        protected override SavedCollectible targetSavedCollectible => SavedCollectible.PowerEggs;
+        protected override SavedCollectible targetSavedCollectible => SaveData.Active.progress.powerEggs;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -25,7 +23,7 @@ namespace RageRooster.Entities.Collectibles
         [CustomEditor(typeof(PowerEgg))]
         public new class Editor : CollectibleBase.Editor
         {
-            protected override List<string> targetRegistryList => SavedValueRegistry.PowerEggs;
+            protected override List<string> targetRegistryList => SaveData.Default.progress.powerEggs.IDs;
         }
     }
 }

@@ -42,7 +42,7 @@ public class MeleeStateEB : StateBehavior
         var res = Physics.OverlapSphere(pos, 0.5f, Physics.AllLayers);
         foreach (var item in res)
         {
-            if(item.TryGetComponent(out PlayerHealth hp))
+            if(item.TryGetComponent(out Health hp))
             {
                 hp.Damage(attack);
                 break;

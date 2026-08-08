@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using SLS.SaveData;
 
-namespace RageRooster.SaveSystem
+namespace RageRooster.Core.Save
 {
     /// <summary>
     /// A Basic Saved Collectible class, tracking the amount and specific collected instances of a collectible. <br/>
