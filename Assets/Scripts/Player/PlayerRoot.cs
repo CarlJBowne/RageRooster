@@ -3,22 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using RageRooster;
 using RageRooster.Core;
-using RageRooster.Player;
 using RageRooster.Core.Save;
+using RageRooster.Player;
 using RageRooster.World;
 using SLS.MenuCore;
+using SLS.StateMachineH.Signals;
 using UnityEngine;
 using UnityEngine.AI;
+using static SLS.Singletons.Singleton;
 
 /// <summary>
 /// The Root component of the Player entity. Implements IPlayer for external access and IPlayerRoot for internal assembly access.
 /// </summary>
 [DefaultExecutionOrder(ExecutionOrders.Player), RequireComponent(typeof(PlayerStateMachine))]
-public class PlayerRoot : MonoBehaviour, IPlayer, IPlayerRoot
+public class PlayerRoot : MonoBehaviour, IPlayer
 {
     #region IPlayer Implementation
-    public Transform Transform => transform;
-    public GameObject GameObject => gameObject;
 
     IPlayerStateMachine IPlayer.StateMachine => StateMachine;
 
@@ -29,7 +29,7 @@ public class PlayerRoot : MonoBehaviour, IPlayer, IPlayerRoot
         remove => currency.updateCurrency -= value; 
     }
 
-    IPlayerStats IPlayer.Stats => PlayerStats.Active;
+    PlayerStats Stats => PlayerStats.Active;
 
     event Action IPlayer.OnMovingUpdate 
     { 
@@ -71,8 +71,10 @@ public class PlayerRoot : MonoBehaviour, IPlayer, IPlayerRoot
     #endregion
 
     #region Component References
+    public Transform Transform => transform;
+    public GameObject GameObject => gameObject;
     public PlayerStateMachine StateMachine { get; private set; }
-    public SLS.StateMachineH.Signals.SignalManager SignalManager { get; private set; }
+    public SignalManager SignalManager { get; private set; }
     public PlayerMovementBody MovementBody { get; private set; }
     public CapsuleCollider Collider { get; private set; }
     public PlayerController Controller { get; private set; }
@@ -89,6 +91,8 @@ public class PlayerRoot : MonoBehaviour, IPlayer, IPlayerRoot
     public Vector3 Center => transform.position + Collider.center;
     public Quaternion Rotation => transform.rotation;
     public Vector3 Forward => transform.forward;
+
+    public MonoBehaviour CurrentVent { get; set; }
 
     public float DistanceFrom(Vector3 pos) => Exists ? Vector3.Distance(Position, pos) : 999999f;
 
@@ -117,7 +121,6 @@ public class PlayerRoot : MonoBehaviour, IPlayer, IPlayerRoot
         
         Self.Instance = this;
         Services.Player = this;
-        IPlayerRoot.Player = this;
 
         StateMachine = GetComponent<PlayerStateMachine>();
         MovementBody = GetComponent<PlayerMovementBody>();
@@ -257,6 +260,8 @@ public class PlayerRoot : MonoBehaviour, IPlayer, IPlayerRoot
     #region Death / Respawn Sequence
     private float fallDownPitTime;
     private float deathTime;
+
+    public event Action OnRespawn;
 
     public void Death()
     {

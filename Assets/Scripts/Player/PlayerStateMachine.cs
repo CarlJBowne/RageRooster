@@ -6,11 +6,11 @@ using System;
 using Cinemachine;
 using System.Linq;
 using SLS.Singletons;
-using AYellowpaper.SerializedCollections;
 using RageRooster.Core.Save;
 using RageRooster.World;
 using SLS.StateMachineH.Signals;
 using RageRooster.Core;
+using static RageRooster.Player.Services;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerStateMachine : StateMachine, IPlayerStateMachine

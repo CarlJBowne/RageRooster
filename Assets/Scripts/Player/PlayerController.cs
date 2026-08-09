@@ -1,5 +1,6 @@
 using EditorAttributes;
 using RageRooster.Core.Save;
+using RageRooster.Player;
 using SLS.StateMachineH;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine.InputSystem;
 using Utilities.Xtensions;
 
 using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
+using static RageRooster.Player.Services;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerController : StateBehavior
@@ -29,14 +31,14 @@ public class PlayerController : StateBehavior
           ? Input.Movement.ToXZ().Rotated(Cameras.RealCamera.transform.eulerAngles.y, Vector3.up)
           : overrideMovementVector.ToXZ().Rotated(Cameras.RealCamera.transform.eulerAngles.y, Vector3.up);
     }
-    [SerializeField] Upgrades upgradesDisplay;
+    [SerializeField] PlayerStats upgradesDisplay;
 
     #endregion
     #region Getters
 
     #endregion
 
-    protected override void OnAwake() => upgradesDisplay = Upgrades.Active;
+    protected override void OnAwake() => upgradesDisplay = SaveData.Active.playerStats;
 
     private void OnEnable()
     {
@@ -103,7 +105,7 @@ public class PlayerController : StateBehavior
 
     public void ParryActionAirborne()
     {
-        if (Upgrades.Active.hellcopter)
+        if (PlayerStats.Active.hellcopter)
         {
             Self.StateMachine.AirParry.Enter();
             if (Self.MovementBody.isOverVent) Machine.SendSignal(new("EnterVent", 0, true));

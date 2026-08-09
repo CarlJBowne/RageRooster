@@ -6,8 +6,7 @@ using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 using RageRooster.Core.Save;
 using RageRooster.Player;
-using static RageRooster.Player.IPlayerRoot;
-
+using static RageRooster.Player.Services;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.UIElements;
