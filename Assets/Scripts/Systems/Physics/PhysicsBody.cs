@@ -42,7 +42,9 @@ namespace RageRooster.Physics
 
             Resolvers.Active?.FixedUpdateFormer();
 
-            if (Velocity.r != 0f) Direction.RotationY += Velocity.r * Time.fixedDeltaTime;
+            if (Direction.PointTarget != null && Velocity.l > 0f)
+                Direction.Set(Direction.PointTarget.position - Position, Velocity.l * Time.fixedDeltaTime);
+            else if (Velocity.r != 0f) Direction.RotationY += Velocity.r * Time.fixedDeltaTime;
 
             Vector3 stepZeroVelocity = Velocity.Global * Time.fixedDeltaTime;
 

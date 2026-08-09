@@ -180,6 +180,9 @@ namespace Utilities.Xtensions.VisualElements
                 To.panel.visualTree.SendEvent(evt);
             }, trickleDown);
         }
+
+        public static SerializedProperty FindBackingField(this SerializedObject obj, string propertyName) => obj.FindProperty($"<{propertyName}>k__BackingField");
+        public static SerializedProperty FindBackingFieldRelative(this SerializedProperty property, string propertyName) => property.FindPropertyRelative($"<{propertyName}>k__BackingField");
     }
 
     public class Highlighter

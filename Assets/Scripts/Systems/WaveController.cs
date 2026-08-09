@@ -37,7 +37,9 @@ public class WaveController : MonoBehaviour
 
     private void Start()
     {
-        enemyPool.onCreateInstance += (PoolableObject O) =>
+        if (!Gameplay.Active) return;
+
+        enemyPool.onCreateInstance += (Spawnable O) =>
             {
                 O.GetComponent<EnemyHealth>().depleteEvent += () =>
                 { activeEnemies--; };
@@ -127,11 +129,9 @@ public class WaveController : MonoBehaviour
 
         for (int i = 0; i < spawnPoints.Count; i++)
         {
-            enemyPool.Pump(out PoolableObject pooledEnemy, out _);
+            enemyPool.Pump(out Spawnable pooledEnemy, out _, 
+                (spawnPoints[i], (Player.Transform.position - spawnPoints[i]).DirToRot()));
             activeEnemies++;
-
-            pooledEnemy.SetPosition(spawnPoints[i]);
-            pooledEnemy.SetRotation((Player.Transform.position - spawnPoints[i]).DirToRot());
         }
     }
 

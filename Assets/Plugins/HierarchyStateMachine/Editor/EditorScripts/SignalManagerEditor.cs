@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using ListUtilities.Editor;
 using SLS.StateMachineH.Editor;
 using SLS.StateMachineH.Utils;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -38,104 +40,135 @@ namespace SLS.StateMachineH.Signals
         }
     }
 
-    /*
+    
     [CustomEditor(typeof(SignalManager))]
     public class SignalManagerEditor : UnityEditor.Editor
     {
-        public override void OnInspectorGUI()
+        Foldout activityDisplay;
+        new SignalManager target;
+        List<SignalVis> signals = new();
+
+        public override VisualElement CreateInspectorGUI()
         {
-            SignalManager signalManager = (SignalManager)target;
+            VisualElement root = new();
 
-            // Display serialized properties  
-            serializedObject.Update();
-            EditorGUI.BeginChangeCheck();
+            root.Add(new PropertyField(serializedObject.FindProperty("signals")));
+            root.Add(new PropertyField(serializedObject.FindProperty("queueSignals")));
 
-            Rect totalArea = EditorGUILayout.GetControlRect();
-            GUIStyle skin = GUI.skin.label;
+            activityDisplay = new Foldout();
+            activityDisplay.text = "Activity Display";
+            root.Add(activityDisplay);
 
-            StateMachine_EditorUtilities.DrawScriptClicker<SignalManager>(signalManager, totalArea);
+            target = (SignalManager)base.target;
+            target.onSignalQueueUpdate += QueueUpdate;
+            target.onUpdate += TimeUpdate;
 
-            Rect globalSignalsArea = totalArea;
-            globalSignalsArea.y += EditorGUIUtility.singleLineHeight + 4;
-            SerializedProperty globalSignals = serializedObject.FindProperty("globalSignals");
-            globalSignalsArea.height = EditorGUI.GetPropertyHeight(globalSignals);
-            EditorGUI.PropertyField(globalSignalsArea, globalSignals, new GUIContent("Global Signals"), true);
+            return root;
+        }
+        private void OnDisable()
+        {
+            target.onSignalQueueUpdate -= QueueUpdate;
+            target.onUpdate -= TimeUpdate;
+        }
 
-            Rect signalQueueArea = globalSignalsArea;
-            signalQueueArea.y = signalQueueArea.yMax + 5;
-            signalQueueArea.height = EditorGUIUtility.singleLineHeight;
-            Rect headerSection = signalQueueArea;
-
-            if (signalManager.queueSignals)
+        public void QueueUpdate()
+        {
+            activityDisplay.Clear();
+            signals.Clear();
+            bool first = true;
+            foreach (Signal signal in target.SignalQueue)
             {
-                Queue<Signal> signalQueue = signalManager.SignalQueue;
-                float signalQueueTimer = signalManager.SignalQueueTimer;
-                float activeSignalLength = signalManager.ActiveSignalLength;
-
-
-#if DEBUG_1
-                {
-                    signalQueue = new();
-                    signalQueue.Enqueue(new Signal("Signal1", 1f));
-                    signalQueue.Enqueue(new Signal("Signal2", 1f));
-                    signalQueue.Enqueue(new Signal("Signal3", 1f));
-                    signalQueueTimer = 0.45f;
-                    activeSignalLength = 1f;
-                }
-#endif
-
-                signalQueueArea.height = 5 + EditorGUIUtility.singleLineHeight * (signalQueue.Count + 1);
-                GUI.Box(signalQueueArea, GUIContent.none, EditorStyles.helpBox);
-
-                if (signalQueue != null && signalQueue.Count > 0)
-                {
-                    int i = 0;
-                    foreach (var signal in signalQueue)
-                    {
-                        Rect signalRect = new Rect(
-                            signalQueueArea.x + 5,
-                            signalQueueArea.y + EditorGUIUtility.singleLineHeight * (i + 1),
-                            signalQueueArea.width+10,
-                            EditorGUIUtility.singleLineHeight);
-                        if (i == 0)
-                        {
-                            EditorGUI.LabelField(signalRect, signal.name);
-
-                            signalRect.x = signalRect.width * .5f;
-                            signalRect.width = signalRect.width * .5f;
-                            EditorGUI.ProgressBar(signalRect, signalQueueTimer / activeSignalLength, $"{signalQueueTimer:F2}s / {activeSignalLength:F2}s");
-                        }
-                        else
-                        {
-                            EditorGUI.LabelField(signalRect, signal.name);
-                        }
-                        i++;
-                    }
-                }
+                signals.Add(new SignalVis(signal, first));
+                activityDisplay.Add(signals[^1]);
+                signals[^1].Update(0);
+                first = false;
             }
-            else
-            {
-                signalQueueArea.height = EditorGUIUtility.singleLineHeight;
-                GUI.Box(signalQueueArea, GUIContent.none, EditorStyles.helpBox);
-            }
+                
+        }
+        public void TimeUpdate() => signals[0].Update(target.SignalQueueTimer);
 
-            headerSection.x += 2;
-            headerSection.width -= 14;
-            signalManager.queueSignals = EditorGUI.ToggleLeft(headerSection, "", signalManager.queueSignals);
-
+        public class SignalVis : VisualElement
+        {
+            float endTime;
             
-            skin.alignment = TextAnchor.MiddleCenter;
-            skin.fontStyle = FontStyle.Bold;
-            EditorGUI.LabelField(headerSection, "Signal Queue", skin);
+            Label timerText;
+            VisualElement meterBack;
+            VisualElement meterFill;
 
-            totalArea.height = signalQueueArea.yMax;
-            GUILayout.Space(totalArea.height-15);
-
-            if (EditorGUI.EndChangeCheck())
+            public SignalVis(Signal s, bool first)
             {
-                serializedObject.ApplyModifiedProperties();
+                style.flexDirection = FlexDirection.Row;
+                Label label = new(s.name); this.Add(label);
+                label.style.width = Length.Percent(30);
+
+                string notesS = "";
+                if (s.ignoreLock) notesS += "L";
+                if (s.allowDuplicates) notesS += "D";
+                Label notes = new(notesS); this.Add(notes);
+                notes.style.width = 18;
+
+                if (first)
+                {
+                    endTime = s.queueTime;
+
+                    // Create meter background container (relative) so fill can be absolute inside it.
+                    meterBack = new VisualElement()
+                    {
+                        style =
+                        {
+                            position = Position.Relative,
+                            flexGrow = 1,
+                            height = 12,
+                            marginLeft = 4,
+                            marginRight = 4,
+                            alignSelf = Align.Center,
+                            backgroundColor = new Color(0f, 0f, 0f, 0.12f),
+                        }
+                    };
+                    this.Add(meterBack);
+
+                    // Create the actual fill bar (absolute positioned)
+                    meterFill = new VisualElement()
+                    {
+                        style =
+                        {
+                            position = Position.Absolute,
+                            left = 0,
+                            top = 0,
+                            bottom = 0,
+                            width = Length.Percent(0),
+                            backgroundColor = new Color(0.2f, 0.6f, 1f, 0.35f),
+                        }
+                    };
+                    meterBack.Add(meterFill);
+
+                    // Timer text sits above the fill (higher z-index)
+                    timerText = new Label(s.queueTime.ToString())
+                    {
+                        style =
+                        {
+                            position = Position.Relative,
+                            unityTextAlign = TextAnchor.MiddleCenter,
+                            alignSelf = Align.Center,
+                            width = Length.Percent(100),
+                            unityFontStyleAndWeight = FontStyle.Bold,
+                        }
+                    };
+                    meterBack.Add(timerText);
+                     
+                }
+            }
+
+            public void Update(float time)
+            {
+                if (timerText != null) timerText.text = $"{time} / {endTime}";
+
+                if (meterFill != null)
+                {
+                    float pct = Mathf.Clamp01((endTime - time) / endTime) * 100f;
+                    meterFill.style.width = Length.Percent(pct);
+                }
             }
         }
     }
-    */
 }

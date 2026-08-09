@@ -11,6 +11,8 @@ using RageRooster.RoomSystem;
 using RageRooster.Systems.SaveSystem;
 using Utilities.ObjectPooling;
 using RageRooster.Systems;
+using Utilities;
+
 
 
 
@@ -171,6 +173,8 @@ public class Gameplay : MonoBehaviour
                 && RoomManager.Active;
 
             RoomManager.ResetTransitionData(false);
+            UpdateDelayer.Setup();
+            EntitySpawn.PlayerPosition = Player.Transform;
 
             RoomManager.TransitionStyle = new()
             {

@@ -38,6 +38,7 @@ public class RandomNavMesh : Unit
 
             if (NavMesh.SamplePosition(transform.position + R, out NavMeshHit hit, maxWalkDistance, 1))
             {
+                if (!agent.isOnNavMesh) break;
                 agent.destination = hit.position;
                 if (agent.path.status == NavMeshPathStatus.PathComplete)
                     break;

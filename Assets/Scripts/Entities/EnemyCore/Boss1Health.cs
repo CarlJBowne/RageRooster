@@ -2,7 +2,7 @@
 using SLS.StateMachineH;
 using EditorAttributes;
 
-public class Boss1Health : Health
+public class Boss1Health : Health, IDamagable
 {
     public float damageCooldown = 0.15f;
     public ColorTintAnimation damageTint;

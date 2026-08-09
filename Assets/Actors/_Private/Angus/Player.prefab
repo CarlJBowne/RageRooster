@@ -746,7 +746,6 @@ MonoBehaviour:
       type: 3}
     <initialSize>k__BackingField: 5
     <canGrow>k__BackingField: 1
-    <autoEnable>k__BackingField: 1
     <autoDisableTime>k__BackingField: 8
     <poolParentOverride>k__BackingField: {fileID: 0}
     <orphanOnDestroy>k__BackingField: 0
@@ -961,7 +960,6 @@ MonoBehaviour:
         type: 3}
       <initialSize>k__BackingField: 1
       <canGrow>k__BackingField: 0
-      <autoEnable>k__BackingField: 0
       <autoDisableTime>k__BackingField: 0
       <poolParentOverride>k__BackingField: {fileID: 0}
       <orphanOnDestroy>k__BackingField: 0
@@ -970,7 +968,6 @@ MonoBehaviour:
         type: 3}
       <initialSize>k__BackingField: 1
       <canGrow>k__BackingField: 0
-      <autoEnable>k__BackingField: 0
       <autoDisableTime>k__BackingField: 0
       <poolParentOverride>k__BackingField: {fileID: 0}
       <orphanOnDestroy>k__BackingField: 0
@@ -979,7 +976,6 @@ MonoBehaviour:
         type: 3}
       <initialSize>k__BackingField: 1
       <canGrow>k__BackingField: 1
-      <autoEnable>k__BackingField: 0
       <autoDisableTime>k__BackingField: 0
       <poolParentOverride>k__BackingField: {fileID: 0}
       <orphanOnDestroy>k__BackingField: 0
@@ -5753,6 +5749,26 @@ PrefabInstance:
       propertyPath: Machine
       value: 
       objectReference: {fileID: 8455434200384702600}
+    - target: {fileID: 5898498358072726126, guid: e2f7aba649dedca4b89f601ebb61b048,
+        type: 3}
+      propertyPath: managedReferences[3657502764043599955].pressEvent._PersistentCalls.Array.data[0]._Target
+      value: 
+      objectReference: {fileID: 2714541672873312079}
+    - target: {fileID: 5898498358072726126, guid: e2f7aba649dedca4b89f601ebb61b048,
+        type: 3}
+      propertyPath: managedReferences[3657502764043599955].pressEvent._PersistentCalls.Array.data[0]._MemberName
+      value: TryShoot
+      objectReference: {fileID: 0}
+    - target: {fileID: 5898498358072726126, guid: e2f7aba649dedca4b89f601ebb61b048,
+        type: 3}
+      propertyPath: managedReferences[3657502764043599955].pressEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5898498358072726126, guid: e2f7aba649dedca4b89f601ebb61b048,
+        type: 3}
+      propertyPath: managedReferences[3657502764043599955].pressEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Object
+      value: 
+      objectReference: {fileID: 5883982345042846063}
     - target: {fileID: 6142764829233176585, guid: e2f7aba649dedca4b89f601ebb61b048,
         type: 3}
       propertyPath: <Machine>k__BackingField
@@ -5864,6 +5880,18 @@ Transform:
 --- !u!114 &5006367998703548978 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4750549930989173588, guid: e2f7aba649dedca4b89f601ebb61b048,
+    type: 3}
+  m_PrefabInstance: {fileID: 330846165430305126}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24d0add41dc610045864e8ea0d860708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5883982345042846063 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6142764829233176585, guid: e2f7aba649dedca4b89f601ebb61b048,
     type: 3}
   m_PrefabInstance: {fileID: 330846165430305126}
   m_PrefabAsset: {fileID: 0}
@@ -8689,6 +8717,11 @@ PrefabInstance:
       propertyPath: manager
       value: 
       objectReference: {fileID: 2472513421387103827}
+    - target: {fileID: 6178039062751613318, guid: b256207bb61b85244915454556421f67,
+        type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 8579594802138283692}
     - target: {fileID: 6374093656045378824, guid: b256207bb61b85244915454556421f67,
         type: 3}
       propertyPath: <Machine>k__BackingField

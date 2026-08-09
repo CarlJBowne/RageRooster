@@ -85,8 +85,8 @@ public class PlayerRanged : MonoBehaviour
             targetPos.position = TargetingManager.RangedChannel.CurrentTarget != null
                 ? targetPos.position = TargetingManager.RangedChannel.CurrentTarget.position
                 : Player.Position + (Player.Transform.forward * TargetingManager.RangedChannel.Range.maxDistance);
-            
-                
+
+
         }
     }
 
@@ -175,8 +175,8 @@ public class PlayerRanged : MonoBehaviour
 
 
     public void TryShoot(State shootingState)
-    { 
-        if (eggAmount >= 1 && !shootingState.Active) shootingState.Enter(); 
+    {
+        if (Player.Ammo.Current >= 1 && !shootingState.Active) shootingState.Enter();
     }
 
     public int totalEggsShot;
@@ -186,7 +186,11 @@ public class PlayerRanged : MonoBehaviour
         totalEggsShot++;
         Player.Audio.PlayOneShot("EggShoot");
         realMuzzle.position = shootMuzzle.position;
-        eggPool.Pump()?.Send(TargetingManager.RangedChannel.CurrentTarget, realMuzzle, targetPos);
+        eggPool.Pump((p, proje) =>
+        {
+            p.gameObject.SetActive(true);
+            proje.Send(TargetingManager.RangedChannel.CurrentTarget, realMuzzle, targetPos);
+        }, realMuzzle);
         Player.Ammo.Current--;
     }
 

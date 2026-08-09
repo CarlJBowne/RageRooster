@@ -299,6 +299,19 @@ namespace Utilities.Xtensions.Unity
             Rightward = 5,
             Leftward = 6
         };
+
+        public static void CopyFrom(this Transform target, Transform source, bool position = true, bool rotation = true, bool scale = false)
+        {
+            if (position) target.localPosition = source.localPosition;
+            if (rotation) target.localRotation = source.localRotation;
+            if (scale) target.localScale = source.localScale;
+        }
+        public static void CopyTo(this Transform source, Transform target, bool position = true, bool rotation = true, bool scale = false)
+        {
+            if (position) target.localPosition = source.localPosition;
+            if (rotation) target.localRotation = source.localRotation;
+            if (scale) target.localScale = source.localScale;
+        }
     }
 
     public static class Xtensions_UnityColliders
@@ -331,70 +344,70 @@ namespace Utilities.Xtensions.Unity
                         break;
 
                     case CapsuleCollider cc:
+                    {
+                        using (new Handles.DrawingScope(Matrix4x4.TRS(worldPos, worldRot, Handles.matrix.lossyScale)))
                         {
-                            using (new Handles.DrawingScope(Matrix4x4.TRS(worldPos, worldRot, Handles.matrix.lossyScale)))
-                            {
-                                var pointOffset = (cc.height - (cc.radius * 2)) / 2;
+                            var pointOffset = (cc.height - (cc.radius * 2)) / 2;
 
-                                //draw sideways
-                                Handles.DrawWireArc(Vector3.up * pointOffset, Vector3.left, Vector3.back, -180, cc.radius);
-                                Handles.DrawLine(new Vector3(0, pointOffset, -cc.radius), new Vector3(0, -pointOffset, -cc.radius));
-                                Handles.DrawLine(new Vector3(0, pointOffset, cc.radius), new Vector3(0, -pointOffset, cc.radius));
-                                Handles.DrawWireArc(Vector3.down * pointOffset, Vector3.left, Vector3.back, 180, cc.radius);
-                                //draw frontways
-                                Handles.DrawWireArc(Vector3.up * pointOffset, Vector3.back, Vector3.left, 180, cc.radius);
-                                Handles.DrawLine(new Vector3(-cc.radius, pointOffset, 0), new Vector3(-cc.radius, -pointOffset, 0));
-                                Handles.DrawLine(new Vector3(cc.radius, pointOffset, 0), new Vector3(cc.radius, -pointOffset, 0));
-                                Handles.DrawWireArc(Vector3.down * pointOffset, Vector3.back, Vector3.left, -180, cc.radius);
-                                //draw center
-                                Handles.DrawWireDisc(Vector3.up * pointOffset, Vector3.up, cc.radius);
-                                Handles.DrawWireDisc(Vector3.down * pointOffset, Vector3.up, cc.radius);
+                            //draw sideways
+                            Handles.DrawWireArc(Vector3.up * pointOffset, Vector3.left, Vector3.back, -180, cc.radius);
+                            Handles.DrawLine(new Vector3(0, pointOffset, -cc.radius), new Vector3(0, -pointOffset, -cc.radius));
+                            Handles.DrawLine(new Vector3(0, pointOffset, cc.radius), new Vector3(0, -pointOffset, cc.radius));
+                            Handles.DrawWireArc(Vector3.down * pointOffset, Vector3.left, Vector3.back, 180, cc.radius);
+                            //draw frontways
+                            Handles.DrawWireArc(Vector3.up * pointOffset, Vector3.back, Vector3.left, 180, cc.radius);
+                            Handles.DrawLine(new Vector3(-cc.radius, pointOffset, 0), new Vector3(-cc.radius, -pointOffset, 0));
+                            Handles.DrawLine(new Vector3(cc.radius, pointOffset, 0), new Vector3(cc.radius, -pointOffset, 0));
+                            Handles.DrawWireArc(Vector3.down * pointOffset, Vector3.back, Vector3.left, -180, cc.radius);
+                            //draw center
+                            Handles.DrawWireDisc(Vector3.up * pointOffset, Vector3.up, cc.radius);
+                            Handles.DrawWireDisc(Vector3.down * pointOffset, Vector3.up, cc.radius);
 
-                            }
                         }
-                        break;
+                    }
+                    break;
 
                     case MeshCollider mc:
+                    {
+                        Mesh mesh = mc.sharedMesh;
+                        if (mesh == null)
                         {
-                            Mesh mesh = mc.sharedMesh;
-                            if (mesh == null)
-                            {
-                                var mf = C.GetComponent<MeshFilter>();
-                                mesh = mf != null ? mf.sharedMesh : null;
-                            }
-
-                            if (mesh != null)
-                            {
-                                Gizmos.matrix = Matrix4x4.TRS(worldPos, worldRot, lossyScale);
-                                // mesh.bounds.center is in mesh local space; DrawWireMesh will apply Gizmos.matrix first then this local transform
-                                Gizmos.DrawWireMesh(mesh, 0, mesh.bounds.center, Quaternion.identity, Vector3.one);
-                            }
-                            else
-                            {
-                                // fallback to bounds
-                                Gizmos.matrix = Matrix4x4.TRS(worldPos, worldRot, lossyScale);
-                                Gizmos.DrawWireCube(C.bounds.center - C.transform.position, C.bounds.size);
-                            }
+                            var mf = C.GetComponent<MeshFilter>();
+                            mesh = mf != null ? mf.sharedMesh : null;
                         }
-                        break;
+
+                        if (mesh != null)
+                        {
+                            Gizmos.matrix = Matrix4x4.TRS(worldPos, worldRot, lossyScale);
+                            // mesh.bounds.center is in mesh local space; DrawWireMesh will apply Gizmos.matrix first then this local transform
+                            Gizmos.DrawWireMesh(mesh, 0, mesh.bounds.center, Quaternion.identity, Vector3.one);
+                        }
+                        else
+                        {
+                            // fallback to bounds
+                            Gizmos.matrix = Matrix4x4.TRS(worldPos, worldRot, lossyScale);
+                            Gizmos.DrawWireCube(C.bounds.center - C.transform.position, C.bounds.size);
+                        }
+                    }
+                    break;
 
                     case TerrainCollider tc:
-                        {
-                            // TerrainCollider.bounds is in world space. When position override is provided we translate the bounds by the delta.
-                            Vector3 delta = worldPos - C.transform.position;
-                            Gizmos.matrix = Matrix4x4.identity;
-                            Gizmos.DrawWireCube(tc.bounds.center + delta, tc.bounds.size);
-                        }
-                        break;
+                    {
+                        // TerrainCollider.bounds is in world space. When position override is provided we translate the bounds by the delta.
+                        Vector3 delta = worldPos - C.transform.position;
+                        Gizmos.matrix = Matrix4x4.identity;
+                        Gizmos.DrawWireCube(tc.bounds.center + delta, tc.bounds.size);
+                    }
+                    break;
 
                     default:
-                        // Generic fallback: draw collider.bounds (world space)
-                        {
-                            Vector3 delta = worldPos - C.transform.position;
-                            Gizmos.matrix = Matrix4x4.identity;
-                            Gizmos.DrawWireCube(C.bounds.center + delta, C.bounds.size);
-                        }
-                        break;
+                    // Generic fallback: draw collider.bounds (world space)
+                    {
+                        Vector3 delta = worldPos - C.transform.position;
+                        Gizmos.matrix = Matrix4x4.identity;
+                        Gizmos.DrawWireCube(C.bounds.center + delta, C.bounds.size);
+                    }
+                    break;
                 }
             }
             finally

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Utilities.ObjectPooling;
 using UnityEngine;
+using Utilities;
+using Utilities.Xtensions.Unity;
 
 public class EnemyBasicBulletSource : MonoBehaviour
 {
@@ -14,19 +16,17 @@ public class EnemyBasicBulletSource : MonoBehaviour
         GlobalPool.BasicEnemyBullet.Initialize();
     }
 
-    public PoolableObject Pump(bool autoEnable = true)
+    public Spawnable Pump()
     {
         if (!Gameplay.Active) return null;
         if (!GlobalPool.BasicEnemyBullet.initialized) GlobalPool.BasicEnemyBullet.Initialize();
-        PoolableObject res = null;
-        GlobalPool.BasicEnemyBullet.Pump(Success);
+        Spawnable res = null;
+        GlobalPool.BasicEnemyBullet.Pump(Success, muzzle);
 
-        void Success(PoolableObject obj, AttackProjectile proj)
+        void Success(Spawnable obj, AttackProjectile proj)
         {
-            if (muzzle != null) obj.PlaceAtMuzzle(muzzle);
-            //proj.Send();
+            if (muzzle != null) obj.transform.CopyFrom(muzzle);
             obj.currentClient = this;
-            if (autoEnable) obj.Active = true;
             res = obj;
         }
         return res;

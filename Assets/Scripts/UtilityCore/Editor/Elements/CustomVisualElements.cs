@@ -133,6 +133,7 @@ namespace Utilities.Xtensions.VisualElements
     }
 
 
+
     public class CachedElement<T> : object where T : VisualElement
     {
         public CachedElement(VisualElement root, string name = null, string ussClassName = null, bool buildNow = false)
@@ -439,5 +440,100 @@ namespace Utilities.Xtensions.VisualElements
         }
     }
 #endif
-}
 
+    public class ToggleLikeButton : Button
+    {
+        public ToggleLikeButton(Action<bool> onToggle = null, bool initialValue = false) : base()
+        {
+            onToggleCallback = onToggle;
+            clicked += () => Value = !isOn;
+
+            // base visuals
+            style.unityTextAlign = TextAnchor.MiddleCenter;
+            style.backgroundColor = NormalBackground;
+            style.color = NormalTextColor;
+            style.paddingTop = 4;
+            style.paddingBottom = 4;
+            style.paddingLeft = 6;
+            style.paddingRight = 6;
+            style.borderTopWidth = 1;
+            style.borderBottomWidth = 1;
+            style.borderLeftWidth = 1;
+            style.borderRightWidth = 1;
+            style.borderTopColor = BorderColor;
+            style.borderBottomColor = BorderColor;
+            style.borderLeftColor = BorderColor;
+            style.borderRightColor = BorderColor;
+
+            SetValueWithoutNotify(initialValue);
+        }
+
+        public bool Value
+        {
+            get => isOn;
+            set
+            {
+                if (isOn == value) return;
+                isOn = value;
+                ApplyVisualState();
+                onToggleCallback?.Invoke(isOn);
+                NotifyChange();
+            }
+        }
+
+        public void SetValueWithoutNotify(bool value)
+        {
+            if (isOn == value) return;
+            isOn = value;
+            ApplyVisualState();
+        }
+
+        public void RegisterValueChangedCallback(Action<bool> cb) => onToggleCallback += cb;
+        public void UnregisterValueChangedCallback(Action<bool> cb) => onToggleCallback -= cb;
+
+        private void ApplyVisualState()
+        {
+            if (isOn)
+            {
+                // "pushed in" appearance
+                style.backgroundColor = PressedBackground;
+                style.color = PressedTextColor;
+                style.paddingTop = 6;
+                style.paddingBottom = 2;
+                style.borderTopColor = PressedBorderColor;
+                style.borderBottomColor = PressedBorderColor;
+                // slight inset effect by reducing top border highlight
+                style.marginTop = 1;
+            }
+            else
+            {
+                // normal appearance
+                style.backgroundColor = NormalBackground;
+                style.color = NormalTextColor;
+                style.paddingTop = 4;
+                style.paddingBottom = 4;
+                style.borderTopColor = BorderColor;
+                style.borderBottomColor = BorderColor;
+                style.marginTop = 0;
+            }
+        }
+
+        private void NotifyChange()
+        {
+            // expose Unity style change event for consumers that expect IMGUI-style events
+            // (keeps this class simple; consumers can use RegisterValueChangedCallback)
+        }
+
+        private bool isOn = false;
+        private Action<bool> onToggleCallback;
+
+        // Colors used for visual states. Adjust to taste.
+        public static Color NormalBackground { get; } = new Color(.94f, .94f, .94f, 1f);
+        public static Color PressedBackground { get; } = new Color(.78f, .78f, .78f, 1f);
+        public static Color NormalTextColor { get; } = Color.black;
+        public static Color PressedTextColor { get; } = Color.black;
+        public static Color BorderColor { get; } = new Color(.72f, .72f, .72f, 1f);
+        public static Color PressedBorderColor { get; } = new Color(.48f, .48f, .48f, 1f);
+    }
+
+}

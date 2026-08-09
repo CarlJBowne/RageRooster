@@ -98,7 +98,9 @@ namespace SLS.StateMachineH
             OnAwake();
             DoAwake();
 
-            for (int i = 0; i < Behaviors.Length; i++) Behaviors[i].DoEnter(null, false);
+            for (int i = 0; i < Behaviors.Length; i++) 
+                if(Behaviors[i] != null)
+                    Behaviors[i].DoEnter(null, false); 
             CurrentChild = Children[0];
             TransitionState(Children[0]);
 
