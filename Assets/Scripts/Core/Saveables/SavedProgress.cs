@@ -10,7 +10,19 @@ namespace RageRooster.Core.Save
         public void Establish() => Active = this;
 
         public TimeSpan playTime = TimeSpan.Zero;
-        public int currency = 0;
+
+        public int Currency
+        {
+            get => currency;
+            set
+            {
+                if (currency == value) return;
+                currency = value;
+                if(this == Active) OnCurrencyChanged(value);
+            }
+        } int currency = 0; public static event Action<int> OnCurrencyChanged;
+
+
         public SavedCollectible powerEggs = new();
         public SavedCollectible wishbones = new();
         public SavedCollectible hensRescued = new();
@@ -34,7 +46,7 @@ namespace RageRooster.Core.Save
         public override void Clone(SavedProgress source)
         {
             playTime = source.playTime;
-            currency = source.currency;
+            Currency = source.currency;
             powerEggs.Clone(source.powerEggs);
             wishbones.Clone(source.wishbones);
             hensRescued.Clone(source.hensRescued);

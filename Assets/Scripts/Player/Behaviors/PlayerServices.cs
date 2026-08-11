@@ -8,6 +8,7 @@ namespace RageRooster.Player
 {
     public static class Services
     {
-        public static PlayerRoot Self;
+        public static PlayerRoot Self => Player;
+        public static PlayerRoot Player;
     }
 }

@@ -7,6 +7,7 @@ using SLS.StateMachineH.Timelines;
 using TMPro;
 using UltEvents;
 using UnityEngine;
+using static RageRooster.Player.Services;
 
 
 public class PlayerGrabAction : StateBehavior
@@ -152,7 +153,7 @@ public class PlayerGrabAction : StateBehavior
 
             if (elapsedTime >= 1)
             {
-                if (Player.StateMachine.Airborne && Upgrades.Active.dropLaunch && Input.Grab.IsPressed())
+                if (Player.StateMachine.Airborne && Player.Stats.dropLaunch && Input.Grab.IsPressed())
                     Player.StateMachine.DropLaunch.Enter();
                 else finalSuccessReturn.Invoke();
                 EndCleanup();

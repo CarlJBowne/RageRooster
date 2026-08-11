@@ -4,6 +4,5 @@ namespace RageRooster.Core
     {
         void CutsceneState();
         void UnCutsceneState();
-        bool SendSignal(string signal);
     }
 }

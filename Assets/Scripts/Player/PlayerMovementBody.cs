@@ -11,6 +11,10 @@ using Utilities.Xtensions;
 using Cinemachine.Utility;
 using RageRooster.World;
 using SLS.Physics3D;
+using SLS.StateMachineH;
+using SLS.StateMachineH.Signals;
+using static RageRooster.Player.Services;
+using RageRooster.Player;
 
 
 
@@ -83,7 +87,7 @@ public sealed class PlayerMovementBody : PhysicsBody
     protected override void FixedUpdate()
     {
         Self.Animator.SetFloat("CurrentSpeed", Velocity.magnitudeH);
-        if (Upgrades.Active.d_moonJump && Input.Jump.IsPressed()) Velocity.u = 10f;
+        if (PlayerStats.Active.d_moonJump && Input.Jump.IsPressed()) Velocity.u = 10f;
 
         Vector3 prePos = Position;
 
@@ -97,21 +101,21 @@ public sealed class PlayerMovementBody : PhysicsBody
     public override void OnLand(bool wasntGrounded, bool objectChange)
     {
         UpdateResolver();
-        Self.StateMachine.SendSignal(new("Land", ignoreLock: true));
+        Self.StateMachine.Signal(new("Land", ignoreLock: true));
         canDoDoubleJump = true; //I still don't like this being part of this script of all things.
-        if (Self.Controller.CheckJumpBuffer()) Self.StateMachine.SendSignal("Jump");
+        if (Self.Controller.CheckJumpBuffer()) Self.StateMachine.Signal("Jump");
     }
     public override void OnUnLand(GroundState.Values newValue) => UpdateResolver();
 
     public override void WalkOff()
     {
         Ground.UnLand(GroundState.Values.Hangtime);
-        Self.StateMachine.SendSignal(new("WalkOff", ignoreLock: true));
+        Self.StateMachine.Signal(new("WalkOff", ignoreLock: true));
     }
 
     public override bool LastChanceStopper(Vector3 velocity, Vector3 normal)
     {
-        if (Vector3.Angle(velocity, -normal) < bonkThreshold && Self.StateMachine.SendSignal(new("Bonk", 0, true)))
+        if (Vector3.Angle(velocity, -normal) < bonkThreshold && Self.StateMachine.Signal(new("Bonk", 0, true)))
         {
             this.Velocity.ZeroOut();
             return true;
@@ -131,7 +135,7 @@ public sealed class PlayerMovementBody : PhysicsBody
         set
         {
             currentVent = value;
-            Self.StateMachine.SendSignal(new(value != null ? "EnterVent" : "ExitVent", 0, true));
+            Self.StateMachine.Signal(new(value != null ? "EnterVent" : "ExitVent", 0, true));
         }
     }
 VolcanicVent currentVent;

@@ -19,11 +19,17 @@ namespace RageRooster.TOP.Save
 
         public const string targetFileVersion = "1.0.0";
 
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void InitServices()
+        {
+            SaveData.SaveToSaveFile = SaveToSaveFile;
+            SaveData.RevertToSaveFile = RevertToSaveFile;
+            SaveData.CallInitializeSave = InitializeSaves;
+        }
+
         public static void InitializeSaves(int fileNo)
         {
             Primary = new(fileNo);
-            SaveData.SaveToSaveFile = SaveToSaveFile;
-            SaveData.RevertToSaveFile = RevertToSaveFile;
             SaveData.InitializeSystem();
             RevertToSaveFile();
         }

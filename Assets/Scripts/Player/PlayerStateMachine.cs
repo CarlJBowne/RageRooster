@@ -10,6 +10,7 @@ using RageRooster.Core.Save;
 using RageRooster.World;
 using SLS.StateMachineH.Signals;
 using RageRooster.Core;
+using Services = RageRooster.Services;
 using static RageRooster.Player.Services;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
@@ -56,27 +57,25 @@ public class PlayerStateMachine : StateMachine, IPlayerStateMachine
 
     protected override void OnAwake()
     {
-        //if (!Gameplay.Active || RoomManager.currentRoom == null)
-        //{
-        //    enabled = false;
-        //    Gameplay.onFinalAwake += OnAwake;
-        //    return;
-        //}
-        //Gameplay.onFinalAwake -= OnAwake;
-        //enabled = true;
+        if (!Services.Gameplay.Active || RoomManager.currentRoom == null)
+        {
+            enabled = false;
+            Services.Gameplay.onFinalAwake += OnAwake;
+            return;
+        }
+        Services.Gameplay.onFinalAwake -= OnAwake;
+        enabled = true;
 
         Singleton.Register(ref instance, this);
 
         whenInitializedEvent?.Invoke(this);
 
-        PauseMenu.onPause += Pause;
-        PauseMenu.onUnPause += UnPause;
+        Services.UI.OnPause += OnPause;
     }
 
     private void OnDestroy()
     {
-        PauseMenu.onPause -= Pause;
-        PauseMenu.onUnPause -= UnPause;
+        Services.UI.OnPause -= OnPause;
 
         Singleton.Deregister(ref instance, this);
     }
@@ -95,15 +94,10 @@ public class PlayerStateMachine : StateMachine, IPlayerStateMachine
         Player.Animator.Play("GroundBasic");
     }
 
-    public void Pause()
+    public void OnPause(bool value)
     {
-        this.enabled = false;
-        Player.MovementBody.enabled = false;
-    }
-    public void UnPause()
-    {
-        this.enabled = true;
-        Player.MovementBody.enabled = true;
+        this.enabled = !value;
+        Player.MovementBody.enabled = !value;
     }
 
     private State prevState;
@@ -119,7 +113,5 @@ public class PlayerStateMachine : StateMachine, IPlayerStateMachine
         prevState.Enter();
     }
 
-    public void DeathIfAtZero() { if (Player.Health.playerObject.GetCurrentHealth() == 0) Player.Death(); }
-
-    public bool SendSignal(string signal) => this.SendSignal(signal);
+    public void DeathIfAtZero() { if (Player.Health == 0) Player.Death(); }
 }

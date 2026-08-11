@@ -47,6 +47,7 @@ public class PauseMenu : Menu, IPauseMenu
         onPause?.Invoke();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        Services.UI.OnPause?.Invoke(true);
     }
     protected override void OnClose()
     {
@@ -54,6 +55,7 @@ public class PauseMenu : Menu, IPauseMenu
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         onUnPause?.Invoke();
+        Services.UI.OnPause?.Invoke(false);
     }
 
     public void QuitGame()

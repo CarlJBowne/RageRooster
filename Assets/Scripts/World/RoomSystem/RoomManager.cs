@@ -124,7 +124,7 @@ namespace RageRooster.World
             if (IPlayer.Present) IPlayer.Self.ActivityState = ActivityStates.Invisible;
             yield return null;
             CurrentlyTransitioning = true;
-            OverlayTopPlus.LoadingPopup();
+            UI.OverlayTopPlus.LoadingPopup();
 
             if (fullTransition)
             {
@@ -155,7 +155,7 @@ namespace RageRooster.World
             yield return MidTransitionRoutine;
 
             CurrentlyTransitioning = false;
-            OverlayTopPlus.LoadingPopup(false);
+            UI.OverlayTopPlus.LoadingPopup(false);
             if (IPlayer.Present) IPlayer.Self.ActivityState = ActivityStates.Active;
 
 

@@ -2,6 +2,7 @@ using RageRooster.Core.Save;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static RageRooster.Player.Services;
 
 public class PlayerParryCollider : MonoBehaviour, IAttackSource
 {
@@ -26,7 +27,7 @@ public class PlayerParryCollider : MonoBehaviour, IAttackSource
     public Attack GetAttack() => throw new System.NotImplementedException();
     public Attack GetAttack(GameObject target)
     {
-        Attack result = Upgrades.Active.hellcopter ? hellUpgradedAttack : baseAttack;
+        Attack result = Player.Stats.hellcopter ? hellUpgradedAttack : baseAttack;
         result.velocity = (target.transform.position - (transform.position + collider.center)).normalized * result.velocity.x;
         return result;
     }

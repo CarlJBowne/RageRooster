@@ -3,7 +3,7 @@ using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using static RageRooster.Player.Services;
 
 public class PlayerWallJump : PlayerMovementEffector
 {

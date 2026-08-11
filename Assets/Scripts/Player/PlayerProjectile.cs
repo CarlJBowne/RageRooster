@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using static RageRooster.Player.Services;
 
 
 public class PlayerProjectile : AttackSourceSingle

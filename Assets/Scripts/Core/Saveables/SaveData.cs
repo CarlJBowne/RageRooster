@@ -44,7 +44,7 @@ namespace RageRooster.Core.Save
 
         public static Action SaveToSaveFile;
         public static Action RevertToSaveFile;
-
+        public static Action<int> CallInitializeSave;
 
         #endregion
 

@@ -5,6 +5,7 @@ using RageRooster.Core;
 using RageRooster.Core.Save;
 using RageRooster.World;
 using SLS.GeneralUtilities;
+using SLS.GeneralUtilities.StatObjects;
 using SLS.SaveData;
 using Utilities.JSON;
 
@@ -18,30 +19,8 @@ namespace RageRooster.Player
     {
         public static PlayerStats Active { get; private set; }
         public void Establish() => Active = this;
-
-        private int maxHealth = 3;
-        public int MaxHealth
-        {
-            get => maxHealth;
-            set
-            {
-                maxHealth = value;
-                if(this == Active) OnMaxHealthChanged?.Invoke(value);
-            }
-        }
-        public static event Action<int> OnMaxHealthChanged;
-
-        private int maxAmmo = 3;
-        public int MaxAmmo
-        {
-            get => maxAmmo;
-            set
-            {
-                maxAmmo = value;
-                if (this == Active) OnMaxAmmoChanged?.Invoke(value);
-            }
-        }
-        public static event Action<int> OnMaxAmmoChanged;
+        public IntStat MaxHealth;
+        public IntStat MaxAmmo;
         public IDestination location;
 
         /// <summary> The ability to throw a grabbable object downwards while in midair, launching the player upwards. </summary>
@@ -65,8 +44,8 @@ namespace RageRooster.Player
 
         public override void Clone(PlayerStats source)
         {
-            MaxHealth = source.maxHealth;
-            MaxAmmo = source.maxAmmo;
+            MaxHealth &= source.MaxHealth;
+            MaxAmmo &= source.MaxAmmo;
             dropLaunch = source.dropLaunch;
             wallJump = source.wallJump;
             hellcopter = source.hellcopter;
@@ -89,8 +68,8 @@ namespace RageRooster.Player
             Active.lasso = true;
             Active.d_invincibility = true;
             Active.d_moonJump = true;
-            Active.maxHealth = 10;
-            Active.maxAmmo = 40;
+            Active.MaxHealth &= 10;
+            Active.MaxAmmo &= 40;
         }
 
         public enum Upgrade

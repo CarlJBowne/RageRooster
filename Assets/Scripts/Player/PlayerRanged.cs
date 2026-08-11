@@ -1,12 +1,18 @@
-using DG.Tweening;
-using EditorAttributes;
-using SLS.ObjectUtilities;
-using RageRooster.Core.Save;
-using SLS.StateMachineH;
-using RageRooster.Core;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using DG.Tweening;
+using EditorAttributes;
+using RageRooster.Core;
+using RageRooster.Core.Save;
+using RageRooster.Player;
+using SLS.GeneralUtilities.EventTickets;
+using SLS.GeneralUtilities.StatObjects;
+using SLS.ObjectUtilities;
+using SLS.StateMachineH;
 using UnityEngine;
+using static RageRooster.Player.Services;
+using Services = RageRooster.Services;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerRanged : MonoBehaviour
@@ -30,11 +36,11 @@ public class PlayerRanged : MonoBehaviour
     #endregion
 
     #region Data
-    [HideProperty] public int eggAmount = 10;
-    [HideProperty] public int eggCapacity = 10;
+    protected List<EventTicket> events = new();
+    public IntStatClamped Ammo = new();
     [HideProperty] public float currentTargetDistance = 10f;
 
-    public bool hasEggsToShoot => eggAmount > 0;
+    public bool hasEggsToShoot => Ammo > 0;
 
     #endregion
 
@@ -42,16 +48,29 @@ public class PlayerRanged : MonoBehaviour
     private void Awake()
     {
         eggPool.Initialize();
+        Ammo.Max = Player.Stats.MaxAmmo;
+        Ammo.Value = Ammo.Max;
+        Ammo.Min = 0;
+        events = new()
+        {
+            Player.Stats.MaxAmmo.Subscribe(Ammo.SetMax),
+            Services.UI.OnPause.Subscribe(ExitAimingInstant)
+        };
+    }
+    private void OnDestroy()
+    {
+        eggPool.Cleanup();
+
     }
 
-    private void OnEnable() => PauseMenu.onPause += ExitAimingInstant;
-    private void OnDisable() => PauseMenu.onPause -= ExitAimingInstant;
+    private void OnEnable() => events.SubscribeAll();
+    private void OnDisable() => events.UnSubscribeAll();
 
     private void FixedUpdate()
     {
         eggPool.Update(Time.deltaTime);
         if (!enabled) return;
-        if (eggAmount < eggCapacity) eggReplenishRate.Tick(() => Self.Ammo.Current++);
+        if (Ammo.Value < Ammo.Max) eggReplenishRate.Tick(() => Ammo += 1);
 
         if (Self.Animator.enabled) Self.Animator.Update(0f);
 
@@ -87,26 +106,21 @@ public class PlayerRanged : MonoBehaviour
     private void LateUpdate()
     {
         if (!enabled) return;
-        if (Self.Instance.Grabber != null && Self.Instance.Grabber.currentGrabbed != null && Self.Instance.Grabber.heldItemAnchor != null)
+        if (Player.Grabber != null && Player.Grabber.currentGrabbed != null && Player.Grabber.heldItemAnchor != null)
         {
-            var t = Self.Instance.Grabber.currentGrabbed.transform;
-            t.SetPositionAndRotation(Self.Instance.Grabber.heldItemAnchor.position, Self.Instance.Grabber.heldItemAnchor.rotation);
+            var t = Player.Grabber.currentGrabbed.transform;
+            t.SetPositionAndRotation(Player.Grabber.heldItemAnchor.position, Player.Grabber.heldItemAnchor.rotation);
         }
     }
 
-    private void OnDestroy()
-    {
-        eggPool.Cleanup();
-    }
-
-    public Grabbable currentGrabbed => Self.Instance.Grabber != null ? Self.Instance.Grabber.currentGrabbed : null;
+    public Grabbable currentGrabbed => Player.Grabber != null ? Player.Grabber.currentGrabbed : null;
 
 
 
 
     public void EnterAiming(State targetState)
     {
-        if (eggCapacity == 0 && currentGrabbed != null) return;
+        if (Ammo.Max == 0 && currentGrabbed != null) return;
 
         SetAimDirection(Cameras.normalCamera.m_XAxis.Value, Cameras.normalCamera.m_YAxis.Value);
         Cameras.aimingCamera.CancelDamping();
@@ -116,7 +130,7 @@ public class PlayerRanged : MonoBehaviour
         targetState.Enter();
         aimingRig.enabled = true;
         aimingRig.weight = 1;
-        IHUDService.HUD?.SetHitMarkerVisibility(true);
+        Services.HUD?.SetHitMarkerVisibility(true);
         Cameras.SetTargetVirtualCamera(Cameras.aimingCamera);
     }
     public void ExitAiming(State targetState)
@@ -128,7 +142,7 @@ public class PlayerRanged : MonoBehaviour
         targetState.Enter();
         aimingRig.enabled = false;
         aimingRig.weight = 0;
-        IHUDService.HUD?.SetHitMarkerVisibility(false);
+        Services.HUD?.SetHitMarkerVisibility(false);
         Cameras.SetTargetVirtualCamera(Cameras.normalCamera);
     }
 
@@ -139,19 +153,19 @@ public class PlayerRanged : MonoBehaviour
         TargetingManager.ToggleAimingDownSights(false);
         aimingRig.enabled = false;
         aimingRig.weight = 0;
-        IHUDService.HUD?.SetHitMarkerVisibility(false);
+        Services.HUD?.SetHitMarkerVisibility(false);
         Cameras.SetTargetVirtualCamera(Cameras.normalCamera);
         Self.StateMachine.IdleWalk.State.Enter();
     }
 
-    public void ExitAimingInstant()
+    public void ExitAimingInstant(bool _)
     {
         if (!Self.StateMachine.Aiming) return;
         Cameras.normalCamera.m_XAxis.Value = hAxis.Value;
         TargetingManager.ToggleAimingDownSights(false);
         aimingRig.enabled = false;
         aimingRig.weight = 0;
-        IHUDService.HUD?.SetHitMarkerVisibility(false);
+        Services.HUD?.SetHitMarkerVisibility(false);
         Cameras.SetTargetVirtualCamera(Cameras.normalCamera);
         Self.Animator.Play("GroundBasic");
         Self.StateMachine.IdleWalk.State.Enter();
@@ -168,7 +182,7 @@ public class PlayerRanged : MonoBehaviour
 
     public void TryShoot(State shootingState)
     {
-        if (Self.Ammo.Current >= 1 && !shootingState.Active) shootingState.Enter();
+        if (Ammo >= 1 && !shootingState.Active) shootingState.Enter();
     }
 
     public int totalEggsShot;
@@ -183,7 +197,7 @@ public class PlayerRanged : MonoBehaviour
             p.gameObject.SetActive(true);
             proje.Send(TargetingManager.RangedChannel.CurrentTarget, realMuzzle, targetPos);
         }, realMuzzle);
-        Self.Ammo.Current--;
+        Ammo -= 1;
     }
 
     public void ThrowLassoPoint()

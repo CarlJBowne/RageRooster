@@ -12,7 +12,11 @@ namespace RageRooster.Core
 
         public List<MonoBehaviour> bobAndTurnList { get; }
 
-        public bool Active
-        { get; }
+        public bool Active { get; }
+
+        public void Death();
+        public void Respawn();
+
+        public event Action onFinalAwake;
     }
 }

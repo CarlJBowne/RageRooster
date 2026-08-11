@@ -127,7 +127,7 @@ public class Grabbable : MonoBehaviour
     {
         var result = GrabResult.Success;
 
-        if (health && health.GetCurrentHealth() > grabHealthMax) result = GrabResult.Blocked;
+        if (health && health.Current > grabHealthMax) result = GrabResult.Blocked;
 
         return result;
     }

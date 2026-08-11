@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
+using static RageRooster.Player.Services;
 
 public class PlayerLedgeGrab : PlayerMovementEffector
 {
@@ -37,7 +38,7 @@ public class PlayerLedgeGrab : PlayerMovementEffector
 
                 if (fwdHit.collider != null)
                 {
-                    Machine.SendSignal("EndFall");
+                    Machine.Signal("EndFall");
                     Player.MovementBody.Velocity.ZeroOut();
 
                     ledged = true;

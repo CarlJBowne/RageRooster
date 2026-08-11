@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
+using static RageRooster.Player.Services;
 
 public class PlayerGroundSlam : PlayerMovementEffector
 {

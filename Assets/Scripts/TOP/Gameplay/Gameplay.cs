@@ -11,6 +11,7 @@ using Utilities;
 using SLS.ObjectUtilities;
 using RageRooster;
 using RageRooster.Core;
+using static RageRooster.Services;
 
 public class Gameplay : GameStateSingle<Gameplay>, IGameplay
 {
@@ -154,8 +155,8 @@ public class Gameplay : GameStateSingle<Gameplay>, IGameplay
             UnityEngine.Cursor.lockState = CursorLockMode.Locked;
             UnityEngine.Cursor.visible = false;
 
-            InitializeSaves(fileNo);
-            RoomManager.queuedDestination = SaveData.Active.location;
+            SaveData.CallInitializeSave(fileNo);
+            RoomManager.queuedDestination = SaveData.Active.playerStats.location;
 
             Menu.CloseAllMenus();
 
@@ -166,8 +167,7 @@ public class Gameplay : GameStateSingle<Gameplay>, IGameplay
         }
     }
 
-    public static void InitializeSaves(int fileNo) => SaveData.InitializeSaves(fileNo);
-
+    /*
     private static Destination CalculateEditorSpawn()
     {
         Destination target = EditorState.EditorDestination;
@@ -202,12 +202,13 @@ public class Gameplay : GameStateSingle<Gameplay>, IGameplay
 
         return target;
     }
+    */
 
 
 
     public static void Respawn()
     {
-        RoomManager.PostFadeOutAction = () => { Player.onRespawn?.Invoke(); };
+        RoomManager.PostFadeOutAction = () => { Player.OnRespawn?.Invoke(); };
         RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
     }
 

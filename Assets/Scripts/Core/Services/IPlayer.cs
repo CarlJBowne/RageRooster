@@ -17,9 +17,6 @@ namespace RageRooster.Core
         ActivityStates ActivityState { get; set; }
         IPlayerStateMachine StateMachine { get; }
 
-        int CurrencyCurrent { get; }
-        event Action<int> OnUpdateCurrency;
-
         void InstantMove(Vector3 position, float? yRot = null);
         void Death();
         void PitFall();

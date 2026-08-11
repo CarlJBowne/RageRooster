@@ -1,14 +1,18 @@
 using RageRooster.Core.Save;
+using SLS.GeneralUtilities.EventTickets;
+using SLS.GeneralUtilities.StatObjects;
 using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static RageRooster.Player.Services;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerHealth : Health
 {
-    #region Instance Variables
+    protected override IntStat MaxSourceStat => Player.Stats.MaxHealth;
+    public static IntStatClamped Viewer;
 
     public float invincibilityTime;
     public State damageState;
@@ -20,36 +24,22 @@ public class PlayerHealth : Health
     private Coroutine invincibility;
     private new Collider collider;
 
-    #endregion Instance Variables
-
-    #region Instance Methods
-
-
-
     protected override void Awake()
     {
         base.Awake();
         collider = GetComponent<Collider>();
-        Self.Health.updateHealth += HealthChangeCallback;
-        Self.Health.updateMaxHealth += MaxHealthChangeCallback;
-
-        //Global.playerObject = this;
-    }
-
-    private void OnDestroy()
-    {
-        if (Self.Present)
-        {
-            Self.Health.updateHealth -= HealthChangeCallback;
-            Self.Health.updateMaxHealth -= MaxHealthChangeCallback;
-        }
+        Viewer = new();
+        Viewer &= Current;
+        Viewer.Max = Max;
+        events.Add(OnValueChanged.Subscribe(Viewer.SetValue));
+        events.Add(OnMaxChanged.Subscribe(Viewer.SetMax));
     }
 
     protected override void OnDamage(Attack attack)
     {
         damageEvent?.Invoke(attack.amount);
         if (tintAnimator) tintAnimator.BeginAnimation();
-        if (health != 0)
+        if (Current != 0)
         {
             if (Self.StateMachine.Aiming) Self.Ranged.ExitAimingAux();
             Coroutine.Begin(ref invincibility, InvinceEnum(invincibilityTime), this);
@@ -67,10 +57,8 @@ public class PlayerHealth : Health
             }
             else damageState.Enter();
         }
-        Self.Health.Current = health;
     }
 
-    protected override void OnHeal(int amount) => Self.Health.Current = health;
 
     protected override void OnDeplete(Attack attack)
     {
@@ -94,7 +82,7 @@ public class PlayerHealth : Health
 
     protected override bool OverrideDamageable(Attack attack)
     {
-        if (Upgrades.Active.d_invincibility && attack != Attack.Tags.Pit) return false;
+        if (Player.Stats.d_invincibility && attack != Attack.Tags.Pit) return false;
 
         if (ConversationManager.instance && ConversationManager.instance.inDialogue) return false;
         return true;
@@ -122,26 +110,11 @@ public class PlayerHealth : Health
         //}
     }
 
-
-    private void HealthChangeCallback()
-    {
-        if (health == Player.Health.Current) return;
-        health = Player.Health.Current;
-        if (health < 1) OnDeplete(default);
-    }
-    private void MaxHealthChangeCallback()
-    {
-        if (maxHealth == Player.Health.Max) return;
-        maxHealth = Player.Health.Max;
-    }
-
     public void DoAwake() => Awake();
-
 
     public override void Destroy()
     {
         //No.
     }
 
-    #endregion Instance Methods
 }

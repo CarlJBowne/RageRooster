@@ -27,7 +27,7 @@ public class OverlayTopPlus : Overlay, IOverlayTopPlus
     protected override void Awake()
     {
         self.Register(this);
-        Services.OverlayTopPlus = this;
+        Services.UI.OverlayTopPlus = this;
 
         if (animator == null) animator = GetComponent<Animator>();
         if (image == null) image = GetComponent<Image>();
@@ -36,7 +36,7 @@ public class OverlayTopPlus : Overlay, IOverlayTopPlus
     private void OnDestroy()
     {
         self.Deregister(this);
-        Services.OverlayTopPlus = null;
+        Services.UI.OverlayTopPlus = null;
     }
 
     public void LoadingPopup(bool value = true)
@@ -59,7 +59,7 @@ public class OverlayTopPlus : Overlay, IOverlayTopPlus
         }
     }
 
-    public IEnumerator GameOverAnim(float duration = 1f)
+    public IEnumerator GameOverAnimation(float duration = 1f)
     {
         PlayAnimation(GameOverAnimationHash);
         animator.SetFloat(DurationSpeedParamHash, 1 / duration);

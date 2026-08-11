@@ -1,7 +1,7 @@
 ﻿using EditorAttributes;
 using SLS.StateMachineH;
 using UnityEngine;
-
+using static RageRooster.Player.Services;
 
 public abstract class PlayerMovementEffector : StateBehavior
 {

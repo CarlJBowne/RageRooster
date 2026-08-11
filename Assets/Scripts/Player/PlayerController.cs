@@ -95,8 +95,8 @@ public class PlayerController : StateBehavior
 
 
 
-    private void BeginActionEvent(InputAction.CallbackContext callbackContext) => Machine.SendSignal(callbackContext.action.name);
-    public void BeginActionEvent(string name) => Machine.SendSignal(name);
+    private void BeginActionEvent(InputAction.CallbackContext callbackContext) => Machine.Signal(callbackContext.action.name);
+    public void BeginActionEvent(string name) => Machine.Signal(name);
 
     public void ReadyNextAction() => Machine.SignalManager.Unlock();
     public void FinishAction() => Machine.SignalManager.FireSignal(new("Finish", ignoreLock: true));
@@ -108,7 +108,7 @@ public class PlayerController : StateBehavior
         if (PlayerStats.Active.hellcopter)
         {
             Self.StateMachine.AirParry.Enter();
-            if (Self.MovementBody.isOverVent) Machine.SendSignal(new("EnterVent", 0, true));
+            if (Self.MovementBody.isOverVent) Machine.Signal(new("EnterVent", 0, true));
         }
     }
 
@@ -124,13 +124,13 @@ public class PlayerController : StateBehavior
 
     public static void AirJumpAction(bool allowDoubleJump, bool allowGlide)
     {
-        if (Upgrades.Active.wallJump && Self.StateMachine.WallJump.WallJump(Self.Transform.forward)) return;
-        else if (allowDoubleJump && Upgrades.Active.doubleJump && Self.MovementBody.canDoDoubleJump)
+        if (PlayerStats.Active.wallJump && Self.StateMachine.WallJump.WallJump(Self.Transform.forward)) return;
+        else if (allowDoubleJump && PlayerStats.Active.doubleJump && Self.MovementBody.canDoDoubleJump)
         {
             Self.StateMachine.Jump.BeginJump();
             Self.MovementBody.canDoDoubleJump = false;
         }
-        else if (allowGlide && Upgrades.Active.glide)
+        else if (allowGlide && PlayerStats.Active.glide)
         {
             if (Self.MovementBody.isOverVent) Self.StateMachine.VentGliding.Enter();
             else Self.StateMachine.Gliding.Enter();
@@ -138,8 +138,8 @@ public class PlayerController : StateBehavior
     }
 
 
-    private void AimPress(CTX cTX) => Machine.SendSignal("Aim");
-    private void AimRelease(CTX cTX) => Machine.SendSignal("AimRelease");
+    private void AimPress(CTX cTX) => Machine.Signal("Aim");
+    private void AimRelease(CTX cTX) => Machine.Signal("AimRelease");
 
 
 

@@ -7,6 +7,7 @@ using UnityEngine.Windows;
 using Cinemachine;
 using Cinemachine.Utility;
 using static Cinemachine.CinemachineFreeLook;
+using static RageRooster.Player.Services;
 
 public class PlayerStrafingMovement : PlayerMovementEffector
 {

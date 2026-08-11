@@ -62,9 +62,9 @@ public class Boss1Health : Health, IDamagable
             if (stunCounter > 2)
             {
                 stunCounter = 0;
-                machine.SendSignal("Charge");
+                machine.Signal("Charge");
             }
-            else machine.SendSignal("Flinch");
+            else machine.Signal("Flinch");
             lastDamageTime = Time.time;
         }
         return false;
@@ -80,8 +80,8 @@ public class Boss1Health : Health, IDamagable
 
     public void OnDamageReturn()
     {
-        if (!phase2TriggerTriggered && GetCurrentHealth() <= phase2Trigger) BeginPhase2();
-        else machine.SendSignal("ReturnFromStun");
+        if (!phase2TriggerTriggered && Current <= phase2Trigger) BeginPhase2();
+        else machine.Signal("ReturnFromStun");
     }
 
     public void BeginPhase2()
@@ -128,7 +128,7 @@ public class Boss1Health : Health, IDamagable
         transform.position = respawnPoint;
         GetComponent<Rigidbody>().MovePosition(respawnPoint);
         gameObject.SetActive(false);
-        health = maxHealth;
+        Current = Max;
         phase2TriggerTriggered = false;
         machine[0][0].Enter();
         animator.Play("Walking", -1, 0f);

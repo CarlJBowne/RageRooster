@@ -22,7 +22,7 @@ namespace RageRooster.Actors.Save.Collectibles
 
         private void OnTriggerEnter(Collider other)
         {
-            PlayerStats.Active.MaxAmmo++;
+            PlayerStats.Active.MaxAmmo += 1;
             Acquire();
             UI.ShowHint(hintString);
         }

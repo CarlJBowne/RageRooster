@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
+using static RageRooster.Player.Services;
 
 
 [System.Obsolete("PlayerMovementAnimator is deprecated, please use TimedMovementAffector instead.")]
@@ -124,8 +125,8 @@ public class PlayerMovementAnimator : PlayerMovementEffector
 
     public string intendedAnimationName;
 
-    [ContextMenu("Recast")]
-    public virtual void RunTransfer() => MiscHelperMethods.PlayerMovementAnimatorTransferToRoots.Basic(this);
+    //[ContextMenu("Recast")]
+    //public virtual void RunTransfer() => MiscHelperMethods.PlayerMovementAnimatorTransferToRoots.Basic(this);
 
 
     public void ResetActive()

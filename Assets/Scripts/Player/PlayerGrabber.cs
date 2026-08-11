@@ -5,6 +5,7 @@ using System.Collections;
 using UltEvents;
 using UnityEngine;
 using Utilities.Xtensions;
+using static RageRooster.Player.Services;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerGrabber : MonoBehaviour
@@ -73,14 +74,14 @@ public class PlayerGrabber : MonoBehaviour
 
     public void AirThrowAction(State throwState)
     {
-        if (Upgrades.Active.dropLaunch) Player.StateMachine.DropLaunch.Enter();
+        if (Player.Stats.dropLaunch) Player.StateMachine.DropLaunch.Enter();
         else if (throwState != null) throwState.Enter();
     }
 
 
     public void SetGrabbingLayer(bool value)
     {
-        Coroutine.Begin(ref layerFadeCoroutine, FadeLayers(value.Int(), 3), gameObject.activeInHierarchy ? this : Gameplay.Instance);
+        Coroutine.Begin(ref layerFadeCoroutine, FadeLayers(value.Int(), 3), gameObject.activeInHierarchy ? this : UpdateProxy.Self);
         IEnumerator FadeLayers(int target, float rate)
         {
             float current = Player.Animator.GetLayerWeight(2);

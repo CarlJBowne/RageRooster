@@ -70,10 +70,10 @@ public class DebugToolWindow : EditorWindow
             Toggle moonJumpToggle = new()
             {
                 text = "Moon Jump",
-                value = Upgrades.Active.d_moonJump
+                value = Player.Stats.d_moonJump
             };
             moonJumpToggle.RegisterValueChangedCallback(ValueChanged);
-            void ValueChanged(ChangeEvent<bool> value) => Upgrades.Active.d_moonJump = value.newValue;
+            void ValueChanged(ChangeEvent<bool> value) => Player.Stats.d_moonJump = value.newValue;
 
             UpgradesFoldout.Add(moonJumpToggle);
         }
@@ -81,10 +81,10 @@ public class DebugToolWindow : EditorWindow
             Toggle invinceToggle = new()
             {
                 text = "Invincibility",
-                value = Upgrades.Active.d_invincibility
+                value = Player.Stats.d_invincibility
             };
             invinceToggle.RegisterValueChangedCallback(ValueChanged);
-            void ValueChanged(ChangeEvent<bool> value) => Upgrades.Active.d_invincibility = value.newValue;
+            void ValueChanged(ChangeEvent<bool> value) => Player.Stats.d_invincibility = value.newValue;
 
             UpgradesFoldout.Add(invinceToggle);
         }
@@ -94,10 +94,10 @@ public class DebugToolWindow : EditorWindow
             Toggle result = new()
             {
                 text = upgrade.ToString(),
-                value = Upgrades.Active.HasUpgrade(upgrade)
+                value = Player.Stats.HasUpgrade(upgrade)
             };
             result.RegisterValueChangedCallback(ValueChanged);
-            void ValueChanged(ChangeEvent<bool> value) => Upgrades.Active.SetUpgrade(upgrade, value.newValue);
+            void ValueChanged(ChangeEvent<bool> value) => Player.Stats.SetUpgrade(upgrade, value.newValue);
 
             UpgradesFoldout.Add(result);
             return result;

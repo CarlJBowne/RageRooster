@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using RageRooster.Core;
@@ -18,7 +19,6 @@ namespace RageRooster
         public static IGameplay Gameplay;
         public static IMusicService Music;
         public static IHUDService HUD;
-        public static IOverlayTopPlus OverlayTopPlus;
         #endregion
 
         #region Static Services
@@ -27,8 +27,9 @@ namespace RageRooster
         {
             public static bool canPause;
             public static Action<bool> SetPause;
-            public static Action<bool> LoadingPopup;
+            public static Action<bool> OnPause;
             public static Action<string> ShowHint;
+            public static IOverlayTopPlus OverlayTopPlus;
         }
 
         #endregion

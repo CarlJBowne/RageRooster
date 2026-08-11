@@ -11,6 +11,8 @@ using SLS.StateMachineH.Signals;
 using UnityEngine;
 using UnityEngine.AI;
 using static SLS.Singletons.Singleton;
+using static RageRooster.Services;
+using static RageRooster.Player.Services;
 
 /// <summary>
 /// The Root component of the Player entity. Implements IPlayer for external access and IPlayerRoot for internal assembly access.
@@ -18,25 +20,6 @@ using static SLS.Singletons.Singleton;
 [DefaultExecutionOrder(ExecutionOrders.Player), RequireComponent(typeof(PlayerStateMachine))]
 public class PlayerRoot : MonoBehaviour, IPlayer
 {
-    #region IPlayer Implementation
-
-    IPlayerStateMachine IPlayer.StateMachine => StateMachine;
-
-    int IPlayer.CurrencyCurrent => currency.Current;
-    event Action<int> IPlayer.OnUpdateCurrency 
-    { 
-        add => currency.updateCurrency += value; 
-        remove => currency.updateCurrency -= value; 
-    }
-
-    PlayerStats Stats => PlayerStats.Active;
-
-    event Action IPlayer.OnMovingUpdate 
-    { 
-        add => PlayerMovementBody.MovingUpdateAction += value; 
-        remove => PlayerMovementBody.MovingUpdateAction -= value; 
-    }
-    #endregion
 
     #region GameplayState
 
@@ -74,6 +57,7 @@ public class PlayerRoot : MonoBehaviour, IPlayer
     public Transform Transform => transform;
     public GameObject GameObject => gameObject;
     public PlayerStateMachine StateMachine { get; private set; }
+    public PlayerHealth Health { get; private set; }
     public SignalManager SignalManager { get; private set; }
     public PlayerMovementBody MovementBody { get; private set; }
     public CapsuleCollider Collider { get; private set; }
@@ -84,6 +68,7 @@ public class PlayerRoot : MonoBehaviour, IPlayer
     public Animator Animator { get; private set; }
     public AudioCaller Audio { get; private set; }
     public RagdollHandler RagdollHandler { get; private set; }
+    public PlayerStats Stats => PlayerStats.Active;
     #endregion
 
     #region Helper Properties / Methods
@@ -113,16 +98,15 @@ public class PlayerRoot : MonoBehaviour, IPlayer
     #endregion
 
     #region Events / Callbacks
-    public Action onRespawn;
 
     public void Awake()
     {
         DontDestroyOnLoad(this);
-        
-        Self.Instance = this;
-        Services.Player = this;
+
+        RageRooster.Player.Services.Player = this;
 
         StateMachine = GetComponent<PlayerStateMachine>();
+        Health = GetComponent<PlayerHealth>();
         MovementBody = GetComponent<PlayerMovementBody>();
         Collider = GetComponent<CapsuleCollider>();
         Controller = GetComponent<PlayerController>();
@@ -133,135 +117,37 @@ public class PlayerRoot : MonoBehaviour, IPlayer
         RagdollHandler = GetComponent<RagdollHandler>();
         TargetingManager = GetComponent<TargetingManager>();
         SignalManager = GetComponent<SLS.StateMachineH.Signals.SignalManager>();
-        
-        health.Initialize(this);
-        ammo.Initialize(this);
-        currency.Initialize();
 
         _activeState = ActivityStates.Active;
 
-        fallDownPitTime = health.playerObject.inFallDownPitTime;
-        deathTime = health.playerObject.inDeathTime;
+        fallDownPitTime = Health.inFallDownPitTime;
+        deathTime = Health.inDeathTime;
     }
 
     void OnDestroy()
     {
-        if (Self.Instance == (IPlayerRoot)this) Self.Instance = null;
-        Services.Register.Player(null);
+        RageRooster.Services.Player = null;
         _activeState = ActivityStates.Null;
     }
     #endregion
 
-    #region Models (Health / Ammo / Currency)
-    public readonly HealthModel health = new();
-    public readonly AmmoModel ammo = new();
-    public readonly CurrencyModel currency = new();
-
-    public class HealthModel
-    {
-        private int current;
-        private int max;
-        public PlayerHealth playerObject;
-
-        public void Initialize(PlayerRoot root)
-        {
-            playerObject = root.GetComponent<PlayerHealth>();
-            max = SaveData.Active.playerStats.maxHealth;
-            current = max;
-        }
-
-        public int Current
-        {
-            get => current;
-            set
-            {
-                if (value > max) value = max;
-                if (current == value) return;
-                current = value;
-                updateHealth?.Invoke();
-            }
-        }
-        public int Max
-        {
-            get => max;
-            set
-            {
-                if (max == value) return;
-                max = value;
-                SaveData.Active.playerStats.maxHealth = value;
-                updateMaxHealth?.Invoke();
-            }
-        }
-        public Action updateHealth;
-        public Action updateMaxHealth;
-    }
-
-    public class AmmoModel
-    {
-        private int current;
-        private int max;
-        public PlayerRanged playerObject;
-
-        public void Initialize(PlayerRoot root)
-        {
-            playerObject = root.GetComponent<PlayerRanged>();
-            max = SaveData.Active.playerStats.maxAmmo;
-            current = max;
-        }
-
-        public int Current
-        {
-            get => current;
-            set
-            {
-                if (value > max) value = max;
-                if (current == value) return;
-                current = value;
-                updateAmmo?.Invoke();
-            }
-        }
-        public int Max
-        {
-            get => max;
-            set
-            {
-                if (max == value) return;
-                max = value;
-                SaveData.Active.playerStats.maxAmmo = value;
-                updateMaxAmmo?.Invoke();
-            }
-        }
-        public Action updateAmmo;
-        public Action updateMaxAmmo;
-    }
-
-    public class CurrencyModel
-    {
-        private int current;
-        public void Initialize()
-        {
-            current = SaveData.Active.playerStats.currency;
-        }
-        public int Current
-        {
-            get => current;
-            set
-            {
-                if (current == value) return;
-                current = value;
-                SaveData.Active.playerStats.currency = value;
-                updateCurrency?.Invoke();
-            }
-        }
-        public Action<int> updateCurrency;
-    }
-    #endregion
 
     #region Death / Respawn Sequence
     private float fallDownPitTime;
     private float deathTime;
 
-    public event Action OnRespawn;
+    public Action onRespawn { get; set; }
+    public event Action OnRespawn
+    {
+        add => onRespawn += value;
+        remove => onRespawn -= value;
+    }
+    public Action onMovingUpdate { get; set; }
+    public event Action OnMovingUpdate
+    {
+        add => onMovingUpdate += value;
+        remove => onMovingUpdate -= value;
+    }
 
     public void Death()
     {
@@ -270,7 +156,7 @@ public class PlayerRoot : MonoBehaviour, IPlayer
         IEnumerator DeathRoutine()
         {
             yield return new WaitForSecondsRealtime(fallDownPitTime + 1);
-            yield return OverlayTopPlus.Get.GameOverAnim();
+            yield return UI.OverlayTopPlus.GameOverAnimation();
             yield return new WaitForSecondsRealtime(deathTime);
 
             RoomManager.TransitionStyle = new()
@@ -312,4 +198,6 @@ public class PlayerRoot : MonoBehaviour, IPlayer
         Animator.enabled = false;
     }
     #endregion
+
+    IPlayerStateMachine IPlayer.StateMachine => StateMachine;
 }

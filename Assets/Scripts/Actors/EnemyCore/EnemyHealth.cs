@@ -53,7 +53,7 @@ public class EnemyHealth : Health
         damageEvent?.Invoke(attack.amount);
 
         if (ragdoll && ragdoll.State != RagdollHandler.States.Off) ragdoll.SetVelocity(attack.velocity);
-        else if (health != 0)
+        else if (Current != 0)
         {
             Stun(attack);
             if (tintAnimator) tintAnimator.BeginAnimation();
@@ -66,7 +66,7 @@ public class EnemyHealth : Health
                 spawnable.SetAlterations(()=>
                 {
                     damagable = false;
-                    health = maxHealth;
+                    InstantFill() ;
                 });
         }
     }
@@ -108,7 +108,7 @@ public class EnemyHealth : Health
                 yield return null;
             }
             entityActivity.State = EntityActivity.States.Default;
-            if (health <= 0)
+            if (Current <= 0)
             {
                 if (ragdoll)
                 {
@@ -138,7 +138,7 @@ public class EnemyHealth : Health
         if (hierarchicalMachine) hierarchicalMachine[0].Enter();
         if (visualMachine) visualMachine.enabled = true;
         entityActivity.enabled = true;
-        health = maxHealth;
+        InstantFill();
         if (ragdoll) ragdoll.State = RagdollHandler.States.Off;
     }
 
