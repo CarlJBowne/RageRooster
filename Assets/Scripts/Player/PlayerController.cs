@@ -9,6 +9,7 @@ using Utilities.Xtensions;
 
 using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
 using static RageRooster.Player.Services;
+using SLS.GeneralUtilities.EventTickets;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerController : StateBehavior
@@ -33,51 +34,32 @@ public class PlayerController : StateBehavior
     }
     [SerializeField] PlayerStats upgradesDisplay;
 
+    protected List<EventTicket> events;
+
     #endregion
     #region Getters
 
     #endregion
 
-    protected override void OnAwake() => upgradesDisplay = SaveData.Active.playerStats;
+    protected override void OnAwake()
+    {
+        upgradesDisplay = SaveData.Active.playerStats;
+        events = new()
+        {
+            Input.Jump.SubscribeBoth(ActionButtonPressed, ActionButtonReleased),
+            Input.Attack.SubscribeBoth(ActionButtonPressed, ActionButtonReleased),
+            Input.Grab.SubscribeBoth(ActionButtonPressed, ActionButtonReleased),
+            Input.Charge1.SubscribeBoth(ActionButtonPressed, ActionButtonReleased),
+            Input.Charge2.SubscribeBoth(ActionButtonPressed, ActionButtonReleased),
+            Input.Aim.SubscribeBoth(AimPress, AimRelease),
+            Input.Parry.SubscribeBoth(ActionButtonPressed, ActionButtonReleased),
+        };
+    }
 
-    private void OnEnable()
-    {
-        Input.Jump.started += ActionButtonPressed;
-        Input.Jump.canceled += ActionButtonReleased;
-        Input.Attack.started += ActionButtonPressed;
-        Input.Attack.canceled += ActionButtonReleased;
-        Input.Grab.started += ActionButtonPressed;
-        Input.Grab.canceled += ActionButtonReleased;
-        Input.Charge1.started += ActionButtonPressed;
-        Input.Charge1.canceled += ActionButtonReleased;
-        Input.Charge2.started += ActionButtonPressed;
-        Input.Charge2.canceled += ActionButtonReleased;
-        Input.Aim.started += AimPress;
-        Input.Aim.canceled += AimRelease;
-        //Input.Aim.started += ButtonPressed;
-        //Input.Aim.canceled += ButtonRelease;
-        Input.Parry.started += ActionButtonPressed;
-        Input.Parry.canceled += ActionButtonReleased;
-    }
-    private void OnDisable()
-    {
-        Input.Jump.started -= ActionButtonPressed;
-        Input.Jump.canceled -= ActionButtonReleased;
-        Input.Attack.started -= ActionButtonPressed;
-        Input.Attack.canceled -= ActionButtonReleased;
-        Input.Grab.started -= ActionButtonPressed;
-        Input.Grab.canceled -= ActionButtonReleased;
-        Input.Charge1.started -= ActionButtonPressed;
-        Input.Charge1.canceled -= ActionButtonReleased;
-        Input.Charge2.started -= ActionButtonPressed;
-        Input.Charge2.canceled -= ActionButtonReleased;
-        Input.Aim.started -= AimPress;
-        Input.Aim.canceled -= AimRelease;
-        //Input.Aim.started -= ButtonPressed;
-        //Input.Aim.canceled -= ButtonRelease;
-        Input.Parry.started -= ActionButtonPressed;
-        Input.Parry.canceled -= ActionButtonReleased;
-    }
+    private void OnEnable() => events.SubscribeAll();
+    private void OnDisable() => events.UnSubscribeAll();
+
+    private void OnDestroy() => events.DestroyAll();
 
     protected override void OnUpdate()
     {
@@ -149,7 +131,7 @@ public class PlayerController : StateBehavior
     {
         if (PlayerButtonAction.Current != null || ButtonLocked) return;
         int i = ActionSourceStack.Count - 1;
-        while(i > -1)
+        while (i > -1)
         {
             if (i > -1 && ActionSourceStack[i] != null && !ActionSourceStack[i].Locked) break;
             i--;

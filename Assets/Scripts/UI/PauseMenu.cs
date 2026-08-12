@@ -10,7 +10,7 @@ using RageRooster.World;
 using RageRooster.Core;
 using RageRooster;
 
-public class PauseMenu : Menu, IPauseMenu
+public class PauseMenu : Menu
 {
     static Singleton<PauseMenu> S;
     public static PauseMenu Get => S.Get;
