@@ -13,6 +13,7 @@ using UnityEngine.AI;
 using static SLS.Singletons.Singleton;
 using static RageRooster.Services;
 using static RageRooster.Player.Services;
+using SLS.GeneralUtilities.EventTickets;
 
 /// <summary>
 /// The Root component of the Player entity. Implements IPlayer for external access and IPlayerRoot for internal assembly access.
@@ -99,6 +100,7 @@ public class PlayerRoot : MonoBehaviour, IPlayer
 
     #region Events / Callbacks
 
+    private List<EventTicket> events;
     public void Awake()
     {
         DontDestroyOnLoad(this);
@@ -123,11 +125,23 @@ public class PlayerRoot : MonoBehaviour, IPlayer
         fallDownPitTime = Health.inFallDownPitTime;
         deathTime = Health.inDeathTime;
     }
+    private void Start()
+    {
+        events = new()
+        {
+            Health.OnValueChanged.Subscribe(UIHUDSystem.Instance.health.Update),
+            Health.OnMaxChanged.Subscribe(UIHUDSystem.Instance.health.UpdateMax),
+            Ranged.Ammo.Subscribe(UIHUDSystem.Instance.health.Update),
+            Ranged.Ammo.SubscribeMax(UIHUDSystem.Instance.ammo.UpdateMax),
+            SavedProgress.Active.Currency.Subscribe(UIHUDSystem.Instance.SetCurrencyText),
+        };
+    }
 
     void OnDestroy()
     {
         RageRooster.Services.Player = null;
         _activeState = ActivityStates.Null;
+        events.DestroyAll();
     }
     #endregion
 

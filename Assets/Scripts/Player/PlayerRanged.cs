@@ -130,7 +130,7 @@ public class PlayerRanged : MonoBehaviour
         targetState.Enter();
         aimingRig.enabled = true;
         aimingRig.weight = 1;
-        Services.HUD?.SetHitMarkerVisibility(true);
+        UIHUDSystem.Instance.SetHitMarkerVisibility(true);
         Cameras.SetTargetVirtualCamera(Cameras.aimingCamera);
     }
     public void ExitAiming(State targetState)
@@ -142,7 +142,7 @@ public class PlayerRanged : MonoBehaviour
         targetState.Enter();
         aimingRig.enabled = false;
         aimingRig.weight = 0;
-        Services.HUD?.SetHitMarkerVisibility(false);
+        UIHUDSystem.Instance?.SetHitMarkerVisibility(false);
         Cameras.SetTargetVirtualCamera(Cameras.normalCamera);
     }
 
@@ -153,7 +153,7 @@ public class PlayerRanged : MonoBehaviour
         TargetingManager.ToggleAimingDownSights(false);
         aimingRig.enabled = false;
         aimingRig.weight = 0;
-        Services.HUD?.SetHitMarkerVisibility(false);
+        UIHUDSystem.Instance?.SetHitMarkerVisibility(false);
         Cameras.SetTargetVirtualCamera(Cameras.normalCamera);
         Self.StateMachine.IdleWalk.State.Enter();
     }
@@ -165,7 +165,7 @@ public class PlayerRanged : MonoBehaviour
         TargetingManager.ToggleAimingDownSights(false);
         aimingRig.enabled = false;
         aimingRig.weight = 0;
-        Services.HUD?.SetHitMarkerVisibility(false);
+        UIHUDSystem.Instance?.SetHitMarkerVisibility(false);
         Cameras.SetTargetVirtualCamera(Cameras.normalCamera);
         Self.Animator.Play("GroundBasic");
         Self.StateMachine.IdleWalk.State.Enter();

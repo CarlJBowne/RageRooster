@@ -1,4 +1,5 @@
 using System;
+using SLS.GeneralUtilities.StatObjects;
 using SLS.SaveData;
 using UnityEngine;
 
@@ -11,16 +12,7 @@ namespace RageRooster.Core.Save
 
         public TimeSpan playTime = TimeSpan.Zero;
 
-        public int Currency
-        {
-            get => currency;
-            set
-            {
-                if (currency == value) return;
-                currency = value;
-                if(this == Active) OnCurrencyChanged(value);
-            }
-        } int currency = 0; public static event Action<int> OnCurrencyChanged;
+        public IntStat Currency;
 
 
         public SavedCollectible powerEggs = new();
@@ -46,7 +38,7 @@ namespace RageRooster.Core.Save
         public override void Clone(SavedProgress source)
         {
             playTime = source.playTime;
-            Currency = source.currency;
+            Currency &= source.Currency;
             powerEggs.Clone(source.powerEggs);
             wishbones.Clone(source.wishbones);
             hensRescued.Clone(source.hensRescued);

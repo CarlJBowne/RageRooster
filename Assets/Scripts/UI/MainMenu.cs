@@ -120,9 +120,6 @@ public class MainMenu : Menu
 
     private void SetMenuButtonsInteractable(bool interactable)
     {
-        foreach (var button in menuButtons)
-        {
-            button.interactable = interactable;
-        }
+        foreach (var button in menuButtons) button.interactable = interactable;
     }
 }

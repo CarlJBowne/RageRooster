@@ -7,9 +7,11 @@ using System.Linq;
 using DG.Tweening;
 using RageRooster.Core;
 using static RageRooster.Services;
+using RageRooster.Player;
+using RageRooster.Core.Save;
 
 [DefaultExecutionOrder(ExecutionOrders.GameplaySystems)]
-public class UIHUDSystem : MonoBehaviour, IHUDService
+public class UIHUDSystem : MonoBehaviour
 {
     public GameObject hintHolder;
     public TextMeshProUGUI hintText;
@@ -28,49 +30,30 @@ public class UIHUDSystem : MonoBehaviour, IHUDService
 
     public void Awake()
     {
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(this);
             return;
         }
         Instance = this;
-        Services.RegisterHUD(this);
+
+        //Services.
+        {
+
+        }
 
         mainCamera = Camera.main;
         transform.parent.TryGetComponent(out canvas);
         transform.parent.TryGetComponent(out canvasRect);
 
         health.Init();
-        ammo.UpdateMax();
-        ammo.UpdateAmmo();
-
-        SetCurrencyText();
-
-        if (IPlayer.Self != null) SubscribePlayer(IPlayer.Self);
-    }
-
-    private void SubscribePlayer(IPlayer player)
-    {
-        player.OnUpdateHealth += health.UpdateHeath;
-        player.OnUpdateMaxHealth += health.UpdateMax;
-        player.OnUpdateAmmo += ammo.UpdateAmmo;
-        player.OnUpdateMaxAmmo += ammo.UpdateMax;
-        player.OnUpdateCurrency += SetCurrencyText;
-    }
-
-    private void UnsubscribePlayer(IPlayer player)
-    {
-        player.OnUpdateHealth -= health.UpdateHeath;
-        player.OnUpdateMaxHealth -= health.UpdateMax;
-        player.OnUpdateAmmo -= ammo.UpdateAmmo;
-        player.OnUpdateMaxAmmo -= ammo.UpdateMax;
-        player.OnUpdateCurrency -= SetCurrencyText;
+        ammo.Init();
+        SetCurrencyText(SavedProgress.Active.Currency);
     }
 
     protected void OnDestroy()
     {
-        Services.DeregisterHUD(this);
-        if (IPlayer.Self != null) UnsubscribePlayer(IPlayer.Self);
+
     }
 
     // Called every frame to update the HUD
@@ -95,30 +78,31 @@ public class UIHUDSystem : MonoBehaviour, IHUDService
         public Sprite healthFullTexture;
         public Sprite healthEmptyTexture;
 
-        //int activeHealth = 1;
-        int activeMaxHealth = 1;
+        int currentHealth = 1;
+        int maxHealth = 1;
 
         Sequence healthBar;
 
         public void Init()
         {
-            activeMaxHealth = healthImages.Count;
-            UpdateMax();
-            UpdateHeath();
+            UpdateMax(PlayerStats.Active.MaxHealth);
+            Update(maxHealth);
         }
 
-        public void UpdateHeath()
+        public void Update(int value)
         {
-            for (int i = 0; i < activeMaxHealth; i++)
-                healthImages[i].sprite = Player.Health.Current > i ? healthFullTexture : healthEmptyTexture;
+            currentHealth = value;
+            for (int i = 0; i < maxHealth; i++)
+                healthImages[i].sprite = value > i ? healthFullTexture : healthEmptyTexture;
         }
-        public void UpdateMax()
+        public void UpdateMax(int value)
         {
-            for (int i = 0; i < activeMaxHealth || i < Player.Health.Max; i++)
+            maxHealth = value;
+            for (int i = 0; i < maxHealth || i < maxHealth; i++)
             {
-                if (i < activeMaxHealth && i < Player.Health.Max)
-                    healthImages[i].sprite = Player.Health.Current > i ? healthFullTexture : healthEmptyTexture;
-                else if (i >= activeMaxHealth)
+                if (i < maxHealth && i < maxHealth)
+                    healthImages[i].sprite = currentHealth > i ? healthFullTexture : healthEmptyTexture;
+                else if (i >= maxHealth)
                 {
                     if (healthImages.Count <= i)
                         healthImages.Add(Instantiate(healthImages[0].transform.parent, healthImages[0].transform.parent.parent).GetChild(0).GetComponent<Image>());
@@ -126,13 +110,9 @@ public class UIHUDSystem : MonoBehaviour, IHUDService
                     healthImages[i].sprite = healthFullTexture;
 
                 }
-                else if (i >= Player.Health.Max) healthImages[i].enabled = false;
+                else if (i >= maxHealth) healthImages[i].enabled = false;
             }
-            activeMaxHealth = Player.Health.Max;
-            if (healthBar != null)
-            {
-                healthBar.Kill();
-            }
+            healthBar?.Kill();
             healthBar = DOTween.Sequence();
             float timeDelay = 0;
             for (int j = 0; j < healthImages.Count; j++)
@@ -157,19 +137,28 @@ public class UIHUDSystem : MonoBehaviour, IHUDService
         }
     }
 
-    public Ammo ammo;
+    public readonly Ammo ammo = new();
     [Serializable]
     public class Ammo
     {
         public TextMeshProUGUI ammoText;
-        public void UpdateAmmo()
+        int currentAmmo = 0;
+        int maxAmmo = 0;
+        public void Init()
         {
-            ammoText.text = $"{Player.Ammo.Current}/{Player.Ammo.Max}";
+            UpdateMax(PlayerStats.Active.MaxAmmo);
+            Update(maxAmmo);
         }
-        public void UpdateMax()
+        public void Update(int value)
         {
-            ammoText.transform.parent.gameObject.SetActive(Player.Ammo.Max > 0);
-            ammoText.text = $"{Player.Ammo.Current}/{Player.Ammo.Max}";
+            currentAmmo = value;
+            ammoText.text = $"{currentAmmo}/{maxAmmo}";
+        }
+        public void UpdateMax(int value)
+        {
+            maxAmmo = value;
+            ammoText.transform.parent.gameObject.SetActive(value > 0);
+            ammoText.text = $"{currentAmmo}/{value}";
         }
     }
 

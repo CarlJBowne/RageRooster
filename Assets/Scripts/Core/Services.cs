@@ -18,7 +18,6 @@ namespace RageRooster
         public static IPlayer Player;
         public static IGameplay Gameplay;
         public static IMusicService Music;
-        public static IHUDService HUD;
         #endregion
 
         #region Static Services
