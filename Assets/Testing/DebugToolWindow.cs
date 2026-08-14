@@ -28,21 +28,21 @@ public class DebugToolWindow : EditorWindow
         rootVisualElement.Add(onlyInGameMessage);
         rootVisualElement.Add(actualWindowRoot);
 
-        if (Gameplay.Active)
+        if (GameplayTopLevel.Active)
         {
             onlyInGameMessage.SetEnabled(false);
             BeginWindow();
         }
         else actualWindowRoot.SetEnabled(false);
 
-        Gameplay.onFinalAwake += BeginWindow;
-        Gameplay.onDestroy += EndWindow;
+        GameplayTopLevel.onFinalAwake += BeginWindow;
+        GameplayTopLevel.onDestroy += EndWindow;
 
     }
     private void OnDisable()
     {
-        Gameplay.onFinalAwake -= BeginWindow;
-        Gameplay.onDestroy -= EndWindow;
+        GameplayTopLevel.onFinalAwake -= BeginWindow;
+        GameplayTopLevel.onDestroy -= EndWindow;
     }
 
     //Intializes the window for real when the game is playing.

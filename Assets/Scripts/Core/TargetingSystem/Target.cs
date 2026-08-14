@@ -8,6 +8,8 @@ using System;
 using EPOOutline;
 using SLS.EditorUtilities.ComponentHeaders;
 using static RageRooster.Services;
+using RageRooster.Core;
+
 
 #if UNITY_EDITOR
 using UnityEditor;

@@ -18,7 +18,11 @@ using SLS.GeneralUtilities.EventTickets;
 /// <summary>
 /// The Root component of the Player entity. Implements IPlayer for external access and IPlayerRoot for internal assembly access.
 /// </summary>
-[DefaultExecutionOrder(ExecutionOrders.Player), RequireComponent(typeof(PlayerStateMachine))]
+[DefaultExecutionOrder(ExecutionOrders.Player)]
+[RequireComponent(typeof(PlayerStateMachine), typeof(PlayerHealth), typeof(PlayerMovementBody))]
+[RequireComponent(typeof(PlayerGrabber), typeof(PlayerController), typeof(TargetingManager))]
+[RequireComponent(typeof(SignalManager), typeof(Animator), typeof(RagdollHandler))]
+[RequireComponent(typeof(AudioCaller), typeof(CapsuleCollider))]
 public class PlayerRoot : MonoBehaviour, IPlayer
 {
 
@@ -179,7 +183,9 @@ public class PlayerRoot : MonoBehaviour, IPlayer
                 FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 1f),
             };
 
-            Gameplay.Death();
+            SaveData.RevertToDeathData();
+            RoomManager.PostFadeOutAction = () => { onRespawn?.Invoke(); };
+            RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
         }
     }
 
@@ -197,7 +203,8 @@ public class PlayerRoot : MonoBehaviour, IPlayer
                 FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 1f),
             };
 
-            Gameplay.Respawn();
+            RoomManager.PostFadeOutAction = () => { onRespawn?.Invoke(); };
+            RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
         }
     }
 
@@ -214,4 +221,9 @@ public class PlayerRoot : MonoBehaviour, IPlayer
     #endregion
 
     IPlayerStateMachine IPlayer.StateMachine => StateMachine;
+
+    public static void HaveDestroyed()
+    {
+
+    }
 }

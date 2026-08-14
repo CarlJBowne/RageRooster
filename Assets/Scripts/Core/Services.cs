@@ -16,7 +16,6 @@ namespace RageRooster
     {
         #region Main Services
         public static IPlayer Player;
-        public static IGameplay Gameplay;
         public static IMusicService Music;
         #endregion
 
@@ -34,8 +33,6 @@ namespace RageRooster
         #endregion
 
         #region Single Services.
-
-        public static GetService<bool> GameplayRunning;
 
         #endregion
 

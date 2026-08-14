@@ -4,6 +4,7 @@ using SLS.StateMachineH;
 using EditorAttributes;
 using UnityEngine.Events;
 using static RageRooster.Services;
+using RageRooster.Core;
 
 [System.Obsolete]
 public class TrackerEB : StateBehavior
