@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using SLS.MenuCore;
+using RageRooster.Core;
 
 public class MainMenu : Menu
 {

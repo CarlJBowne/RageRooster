@@ -57,13 +57,13 @@ public class PlayerStateMachine : StateMachine, IPlayerStateMachine
 
     protected override void OnAwake()
     {
-        if (!Services.Gameplay.Active || RoomManager.currentRoom == null)
+        if (!Gameplay.Active || RoomManager.currentRoom == null)
         {
             enabled = false;
-            Services.Gameplay.onFinalAwake += OnAwake;
+            Gameplay.onFinalAwake += OnAwake;
             return;
         }
-        Services.Gameplay.onFinalAwake -= OnAwake;
+        Gameplay.onFinalAwake -= OnAwake;
         enabled = true;
 
         Singleton.Register(ref instance, this);

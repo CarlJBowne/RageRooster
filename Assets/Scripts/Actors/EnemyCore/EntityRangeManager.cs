@@ -4,6 +4,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static RageRooster.Services;
+using RageRooster.Core;
+
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.UIElements;

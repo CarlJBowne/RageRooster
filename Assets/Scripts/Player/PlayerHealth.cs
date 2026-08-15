@@ -46,7 +46,7 @@ public class PlayerHealth : Health
             damagable = false;
             if (attack == Attack.Tags.Pit)
             {
-                Self.PitFall();
+                Self.Respawn();
                 damagable = true;
             }
             else if (attack == Attack.Tags.Wham)

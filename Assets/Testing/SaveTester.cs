@@ -12,21 +12,18 @@ public class SaveTester : ScriptableObject
 {
     public string path;
     public string fileName;
-    public ScriptableCollection coll;
     private JsonFile File;
 
     [Button]
     public void Save()
     {
         File = new JsonFile(Application.dataPath + path, fileName);
-        File.SaveToFile(coll.Serialize() as JObject);
     }
     [Button]
     public void Load()
     {
         File = new JsonFile(Application.dataPath + path, fileName);
         File.LoadFromFile();
-        File.Data.DeserializeInto(coll);
     }
 }
 

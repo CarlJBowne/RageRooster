@@ -13,6 +13,7 @@ using Utilities.JSON;
 using UnityEditor;
 #endif
 
+/*
 [CreateAssetMenu(fileName = "NewSOCollection", menuName ="SO Collection"), System.Serializable]
 public class ScriptableCollection : ScriptableObject, ICustomSerialized
 {
@@ -157,3 +158,4 @@ public class _ScriptableCollectionEditor : Editor
 }
 
 #endif
+*/

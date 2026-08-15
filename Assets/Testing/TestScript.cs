@@ -8,17 +8,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using SLS.ObjectUtilities;
 using FMODUnity;
-using RageRooster.Systems;
 using UnityEngine.UIElements;
 using UnityEditor;
 using UnityEditor.UIElements;
 using SLS.MenuCore;
+using static RageRooster.Services;
 
 public class TestScript : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (!Player.IsPlayer(other)) return;
+        if (!Player.Owns(other)) return;
 
         Enum().Begin(this);
         static IEnumerator Enum()

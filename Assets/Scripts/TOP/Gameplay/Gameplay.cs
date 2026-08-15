@@ -69,7 +69,7 @@ namespace RageRooster.TOP
                     },
                 };
                 yield return RoomManager.Transition();
-                onFinalAwake?.Invoke();
+                InvokeOnFinalAwake();
             }
         }
 
@@ -83,28 +83,12 @@ namespace RageRooster.TOP
         /// </summary>
         //public static StudioEventEmitter musicEmitter;
 
-        /// <summary>
-        /// Callback event for when a Save is about to be reloaded.
-        /// </summary>
-        public static System.Action PreReloadSave;
-        /// <summary>
-        /// A Callback event for when the Gameplay system updates, invoked in <see cref="Update"/>.
-        /// </summary>
-        public static System.Action onUpdate;
-        /// <summary>
-        /// A Callback event for when the Gameplay system has finally finished its introduction.
-        /// </summary>
-        public static System.Action onFinalAwake;
-        /// <summary>
-        /// A Callbck event for when the Gameplay system is Unloaded.
-        /// </summary>
-        public static System.Action onDestroy;
 
         /// <summary>
         /// Begins The Gameplay Phase using the specified Save File on Disk.
         /// </summary>
         /// <param name="fileNo"></param>
-        public static void BeginSaveFile(int fileNo)
+        protected override void DoBeginSaveFile(int fileNo)
         {
             if (Active) return;
 
@@ -268,9 +252,19 @@ namespace RageRooster.TOP
             Music.StopAllMusic();
             UpdateProxy.OnFixedUpdate -= FixedUpdate;
             PlayerRoot.HaveDestroyed();
+            SaveData.CallInitializeSave(-1);
+            RoomManager.queuedDestination = null;
             for (int i = rootObjects.Length - 1; i >= 0; i--)
                 Destroy(rootObjects[i]);
         }
+
+        protected override void DoEndGame()
+        {
+            titleScreenGameState.Enter();
+        }
+
+        [SerializeField] protected GameState titleScreenGameState;
+    
     }
 
 }

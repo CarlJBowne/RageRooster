@@ -19,7 +19,7 @@ namespace RageRooster.Core
 
         void InstantMove(Vector3 position, float? yRot = null);
         void Death();
-        void PitFall();
+        void Respawn();
         bool Owns(Component C);
 
         event Action OnMovingUpdate;

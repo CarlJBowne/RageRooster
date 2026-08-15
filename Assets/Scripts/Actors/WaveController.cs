@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using TMPro;
 using SLS.ObjectUtilities;
 using static RageRooster.Services;
+using RageRooster.Core;
 
 public class WaveController : MonoBehaviour
 {

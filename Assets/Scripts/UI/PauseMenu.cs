@@ -9,6 +9,7 @@ using SLS.MenuCore;
 using RageRooster.World;
 using RageRooster.Core;
 using RageRooster;
+using static RageRooster.Services;
 
 public class PauseMenu : Menu
 {
@@ -93,7 +94,7 @@ public class PauseMenu : Menu
             FadeInRoutine = Overlay.OverALL.FadeAlpha(0, 1f),
             PreFadeInAction = TrueClose,
         };
-        Gameplay.Respawn();
+        Player.Respawn();
     }
     public void ReloadSave()
     {

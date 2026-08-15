@@ -189,7 +189,7 @@ public class PlayerRoot : MonoBehaviour, IPlayer
         }
     }
 
-    public void PitFall()
+    public void Respawn()
     {
         DeathOrPit();
         StartCoroutine(PitFallRoutine());
