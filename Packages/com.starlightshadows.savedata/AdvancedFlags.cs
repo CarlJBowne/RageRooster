@@ -66,6 +66,8 @@ namespace SLS.SaveData
         public abstract void LoadFromJson(JToken input);
         public abstract JToken SaveToJson();
 
+        public static implicit operator JToken(FlagBase source) => source.SaveToJson();
+
         //public static FlagBase CreateInstanceFromEnum(Type type)
         //{
         //    return type switch
@@ -99,7 +101,7 @@ namespace SLS.SaveData
                 typeof(Vector3),
             };
 
-            T value;
+            public T value;
             new public event Action<T> OnValueChanged;
 
             public override object valueObject

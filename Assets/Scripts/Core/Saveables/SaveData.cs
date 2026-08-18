@@ -54,6 +54,11 @@ namespace RageRooster.Core.Save
         public SavedProgress progress = new();
         public SavedFlagSet globalChanges;
         public Dictionary<string, SavedFlagSet> areaChanges = new();
+        public float Completion =>
+            progress.storyFlags.CompletionOf(.4f) +
+            progress.powerEggs.CompletionOf(.3f) + 
+            progress.hensRescued.CompletionOf(.2f) + 
+            progress.wishbones.CompletionOf(.1f);
 
         #endregion Actual Data 
 
@@ -83,6 +88,24 @@ namespace RageRooster.Core.Save
 
         #region Editor Exclusive
         public static ScriptableObject SavedValueManagerAsset;
+
+        #endregion
+
+        #region Menu Display Data
+
+        /// <summary>
+        /// The display data used for the Main Menu's Save File Selection Screen. This is a simplified version of the Save Data, containing only the information needed for display purposes.
+        /// </summary>
+        public class MenuDisplayData
+        {
+            public bool isValid = true;
+            public string locationString;
+            public string timeString;
+            public float completionPercentage;
+            public int health;
+            public int powerEggs;
+            public int hensRescued;
+        }
 
         #endregion
     }

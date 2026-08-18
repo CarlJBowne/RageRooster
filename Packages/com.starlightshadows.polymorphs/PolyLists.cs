@@ -388,6 +388,12 @@ public abstract partial class Polymorph
                     this[source.serializedNames[i]] = source.serializedValues[i];
         }
 
+        public void ForEach(Action<string, int, T> act)
+        {
+            for (int i = 0; i < Count; i++)
+                act(NameFromIndex(i), KeyFromIndex(i), ValueFromIndex(i));
+        }
+
     }
 
     public class Single<T> where T : Polymorph

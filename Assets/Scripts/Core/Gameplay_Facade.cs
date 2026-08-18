@@ -7,12 +7,13 @@ using UnityEngine.EventSystems;
 
 namespace RageRooster.Core
 {
-    //This Class is functionally split in two pieces: This, and GameplayToplevel.cs
-    // GameplayToplevel is the implementation of everything that needs top-level capabilities.
+    //This Class is functionally split in two pieces: This, and Gameplay_Top.cs
+    // Gameplay_Top.cs is the implementation of everything that needs top-level capabilities.
     public abstract class Gameplay : GameStateSingle<Gameplay>
     {
         public override bool Additive => false;
         public static GameObject[] rootObjects;
+        [SerializeField] protected GameState titleScreenGameState;
 
         protected abstract void DoReloadSave(); public static void ReloadSave() => Get.DoReloadSave();
 

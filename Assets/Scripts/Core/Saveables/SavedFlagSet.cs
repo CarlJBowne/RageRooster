@@ -29,7 +29,7 @@ namespace RageRooster.Core.Save
         }
 
         [SerializeField]
-        private Polymorph.Dictionary<FlagBase> flags;
+        protected Polymorph.Dictionary<FlagBase> flags;
 
         public override void Clone(SavedFlagSet source) => flags.Clone(source.flags);
 
@@ -54,5 +54,55 @@ namespace RageRooster.Core.Save
         /// <param name="value">The new value to set for the flag.</param>
         /// <returns>Whether setting the flag was a success.</returns>
         public bool TrySetFlag<T>(string name, T value) => flags.ContainsName(name) && flags[name].TrySetValue(value);
+        /// <summary>
+        /// Tries to get a flag value from the dictionary.
+        /// </summary>
+        /// <typeparam name="T">The type assumed to be in this slot.</typeparam>
+        /// <param name="hash">The name identifier of the flag.</param>
+        /// <param name="value">The output value of the flag.</param>
+        /// <returns>Whether acquiring the flag was a success.</returns>
+        public bool TryGetFlag<T>(int hash, out T value)
+        {
+            value = default;
+            return flags.ContainsName(hash) && flags[hash].TryGetValue(out value);
+        }
+
+        /// <summary>
+        /// Tries to set a flag value in the dictionary.
+        /// </summary>
+        /// <typeparam name="T">The type assumed to be in this slot.</typeparam>
+        /// <param name="hash">The name identifier of the flag.</param>
+        /// <param name="value">The new value to set for the flag.</param>
+        /// <returns>Whether setting the flag was a success.</returns>
+        public bool TrySetFlag<T>(int hash, T value) => flags.ContainsKey(hash) && flags[hash].TrySetValue(value);
+
+        public bool TryLoadFromJson(string key, JToken value)
+        {
+
+        }
+        public static implicit operator JObject(SavedFlagSet set)
+        {
+            JObject result = new();
+
+            set.flags.ForEach((name, hash, value) => { result.Add(name, value); });
+
+            return result;
+        }
+
+        public class StoryFlags : SavedFlagSet
+        {
+            public float CompletionOf(float percentage)
+            {
+                int Count = flags.Count;
+                int completeted = 0;
+                for (int i = 0; i < flags.Count; i++)
+                {
+                    if(flags.ValueFromIndex(i) is FlagBase.Flag<bool> flag)
+                    { if (flag.value) completeted++; }
+                    else Count--;
+                }
+                return completeted / Count * percentage;
+            }
+        }
     }
 }

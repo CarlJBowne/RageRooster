@@ -68,7 +68,7 @@ namespace RageRooster.Settings
                 SecondaryFiles = new JsonFile[0];
             }
 
-            protected override JsonFile.LoadResult ReadData()
+            protected override JsonFile.FileState ReadData()
             {
                 Debug.Log("Reading Config Data");
                 float version = RootFile.Data["FileVersion"] != null ? RootFile.Data["FileVersion"].ToObject<float>() : 1.0f;
@@ -83,7 +83,7 @@ namespace RageRooster.Settings
                     Graphics.Brightness.TakeSaveInput(RootFile["G_Brightness"]);
                     if (RootFile.Data.TryGetValue("Controls", out ControlsJ))
                         Remapping.Deserialize(ControlsJ);
-                    return JsonFile.LoadResult.Success;
+                    return JsonFile.FileState.Valid;
                 }
 
                 if (RootFile.Data.TryGetValue("Volume", out JToken VolumeJ))
@@ -100,7 +100,7 @@ namespace RageRooster.Settings
                 if (RootFile.Data.TryGetValue("Controls", out ControlsJ))
                     Remapping.Deserialize(ControlsJ);
 
-                return JsonFile.LoadResult.Success;
+                return JsonFile.FileState.Valid;
             }
             protected override JsonFile.FileState WriteData()
             {

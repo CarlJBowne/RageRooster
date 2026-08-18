@@ -15,7 +15,7 @@ using static RageRooster.Services;
 
 namespace RageRooster.TOP
 {
-    public class Gameplay : Core.Gameplay
+    public sealed class Gameplay : Core.Gameplay
     {
         protected override void TransitionLogic(Action SetCurrent, Action PostAction)
         {
@@ -258,13 +258,9 @@ namespace RageRooster.TOP
                 Destroy(rootObjects[i]);
         }
 
-        protected override void DoEndGame()
-        {
-            titleScreenGameState.Enter();
-        }
+        protected override void DoEndGame() => titleScreenGameState.Enter();
 
-        [SerializeField] protected GameState titleScreenGameState;
-    
+
     }
 
 }

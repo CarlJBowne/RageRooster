@@ -12,7 +12,7 @@ namespace RageRooster.Core.Save
         /// <summary>
         /// The total amount of this collectible that has been collected, only for easy access.
         /// </summary>
-        public int total = 0;
+        public int collected = 0;
         /// <summary>
         /// A list of individual collectibles and whether they are collected or not.<br/>
         /// </summary>
@@ -22,10 +22,12 @@ namespace RageRooster.Core.Save
         /// </summary>
         public List<string> IDs;
 
+        public int total => isCollected.Count;
+
         public override void Clone(SavedCollectible source)
         {
             if (this.GetType() != source.GetType()) return;
-            total = source.total;
+            collected = source.collected;
             isCollected ??= new List<bool>(source.isCollected);
             IDs ??= new List<string>(source.IDs);
         }
@@ -43,7 +45,7 @@ namespace RageRooster.Core.Save
             return true;
         }
 
-
+        public float CompletionOf(float percentage) => collected / total * percentage;
 
 
         public static SavedCollectible Wishbones;

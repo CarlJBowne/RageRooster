@@ -22,6 +22,7 @@ namespace RageRooster.TOP.Save
         [SerializeField] private SavedCollectible wishbones = new();
         [SerializeField] private SavedCollectible hensRescued = new();
         [SerializeField] private SavedFlagSet globalFlagDefs;
+        [SerializeField] private SavedFlagSet.StoryFlags storyFlagDefs;
 
 
         public override void OnInit()
@@ -37,10 +38,10 @@ namespace RageRooster.TOP.Save
                     hensRescued = hensRescued,
                 },
                 globalChanges = globalFlagDefs,
+                storyFlags = storyFlagDefs,
                 areaChanges = AreaRegistry.SavedFlagsDictionary()
             };
-            this.GetExecutionDetails(out bool gameIsEditor, out bool gameIsPlaying);
-            SaveData.InitializeSystem(defs, gameIsEditor && !gameIsPlaying);
+            SaveData.InitializeDefaults(defs);
         }
     }
 }

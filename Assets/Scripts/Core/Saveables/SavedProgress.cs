@@ -14,7 +14,7 @@ namespace RageRooster.Core.Save
 
         public IntStat Currency;
 
-
+        public SavedFlagSet.StoryFlags storyFlags;
         public SavedCollectible powerEggs = new();
         public SavedCollectible wishbones = new();
         public SavedCollectible hensRescued = new();

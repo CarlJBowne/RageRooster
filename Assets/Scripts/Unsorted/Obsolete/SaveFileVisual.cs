@@ -32,7 +32,7 @@ namespace RageRooster.Obsolete
         private void UpdateFile()
         {
 
-            if (File.LoadFromFile() == JsonFile.LoadResult.Success)
+            if (File.LoadFromFile() == JsonFile.FileState.Valid)
             {
                 var TS = System.TimeSpan.FromSeconds(File.Data["Time"].ToObject<double>());
                 timeText.text = $"{TS.Hours}:{TS.Minutes}:{TS.Seconds}";

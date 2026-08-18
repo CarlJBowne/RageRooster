@@ -2,57 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json.Linq;
 using RageRooster.Core.Save;
 using RageRooster.World;
-using Unity.VisualScripting;
 using UnityEngine;
 using Utilities.JSON;
 
-namespace RageRooster.TOP.Save
+namespace RageRooster.TOP.Save.Streams
 {
     /// <summary>
-    /// An Input Output stream for Saving/Loading Save Data to/from disk. Also used to display save files in UI.
+    /// This is the 1.0.0 version of the Save Stream. Outdated but necessary for loading old save files. This version is no longer used for saving.
     /// </summary>
-    public class SaveFileIO : JsonStream
+    public class SaveStream100 : SaveIOStream
     {
-        public static SaveFileIO Primary;
+        public override float version => -1.00f;
 
-        public const string targetFileVersion = "1.0.0";
-
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void InitServices()
-        {
-            SaveData.SaveToSaveFile = SaveToSaveFile;
-            SaveData.RevertToSaveFile = RevertToSaveFile;
-            SaveData.CallInitializeSave = InitializeSaves;
-        }
-
-        public static void InitializeSaves(int fileNo)
-        {
-            Primary = new(fileNo);
-            SaveData.InitializeSystem();
-            RevertToSaveFile();
-        }
-
-        public static void SaveToSaveFile()
-        {
-            SaveData.Active.progress.playTime += TimeSpan.FromSeconds(SavedProgress.UpdateGameTime());
-            SaveData.Clone(SaveData.Active, SaveData.DeathReloadData);
-            SaveData.Clone(SaveData.Active, Primary.LoadOperator);
-            Primary.SaveToFile();
-        }
-        public static void RevertToSaveFile()
-        {
-            SavedProgress.UpdateGameTime();
-            Primary.LoadFromFile();
-            SaveData.Clone(Primary.LoadOperator, SaveData.Active);
-            SaveData.Clone(SaveData.Active, SaveData.DeathReloadData);
-        }
-
-
-
-
-        public SaveFileIO(int fileID)
+        public SaveStream100(int fileID, out JsonFile.FileState state) : base(fileID, out state)
         {
             this.fileID = fileID;
             saveRootPath = $"{Application.persistentDataPath}/Save{fileID}";
@@ -63,9 +28,28 @@ namespace RageRooster.TOP.Save
             foreach (string area in IDestination.AllAreas)
                 areaChangesFiles.Add(area, new JsonFile(saveRootPath, $"flags_{area}"));
             SecondaryFiles = areaChangesFiles.Values.Append(WorldChangesFile).ToArray();
-        }
 
-        int fileID;
+            if (RootFile.State != JsonFile.FileState.Valid)
+            {
+                state = RootFile.State;
+                return;
+            }
+            if (WorldChangesFile.State != JsonFile.FileState.Valid)
+            {
+                state = WorldChangesFile.State;
+                return;
+            }
+            foreach (var item in areaChangesFiles)
+            {
+                if (item.Value.State != JsonFile.FileState.Valid)
+                {
+                    state = item.Value.State;
+                    return;
+                }
+            }
+            state = JsonFile.FileState.Valid;
+
+        }
 
         public JsonFile PlayerFile => RootFile;
 
@@ -74,43 +58,45 @@ namespace RageRooster.TOP.Save
 
         public Dictionary<string, JsonFile> areaChangesFiles;
 
-        protected override JsonFile.LoadResult ReadData()
+        protected override JsonFile.FileState ReadData()
         {
-            //ResultingData.location = (DestinationMap)PlayerFile.Data[nameof(ResultingData.location)];
-            //ResultingData.playerStats.maxHealth = (int)PlayerFile.Data[nameof(SavedPlayerStats.maxHealth)];
-            //ResultingData.playerStats.maxAmmo = (int)PlayerFile.Data[nameof(SavedPlayerStats.maxAmmo)];
-            //ResultingData.playerStats.currency = (int)PlayerFile.Data[nameof(SavedPlayerStats.currency)];
-            //ResultingData.playerStats.playTime = TimeSpan.Parse((string)PlayerFile.Data[nameof(SavedPlayerStats.playTime)]);
-            //
-            //JToken upgradesLoad = PlayerFile.Data[nameof(SavedPlayerStats.upgrades)];
-            //ResultingData.playerStats.upgrades = upgradesLoad.ToObject<Upgrades>();
-            //
-            //JToken powerEggsLoad = WorldChangesFile.Data[nameof(ResultingData.powerEggs)];
-            //JToken wishbonesLoad = WorldChangesFile.Data[nameof(ResultingData.wishbones)];
-            //JToken hensRescuedLoad = WorldChangesFile.Data[nameof(ResultingData.hensRescued)];
-            //JToken globalChangesLoad = WorldChangesFile.Data[nameof(ResultingData.globalChanges)];
-            //
-            //ResultingData.powerEggs.total = (int)powerEggsLoad[nameof(SavedCollectible.total)];
-            //for (int i = 0; i < ResultingData.powerEggs.isCollected.Count; i++)
-            //    ResultingData.powerEggs.isCollected[i] = (bool)powerEggsLoad[nameof(SavedCollectible.isCollected)][i];
-            //
-            //ResultingData.wishbones.total = (int)wishbonesLoad[nameof(SavedCollectible.total)];
-            //for (int i = 0; i < ResultingData.wishbones.isCollected.Count; i++)
-            //    ResultingData.wishbones.isCollected[i] = (bool)wishbonesLoad[nameof(SavedCollectible.isCollected)][i];
-            //
-            //ResultingData.hensRescued.total = (int)hensRescuedLoad[nameof(SavedCollectible.total)];
-            //for (int i = 0; i < ResultingData.hensRescued.isCollected.Count; i++)
-            //    ResultingData.hensRescued.isCollected[i] = (bool)hensRescuedLoad[nameof(SavedCollectible.isCollected)][i];
-            //
-            //ResultingData.globalChanges.LoadFromJson(globalChangesLoad);
-            //
-            //foreach (IAreaAsset area in DestinationMap.AllAreas)
-            //    ResultingData.areaChanges[area].LoadFromJson(areaChangesFiles[area].Data);
-            //
-            return JsonFile.LoadResult.Success;
+            Data.playerStats.location = (DestinationMap)PlayerFile.Data["location"];
+            Data.playerStats.MaxHealth &= (int)PlayerFile.Data["maxHealth"];
+            Data.playerStats.MaxAmmo &= (int)PlayerFile.Data["maxAmmo"];
+            Data.playerStats.dropLaunch = (bool)PlayerFile.Data["upgrades"]["dropLaunch"];
+            Data.playerStats.wallJump = (bool)PlayerFile.Data["upgrades"]["wallJump"];
+            Data.playerStats.hellcopter = (bool)PlayerFile.Data["upgrades"]["hellcopter"];
+            Data.playerStats.ragingCharge = (bool)PlayerFile.Data["upgrades"]["ragingCharge"];
+
+            Data.progress.Currency &= (int)PlayerFile.Data["currency"];
+            Data.progress.playTime = TimeSpan.Parse((string)PlayerFile.Data["playTime"]);
+
+            Data.progress.powerEggs.collected = (int)WorldChangesFile.Data["powerEggs"]["total"];
+            for (int i = 0; i < Data.progress.powerEggs.isCollected.Count; i++)
+                Data.progress.powerEggs.isCollected[i] = (bool)WorldChangesFile.Data["powerEggs"]["isCollected"][i];
+
+            Data.progress.wishbones.collected = (int)WorldChangesFile.Data["wishbones"]["total"];
+            for (int i = 0; i < Data.progress.powerEggs.isCollected.Count; i++)
+                Data.progress.wishbones.isCollected[i] = (bool)WorldChangesFile.Data["wishbones"]["isCollected"][i];
+
+            Data.progress.hensRescued.collected = (int)WorldChangesFile.Data["hensRescued"]["total"];
+            for (int i = 0; i < Data.progress.powerEggs.isCollected.Count; i++)
+                Data.progress.hensRescued.isCollected[i] = (bool)WorldChangesFile.Data["hensRescued"]["isCollected"][i];
+
+            JObject globalChangesLoad = (JObject)WorldChangesFile.Data["globalChanges"];
+
+            foreach (KeyValuePair<string, JToken> item in globalChangesLoad)
+                Data.globalChanges.TryLoadFromJson(item.Key, item.Value);
+
+            foreach (string area in IDestination.AllAreas)
+                foreach (var entry in areaChangesFiles[area].Data)
+                    Data.areaChanges[area].TryLoadFromJson(entry.Key, entry.Value);
+
+            return JsonFile.FileState.Valid;
         }
         protected override JsonFile.FileState WriteData()
         {
+            //NO
 
             //PlayerFile.Data = new JObject
             //{
@@ -165,6 +151,7 @@ namespace RageRooster.TOP.Save
         public float GetCompletionPercentage()
         {
             if (fileID == -1) throw new Exception("No file target set. Use SetFileTarget before loading or saving.");
+            return 0;
             int totalCollectibles = 0 // SavedValueRegistry.PowerEggs.Count + SavedValueRegistry.Wishbones.Count + SavedValueRegistry.HensRescued.Count
                                       ;
             if (totalCollectibles == 0) return 100f;
@@ -176,7 +163,19 @@ namespace RageRooster.TOP.Save
             return (collected / (float)totalCollectibles) * 100f;
         }
 
-        public SaveData LoadOperator;
+        public override void ExportMenuDisplayData(out SaveData.MenuDisplayData result)
+        {
+            TimeSpan readTime = TimeSpan.Parse((string)PlayerFile.Data["playTime"]);
+            DestinationMap readLocation = PlayerFile.Data["location"];
+            result = new SaveData.MenuDisplayData
+            {
+                timeString =$"{(int)readTime.TotalHours}:{readTime.Minutes:D2}:{readTime.Seconds:D2}",
+                locationString = readLocation.ToString(),
+                completionPercentage = GetCompletionPercentage(),
+                health = (int)PlayerFile.Data["maxHealth"],
+                powerEggs = (int)WorldChangesFile.Data["powerEggs"]["total"],
+                hensRescued = (int)WorldChangesFile.Data["hensRescued"]["total"],
+            };
+        }
     }
-
 }

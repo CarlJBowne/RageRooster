@@ -108,6 +108,5 @@ namespace RageRooster.Player
 
             return false;
         }
-
     }
 }
