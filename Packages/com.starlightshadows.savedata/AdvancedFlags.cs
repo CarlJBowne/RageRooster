@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utilities.JSON;
-
+using SLS.GeneralUtilities.EventTickets;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -13,134 +13,199 @@ using UnityEditor;
 namespace SLS.SaveData
 {
     [Serializable]
-    public abstract class FlagBase : Polymorph
+    public abstract class Flag : Polymorph
     {
-
-        //public bool IsType<T>() => type == TypeEnumFromCType<T>();
-        //public static Type TypeEnumFromCType<T>()
-        //       => typeof(T) == typeof(bool) ? Type.Bool
-        //        : typeof(T) == typeof(int) ? Type.Int
-        //        : typeof(T) == typeof(float) ? Type.Float
-        //        : typeof(T) == typeof(UnityEngine.Vector3) ? Type.Vector3
-        //        : typeof(T) == typeof(string) ? Type.String
-        //        : throw new System.Exception("No matching FlagType for type " + typeof(T).Name);
-
-        public abstract object valueObject { get; protected set; }
-
-        public event Action<object> OnValueChanged;
-
-        //public abstract Type type { get; }
-
-        // Shared TrySetValue(object value) implementation
-        public virtual bool TrySetValue(object value)
-        {
-            if (value == null || valueObject.GetType() != value.GetType()) return false;
-            valueObject = value;
-            return true;
-        }
-
-        public bool TryGetValue<T>(out T value)
-        {
-            if (valueObject.GetType() == typeof(T))
-            {
-                value = (T)valueObject;
-                OnValueChanged?.Invoke(value);
-                return true;
-            }
-            value = default;
-            return false;
-        }
-
-        public bool TrySetValue<T>(T value)
-        {
-            if (valueObject.GetType() == typeof(T))
-            {
-                valueObject = value;
-                return true;
-            }
-            return false;
-        }
-
-        public abstract FlagBase Clone(FlagBase source);
+        public abstract object valueObject { get; set; }
+        public abstract Type ValueType { get; }
 
         public abstract void LoadFromJson(JToken input);
         public abstract JToken SaveToJson();
+        public abstract Flag Clone(Flag source);
 
-        public static implicit operator JToken(FlagBase source) => source.SaveToJson();
+        protected abstract void CallValueChangedCallback();
 
-        //public static FlagBase CreateInstanceFromEnum(Type type)
-        //{
-        //    return type switch
-        //    {
-        //        Type.Bool => new Boolean(),
-        //        Type.Int => new Integer(),
-        //        Type.Float => new Float(),
-        //        Type.Vector3 => new Vector3(),
-        //        Type.String => new String(),
-        //        _ => null,
-        //    };
-        //}
-
-
-        //public enum Type
-        //{
-        //    Bool,
-        //    Int,
-        //    Float,
-        //    Vector3,
-        //    String,
-        //}
-
-        public class Flag<T> : FlagBase where T : struct
+        public static implicit operator JToken(Flag source) => source.SaveToJson();
+        /// <summary>
+        /// psudeo assignment operator.
+        /// </summary>
+        public static Flag operator &(Flag flag, object value)
         {
-            private static Type[] ValidTypes =
+            flag.valueObject = value;
+            return flag;
+        }
+
+
+        //[Polymorph.ValidTypes(typeof(int), typeof(float), typeof(bool), typeof(UnityEngine.Vector3))]
+        public abstract class Generic<T> : Flag
+        {
+            public T Value
             {
-                typeof(int),
-                typeof(float),
-                typeof(bool),
-                typeof(Vector3),
-            };
-
-            public T value;
-            new public event Action<T> OnValueChanged;
-
+                get => value;
+                set
+                {
+                    if (this.value.Equals(value)) return;
+                    this.value = value;
+                    CallValueChangedCallback();
+                }
+            }
             public override object valueObject
             {
                 get => value;
-                protected set
+                set
                 {
-                    if (typeof(T) != value.GetType()) return;
+                    if (value.GetType() != typeof(T)) return;
                     this.value = (T)value;
-                    OnValueChanged?.Invoke((T)value);
+                    CallValueChangedCallback();
                 }
             }
-            //public override Type type { get; }
+            [SerializeField] protected T value;
 
-            public override FlagBase Clone(FlagBase source)
+            public override Type ValueType => typeof(T);
+
+
+            public event Action<T> OnValueChanged;
+
+            public EventTicket RegisterCallback(Action<T> callback) =>
+                EventTicket.Action(OnValueChanged, callback);
+
+            protected override void CallValueChangedCallback() => OnValueChanged?.Invoke(Value);
+
+            public override Flag Clone(Flag source)
             {
                 if (source == null) return this;
                 if (source.valueObject.GetType() != typeof(T)) return this;
                 valueObject = source.valueObject;
                 return this;
             }
+            public Generic<T> Clone(Generic<T> source)
+            {
+                if (source == null) return this;
+                Value = source.Value;
+                return this;
+            }
+
+            public static implicit operator T(Generic<T> input) => input.Value;
+            public static Generic<T> operator &(Generic<T> flag, T value)
+            {
+                flag.Value = value;
+                return flag;
+            }
+        }
+
+        [Serializable]
+        public class Bool : Generic<bool>
+        {
             public override void LoadFromJson(JToken input)
             {
-                if (typeof(T) == typeof(Vector3))
-                {
-                    JArray arr = input as JArray;
-                    valueObject = new Vector3(arr[0].ToObject<float>(), arr[1].ToObject<float>(), arr[2].ToObject<float>());
-                }
-                else value = input.ToObject<T>();
-                OnValueChanged?.Invoke(value);
+                if (input == null || input.Type != JTokenType.Boolean) return;
+                Value = (bool)input;
             }
-            public override JToken SaveToJson()
+            public override JToken SaveToJson() => (JToken)Value;
+        }
+        [Serializable]
+        public class Int : Generic<int>
+        {
+            public override void LoadFromJson(JToken input)
             {
-                if (typeof(T) == typeof(Vector3))
-                {
-                    Vector3 v = (Vector3)valueObject;
-                    return new JArray { v.x, v.y, v.z };
-                }
-                else return JToken.FromObject(value);
+                if (input == null || input.Type != JTokenType.Integer) return;
+                Value = (int)input;
+            }
+            public override JToken SaveToJson() => (JToken)Value;
+        }
+        [Serializable]
+        public class Float : Generic<float>
+        {
+            public override void LoadFromJson(JToken input)
+            {
+                if (input == null || input.Type != JTokenType.Float) return;
+                Value = (float)input;
+            }
+            public override JToken SaveToJson() => (JToken)Value;
+        }
+        [Serializable]
+        public class Vector3 : Generic<UnityEngine.Vector3>
+        {
+            public override void LoadFromJson(JToken input)
+            {
+                if (input == null || input is not JArray array || array.Count != 3) return;
+                Value = new((float)array[0], (float)array[1], (float)array[2]);
+            }
+            public override JToken SaveToJson() => new JArray { value.x, value.y, value.z };
+        }
+        [Serializable]
+        public class String : Generic<string>
+        {
+            public override void LoadFromJson(JToken input)
+            {
+                if (input == null || input.Type != JTokenType.String) return;
+                Value = (string)input;
+            }
+            public override JToken SaveToJson() => (JToken)Value;
+        }
+        [Serializable]
+        public class Char : Generic<char>
+        {
+            public override void LoadFromJson(JToken input)
+            {
+                if (input == null || input.Type != JTokenType.Integer) return;
+                Value = (char)(int)input;
+            }
+            public override JToken SaveToJson() => (JToken)(int)Value;
+        }
+
+        [Serializable]
+        public class Collection : Dictionary<Flag>
+        {
+            // Get or create a Flag<T> under the given name (uses string-name storage)
+            public Generic<T> GetOrCreate<T>(string name)
+            {
+                if (TryGet(name, out Flag existing, true) && existing is Generic<T> f) return f;
+
+                Flag newFlag = null;
+                if (typeof(T) == typeof(bool)) newFlag = new Bool();
+                if (typeof(T) == typeof(int)) newFlag = new Int();
+                if (typeof(T) == typeof(float)) newFlag = new Float();
+                if (typeof(T) == typeof(UnityEngine.Vector3)) newFlag = new Vector3();
+                if (typeof(T) == typeof(string)) newFlag = new String();
+                if (typeof(T) == typeof(char)) newFlag = new Char();
+                this[name] = newFlag;
+                return newFlag as Generic<T>;
+
+            }
+
+            public void Set<T>(string name, T value)
+            {
+                if (!ContainsName(name)) return;
+                if (this[name].ValueType != typeof(T)) return;
+                if (this[name] is not Generic<T> gen) return;
+                gen.Value = value;
+            }
+
+            public bool TryGet<T>(string name, out T value)
+            {
+                value = default;
+                if (!ContainsName(name)) return false;
+                if (this[name].ValueType != typeof(T)) return false;
+                if (this[name] is not Generic<T> gen) return false;
+
+                value = gen.Value;
+                return true;
+            }
+
+            public void Subscribe<T>(string name, Action<T> callback)
+            {
+                var f = GetOrCreate<T>(name);
+                f.OnValueChanged += callback;
+            }
+
+            public string[] AllNamesOfType<T>() => AllNamesOfType(typeof(T));
+            public string[] AllNamesOfType(Type type)
+            {
+                List<string> result = new();
+                for (int i = 0; i < Count; i++)
+                    if (ValueFromIndex(i).ValueType == type)
+                        result.Add(NameFromIndex(i));
+                return result.ToArray();
             }
         }
 

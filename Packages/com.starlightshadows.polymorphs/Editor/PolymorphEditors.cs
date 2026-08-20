@@ -21,36 +21,15 @@ public class PolymorphEditors
     {
         GenericMenu menu = new();
 
-        
-        Type[] types = GetSubtypes(baseType);
-        if (types.Length != 0)
+
+        Type[] types = Polymorph.GetSubtypes(baseType, false/*, true*/);
+        for (int i = 0; i < types.Length; i++) Add(types[i]);
+        void Add(Type t)
         {
-            DoType(baseType);
-            foreach (Type t in types)
-            {
-                if (t == baseType) continue;
-                Add(t);
-            }
+            string name = t.Name;
+            //if (name.Contains('\'')) name = name.Replace('\'', '<') + '>';
+            menu.AddItem(new GUIContent(name), false, () => { result?.Invoke(t); });
         }
-        else menu.AddItem(new GUIContent("Add"), false, () => { result?.Invoke(baseType); });
-        void DoType(Type t)
-        {
-            if (t.IsAbstract) return;
-            if (!t.ContainsGenericParameters) Add(t);
-            else
-            {
-                PropertyInfo ValidTypesProperty = t.GetProperty("ValidTypes", BindingFlags.NonPublic | BindingFlags.Static);
-                if (ValidTypesProperty == null) return;
-                Type[] validTypes = ValidTypesProperty.GetValue(t, null) as Type[];
-                for (int i = 0; i < validTypes.Length; i++)
-                {
-                    Type subtype = t;
-                    subtype.GenericTypeArguments[0] = validTypes[i];
-                    Add(subtype);
-                }
-            }
-        }
-        void Add(Type t) => menu.AddItem(new GUIContent(t.Name), false, () => { result?.Invoke(t); });
 
         if (showNullOption) menu.AddItem(new GUIContent("Nullify"), false, () => { result?.Invoke(null); });
 
@@ -390,15 +369,11 @@ public class PolymorphEditors
         public ListDrawer(SerializedProperty rootProperty, FieldInfo fieldInfo, bool BindImmediately = true) : base(rootProperty)
         {
             this.fieldInfo = fieldInfo;
-            try
-            {
-                if (fieldInfo != null && fieldInfo.FieldType.IsGenericType)
-                {
-                    Type[] args = fieldInfo.FieldType.GetGenericArguments();
-                    if (args != null && args.Length > 0) baseType = args[0];
-                }
-            }
-            catch { baseType = null; }
+
+            Type genType = fieldInfo.FieldType.FindGenericAncestor()
+                ?? throw new Exception("This List is somehow not scoped. WTF did you do?");
+            baseType = genType.GenericTypeArguments[0];
+
             ShowTypeChooser = () => { ShowChooseTypeMenu(baseType, false, TypeChosen); };
 
             BuildBasicElements();
@@ -465,18 +440,19 @@ public class PolymorphEditors
         public SerializedProperty KeysProperty { get; private set; }
         public SerializedProperty ValuesProperty { get; private set; }
 
-        public DictionaryDrawer(SerializedProperty rootProperty, FieldInfo fieldInfo, bool BindImmediately = true)
-            : base(rootProperty, true)
+        public DictionaryDrawer(SerializedProperty rootProperty, FieldInfo fieldInfo, bool BindImmediately = true) : base(rootProperty, true)
         {
             this.fieldInfo = fieldInfo;
-            // Try to obtain the live dictionary instance to support duplicate detection if it implements ILookupTable
+
+            Type genType = fieldInfo.FieldType.FindGenericAncestor()
+                ?? throw new Exception("This List is somehow not scoped. WTF did you do?");
+            targetBaseType = genType.GenericTypeArguments[0];
+
             try
             {
                 LookupTable = fieldInfo?.GetValue(rootProperty.serializedObject.targetObject) as ILookupTable;
             }
             catch { LookupTable = null; }
-
-            targetBaseType = fieldInfo.FieldType.GenericTypeArguments[0];
 
             BuildBasicElements();
             enterDataMenu = new EnterPolyDataMenu(TypeChosen, targetBaseType).AddTo(collectionBackground);
@@ -511,8 +487,11 @@ public class PolymorphEditors
                 TextField = new TextField("").AddTo(this);
                 TextField.style.flexGrow = 1f;
 
-                Types = Polymorph.GetSubtypes(baseType);
+                Types = Polymorph.GetSubtypes(baseType, false/*, true*/);
                 string[] typeNames = Types.Select(t => t.Name).ToArray();
+                //for (int i = 0; i < typeNames.Length; i++)
+                //    if (typeNames[i].Contains('\''))
+                //        typeNames[i] = typeNames[i].Replace('\'', '<') + '>';
                 TypeField = new DynamicEnumField(typeNames, -1, null).AddTo(this);
                 TypeField.style.width = Length.Percent(40);
                 TypeField.style.flexShrink = 0;

@@ -60,37 +60,37 @@ namespace RageRooster.TOP.Save.Streams
 
         protected override JsonFile.FileState ReadData()
         {
-            Data.playerStats.location = (DestinationMap)PlayerFile.Data["location"];
-            Data.playerStats.MaxHealth &= (int)PlayerFile.Data["maxHealth"];
-            Data.playerStats.MaxAmmo &= (int)PlayerFile.Data["maxAmmo"];
-            Data.playerStats.dropLaunch = (bool)PlayerFile.Data["upgrades"]["dropLaunch"];
-            Data.playerStats.wallJump = (bool)PlayerFile.Data["upgrades"]["wallJump"];
-            Data.playerStats.hellcopter = (bool)PlayerFile.Data["upgrades"]["hellcopter"];
-            Data.playerStats.ragingCharge = (bool)PlayerFile.Data["upgrades"]["ragingCharge"];
+            Transfer.playerStats.location = (DestinationMap)PlayerFile.Data["location"];
+            Transfer.playerStats.MaxHealth &= (int)PlayerFile.Data["maxHealth"];
+            Transfer.playerStats.MaxAmmo &= (int)PlayerFile.Data["maxAmmo"];
+            Transfer.playerStats.dropLaunch = (bool)PlayerFile.Data["upgrades"]["dropLaunch"];
+            Transfer.playerStats.wallJump = (bool)PlayerFile.Data["upgrades"]["wallJump"];
+            Transfer.playerStats.hellcopter = (bool)PlayerFile.Data["upgrades"]["hellcopter"];
+            Transfer.playerStats.ragingCharge = (bool)PlayerFile.Data["upgrades"]["ragingCharge"];
 
-            Data.progress.Currency &= (int)PlayerFile.Data["currency"];
-            Data.progress.playTime = TimeSpan.Parse((string)PlayerFile.Data["playTime"]);
+            Transfer.progress.Currency &= (int)PlayerFile.Data["currency"];
+            Transfer.progress.playTime = TimeSpan.Parse((string)PlayerFile.Data["playTime"]);
 
-            Data.progress.powerEggs.collected = (int)WorldChangesFile.Data["powerEggs"]["total"];
-            for (int i = 0; i < Data.progress.powerEggs.isCollected.Count; i++)
-                Data.progress.powerEggs.isCollected[i] = (bool)WorldChangesFile.Data["powerEggs"]["isCollected"][i];
+            Transfer.progress.powerEggs.collected = (int)WorldChangesFile.Data["powerEggs"]["total"];
+            for (int i = 0; i < Transfer.progress.powerEggs.isCollected.Count; i++)
+                Transfer.progress.powerEggs.isCollected[i] = (bool)WorldChangesFile.Data["powerEggs"]["isCollected"][i];
 
-            Data.progress.wishbones.collected = (int)WorldChangesFile.Data["wishbones"]["total"];
-            for (int i = 0; i < Data.progress.powerEggs.isCollected.Count; i++)
-                Data.progress.wishbones.isCollected[i] = (bool)WorldChangesFile.Data["wishbones"]["isCollected"][i];
+            Transfer.progress.wishbones.collected = (int)WorldChangesFile.Data["wishbones"]["total"];
+            for (int i = 0; i < Transfer.progress.powerEggs.isCollected.Count; i++)
+                Transfer.progress.wishbones.isCollected[i] = (bool)WorldChangesFile.Data["wishbones"]["isCollected"][i];
 
-            Data.progress.hensRescued.collected = (int)WorldChangesFile.Data["hensRescued"]["total"];
-            for (int i = 0; i < Data.progress.powerEggs.isCollected.Count; i++)
-                Data.progress.hensRescued.isCollected[i] = (bool)WorldChangesFile.Data["hensRescued"]["isCollected"][i];
+            Transfer.progress.hensRescued.collected = (int)WorldChangesFile.Data["hensRescued"]["total"];
+            for (int i = 0; i < Transfer.progress.powerEggs.isCollected.Count; i++)
+                Transfer.progress.hensRescued.isCollected[i] = (bool)WorldChangesFile.Data["hensRescued"]["isCollected"][i];
 
             JObject globalChangesLoad = (JObject)WorldChangesFile.Data["globalChanges"];
 
             foreach (KeyValuePair<string, JToken> item in globalChangesLoad)
-                Data.globalChanges.TryLoadFromJson(item.Key, item.Value);
+                Transfer.globalChanges.TryLoadFromJson(item.Key, item.Value);
 
             foreach (string area in IDestination.AllAreas)
                 foreach (var entry in areaChangesFiles[area].Data)
-                    Data.areaChanges[area].TryLoadFromJson(entry.Key, entry.Value);
+                    Transfer.areaChanges[area].TryLoadFromJson(entry.Key, entry.Value);
 
             return JsonFile.FileState.Valid;
         }

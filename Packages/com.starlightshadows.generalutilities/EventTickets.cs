@@ -107,22 +107,22 @@ namespace SLS.GeneralUtilities.EventTickets
         /// <summary>
         /// Creates an <see cref="EventTicket"/> for an <see cref="UltEvent"/>.
         /// </summary>
-        public static EventTicket Ult(UltEvent ultEvent, Action subscriber, bool subscribeNow = true) => new(() => ultEvent.AddListener(subscriber), () => ultEvent.RemoveListener(subscriber), subscribeNow);
+        public static EventTicket Ult(UltEvent ultEvent, Action subscriber, bool subscribeNow = true) => new(() => ultEvent.AddPersistentCall(subscriber), () => ultEvent.RemovePersistentCall(subscriber), subscribeNow);
 
         /// <summary>
         /// Creates an <see cref="EventTicket"/> for a generic <see cref="UltEvent{T}"/>.
         /// </summary>
-        public static EventTicket Ult<T>(UltEvent<T> ultEvent, Action<T> subscriber, bool subscribeNow = true) => new(() => ultEvent.AddListener(subscriber), () => ultEvent.RemoveListener(subscriber), subscribeNow);
+        public static EventTicket Ult<T>(UltEvent<T> ultEvent, Action<T> subscriber, bool subscribeNow = true) => new(() => ultEvent.AddPersistentCall(subscriber), () => ultEvent.RemovePersistentCall(subscriber), subscribeNow);
 
         /// <summary>
         /// Creates an <see cref="EventTicket"/> for a generic <see cref="UltEvent{T,T1}"/>.
         /// </summary>
-        public static EventTicket Ult<T, T1>(UltEvent<T, T1> ultEvent, Action<T, T1> subscriber, bool subscribeNow = true) => new(() => ultEvent.AddListener(subscriber), () => ultEvent.RemoveListener(subscriber), subscribeNow);
+        public static EventTicket Ult<T, T1>(UltEvent<T, T1> ultEvent, Action<T, T1> subscriber, bool subscribeNow = true) => new(() => ultEvent.AddPersistentCall(subscriber), () => ultEvent.RemovePersistentCall(subscriber), subscribeNow);
 
         /// <summary>
         /// Creates an <see cref="EventTicket"/> for a generic <see cref="UltEvent{T,T1,T2}"/>.
         /// </summary>
-        public static EventTicket Ult<T, T1, T2>(UltEvent<T, T1, T2> ultEvent, Action<T, T1, T2> subscriber, bool subscribeNow = true) => new(() => ultEvent.AddListener(subscriber), () => ultEvent.RemoveListener(subscriber), subscribeNow);
+        public static EventTicket Ult<T, T1, T2>(UltEvent<T, T1, T2> ultEvent, Action<T, T1, T2> subscriber, bool subscribeNow = true) => new(() => ultEvent.AddPersistentCall(subscriber), () => ultEvent.RemovePersistentCall(subscriber), subscribeNow);
     }
 
     /// <summary>
@@ -313,28 +313,28 @@ namespace SLS.GeneralUtilities.EventTickets
         /// <param name="subscriber">The subscribing function </param>
         /// <param name="subscribeNow">Whether this should immediately subscribe.</param>
         /// <returns>The <see cref="EventTicket"/> representing this subscripton</returns>
-        public static EventTicket Subscribe(this UltEvent ultEvent, Action subscriber, bool subscribeNow = true) => new(() => ultEvent.AddListener(subscriber), () => ultEvent.RemoveListener(subscriber), subscribeNow);
+        public static EventTicket Subscribe(this UltEvent ultEvent, Action subscriber, bool subscribeNow = true) => new(() => ultEvent.AddPersistentCall(subscriber), () => ultEvent.RemovePersistentCall(subscriber), subscribeNow);
         /// <summary>
         /// Creates an <see cref="EventTicket"/> subscribing a function with 1 parameter to this <see cref="UltEvent{T0}"/>. 
         /// </summary>
         /// <param name="subscriber">The subscribing function </param>
         /// <param name="subscribeNow">Whether this should immediately subscribe.</param>
         /// <returns>The <see cref="EventTicket"/> representing this subscripton</returns>
-        public static EventTicket Subscribe<T>(this UltEvent<T> ultEvent, Action<T> subscriber, bool subscribeNow = true) => new(() => ultEvent.AddListener(subscriber), () => ultEvent.RemoveListener(subscriber), subscribeNow);
+        public static EventTicket Subscribe<T>(this UltEvent<T> ultEvent, Action<T> subscriber, bool subscribeNow = true) => new(() => ultEvent.AddPersistentCall(subscriber), () => ultEvent.RemovePersistentCall(subscriber), subscribeNow);
         /// <summary>
         /// Creates an <see cref="EventTicket"/> subscribing a function with 2 parameters to this <see cref="UltEvent{T0, T1}"/>. 
         /// </summary>
         /// <param name="subscriber">The subscribing function </param>
         /// <param name="subscribeNow">Whether this should immediately subscribe.</param>
         /// <returns>The <see cref="EventTicket"/> representing this subscripton</returns>
-        public static EventTicket Subscribe<T, T1>(this UltEvent<T, T1> ultEvent, Action<T, T1> subscriber, bool subscribeNow = true) => new(() => ultEvent.AddListener(subscriber), () => ultEvent.RemoveListener(subscriber), subscribeNow);
+        public static EventTicket Subscribe<T, T1>(this UltEvent<T, T1> ultEvent, Action<T, T1> subscriber, bool subscribeNow = true) => new(() => ultEvent.AddPersistentCall(subscriber), () => ultEvent.RemovePersistentCall(subscriber), subscribeNow);
         /// <summary>
         /// Creates an <see cref="EventTicket"/> subscribing a function with 3 parameters to this <see cref="UltEvent{T0, T1, T2}"/>. 
         /// </summary>
         /// <param name="subscriber">The subscribing function </param>
         /// <param name="subscribeNow">Whether this should immediately subscribe.</param>
         /// <returns>The <see cref="EventTicket"/> representing this subscripton</returns>
-        public static EventTicket Subscribe<T, T1, T2>(this UltEvent<T, T1, T2> ultEvent, Action<T, T1, T2> subscriber, bool subscribeNow = true) => new(() => ultEvent.AddListener(subscriber), () => ultEvent.RemoveListener(subscriber), subscribeNow);
+        public static EventTicket Subscribe<T, T1, T2>(this UltEvent<T, T1, T2> ultEvent, Action<T, T1, T2> subscriber, bool subscribeNow = true) => new(() => ultEvent.AddPersistentCall(subscriber), () => ultEvent.RemovePersistentCall(subscriber), subscribeNow);
 
         /// <summary>
         /// Creates an <see cref="EventTicket"/> subscribing a function to this Action's <see cref="InputAction.performed"/> event. 

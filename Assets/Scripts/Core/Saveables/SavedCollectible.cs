@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using SLS.SaveData;
 
 namespace RageRooster.Core.Save

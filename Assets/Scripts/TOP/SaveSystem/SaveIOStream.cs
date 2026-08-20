@@ -17,7 +17,7 @@ namespace RageRooster.TOP.Save
     public abstract class SaveIOStream : JsonStream
     {
         public abstract float version { get; }
-        public static SaveData Data => SaveManager.TransferSnapshot;
+        public static SaveData Transfer => SaveManager.TransferSnapshot;
 
         protected int fileID;
         public SaveIOStream(int id, out JsonFile.FileState state)

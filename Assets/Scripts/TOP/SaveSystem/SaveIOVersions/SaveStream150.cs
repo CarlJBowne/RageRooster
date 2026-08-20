@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using RageRooster.Actors.Save.Collectibles;
 using RageRooster.Core.Save;
 using RageRooster.TOP.Save;
 using RageRooster.World;
@@ -13,9 +14,9 @@ namespace RageRooster.TOP.Save.Streams
     {
         public override float version => 1.5f;
 
-        JsonFile PlayerFile;
-        JsonFile ProgressFile;
-        JsonFile WorldChangesFile;
+        readonly JsonFile PlayerFile;
+        readonly JsonFile ProgressFile;
+        readonly JsonFile WorldChangesFile;
 
         public SaveStream150(int fileID, out JsonFile.FileState state) : base(fileID, out state)
         {
@@ -33,47 +34,96 @@ namespace RageRooster.TOP.Save.Streams
                 WorldChangesFile,
             };
 
-
+            state = State;
         }
 
         protected override JsonFile.FileState ReadData()
         {
+            Transfer.playerStats.MaxHealth &= (int)PlayerFile["MaxHealth"];
+            Transfer.playerStats.MaxAmmo &= (int)PlayerFile["MaxAmmo"];
+            Transfer.playerStats.location = (DestinationMap)PlayerFile["Location"];
+            Transfer.playerStats.dropLaunch   = (bool)PlayerFile["Upgrades"]["DropLaunch"];
+            Transfer.playerStats.wallJump     = (bool)PlayerFile["Upgrades"]["WallJump"];
+            Transfer.playerStats.hellcopter   = (bool)PlayerFile["Upgrades"]["Hellcopter"];
+            Transfer.playerStats.ragingCharge = (bool)PlayerFile["Upgrades"]["RagingCharge"];
+            Transfer.playerStats.glide        = (bool)PlayerFile["Upgrades"]["Glide"];
+            Transfer.playerStats.doubleJump   = (bool)PlayerFile["Upgrades"]["DoubleJump"];
+            Transfer.playerStats.lasso        = (bool)PlayerFile["Upgrades"]["Lasso"];
 
+            Transfer.progress.playTime = TimeSpan.Parse(ProgressFile["PlayTime"].ToString());
+            Load_SavedCollectible(Transfer.progress.powerEggs, 
+                (JObject)ProgressFile["PowerEggs"], 
+                (JArray)ProgressFile["PowerEggIDs"]);
+            Load_SavedCollectible(Transfer.progress.wishbones, 
+                (JObject)ProgressFile["Wishbones"], 
+                (JArray)ProgressFile["WishboneIDs"]);
+            Load_SavedCollectible(Transfer.progress.hensRescued, 
+                (JObject)ProgressFile["HensRescued"], 
+                (JArray)ProgressFile["HensRescuedIDs"]);
+
+            return JsonFile.FileState.Valid;
         }
         protected override JsonFile.FileState WriteData()
         {
             PlayerFile.Data = new()
             {
-                ["MaxHealth"] = Data.playerStats.MaxHealth.Value,
-                ["MaxAmmo"] = Data.playerStats.MaxAmmo.Value,
-                ["Location"] = (JToken)Data.playerStats.location,
+                ["MaxHealth"] = Transfer.playerStats.MaxHealth.Value,
+                ["MaxAmmo"] = Transfer.playerStats.MaxAmmo.Value,
+                ["Location"] = (JToken)Transfer.playerStats.location,
                 ["Upgrades"] = new JObject
                 {
-                    ["DropLaunch"] = Data.playerStats.dropLaunch,
-                    ["WallJump"] = Data.playerStats.wallJump,
-                    ["Hellcopter"] = Data.playerStats.hellcopter,
-                    ["RagingCharge"] = Data.playerStats.ragingCharge,
-                    ["Glide"] = Data.playerStats.glide,
-                    ["DoubleJump"] = Data.playerStats.doubleJump,
-                    ["Lasso"] = Data.playerStats.lasso,
+                    ["DropLaunch"] = Transfer.playerStats.dropLaunch,
+                    ["WallJump"] = Transfer.playerStats.wallJump,
+                    ["Hellcopter"] = Transfer.playerStats.hellcopter,
+                    ["RagingCharge"] = Transfer.playerStats.ragingCharge,
+                    ["Glide"] = Transfer.playerStats.glide,
+                    ["DoubleJump"] = Transfer.playerStats.doubleJump,
+                    ["Lasso"] = Transfer.playerStats.lasso,
                 }
             };
             ProgressFile.Data = new()
             {
-                ["PlayTime"] = Data.progress.playTime,
-                ["Completion"] = Data.Completion,
-                ["PowerEggs"] = Data.progress.powerEggs.collected,
-                ["HensRescued"] = Data.progress.hensRescued.collected,
-                ["Wishbones"] = Data.progress.wishbones.collected,
-                ["PowerEggIDs"] = new JArray(Data.progress.powerEggs.isCollected),
-                ["HensRescuedIDs"] = new JArray(Data.progress.hensRescued.isCollected),
-                ["WishboneIDs"] = new JArray(Data.progress.wishbones.isCollected),
+                ["PlayTime"] = Transfer.progress.playTime,
+                ["Completion"] = Transfer.Completion,
+                ["PowerEggs"] = Transfer.progress.powerEggs.collected,
+                ["HensRescued"] = Transfer.progress.hensRescued.collected,
+                ["Wishbones"] = Transfer.progress.wishbones.collected,
+                ["PowerEggIDs"] = Save_SavedCollectible_IDs(Transfer.progress.powerEggs),
+                ["HensRescuedIDs"] = Save_SavedCollectible_IDs(Transfer.progress.hensRescued),
+                ["WishboneIDs"] = Save_SavedCollectible_IDs(Transfer.progress.wishbones),
+                ["StoryFlags"] = null //This one's gonna be hard.
             };
-            WorldChangesFile.Data = new();
-            WorldChangesFile.Data.Add("Global", Data.globalChanges);
+            WorldChangesFile.Data = new()
+            {
+                ["Global"] = Transfer.globalChanges
+            };
             foreach (string key in IDestination.AllAreas)
-                WorldChangesFile.Data.Add(key, Data.areaChanges[key]);
+                WorldChangesFile.Data.Add(key, Transfer.areaChanges[key]);
+
+            return JsonFile.FileState.Valid;
         }
+
+        #region Load Helpers
+
+        public static void Load_SavedCollectible(SavedCollectible coll, JObject integer, JArray array)
+        {
+            coll.collected = integer.ToObject<int>();
+            for (int i = 0; i < array.Count; i++)
+            {
+                string id = array[i].ToString();
+                if (coll.IDs.Contains(id)) coll.isCollected[coll.IDs.IndexOf(id)] = true;
+            }
+        }
+        public static JArray Save_SavedCollectible_IDs(SavedCollectible coll)
+        {
+            JArray array = new();
+            for (int i = 0; i < coll.IDs.Count; i++)
+                if (coll.isCollected[i]) 
+                    array.Add(coll.IDs[i]);
+            return array;
+        }
+
+        #endregion
 
         public float ApproxCompletion()
         {
