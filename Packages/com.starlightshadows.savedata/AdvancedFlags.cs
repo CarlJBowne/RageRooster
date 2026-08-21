@@ -5,6 +5,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utilities.JSON;
 using SLS.GeneralUtilities.EventTickets;
+using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
+using SLS.ListUtilities;
+using static SLS.SaveData.Flag;
+
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -192,11 +198,8 @@ namespace SLS.SaveData
                 return true;
             }
 
-            public void Subscribe<T>(string name, Action<T> callback)
-            {
-                var f = GetOrCreate<T>(name);
-                f.OnValueChanged += callback;
-            }
+            public EventTicket Subscribe<T>(string name, Action<T> callback) => 
+                TryGet(name, out Generic<T> res) ? res.RegisterCallback(callback) : null;
 
             public string[] AllNamesOfType<T>() => AllNamesOfType(typeof(T));
             public string[] AllNamesOfType(Type type)
@@ -206,6 +209,128 @@ namespace SLS.SaveData
                     if (ValueFromIndex(i).ValueType == type)
                         result.Add(NameFromIndex(i));
                 return result.ToArray();
+            }
+
+            public void Clone(Collection source, DictionaryCloneOp op = DictionaryCloneOp.Transfer)
+            {
+                if (source == null) return;
+                if (Count == 0) op = DictionaryCloneOp.TransferAndAdd;
+                if (op is DictionaryCloneOp.ReplaceEntirely) Clear();
+                for (int i = 0; i < source.Count; i++)
+                {
+                    if (!serializedKeys.Contains(source.serializedKeys[i]) && op is not DictionaryCloneOp.Transfer) 
+                        this.Add(source.NameFromIndex(i), Activator.CreateInstance(source.ValueFromIndex(i).GetType()) as Flag);
+                    this[source.KeyFromIndex(i)].Clone(source.ValueFromIndex(i));
+                }
+            }
+
+            public void LoadFromJson(JObject list)
+            {
+                if (!list.HasValues) return;
+                foreach (JProperty prop in list.Properties())
+                    if (ContainsName(prop.Name))
+                        this[prop.Name].LoadFromJson(prop.Value);
+            }
+            public JObject SaveToJson()
+            {
+                JObject result = new();
+                for (int i = 0; i < Count; i++)
+                    result.Add(new JProperty(NameFromIndex(i), ValueFromIndex(i).SaveToJson()));
+                return result;
+            }
+        }
+
+        public class OneTypeCollection<T> : Dictionary<Generic<T>>
+        {
+            // Get or create a Flag<T> under the given name (uses string-name storage)
+            public Generic<T> GetOrCreate(string name)
+            {
+                if (TryGet(name, out Generic<T> existing, true) && existing is Generic<T> f) return f;
+
+                Flag newFlag = null;
+                if (typeof(T) == typeof(bool)) newFlag = new Bool();
+                if (typeof(T) == typeof(int)) newFlag = new Int();
+                if (typeof(T) == typeof(float)) newFlag = new Float();
+                if (typeof(T) == typeof(UnityEngine.Vector3)) newFlag = new Vector3();
+                if (typeof(T) == typeof(string)) newFlag = new String();
+                if (typeof(T) == typeof(char)) newFlag = new Char();
+                this[name] = newFlag as Generic<T>;
+                return newFlag as Generic<T>;
+
+            }
+
+            public void Set(string name, T value)
+            {
+                if (!ContainsName(name)) return;
+                if (this[name].ValueType != typeof(T)) return;
+                if (this[name] is not Generic<T> gen) return;
+                gen.Value = value;
+            }
+
+            public bool TryGet(string name, out T value)
+            {
+                value = default;
+                if (!ContainsName(name)) return false;
+                if (this[name].ValueType != typeof(T)) return false;
+                if (this[name] is not Generic<T> gen) return false;
+
+                value = gen.Value;
+                return true;
+            }
+
+            public EventTicket Subscribe(string name, Action<T> callback) =>
+                TryGet(name, out Generic<T> res) ? res.RegisterCallback(callback) : null;
+
+            public void Clone(OneTypeCollection<T> source, DictionaryCloneOp op = DictionaryCloneOp.Transfer)
+            {
+                if (source == null) return;
+                if (Count == 0) op = DictionaryCloneOp.TransferAndAdd;
+                if (op is DictionaryCloneOp.ReplaceEntirely) Clear();
+                for (int i = 0; i < source.Count; i++)
+                {
+                    if (!serializedKeys.Contains(source.serializedKeys[i]) && op is not DictionaryCloneOp.Transfer)
+                        this.Add(source.NameFromIndex(i), Activator.CreateInstance(source.ValueFromIndex(i).GetType()) as Generic<T>);
+                    this[source.KeyFromIndex(i)].Clone(source.ValueFromIndex(i));
+                }
+            }
+
+            public void LoadFromJson(JObject list)
+            {
+                if (!list.HasValues) return;
+                foreach (JProperty prop in list.Properties())
+                    if (ContainsName(prop.Name))
+                        this[prop.Name].LoadFromJson(prop.Value);
+            }
+            public JObject SaveToJson()
+            {
+                JObject result = new();
+                for (int i = 0; i < Count; i++)
+                    result.Add(new JProperty(NameFromIndex(i), ValueFromIndex(i).SaveToJson()));
+                return result;
+            }
+        }
+
+        public class BoolOnlyCollection : OneTypeCollection<bool>
+        {
+            public float CompletionOf(float percentage)
+            {
+                int completeted = 0;
+                for (int i = 0; i < Count; i++)
+                    if(ValueFromIndex(i).Value)
+                        completeted++;
+                return completeted / Count * percentage;
+            }
+            public void Clone(BoolOnlyCollection source, DictionaryCloneOp op = DictionaryCloneOp.Transfer)
+            {
+                if (source == null) return;
+                if (Count == 0) op = DictionaryCloneOp.TransferAndAdd;
+                if (op is DictionaryCloneOp.ReplaceEntirely) Clear();
+                for (int i = 0; i < source.Count; i++)
+                {
+                    if (!serializedKeys.Contains(source.serializedKeys[i]) && op is not DictionaryCloneOp.Transfer)
+                        this.Add(source.NameFromIndex(i), Activator.CreateInstance(source.ValueFromIndex(i).GetType()) as Generic<bool>);
+                    this[source.KeyFromIndex(i)].Clone(source.ValueFromIndex(i));
+                }
             }
         }
 
@@ -355,6 +480,7 @@ namespace SLS.SaveData
 
 }
 
+/*
 public class Vector3Object
 {
     public float x, y, z;
@@ -373,3 +499,4 @@ public class Vector3Object
     public static implicit operator Vector3Object(Vector3 v) => new(v);
     public static implicit operator Vector3(Vector3Object o) => new(o.x, o.y, o.z);
 }
+*/

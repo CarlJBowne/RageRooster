@@ -134,11 +134,10 @@ namespace RageRooster.TOP.Save.Streams
         public override void ExportMenuDisplayData(out SaveData.MenuDisplayData result)
         {
             TimeSpan readTime = TimeSpan.Parse((string)PlayerFile.Data["playTime"]);
-            DestinationMap readLocation = PlayerFile.Data["location"];
             result = new SaveData.MenuDisplayData
             {
                 timeString = $"{(int)readTime.TotalHours}:{readTime.Minutes:D2}:{readTime.Seconds:D2}",
-                locationString = readLocation.ToString(),
+                location = PlayerFile.Data["location"],
                 completionPercentage = ApproxCompletion(),
                 health = (int)PlayerFile.Data["maxHealth"],
                 powerEggs = (int)WorldChangesFile.Data["powerEggs"]["total"],

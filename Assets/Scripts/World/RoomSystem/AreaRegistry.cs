@@ -4,6 +4,7 @@ using UnityEngine;
 using SLS.Singletons;
 using System.Linq;
 using RageRooster.Core.Save;
+using SLS.SaveData;
 
 namespace RageRooster.World
 {
@@ -18,7 +19,7 @@ namespace RageRooster.World
 
 
         private static Dictionary<string, AreaAsset> dictionary;
-        private static Dictionary<string, SavedFlagSet> savedFlagDictionary;
+        private static Dictionary<string, Flag.Collection> savedFlagDictionary;
 
         public override void OnInit()
         {
@@ -44,7 +45,7 @@ namespace RageRooster.World
         /// <returns>All areas in the registry.</returns>
         public static AreaAsset[] GetAll() => Get.areaAssets;
 
-        public static Dictionary<string, SavedFlagSet> SavedFlagsDictionary()
+        public static Dictionary<string, Flag.Collection> SavedFlagsDictionary()
         {
             if (savedFlagDictionary is null) Get.OnInit();
             return savedFlagDictionary;

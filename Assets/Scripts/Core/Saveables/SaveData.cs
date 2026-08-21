@@ -29,7 +29,6 @@ namespace RageRooster.Core.Save
             Active = new();
             Active.playerStats.Establish();
             Active.progress.Establish();
-            SavedFlagSet.Establish(Active.globalChanges, Active.areaChanges);
 
             DeathReloadData = new();
         }
@@ -52,8 +51,7 @@ namespace RageRooster.Core.Save
 
         public PlayerStats playerStats = new();
         public SavedProgress progress = new();
-        public SavedFlagSet globalChanges;
-        public Dictionary<string, SavedFlagSet> areaChanges = new();
+        public Dictionary<string, Flag.Collection> areaChanges = new();
         public float Completion =>
             progress.storyFlags.CompletionOf(.4f) +
             progress.powerEggs.CompletionOf(.3f) + 
@@ -78,10 +76,12 @@ namespace RageRooster.Core.Save
         {
             playerStats.Clone(source.playerStats);
             progress.Clone(source.progress);
-            globalChanges.Clone(source.globalChanges);
-            if (areaChanges.Count == 0) areaChanges = new(source.areaChanges);
-            foreach (KeyValuePair<string, SavedFlagSet> pair in areaChanges)
-                pair.Value.Clone(source.areaChanges[pair.Key]);
+            foreach (string key in source.areaChanges.Keys)
+            {
+                if (!areaChanges.ContainsKey(key) || areaChanges[key] == source.areaChanges[key]) 
+                    areaChanges[key] = new();
+                areaChanges[key].Clone(source.areaChanges[key]);
+            }
         }
 
         #endregion
@@ -99,7 +99,7 @@ namespace RageRooster.Core.Save
         public class MenuDisplayData
         {
             public bool isValid = true;
-            public string locationString;
+            public DestinationMap location;
             public string timeString;
             public float completionPercentage;
             public int health;

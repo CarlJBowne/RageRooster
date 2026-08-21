@@ -170,7 +170,7 @@ namespace RageRooster.TOP.Save.Streams
             result = new SaveData.MenuDisplayData
             {
                 timeString =$"{(int)readTime.TotalHours}:{readTime.Minutes:D2}:{readTime.Seconds:D2}",
-                locationString = readLocation.ToString(),
+                location = readLocation,
                 completionPercentage = GetCompletionPercentage(),
                 health = (int)PlayerFile.Data["maxHealth"],
                 powerEggs = (int)WorldChangesFile.Data["powerEggs"]["total"],

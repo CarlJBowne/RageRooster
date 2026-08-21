@@ -10,14 +10,24 @@ namespace RageRooster.Core.Save
     {
         public string ID;
         public string AreaID;
-        private FlagBase.Flag<T> foundFlag;
+        private Flag.Generic<T> foundFlag;
 
         public bool TryGet(out T res)
         {
             res = default;
-            return Find() && foundFlag.TryGetValue<T>(out res);
+            if (Find())
+            {
+                res = foundFlag.Value;
+                return true;
+            }
+            return false;
         }
-        public bool TrySet(T value) => Find() && foundFlag.TrySetValue(value);
+        public bool TrySet(T value)
+        {
+            if (!Find()) return false;
+            foundFlag.Value = value;
+            return true;
+        }
         public bool Find()
         {
             if (foundFlag != null) return true;

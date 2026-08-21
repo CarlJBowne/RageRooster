@@ -8,6 +8,8 @@ using RageRooster.Core.Save;
 using RageRooster.Core.Save;
 using FMODUnity;
 using System;
+using SLS.SaveData;
+
 
 
 
@@ -47,7 +49,7 @@ namespace RageRooster.World
         /// <summary>
         /// The Dev-Defined default flags for this area. These are cloned into the active <see cref="SaveData"/> when a new game is started.
         /// </summary>
-        [field: SerializeField] public SavedFlagSet flagDefaults { get; protected set; } = new();
+        [field: SerializeField] public Flag.Collection flagDefaults { get; protected set; } = new();
         #endregion
 
         #region Active Data

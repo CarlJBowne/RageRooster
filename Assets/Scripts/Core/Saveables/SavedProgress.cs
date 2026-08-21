@@ -14,7 +14,7 @@ namespace RageRooster.Core.Save
 
         public IntStat Currency;
 
-        public SavedFlagSet.StoryFlags storyFlags;
+        public Flag.BoolOnlyCollection storyFlags;
         public SavedCollectible powerEggs = new();
         public SavedCollectible wishbones = new();
         public SavedCollectible hensRescued = new();
@@ -39,6 +39,7 @@ namespace RageRooster.Core.Save
         {
             playTime = source.playTime;
             Currency &= source.Currency;
+            storyFlags.Clone(source.storyFlags);
             powerEggs.Clone(source.powerEggs);
             wishbones.Clone(source.wishbones);
             hensRescued.Clone(source.hensRescued);

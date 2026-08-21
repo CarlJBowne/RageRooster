@@ -18,14 +18,11 @@ namespace RageRooster.TOP.Save
         public TMPro.TextMeshProUGUI totalHealthText;
         public TMPro.TextMeshProUGUI powerEggsText;
         public TMPro.TextMeshProUGUI hensRescuedText;
-
-        SaveData data;
-        SaveData.IOStream file;
+        TOP.Save.SaveFile file;
 
         private void Awake()
         {
             file = new(ID);
-            data = new();
             UpdateFile();
         }
 
@@ -34,29 +31,28 @@ namespace RageRooster.TOP.Save
 
         public void DeleteFile()
         {
-            file.DeleteFile();
+            file.Stream.DeleteFile();
             UpdateFile();
         }
 
         private void UpdateFile()
         {
-            if (file.filesDoExist)
+            file.ExportMenuDisplayData(out SaveData.MenuDisplayData data);
+            if (data.isValid)
             {
-                file.LoadFromFile(data);
-
                 details.SetActive(true);
 
-                Destination location = data.location;
-                locationText.text = $"{location.area.displayName} -- {location.room.displayName}";
+                locationText.text = $"{data.location.area} -- {data.location.room}";
 
-                var TS = data.playerStats.playTime;
-                timeText.text = $"{TS.Hours}:{TS.Minutes}:{TS.Seconds}";
+                var TS = data.timeString;
+                timeText.text = TS;
+                //timeText.text = $"{TS.Hours}:{TS.Minutes}:{TS.Seconds}";
 
-                completionText.text = $"{file.GetCompletionPercentage()}%";
+                completionText.text = $"{data.completionPercentage * 100}%";
 
-                totalHealthText.text = data.playerStats.maxHealth.ToString();
-                powerEggsText.text = data.powerEggs.total.ToString();
-                hensRescuedText.text = data.hensRescued.total.ToString();
+                totalHealthText.text = data.health.ToString();
+                powerEggsText.text = data.powerEggs.ToString();
+                hensRescuedText.text = data.hensRescued.ToString();
             }
             else
             {

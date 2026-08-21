@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using RageRooster.Core.Save;
+using SLS.SaveData;
 
 namespace RageRooster.TOP.Save
 {
@@ -21,8 +21,8 @@ namespace RageRooster.TOP.Save
         [SerializeField] private SavedCollectible powerEggs = new();
         [SerializeField] private SavedCollectible wishbones = new();
         [SerializeField] private SavedCollectible hensRescued = new();
-        [SerializeField] private SavedFlagSet globalFlagDefs;
-        [SerializeField] private SavedFlagSet.StoryFlags storyFlagDefs;
+        [SerializeField] private Flag.Collection globalFlagDefs;
+        [SerializeField] private Flag.BoolOnlyCollection storyFlagDefs;
 
 
         public override void OnInit()
@@ -33,14 +33,14 @@ namespace RageRooster.TOP.Save
                 playerStats = playerStatsDef,
                 progress = new()
                 {
+                    storyFlags = storyFlagDefs,
                     powerEggs = powerEggs,
                     wishbones = wishbones,
                     hensRescued = hensRescued,
                 },
-                globalChanges = globalFlagDefs,
-                storyFlags = storyFlagDefs,
                 areaChanges = AreaRegistry.SavedFlagsDictionary()
             };
+            defs.areaChanges.Add("GLOBAL", globalFlagDefs);
             SaveData.InitializeDefaults(defs);
         }
     }
