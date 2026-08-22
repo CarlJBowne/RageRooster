@@ -11949,87 +11949,6 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// ScriptableCollection.op_Implicit
-		[global::UnityEngine.Scripting.PreserveAttribute()]
-		public static void ScriptableCollection_op_Implicit()
-		{
-			global::ScriptableCollection arg0 = default(global::ScriptableCollection);
-			Newtonsoft.Json.Linq.JToken conversion = ((Newtonsoft.Json.Linq.JToken)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<ScriptableCollection, Newtonsoft.Json.Linq.JToken> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<ScriptableCollection, Newtonsoft.Json.Linq.JToken>(default(global::System.Reflection.MethodInfo));
-			optimized.Invoke(null, arg0);
-			optimized.Invoke(default(object[]));
-		}
-		
-		// ScriptableCollection.op_Implicit
-		[global::UnityEngine.Scripting.PreserveAttribute()]
-		public static void ScriptableCollection_op_Implicit_0()
-		{
-			global::UnityEngine.Object arg0 = default(global::UnityEngine.Object);
-			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<UnityEngine.Object, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<UnityEngine.Object, bool>(default(global::System.Reflection.MethodInfo));
-			optimized.Invoke(null, arg0);
-			optimized.Invoke(default(object[]));
-		}
-		
-		// ScriptableCollection.op_Equality
-		[global::UnityEngine.Scripting.PreserveAttribute()]
-		public static void ScriptableCollection_op_Equality()
-		{
-			global::UnityEngine.Object arg0 = default(global::UnityEngine.Object);
-			global::UnityEngine.Object arg1 = default(global::UnityEngine.Object);
-			bool @operator = (arg0 == arg1);
-			global::Unity.VisualScripting.StaticFunctionInvoker<UnityEngine.Object, UnityEngine.Object, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<UnityEngine.Object, UnityEngine.Object, bool>(default(global::System.Reflection.MethodInfo));
-			optimized.Invoke(null, arg0, arg1);
-			optimized.Invoke(default(object[]));
-		}
-		
-		// ScriptableCollection.op_Inequality
-		[global::UnityEngine.Scripting.PreserveAttribute()]
-		public static void ScriptableCollection_op_Inequality()
-		{
-			global::UnityEngine.Object arg0 = default(global::UnityEngine.Object);
-			global::UnityEngine.Object arg1 = default(global::UnityEngine.Object);
-			bool @operator = (arg0 != arg1);
-			global::Unity.VisualScripting.StaticFunctionInvoker<UnityEngine.Object, UnityEngine.Object, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<UnityEngine.Object, UnityEngine.Object, bool>(default(global::System.Reflection.MethodInfo));
-			optimized.Invoke(null, arg0, arg1);
-			optimized.Invoke(default(object[]));
-		}
-		
-		// _ScriptableCollectionEditor.op_Implicit
-		[global::UnityEngine.Scripting.PreserveAttribute()]
-		public static void _ScriptableCollectionEditor_op_Implicit()
-		{
-			global::UnityEngine.Object arg0 = default(global::UnityEngine.Object);
-			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<UnityEngine.Object, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<UnityEngine.Object, bool>(default(global::System.Reflection.MethodInfo));
-			optimized.Invoke(null, arg0);
-			optimized.Invoke(default(object[]));
-		}
-		
-		// _ScriptableCollectionEditor.op_Equality
-		[global::UnityEngine.Scripting.PreserveAttribute()]
-		public static void _ScriptableCollectionEditor_op_Equality()
-		{
-			global::UnityEngine.Object arg0 = default(global::UnityEngine.Object);
-			global::UnityEngine.Object arg1 = default(global::UnityEngine.Object);
-			bool @operator = (arg0 == arg1);
-			global::Unity.VisualScripting.StaticFunctionInvoker<UnityEngine.Object, UnityEngine.Object, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<UnityEngine.Object, UnityEngine.Object, bool>(default(global::System.Reflection.MethodInfo));
-			optimized.Invoke(null, arg0, arg1);
-			optimized.Invoke(default(object[]));
-		}
-		
-		// _ScriptableCollectionEditor.op_Inequality
-		[global::UnityEngine.Scripting.PreserveAttribute()]
-		public static void _ScriptableCollectionEditor_op_Inequality()
-		{
-			global::UnityEngine.Object arg0 = default(global::UnityEngine.Object);
-			global::UnityEngine.Object arg1 = default(global::UnityEngine.Object);
-			bool @operator = (arg0 != arg1);
-			global::Unity.VisualScripting.StaticFunctionInvoker<UnityEngine.Object, UnityEngine.Object, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<UnityEngine.Object, UnityEngine.Object, bool>(default(global::System.Reflection.MethodInfo));
-			optimized.Invoke(null, arg0, arg1);
-			optimized.Invoke(default(object[]));
-		}
-		
 		// RotateSkybox.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RotateSkybox_op_Implicit()
@@ -21097,7 +21016,7 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void Player_Position()
 		{
-			global::UnityEngine.Vector3 accessor = global::Player.Position;
+			global::UnityEngine.Vector3 accessor = global::RageRooster.Player.Services.Player.Position;
 			global::Unity.VisualScripting.StaticPropertyAccessor<UnityEngine.Vector3> optimized = new global::Unity.VisualScripting.StaticPropertyAccessor<UnityEngine.Vector3>(default(global::System.Reflection.PropertyInfo));
 			optimized.GetValue(null);
 		}
@@ -21224,7 +21143,7 @@ namespace Unity.VisualScripting.Generated.Aot
 		public static void Player_DistanceFrom()
 		{
 			global::UnityEngine.Vector3 arg0 = default(global::UnityEngine.Vector3);
-			global::Player.DistanceFrom(arg0);
+			global::RageRooster.Services.Player.DistanceFrom(arg0);
 			global::Unity.VisualScripting.StaticFunctionInvoker<UnityEngine.Vector3, float> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<UnityEngine.Vector3, float>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));

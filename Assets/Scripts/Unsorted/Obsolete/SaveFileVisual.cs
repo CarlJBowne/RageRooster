@@ -21,7 +21,7 @@ namespace RageRooster.Obsolete
         }
 
 
-        public void PlayFile() => GameplayTopLevel.BeginSaveFile(ID);
+        public void PlayFile() { }// => GameplayTopLevel.BeginSaveFile(ID);
 
         public void DeleteFile()
         {

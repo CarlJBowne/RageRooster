@@ -6,6 +6,7 @@ using RageRooster.Actors.Save.Collectibles;
 using RageRooster.Core.Save;
 using RageRooster.TOP.Save;
 using RageRooster.World;
+using UnityEngine.InputSystem;
 using Utilities.JSON;
 
 namespace RageRooster.TOP.Save.Streams
@@ -93,12 +94,10 @@ namespace RageRooster.TOP.Save.Streams
                 ["WishboneIDs"] = Save_SavedCollectible_IDs(Transfer.progress.wishbones),
                 ["StoryFlags"] = null //This one's gonna be hard.
             };
-            WorldChangesFile.Data = new()
-            {
-                ["Global"] = Transfer.globalChanges
-            };
+            WorldChangesFile.Data = new();
+            WorldChangesFile.Data.Add("GLOBAL", Transfer.areaChanges["GLOBAL"].SaveToJson());
             foreach (string key in IDestination.AllAreas)
-                WorldChangesFile.Data.Add(key, Transfer.areaChanges[key]);
+                WorldChangesFile.Data.Add(key, Transfer.areaChanges[key].SaveToJson());
 
             return JsonFile.FileState.Valid;
         }

@@ -28,21 +28,21 @@ public class DebugToolWindow : EditorWindow
         rootVisualElement.Add(onlyInGameMessage);
         rootVisualElement.Add(actualWindowRoot);
 
-        if (GameplayTopLevel.Active)
+        if (RageRooster.TOP.Gameplay.Active)
         {
             onlyInGameMessage.SetEnabled(false);
             BeginWindow();
         }
         else actualWindowRoot.SetEnabled(false);
 
-        GameplayTopLevel.onFinalAwake += BeginWindow;
-        GameplayTopLevel.onDestroy += EndWindow;
+        RageRooster.TOP.Gameplay.onFinalAwake += BeginWindow;
+        RageRooster.TOP.Gameplay.onDestroy += EndWindow;
 
     }
     private void OnDisable()
     {
-        GameplayTopLevel.onFinalAwake -= BeginWindow;
-        GameplayTopLevel.onDestroy -= EndWindow;
+        RageRooster.TOP.Gameplay.onFinalAwake -= BeginWindow;
+        RageRooster.TOP.Gameplay.onDestroy -= EndWindow;
     }
 
     //Intializes the window for real when the game is playing.
@@ -58,6 +58,7 @@ public class DebugToolWindow : EditorWindow
         };
         actualWindowRoot.Add(UpgradesFoldout);
 
+        /*
         CreateUpgradeDisplay(Upgrades.Upgrade.DropLaunch);
         CreateUpgradeDisplay(Upgrades.Upgrade.WallJump);
         CreateUpgradeDisplay(Upgrades.Upgrade.Hellcopter);
@@ -102,7 +103,7 @@ public class DebugToolWindow : EditorWindow
             UpgradesFoldout.Add(result);
             return result;
         }
-
+        */
 
 
 

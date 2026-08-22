@@ -22,6 +22,8 @@ namespace RageRooster.Core
         void Respawn();
         bool Owns(Component C);
 
+        float DistanceFrom(Vector3 pos);
+
         event Action OnMovingUpdate;
         event Action OnRespawn;
 

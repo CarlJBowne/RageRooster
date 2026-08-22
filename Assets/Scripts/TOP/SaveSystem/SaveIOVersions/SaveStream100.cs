@@ -85,12 +85,11 @@ namespace RageRooster.TOP.Save.Streams
 
             JObject globalChangesLoad = (JObject)WorldChangesFile.Data["globalChanges"];
 
-            foreach (KeyValuePair<string, JToken> item in globalChangesLoad)
-                Transfer.globalChanges.TryLoadFromJson(item.Key, item.Value);
+            Transfer.areaChanges["GLOBAL"].LoadFromJson(globalChangesLoad);
 
-            foreach (string area in IDestination.AllAreas)
-                foreach (var entry in areaChangesFiles[area].Data)
-                    Transfer.areaChanges[area].TryLoadFromJson(entry.Key, entry.Value);
+            foreach (var item in areaChangesFiles)
+                if (Transfer.areaChanges.ContainsKey(item.Key))
+                    Transfer.areaChanges[item.Key].LoadFromJson(item.Value.Data as JObject);
 
             return JsonFile.FileState.Valid;
         }
@@ -169,7 +168,7 @@ namespace RageRooster.TOP.Save.Streams
             DestinationMap readLocation = PlayerFile.Data["location"];
             result = new SaveData.MenuDisplayData
             {
-                timeString =$"{(int)readTime.TotalHours}:{readTime.Minutes:D2}:{readTime.Seconds:D2}",
+                timeString = $"{(int)readTime.TotalHours}:{readTime.Minutes:D2}:{readTime.Seconds:D2}",
                 location = readLocation,
                 completionPercentage = GetCompletionPercentage(),
                 health = (int)PlayerFile.Data["maxHealth"],
