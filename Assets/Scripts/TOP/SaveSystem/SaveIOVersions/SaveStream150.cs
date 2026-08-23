@@ -95,9 +95,9 @@ namespace RageRooster.TOP.Save.Streams
                 ["StoryFlags"] = null //This one's gonna be hard.
             };
             WorldChangesFile.Data = new();
-            WorldChangesFile.Data.Add("GLOBAL", Transfer.areaChanges["GLOBAL"].SaveToJson());
+            WorldChangesFile.Data.Add("Global", Transfer.flags["Global"].SaveToJson());
             foreach (string key in IDestination.AllAreas)
-                WorldChangesFile.Data.Add(key, Transfer.areaChanges[key].SaveToJson());
+                WorldChangesFile.Data.Add(key, Transfer.flags[key].SaveToJson());
 
             return JsonFile.FileState.Valid;
         }

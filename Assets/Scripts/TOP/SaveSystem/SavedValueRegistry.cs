@@ -38,9 +38,9 @@ namespace RageRooster.TOP.Save
                     wishbones = wishbones,
                     hensRescued = hensRescued,
                 },
-                areaChanges = AreaRegistry.SavedFlagsDictionary()
+                flags = AreaRegistry.SavedFlagsDictionary()
             };
-            defs.areaChanges.Add("GLOBAL", globalFlagDefs);
+            defs.flags.Add("Global", globalFlagDefs);
             SaveData.InitializeDefaults(defs);
         }
     }

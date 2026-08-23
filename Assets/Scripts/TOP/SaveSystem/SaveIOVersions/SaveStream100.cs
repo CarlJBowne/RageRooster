@@ -85,11 +85,11 @@ namespace RageRooster.TOP.Save.Streams
 
             JObject globalChangesLoad = (JObject)WorldChangesFile.Data["globalChanges"];
 
-            Transfer.areaChanges["GLOBAL"].LoadFromJson(globalChangesLoad);
+            Transfer.flags["Global"].LoadFromJson(globalChangesLoad);
 
             foreach (var item in areaChangesFiles)
-                if (Transfer.areaChanges.ContainsKey(item.Key))
-                    Transfer.areaChanges[item.Key].LoadFromJson(item.Value.Data as JObject);
+                if (Transfer.flags.ContainsKey(item.Key))
+                    Transfer.flags[item.Key].LoadFromJson(item.Value.Data as JObject);
 
             return JsonFile.FileState.Valid;
         }

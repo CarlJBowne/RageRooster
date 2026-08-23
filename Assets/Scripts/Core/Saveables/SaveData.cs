@@ -51,7 +51,7 @@ namespace RageRooster.Core.Save
 
         public PlayerStats playerStats = new();
         public SavedProgress progress = new();
-        public Dictionary<string, Flag.Collection> areaChanges = new();
+        public Dictionary<string, Flag.Collection> flags = new();
         public float Completion =>
             progress.storyFlags.CompletionOf(.4f) +
             progress.powerEggs.CompletionOf(.3f) + 
@@ -76,11 +76,11 @@ namespace RageRooster.Core.Save
         {
             playerStats.Clone(source.playerStats);
             progress.Clone(source.progress);
-            foreach (string key in source.areaChanges.Keys)
+            foreach (string key in source.flags.Keys)
             {
-                if (!areaChanges.ContainsKey(key) || areaChanges[key] == source.areaChanges[key]) 
-                    areaChanges[key] = new();
-                areaChanges[key].Clone(source.areaChanges[key]);
+                if (!flags.ContainsKey(key) || flags[key] == source.flags[key]) 
+                    flags[key] = new();
+                flags[key].Clone(source.flags[key]);
             }
         }
 
