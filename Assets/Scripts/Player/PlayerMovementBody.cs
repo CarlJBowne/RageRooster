@@ -73,6 +73,7 @@ public sealed class PlayerMovementBody : PhysicsBody
     public static bool Loaded => Singleton.Active;
 
     #endregion LifeCycle
+    private static readonly int CurrentSpeedHash = Animator.StringToHash("CurrentSpeed");
 
     public void ReturnToNeutral(bool doCrossFade = true)
     {
@@ -86,8 +87,8 @@ public sealed class PlayerMovementBody : PhysicsBody
 
     protected override void FixedUpdate()
     {
-        Self.Animator.SetFloat("CurrentSpeed", Velocity.magnitudeH);
-        if (PlayerStats.Active.d_moonJump && Input.Jump.IsPressed()) Velocity.u = 10f;
+        Self.Animator.SetFloat(CurrentSpeedHash, Velocity.magnitudeH);
+        if (PlayerStats.Active != null && PlayerStats.Active.d_moonJump && Input.Jump.IsPressed()) Velocity.u = 10f;
 
         Vector3 prePos = Position;
 

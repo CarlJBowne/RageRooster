@@ -32,7 +32,7 @@ public class Input : GlobalAsset<Input>
     public ReferencesClass References;
 
 
-    [FormerlySerializedAs("Asset")] public InputActionAsset RootAsset;
+    public InputActionAsset RootAsset;
 
     public static Vector2 Movement => MovementAction.ReadValue<Vector2>();
     public static Vector2 Camera => CameraAction.ReadValue<Vector2>();

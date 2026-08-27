@@ -24,13 +24,15 @@ namespace RageRooster.TOP.Save
             Stream = DesiredStreamCreator(fileID, out JsonFile.FileState state);
             if (state != JsonFile.FileState.Valid)
             {
+                var firstStream = Stream;
                 Stream = new SaveStream100(fileID, out state);
-                if (state != JsonFile.FileState.Valid) Stream = null;
+                if (state != JsonFile.FileState.Valid) Stream = firstStream;
             }
         }
 
         public void LoadFromFile()
         {
+            if (Stream.State != JsonFile.FileState.Valid) return;
             SaveData.Clone(SaveData.Default, SaveManager.TransferSnapshot);
             Stream.LoadFromFile();
         }

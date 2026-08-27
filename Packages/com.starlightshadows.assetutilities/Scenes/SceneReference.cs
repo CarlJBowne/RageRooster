@@ -4,10 +4,12 @@ using System.Collections;
 using System;
 using System.Reflection;
 
+
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
+using SLS.EditorUtilities.Editor;
 #endif
 
 [System.Serializable]
@@ -166,44 +168,61 @@ public class SceneReference : ISerializationCallbackReceiver
         // UIElements drawer implementing the exact requested layout
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
-            Foldout foldout = new();
-            foldout.text = property.displayName;
-            foldout.value = EditorPrefs.GetBool("SceneReference_DetailsShow", true);
-            foldout.RegisterValueChangedCallback(evt => EditorPrefs.SetBool("SceneReference_DetailsShow", evt.newValue));
+            Foldout foldout = new()
+            {
+                text = property.displayName,
+                value = EditorPrefs.GetBool("SceneReference_DetailsShow", true)
+            };
             foldout.BindProperty(property);
-            Label label = foldout.Q<Label>(className: Foldout.textUssClassName);
+            foldout.SetupHeader(out VisualElement header);
+            foldout.RegisterValueChangedCallback(evt => EditorPrefs.SetBool("SceneReference_DetailsShow", evt.newValue));
 
             // ObjectField (right of name)
-            var assetProp = property.FindPropertyRelative($"<{nameof(SceneReference.asset)}>k__BackingField");
-            var sceneNameProp = property.FindPropertyRelative($"<{nameof(SceneReference.sceneName)}>k__BackingField");
+            var assetProp = property.FindPropertyRelative
+                ($"<{nameof(SceneReference.asset)}>k__BackingField");
+            var sceneNameProp = property.FindPropertyRelative
+                ($"<{nameof(SceneReference.sceneName)}>k__BackingField");
 
-            var objField = new ObjectField
+            ObjectField objField = new()
             {
                 objectType = typeof(UnityEditor.SceneAsset),
                 allowSceneObjects = false,
+                style =
+                {
+                    flexGrow = 1,
+                    marginTop = 0,
+                    marginBottom = 0,
+                },
+                value = assetProp.objectReferenceValue
             };
-            objField.style.flexGrow = 1;
-            objField.value = assetProp.objectReferenceValue;
 
             // Small icon slot to the left of the object field
-            var stateIcon = new UnityEngine.UIElements.Image();
-            stateIcon.style.width = 18;
-            stateIcon.style.height = 18;
-            stateIcon.style.marginRight = 4;
-            stateIcon.style.alignItems = Align.Center;
-            stateIcon.style.justifyContent = Justify.Center;
+            Image stateIcon = new()
+            {
+                style =
+                {
+                    width = 18,
+                    height = 18,
+                    alignItems = Align.Center,
+                    justifyContent = Justify.Center
+                }
+            };
 
-            label.parent.Add(objField);
-            label.parent.Add(stateIcon);
-            label.parent.style.flexDirection = FlexDirection.Row;
+            header.Add(stateIcon);
+            header.Add(objField);
 
             var sceneNameField = new TextField("Scene Name");
             sceneNameField.SetEnabled(false);
             sceneNameField.style.marginBottom = 2;
 
-            var tooltipLabel = new Label();
-            tooltipLabel.style.whiteSpace = WhiteSpace.Normal;
-            tooltipLabel.style.unityTextAlign = TextAnchor.MiddleLeft;
+            Label tooltipLabel = new()
+            {
+                style =
+                {
+                    whiteSpace = WhiteSpace.Normal,
+                    unityTextAlign = TextAnchor.MiddleLeft
+                }
+            };
 
             foldout.Add(sceneNameField);
             foldout.Add(tooltipLabel);
@@ -218,10 +237,17 @@ public class SceneReference : ISerializationCallbackReceiver
                 var icon = GetIconForState(state);
                 stateIcon.Clear();
 
-                var img = new Image { image = icon, scaleMode = ScaleMode.ScaleToFit };
-                img.style.width = 16;
-                img.style.height = 16;
-                img.tooltip = stateTooltip;
+                Image img = new()
+                {
+                    image = icon,
+                    scaleMode = ScaleMode.ScaleToFit,
+                    style =
+                    {
+                        width = 16,
+                        height = 16,
+                    },
+                    tooltip = stateTooltip
+                };
                 stateIcon.tooltip = stateTooltip;
                 stateIcon.Add(img);
 

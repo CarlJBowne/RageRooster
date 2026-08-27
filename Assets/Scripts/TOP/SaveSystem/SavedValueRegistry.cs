@@ -1,12 +1,13 @@
-﻿using RageRooster.Player;
-using RageRooster.Core.Save;
-using RageRooster.World;
-using SLS.Singletons;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using EditorAttributes;
+using RageRooster.Core.Save;
+using RageRooster.Player;
+using RageRooster.World;
 using SLS.SaveData;
+using SLS.Singletons;
+using UnityEngine;
 
 namespace RageRooster.TOP.Save
 {
@@ -21,8 +22,8 @@ namespace RageRooster.TOP.Save
         [SerializeField] private SavedCollectible powerEggs = new();
         [SerializeField] private SavedCollectible wishbones = new();
         [SerializeField] private SavedCollectible hensRescued = new();
-        [SerializeField] private Flag.Collection globalFlagDefs;
-        [SerializeField] private Flag.BoolOnlyCollection storyFlagDefs;
+        [SerializeField] private Flag.Collection globalFlagDefs = new();
+        [SerializeField] private Flag.BoolOnlyCollection storyFlagDefs = new();
 
 
         public override void OnInit()
@@ -42,6 +43,16 @@ namespace RageRooster.TOP.Save
             };
             defs.flags.Add("Global", globalFlagDefs);
             SaveData.InitializeDefaults(defs);
+            Attack.InitGlobalData(attackTagNames);
+        }
+
+        public List<string> attackTagNames;
+        [Button]
+        public void GetFromTagsEnum()
+        {
+            attackTagNames = new List<string>();
+            for (int i = 0; i < 27; i++) attackTagNames.Add(((Attack.Tags)i).ToString());
+            Attack.InitGlobalData(attackTagNames);
         }
     }
 }

@@ -18,8 +18,10 @@ namespace RageRooster.TOP.Save
         public static SaveData TransferSnapshot;
         public static SaveFile Active;
 
+        public static bool Initialized { get; private set; }
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void Initialize()
+        private static void InitServices()
         {
             SaveData.SaveToSaveFile = SaveToSaveFile;
             SaveData.RevertToSaveFile = RevertToSaveFile;
@@ -27,10 +29,12 @@ namespace RageRooster.TOP.Save
         }
         public static void InitializeManager(int fileNo)
         {
+            if (Initialized) return;
             TransferSnapshot = new SaveData();
             Active = new SaveFile(fileNo);
             SaveData.InitializeSystem();
             RevertToSaveFile();
+            Initialized = true;
         }
 
         public static void SaveToSaveFile()

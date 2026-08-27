@@ -10,7 +10,7 @@ using static RageRooster.Services;
 using RageRooster.Player;
 using RageRooster.Core.Save;
 
-[DefaultExecutionOrder(ExecutionOrders.GameplaySystems)]
+[DefaultExecutionOrder(ExecutionOrders.GameplaySystems+20)]
 public class UIHUDSystem : MonoBehaviour
 {
     public GameObject hintHolder;

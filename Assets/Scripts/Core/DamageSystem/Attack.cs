@@ -58,7 +58,7 @@ public partial class Attack
             velocityField = new(property.FindPropertyRelative(nameof(velocity)));
             tagsField = new(property.FindPropertyRelative(nameof(tags)));
 
-            FoldoutPlus foldout = new();
+            CustomFoldout foldout = new();
             foldout.value = false;
             root.Add(foldout);
 

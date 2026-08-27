@@ -12,6 +12,7 @@ using SLS.ObjectUtilities;
 using RageRooster;
 using RageRooster.Core;
 using static RageRooster.Services;
+using RageRooster.TOP.Save;
 
 namespace RageRooster.TOP
 {
@@ -22,11 +23,13 @@ namespace RageRooster.TOP
             E().Begin();
             IEnumerator E()
             {
+                SaveManager.InitializeManager(0);
+
                 SetCurrent();
                 SceneManager.LoadScene(Scene, LoadSceneMode.Single);
-                var s = SceneManager.GetSceneByName(Scene);
+                Scene s = SceneManager.GetSceneByName(Scene);
                 yield return null;
-                rootObjects = s.GetRootGameObjects();
+                //rootObjects = s.GetRootGameObjects();
                 yield return null;
 
                 for (int i = 0; i < rootObjects.Length; i++) DontDestroyOnLoad(rootObjects[i]);
@@ -101,7 +104,7 @@ namespace RageRooster.TOP
                 UnityEngine.Cursor.lockState = CursorLockMode.Locked;
                 UnityEngine.Cursor.visible = false;
 
-                SaveData.CallInitializeSave(fileNo);
+                SaveManager.InitializeManager(fileNo);
                 RoomManager.queuedDestination = SaveData.Active.playerStats.location;
 
                 Menu.CloseAllMenus();

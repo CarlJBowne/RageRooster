@@ -3,6 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using SLS.GeneralUtilities.EventTickets;
 using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEditor.UIElements;
+
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace SLS.GeneralUtilities.StatObjects
 {
@@ -17,7 +24,7 @@ namespace SLS.GeneralUtilities.StatObjects
         /// <summary>
         /// Backing field for the <see cref="Value"/> property. Serialized by Unity.
         /// </summary>
-        [SerializeField] protected T _value;
+        [SerializeField, InspectorName("Default Value")] protected T _value;
 
         /// <summary>
         /// Gets or sets the current value. Will invoke Value-Changed Callbacks when the resulting value has changed.
@@ -124,16 +131,17 @@ namespace SLS.GeneralUtilities.StatObjects
     /// and utilities for subscribing to value changes. Includes Maximum and Minimum clamps
     /// </summary>
     /// <typeparam name="T">A value type that implements <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/>.</typeparam>
+    [System.Serializable]
     public class StatObjectClamped<T> : StatObject<T> where T : struct, IEquatable<T>, IComparable<T>
     {
         /// <summary>
         /// Backing field for the <see cref="Max"/> property. Serialized by Unity.
         /// </summary>
-        [SerializeField] protected T _max;
+        [SerializeField, InspectorName("Maximum")] protected T _max;
         /// <summary>
         /// Backing field for the <see cref="Min"/> property. Serialized by Unity.
         /// </summary>
-        [SerializeField] protected T _min;
+        [SerializeField, InspectorName("Minimum")] protected T _min;
         /// <summary>
         /// Gets or sets the current value. Will invoke Value-Changed Callbacks when the resulting value has changed.
         /// Will also clamp itself between <see cref="Min"/> and <see cref="Max"/>.
@@ -262,6 +270,7 @@ namespace SLS.GeneralUtilities.StatObjects
     /// <summary>
     /// A serializable wrapper for an integer value that exposes change events and utilities for subscribing to value changes. 
     /// </summary>
+    [System.Serializable]
     public class IntStat : StatObject<int>
     {
         /// <summary> Adds the int on the right to the value of the <see cref="IntStat"/> on the left. </summary>
@@ -315,6 +324,7 @@ namespace SLS.GeneralUtilities.StatObjects
     /// <summary>
     /// A serializable wrapper for an integer value that exposes change events and utilities for subscribing to value changes. Includes Maximum and Minimum clamps.
     /// </summary>
+    [System.Serializable]
     public class IntStatClamped : StatObjectClamped<int>
     {
         /// <summary> Adds the int on the right to the value of the <see cref="IntStat"/> on the left. </summary>
@@ -368,6 +378,7 @@ namespace SLS.GeneralUtilities.StatObjects
     /// <summary>
     /// A serializable wrapper for a float value that exposes change events and utilities for subscribing to value changes. 
     /// </summary>
+    [System.Serializable]
     public class FloatStat : StatObject<float>
     {
         /// <summary> Adds the float on the right to the value of the <see cref="FloatStat"/> on the left. </summary>
@@ -421,6 +432,7 @@ namespace SLS.GeneralUtilities.StatObjects
     /// <summary>
     /// A serializable wrapper for a float value that exposes change events and utilities for subscribing to value changes. Includes Maximum and Minimum clamps.
     /// </summary>
+    [System.Serializable]
     public class FloatStatClamped : StatObjectClamped<float>
     {
         /// <summary> Adds the float on the right to the value of the <see cref="FloatStat"/> on the left. </summary>
@@ -472,4 +484,30 @@ namespace SLS.GeneralUtilities.StatObjects
         }
     }
 
+#if UNITY_EDITOR
+    [CustomPropertyDrawer(typeof(StatObject<>), true)]
+    public class StatObjectBaseEditor : PropertyDrawer
+    {
+        public override VisualElement CreatePropertyGUI(SerializedProperty property)
+        { 
+            Foldout foldout = new();
+            foldout.BindProperty(property);
+
+            Label label = foldout.Q<Label>(className: Foldout.textUssClassName);
+            VisualElement header = label.parent;
+            label.parent.style.flexDirection = FlexDirection.Row;
+            foldout.Add(new PropertyField(property.FindPropertyRelative("_value")));
+
+            SerializedProperty pointer = property.Copy();
+            if (pointer.NextVisible(true))
+            {
+                pointer.NextVisible(false); //Skip Value we just posted.
+                do foldout.Add(new PropertyField(pointer));
+                while (pointer.NextVisible(false));
+            }
+
+            return foldout;
+        }
+    }
+#endif
 }

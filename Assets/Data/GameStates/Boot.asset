@@ -14,20 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Boot
   <Additive>k__BackingField: 0
   <Scene>k__BackingField:
-    <sceneName>k__BackingField: 
-    <asset>k__BackingField: {fileID: 0}
+    <sceneName>k__BackingField: GameplayScene
+    <asset>k__BackingField: {fileID: 102900000, guid: b162f0f2fd0067b458c8904f70016513,
+      type: 3}
   <Prefab>k__BackingField:
     <readOnlyObject>k__BackingField: {fileID: 0}
     <path>k__BackingField: 
     <assetGuid>k__BackingField: 
     <addressableKey>k__BackingField: 
-  <FreezeTillSceneLoad>k__BackingField: 0
-  <OnExit>k__BackingField:
+  <FreezeTillSceneLoad>k__BackingField: 1
+  OnExit:
     Real:
       _PersistentCalls: []
-  <OnEnter>k__BackingField:
+  OnEnter:
     Real:
       _PersistentCalls: []
   <Parameters>k__BackingField:
     serializedKeys: []
     serializedValues: []
+  MainMenuState: {fileID: 11400000, guid: 9748c2ea1ddc87f49b9202f75b808498, type: 2}
+  GameplayState: {fileID: 11400000, guid: eacc4d74299817e4b9ed28b545824151, type: 2}
+  onBuildStateMachineHandling: 0

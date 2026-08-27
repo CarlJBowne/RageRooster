@@ -13,19 +13,61 @@ MonoBehaviour:
   m_Name: SavedValueRegistry
   m_EditorClassIdentifier: Assembly-CSharp::RageRooster.TOP.Save.SavedValueRegistry
   playerStatsDef:
+    MaxHealth:
+      _value: 4
+      OnValueChangedUlt:
+        _PersistentCalls: []
+    MaxAmmo:
+      _value: 0
+      OnValueChangedUlt:
+        _PersistentCalls: []
     dropLaunch: 0
     wallJump: 0
     hellcopter: 0
     ragingCharge: 0
-    glide: 0
-    doubleJump: 0
-    lasso: 0
+    glide: 1
+    doubleJump: 1
+    lasso: 1
     d_invincibility: 0
     d_moonJump: 0
+  powerEggs:
+    IDs: []
+  wishbones:
+    IDs: []
+  hensRescued:
+    IDs: []
   globalFlagDefs:
     serializedNames: []
     serializedKeys: 
     serializedValues: []
+  attackTagNames:
+  - Player
+  - Enemy
+  - Wham
+  - FriendlyFire
+  - Thrown
+  - Projectile
+  - Environment
+  - Pit
+  - Boss
+  - Egg
+  - RagingCharge
+  - Explosion
+  - Boulder
+  - OnPlayerDouble
+  - OnPlayerTriple
+  - OnPlayerQuadruple
+  - OnPlayerNone
+  - Punch
+  - Uppercut
+  - Kick
+  - Headbutt
+  - Charge
+  - GroundSlam
+  - Fire
+  - Lazer
+  - Peck
+  - Lava
   references:
     version: 2
     RefIds: []
