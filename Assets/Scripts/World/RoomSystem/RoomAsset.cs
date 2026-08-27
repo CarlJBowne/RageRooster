@@ -35,10 +35,6 @@ namespace RageRooster.World
         /// </summary>
         [field: SerializeField] public AreaAsset area { get; protected set; }
 
-        /// <summary>
-        /// The Scene Asset containing the contents of this Room.
-        /// </summary>
-        [field: SerializeField, Obsolete] public SceneReference scene { get; protected set; } //Replace Later.
         [field: SerializeField] public RoomLOD lod { get; protected set; }
 
         /// <summary>
@@ -393,7 +389,7 @@ namespace RageRooster.World
 
                 // Editable properties
                 var displayNameProp = serializedObject.FindBackingField(nameof(RoomAsset.displayName));
-                var sceneProp = serializedObject.FindBackingField(nameof(RoomAsset.scene));
+                var sceneProp = serializedObject.FindBackingField(nameof(RoomAsset.Scene));
                 var lodProp = serializedObject.FindBackingField(nameof(RoomAsset.lod));
 
                 if (displayNameProp != null)
@@ -511,7 +507,7 @@ namespace RageRooster.World
 
                 room.displayName = name;
                 room.area = area;
-                room.scene = new(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(scenePath));
+                room.Scene = new(AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(scenePath));
                 EditorUtility.SetDirty(room);
                 area.rooms.Add(room);
                 EditorUtility.SetDirty(area);
@@ -597,7 +593,7 @@ namespace RageRooster.World
                             rootVisualElement.Add(roomLabel);
                             void OpenRoom()
                             {
-                                EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(room.scene.asset));
+                                EditorSceneManager.OpenScene(AssetDatabase.GetAssetPath(room.Scene.asset));
                                 Close();
                             }
                         }

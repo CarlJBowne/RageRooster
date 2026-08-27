@@ -12,9 +12,9 @@ namespace RageRooster.Core.Save
 
         public TimeSpan playTime = TimeSpan.Zero;
 
-        public IntStat Currency;
+        public IntStat Currency = new();
 
-        public Flag.BoolOnlyCollection storyFlags;
+        public Flag.BoolOnlyCollection storyFlags = new();
         public SavedCollectible powerEggs = new();
         public SavedCollectible wishbones = new();
         public SavedCollectible hensRescued = new();

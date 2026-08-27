@@ -36,7 +36,7 @@ namespace RageRooster.World
         /// </summary>
         public static AreaAsset GetArea(string name)
         {
-            if(dictionary is null) Get.OnInit();
+            if (dictionary is null) Get.OnInit();
             return dictionary[name];
         }
 
@@ -61,6 +61,7 @@ namespace RageRooster.World
 
 
 #if UNITY_EDITOR
+
         /// <summary>
         /// Adds an <see cref="AreaAsset"/> to the registry asset. EDITOR ONLY.
         /// </summary>

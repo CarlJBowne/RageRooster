@@ -97,8 +97,8 @@ namespace RageRooster.Core.Save
             flagIds = new();
 
             Polymorph.Dictionary<Flag> target;
-            if (v == 1) target = SaveData.Default.progress.storyFlags as Polymorph.Dictionary<Flag>;
-            else target = SaveData.Default.flags[collectionIDs[v]];
+            //if (v == 1) target = SaveData.Default.progress.storyFlags as Polymorph.Dictionary<Flag>;
+            //else target = SaveData.Default.flags[collectionIDs[v]];
 
         }
     }
