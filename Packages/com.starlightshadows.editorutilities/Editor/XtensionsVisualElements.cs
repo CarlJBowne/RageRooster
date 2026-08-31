@@ -198,10 +198,14 @@ namespace SLS.EditorUtilities.Editor
 
         public static void SetupHeader(this Foldout f, out VisualElement header)
         {
-            Label label = f.Q<Label>(className: Foldout.textUssClassName);
-            header = label.parent;
-            label.ShrinkToTextWidth();
-            label.parent.style.flexDirection = FlexDirection.Row;
+            try
+            {
+                Label label = f.Q<Label>(className: Foldout.textUssClassName);
+                header = label.parent;
+                label.ShrinkToTextWidth();
+                label.parent.style.flexDirection = FlexDirection.Row;
+            }
+            catch (Exception) { header = null; }
 
         }
 

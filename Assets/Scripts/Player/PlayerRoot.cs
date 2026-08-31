@@ -109,6 +109,7 @@ public class PlayerRoot : MonoBehaviour, IPlayer
     {
         DontDestroyOnLoad(this);
 
+        RageRooster.Services.Player = this;
         RageRooster.Player.Services.Player = this;
 
         StateMachine = GetComponent<PlayerStateMachine>();

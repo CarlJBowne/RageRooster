@@ -27,9 +27,13 @@ namespace RageRooster.TOP
 
                 SetCurrent();
                 SceneManager.LoadScene(Scene, LoadSceneMode.Single);
+                yield return null;
                 Scene s = SceneManager.GetSceneByName(Scene);
                 yield return null;
-                //rootObjects = s.GetRootGameObjects();
+                yield return new WaitUntil(
+                    () => s.IsValid() && s.isLoaded
+                    );
+                rootObjects = s.GetRootGameObjects();
                 yield return null;
 
                 for (int i = 0; i < rootObjects.Length; i++) DontDestroyOnLoad(rootObjects[i]);

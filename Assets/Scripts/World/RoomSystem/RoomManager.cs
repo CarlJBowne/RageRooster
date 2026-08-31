@@ -113,7 +113,7 @@ namespace RageRooster.World
                 FadeInRoutine = Overlay.BetweenUI.FadeAlpha(0, 0.5f);
             }
 
-            if (fullTransition) Music.FadeOutBothMusic();
+            //if (fullTransition) Music.FadeOutBothMusic();
 
             PreFadeOutAction?.Invoke();
             if (FadeOutRoutine != null)
@@ -159,13 +159,13 @@ namespace RageRooster.World
             if (IPlayer.Present) IPlayer.Self.ActivityState = ActivityStates.Active;
 
 
-            try { if (fullTransition) Music.BeginPrimaryMusic(currentArea.music); }
-            catch (Exception e)
-            {
-#if UNITY_EDITOR
-                Debug.LogException(e);
-#endif
-            }
+//            try { if (fullTransition) Music.BeginPrimaryMusic(currentArea.music); }
+//            catch (Exception e)
+//            {
+//#if UNITY_EDITOR
+//                Debug.LogException(e);
+//#endif
+//            }
 
             PreFadeInAction?.Invoke();
             if (FadeInRoutine != null)

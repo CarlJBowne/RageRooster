@@ -489,24 +489,30 @@ namespace SLS.GeneralUtilities.StatObjects
     public class StatObjectBaseEditor : PropertyDrawer
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
-        { 
-            Foldout foldout = new();
-            foldout.BindProperty(property);
-
-            Label label = foldout.Q<Label>(className: Foldout.textUssClassName);
-            VisualElement header = label.parent;
-            label.parent.style.flexDirection = FlexDirection.Row;
-            foldout.Add(new PropertyField(property.FindPropertyRelative("_value")));
-
-            SerializedProperty pointer = property.Copy();
-            if (pointer.NextVisible(true))
+        {
+            try
             {
-                pointer.NextVisible(false); //Skip Value we just posted.
-                do foldout.Add(new PropertyField(pointer));
-                while (pointer.NextVisible(false));
-            }
+                Foldout foldout = new();
+                foldout.BindProperty(property);
 
-            return foldout;
+                Label label = foldout.Q<Label>(className: Foldout.textUssClassName);
+                VisualElement header = label.parent;
+                label.parent.style.flexDirection = FlexDirection.Row;
+                foldout.Add(new PropertyField(property.FindPropertyRelative("_value")));
+
+                SerializedProperty pointer = property.Copy();
+                if (pointer.NextVisible(true))
+                {
+                    pointer.NextVisible(false); //Skip Value we just posted.
+                    do foldout.Add(new PropertyField(pointer));
+                    while (pointer.NextVisible(false));
+                }
+                return foldout; 
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
     }
 #endif

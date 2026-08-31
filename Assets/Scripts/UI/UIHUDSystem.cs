@@ -70,7 +70,7 @@ public class UIHUDSystem : MonoBehaviour
         combo.comboTime.Tick(combo.EndCombo);
     }
 
-    public Health health;
+    [field: SerializeField] public Health health { get; private set; } =new();
     [Serializable]
     public class Health
     {
@@ -137,7 +137,7 @@ public class UIHUDSystem : MonoBehaviour
         }
     }
 
-    public readonly Ammo ammo = new();
+    [field: SerializeField] public Ammo ammo { get; private set; } = new();
     [Serializable]
     public class Ammo
     {
