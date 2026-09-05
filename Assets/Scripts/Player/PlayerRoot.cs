@@ -107,9 +107,15 @@ public class PlayerRoot : MonoBehaviour, IPlayer
     private List<EventTicket> events;
     public void Awake()
     {
+        if (RageRooster.Player.Services.Active() && RageRooster.Player.Services.Player != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         DontDestroyOnLoad(this);
 
-        RageRooster.Services.Player = this;
+        RageRooster.Services.Player = this as IPlayer;
         RageRooster.Player.Services.Player = this;
 
         StateMachine = GetComponent<PlayerStateMachine>();
@@ -144,7 +150,7 @@ public class PlayerRoot : MonoBehaviour, IPlayer
 
     void OnDestroy()
     {
-        RageRooster.Services.Player = null;
+        if (RageRooster.Services.Player == (this as IPlayer)) RageRooster.Services.Player = null;
         _activeState = ActivityStates.Null;
         events.DestroyAll();
     }

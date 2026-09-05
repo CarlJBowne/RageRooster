@@ -23,9 +23,11 @@ namespace RageRooster.TOP
             E().Begin();
             IEnumerator E()
             {
+                Debug.Log("Initializing Saves");
                 SaveManager.InitializeManager(0);
 
                 SetCurrent();
+                Debug.Log("Loading Gameplay Scene");
                 SceneManager.LoadScene(Scene, LoadSceneMode.Single);
                 yield return null;
                 Scene s = SceneManager.GetSceneByName(Scene);
@@ -35,8 +37,14 @@ namespace RageRooster.TOP
                     );
                 rootObjects = s.GetRootGameObjects();
                 yield return null;
+                Debug.Log("Gameplay Scene Active");
 
-                for (int i = 0; i < rootObjects.Length; i++) DontDestroyOnLoad(rootObjects[i]);
+                yield return new WaitUntil(Player.Services.Active);
+                EntitySpawn.PlayerPosition = Player.Services.Player.Transform;
+                Debug.Log("Player Active");
+
+                for (int i = 0; i < rootObjects.Length; i++) 
+                    DontDestroyOnLoad(rootObjects[i]);
                 //rootObjects[1].GetComponent<Player>().Awake();
                 //rootObjects[2].GetComponent<Cameras>().Awake();
 
@@ -44,6 +52,7 @@ namespace RageRooster.TOP
 
                 yield return null;
 
+                Debug.Log("Initializing Other Systems");
                 GlobalPool.poolParent = rootObjects[0].transform.Find("PooledObjects");
                 GlobalPool.Get.Initialize();
                 Overlay.OverALL.Alpha = 1;
@@ -55,10 +64,8 @@ namespace RageRooster.TOP
                     && RoomManager.Active
                     );
 
-
+                Debug.Log("Beginning Transition");
                 RoomManager.ResetTransitionData(false);
-                EntitySpawn.PlayerPosition = Player.Services.Player.Transform;
-
                 RoomManager.TransitionStyle = new()
                 {
                     forceFullTransition = true,
@@ -76,6 +83,7 @@ namespace RageRooster.TOP
                     },
                 };
                 yield return RoomManager.Transition();
+                Debug.Log("Transition Finished");
                 InvokeOnFinalAwake();
             }
         }

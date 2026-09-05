@@ -189,6 +189,63 @@ namespace SLS.ListUtilities.Editor
                 }
                 };
 
+                // Prepare KeyField but do not add it to the main content until we know layout
+                {
+                    if (KeyField != null) KeyField.Unbind();
+                    VisualElement createdKeyField;
+                    if (typeof(TK) == typeof(string)) createdKeyField = new TextField();
+                    else if (typeof(TK) == typeof(int)) createdKeyField = new IntegerField();
+                    else if (typeof(TK) == typeof(float)) createdKeyField = new FloatField();
+                    else if (typeof(TK) == typeof(double)) createdKeyField = new DoubleField();
+                    else createdKeyField = new PropertyField(KeyProp, "");
+
+                    // Configure KeyField common properties
+                    if (createdKeyField is TextField t)
+                    {
+                        t.label = "";
+                        t.style.maxHeight = EditorGUIUtility.singleLineHeight;
+                        t.style.top = 0;
+                        t.SetValueWithoutNotify(KeyProp.stringValue);
+                        t.BindProperty(KeyProp);
+                        t.isDelayed = true;
+                    }
+                    else if (createdKeyField is IntegerField i)
+                    {
+                        i.label = "";
+                        i.style.maxHeight = EditorGUIUtility.singleLineHeight;
+                        i.style.top = 0;
+                        i.SetValueWithoutNotify(KeyProp.intValue);
+                        i.BindProperty(KeyProp);
+                        i.isDelayed = true;
+                    }
+                    else if (createdKeyField is FloatField f)
+                    {
+                        f.label = "";
+                        f.style.maxHeight = EditorGUIUtility.singleLineHeight;
+                        f.style.top = 0;
+                        f.SetValueWithoutNotify(KeyProp.floatValue);
+                        f.BindProperty(KeyProp);
+                        f.isDelayed = true;
+                    }
+                    else if (createdKeyField is DoubleField d)
+                    {
+                        d.label = "";
+                        d.style.maxHeight = EditorGUIUtility.singleLineHeight;
+                        d.style.top = 0;
+                        d.SetValueWithoutNotify(KeyProp.doubleValue);
+                        d.BindProperty(KeyProp);
+                        d.isDelayed = true;
+                    }
+                    else if (createdKeyField is PropertyField pf)
+                    {
+                        pf.RegisterCallback<ContextualMenuPopulateEvent>(ContextMenu, TrickleDown.TrickleDown);
+                    }
+
+                    createdKeyField.style.flexBasis = new Length(30, LengthUnit.Percent);
+                    KeyField = createdKeyField;
+                }
+
+
                 // Create the value field first so we can inspect whether it draws as a foldout
                 ValueField?.Unbind();
                 ValueField = new PropertyField(ValueProp, "").AddTo(content, v =>
@@ -198,63 +255,9 @@ namespace SLS.ListUtilities.Editor
                     v.style.flexGrow = 1f;
                 });
 
-                // Prepare KeyField but do not add it to the main content until we know layout
-                if (KeyField != null) KeyField.Unbind();
-                VisualElement createdKeyField;
-                if (typeof(TK) == typeof(string)) createdKeyField = new TextField();
-                else if (typeof(TK) == typeof(int)) createdKeyField = new IntegerField();
-                else if (typeof(TK) == typeof(float)) createdKeyField = new FloatField();
-                else if (typeof(TK) == typeof(double)) createdKeyField = new DoubleField();
-                else createdKeyField = new PropertyField(KeyProp, "");
-
-                // Configure KeyField common properties
-                if (createdKeyField is TextField t)
-                {
-                    t.label = "";
-                    t.style.maxHeight = EditorGUIUtility.singleLineHeight;
-                    t.style.top = 0;
-                    t.SetValueWithoutNotify(KeyProp.stringValue);
-                    t.BindProperty(KeyProp);
-                    t.isDelayed = true;
-                }
-                else if (createdKeyField is IntegerField i)
-                {
-                    i.label = "";
-                    i.style.maxHeight = EditorGUIUtility.singleLineHeight;
-                    i.style.top = 0;
-                    i.SetValueWithoutNotify(KeyProp.intValue);
-                    i.BindProperty(KeyProp);
-                    i.isDelayed = true;
-                }
-                else if (createdKeyField is FloatField f)
-                {
-                    f.label = "";
-                    f.style.maxHeight = EditorGUIUtility.singleLineHeight;
-                    f.style.top = 0;
-                    f.SetValueWithoutNotify(KeyProp.floatValue);
-                    f.BindProperty(KeyProp);
-                    f.isDelayed = true;
-                }
-                else if (createdKeyField is DoubleField d)
-                {
-                    d.label = "";
-                    d.style.maxHeight = EditorGUIUtility.singleLineHeight;
-                    d.style.top = 0;
-                    d.SetValueWithoutNotify(KeyProp.doubleValue);
-                    d.BindProperty(KeyProp);
-                    d.isDelayed = true;
-                }
-                else if (createdKeyField is PropertyField pf)
-                {
-                    pf.RegisterCallback<ContextualMenuPopulateEvent>(ContextMenu, TrickleDown.TrickleDown);
-                }
-
-                createdKeyField.style.flexBasis = new Length(30, LengthUnit.Percent);
-                KeyField = createdKeyField;
-
                 // If the value field contains a Foldout, place the key field into the foldout header next to the label
-                VisualElement top = ValueField?.Q<PropertyField>() as VisualElement
-                    ?? ValueField?.Q<Foldout>() as VisualElement ?? null;
+
+                VisualElement top = ValueField?.Q<Foldout>(className: "unity-foldout--depth-0");
                 if (top != null)
                 {
                     top.DelayedBuild(() =>
@@ -285,9 +288,11 @@ namespace SLS.ListUtilities.Editor
                 }
                 else
                 {
+                    content.Remove(ValueField);
                     // Default layout: key on left, value on right
                     KeyField.style.flexBasis = new Length(30, LengthUnit.Percent);
                     content.Add(KeyField);
+                    content.Add(ValueField);
                     // ValueField already added
                 }
 

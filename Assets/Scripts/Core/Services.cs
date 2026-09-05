@@ -15,7 +15,11 @@ namespace RageRooster
     public class Services
     {
         #region Main Services
-        public static IPlayer Player;
+        public static IPlayer Player
+        {
+            get;
+            set;
+        }
         public static IMusicService Music;
         #endregion
 

@@ -10,5 +10,11 @@ namespace RageRooster.Player
     {
         public static PlayerRoot Self => Player;
         public static PlayerRoot Player;
+
+        public static bool Active() =>
+            Player != null
+            && RageRooster.Services.Player != null
+            && Player.GameObject != null
+            && Player.gameObject != null;
     }
 }
