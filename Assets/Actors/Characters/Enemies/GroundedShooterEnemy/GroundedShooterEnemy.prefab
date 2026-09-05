@@ -4969,6 +4969,7 @@ GameObject:
   - component: {fileID: 838323740284995032}
   - component: {fileID: 2813074546204450206}
   - component: {fileID: 2666689870643536537}
+  - component: {fileID: -2825216245979343553}
   m_Layer: 7
   m_Name: GroundedShooterEnemy
   m_TagString: Untagged
@@ -5155,7 +5156,6 @@ MonoBehaviour:
   enemyLootSpawner: {fileID: 8999987942707735413}
   tintAnimator: {fileID: 0}
   ragdoll: {fileID: 4339660178794021585}
-  respawnTime: 3
   onDamageEvent:
     _PersistentCalls: []
 --- !u!114 &5231858220885111202
@@ -5364,6 +5364,19 @@ MonoBehaviour:
   sendUltEvents: 0
   outerMostRangeName: Wandering
   showGizmos: 0
+--- !u!114 &-2825216245979343553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4906831177318307996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11dd5e2eafeaaee49be5a582c7094c6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Utilities::Spawnable
+  Reserved: 0
 --- !u!1 &4909045370384413027
 GameObject:
   m_ObjectHideFlags: 0
