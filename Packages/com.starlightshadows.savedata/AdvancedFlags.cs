@@ -198,7 +198,7 @@ namespace SLS.SaveData
                 return true;
             }
 
-            public EventTicket Subscribe<T>(string name, Action<T> callback) => 
+            public EventTicket Subscribe<T>(string name, Action<T> callback) =>
                 TryGet(name, out Generic<T> res) ? res.RegisterCallback(callback) : null;
 
             public string[] AllNamesOfType<T>() => AllNamesOfType(typeof(T));
@@ -206,8 +206,8 @@ namespace SLS.SaveData
             {
                 List<string> result = new();
                 for (int i = 0; i < Count; i++)
-                    if (ValueFromIndex(i).ValueType == type)
-                        result.Add(NameFromIndex(i));
+                    if (Values[i].ValueType == type)
+                        result.Add(Names[i]);
                 return result.ToArray();
             }
 
@@ -218,9 +218,9 @@ namespace SLS.SaveData
                 if (op is DictionaryCloneOp.ReplaceEntirely) Clear();
                 for (int i = 0; i < source.Count; i++)
                 {
-                    if (!serializedKeys.Contains(source.serializedKeys[i]) && op is not DictionaryCloneOp.Transfer) 
-                        this.Add(source.NameFromIndex(i), Activator.CreateInstance(source.ValueFromIndex(i).GetType()) as Flag);
-                    this[source.KeyFromIndex(i)].Clone(source.ValueFromIndex(i));
+                    if (!serializedKeys.Contains(source.serializedKeys[i]) && op is not DictionaryCloneOp.Transfer)
+                        this.Add(source.Names[i], Activator.CreateInstance(source.Values[i].GetType()) as Flag);
+                    this[source.Keys[i]].Clone(source.Values[i]);
                 }
             }
 
@@ -235,7 +235,7 @@ namespace SLS.SaveData
             {
                 JObject result = new();
                 for (int i = 0; i < Count; i++)
-                    result.Add(new JProperty(NameFromIndex(i), ValueFromIndex(i).SaveToJson()));
+                    result.Add(new JProperty(Names[i], Values[i].SaveToJson()));
                 return result;
             }
         }
@@ -286,11 +286,11 @@ namespace SLS.SaveData
                 if (source == null) return;
                 if (Count == 0) op = DictionaryCloneOp.TransferAndAdd;
                 if (op is DictionaryCloneOp.ReplaceEntirely) Clear();
-                for (int i = 0; i < source.Count; i++)
+                for (int i = 0; i < source; i++)
                 {
                     if (!serializedKeys.Contains(source.serializedKeys[i]) && op is not DictionaryCloneOp.Transfer)
-                        this.Add(source.NameFromIndex(i), Activator.CreateInstance(source.ValueFromIndex(i).GetType()) as Generic<T>);
-                    this[source.KeyFromIndex(i)].Clone(source.ValueFromIndex(i));
+                        this.Add(source.Names[i], Activator.CreateInstance(source.Values[i].GetType()) as Generic<T>);
+                    this[source.Keys[i]].Clone(source.Values[i]);
                 }
             }
 
@@ -305,7 +305,7 @@ namespace SLS.SaveData
             {
                 JObject result = new();
                 for (int i = 0; i < Count; i++)
-                    result.Add(new JProperty(NameFromIndex(i), ValueFromIndex(i).SaveToJson()));
+                    result.Add(new JProperty(Names[i], Values[i].SaveToJson()));
                 return result;
             }
         }
@@ -316,7 +316,7 @@ namespace SLS.SaveData
             {
                 int completeted = 0;
                 for (int i = 0; i < Count; i++)
-                    if(ValueFromIndex(i).Value)
+                    if (Values[i].Value)
                         completeted++;
                 return completeted / Count * percentage;
             }
@@ -325,12 +325,27 @@ namespace SLS.SaveData
                 if (source == null) return;
                 if (Count == 0) op = DictionaryCloneOp.TransferAndAdd;
                 if (op is DictionaryCloneOp.ReplaceEntirely) Clear();
-                for (int i = 0; i < source.Count; i++)
+                for (int i = 0; i < source; i++)
                 {
                     if (!serializedKeys.Contains(source.serializedKeys[i]) && op is not DictionaryCloneOp.Transfer)
-                        this.Add(source.NameFromIndex(i), Activator.CreateInstance(source.ValueFromIndex(i).GetType()) as Generic<bool>);
-                    this[source.KeyFromIndex(i)].Clone(source.ValueFromIndex(i));
+                        this.Add(source.Names[i], Activator.CreateInstance(source.Values[i].GetType()) as Generic<bool>);
+                    this[source.Keys[i]].Clone(source.Values[i]);
                 }
+            }
+            public new JArray SaveToJson()
+            {
+                JArray res = new();
+                for (int i = 0; i < Count; i++)
+                    if (Values[i].Value)
+                        res.Add(Names[i]);
+                return res;
+            }
+            public void LoadFromJson(JArray list)
+            {
+                if (!list.HasValues) return;
+                for (int i = 0; i < list.Count; i++)
+                    if (ContainsName(list[i].ToString()))
+                        this[list[i].ToString()].Value = true;
             }
         }
 

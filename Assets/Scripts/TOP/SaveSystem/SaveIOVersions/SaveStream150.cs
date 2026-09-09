@@ -6,6 +6,7 @@ using RageRooster.Actors.Save.Collectibles;
 using RageRooster.Core.Save;
 using RageRooster.TOP.Save;
 using RageRooster.World;
+using SLS.SaveData;
 using UnityEngine.InputSystem;
 using Utilities.JSON;
 
@@ -43,24 +44,25 @@ namespace RageRooster.TOP.Save.Streams
             Transfer.playerStats.MaxHealth &= (int)PlayerFile["MaxHealth"];
             Transfer.playerStats.MaxAmmo &= (int)PlayerFile["MaxAmmo"];
             Transfer.playerStats.location = (DestinationMap)PlayerFile["Location"];
-            Transfer.playerStats.dropLaunch   = (bool)PlayerFile["Upgrades"]["DropLaunch"];
-            Transfer.playerStats.wallJump     = (bool)PlayerFile["Upgrades"]["WallJump"];
-            Transfer.playerStats.hellcopter   = (bool)PlayerFile["Upgrades"]["Hellcopter"];
+            Transfer.playerStats.dropLaunch = (bool)PlayerFile["Upgrades"]["DropLaunch"];
+            Transfer.playerStats.wallJump = (bool)PlayerFile["Upgrades"]["WallJump"];
+            Transfer.playerStats.hellcopter = (bool)PlayerFile["Upgrades"]["Hellcopter"];
             Transfer.playerStats.ragingCharge = (bool)PlayerFile["Upgrades"]["RagingCharge"];
-            Transfer.playerStats.glide        = (bool)PlayerFile["Upgrades"]["Glide"];
-            Transfer.playerStats.doubleJump   = (bool)PlayerFile["Upgrades"]["DoubleJump"];
-            Transfer.playerStats.lasso        = (bool)PlayerFile["Upgrades"]["Lasso"];
+            Transfer.playerStats.glide = (bool)PlayerFile["Upgrades"]["Glide"];
+            Transfer.playerStats.doubleJump = (bool)PlayerFile["Upgrades"]["DoubleJump"];
+            Transfer.playerStats.lasso = (bool)PlayerFile["Upgrades"]["Lasso"];
 
             Transfer.progress.playTime = TimeSpan.Parse(ProgressFile["PlayTime"].ToString());
-            Load_SavedCollectible(Transfer.progress.powerEggs, 
-                (JObject)ProgressFile["PowerEggs"], 
+            Load_SavedCollectible(Transfer.progress.powerEggs,
+                (JObject)ProgressFile["PowerEggs"],
                 (JArray)ProgressFile["PowerEggIDs"]);
-            Load_SavedCollectible(Transfer.progress.wishbones, 
-                (JObject)ProgressFile["Wishbones"], 
+            Load_SavedCollectible(Transfer.progress.wishbones,
+                (JObject)ProgressFile["Wishbones"],
                 (JArray)ProgressFile["WishboneIDs"]);
-            Load_SavedCollectible(Transfer.progress.hensRescued, 
-                (JObject)ProgressFile["HensRescued"], 
+            Load_SavedCollectible(Transfer.progress.hensRescued,
+                (JObject)ProgressFile["HensRescued"],
                 (JArray)ProgressFile["HensRescuedIDs"]);
+            Transfer.progress.storyFlags.LoadFromJson(ProgressFile["StoryFlags"] as JArray);
 
             return JsonFile.FileState.Valid;
         }
@@ -92,12 +94,15 @@ namespace RageRooster.TOP.Save.Streams
                 ["PowerEggIDs"] = Save_SavedCollectible_IDs(Transfer.progress.powerEggs),
                 ["HensRescuedIDs"] = Save_SavedCollectible_IDs(Transfer.progress.hensRescued),
                 ["WishboneIDs"] = Save_SavedCollectible_IDs(Transfer.progress.wishbones),
-                ["StoryFlags"] = null //This one's gonna be hard.
+                ["StoryFlags"] = Transfer.progress.storyFlags.SaveToJson()
             };
-            WorldChangesFile.Data = new();
-            WorldChangesFile.Data.Add("Global", Transfer.flags["Global"].SaveToJson());
-            foreach (string key in IDestination.AllAreas)
-                WorldChangesFile.Data.Add(key, Transfer.flags[key].SaveToJson());
+            WorldChangesFile.Data = new JObject().Populate(o =>
+            {
+                o.Add("Global", Transfer.flags["Global"].SaveToJson());
+                foreach (string key in IDestination.AllAreas)
+                    o.Add(key, Transfer.flags[key].SaveToJson());
+
+            });
 
             return JsonFile.FileState.Valid;
         }
@@ -117,7 +122,7 @@ namespace RageRooster.TOP.Save.Streams
         {
             JArray array = new();
             for (int i = 0; i < coll.IDs.Count; i++)
-                if (coll.isCollected[i]) 
+                if (coll.isCollected[i])
                     array.Add(coll.IDs[i]);
             return array;
         }

@@ -1271,5 +1271,4 @@ namespace SLS.ListUtilities.Editor
     {
         public SuperListItem(SuperList<T> parentList, int Index) : base(parentList, Index) { }
     }
-
 }

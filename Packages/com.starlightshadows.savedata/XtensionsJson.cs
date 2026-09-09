@@ -9,8 +9,13 @@ namespace SLS.SaveData
     {
         public static void RemoveIfNull(this JObject THIS, string name)
         {
-            if (THIS.ContainsKey(name) && THIS[name].Type is JTokenType.Null) 
+            if (THIS.ContainsKey(name) && THIS[name].Type is JTokenType.Null)
                 THIS.Remove(name);
+        }
+        public static JObject Populate(this JObject THIS, Action<JObject> func)
+        {
+            func(THIS);
+            return THIS;
         }
     }
 

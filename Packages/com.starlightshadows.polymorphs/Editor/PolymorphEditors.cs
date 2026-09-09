@@ -436,8 +436,8 @@ public class PolymorphEditors
         private readonly FieldInfo fieldInfo;
         private readonly Type targetBaseType;
         public ILookupTable LookupTable { get; private set; }
-        public SerializedProperty NamesProperty { get; private set; }
         public SerializedProperty KeysProperty { get; private set; }
+        public SerializedProperty HashesProperty { get; private set; }
         public SerializedProperty ValuesProperty { get; private set; }
 
         public DictionaryDrawer(SerializedProperty rootProperty, FieldInfo fieldInfo, bool BindImmediately = true) : base(rootProperty, true)
@@ -463,8 +463,8 @@ public class PolymorphEditors
         new public void BindProperty(SerializedProperty input)
         {
             property = input;
-            NamesProperty = property.FindPropertyRelative("serializedNames");
             KeysProperty = property.FindPropertyRelative("serializedKeys");
+            HashesProperty = property.FindPropertyRelative("serializedHashes");
             ValuesProperty = property.FindPropertyRelative("serializedValues");
             header.Bind(input);
             FinishBind();
@@ -524,11 +524,11 @@ public class PolymorphEditors
         }
         public override void CreatePropertySlot(out int newID)
         {
-            if (ValuesProperty == null || KeysProperty == null || NamesProperty == null) throw new ArgumentNullException();
+            if (ValuesProperty == null || HashesProperty == null || KeysProperty == null) throw new ArgumentNullException();
             newID = Selection.NewItemID;
             ValuesProperty.InsertArrayElementAtIndex(newID);
-            NamesProperty.InsertArrayElementAtIndex(newID);
             KeysProperty.InsertArrayElementAtIndex(newID);
+            HashesProperty.InsertArrayElementAtIndex(newID);
         }
 
         public virtual void TypeChosen(string newName, Type chosen)
@@ -537,10 +537,10 @@ public class PolymorphEditors
             CreatePropertySlot(out int newID);
 
             // ensure a stable name and corresponding hash key for the new slot
-            SerializedProperty nameProp = NamesProperty.GetArrayElementAtIndex(newID);
+            SerializedProperty nameProp = KeysProperty.GetArrayElementAtIndex(newID);
             nameProp.stringValue = newName;
 
-            SerializedProperty keyProp = KeysProperty.GetArrayElementAtIndex(newID);
+            SerializedProperty keyProp = HashesProperty.GetArrayElementAtIndex(newID);
             keyProp.intValue = newName.Hash();
 
             SerializedProperty valProp = ValuesProperty.GetArrayElementAtIndex(newID);
@@ -562,26 +562,26 @@ public class PolymorphEditors
 
         public override void DeletePropertySlotAt(int index)
         {
-            int prevNamesCount = NamesProperty.arraySize;
-            int prevKeysCount = KeysProperty.arraySize;
+            int prevNamesCount = KeysProperty.arraySize;
+            int prevKeysCount = HashesProperty.arraySize;
             int prevValuesCount = ValuesProperty.arraySize;
 
-            NamesProperty.DeleteArrayElementAtIndex(index);
             KeysProperty.DeleteArrayElementAtIndex(index);
+            HashesProperty.DeleteArrayElementAtIndex(index);
             ValuesProperty.DeleteArrayElementAtIndex(index);
 
             // Handle the Unity quirk where deleting an object reference leaves a null element
-            if (prevNamesCount == NamesProperty.arraySize)
-            {
-                SerializedProperty maybeElem = NamesProperty.GetArrayElementAtIndex(index);
-                if (maybeElem != null && maybeElem.propertyType == SerializedPropertyType.ObjectReference && maybeElem.objectReferenceValue == null)
-                    NamesProperty.DeleteArrayElementAtIndex(index);
-            }
-            if (prevKeysCount == KeysProperty.arraySize)
+            if (prevNamesCount == KeysProperty.arraySize)
             {
                 SerializedProperty maybeElem = KeysProperty.GetArrayElementAtIndex(index);
                 if (maybeElem != null && maybeElem.propertyType == SerializedPropertyType.ObjectReference && maybeElem.objectReferenceValue == null)
                     KeysProperty.DeleteArrayElementAtIndex(index);
+            }
+            if (prevKeysCount == HashesProperty.arraySize)
+            {
+                SerializedProperty maybeElem = HashesProperty.GetArrayElementAtIndex(index);
+                if (maybeElem != null && maybeElem.propertyType == SerializedPropertyType.ObjectReference && maybeElem.objectReferenceValue == null)
+                    HashesProperty.DeleteArrayElementAtIndex(index);
             }
             if (prevValuesCount == ValuesProperty.arraySize)
             {
@@ -628,15 +628,15 @@ public class PolymorphEditors
 
             protected override void BindProperty()
             {
-                this.NameProp = parent.NamesProperty.GetArrayElementAtIndex(Index);
                 this.KeyProp = parent.KeysProperty.GetArrayElementAtIndex(Index);
+                this.HashProp = parent.HashesProperty.GetArrayElementAtIndex(Index);
                 this.ValueProp = parent.ValuesProperty.GetArrayElementAtIndex(Index);
                 FinishBind();
             }
 
-            public SerializedProperty NameProp { get; protected set; }
-            public TextField NameField { get; protected set; }
             public SerializedProperty KeyProp { get; protected set; }
+            public TextField KeyField { get; protected set; }
+            public SerializedProperty HashProp { get; protected set; }
             public SerializedProperty ValueProp { get; protected set; }
             public HeaderDrawer ValueHeader { get; protected set; }
 
@@ -667,8 +667,8 @@ public class PolymorphEditors
                     ValueHeader.ChangeButton.parent.Remove(ValueHeader.ChangeButton);
 
                     // Name field (visible)
-                    NameField?.Unbind();
-                    NameField = new TextField().AddTo(ValueHeader.Label.parent, k =>
+                    KeyField?.Unbind();
+                    KeyField = new TextField().AddTo(ValueHeader.Label.parent, k =>
                     {
                         ValueHeader.Label.text = ValueHeader.Label.text.Split(' ')[2];
                         k.style.flexBasis = Length.Percent(50);
@@ -683,17 +683,17 @@ public class PolymorphEditors
                         ValueHeader.Label.ShrinkToTextWidth();
 
 
-                        k.SetValueWithoutNotify(NameProp.stringValue);
+                        k.SetValueWithoutNotify(KeyProp.stringValue);
 
-                        k.SetValueWithoutNotify(NameProp.stringValue);
-                        k.BindProperty(NameProp);
+                        k.SetValueWithoutNotify(KeyProp.stringValue);
+                        k.BindProperty(KeyProp);
                         k.isDelayed = true;
                         // When name changes, update the hash key and propagate duplicate checks
                         k.DelayedBuild(() => k.RegisterValueChangedCallback(ev =>
                         {
-                            NameProp.stringValue = ev.newValue;
-                            KeyProp.intValue = ev.newValue.Hash();
-                            NameProp.serializedObject.ApplyModifiedProperties();
+                            KeyProp.stringValue = ev.newValue;
+                            HashProp.intValue = ev.newValue.Hash();
+                            KeyProp.serializedObject.ApplyModifiedProperties();
                             parent.CallUpdateColors();
                         }));
 
@@ -704,10 +704,18 @@ public class PolymorphEditors
                 return content;
             }
 
+
             protected override void PostContent()
             {
-                // Context menu target and value binding handled by HeaderDrawer
-                ContextMenuTarget = NameField;
+                KeyField.tooltip = $"Key: {HashProp.intValue}";
+                KeyField.RegisterValueChangedCallback(ev =>
+                {
+                    HashProp.intValue = ev.newValue.Hash();
+                    KeyField.tooltip = $"Key: {HashProp.intValue}";
+                    parent.CallUpdateColors();
+                });
+
+                ContextMenuTarget = KeyField;
             }
 
             protected override void ContextMenu(ContextualMenuPopulateEvent evt)

@@ -11,7 +11,9 @@ using Utilities;
 using SLS.ObjectUtilities;
 using RageRooster;
 using RageRooster.Core;
-using static RageRooster.Services;
+using CoreServices = RageRooster.Services;
+using RageRooster.Player;
+using static RageRooster.Player.Services;
 using RageRooster.TOP.Save;
 
 namespace RageRooster.TOP
@@ -61,10 +63,10 @@ namespace RageRooster.TOP
 
                 yield return WaitFor.Until(() => Active
                     && Services.Player is not null
-                    && RoomManager.Active
                     );
 
                 Debug.Log("Beginning Transition");
+                //It's not loading the correct room cause the boot data's destination isn't actually being transferred to the stupid Room Manager, you dumbass.
                 RoomManager.ResetTransitionData(false);
                 RoomManager.TransitionStyle = new()
                 {
@@ -264,7 +266,7 @@ namespace RageRooster.TOP
 
         protected override void OnExitLogic()
         {
-            Music.StopAllMusic();
+            CoreServices.Music.StopAllMusic();
             UpdateProxy.OnFixedUpdate -= FixedUpdate;
             PlayerRoot.HaveDestroyed();
             SaveData.CallInitializeSave(-1);

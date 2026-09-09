@@ -11,7 +11,7 @@ using SLS.StateMachineH.Signals;
 using UnityEngine;
 using UnityEngine.AI;
 using static SLS.Singletons.Singleton;
-using static RageRooster.Services;
+using CoreServices = RageRooster.Services;
 using static RageRooster.Player.Services;
 using SLS.GeneralUtilities.EventTickets;
 
@@ -115,8 +115,8 @@ public class PlayerRoot : MonoBehaviour, IPlayer
 
         DontDestroyOnLoad(this);
 
-        RageRooster.Services.Player = this as IPlayer;
-        RageRooster.Player.Services.Player = this;
+        CoreServices.Player = this as IPlayer;
+        Self = this;
 
         StateMachine = GetComponent<PlayerStateMachine>();
         Health = GetComponent<PlayerHealth>();
@@ -181,7 +181,7 @@ public class PlayerRoot : MonoBehaviour, IPlayer
         IEnumerator DeathRoutine()
         {
             yield return new WaitForSecondsRealtime(fallDownPitTime + 1);
-            yield return UI.OverlayTopPlus.GameOverAnimation();
+            yield return CoreServices.UI.OverlayTopPlus.GameOverAnimation();
             yield return new WaitForSecondsRealtime(deathTime);
 
             RoomManager.TransitionStyle = new()

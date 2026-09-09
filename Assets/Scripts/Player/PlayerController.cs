@@ -171,7 +171,7 @@ public class PlayerController : StateBehavior
             {
                 PlayerButtonActions actionSet = signalNode.GetOrAddComponent<PlayerButtonActions>();
 
-                if (signalNode.ContainsName("Jump"))
+                if (signalNode.ContainsKey("Jump"))
                 {
                     actionSet.Jump = new PlayerButtonAction.BasicPush()
                     {
@@ -181,7 +181,7 @@ public class PlayerController : StateBehavior
                 }
 
 
-                if (signalNode.ContainsName("AttackTap") && signalNode.ContainsName("AttackHold"))
+                if (signalNode.ContainsKey("AttackTap") && signalNode.ContainsKey("AttackHold"))
                 {
                     actionSet.Attack = new PlayerButtonAction.TapOrHold()
                     {
@@ -191,7 +191,7 @@ public class PlayerController : StateBehavior
                     signalNode.Remove("AttackTap");
                     signalNode.Remove("AttackHold");
                 }
-                else if (signalNode.ContainsName("AttackTap"))
+                else if (signalNode.ContainsKey("AttackTap"))
                 {
                     actionSet.Jump = new PlayerButtonAction.BasicPush()
                     {
@@ -199,7 +199,7 @@ public class PlayerController : StateBehavior
                     };
                     signalNode.Remove("AttackTap");
                 }
-                else if (signalNode.ContainsName("AttackHold"))
+                else if (signalNode.ContainsKey("AttackHold"))
                 {
                     actionSet.Jump = new PlayerButtonAction.TapOrHold()
                     {
@@ -210,7 +210,7 @@ public class PlayerController : StateBehavior
                 }
 
 
-                if (signalNode.ContainsName("Grab"))
+                if (signalNode.ContainsKey("Grab"))
                 {
                     actionSet.Grab = new PlayerButtonAction.BasicPush()
                     {
@@ -218,7 +218,7 @@ public class PlayerController : StateBehavior
                     };
                     signalNode.Remove("Grab");
                 }
-                if (signalNode.ContainsName("Charge"))
+                if (signalNode.ContainsKey("Charge"))
                 {
                     actionSet.Charge = new PlayerButtonAction.BasicPush()
                     {
@@ -246,7 +246,7 @@ public class PlayerController : StateBehavior
                 //}
 
 
-                if (signalNode.ContainsName("Parry"))
+                if (signalNode.ContainsKey("Parry"))
                 {
                     actionSet.Parry = new PlayerButtonAction.BasicPush()
                     {

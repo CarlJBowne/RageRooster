@@ -15,7 +15,7 @@ namespace RageRooster.World
     /// <summary>
     /// Global Gameplay System for managing Room transitions, current Room/Area tracking, and related functionality.
     /// </summary>
-    public class RoomManager : Singleton.MonoBehaviour<RoomManager>
+    public static class RoomManager
     {
         /// <summary>
         /// The Currently active Area in the game world. <br/>
@@ -93,7 +93,7 @@ namespace RageRooster.World
         /// Begins a Room transition to the specified <see cref="Destination"/>.
         /// </summary>
         public static void StartTransition(Destination destination = default)
-            => Transition(destination ?? new()).Begin(Overlay.OverALL);
+            => Transition(destination ?? new()).Begin();
 
         /// <summary>
         /// The central Transition Routine run when the player transitions between Rooms/Areas.

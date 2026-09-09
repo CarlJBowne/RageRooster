@@ -59,7 +59,7 @@ public class VFXCatalogue : MonoBehaviour
 
     private void Update()
     {
-        for (int i = 0; i < Pools.Count; i++)
-            Pools.ValueFromIndex(i).Update(Time.deltaTime);
+        for (int i = 0; i < Pools; i++)
+            Pools.Values[i].Update(Time.deltaTime);
     }
 }
