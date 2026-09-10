@@ -17,6 +17,65 @@ namespace SLS.SaveData
             func(THIS);
             return THIS;
         }
+
+        public static JToken PruneDefaults(this JToken current, JToken defaults)
+        {
+            if (JToken.DeepEquals(current, defaults))
+                return null; // nothing different at this node
+
+            if (current == null) return null;
+            if (defaults == null) return current.DeepClone();
+
+            if (current.Type != defaults.Type)
+                return current.DeepClone();
+
+            switch (current.Type)
+            {
+                case JTokenType.Object:
+                {
+                    var curObj = (JObject)current;
+                    var defObj = defaults as JObject ?? new JObject();
+                    var outObj = new JObject();
+                    foreach (var prop in curObj.Properties())
+                    {
+                        var defProp = defObj.Property(prop.Name);
+                        var prunedChild = PruneDefaults(prop.Value, defProp?.Value);
+                        if (prunedChild != null)
+                            outObj.Add(prop.Name, prunedChild);
+                    }
+                    return outObj.HasValues ? outObj : null;
+                }
+                case JTokenType.Array:
+                {
+                    // Simple heuristic: if arrays are equal -> prune; if not equal -> keep full current array.
+                    var defArr = defaults as JArray;
+                    var curArr = current as JArray;
+                    if (JToken.DeepEquals(curArr, defArr)) return null;
+                    // Optionally implement element-wise pruning here; for now return full current
+                    return curArr.DeepClone();
+                }
+                default:
+                    // primitive types -> since not DeepEquals, return current value (replace)
+                    return current.DeepClone();
+            }
+        }
+
+        public static JToken ApplyDelta(this JToken baseToken, JToken delta)
+        {
+            if (delta == null) return baseToken.DeepClone();
+            if (baseToken == null) return delta.DeepClone();
+
+            if (delta.Type != JTokenType.Object || baseToken.Type != JTokenType.Object)
+                return delta.DeepClone();
+
+            var baseObj = (JObject)baseToken.DeepClone();
+            var deltaObj = (JObject)delta;
+            foreach (var prop in deltaObj.Properties())
+            {
+                baseObj[prop.Name] = ApplyDelta(baseObj[prop.Name], prop.Value);
+            }
+            return baseObj;
+        }
     }
 
 

@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 
 namespace Utilities.JSON
 {
@@ -145,11 +146,91 @@ namespace Utilities.JSON
             /// <summary>
             /// Some other error occurred.
             /// </summary>
-            Error
+            Error,
+            /// <summary>
+            /// A valid file exists but is not of the target version number
+            /// </summary>
+            WrongVersion,
         }
 
         public bool FileExists => Directory.Exists(path) && File.Exists(FullPath);
 
         public JToken this[string i] => Data?[i];
+    }
+
+    public static class Xtensions_JsonFile
+    {
+        /// <summary>
+        /// Loads multiple JsonFile instances from their respective files.
+        /// </summary>
+        /// <returns>True if any of the <see cref="JsonFile"/> instances fail to load.</returns>
+        public static bool LoadManyFiles(this JsonFile[] files, out JsonFile.FileState result)
+        {
+            for (int i = 0; i < files.Length; i++)
+            {
+                JsonFile.FileState loadResult = files[i].LoadFromFile();
+                if (loadResult != JsonFile.FileState.Valid)
+                {
+                    result = loadResult;
+                    return true;
+                }
+            }
+            result = JsonFile.FileState.Valid;
+            return false;
+        }
+        /// <summary>
+        /// Loads multiple JsonFile instances from their respective files.
+        /// </summary>
+        /// <returns>True if any of the <see cref="JsonFile"/> instances fail to load.</returns>
+        public static bool LoadManyFiles(this List<JsonFile> files, out JsonFile.FileState result)
+        {
+            for (int i = 0; i < files.Count; i++)
+            {
+                JsonFile.FileState loadResult = files[i].LoadFromFile();
+                if (loadResult != JsonFile.FileState.Valid)
+                {
+                    result = loadResult;
+                    return true;
+                }
+            }
+            result = JsonFile.FileState.Valid;
+            return false;
+        }
+        /// <summary>
+        /// Saves multiple JsonFile instances to their respective files.
+        /// </summary>
+        /// <returns>True if any of the <see cref="JsonFile"/> instances fail to save.</returns>
+        public static bool SaveManyFiles(this JsonFile[] files, out JsonFile.FileState result)
+        {
+            for (int i = 0; i < files.Length; i++)
+            {
+                JsonFile.FileState loadResult = files[i].SaveToFile();
+                if (loadResult != JsonFile.FileState.Valid)
+                {
+                    result = loadResult;
+                    return true;
+                }
+            }
+            result = JsonFile.FileState.Valid;
+            return false;
+        }
+        /// <summary>
+        /// Saves multiple JsonFile instances to their respective files.
+        /// </summary>
+        /// <returns>True if any of the <see cref="JsonFile"/> instances fail to save.</returns>
+        public static bool SaveManyFiles(this List<JsonFile> files, out JsonFile.FileState result)
+        {
+            for (int i = 0; i < files.Count; i++)
+            {
+                JsonFile.FileState loadResult = files[i].SaveToFile();
+                if (loadResult != JsonFile.FileState.Valid)
+                {
+                    result = loadResult;
+                    return true;
+                }
+            }
+            result = JsonFile.FileState.Valid;
+            return false;
+        }
     }
 }

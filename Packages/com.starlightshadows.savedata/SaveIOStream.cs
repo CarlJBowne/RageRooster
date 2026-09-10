@@ -34,9 +34,6 @@ namespace SLS.SaveData
                 state = JsonFile.FileState.WrongVersion;
         }
 
-        protected abstract JsonFile.FileState ReadData();
-        protected abstract JsonFile.FileState WriteData();
-
         public abstract void ExportMenuDisplayData(out object result);
 
     }
