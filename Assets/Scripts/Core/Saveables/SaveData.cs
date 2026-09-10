@@ -6,10 +6,8 @@ using Newtonsoft.Json.Linq;
 using RageRooster.Core;
 using RageRooster.Player;
 using RageRooster.World;
-using SLS.SaveData;
-using Unity.VisualScripting;
 using UnityEngine;
-using Utilities.JSON;
+using SLS.SaveFileCore;
 
 namespace RageRooster.Core.Save
 {
@@ -72,7 +70,7 @@ namespace RageRooster.Core.Save
             else if (Default != null) Clone(Default);
         }
 
-        public override void Clone(SaveData source)
+        public override SaveData Clone(SaveData source)
         {
             playerStats.Clone(source.playerStats);
             progress.Clone(source.progress);
@@ -82,6 +80,7 @@ namespace RageRooster.Core.Save
                     flags[key] = new();
                 flags[key].Clone(source.flags[key]);
             }
+            return this;
         }
 
         #endregion

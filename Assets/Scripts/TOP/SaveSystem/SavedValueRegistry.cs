@@ -5,7 +5,7 @@ using EditorAttributes;
 using RageRooster.Core.Save;
 using RageRooster.Player;
 using RageRooster.World;
-using SLS.SaveData;
+using SLS.SaveFileCore;
 using SLS.Singletons;
 using UnityEngine;
 

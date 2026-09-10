@@ -1,6 +1,6 @@
 using RageRooster.Core.Save;
 using SLS.GeneralUtilities.EventTickets;
-using SLS.GeneralUtilities.StatObjects;
+using SLS.GeneralUtilities.Syncables;
 using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,8 +11,8 @@ using static RageRooster.Player.Services;
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerHealth : Health
 {
-    protected override IntStat MaxSourceStat => Player.Stats.MaxHealth;
-    public static IntStatClamped Viewer;
+    protected override IntSyncable MaxSourceStat => Player.Stats.MaxHealth;
+    public static IntSyncableClamped Viewer;
 
     public float invincibilityTime;
     public State damageState;

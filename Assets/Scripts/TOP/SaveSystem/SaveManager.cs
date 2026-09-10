@@ -5,6 +5,7 @@ using RageRooster.Core.Save;
 using RageRooster.TOP.Save.Streams;
 using Unity.VisualScripting;
 using UnityEngine;
+using SLS.SaveFileCore;
 
 namespace RageRooster.TOP.Save
 {
@@ -23,6 +24,13 @@ namespace RageRooster.TOP.Save
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void InitServices()
         {
+            SaveFile._versionOptions.DesiredFileVersion = typeof(FileVersion_10);
+            SaveFile._versionOptions.AllFileVersions = new Dictionary<string, Type>()
+            {
+                { FileVersion_10.NUM, typeof(FileVersion_10) },
+                { FileVersion_UCF.NUM, typeof(FileVersion_UCF) }
+            };
+
             SaveData.SaveToSaveFile = SaveToSaveFile;
             SaveData.RevertToSaveFile = RevertToSaveFile;
             SaveData.CallInitializeSave = InitializeManager;

@@ -5,7 +5,7 @@ using EditorAttributes;
 using Newtonsoft.Json.Linq;
 using static UnityEngine.Rendering.DebugUI;
 using RageRooster.Core.Save;
-using Utilities.JSON;
+using SLS.SaveFileCore;
 
 [CreateAssetMenu(fileName = "SaveTester", menuName = "ScriptableObjects/SaveTester")]
 public class SaveTester : ScriptableObject
@@ -23,7 +23,7 @@ public class SaveTester : ScriptableObject
     public void Load()
     {
         File = new JsonFile(Application.dataPath + path, fileName);
-        File.LoadFromFile();
+        //File.LoadFromFile();
     }
 }
 

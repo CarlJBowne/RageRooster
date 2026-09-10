@@ -1,6 +1,6 @@
 using System;
-using SLS.GeneralUtilities.StatObjects;
-using SLS.SaveData;
+using SLS.GeneralUtilities.Syncables;
+using SLS.SaveFileCore;
 using UnityEngine;
 
 namespace RageRooster.Core.Save
@@ -12,7 +12,7 @@ namespace RageRooster.Core.Save
 
         public TimeSpan playTime = TimeSpan.Zero;
 
-        public IntStat Currency = new();
+        public IntSyncable Currency = new();
 
         public Flag.BoolOnlyCollection storyFlags = new();
         public SavedCollectible powerEggs = new();
@@ -35,7 +35,7 @@ namespace RageRooster.Core.Save
             return Time.timeAsDouble - previousSaveInteractionTime;
         }
 
-        public override void Clone(SavedProgress source)
+        public override SavedProgress Clone(SavedProgress source)
         {
             playTime = source.playTime;
             Currency &= source.Currency;
@@ -43,6 +43,7 @@ namespace RageRooster.Core.Save
             powerEggs.Clone(source.powerEggs);
             wishbones.Clone(source.wishbones);
             hensRescued.Clone(source.hensRescued);
+            return this;
         }
     }
 }

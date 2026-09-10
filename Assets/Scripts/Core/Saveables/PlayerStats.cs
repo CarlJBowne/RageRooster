@@ -5,9 +5,9 @@ using RageRooster.Core;
 using RageRooster.Core.Save;
 using RageRooster.World;
 using SLS.GeneralUtilities;
-using SLS.GeneralUtilities.StatObjects;
-using SLS.SaveData;
-using Utilities.JSON;
+using SLS.GeneralUtilities.Syncables;
+using SLS.SaveFileCore;
+using SLS.SaveFileCore;
 
 namespace RageRooster.Player
 {
@@ -19,8 +19,8 @@ namespace RageRooster.Player
     {
         public static PlayerStats Active { get; private set; }
         public void Establish() => Active = this;
-        public IntStat MaxHealth = new();
-        public IntStat MaxAmmo = new();
+        public IntSyncable MaxHealth = new();
+        public IntSyncable MaxAmmo = new();
         public IDestination location;
 
         /// <summary> The ability to throw a grabbable object downwards while in midair, launching the player upwards. </summary>
@@ -42,7 +42,7 @@ namespace RageRooster.Player
         /// <summary> A debug-privilege upgrade that makes the player go infinitely upwards as long as the jump button is held. </summary>
         [JsonIgnore] public bool d_moonJump;
 
-        public override void Clone(PlayerStats source)
+        public override PlayerStats Clone(PlayerStats source)
         {
             MaxHealth &= source.MaxHealth;
             MaxAmmo &= source.MaxAmmo;
@@ -54,6 +54,7 @@ namespace RageRooster.Player
             doubleJump = source.doubleJump;
             lasso = source.lasso;
             location = source.location;
+            return this;
         }
 
         /// <returns>A new instance of <see cref="PlayerStats"/> with all upgrades active, including debug-privilege upgrades</returns>

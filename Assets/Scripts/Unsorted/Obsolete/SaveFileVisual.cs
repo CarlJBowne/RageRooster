@@ -3,7 +3,7 @@ using RageRooster.Core.Save;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utilities.JSON;
+using SLS.SaveFileCore;
 
 namespace RageRooster.Obsolete
 {
@@ -32,12 +32,12 @@ namespace RageRooster.Obsolete
         private void UpdateFile()
         {
 
-            if (File.LoadFromFile() == JsonFile.FileState.Valid)
-            {
-                var TS = System.TimeSpan.FromSeconds(File.Data["Time"].ToObject<double>());
-                timeText.text = $"{TS.Hours}:{TS.Minutes}:{TS.Seconds}";
-            }
-            else { timeText.text = "Empty"; }
+            //if (File.LoadFromFile() == JsonFile.FileState.Valid)
+            //{
+            //    var TS = System.TimeSpan.FromSeconds(File.Data["Time"].ToObject<double>());
+            //    timeText.text = $"{TS.Hours}:{TS.Minutes}:{TS.Seconds}";
+            //}
+            //else { timeText.text = "Empty"; }
         }
     }
 }

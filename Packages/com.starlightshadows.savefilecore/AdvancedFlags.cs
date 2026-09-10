@@ -3,11 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utilities.JSON;
 using SLS.GeneralUtilities.EventTickets;
-using static Unity.IO.LowLevel.Unsafe.AsyncReadManagerMetrics;
 using SLS.ListUtilities;
-using static SLS.SaveData.Flag;
 
 
 
@@ -16,7 +13,7 @@ using static SLS.SaveData.Flag;
 using UnityEditor;
 #endif
 
-namespace SLS.SaveData
+namespace SLS.SaveFileCore
 {
     [Serializable]
     public abstract class Flag : Polymorph

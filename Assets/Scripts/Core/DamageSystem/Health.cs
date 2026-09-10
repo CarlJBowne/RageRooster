@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
 using UnityEngine.Serialization;
-using SLS.GeneralUtilities.StatObjects;
+using SLS.GeneralUtilities.Syncables;
 using SLS.GeneralUtilities.EventTickets;
 
 
@@ -141,7 +141,7 @@ public class Health : MonoBehaviour, IDamagable
     /// <summary>
     /// Psudeo Assignment operator. Assigns the object on the right's value to the value.
     /// </summary>
-    public static Health operator &(Health l, IntStat r)
+    public static Health operator &(Health l, IntSyncable r)
     {
         l.Current = r.Value;
         return l;
@@ -157,7 +157,7 @@ public class Health : MonoBehaviour, IDamagable
     public override int GetHashCode() => _current.GetHashCode();
 
     protected List<EventTicket> events = new();
-    protected virtual IntStat MaxSourceStat => null;
+    protected virtual IntSyncable MaxSourceStat => null;
     protected bool damagable = true;
 
     #endregion

@@ -2,6 +2,8 @@ using UnityEngine.UI;
 using RageRooster.Settings;
 using SLS.Singletons;
 using SLS.MenuCore;
+using SLS.GeneralUtilities.EventTickets;
+using System.Collections.Generic;
 
 public class SettingsMenu : Menu
 {
@@ -9,6 +11,8 @@ public class SettingsMenu : Menu
     public static SettingsMenu Get => S.Get;
     public static bool TryGet(out SettingsMenu instance) => S.TryGet(out instance);
     public static bool Present => S.Active;
+
+    static List<EventTicket> events;
 
     public RemappingMenu remap;
 
@@ -23,17 +27,28 @@ public class SettingsMenu : Menu
         S.Register(this);
         base.Awake();
 
+        GameSettings.Graphics.EstablishBrightnessOverlay();
+
+        events = new()
+        {
+            GameSettings.Volume.Master.Subscribe(AudioManager.Get.SetMasterVolume),
+            GameSettings.Volume.Music.Subscribe(AudioManager.Get.SetMusicVolume),
+            GameSettings.Volume.SFX.Subscribe(AudioManager.Get.SetSFXVolume),
+            GameSettings.Volume.Ambience.Subscribe(AudioManager.Get.SetAmbienceVolume),
+            GameSettings.Graphics.Brightness.Subscribe
+            (value => GameSettings.Graphics.brightnessOverlay.color = new(0, 0, 0, 1 - value))
+        };
+
         GameSettings.Volume.Master.SetupSlider(volumeMasterSlider);
         GameSettings.Volume.Music.SetupSlider(volumeMusicSlider);
         GameSettings.Volume.SFX.SetupSlider(volumeSFXSlider);
         GameSettings.Volume.Ambience.SetupSlider(volumeAmbSlider);
-
         GameSettings.Graphics.Brightness.SetupSlider(brightnessSlider);
-        GameSettings.Graphics.EstablishBrightnessOverlay();
 
 
         remap.UpdateAllIcons();
     }
+
 
     // Confirms the changes made to the settings and saves them to a file
     public void ConfirmChanges()
@@ -55,6 +70,7 @@ public class SettingsMenu : Menu
     {
         S.Deregister(this);
         base.OnDestroy();
+        events.DestroyAll();
     }
 
 }

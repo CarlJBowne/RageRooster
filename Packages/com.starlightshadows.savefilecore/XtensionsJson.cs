@@ -1,9 +1,8 @@
 ﻿using System;
-using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace SLS.SaveData
+namespace SLS.SaveFileCore
 {
     public static class XtensionsJson
     {
@@ -12,7 +11,7 @@ namespace SLS.SaveData
             if (THIS.ContainsKey(name) && THIS[name].Type is JTokenType.Null)
                 THIS.Remove(name);
         }
-        public static JObject Populate(this JObject THIS, Action<JObject> func)
+        public static T Populate<T>(this T THIS, Action<T> func) where T : JToken
         {
             func(THIS);
             return THIS;
@@ -75,6 +74,13 @@ namespace SLS.SaveData
                 baseObj[prop.Name] = ApplyDelta(baseObj[prop.Name], prop.Value);
             }
             return baseObj;
+        }
+
+        public static bool IfFail(this FileOpMessage source) => source != FileOpMessage.Success;
+        public static bool IfFail(this FileOpMessage source, out FileOpMessage result)
+        {
+            result = source;
+            return source != FileOpMessage.Success;
         }
     }
 
@@ -207,20 +213,4 @@ namespace SLS.SaveData
     }
 
     #endregion
-
-    //Generic FilePath class, intersting, but probably not useful.
-    public struct FilePath
-    {
-        public string path;
-        public string filename;
-        public string extension;
-        public FilePath(string path, string filename, string extension)
-        {
-            this.path = path;
-            this.filename = filename;
-            this.extension = extension;
-        }
-        public readonly string Fullpath => Path.Combine(path, $"{filename}.{extension}");
-        public static implicit operator string(FilePath obj) => Path.Combine(obj.path, $"{obj.filename}.{obj.extension}");
-    }
 }

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RageRooster.Core.Save;
+using SLS.SaveFileCore;
 
 
 namespace RageRooster.TOP.Save
@@ -18,7 +19,7 @@ namespace RageRooster.TOP.Save
         public TMPro.TextMeshProUGUI totalHealthText;
         public TMPro.TextMeshProUGUI powerEggsText;
         public TMPro.TextMeshProUGUI hensRescuedText;
-        TOP.Save.SaveFile file;
+        SaveFile file;
 
         private void Awake()
         {
@@ -31,13 +32,13 @@ namespace RageRooster.TOP.Save
 
         public void DeleteFile()
         {
-            file.Stream.DeleteFile();
+            file.FileVersion.DeleteFile();
             UpdateFile();
         }
 
         private void UpdateFile()
         {
-            file.ExportMenuDisplayData(out SaveData.MenuDisplayData data);
+            file.ExportDisplayData(out SaveData.MenuDisplayData data);
             if (data.isValid)
             {
                 details.SetActive(true);

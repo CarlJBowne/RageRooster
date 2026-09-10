@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Newtonsoft.Json.Linq;
 using RageRooster.Core.Save;
 using RageRooster.World;
 using UnityEngine;
-using Utilities.JSON;
+using SLS.SaveFileCore;
 
 namespace RageRooster.TOP.Save.Streams
 {
     /// <summary>
     /// This is the 1.0.0 version of the Save Stream. Outdated but necessary for loading old save files. This version is no longer used for saving.
     /// </summary>
-    public class SaveStream100 : SaveIOStream
+    public class FileVersion_UCF : FileVersion
     {
-        public override float version => -1.00f;
+        public const string NUM = "UCF_Release";
+        public override string version => NUM;
 
-        public SaveStream100(int fileID, out JsonFile.FileState state) : base(fileID, out state)
+        static SaveData Transfer => SaveManager.TransferSnapshot;
+
+        public FileVersion_UCF(int fileID) : base(fileID) { }
+        public override void Initialize()
         {
             this.fileID = fileID;
             saveRootPath = $"{Application.persistentDataPath}/Save{fileID}";
@@ -27,77 +30,72 @@ namespace RageRooster.TOP.Save.Streams
             areaChangesFiles = new();
             foreach (string area in IDestination.AllAreas)
                 areaChangesFiles.Add(area, new JsonFile(saveRootPath, $"flags_{area}"));
-            SecondaryFiles = areaChangesFiles.Values.Append(WorldChangesFile).ToArray();
-
-            if (RootFile.State != JsonFile.FileState.Valid)
-            {
-                state = RootFile.State;
-                return;
-            }
-            if (WorldChangesFile.State != JsonFile.FileState.Valid)
-            {
-                state = WorldChangesFile.State;
-                return;
-            }
-            foreach (var item in areaChangesFiles)
-            {
-                if (item.Value.State != JsonFile.FileState.Valid)
-                {
-                    state = item.Value.State;
-                    return;
-                }
-            }
-            state = JsonFile.FileState.Valid;
-
         }
 
         public JsonFile PlayerFile => RootFile;
-
-        //Contains powerEggs, hensRescued, and globalChanges
         public JsonFile WorldChangesFile;
-
         public Dictionary<string, JsonFile> areaChangesFiles;
 
-        protected override JsonFile.FileState ReadData()
+
+        #region Getters
+        public override bool PathExists => RootFile.PathExists && WorldChangesFile.PathExists && areaChangesFiles.Values.All(x => x.PathExists);
+        public override bool FileExists => RootFile.FileExists && WorldChangesFile.FileExists && areaChangesFiles.Values.All(x => x.FileExists);
+        public override bool Exists => PathExists && FileExists;
+        public override bool HasData => RootFile.HasData && WorldChangesFile.HasData && areaChangesFiles.Values.All(x => x.HasData);
+        public override bool Valid => Exists && HasData;
+        #endregion
+
+        public override FileOpMessage LoadFromFile()
         {
-            Transfer.playerStats.location = (DestinationMap)PlayerFile.Data["location"];
-            Transfer.playerStats.MaxHealth &= (int)PlayerFile.Data["maxHealth"];
-            Transfer.playerStats.MaxAmmo &= (int)PlayerFile.Data["maxAmmo"];
-            Transfer.playerStats.dropLaunch = (bool)PlayerFile.Data["upgrades"]["dropLaunch"];
-            Transfer.playerStats.wallJump = (bool)PlayerFile.Data["upgrades"]["wallJump"];
-            Transfer.playerStats.hellcopter = (bool)PlayerFile.Data["upgrades"]["hellcopter"];
-            Transfer.playerStats.ragingCharge = (bool)PlayerFile.Data["upgrades"]["ragingCharge"];
+            FileOpMessage result = FileOpMessage.Success;
+            if (PlayerFile.LoadFromFile(out JObject PlayerData).IfFail(out result)) return result;
+            if (WorldChangesFile.LoadFromFile(out JObject WorldChangesData).IfFail(out result)) return result;
+            Dictionary<string, JObject> areaChangesData = new();
+            foreach (var pair in areaChangesFiles)
+            {
+                JObject iAreaChangeData;
+                if(pair.Value.LoadFromFile(out iAreaChangeData).IfFail(out result)) return result;
+                areaChangesData.Add(pair.Key, iAreaChangeData);
+            }
 
-            Transfer.progress.Currency &= (int)PlayerFile.Data["currency"];
-            Transfer.progress.playTime = TimeSpan.Parse((string)PlayerFile.Data["playTime"]);
+            Transfer.playerStats.location = (DestinationMap)PlayerData["location"];
+            Transfer.playerStats.MaxHealth &= (int)PlayerData["maxHealth"];
+            Transfer.playerStats.MaxAmmo &= (int)PlayerData["maxAmmo"];
+            Transfer.playerStats.dropLaunch = (bool)PlayerData["upgrades"]["dropLaunch"];
+            Transfer.playerStats.wallJump = (bool)PlayerData["upgrades"]["wallJump"];
+            Transfer.playerStats.hellcopter = (bool)PlayerData["upgrades"]["hellcopter"];
+            Transfer.playerStats.ragingCharge = (bool)PlayerData["upgrades"]["ragingCharge"];
 
-            Transfer.progress.powerEggs.collected = (int)WorldChangesFile.Data["powerEggs"]["total"];
+            Transfer.progress.Currency &= (int)PlayerData["currency"];
+            Transfer.progress.playTime = TimeSpan.Parse((string)PlayerData["playTime"]);
+
+            Transfer.progress.powerEggs.collected = (int)WorldChangesData["powerEggs"]["total"];
             for (int i = 0; i < Transfer.progress.powerEggs.isCollected.Count; i++)
-                Transfer.progress.powerEggs.isCollected[i] = (bool)WorldChangesFile.Data["powerEggs"]["isCollected"][i];
+                Transfer.progress.powerEggs.isCollected[i] = (bool)WorldChangesData["powerEggs"]["isCollected"][i];
 
-            Transfer.progress.wishbones.collected = (int)WorldChangesFile.Data["wishbones"]["total"];
+            Transfer.progress.wishbones.collected = (int)WorldChangesData["wishbones"]["total"];
             for (int i = 0; i < Transfer.progress.powerEggs.isCollected.Count; i++)
-                Transfer.progress.wishbones.isCollected[i] = (bool)WorldChangesFile.Data["wishbones"]["isCollected"][i];
+                Transfer.progress.wishbones.isCollected[i] = (bool)WorldChangesData["wishbones"]["isCollected"][i];
 
-            Transfer.progress.hensRescued.collected = (int)WorldChangesFile.Data["hensRescued"]["total"];
+            Transfer.progress.hensRescued.collected = (int)WorldChangesData["hensRescued"]["total"];
             for (int i = 0; i < Transfer.progress.powerEggs.isCollected.Count; i++)
-                Transfer.progress.hensRescued.isCollected[i] = (bool)WorldChangesFile.Data["hensRescued"]["isCollected"][i];
+                Transfer.progress.hensRescued.isCollected[i] = (bool)WorldChangesData["hensRescued"]["isCollected"][i];
 
-            JObject globalChangesLoad = (JObject)WorldChangesFile.Data["globalChanges"];
+            JObject globalChangesLoad = (JObject)WorldChangesData["globalChanges"];
 
             Transfer.flags["Global"].LoadFromJson(globalChangesLoad);
 
-            foreach (var item in areaChangesFiles)
+            foreach (var item in areaChangesData)
                 if (Transfer.flags.ContainsKey(item.Key))
-                    Transfer.flags[item.Key].LoadFromJson(item.Value.Data as JObject);
+                    Transfer.flags[item.Key].LoadFromJson(item.Value);
 
-            return JsonFile.FileState.Valid;
+            return result;
         }
-        protected override JsonFile.FileState WriteData()
+        public override FileOpMessage SaveToFile()
         {
             //NO
 
-            //PlayerFile.Data = new JObject
+            //PlayerData = new JObject
             //{
             //    ["FileVersion"] = targetFileVersion,
             //    [nameof(sourceData.location)] = (JToken)sourceData.location,
@@ -109,7 +107,7 @@ namespace RageRooster.TOP.Save.Streams
             //    [nameof(SavedPlayerStats.upgrades)] = JObject.FromObject(sourceData.playerStats.upgrades)
             //};
             //
-            //WorldChangesFile.Data = new JObject
+            //WorldChangesData = new JObject
             //{
             //    [nameof(sourceData.powerEggs)] = new JObject
             //    {
@@ -143,9 +141,9 @@ namespace RageRooster.TOP.Save.Streams
             //    state = pair.Value.SaveToFile();
             //    if (state != JsonFile.FileState.Valid) return state;
             //}
-
-            return JsonFile.FileState.Valid;
+            throw new InvalidOperationException();
         }
+
 
         public float GetCompletionPercentage()
         {
@@ -162,19 +160,30 @@ namespace RageRooster.TOP.Save.Streams
             return (collected / (float)totalCollectibles) * 100f;
         }
 
-        public override void ExportMenuDisplayData(out SaveData.MenuDisplayData result)
+        public override void ExportDisplayData(out object resultF)
         {
-            TimeSpan readTime = TimeSpan.Parse((string)PlayerFile.Data["playTime"]);
-            DestinationMap readLocation = PlayerFile.Data["location"];
-            result = new SaveData.MenuDisplayData
+            PlayerFile.LoadFromFile(out JObject PlayerData);
+            WorldChangesFile.LoadFromFile(out JObject ProgressData);
+
+            TimeSpan readTime = TimeSpan.Parse((string)PlayerData["playTime"]);
+            DestinationMap readLocation = PlayerData["location"];
+            SaveData.MenuDisplayData result = new()
             {
                 timeString = $"{(int)readTime.TotalHours}:{readTime.Minutes:D2}:{readTime.Seconds:D2}",
                 location = readLocation,
                 completionPercentage = GetCompletionPercentage(),
-                health = (int)PlayerFile.Data["maxHealth"],
-                powerEggs = (int)WorldChangesFile.Data["powerEggs"]["total"],
-                hensRescued = (int)WorldChangesFile.Data["hensRescued"]["total"],
+                health = (int)PlayerData["maxHealth"],
+                powerEggs = (int)ProgressData["powerEggs"]["total"],
+                hensRescued = (int)ProgressData["hensRescued"]["total"],
             };
+            resultF = result;
+        }
+
+        public override void DeleteFile()
+        {
+            PlayerFile.DeleteFile();
+            WorldChangesFile.DeleteFile();
+            foreach (var item in areaChangesFiles.Values) item.DeleteFile();
         }
     }
 }

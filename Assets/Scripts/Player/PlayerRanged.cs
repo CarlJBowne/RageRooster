@@ -7,7 +7,7 @@ using RageRooster.Core;
 using RageRooster.Core.Save;
 using RageRooster.Player;
 using SLS.GeneralUtilities.EventTickets;
-using SLS.GeneralUtilities.StatObjects;
+using SLS.GeneralUtilities.Syncables;
 using SLS.ObjectUtilities;
 using SLS.StateMachineH;
 using UnityEngine;
@@ -37,7 +37,7 @@ public class PlayerRanged : MonoBehaviour
 
     #region Data
     protected List<EventTicket> events = new();
-    public IntStatClamped Ammo = new();
+    public IntSyncableClamped Ammo = new();
     [HideProperty] public float currentTargetDistance = 10f;
 
     public bool hasEggsToShoot => Ammo > 0;

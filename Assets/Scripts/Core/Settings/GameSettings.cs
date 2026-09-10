@@ -10,8 +10,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using Utilities.JSON;
+using SLS.SaveFileCore;
 using Utilities.Xtensions.Input;
+using SLS.GeneralUtilities.Syncables;
 
 namespace RageRooster.Settings
 {
@@ -24,7 +25,17 @@ namespace RageRooster.Settings
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
         static void Init()
         {
-            stream = new();
+            FileVersion.Options options = new()
+            {
+                DesiredFileVersion = typeof(ConfigVersion_10),
+                AllFileVersions =
+                {
+                    {ConfigVersion_10.NUM, typeof(ConfigVersion_10)},
+                    {ConfigVersion_UCF.NUM, typeof(ConfigVersion_UCF)},
+                }
+            };
+            options.Initialize(ref stream, -1);
+
             {
                 Volume.Master.Value = 1f;
                 Volume.Music.Value = 1f;
@@ -39,92 +50,40 @@ namespace RageRooster.Settings
 
         public static class Volume
         {
-            public static FloatSetting Master = new(1f, value => AudioManager.Get.masterVolume = value);
-            public static FloatSetting Music = new(1f, value => AudioManager.Get.musicVolume = value);
-            public static FloatSetting SFX = new(1f, value => AudioManager.Get.SFXVolume = value);
-            public static FloatSetting Ambience = new(1f, value => AudioManager.Get.ambienceVolume = value);
+            public static FloatSyncableClamped Master = new(1f);
+            public static FloatSyncableClamped Music = new(1f);
+            public static FloatSyncableClamped SFX = new(1f);
+            public static FloatSyncableClamped Ambience = new(1f);
         }
 
         public static class Graphics
         {
-            public static FloatSetting Brightness = new(1f);
-            static Image brightnessOverlay;
+            public static FloatSyncableClamped Brightness = new(1f);
+            public static Image brightnessOverlay;
             public static void EstablishBrightnessOverlay()
             {
                 if (brightnessOverlay != null) return;
                 if (Overlay.ActiveOverlays > 0)
                     brightnessOverlay = Overlay.OverALL.transform.parent.Find("BrightnessOverlay").GetComponent<Image>();
-                Brightness.onChanged = value => brightnessOverlay.color = new(0, 0, 0, 1 - value);
+                Brightness.OnValueChanged += value => brightnessOverlay.color = new(0, 0, 0, 1 - value);
             }
         }
 
-        static IOStream stream;
-        public class IOStream : JsonStream
+        static SLS.SaveFileCore.FileVersion stream;
+        public abstract class FileVersion : SLS.SaveFileCore.FileVersion
         {
-            public IOStream()
+            public FileVersion() : base(-1) { }
+
+            public override string version { get; }
+
+            public override void Initialize()
             {
                 saveRootPath = $"{Application.persistentDataPath}";
-                base.RootFile = new JsonFile(saveRootPath, "Config");
-                SecondaryFiles = new JsonFile[0];
+                RootFile = new JsonFile(saveRootPath, "Config");
             }
+            public override void DeleteFile() => RootFile.DeleteFile();
+            public override void ExportDisplayData(out object result) => throw new NotImplementedException();
 
-            protected override JsonFile.FileState ReadData()
-            {
-                Debug.Log("Reading Config Data");
-                float version = RootFile.Data["FileVersion"] != null ? RootFile.Data["FileVersion"].ToObject<float>() : 1.0f;
-                JToken ControlsJ;
-
-                if (version < 2.0f)
-                {
-                    Volume.Master.TakeSaveInput(RootFile["V_Master"]);
-                    Volume.Music.TakeSaveInput(RootFile["V_Music"]);
-                    Volume.SFX.TakeSaveInput(RootFile["V_SFX"]);
-                    Volume.Ambience.TakeSaveInput(RootFile["V_Amb"]);
-                    Graphics.Brightness.TakeSaveInput(RootFile["G_Brightness"]);
-                    if (RootFile.Data.TryGetValue("Controls", out ControlsJ))
-                        Remapping.Deserialize(ControlsJ);
-                    return JsonFile.FileState.Valid;
-                }
-
-                if (RootFile.Data.TryGetValue("Volume", out JToken VolumeJ))
-                {
-                    Volume.Master.TakeSaveInput(VolumeJ["Master"]);
-                    Volume.Music.TakeSaveInput(VolumeJ["Music"]);
-                    Volume.SFX.TakeSaveInput(VolumeJ["SFX"]);
-                    Volume.Ambience.TakeSaveInput(VolumeJ["Ambience"]);
-                }
-
-                if (RootFile.Data.TryGetValue("Graphics", out JToken GraphicsJ))
-                    Graphics.Brightness.TakeSaveInput(GraphicsJ["Brightness"]);
-
-                if (RootFile.Data.TryGetValue("Controls", out ControlsJ))
-                    Remapping.Deserialize(ControlsJ);
-
-                return JsonFile.FileState.Valid;
-            }
-            protected override JsonFile.FileState WriteData()
-            {
-                Debug.Log("Writing Config Data");
-
-                RootFile.Data = new()
-                {
-                    ["FileVersion"] = 2.0f,
-                    ["Volume"] = new JObject()
-                    {
-                        ["Master"] = Volume.Master.Value,
-                        ["Music"] = Volume.Music.Value,
-                        ["SFX"] = Volume.SFX.Value,
-                        ["Ambience"] = Volume.Ambience.Value,
-                    },
-                    ["Graphics"] = new JObject()
-                    {
-                        ["Brightness"] = Graphics.Brightness.Value
-                    },
-                    ["Controls"] = Remapping.Serialized(),
-                };
-
-                return JsonFile.FileState.Valid;
-            }
         }
 
         public static class Remapping

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
-using SLS.SaveData;
+using SLS.SaveFileCore;
 using UnityEngine;
 
 namespace RageRooster.Core.Save
@@ -28,9 +28,9 @@ namespace RageRooster.Core.Save
 
         public int total => isCollected.Count;
 
-        public override void Clone(SavedCollectible source)
+        public override SavedCollectible Clone(SavedCollectible source)
         {
-            if (this.GetType() != source.GetType()) return;
+            if (this.GetType() != source.GetType()) return null;
             collected = source.collected;
             try
             {
@@ -38,6 +38,7 @@ namespace RageRooster.Core.Save
                 IDs ??= new List<string>(source.IDs);
             }
             catch (Exception) { }
+            return this;
         }
 
         public bool GetValue(string id)
