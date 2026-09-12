@@ -79,7 +79,7 @@ public class Boss1Health : Health, IDamagable
     public void OnDamageReturn()
     {
         if (!phase2TriggerTriggered && GetCurrentHealth() <= phase2Trigger) BeginPhase2();
-        else machine.SendSignal("ReturnFromStun");
+        // else machine.SendSignal("ReturnFromStun");
     }
 
     public void BeginPhase2()
