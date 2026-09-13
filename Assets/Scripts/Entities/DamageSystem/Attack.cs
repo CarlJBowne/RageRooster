@@ -22,12 +22,20 @@ public partial class Attack
     public Vector3 velocity = Vector3.zero;
     public TagSet tags = new();
 
+    public Attack() { }
     public Attack(int damage, Vector3 velocity = default, TagSet tags = default)
     {
         this.amount = damage;
         this.velocity = velocity;
         this.tags = tags;
     }
+    public Attack(Attack source)
+    {
+        this.amount = source.amount;
+        this.velocity = source.velocity;
+        this.tags = new(source.tags);
+    }
+    public Attack Clone() => new(this);
 
     public float x => velocity.x;
     public float y => velocity.y;

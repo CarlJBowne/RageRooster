@@ -9,106 +9,79 @@ using UnityEngine.UIElements;
 
 public partial class Attack
 {
-    public enum Tags
-    {
-        Player,
-        Enemy,
-        Wham,
-        FriendlyFire,
-        Thrown,
-        Projectile,
-        Environment,
-        Pit,
-        Boss,
-        Egg,
-        RagingCharge,
-        Explosion,
-        Boulder,
-        OnPlayerDouble,
-        OnPlayerTriple,
-        OnPlayerQuadruple,
-        OnPlayerNone, 
-        Punch,
-        Uppercut,
-        Kick,
-        Headbutt,
-        Charge,
-        GroundSlam,
-        Fire,
-        Lazer,
-        Peck,
-        Lava,
-        WeakSpot
-    }
-
     [Serializable]
     public class TagSet : Bitmask
     {
         #region Operators
 
+
         /// <summary>
         /// Returns a TagSet where any flags from L OR R are true. Equivalent to | or + operators.
         /// </summary>
-        public static TagSet operator |(TagSet L, TagSet R) => Bitmask.OR(L as Bitmask, R as Bitmask) as TagSet;
+        public static TagSet operator |(TagSet L, TagSet R) => L.OR(R, true);
         /// <summary>
         /// Returns a TagSet where any flags from L OR R are true. Equivalent to | or + operators.
         /// </summary>
-        public static TagSet operator +(TagSet L, TagSet R) => Bitmask.OR(L as Bitmask, R as Bitmask) as TagSet;
+        public static TagSet operator +(TagSet L, TagSet R) => L.OR(R, true);
 
         /// <summary>
         /// Returns a TagSet where any flags on L AND R are true. 
         /// </summary>
-        public static TagSet operator &(TagSet L, TagSet R) => Bitmask.AND(L as Bitmask, R as Bitmask) as TagSet;
+        public static TagSet operator &(TagSet L, TagSet R) => L.AND(R, true);
         /// <summary>
         /// Returns a TagSet where any flags on L AND R are true. 
         /// </summary>
-        public static TagSet operator *(TagSet L, TagSet R) => Bitmask.AND(L as Bitmask, R as Bitmask) as TagSet;
+        public static TagSet operator *(TagSet L, TagSet R) => L.AND(R, true);
 
         /// <summary>
         /// Returns a TagSet where only flags true on one of the two operands, L/R are true. Equivalent to ^ or / operators.
         /// </summary>
-        public static TagSet operator ^(TagSet L, TagSet R) => Bitmask.XOR(L as Bitmask, R as Bitmask) as TagSet;
+        public static TagSet operator ^(TagSet L, TagSet R) => L.XOR(R, true);
         /// <summary>
         /// Returns a TagSet where only flags true on one of the two operands, L/R are true. Equivalent to ^ or / operators.
         /// </summary>
-        public static TagSet operator /(TagSet L, TagSet R) => Bitmask.XOR(L as Bitmask, R as Bitmask) as TagSet;
+        public static TagSet operator /(TagSet L, TagSet R) => L.XOR(R, true);
 
 
 
         /// <summary>
         /// Returns a TagSet where the right index is added to the left TagSet.
         /// </summary>
-        public static TagSet operator +(TagSet L, int R) => Bitmask.ADD(L as Bitmask, R) as TagSet;
+        public static TagSet operator +(TagSet L, int R) => L.ADD(R, true);
         /// <summary>
         /// Returns a TagSet where the right indeces are added to the left TagSet.
         /// </summary>
-        public static TagSet operator +(TagSet L, int[] R) => Bitmask.ADD(L as Bitmask, R) as TagSet;
+        public static TagSet operator +(TagSet L, int[] R) => L.ADD(R, true);
         /// <summary>
         /// Returns a TagSet where the right indeces are added to the left TagSet.
         /// </summary>
-        public static TagSet operator +(TagSet L, List<int> R) => Bitmask.ADD(L as Bitmask, R) as TagSet;
+        public static TagSet operator +(TagSet L, List<int> R) => L.ADD(R, true);
 
         /// <summary>
         /// Returns a TagSet where the right index is removed to the left TagSet.
         /// </summary>
-        public static TagSet operator -(TagSet L, int R) => Bitmask.REMOVE(L as Bitmask, R) as TagSet;
+        public static TagSet operator -(TagSet L, int R) => L.REMOVE(R, true);
         /// <summary>
         /// Returns a TagSet where the right indeces are removed to the left TagSet.
         /// </summary>
-        public static TagSet operator -(TagSet L, int[] R) => Bitmask.REMOVE(L as Bitmask, R) as TagSet;
+        public static TagSet operator -(TagSet L, int[] R) => L.REMOVE(R, true);
         /// <summary>
         /// Returns a TagSet where the right indeces are removed to the left TagSet.
         /// </summary>
-        public static TagSet operator -(TagSet L, List<int> R) => Bitmask.REMOVE(L as Bitmask, R) as TagSet;
+        public static TagSet operator -(TagSet L, List<int> R) => L.REMOVE(R, true);
 
         /// <summary>
         /// Returns a TagSet where flags true on R are subtracted from L.
         /// </summary>
-        public static TagSet operator -(TagSet L, TagSet R) => Bitmask.XAND(L as Bitmask, R as Bitmask) as TagSet;
+        public static TagSet operator -(TagSet L, TagSet R) => L.XAND(R, true);
         /// <summary>
         /// Returns a TagSet that is inverted from the input. 
         /// </summary>
-        public static TagSet operator ~(TagSet L) => INVERT(L as Bitmask) as TagSet;
+        public static TagSet operator ~(TagSet L) => L.INVERT(true);
+
+
+
+
 
 
         /// <summary>
@@ -144,6 +117,47 @@ public partial class Attack
         #endregion
 
 
+        /// <summary>
+        /// Create a BitwiseEnum with specific integer bitmask.
+        /// </summary>
+        /// <param name="intValue">Integer bitmask.</param>
+        public TagSet(int intValue = 0) => this.intValue = intValue;
+        /// <summary>
+        /// Create a BitwiseEnum from an array of booleans. Each true value sets the corresponding bit.
+        /// </summary>
+        /// <param name="inputs">Boolean array where index i sets bit i if true.</param>
+        public TagSet(params bool[] inputs)
+        {
+            intValue = 0;
+            if (inputs == null) return;
+            int maxBits = sizeof(int) * 8;
+            int len = Math.Min(inputs.Length, maxBits);
+            for (int i = 0; i < len; i++)
+                if (inputs[i]) intValue |= 1 << i;
+        }
+        /// <summary>
+        /// Create a BitwiseEnum with all the input values switched on.
+        /// </summary>
+        /// <param name="values"></param>
+        public TagSet(params Tags[] values)
+        {
+            intValue = 0;
+            for (int i = 0; i < values.Length; i++)
+                this[(int)values[0]] = true;
+        }
+
+
+        /// <summary>
+        /// Create a BitwiseEnum Cloned from an existing one.
+        /// </summary>
+        /// <param name="source">The Source.</param>
+        public TagSet(Bitmask source) => new TagSet(source.intValue);
+        /// <summary>
+        /// Create a BitwiseEnum Cloned from an existing one.
+        /// </summary>
+        /// <param name="source">The Source.</param>
+        public TagSet(TagSet source) => new TagSet(source.intValue);
+        new public TagSet Clone() => new(this);
 
         public bool this[Tags i]
         {
@@ -154,7 +168,7 @@ public partial class Attack
         public static bool operator ==(TagSet L, Tags R) => L[R];
         public static bool operator !=(TagSet L, Tags R) => !L[R];
 
-
+        new public TagSet Clone() => new(this);
 
 
         public override bool Equals(object obj) => obj is TagSet set && base.Equals(obj) && intValue == set.intValue;
