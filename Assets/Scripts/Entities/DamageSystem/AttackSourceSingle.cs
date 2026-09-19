@@ -19,7 +19,7 @@ public class AttackSourceSingle : MonoBehaviour, IAttackSource
 
     public virtual Attack GetAttack()
     {
-        Attack result = attack;
+        Attack result = attack.Clone();
         result.velocity = transform.TransformDirection(result.velocity);
         return result;
     }
