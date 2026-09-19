@@ -52,7 +52,7 @@ public class Boss1Health : Health, IDamagable
         if (attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.GroundSlam])
         {
             damageTint.BeginAnimation();
-            EventBus.Trigger("Damaged", gameObject);
+            CustomEvent.Trigger(gameObject, "Damaged");
             return true;
         }
         if (bossPhase != 2 && attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.Egg] /* &&  machine.CurrentState.gameObject.name != "Charging" */)
@@ -69,6 +69,16 @@ public class Boss1Health : Health, IDamagable
         return false;
     }
 
+    public void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Collided with " + other);        
+
+        /* if (other.TryGetComponent<Attack>(out Attack foundAttack)) 
+        {
+            Debug.Log("Attack tag attached!");
+            OverrideDamageable(foundAttack);
+        } */
+    }
 
     protected override void OnDamage(Attack attack)
     {

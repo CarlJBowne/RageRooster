@@ -157,8 +157,7 @@ public partial class Attack
         /// </summary>
         /// <param name="source">The Source.</param>
         public TagSet(TagSet source) => new TagSet(source.intValue);
-        new public TagSet Clone() => new(this);
-
+        
         public bool this[Tags i]
         {
             get => this[(int)i];
