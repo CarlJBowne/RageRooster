@@ -18,7 +18,7 @@ public class AttackSourceMulti : MonoBehaviour, IAttackSource
 
     public Attack GetAttack()
     {
-        Attack result = attacks[currentAttackID].Clone();
+        Attack result = attacks[currentAttackID];
         result.velocity = transform.TransformDirection(result.velocity);
         result.tags += additionalTags;
         return result;
