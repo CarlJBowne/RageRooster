@@ -5,7 +5,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using RageRooster.Core;
 using RageRooster.Player;
-using RageRooster.World;
+using RageRooster.Core.World;
 using UnityEngine;
 using SLS.SaveFileCore;
 
@@ -18,10 +18,21 @@ namespace RageRooster.Core.Save
     {
         #region Top Systems
 
-        public static SaveData Default { get; private set; }
+        /// <summary>
+        /// The currently Active <see cref="SaveData"/> functioning in the game.
+        /// </summary>
         public static SaveData Active { get; private set; }
+        /// <summary>
+        /// Stands for Defaults or Definitions depending on your point of view. <br/>
+        /// Contains all the default values as well as the definition of what they are called.
+        /// </summary>
+        public static SaveData Defs { get; private set; }
 
-        public static void InitializeDefaults(SaveData defaultInput) => Default = defaultInput;
+        public static void InitializeDefaults(SaveData defaultInput)
+        {
+            Defs = defaultInput;
+            FlagIDs = Defs.flags.Keys.ToList();
+        }
         public static void InitializeSystem()
         {
             Active = new();
@@ -43,6 +54,8 @@ namespace RageRooster.Core.Save
         public static Action RevertToSaveFile;
         public static Action<int> CallInitializeSave;
 
+        public static IReadOnlyList<string> FlagIDs { get; private set; }
+
         #endregion
 
         #region Actual Data
@@ -52,8 +65,8 @@ namespace RageRooster.Core.Save
         public Dictionary<string, Flag.Collection> flags = new();
         public float Completion =>
             progress.storyFlags.CompletionOf(.4f) +
-            progress.powerEggs.CompletionOf(.3f) + 
-            progress.hensRescued.CompletionOf(.2f) + 
+            progress.powerEggs.CompletionOf(.3f) +
+            progress.hensRescued.CompletionOf(.2f) +
             progress.wishbones.CompletionOf(.1f);
 
         #endregion Actual Data 
@@ -67,7 +80,7 @@ namespace RageRooster.Core.Save
         public SaveData(SaveData source = null)
         {
             if (source != null) Clone(source);
-            else if (Default != null) Clone(Default);
+            else if (Defs != null) Clone(Defs);
         }
 
         public override SaveData Clone(SaveData source)
@@ -76,7 +89,7 @@ namespace RageRooster.Core.Save
             progress.Clone(source.progress);
             foreach (string key in source.flags.Keys)
             {
-                if (!flags.ContainsKey(key) || flags[key] == source.flags[key]) 
+                if (!flags.ContainsKey(key) || flags[key] == source.flags[key])
                     flags[key] = new();
                 flags[key].Clone(source.flags[key]);
             }
@@ -98,7 +111,7 @@ namespace RageRooster.Core.Save
         public class MenuDisplayData
         {
             public bool isValid = true;
-            public DestinationMap location;
+            public Destination location;
             public string timeString;
             public float completionPercentage;
             public int health;

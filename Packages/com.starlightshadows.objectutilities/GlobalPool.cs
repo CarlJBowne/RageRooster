@@ -72,7 +72,7 @@ namespace SLS.ObjectUtilities
         public static void UnloadAllPools()
         {
             if (!initialized) return;
-            foreach (var pool in Get.serializedPools) pool.DisableAll();
+            foreach (var pool in Self.serializedPools) pool.DisableAll();
         }
 
         public static ObjectPool GetPool(string poolName)
@@ -239,11 +239,11 @@ namespace SLS.ObjectUtilities
                     List<ObjectPool> poolList = new();
 
                     // Prefer runtime instance
-                    if (GlobalPool.Get != null)
+                    if (GlobalPool.Self != null)
                     {
                         try
                         {
-                            poolList = GlobalPool.Get.ALLGlobalPools() ?? new List<ObjectPool>();
+                            poolList = GlobalPool.Self.ALLGlobalPools() ?? new List<ObjectPool>();
                         }
                         catch
                         {

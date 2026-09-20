@@ -1,4 +1,4 @@
-using RageRooster.World;
+using RageRooster.Core.World;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

@@ -30,7 +30,7 @@ namespace RageRooster.Actors.Save.Collectibles
         [CustomEditor(typeof(Hen))]
         new public class Editor : CollectibleBase.Editor
         {
-            protected override List<string> targetRegistryList => SaveData.Default.progress.hensRescued.IDs;
+            protected override List<string> targetRegistryList => SaveData.Defs.progress.hensRescued.IDs;
         }
     }
 }

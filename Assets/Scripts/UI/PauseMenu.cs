@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using System;
 using SLS.Singletons;
 using SLS.MenuCore;
-using RageRooster.World;
+using RageRooster.Core.World;
 using RageRooster.Core;
 using RageRooster;
 using static RageRooster.Services;

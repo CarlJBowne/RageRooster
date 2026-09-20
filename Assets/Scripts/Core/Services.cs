@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using RageRooster.Core;
-using RageRooster.World;
+using RageRooster.Core.World;
 using UnityEngine;
 
 namespace RageRooster
@@ -43,7 +43,7 @@ namespace RageRooster
 #if UNITY_EDITOR
         public static class Editor
         {
-            public static Action<IDestination> SetEditorDestination;
+            public static Action<Destination> SetEditorDestination;
             public static ScriptableObject SavedValueRegistry;
         }
 

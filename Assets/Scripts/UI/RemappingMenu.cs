@@ -58,8 +58,8 @@ public class RemappingMenu : MonoBehaviour
 
         public void UpdateImages()
         {
-            keyboardImage.sprite = ButtonIcons.Get.GetKeyboardSprite(main.action.GetBindingEffectivePath("Keyboard"));
-            gamepadImage.sprite = ButtonIcons.Get.GetGamepadSprite(main.action.GetBindingEffectivePath("Gamepad"));
+            keyboardImage.sprite = ButtonIcons.Self.GetKeyboardSprite(main.action.GetBindingEffectivePath("Keyboard"));
+            gamepadImage.sprite = ButtonIcons.Self.GetGamepadSprite(main.action.GetBindingEffectivePath("Gamepad"));
             keyboardImage.enabled = keyboardImage.sprite != null;
             gamepadImage.enabled = gamepadImage.sprite != null;
         }

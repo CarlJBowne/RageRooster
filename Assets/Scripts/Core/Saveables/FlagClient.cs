@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using RageRooster.World;
+using RageRooster.Core.World;
 using SLS.SaveFileCore;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -77,9 +77,9 @@ namespace RageRooster.Core.Save
             collectionIDProp = property.FindPropertyRelative("CollectionID");
             flagIDProp = property.FindPropertyRelative("ID");
 
-            collectionIDs = new(IDestination.AllAreas);
+            collectionIDs = new(AreaRegistry.Names);
             collectionIDs.Insert(0, "Global");
-            collectionIDs.Insert(1, "Story Flags");
+            collectionIDs.Insert(1, "StoryFlags");
             int collInitID = collectionIDs.Contains(collectionIDProp.stringValue)
                 ? collectionIDs.IndexOf(collectionIDProp.stringValue)
                 : 0;

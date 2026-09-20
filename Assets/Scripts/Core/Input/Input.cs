@@ -87,6 +87,6 @@ public class Input : GlobalAsset<Input>
 
     }
 
-    public static void Enable() => Get.RootAsset.Enable();
-    public static void Disable() => Get.RootAsset.Disable();
+    public static void Enable() => Self.RootAsset.Enable();
+    public static void Disable() => Self.RootAsset.Disable();
 }

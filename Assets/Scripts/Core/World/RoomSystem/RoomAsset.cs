@@ -16,13 +16,13 @@ using UnityEditor;
 using UnityEditor.UIElements;
 #endif
 
-namespace RageRooster.World
+namespace RageRooster.Core.World
 {
     /// <summary>
     /// A Development-Time Asset defining a Room in the game world. <br/>
     /// </summary>
     [CreateAssetMenu(fileName = "Room", menuName = "ScriptableObjects/Room")]
-    public class RoomAsset : SceneSO//, IRoomAsset
+    public class RoomAsset : SceneSO
     {
         #region Serialized Data
 
@@ -40,10 +40,10 @@ namespace RageRooster.World
         /// <summary>
         /// The list of Entrance points into this room. The Player's position to these entrances is compared every few frames to determine when to load/unload the room.
         /// </summary>
-        [field: SerializeField] public List<RoomEntrance.Data> entrances { get; protected set; } = new();
+        [field: SerializeField] public List<RoomEntrance.Data> entrances { get; internal set; } = new();
 
 #if UNITY_EDITOR
-        [field: SerializeField] public List<string> spawnPointNames { get; protected set; } = new();
+        [field: SerializeField] public List<string> spawnPointNames { get; internal set; } = new();
 #endif
 
         #endregion
@@ -459,7 +459,7 @@ namespace RageRooster.World
                 SerializedProperty spawnNamesProp = serializedObject.FindBackingField(nameof(RoomAsset.spawnPointNames));
                 for (int i = 0; i < spawnNamesProp.arraySize; i++)
                     spawnFoldout.Add(new Label($"{i} : {spawnNamesProp.GetArrayElementAtIndex(i).stringValue}"));
-                
+
 
                 // Bind fields to serializedObject - PropertyField does this automatically.
                 // Ensure changes are applied when serialization changes occur.
@@ -567,7 +567,7 @@ namespace RageRooster.World
 
                 private void OnEnable()
                 {
-                    foreach (AreaAsset area in AreaRegistry.GetAll().ToList())
+                    foreach (AreaAsset area in AreaRegistry.All)
                     {
                         Label areaLabel = new(area.displayName);
                         rootVisualElement.Add(areaLabel);

@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace RageRooster.World
+namespace RageRooster.Core.World
 {
     [ExecuteInEditMode]
     public abstract class RoomActor : MonoBehaviour, IRoomActor

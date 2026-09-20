@@ -12,7 +12,7 @@ namespace RageRooster.Actors.Save.Collectibles
 {
     public class Wishbone : CollectibleBase
     {
-        protected override SavedCollectible targetSavedCollectible => SaveData.Default.progress.wishbones;
+        protected override SavedCollectible targetSavedCollectible => SaveData.Defs.progress.wishbones;
 
 
         private void OnTriggerEnter(Collider other)
@@ -23,7 +23,7 @@ namespace RageRooster.Actors.Save.Collectibles
         [CustomEditor(typeof(Wishbone))]
         public new class Editor : CollectibleBase.Editor
         {
-            protected override List<string> targetRegistryList => SaveData.Default.progress.wishbones.IDs;
+            protected override List<string> targetRegistryList => SaveData.Defs.progress.wishbones.IDs;
         }
     }
 }

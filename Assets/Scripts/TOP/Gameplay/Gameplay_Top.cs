@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using RageRooster.World;
+using RageRooster.Core.World;
 using RageRooster.Core.Save;
 using SLS.GameStateMachine;
 using SLS.MenuCore;
@@ -56,7 +56,7 @@ namespace RageRooster.TOP
 
                 Debug.Log("Initializing Other Systems");
                 GlobalPool.poolParent = rootObjects[0].transform.Find("PooledObjects");
-                GlobalPool.Get.Initialize();
+                GlobalPool.Self.Initialize();
                 Overlay.OverALL.Alpha = 1;
                 Overlay.UnderHUD.ResetState();
                 Overlay.BetweenUI.ResetState();

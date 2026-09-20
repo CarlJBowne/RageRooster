@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 using SLS.Singletons;
 using Utilities.Xtensions;
 using Cinemachine.Utility;
-using RageRooster.World;
+using RageRooster.Core.World;
 using SLS.Physics3D;
 using SLS.StateMachineH;
 using SLS.StateMachineH.Signals;

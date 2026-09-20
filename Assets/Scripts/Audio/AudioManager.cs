@@ -61,8 +61,8 @@ public class AudioManager : MonoBehaviour
     {
         if (FMODEvents.Active)
         {
-            if (FMODEvents.Get.HasAmbience()) InitializeAmbience(FMODEvents.Get.GetAmbience());
-            if (FMODEvents.Get.HasMusic()) InitializeMusic(FMODEvents.Get.GetMusic());
+            if (FMODEvents.Self.HasAmbience()) InitializeAmbience(FMODEvents.Self.GetAmbience());
+            if (FMODEvents.Self.HasMusic()) InitializeMusic(FMODEvents.Self.GetMusic());
         }
     }
 
@@ -168,9 +168,9 @@ public class AudioManager : MonoBehaviour
         EventReference musicEvent = new EventReference();
         switch (sceneName)
         {
-            case "MainMenu": musicEvent = FMODEvents.Get.titleScreenMusic; break;
-            case "Forest": musicEvent = FMODEvents.Get.ireGorgeMusic; break;
-            case "FarmHouse": musicEvent = FMODEvents.Get.rockyFurrowsHubMusic; break;
+            case "MainMenu": musicEvent = FMODEvents.Self.titleScreenMusic; break;
+            case "Forest": musicEvent = FMODEvents.Self.ireGorgeMusic; break;
+            case "FarmHouse": musicEvent = FMODEvents.Self.rockyFurrowsHubMusic; break;
             default:
                 return;
         }

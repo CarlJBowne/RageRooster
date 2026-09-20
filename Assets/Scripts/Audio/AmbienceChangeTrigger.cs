@@ -29,15 +29,15 @@ public class AmbienceChangeTrigger : MonoBehaviour
         switch (type)
         {
             case AmbienceType.IreGorge:
-                return FMODEvents.Get.ireGorgeAmbience;
+                return FMODEvents.Self.ireGorgeAmbience;
             case AmbienceType.RockyFurrows:
-                return FMODEvents.Get.rockyFurrowsAmbience;
+                return FMODEvents.Self.rockyFurrowsAmbience;
             case AmbienceType.WaterSplash:
-                return FMODEvents.Get.waterSplash;
+                return FMODEvents.Self.waterSplash;
             case AmbienceType.Boss:
-                return FMODEvents.Get.bossAmbience;
+                return FMODEvents.Self.bossAmbience;
             case AmbienceType.Transition:
-                return FMODEvents.Get.transitionAmbience;
+                return FMODEvents.Self.transitionAmbience;
             default:
                 return new EventReference();
         }

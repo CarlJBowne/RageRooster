@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using RageRooster.World;
+using RageRooster.Core.World;
 using SLS.GameStateMachine;
 using SLS.MenuCore;
 

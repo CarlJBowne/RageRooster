@@ -34,7 +34,7 @@ namespace SLS.GameStateMachine
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
-        private static void Boot() => Get.AllStates[0].Enter();
+        private static void Boot() => Self.AllStates[0].Enter();
 
 #if UNITY_EDITOR
 
@@ -103,8 +103,8 @@ namespace SLS.GameStateMachine
             {
                 GameState NewState = ScriptableObject.CreateInstance<GameState>();
                 ProjectWindowUtil.CreateAsset(NewState, "Assets/Data/GameStates/New Game State.asset");
-                Get.AllStates.Add(NewState);
-                EditorUtility.SetDirty(Get);
+                Self.AllStates.Add(NewState);
+                EditorUtility.SetDirty(Self);
             }
 
             class StateTypeTemplate : VisualElement
@@ -124,8 +124,8 @@ namespace SLS.GameStateMachine
 
                 bool AlreadyMade()
                 {
-                    for (int i = 0; i < Get.AllStates.Count; i++)
-                        if (Get.AllStates[i] != null && Get.AllStates[i].name == title)
+                    for (int i = 0; i < Self.AllStates.Count; i++)
+                        if (Self.AllStates[i] != null && Self.AllStates[i].name == title)
                             return true;
                     return false;
                 }

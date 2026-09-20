@@ -18,13 +18,13 @@ using UnityEditor.SceneManagement;
 using SLS.ListUtilities.Editor;
 #endif
 
-namespace RageRooster.World
+namespace RageRooster.Core.World
 {
     /// <summary>
     /// A Development-Time Asset defining an Area in the game world. <br/>
     /// </summary>
     [CreateAssetMenu(fileName = "Area", menuName = "ScriptableObjects/Area")]
-    public class AreaAsset : SceneSO//, IAreaAsset
+    public class AreaAsset : SceneSO
     {
         #region Config Fields
         /// <summary>
@@ -97,14 +97,18 @@ namespace RageRooster.World
         }
 
 
-        public RoomAsset GetRoom(string name)
+        public RoomAsset this[string name]
         {
-            for (int i = 0; i < rooms.Count; i++)
-                if (rooms[i].name == name)
-                    return rooms[i];
-            return null;
+            get
+            {
+                for (int i = 0; i < rooms.Count; i++)
+                    if (rooms[i].name == name)
+                        return rooms[i];
+                return null;
+            }
         }
-        public RoomAsset GetRoom(int i) => rooms[i];
+        public RoomAsset this[int i] => rooms[i];
+
 
 
 #if UNITY_EDITOR

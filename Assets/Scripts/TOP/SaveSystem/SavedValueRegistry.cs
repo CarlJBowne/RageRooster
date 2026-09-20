@@ -4,7 +4,7 @@ using System.Linq;
 using EditorAttributes;
 using RageRooster.Core.Save;
 using RageRooster.Player;
-using RageRooster.World;
+using RageRooster.Core.World;
 using SLS.SaveFileCore;
 using SLS.Singletons;
 using UnityEngine;
@@ -39,7 +39,7 @@ namespace RageRooster.TOP.Save
                     wishbones = wishbones,
                     hensRescued = hensRescued,
                 },
-                flags = AreaRegistry.SavedFlagsDictionary()
+                flags = AreaRegistry.All.ToDictionary( a => a.name,  a => a.flagDefaults)
             };
             defs.flags.Add("Global", globalFlagDefs);
             SaveData.InitializeDefaults(defs);

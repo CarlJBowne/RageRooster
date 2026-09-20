@@ -1,4 +1,4 @@
-using RageRooster.World;
+using RageRooster.Core.World;
 using SLS.ObjectUtilities;
 using RageRooster.Core;
 using RageRooster.Core.Save;
@@ -10,7 +10,7 @@ using SLS.Singletons;
 using SLS.MenuCore;
 using static RageRooster.Services;
 
-namespace RageRooster.World
+namespace RageRooster.Core.World
 {
     /// <summary>
     /// Global Gameplay System for managing Room transitions, current Room/Area tracking, and related functionality.
@@ -34,7 +34,7 @@ namespace RageRooster.World
         /// <summary>
         /// A redirection to the Active SaveData's PlayerStats's location value.
         /// </summary>
-        public static IDestination ReturnDestination
+        public static Destination ReturnDestination
         {
             get => SaveData.Active.playerStats.location;
             set => SaveData.Active.playerStats.location = value;
@@ -43,7 +43,7 @@ namespace RageRooster.World
         /// <summary>
         /// The target Destination for the next Room transition. <br/>
         /// </summary>
-        public static IDestination queuedDestination;
+        public static Destination queuedDestination;
         /// <summary>
         /// Manual override to force a full Deload & Load transition even if too/from the same area or room.
         /// </summary>

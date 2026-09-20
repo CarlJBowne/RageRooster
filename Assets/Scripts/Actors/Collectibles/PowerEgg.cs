@@ -23,7 +23,7 @@ namespace RageRooster.Actors.Save.Collectibles
         [CustomEditor(typeof(PowerEgg))]
         public new class Editor : CollectibleBase.Editor
         {
-            protected override List<string> targetRegistryList => SaveData.Default.progress.powerEggs.IDs;
+            protected override List<string> targetRegistryList => SaveData.Defs.progress.powerEggs.IDs;
         }
     }
 }

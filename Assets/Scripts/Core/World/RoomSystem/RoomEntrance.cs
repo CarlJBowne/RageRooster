@@ -12,7 +12,7 @@ using UnityEditor;
 using UnityEditor.Rendering;
 #endif
 
-namespace RageRooster.World
+namespace RageRooster.Core.World
 {
     [ExecuteInEditMode]
     /// <summary>

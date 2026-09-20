@@ -4,7 +4,7 @@ using UnityEngine;
 using SLS.MenuCore;
 using static RageRooster.Services;
 
-namespace RageRooster.World
+namespace RageRooster.Core.World
 {
     public class TunnelTransition : MonoBehaviour
     {

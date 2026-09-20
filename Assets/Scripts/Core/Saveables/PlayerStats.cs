@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RageRooster.Core;
 using RageRooster.Core.Save;
-using RageRooster.World;
+using RageRooster.Core.World;
 using SLS.GeneralUtilities;
 using SLS.GeneralUtilities.Syncables;
 using SLS.SaveFileCore;
@@ -21,7 +21,7 @@ namespace RageRooster.Player
         public void Establish() => Active = this;
         public IntSyncable MaxHealth = new();
         public IntSyncable MaxAmmo = new();
-        public IDestination location;
+        public Destination location;
 
         /// <summary> The ability to throw a grabbable object downwards while in midair, launching the player upwards. </summary>
         public bool dropLaunch;

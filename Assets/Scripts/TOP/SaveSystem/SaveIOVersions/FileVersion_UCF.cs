@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using RageRooster.Core.Save;
-using RageRooster.World;
+using RageRooster.Core.World;
 using UnityEngine;
 using SLS.SaveFileCore;
 
@@ -28,7 +28,7 @@ namespace RageRooster.TOP.Save.Streams
             RootFile = new(saveRootPath, $"playerData");
             WorldChangesFile = new(saveRootPath, $"worldChanges");
             areaChangesFiles = new();
-            foreach (string area in IDestination.AllAreas)
+            foreach (string area in AreaRegistry.Names)
                 areaChangesFiles.Add(area, new JsonFile(saveRootPath, $"flags_{area}"));
         }
 
@@ -58,7 +58,7 @@ namespace RageRooster.TOP.Save.Streams
                 areaChangesData.Add(pair.Key, iAreaChangeData);
             }
 
-            Transfer.playerStats.location = (DestinationMap)PlayerData["location"];
+            Transfer.playerStats.location = (Destination)(JArray)PlayerData["location"];
             Transfer.playerStats.MaxHealth &= (int)PlayerData["maxHealth"];
             Transfer.playerStats.MaxAmmo &= (int)PlayerData["maxAmmo"];
             Transfer.playerStats.dropLaunch = (bool)PlayerData["upgrades"]["dropLaunch"];
@@ -166,7 +166,7 @@ namespace RageRooster.TOP.Save.Streams
             WorldChangesFile.LoadFromFile(out JObject ProgressData);
 
             TimeSpan readTime = TimeSpan.Parse((string)PlayerData["playTime"]);
-            DestinationMap readLocation = PlayerData["location"];
+            Destination readLocation = (Destination)(JArray)PlayerData["location"];
             SaveData.MenuDisplayData result = new()
             {
                 timeString = $"{(int)readTime.TotalHours}:{readTime.Minutes:D2}:{readTime.Seconds:D2}",

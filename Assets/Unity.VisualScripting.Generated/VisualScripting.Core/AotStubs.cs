@@ -1093,33 +1093,33 @@ namespace Unity.VisualScripting.Generated.Aot
 	// SLS.StateMachineH.Timelines.TimedMovementAffector.op_Implicit
 	// SLS.StateMachineH.Timelines.TimedMovementAffector.op_Equality
 	// SLS.StateMachineH.Timelines.TimedMovementAffector.op_Inequality
-	// RageRooster.World.AreaAsset.op_Implicit
-	// RageRooster.World.AreaAsset.op_Equality
-	// RageRooster.World.AreaAsset.op_Inequality
-	// RageRooster.World.AreaRegistry.op_Implicit
-	// RageRooster.World.AreaRegistry.op_Equality
-	// RageRooster.World.AreaRegistry.op_Inequality
-	// RageRooster.World.AreaRoot.op_Implicit
-	// RageRooster.World.AreaRoot.op_Equality
-	// RageRooster.World.AreaRoot.op_Inequality
-	// RageRooster.World.RoomActor.op_Implicit
-	// RageRooster.World.RoomActor.op_Equality
-	// RageRooster.World.RoomActor.op_Inequality
-	// RageRooster.World.RoomAsset.op_Implicit
-	// RageRooster.World.RoomAsset.op_Equality
-	// RageRooster.World.RoomAsset.op_Inequality
-	// RageRooster.World.RoomEntrance.op_Implicit
-	// RageRooster.World.RoomEntrance.op_Equality
-	// RageRooster.World.RoomEntrance.op_Inequality
-	// RageRooster.World.RoomManager.op_Implicit
-	// RageRooster.World.RoomManager.op_Equality
-	// RageRooster.World.RoomManager.op_Inequality
-	// RageRooster.World.RoomRoot.op_Implicit
-	// RageRooster.World.RoomRoot.op_Equality
-	// RageRooster.World.RoomRoot.op_Inequality
-	// RageRooster.World.MovementSystems.TunnelTransition.op_Implicit
-	// RageRooster.World.MovementSystems.TunnelTransition.op_Equality
-	// RageRooster.World.MovementSystems.TunnelTransition.op_Inequality
+	// RageRooster.Core.World.AreaAsset.op_Implicit
+	// RageRooster.Core.World.AreaAsset.op_Equality
+	// RageRooster.Core.World.AreaAsset.op_Inequality
+	// RageRooster.Core.World.AreaRegistry.op_Implicit
+	// RageRooster.Core.World.AreaRegistry.op_Equality
+	// RageRooster.Core.World.AreaRegistry.op_Inequality
+	// RageRooster.Core.World.AreaRoot.op_Implicit
+	// RageRooster.Core.World.AreaRoot.op_Equality
+	// RageRooster.Core.World.AreaRoot.op_Inequality
+	// RageRooster.Core.World.RoomActor.op_Implicit
+	// RageRooster.Core.World.RoomActor.op_Equality
+	// RageRooster.Core.World.RoomActor.op_Inequality
+	// RageRooster.Core.World.RoomAsset.op_Implicit
+	// RageRooster.Core.World.RoomAsset.op_Equality
+	// RageRooster.Core.World.RoomAsset.op_Inequality
+	// RageRooster.Core.World.RoomEntrance.op_Implicit
+	// RageRooster.Core.World.RoomEntrance.op_Equality
+	// RageRooster.Core.World.RoomEntrance.op_Inequality
+	// RageRooster.Core.World.RoomManager.op_Implicit
+	// RageRooster.Core.World.RoomManager.op_Equality
+	// RageRooster.Core.World.RoomManager.op_Inequality
+	// RageRooster.Core.World.RoomRoot.op_Implicit
+	// RageRooster.Core.World.RoomRoot.op_Equality
+	// RageRooster.Core.World.RoomRoot.op_Inequality
+	// RageRooster.Core.World.MovementSystems.TunnelTransition.op_Implicit
+	// RageRooster.Core.World.MovementSystems.TunnelTransition.op_Equality
+	// RageRooster.Core.World.MovementSystems.TunnelTransition.op_Inequality
 	// RageRooster.Core.Save.SavedValueRegistry.op_Implicit
 	// RageRooster.Core.Save.SavedValueRegistry.op_Equality
 	// RageRooster.Core.Save.SavedValueRegistry.op_Inequality
@@ -1153,18 +1153,18 @@ namespace Unity.VisualScripting.Generated.Aot
 	// PlayerMovementBody.Editor.op_Implicit
 	// PlayerMovementBody.Editor.op_Equality
 	// PlayerMovementBody.Editor.op_Inequality
-	// RageRooster.World.AreaAsset.Editor.op_Implicit
-	// RageRooster.World.AreaAsset.Editor.op_Equality
-	// RageRooster.World.AreaAsset.Editor.op_Inequality
-	// RageRooster.World.AreaRoot.Editor.op_Implicit
-	// RageRooster.World.AreaRoot.Editor.op_Equality
-	// RageRooster.World.AreaRoot.Editor.op_Inequality
-	// RageRooster.World.RoomAsset.Editor.op_Implicit
-	// RageRooster.World.RoomAsset.Editor.op_Equality
-	// RageRooster.World.RoomAsset.Editor.op_Inequality
-	// RageRooster.World.RoomRoot.Editor.op_Implicit
-	// RageRooster.World.RoomRoot.Editor.op_Equality
-	// RageRooster.World.RoomRoot.Editor.op_Inequality
+	// RageRooster.Core.World.AreaAsset.Editor.op_Implicit
+	// RageRooster.Core.World.AreaAsset.Editor.op_Equality
+	// RageRooster.Core.World.AreaAsset.Editor.op_Inequality
+	// RageRooster.Core.World.AreaRoot.Editor.op_Implicit
+	// RageRooster.Core.World.AreaRoot.Editor.op_Equality
+	// RageRooster.Core.World.AreaRoot.Editor.op_Inequality
+	// RageRooster.Core.World.RoomAsset.Editor.op_Implicit
+	// RageRooster.Core.World.RoomAsset.Editor.op_Equality
+	// RageRooster.Core.World.RoomAsset.Editor.op_Inequality
+	// RageRooster.Core.World.RoomRoot.Editor.op_Implicit
+	// RageRooster.Core.World.RoomRoot.Editor.op_Equality
+	// RageRooster.Core.World.RoomRoot.Editor.op_Inequality
 	// RageRooster.Actors.Save.Collectibles.CollectibleBase.Editor.op_Implicit
 	// RageRooster.Actors.Save.Collectibles.CollectibleBase.Editor.op_Equality
 	// RageRooster.Actors.Save.Collectibles.CollectibleBase.Editor.op_Inequality
@@ -14222,7 +14222,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaAsset.op_Implicit
+		// RageRooster.Core.World.AreaAsset.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaAsset_op_Implicit()
 		{
@@ -14233,7 +14233,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaAsset.op_Equality
+		// RageRooster.Core.World.AreaAsset.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaAsset_op_Equality()
 		{
@@ -14245,7 +14245,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaAsset.op_Inequality
+		// RageRooster.Core.World.AreaAsset.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaAsset_op_Inequality()
 		{
@@ -14257,7 +14257,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaRegistry.op_Implicit
+		// RageRooster.Core.World.AreaRegistry.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaRegistry_op_Implicit()
 		{
@@ -14268,7 +14268,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaRegistry.op_Equality
+		// RageRooster.Core.World.AreaRegistry.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaRegistry_op_Equality()
 		{
@@ -14280,7 +14280,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaRegistry.op_Inequality
+		// RageRooster.Core.World.AreaRegistry.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaRegistry_op_Inequality()
 		{
@@ -14292,7 +14292,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaRoot.op_Implicit
+		// RageRooster.Core.World.AreaRoot.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaRoot_op_Implicit()
 		{
@@ -14303,7 +14303,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaRoot.op_Equality
+		// RageRooster.Core.World.AreaRoot.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaRoot_op_Equality()
 		{
@@ -14315,7 +14315,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaRoot.op_Inequality
+		// RageRooster.Core.World.AreaRoot.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaRoot_op_Inequality()
 		{
@@ -14327,7 +14327,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomActor.op_Implicit
+		// RageRooster.Core.World.RoomActor.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomActor_op_Implicit()
 		{
@@ -14338,7 +14338,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomActor.op_Equality
+		// RageRooster.Core.World.RoomActor.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomActor_op_Equality()
 		{
@@ -14350,7 +14350,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomActor.op_Inequality
+		// RageRooster.Core.World.RoomActor.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomActor_op_Inequality()
 		{
@@ -14362,7 +14362,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomAsset.op_Implicit
+		// RageRooster.Core.World.RoomAsset.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomAsset_op_Implicit()
 		{
@@ -14373,7 +14373,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomAsset.op_Equality
+		// RageRooster.Core.World.RoomAsset.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomAsset_op_Equality()
 		{
@@ -14385,7 +14385,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomAsset.op_Inequality
+		// RageRooster.Core.World.RoomAsset.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomAsset_op_Inequality()
 		{
@@ -14397,7 +14397,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomEntrance.op_Implicit
+		// RageRooster.Core.World.RoomEntrance.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomEntrance_op_Implicit()
 		{
@@ -14408,7 +14408,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomEntrance.op_Equality
+		// RageRooster.Core.World.RoomEntrance.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomEntrance_op_Equality()
 		{
@@ -14420,7 +14420,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomEntrance.op_Inequality
+		// RageRooster.Core.World.RoomEntrance.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomEntrance_op_Inequality()
 		{
@@ -14432,7 +14432,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomManager.op_Implicit
+		// RageRooster.Core.World.RoomManager.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomManager_op_Implicit()
 		{
@@ -14443,7 +14443,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomManager.op_Equality
+		// RageRooster.Core.World.RoomManager.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomManager_op_Equality()
 		{
@@ -14455,7 +14455,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomManager.op_Inequality
+		// RageRooster.Core.World.RoomManager.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomManager_op_Inequality()
 		{
@@ -14467,7 +14467,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomRoot.op_Implicit
+		// RageRooster.Core.World.RoomRoot.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomRoot_op_Implicit()
 		{
@@ -14478,7 +14478,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomRoot.op_Equality
+		// RageRooster.Core.World.RoomRoot.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomRoot_op_Equality()
 		{
@@ -14490,7 +14490,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomRoot.op_Inequality
+		// RageRooster.Core.World.RoomRoot.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomRoot_op_Inequality()
 		{
@@ -14502,7 +14502,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.MovementSystems.TunnelTransition.op_Implicit
+		// RageRooster.Core.World.MovementSystems.TunnelTransition.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_MovementSystems_TunnelTransition_op_Implicit()
 		{
@@ -14513,7 +14513,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.MovementSystems.TunnelTransition.op_Equality
+		// RageRooster.Core.World.MovementSystems.TunnelTransition.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_MovementSystems_TunnelTransition_op_Equality()
 		{
@@ -14525,7 +14525,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.MovementSystems.TunnelTransition.op_Inequality
+		// RageRooster.Core.World.MovementSystems.TunnelTransition.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_MovementSystems_TunnelTransition_op_Inequality()
 		{
@@ -14922,7 +14922,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaAsset.Editor.op_Implicit
+		// RageRooster.Core.World.AreaAsset.Editor.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaAsset_Editor_op_Implicit()
 		{
@@ -14933,7 +14933,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaAsset.Editor.op_Equality
+		// RageRooster.Core.World.AreaAsset.Editor.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaAsset_Editor_op_Equality()
 		{
@@ -14945,7 +14945,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaAsset.Editor.op_Inequality
+		// RageRooster.Core.World.AreaAsset.Editor.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaAsset_Editor_op_Inequality()
 		{
@@ -14957,7 +14957,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaRoot.Editor.op_Implicit
+		// RageRooster.Core.World.AreaRoot.Editor.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaRoot_Editor_op_Implicit()
 		{
@@ -14968,7 +14968,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaRoot.Editor.op_Equality
+		// RageRooster.Core.World.AreaRoot.Editor.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaRoot_Editor_op_Equality()
 		{
@@ -14980,7 +14980,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.AreaRoot.Editor.op_Inequality
+		// RageRooster.Core.World.AreaRoot.Editor.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_AreaRoot_Editor_op_Inequality()
 		{
@@ -14992,7 +14992,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomAsset.Editor.op_Implicit
+		// RageRooster.Core.World.RoomAsset.Editor.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomAsset_Editor_op_Implicit()
 		{
@@ -15003,7 +15003,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomAsset.Editor.op_Equality
+		// RageRooster.Core.World.RoomAsset.Editor.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomAsset_Editor_op_Equality()
 		{
@@ -15015,7 +15015,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomAsset.Editor.op_Inequality
+		// RageRooster.Core.World.RoomAsset.Editor.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomAsset_Editor_op_Inequality()
 		{
@@ -15027,7 +15027,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomRoot.Editor.op_Implicit
+		// RageRooster.Core.World.RoomRoot.Editor.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomRoot_Editor_op_Implicit()
 		{
@@ -15038,7 +15038,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomRoot.Editor.op_Equality
+		// RageRooster.Core.World.RoomRoot.Editor.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomRoot_Editor_op_Equality()
 		{
@@ -15050,7 +15050,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// RageRooster.World.RoomRoot.Editor.op_Inequality
+		// RageRooster.Core.World.RoomRoot.Editor.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RageRooster_RoomSystem_RoomRoot_Editor_op_Inequality()
 		{

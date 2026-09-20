@@ -3,7 +3,7 @@ using UnityEditor.SceneManagement;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
-using RageRooster.World;
+using RageRooster.Core.World;
 
 namespace RageRooster.Actors.Save.Collectibles
 {

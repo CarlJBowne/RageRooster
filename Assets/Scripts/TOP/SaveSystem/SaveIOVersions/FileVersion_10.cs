@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
 using RageRooster.Core.Save;
-using RageRooster.World;
+using RageRooster.Core.World;
 using SLS.SaveFileCore;
 
 namespace RageRooster.TOP.Save.Streams
@@ -46,7 +46,7 @@ namespace RageRooster.TOP.Save.Streams
 
             Transfer.playerStats.MaxHealth &= (int)PlayerData["MaxHealth"];
             Transfer.playerStats.MaxAmmo &= (int)PlayerData["MaxAmmo"];
-            Transfer.playerStats.location = (DestinationMap)PlayerData["Location"];
+            Transfer.playerStats.location = (Destination)PlayerData["Location"];
             Transfer.playerStats.dropLaunch = (bool)PlayerData["Upgrades"]["DropLaunch"];
             Transfer.playerStats.wallJump = (bool)PlayerData["Upgrades"]["WallJump"];
             Transfer.playerStats.hellcopter = (bool)PlayerData["Upgrades"]["Hellcopter"];
@@ -67,8 +67,7 @@ namespace RageRooster.TOP.Save.Streams
                 (JArray)ProgressData["HensRescuedIDs"]);
             Transfer.progress.storyFlags.LoadFromJson(ProgressData["StoryFlags"] as JArray);
 
-            Transfer.flags["Global"].LoadFromJson(WorldChangesData["Global"] as JObject);
-            foreach (string key in IDestination.AllAreas)
+            foreach (string key in SaveData.FlagIDs)
                 Transfer.flags[key].LoadFromJson(WorldChangesData[key] as JObject);
 
             return result;
@@ -113,8 +112,7 @@ namespace RageRooster.TOP.Save.Streams
 
                 WorldChangesFile.SaveToFile(new JObject().Populate(o =>
                 {
-                    o.Add("Global", Transfer.flags["Global"].SaveToJson());
-                    foreach (string key in IDestination.AllAreas)
+                    foreach (string key in SaveData.FlagIDs)
                         o.Add(key, Transfer.flags[key].SaveToJson());
                 }));
 
@@ -169,7 +167,7 @@ namespace RageRooster.TOP.Save.Streams
             SaveData.MenuDisplayData result = new()
             {
                 timeString = $"{(int)readTime.TotalHours}:{readTime.Minutes:D2}:{readTime.Seconds:D2}",
-                location = PlayerData["location"],
+                location = (Destination)PlayerData["location"],
                 completionPercentage = (float)ProgressData["Completion"],
                 health = (int)PlayerData["MaxHealth"],
                 powerEggs = (int)ProgressData["powerEggs"]["total"],

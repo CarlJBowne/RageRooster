@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RageRooster.World
+namespace RageRooster.Core.World
 {
     /// <summary>
     /// The Root component for an Area. Attached to the root <see cref="GameObject"/> of a <see cref="AreaAsset.shellScene"/>
