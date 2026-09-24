@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Serialization;
 using System.Collections.ObjectModel;
 using SLS.EditorUtilities.Editor;
@@ -51,20 +50,24 @@ public partial class Attack
     [CustomPropertyDrawer(typeof(Attack))]
     public class PropertyDrawer : UnityEditor.PropertyDrawer
     {
-        PropertyField displayNameField;
-        PropertyField amountField;
+        TextField displayNameField;
+        IntegerField amountField;
         PropertyField velocityField;
         PropertyField tagsField;
         bool oldTagsVisible = true;
 
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
-            displayNameField = new(property.FindPropertyRelative(nameof(_displayName)));
-            amountField = new(property.FindPropertyRelative(nameof(amount)), string.Empty);
+            displayNameField = new TextField("");
+            displayNameField.BindProperty(property.FindPropertyRelative(nameof(_displayName)));
+            amountField = new IntegerField("");
+            amountField.BindProperty(property.FindPropertyRelative(nameof(amount)));
             velocityField = new(property.FindPropertyRelative(nameof(velocity)));
             tagsField = new(property.FindPropertyRelative(nameof(tags)));
 
             Foldout foldout = new();
+            foldout.text = property.displayName;
+
             foldout.Bind(property.serializedObject);
             foldout.Clear();
             foldout.style.marginTop = 0;
@@ -74,30 +77,34 @@ public partial class Attack
             foldout.contentContainer.Add(velocityField);
             foldout.contentContainer.Add(tagsField);
 
-            foldout.DelayedBuild(() =>
+            if(foldout.SetupHeader(out VisualElement header, out Label label, out Toggle toggle))
             {
-                Label label = foldout.Q<Label>(className: Foldout.textUssClassName);
-                //VisualElement header = label.parent;
+                header.Add(displayNameField);
+                header.Add(amountField);
 
-                //if (label.text.StartsWith("Element "))
-                //    label.text = label.text.Replace("Element ", "Attack ");
-                //label.ShrinkToTextWidth();
-                //label.parent.style.flexDirection = FlexDirection.Row;
+                if (label.text.StartsWith("Element "))
+                    label.text = label.text.Replace("Element ", "Attack ");
 
-                //header.Add(displayNameField);
-                //header.Add(amountField);
+                amountField.style.width = Length.Percent(20f);
+                amountField.ClampToOneLine();
+                amountField.SetTextElementAlign(TextAnchor.MiddleCenter);
+                displayNameField.style.maxWidth = Length.Percent(60f);
+                displayNameField.style.flexGrow = 1;
+                displayNameField.SetTextElementAlign(TextAnchor.UpperRight);
+                displayNameField.MakeTextFieldBackgroundInvisible();
+                if (displayNameField.text == "")
+                    displayNameField.SetValueWithoutNotify("...");
 
-                amountField.style.maxWidth = Length.Percent(.15f);
-
-                //header.Add(amountField);
-            });
-
-            //displayNameField.RegisterValueChangeCallback(DisplayNameChanged);
-            //void DisplayNameChanged(SerializedPropertyChangeEvent ev) => foldout.text = !string.IsNullOrEmpty(ev.changedProperty.stringValue) 
-            //        ? ev.changedProperty.stringValue 
-            //        : property.displayName;
-
-            return foldout; 
+                return foldout;
+            }
+            else
+            {
+                foldout.Add(amountField);
+                foldout.Add(displayNameField);
+                foldout.Add(velocityField);
+                foldout.Add(tagsField);
+                return foldout;
+            }
         }
     }
 #endif

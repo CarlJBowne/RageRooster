@@ -48,7 +48,7 @@ namespace SLS.GameStateMachine
                 registry.OnEnable();
 
                 Type GlobalAssetType = typeof(GameStateSingle<>);
-                Type[] globalAssetTypes = GlobalAssetType.GetAllInheritors();
+                List<Type> globalAssetTypes = GlobalAssetType.GetAllInheritors();
 
                 foreach (Type type in globalAssetTypes)
                 {

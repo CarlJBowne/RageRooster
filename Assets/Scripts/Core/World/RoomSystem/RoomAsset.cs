@@ -361,7 +361,7 @@ namespace RageRooster.Core.World
                             alignSelf = Align.FlexStart,
                         }
                     };
-                    new ElementHighlight(areaButton, .3f).Hover();
+                    new ElementHighlight(areaButton, raiseBack: .3f).Hover();
                     areaButton.RegisterCallback<ClickEvent>(PING);
                     root.Add(areaButton);
 
@@ -589,7 +589,7 @@ namespace RageRooster.Core.World
                                     unityTextAlign = TextAnchor.MiddleLeft
                                 }
                             };
-                            new ElementHighlight(roomLabel, .1f).Hover();
+                            new ElementHighlight(roomLabel, raiseBack: .1f).Hover();
                             rootVisualElement.Add(roomLabel);
                             void OpenRoom()
                             {

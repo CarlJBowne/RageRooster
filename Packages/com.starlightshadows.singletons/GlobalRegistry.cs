@@ -34,7 +34,7 @@ namespace SLS.Singletons
                 registry.OnEnable();
 
                 Type GlobalAssetType = typeof(GlobalAsset<>);
-                Type[] globalAssetTypes = GlobalAssetType.GetAllInheritors();
+                List<Type> globalAssetTypes = GlobalAssetType.GetAllInheritors();
 
                 foreach (Type type in globalAssetTypes)
                 {

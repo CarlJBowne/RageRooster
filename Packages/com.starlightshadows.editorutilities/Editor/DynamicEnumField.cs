@@ -130,7 +130,7 @@ namespace SLS.EditorUtilities.Editor
             get => _selectedIndex >= 0 && _selectedIndex < _options.Count ? _options[_selectedIndex] : "SELECT";
             set
             {
-                if(_options.Contains(value)) SelectedIndex = _options.IndexOf(value);
+                if (_options.Contains(value)) SelectedIndex = _options.IndexOf(value);
             }
         }
 
@@ -192,7 +192,11 @@ namespace SLS.EditorUtilities.Editor
             _selectedIndex = ClampIndex(_selectedIndex);
 
             // Create a PopupField<string> with the current options
-            var popup = new PopupField<string>(new List<string>(_options), Math.Max(0, _selectedIndex), s => s, s => s)
+            var popup = new PopupField<string>(
+                new List<string>(_options),
+                Math.Max(0, _selectedIndex),
+                s => s,
+                s => s)
             {
                 name = "dynamic-enum-popup",
                 style =

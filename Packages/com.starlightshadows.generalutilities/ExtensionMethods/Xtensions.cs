@@ -256,7 +256,7 @@ public static class Xtensions_Types
         return false;
     }
 
-    public static Type[] GetAllInheritors(this Type Top, 
+    public static List<Type> GetAllInheritors(this Type Top, 
         bool excludeAbstracts = true, bool excludeGenerics = true, bool excludeSelf = true)
     {
         return AppDomain.CurrentDomain.GetAssemblies()
@@ -265,7 +265,7 @@ public static class Xtensions_Types
                     && (!i.IsAbstract || !excludeAbstracts)
                     && (!i.IsGenericType || !excludeGenerics)
                     && (i != Top || !excludeSelf)
-                    ).ToArray();
+                    ).ToList();
     }
 
     public static Type FindGenericAncestor(this Type start, int maxSteps = 5)

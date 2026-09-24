@@ -13,13 +13,14 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using SLS.MenuCore;
 using static RageRooster.Services;
+using System.Linq;
 
 public class TestScript : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
         if (!Player.Owns(other)) return;
-
+    
         Enum().Begin(this);
         static IEnumerator Enum()
         {
@@ -29,6 +30,4 @@ public class TestScript : MonoBehaviour
             Overlay.BetweenUI.DoFadeAlpha(1, 1f);
         }
     }
-
-
 }

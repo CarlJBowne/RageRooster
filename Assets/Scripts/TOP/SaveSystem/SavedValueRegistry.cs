@@ -43,16 +43,6 @@ namespace RageRooster.TOP.Save
             };
             defs.flags.Add("Global", globalFlagDefs);
             SaveData.InitializeDefaults(defs);
-            Attack.InitGlobalData(attackTagNames);
-        }
-
-        public List<string> attackTagNames;
-        [Button]
-        public void GetFromTagsEnum()
-        {
-            attackTagNames = new List<string>();
-            for (int i = 0; i < 27; i++) attackTagNames.Add(((Attack.Tags)i).ToString());
-            Attack.InitGlobalData(attackTagNames);
         }
     }
 }

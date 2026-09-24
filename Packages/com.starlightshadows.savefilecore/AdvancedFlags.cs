@@ -178,7 +178,7 @@ namespace SLS.SaveFileCore
 
             public void Set<T>(string name, T value)
             {
-                if (!ContainsName(name)) return;
+                if (!ContainsKey(name)) return;
                 if (this[name].ValueType != typeof(T)) return;
                 if (this[name] is not Generic<T> gen) return;
                 gen.Value = value;
@@ -187,7 +187,7 @@ namespace SLS.SaveFileCore
             public bool TryGet<T>(string name, out T value)
             {
                 value = default;
-                if (!ContainsName(name)) return false;
+                if (!ContainsKey(name)) return false;
                 if (this[name].ValueType != typeof(T)) return false;
                 if (this[name] is not Generic<T> gen) return false;
 
@@ -204,7 +204,7 @@ namespace SLS.SaveFileCore
                 List<string> result = new();
                 for (int i = 0; i < Count; i++)
                     if (Values[i].ValueType == type)
-                        result.Add(Names[i]);
+                        result.Add(Keys[i]);
                 return result.ToArray();
             }
 
@@ -215,8 +215,8 @@ namespace SLS.SaveFileCore
                 if (op is DictionaryCloneOp.ReplaceEntirely) Clear();
                 for (int i = 0; i < source.Count; i++)
                 {
-                    if (!serializedKeys.Contains(source.serializedKeys[i]) && op is not DictionaryCloneOp.Transfer)
-                        this.Add(source.Names[i], Activator.CreateInstance(source.Values[i].GetType()) as Flag);
+                    if (!ContainsHash(source.Hashes[i]) && op is not DictionaryCloneOp.Transfer)
+                        this.Add(source.Keys[i], Activator.CreateInstance(source.Values[i].GetType()) as Flag);
                     this[source.Keys[i]].Clone(source.Values[i]);
                 }
             }
@@ -225,14 +225,14 @@ namespace SLS.SaveFileCore
             {
                 if (!list.HasValues) return;
                 foreach (JProperty prop in list.Properties())
-                    if (ContainsName(prop.Name))
+                    if (ContainsKey(prop.Name))
                         this[prop.Name].LoadFromJson(prop.Value);
             }
             public JObject SaveToJson()
             {
                 JObject result = new();
                 for (int i = 0; i < Count; i++)
-                    result.Add(new JProperty(Names[i], Values[i].SaveToJson()));
+                    result.Add(new JProperty(Keys[i], Values[i].SaveToJson()));
                 return result;
             }
         }
@@ -258,7 +258,7 @@ namespace SLS.SaveFileCore
 
             public void Set(string name, T value)
             {
-                if (!ContainsName(name)) return;
+                if (!ContainsKey(name)) return;
                 if (this[name].ValueType != typeof(T)) return;
                 if (this[name] is not Generic<T> gen) return;
                 gen.Value = value;
@@ -267,7 +267,7 @@ namespace SLS.SaveFileCore
             public bool TryGet(string name, out T value)
             {
                 value = default;
-                if (!ContainsName(name)) return false;
+                if (!ContainsKey(name)) return false;
                 if (this[name].ValueType != typeof(T)) return false;
                 if (this[name] is not Generic<T> gen) return false;
 
@@ -285,8 +285,8 @@ namespace SLS.SaveFileCore
                 if (op is DictionaryCloneOp.ReplaceEntirely) Clear();
                 for (int i = 0; i < source; i++)
                 {
-                    if (!serializedKeys.Contains(source.serializedKeys[i]) && op is not DictionaryCloneOp.Transfer)
-                        this.Add(source.Names[i], Activator.CreateInstance(source.Values[i].GetType()) as Generic<T>);
+                    if (!ContainsHash(source.Hashes[i]) && op is not DictionaryCloneOp.Transfer)
+                        this.Add(source.Keys[i], Activator.CreateInstance(source.Values[i].GetType()) as Generic<T>);
                     this[source.Keys[i]].Clone(source.Values[i]);
                 }
             }
@@ -295,14 +295,14 @@ namespace SLS.SaveFileCore
             {
                 if (!list.HasValues) return;
                 foreach (JProperty prop in list.Properties())
-                    if (ContainsName(prop.Name))
+                    if (ContainsKey(prop.Name))
                         this[prop.Name].LoadFromJson(prop.Value);
             }
             public JObject SaveToJson()
             {
                 JObject result = new();
                 for (int i = 0; i < Count; i++)
-                    result.Add(new JProperty(Names[i], Values[i].SaveToJson()));
+                    result.Add(new JProperty(Keys[i], Values[i].SaveToJson()));
                 return result;
             }
         }
@@ -324,8 +324,8 @@ namespace SLS.SaveFileCore
                 if (op is DictionaryCloneOp.ReplaceEntirely) Clear();
                 for (int i = 0; i < source; i++)
                 {
-                    if (!serializedKeys.Contains(source.serializedKeys[i]) && op is not DictionaryCloneOp.Transfer)
-                        this.Add(source.Names[i], Activator.CreateInstance(source.Values[i].GetType()) as Generic<bool>);
+                    if (!ContainsHash(source.Hashes[i]) && op is not DictionaryCloneOp.Transfer)
+                        this.Add(source.Keys[i], Activator.CreateInstance(source.Values[i].GetType()) as Generic<bool>);
                     this[source.Keys[i]].Clone(source.Values[i]);
                 }
             }
@@ -334,14 +334,14 @@ namespace SLS.SaveFileCore
                 JArray res = new();
                 for (int i = 0; i < Count; i++)
                     if (Values[i].Value)
-                        res.Add(Names[i]);
+                        res.Add(Keys[i]);
                 return res;
             }
             public void LoadFromJson(JArray list)
             {
                 if (!list.HasValues) return;
                 for (int i = 0; i < list.Count; i++)
-                    if (ContainsName(list[i].ToString()))
+                    if (ContainsKey(list[i].ToString()))
                         this[list[i].ToString()].Value = true;
             }
         }

@@ -60,34 +60,21 @@ namespace SLS.EditorUtilities.Editor
             v.style.cursor = input.cursor;
         }
 
-        public static int LabelTextWidth(this Label label)
+        public static float LabelTextWidth(this Label l, float add = 2) => EditorStyles.label.CalcSize(new(l.text)).x + add;
+        public static void ShrinkToTextWidth(this Label l, float? grow = null)
         {
-            return 0;
-
-            //string text = label.text;
-            //IStyle style = label.style;
-            //Length fontSize = style.fontSize.value;
-            //FontStyle fontStyle = style.unityFontStyleAndWeight.value;
-            //Font font = style.unityFont.value ?? Font.CreateDynamicFontFromOSFont("Arial", (int)fontSize);
-            //FontStyle fs = FontStyle.Normal;
-            //switch (fontStyle)
-            //{
-            //    case FontStyle.Bold: fs = FontStyle.Bold; break;
-            //    case FontStyle.Italic: fs = FontStyle.Italic; break;
-            //    case FontStyle.BoldAndItalic: fs = FontStyle.BoldAndItalic; break;
-            //    default: fs = FontStyle.Normal; break;
-            //}
-            //font.RequestCharactersInTexture(text, (int)fontSize, fs);
-            //int totalWidth = 0;
-            //foreach (char c in text)
-            //{
-            //    if (font.GetCharacterInfo(c, out CharacterInfo charInfo, (int)fontSize, fs))
-            //    {
-            //        totalWidth += charInfo.advance;
-            //    }
-            //}
-            //return totalWidth;
+            l.style.flexShrink = 1;
+            if (grow.HasValue) l.style.flexGrow = grow.Value;
+            DO();
+            void DO()
+            {
+                float width = l.LabelTextWidth();
+                if (width < l.style.minWidth.value.value)
+                    l.style.minWidth = width;
+            }
+            l.RegisterValueChangedCallback(_ => DO());
         }
+        public static void ClampToOneLine<T>(this T t) where T : VisualElement => t.style.maxHeight = 19;
 
 
         public static VisualElement GetChild(this VisualElement V, int i)
@@ -156,23 +143,23 @@ namespace SLS.EditorUtilities.Editor
             return V;
         }
 
-        public static void ShrinkToTextWidth(this Label l, float? grow = null)
+
+
+        public static void SetTextElementAlign<T>(this T t, TextAnchor input) where T : VisualElement
         {
-            l.style.flexShrink = 1;
-            if (grow.HasValue) l.style.flexGrow = grow.Value;
-            DO();
-            void DO()
-            {
-                float width = EditorStyles.label.CalcSize(new(l.text)).x + 2;
-                if (width < l.style.minWidth.value.value)
-                    l.style.minWidth = width;
-            }
-            l.RegisterValueChangedCallback(_ => DO());
+            TextElement text = t.Q<TextElement>(classes: TextElement.ussClassName);
+            if (text is null) return;
+            text.style.unityTextAlign = input;
         }
 
         public static bool QCache<T>(this VisualElement V, out T result, string name = null, string className = null) where T : VisualElement
         {
             result = V.Q<T>(name, className) ?? null;
+            return result != null;
+        }
+        public static bool QCache<T>(this VisualElement V, out T result, string name = null, params string[] classes) where T : VisualElement
+        {
+            result = V.Q<T>(name, classes) ?? null;
             return result != null;
         }
 
@@ -196,17 +183,63 @@ namespace SLS.EditorUtilities.Editor
             }, trickleDown);
         }
 
-        public static void SetupHeader(this Foldout f, out VisualElement header)
+        public static bool SetupHeader(this Foldout f, out VisualElement header)
         {
             try
             {
-                Label label = f.Q<Label>(className: Foldout.textUssClassName);
+                Label label = f.Q<Label>(classes: Foldout.textUssClassName);
                 header = label.parent;
+                header.style.justifyContent = Justify.SpaceBetween;
                 label.ShrinkToTextWidth();
                 label.parent.style.flexDirection = FlexDirection.Row;
+                return true;
             }
-            catch (Exception) { header = null; }
+            catch (Exception) { header = null; return false; }
 
+        }
+        public static bool SetupHeader(this Foldout f, out VisualElement header, out Label label)
+        {
+            try
+            {
+                label = f.Q<Label>(classes: Foldout.textUssClassName);
+                header = label.parent;
+                header.style.justifyContent = Justify.SpaceBetween;
+                label.ShrinkToTextWidth();
+                label.parent.style.flexDirection = FlexDirection.Row;
+                return true;
+            }
+            catch (Exception) { header = null; label = null; return false; }
+
+        }
+        public static bool SetupHeader(this Foldout f, out VisualElement header, out Label label, out Toggle toggle)
+        {
+            try
+            {
+                label = f.Q<Label>(classes: Foldout.textUssClassName);
+                toggle = f.Q<Toggle>(classes: Foldout.toggleUssClassName);
+                toggle.style.marginBottom = 0;
+                toggle.style.marginTop = 0;
+                header = label.parent;
+                header.style.justifyContent = Justify.SpaceBetween;
+                label.ShrinkToTextWidth();
+                label.parent.style.flexDirection = FlexDirection.Row;
+                return true;
+            }
+            catch (Exception) { header = null; label = null; toggle = null; return false; }
+
+        }
+
+        public static void MakeTextFieldBackgroundInvisible<T>(this T t) where T : VisualElement
+        {
+            if (t.QCache(out VisualElement box, classes: "unity-base-text-field__input"))
+            {
+                box.style.backgroundColor = Color.clear;
+                box.style.borderBottomColor = Color.clear;
+                box.style.borderLeftColor = Color.clear;
+                box.style.borderRightColor = Color.clear;
+                box.style.borderTopColor = Color.clear;
+                new ElementHighlight(box, setBack: new(1, 1, 1, .1f)).Hover();
+            }
         }
 
         public static Foldout InstantFoldout(this SerializedProperty prop, string targetMainProperty = null, bool autoPopulate = false)
@@ -272,6 +305,14 @@ namespace SLS.EditorUtilities.Editor
                 v.Add(new PropertyField(pointer));
             while (pointer.NextVisible(false));
         }
+
+        public static bool IsFoldout<T>(this T item, out Foldout foldout, int depth = 0) where T : VisualElement
+        {
+            foldout = item?.Q<Foldout>(className: $"unity-foldout--depth-{depth}");
+            return foldout != null;
+        }
+
+
     }
 
     public static class Xtensions_VisualElements_StyleBuilders
@@ -668,6 +709,13 @@ namespace SLS.EditorUtilities.Editor
                 catch (Exception) { }
             }
         }
+    }
+
+    public static class UIClassNames
+    {
+        public static string UnityLabel => "unity-label";
+        public static string AutoFoldout(int depth = 0) => $"unity-foldout--depth-{depth}";
+        public static string TextFieldBackground => "unity-base-text-field__input";
     }
 
 }

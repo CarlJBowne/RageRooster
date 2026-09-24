@@ -292,6 +292,7 @@ namespace SLS.ListUtilities.Editor
         public void BindProperty(SerializedProperty listProperty)
         {
             property = listProperty;
+            AssertProperties(property);
             this.Bind(property.serializedObject);
             header.Bind(listProperty);
             FinishBind();
@@ -909,6 +910,13 @@ namespace SLS.ListUtilities.Editor
 
 
         public static DropdownMenuAction.Status DropDownMenuStatus(DropdownMenuAction A) => DropdownMenuAction.Status.Normal;
+
+        public static void AssertProperties(params SerializedProperty[] list)
+        {
+            for (int i = 0; i < list.Length; i++)
+                if (list[i] == null)
+                    throw new Exception("Assertion Failed");
+        }
     }
     /// <summary>
     /// A <see cref="VisualElement"/> that displays the individual items in a <see cref="SuperList{LIST, ITEM, VALUE}"/>.<br/>
@@ -1010,6 +1018,7 @@ namespace SLS.ListUtilities.Editor
         protected virtual void BindProperty()
         {
             property = parent.property.GetArrayElementAtIndex(Index);
+            AssertProperties(property);
             FinishBind();
         }
         protected void FinishBind()
@@ -1210,6 +1219,12 @@ namespace SLS.ListUtilities.Editor
 
         public static DropdownMenuAction.Status DropDownMenuStatus(DropdownMenuAction A) => DropdownMenuAction.Status.Normal;
 
+        public static void AssertProperties(params SerializedProperty[] list)
+        {
+            for (int i = 0; i < list.Length; i++)
+                if (list[i] == null)
+                    throw new Exception("Assertion Failed");
+        }
     }
     public enum SelectionOp
     {

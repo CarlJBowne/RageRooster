@@ -22,8 +22,8 @@ public class PolymorphEditors
         GenericMenu menu = new();
 
 
-        Type[] types = Polymorph.GetSubtypes(baseType, false/*, true*/);
-        for (int i = 0; i < types.Length; i++) Add(types[i]);
+        List<Type> types = Polymorph.GetSubtypes(baseType, false/*, true*/);
+        for (int i = 0; i < types.Count; i++) Add(types[i]);
         void Add(Type t)
         {
             string name = t.Name;
@@ -384,6 +384,7 @@ public class PolymorphEditors
         {
             rootProperty = input;
             property = input.FindPropertyRelative("items");
+            AssertProperties(rootProperty);
             header.Bind(input);
             FinishBind();
         }
@@ -466,6 +467,7 @@ public class PolymorphEditors
             KeysProperty = property.FindPropertyRelative("serializedKeys");
             HashesProperty = property.FindPropertyRelative("serializedHashes");
             ValuesProperty = property.FindPropertyRelative("serializedValues");
+            AssertProperties(KeysProperty, HashesProperty, ValuesProperty);
             header.Bind(input);
             FinishBind();
         }
@@ -488,11 +490,9 @@ public class PolymorphEditors
                 TextField.style.flexGrow = 1f;
 
                 Types = Polymorph.GetSubtypes(baseType, false/*, true*/);
-                string[] typeNames = Types.Select(t => t.Name).ToArray();
-                //for (int i = 0; i < typeNames.Length; i++)
-                //    if (typeNames[i].Contains('\''))
-                //        typeNames[i] = typeNames[i].Replace('\'', '<') + '>';
-                TypeField = new DynamicEnumField(typeNames, -1, null).AddTo(this);
+
+                TypeField = new PopupField<Type>(Types, -1, Name, Name).AddTo(this);
+                string Name(Type t) => t?.Name.Replace($"{baseType.Name}+", "");
                 TypeField.style.width = Length.Percent(40);
                 TypeField.style.flexShrink = 0;
 
@@ -503,15 +503,15 @@ public class PolymorphEditors
                 FinishButton.style.backgroundColor = new Color(.5f, .75f, .5f);
             }
 
-            public DynamicEnumField TypeField { get; protected set; }
-            public Type[] Types { get; protected set; }
+            public PopupField<Type> TypeField { get; protected set; }
+            public List<Type> Types { get; protected set; }
             new public Action<string, Type> Result { get; protected set; }
 
             protected override void Complete()
             {
-                Result?.Invoke(TextField.text, Types[TypeField.SelectedIndex]);
+                Result?.Invoke(TextField.text, TypeField.value);
                 TextField.SetValueWithoutNotify("");
-                TypeField.SelectedIndex = -1;
+                TypeField.value = null;
                 this.Display(false);
             }
         }
@@ -631,6 +631,7 @@ public class PolymorphEditors
                 this.KeyProp = parent.KeysProperty.GetArrayElementAtIndex(Index);
                 this.HashProp = parent.HashesProperty.GetArrayElementAtIndex(Index);
                 this.ValueProp = parent.ValuesProperty.GetArrayElementAtIndex(Index);
+                AssertProperties(KeyProp, HashProp, ValueProp);
                 FinishBind();
             }
 
@@ -697,6 +698,16 @@ public class PolymorphEditors
                             parent.CallUpdateColors();
                         }));
 
+                        k.tooltip = $"Key: {HashProp.intValue}";
+                        k.RegisterValueChangedCallback(ev =>
+                        {
+                            HashProp.intValue = ev.newValue.Hash();
+                            k.tooltip = $"Key: {HashProp.intValue}";
+                            parent.CallUpdateColors();
+                        });
+
+                        ContextMenuTarget = k;
+
 
                     });
                 });
@@ -707,15 +718,7 @@ public class PolymorphEditors
 
             protected override void PostContent()
             {
-                KeyField.tooltip = $"Key: {HashProp.intValue}";
-                KeyField.RegisterValueChangedCallback(ev =>
-                {
-                    HashProp.intValue = ev.newValue.Hash();
-                    KeyField.tooltip = $"Key: {HashProp.intValue}";
-                    parent.CallUpdateColors();
-                });
 
-                ContextMenuTarget = KeyField;
             }
 
             protected override void ContextMenu(ContextualMenuPopulateEvent evt)

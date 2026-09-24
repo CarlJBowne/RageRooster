@@ -22,14 +22,6 @@ namespace SLS.EditorUtilities.Editor
             rBorder = raiseBorder;
             Init();
         }
-        public ElementHighlight(VisualElement source, float? raiseMain = null, float? raiseBack = null, float? raiseBorder = null)
-        {
-            target = source;
-            rMain = raiseMain;
-            rBack = raiseBack;
-            rBorder = raiseBorder;
-            Init();
-        }
 
         void Init()
         {
@@ -145,13 +137,13 @@ namespace SLS.EditorUtilities.Editor
 
         public static void ButtonDefault(VisualElement target)
         {
-            new ElementHighlight(target, null, ButtonHoverBackRaise).Hover();
+            new ElementHighlight(target, null, raiseBack: ButtonHoverBackRaise).Hover();
             new ElementHighlight(target, null, ButtonClickedBack).Click();
             new ElementHighlight(target, null, null, ButtonSelectedOutline).Select();
         }
         public static void ButtonStyle(VisualElement target, float? hoverAmount = null, Color? clickColor = null, Color? selectOutline = null)
         {
-            new ElementHighlight(target, null, hoverAmount ?? ButtonHoverBackRaise).Hover();
+            new ElementHighlight(target, null, raiseBack: hoverAmount ?? ButtonHoverBackRaise).Hover();
             new ElementHighlight(target, null, clickColor ?? ButtonClickedBack).Click();
             new ElementHighlight(target, null, null, selectOutline ?? ButtonSelectedOutline).Select();
         }
@@ -159,7 +151,7 @@ namespace SLS.EditorUtilities.Editor
         {
             (hoverColor.HasValue
             ? new ElementHighlight(target, null, hoverColor)
-            : new ElementHighlight(target, null, ButtonHoverBackRaise)
+            : new ElementHighlight(target, null, raiseBack: ButtonHoverBackRaise)
             ).Hover();
             new ElementHighlight(target, null, clickColor ?? ButtonClickedBack).Click();
             new ElementHighlight(target, null, null, selectOutline ?? ButtonSelectedOutline).Select();

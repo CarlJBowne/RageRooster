@@ -410,7 +410,6 @@ namespace SLS.ListUtilities
         public Dictionary<string, int> ToHashDictionary() => SerializedKeys.Zip(serializedHashes, (n, k) => new { n, k }).ToDictionary(x => x.n, x => x.k);
 
         // Access to secondary integer hashes
-        public IReadOnlyList<int> Hash => serializedHashes;
         public int HashOf(string name) => !SerializedKeys.Contains(name)
             ? name.Hash()
             : SerializedHashes[SerializedKeys.IndexOf(name)];
