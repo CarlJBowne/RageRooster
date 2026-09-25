@@ -15,6 +15,7 @@ namespace RageRooster.TOP.Save.Streams
     public class FileVersion_UCF : FileVersion
     {
         public const string NUM = "UCF_Release";
+        protected override List<string> altVersions => new() { "1.0.0" };
         public override string version => NUM;
 
         static SaveData Transfer => SaveManager.TransferSnapshot;
@@ -54,7 +55,7 @@ namespace RageRooster.TOP.Save.Streams
             foreach (var pair in areaChangesFiles)
             {
                 JObject iAreaChangeData;
-                if(pair.Value.LoadFromFile(out iAreaChangeData).IfFail(out result)) return result;
+                if (pair.Value.LoadFromFile(out iAreaChangeData).IfFail(out result)) return result;
                 areaChangesData.Add(pair.Key, iAreaChangeData);
             }
 

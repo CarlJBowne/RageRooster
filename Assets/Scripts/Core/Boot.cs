@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using RageRooster.Core.World;
+using RageRooster.Settings;
 using SLS.GameStateMachine;
 using SLS.MenuCore;
 
@@ -33,6 +34,7 @@ public class Boot : GameStateSingle<Boot>
 
     private void OnBoot()
     {
+        GameSettings.Init();
         var d = AudioManager.Get;
         Overlay.Instantiate();
     }

@@ -61,9 +61,9 @@ namespace SLS.ListUtilities
     [Serializable]
     public class HashedListS<T> : SDictionaryAbstract<string, T>
     {
-        [SerializeField, FormerlySerializedAs("serializedKeys")] List<int> serializedHashes;
-        [SerializeField, FormerlySerializedAs("serializedNames")] List<string> serializedKeys;
-        [SerializeField] List<T> serializedValues;
+        [SerializeField, FormerlySerializedAs("serializedKeys")] List<int> serializedHashes = new();
+        [SerializeField, FormerlySerializedAs("serializedNames")] List<string> serializedKeys = new();
+        [SerializeField] List<T> serializedValues = new();
 
         protected override List<string> SerializedKeys => serializedKeys;
         protected override List<T> SerializedValues => serializedValues;
@@ -250,9 +250,9 @@ namespace SLS.ListUtilities
     [Serializable]
     public class HashedListSReference<T> : SDictionaryAbstract<string, T>
     {
-        [SerializeField, FormerlySerializedAs("serializedNames")] List<string> serializedKeys;
-        [SerializeField, FormerlySerializedAs("serializedKeys")] List<int> serializedHashes;
-        [SerializeField, SerializeReference] List<T> serializedValues;
+        [SerializeField, FormerlySerializedAs("serializedNames")] List<string> serializedKeys = new();
+        [SerializeField, FormerlySerializedAs("serializedKeys")] List<int> serializedHashes = new();
+        [SerializeField, SerializeReference] List<T> serializedValues = new();
 
         protected override List<string> SerializedKeys => serializedKeys;
         protected override List<T> SerializedValues => serializedValues;

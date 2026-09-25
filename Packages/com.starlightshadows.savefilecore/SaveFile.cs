@@ -9,7 +9,7 @@ namespace SLS.SaveFileCore
     /// </summary>
     public class SaveFile
     {
-        public static FileVersion.Options _versionOptions;
+        public static FileVersion.Options _versionOptions = new();
         public virtual FileVersion.Options VersionOptions => _versionOptions;
         public FileVersion FileVersion;
         private readonly int targetFileID;

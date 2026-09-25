@@ -295,6 +295,7 @@ namespace SLS.ObjectUtilities
             activeObjects = 0;
             for (int i = poolList.Count - 1; i >= 0; i--)
             {
+                if (poolList[i] == null) return;
                 if (orphanOnDestroy) UnityEngine.Object.Destroy(poolList[i]);
                 else
                 {

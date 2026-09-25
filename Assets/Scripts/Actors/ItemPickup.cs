@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using DG.Tweening;
+using RageRooster.Core;
 using RageRooster.Core.Save;
 using UnityEngine;
 
@@ -25,6 +26,7 @@ public class ItemPickup : MonoBehaviour
 
     private void Awake()
     {
+        if (!Gameplay.Active) return;
         //if(oneTime != null && oneTime.Enabled) gameObject.SetActive(false);
         //if(type == ItemType.Wishbone && oneTime == null)
         {

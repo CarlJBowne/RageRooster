@@ -22,8 +22,7 @@ namespace RageRooster.Settings
     /// </summary>
     public class GameSettings
     {
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
-        static void Init()
+        public static void Init() 
         {
             FileVersion.Options options = new()
             {
@@ -34,7 +33,7 @@ namespace RageRooster.Settings
                     {ConfigVersion_UCF.NUM, typeof(ConfigVersion_UCF)},
                 }
             };
-            options.Initialize(ref stream, -1);
+            options.Initialize(ref stream);
 
             {
                 Volume.Master.Value = 1f;
