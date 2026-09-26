@@ -151,13 +151,13 @@ public partial class Attack
         /// Create a BitwiseEnum Cloned from an existing one.
         /// </summary>
         /// <param name="source">The Source.</param>
-        public TagSet(Bitmask source) => new TagSet(source.intValue);
+        public TagSet(Bitmask source) => intValue = source.intValue;
         /// <summary>
         /// Create a BitwiseEnum Cloned from an existing one.
         /// </summary>
         /// <param name="source">The Source.</param>
-        public TagSet(TagSet source) => new TagSet(source.intValue);
-        
+        public TagSet(TagSet source) => intValue = source.intValue;
+
         public bool this[Tags i]
         {
             get => this[(int)i];
@@ -167,23 +167,17 @@ public partial class Attack
         public static bool operator ==(TagSet L, Tags R) => L[R];
         public static bool operator !=(TagSet L, Tags R) => !L[R];
 
-        new public TagSet Clone() => new(this);
-
-        public Attack.Tags[] AllTags
-        {
-            get
-            {
-                List<Attack.Tags> res = new();
-
-                for (int i = 0; i < sizeof(int); i++)
-                    if (this[i])
-                        res.Add((Tags)i);
-
-                return res.ToArray();
-            }
-        }
         public override bool Equals(object obj) => obj is TagSet set && base.Equals(obj) && intValue == set.intValue;
         public override int GetHashCode() => HashCode.Combine(base.GetHashCode(), intValue);
+
+        public override string ToString()
+        {
+            string result = "";
+            for (int i = 0; i < 32; i++)
+                if (this[i] == true)
+                    result += $"{(Attack.Tags)i}, ";
+            return result;
+        }
 
 #if UNITY_EDITOR
         [CustomPropertyDrawer(typeof(TagSet))]
@@ -250,7 +244,8 @@ public partial class Attack
     public static bool operator !=(Attack L, Tags R) => !L.tags[R];
 
     public static implicit operator TagSet(Attack O) => O.tags;
-    
+
+    public override string ToString() => $"\"{_displayName}\" ({amount}) <{tags.ToString()}>";
 
     public static void InitGlobalData(List<string> namesInput)
     {

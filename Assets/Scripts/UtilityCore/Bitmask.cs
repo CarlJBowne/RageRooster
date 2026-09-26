@@ -68,7 +68,7 @@ public class Bitmask : IEquatable<Bitmask>
     /// Create a BitwiseEnum Cloned from an existing one.
     /// </summary>
     /// <param name="source">The Source.</param>
-    public Bitmask(Bitmask source) => new Bitmask(source.intValue);
+    public Bitmask(Bitmask source) => this.intValue = source.intValue;
 
     /// <summary>
     /// Explicit conversion to <see cref="int"/> returning the underlying bitmask.
@@ -87,7 +87,6 @@ public class Bitmask : IEquatable<Bitmask>
     public static explicit operator Bitmask(bool[] inputs) => new(inputs);
 
     public static T New<T>(int input = 0) => (T)Activator.CreateInstance(typeof(T), input);
-    public Bitmask Clone() => new(this);
 
     #endregion
 
@@ -190,9 +189,9 @@ public class Bitmask : IEquatable<Bitmask>
     /// <summary>
     /// Equality operator. True if both are the same reference or both non-null with equal integer masks.
     /// </summary>
-    public static bool operator ==(Bitmask L, Bitmask R) => 
-        ReferenceEquals(L, R) ? true 
-        : L is null ||  R is null ? false 
+    public static bool operator ==(Bitmask L, Bitmask R) =>
+        ReferenceEquals(L, R) ? true
+        : L is null || R is null ? false
         : L.intValue == R.intValue;
 
     /// <summary>
@@ -403,4 +402,11 @@ public static class Xtensions_Bitmasks_Class
         return input;
     }
 
+    /// <summary>
+    /// Returns a new Bitmask (or derived) with the same data.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static T Clone<T>(this T input) where T : Bitmask => Bitmask.New<T>(input.intValue);
 }
