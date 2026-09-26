@@ -169,7 +169,19 @@ public partial class Attack
 
         new public TagSet Clone() => new(this);
 
+        public Attack.Tags[] AllTags
+        {
+            get
+            {
+                List<Attack.Tags> res = new();
 
+                for (int i = 0; i < sizeof(int); i++)
+                    if (this[i])
+                        res.Add((Tags)i);
+
+                return res.ToArray();
+            }
+        }
         public override bool Equals(object obj) => obj is TagSet set && base.Equals(obj) && intValue == set.intValue;
         public override int GetHashCode() => HashCode.Combine(base.GetHashCode(), intValue);
 
