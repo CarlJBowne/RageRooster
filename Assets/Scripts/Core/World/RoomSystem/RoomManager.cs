@@ -43,7 +43,11 @@ namespace RageRooster.Core.World
         /// <summary>
         /// The target Destination for the next Room transition. <br/>
         /// </summary>
-        public static Destination queuedDestination;
+        public static Destination queuedDestination
+        {
+            get;
+            set; 
+        }
         /// <summary>
         /// Manual override to force a full Deload & Load transition even if too/from the same area or room.
         /// </summary>

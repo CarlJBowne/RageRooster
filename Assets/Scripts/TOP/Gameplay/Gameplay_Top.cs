@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using RageRooster.Core.World;
 using RageRooster.Core.Save;
-using SLS.GameStateMachine;
+using SLS.AppStateMachine;
 using SLS.MenuCore;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -20,74 +20,70 @@ namespace RageRooster.TOP
 {
     public sealed class Gameplay : Core.Gameplay
     {
-        protected override void TransitionLogic(Action SetCurrent, Action PostAction)
+        public override IEnumerator Enter()
         {
-            E().Begin();
-            IEnumerator E()
+            yield return ExitPrevious();
+
+            DoEnter();
+            Debug.Log("Loading Gameplay Scene");
+            SceneManager.LoadScene(Scene, LoadSceneMode.Single);
+            yield return null;
+            Scene s = SceneManager.GetSceneByName(Scene);
+            yield return null;
+            yield return new WaitUntil(
+                () => s.IsValid() && s.isLoaded
+                );
+            rootObjects = s.GetRootGameObjects();
+            yield return null;
+            Debug.Log("Gameplay Scene Active");
+
+            yield return new WaitUntil(Player.Services.Active);
+            EntitySpawn.PlayerPosition = Player.Services.Player.Transform;
+            Debug.Log("Player Active");
+
+            for (int i = 0; i < rootObjects.Length; i++)
+                DontDestroyOnLoad(rootObjects[i]);
+            //rootObjects[1].GetComponent<Player>().Awake();
+            //rootObjects[2].GetComponent<Cameras>().Awake();
+
+            OnEnter();
+
+            yield return null;
+
+            Debug.Log("Initializing Other Systems");
+            GlobalPool.poolParent = rootObjects[0].transform.Find("PooledObjects");
+            GlobalPool.Self.Initialize();
+            Overlay.OverALL.Alpha = 1;
+            Overlay.UnderHUD.ResetState();
+            Overlay.BetweenUI.ResetState();
+
+            yield return WaitFor.Until(() => Active
+                && Services.Player is not null
+                );
+
+            Debug.Log("Beginning Transition");
+            //It's not loading the correct room cause the boot data's destination isn't actually being transferred to the stupid Room Manager, you dumbass.
+            RoomManager.ResetTransitionData(false);
+            RoomManager.TransitionStyle = new()
             {
-                Debug.Log("Initializing Saves");
-                SaveManager.InitializeManager(0);
-
-                SetCurrent();
-                Debug.Log("Loading Gameplay Scene");
-                SceneManager.LoadScene(Scene, LoadSceneMode.Single);
-                yield return null;
-                Scene s = SceneManager.GetSceneByName(Scene);
-                yield return null;
-                yield return new WaitUntil(
-                    () => s.IsValid() && s.isLoaded
-                    );
-                rootObjects = s.GetRootGameObjects();
-                yield return null;
-                Debug.Log("Gameplay Scene Active");
-
-                yield return new WaitUntil(Player.Services.Active);
-                EntitySpawn.PlayerPosition = Player.Services.Player.Transform;
-                Debug.Log("Player Active");
-
-                for (int i = 0; i < rootObjects.Length; i++) 
-                    DontDestroyOnLoad(rootObjects[i]);
-                //rootObjects[1].GetComponent<Player>().Awake();
-                //rootObjects[2].GetComponent<Cameras>().Awake();
-
-                PostAction();
-
-                yield return null;
-
-                Debug.Log("Initializing Other Systems");
-                GlobalPool.poolParent = rootObjects[0].transform.Find("PooledObjects");
-                GlobalPool.Self.Initialize();
-                Overlay.OverALL.Alpha = 1;
-                Overlay.UnderHUD.ResetState();
-                Overlay.BetweenUI.ResetState();
-
-                yield return WaitFor.Until(() => Active
-                    && Services.Player is not null
-                    );
-
-                Debug.Log("Beginning Transition");
-                //It's not loading the correct room cause the boot data's destination isn't actually being transferred to the stupid Room Manager, you dumbass.
-                RoomManager.ResetTransitionData(false);
-                RoomManager.TransitionStyle = new()
+                forceFullTransition = true,
+                FadeOutRoutine = null,
+                FadeInRoutine = Overlay.OverALL.FadeAlpha(0, 0.5f),
+                PreFadeInAction = () =>
                 {
-                    forceFullTransition = true,
-                    FadeOutRoutine = null,
-                    FadeInRoutine = Overlay.OverALL.FadeAlpha(0, 0.5f),
-                    PreFadeInAction = () =>
-                    {
-                        Overlay.UnderHUD.ResetState();
-                        Overlay.BetweenUI.ResetState();
-                        OverlayTopPlus.Get.ResetState();
-                        SavedProgress.UpdateGameTime();
-                        Input.Pause.performed += c => { Menu.Escape(); };
-                        Menu.EscapeCallbackMenuless += PauseMenu.Get.Open;
-                        UpdateProxy.OnFixedUpdate += FixedUpdate;
-                    },
-                };
-                yield return RoomManager.Transition();
-                Debug.Log("Transition Finished");
-                InvokeOnFinalAwake();
-            }
+                    Overlay.UnderHUD.ResetState();
+                    Overlay.BetweenUI.ResetState();
+                    OverlayTopPlus.Get.ResetState();
+                    SavedProgress.UpdateGameTime();
+                    Input.Pause.performed += c => { Menu.Escape(); };
+                    Menu.EscapeCallbackMenuless += PauseMenu.Get.Open;
+                    UpdateProxy.OnFixedUpdate += FixedUpdate;
+                },
+            };
+            yield return RoomManager.Transition();
+            Debug.Log("Transition Finished");
+            InvokeOnFinalAwake();
+
         }
 
         /// <summary>
@@ -109,7 +105,7 @@ namespace RageRooster.TOP
         {
             if (Active) return;
 
-            Enum().Begin(Overlay.OverALL);
+            Enum().Begin();
             IEnumerator Enum()
             {
 
@@ -123,12 +119,29 @@ namespace RageRooster.TOP
 
                 Menu.CloseAllMenus();
 
-                Get.Enter();
-
-                yield return WaitFor.Until(() => Get.isActive);
-                yield return WaitFor.SecondsRealtime(0.2f);
+                yield return Get.Enter();
             }
         }
+
+        protected override void DoBeginEditor(Destination d)
+        {
+            SaveManager.InitializeManager(0);
+            Destination loadedDest = SaveData.Active.playerStats.location;
+            loadedDest ??= new();
+
+            RoomManager.queuedDestination = 
+                (d.room != null && d.spawn > -1) ? d // Everything Checks
+                : (d.area != null && d.room == null) ? //Area but No Room
+                    (loadedDest.area == d.area) ? d // Area Matches Save
+                    : new(d.area.rooms[0], 0) // Area doesn't Match Save
+                  : (d.room != null && d.spawn == -1) ?  // Room but no Spawn
+                        (loadedDest.room == d.room) ? d // Room Matches Save
+                        : new(d.room, 0) // Room doesn't Match Save
+                    : throw new System.Exception("Excuse me??????"); // Idk.
+
+            Get.Enter().Begin();
+        }
+
 
         /*
         private static Destination CalculateEditorSpawn()
@@ -264,7 +277,7 @@ namespace RageRooster.TOP
 
         }*/
 
-        protected override void OnExitLogic()
+        protected override IEnumerator OnExit()
         {
             CoreServices.Music.StopAllMusic();
             UpdateProxy.OnFixedUpdate -= FixedUpdate;
@@ -273,11 +286,10 @@ namespace RageRooster.TOP
             RoomManager.queuedDestination = null;
             for (int i = rootObjects.Length - 1; i >= 0; i--)
                 Destroy(rootObjects[i]);
+            yield break;
         }
 
         protected override void DoEndGame() => titleScreenGameState.Enter();
-
-
     }
 
 }

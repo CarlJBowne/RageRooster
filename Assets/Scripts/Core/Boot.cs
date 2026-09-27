@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using RageRooster.Core.World;
 using RageRooster.Settings;
-using SLS.GameStateMachine;
+using SLS.AppStateMachine;
 using SLS.MenuCore;
 
 
-public class Boot : GameStateSingle<Boot>
+public class Boot : AppStateGlobal<Boot>
 {
-    public GameState MainMenuState;
-    public GameState GameplayState;
+    public AppState MainMenuState;
+    public AppState GameplayState;
 
     private int loadFromSavePointID = -2;
     public static int LoadFromSavePointID
@@ -29,8 +30,12 @@ public class Boot : GameStateSingle<Boot>
     }
     public OnBuildStateMachineHandling onBuildStateMachineHandling;
 
-
-    protected override void OnEnterLogic() => OnBoot();
+    protected override IEnumerator OnEnter()
+    {
+        base.OnEnter();
+        OnBoot();
+        yield break;
+    }
 
     private void OnBoot()
     {
@@ -39,5 +44,4 @@ public class Boot : GameStateSingle<Boot>
         Overlay.Instantiate();
     }
 
-    public static void BeginEditor() => Get.GameplayState.Enter();
 }

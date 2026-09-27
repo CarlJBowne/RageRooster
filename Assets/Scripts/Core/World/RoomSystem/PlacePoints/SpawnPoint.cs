@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using EditorAttributes;
 using JetBrains.Annotations;
+using RageRooster.Core;
 using RageRooster.Core.Save;
 using RageRooster.Core.World;
 using UnityEngine;
@@ -71,8 +72,8 @@ public class SpawnPoint : RoomActor
     [Button("Play from here.")]
     private void BeginFromHere()
     {
-        AreaRegistry.EditorDestination = new Destination(Root.asset, ID);
         UnityEditor.EditorApplication.isPlaying = true;
+        Gameplay.BeginEditor(new(Root.asset, ID));
     }
 
     [UnityEditor.MenuItem("GameObject/Create Spawn Point", false, 0)]

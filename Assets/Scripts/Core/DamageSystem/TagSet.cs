@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
-using UnityEditor.UIElements;
-
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine.UIElements;
@@ -153,12 +151,12 @@ public partial class Attack
         /// Create a BitwiseEnum Cloned from an existing one.
         /// </summary>
         /// <param name="source">The Source.</param>
-        public TagSet(Bitmask source) => new TagSet(source.intValue);
+        public TagSet(Bitmask source) => intValue = source.intValue;
         /// <summary>
         /// Create a BitwiseEnum Cloned from an existing one.
         /// </summary>
         /// <param name="source">The Source.</param>
-        public TagSet(TagSet source) => new TagSet(source.intValue);
+        public TagSet(TagSet source) => intValue = source.intValue;
 
         public bool this[Tags i]
         {
@@ -169,11 +167,17 @@ public partial class Attack
         public static bool operator ==(TagSet L, Tags R) => L[R];
         public static bool operator !=(TagSet L, Tags R) => !L[R];
 
-        new public TagSet Clone() => new(this);
-
-
         public override bool Equals(object obj) => obj is TagSet set && base.Equals(obj) && intValue == set.intValue;
         public override int GetHashCode() => HashCode.Combine(base.GetHashCode(), intValue);
+
+        public override string ToString()
+        {
+            string result = "";
+            for (int i = 0; i < 32; i++)
+                if (this[i] == true)
+                    result += $"{(Attack.Tags)i}, ";
+            return result;
+        }
 
 #if UNITY_EDITOR
         [CustomPropertyDrawer(typeof(TagSet))]
@@ -191,10 +195,34 @@ public partial class Attack
                     return container;
                 }
 
-                MaskField mask = new(property.displayName, TagNames.ToList(), intProp.intValue, s => s, s => s);
-                mask.BindProperty(intProp);
-                container.Add(mask);
+                var imgui = new IMGUIContainer(() =>
+                {
+                    // Retrieve dynamic names from GlobalPrefabs; ensure null-safety
+                    string[] options;
+                    try
+                    {
+                        options = TagNames != null && TagNames.Count > 0 ? TagNames.ToArray() : (new string[] { "None" });
+                    }
+                    catch
+                    {
+                        options = new string[] { "None" };
+                    }
 
+                    EditorGUI.BeginChangeCheck();
+
+                    // Render mask field using GUILayout so it integrates into the IMGUIContainer
+                    int currentMask = intProp.intValue;
+                    int newMask = EditorGUILayout.MaskField(property.displayName, currentMask, options);
+
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        intProp.intValue = newMask;
+                        // Apply changes immediately to the serialized object
+                        property.serializedObject.ApplyModifiedProperties();
+                    }
+                });
+
+                container.Add(imgui);
                 return container;
             }
         }
@@ -217,39 +245,21 @@ public partial class Attack
 
     public static implicit operator TagSet(Attack O) => O.tags;
 
+    public override string ToString() => $"\"{_displayName}\" ({amount}) <{tags.ToString()}>";
+
+    public static void InitGlobalData(List<string> namesInput)
+    {
+        TagNames = namesInput;
+
+        Dictionary<string, int> dictionary = new();
+        for (int i = 0; i < TagNames.Count; i++) dictionary[TagNames[i]] = i;
+        TagNameToID = new(dictionary);
+    }
 
     public override bool Equals(object obj) => obj is Attack attack && amount == attack.amount && velocity.Equals(attack.velocity) && EqualityComparer<TagSet>.Default.Equals(tags, attack.tags) && x == attack.x && y == attack.y && z == attack.z && _displayName == attack._displayName;
     public override int GetHashCode() => HashCode.Combine(amount, velocity, tags, x, y, z, _displayName);
 
-    public static void InitGlobalData()
-    {
-        m_TagNames = Enum.GetValues(typeof(Tags))
-            .Cast<Tags>()
-            .Select(t => t.ToString())
-            .ToList();
+    public static ReadOnlyDictionary<string, int> TagNameToID { get; private set; }
+    public static IReadOnlyList<string> TagNames { get; private set; }
 
-        Dictionary<string, int> dictionary = new();
-        for (int i = 0; i < TagNames.Count; i++) dictionary[TagNames[i]] = i;
-        m_TagNameToID = new(dictionary);
-    }
-
-    private static IReadOnlyList<string> m_TagNames;
-    private static ReadOnlyDictionary<string, int> m_TagNameToID;
-
-    public static ReadOnlyDictionary<string, int> TagNameToID
-    {
-        get
-        {
-            if (m_TagNameToID == null) InitGlobalData();
-            return m_TagNameToID;
-        }
-    }
-    public static IReadOnlyList<string> TagNames
-    {
-        get
-        {
-            if (m_TagNames == null) InitGlobalData();
-            return m_TagNames;
-        }
-    }
 }

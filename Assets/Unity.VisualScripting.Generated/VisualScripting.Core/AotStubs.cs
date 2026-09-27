@@ -12408,9 +12408,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void Boot_op_Implicit()
 		{
-			global::SLS.GameStateMachine.GameState arg0 = default(global::SLS.GameStateMachine.GameState);
+			global::SLS.AppStateMachine.AppState arg0 = default(global::SLS.AppStateMachine.AppState);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.GameStateMachine.GameState, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.GameStateMachine.GameState, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.AppStateMachine.AppState, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.AppStateMachine.AppState, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -12489,9 +12489,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void Gameplay_op_Implicit()
 		{
-			global::SLS.GameStateMachine.GameState arg0 = default(global::SLS.GameStateMachine.GameState);
+			global::SLS.AppStateMachine.AppState arg0 = default(global::SLS.AppStateMachine.AppState);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.GameStateMachine.GameState, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.GameStateMachine.GameState, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.AppStateMachine.AppState, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.AppStateMachine.AppState, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}

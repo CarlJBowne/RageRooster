@@ -18,7 +18,16 @@ namespace RageRooster.Core.World
 
         [field: SerializeField] public GameObject[] roomLowestLods { get; private set; }
 
-        private void Awake() => asset.Connect(this);
+        private void Awake()
+        {
+            if (!Gameplay.Active)
+            {
+                Gameplay.BeginEditor(Destination.AreaOnly(asset));
+                return;
+            }
+
+            asset.Connect(this);
+        }
 
 #if UNITY_EDITOR
         public class Editor : UnityEditor.Editor

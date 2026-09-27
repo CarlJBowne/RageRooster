@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using SLS.GameStateMachine;
+using RageRooster.Core.World;
+using SLS.AppStateMachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,18 +10,17 @@ namespace RageRooster.Core
 {
     //This Class is functionally split in two pieces: This, and Gameplay_Top.cs
     // Gameplay_Top.cs is the implementation of everything that needs top-level capabilities.
-    public abstract class Gameplay : GameStateSingle<Gameplay>
+    public abstract class Gameplay : AppStateGlobal<Gameplay>
     {
-        public override bool Additive => false;
         public static GameObject[] rootObjects;
-        [SerializeField] protected GameState titleScreenGameState;
+        [SerializeField] protected AppState titleScreenGameState;
 
         protected abstract void DoReloadSave(); public static void ReloadSave() => Get.DoReloadSave();
 
         /// <summary>
         /// Callback event for when a Save is about to be reloaded.
         /// </summary>
-        public static event System.Action PreReloadSave; 
+        public static event System.Action PreReloadSave;
         protected static void InvokePreReloadSave() => PreReloadSave?.Invoke();
         /// <summary>
         /// A Callback event for when the Gameplay system updates, invoked in <see cref="Update"/>.
@@ -52,7 +52,9 @@ namespace RageRooster.Core
 
         public static void BeginSaveFile(int index) => Get.DoBeginSaveFile(index);
         protected abstract void DoBeginSaveFile(int index);
-        
+        public static void BeginEditor(Destination dest) => Get.DoBeginEditor(dest);
+        protected abstract void DoBeginEditor(Destination dest);
+
         public static void EndGame() => Get.DoEndGame();
         protected abstract void DoEndGame();
 

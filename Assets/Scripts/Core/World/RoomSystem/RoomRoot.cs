@@ -35,9 +35,7 @@ namespace RageRooster.Core.World
         {
             if (!Gameplay.Active)
             {
-                if (!AreaRegistry.EditorDestination)
-                    AreaRegistry.EditorDestination = new Destination(asset, 0);
-                Boot.BeginEditor();
+                Gameplay.BeginEditor(Destination.RoomOnly(asset));
                 return;
             }
 

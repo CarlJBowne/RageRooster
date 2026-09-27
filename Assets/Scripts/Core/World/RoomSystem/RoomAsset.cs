@@ -42,9 +42,10 @@ namespace RageRooster.Core.World
         /// </summary>
         [field: SerializeField] public List<RoomEntrance.Data> entrances { get; internal set; } = new();
 
-#if UNITY_EDITOR
         [field: SerializeField] public List<string> spawnPointNames { get; internal set; } = new();
-#endif
+
+        public bool ValidSpawn(int i) => i >= 0 && i < spawnPointNames.Count;
+        public bool ValidSpawn(string s) => spawnPointNames.Contains(s);
 
         #endregion
 

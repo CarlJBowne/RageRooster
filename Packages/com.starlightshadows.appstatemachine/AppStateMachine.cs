@@ -10,13 +10,13 @@ using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace SLS.GameStateMachine
+namespace SLS.AppStateMachine
 {
     [DefaultExecutionOrder(-160)]
-    public class GameStateRegistry : GlobalAsset<GameStateRegistry>
+    public class AppStateMachine : GlobalAsset<AppStateMachine>
     {
-        [field: SerializeField] public List<GameState> AllStates { get; private set; } = new();
-        public static Dictionary<string, GameState> Dict;
+        [field: SerializeField] public List<AppState> AllStates { get; private set; } = new();
+        public static Dictionary<string, AppState> Dict;
 
         public static Action Setup;
 
@@ -34,33 +34,111 @@ namespace SLS.GameStateMachine
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
-        private static void Boot() => Self.AllStates[0].Enter();
+        private static void Boot() => Self.AllStates[0].Enter().Instant(); //This may be horrible. Investigate.
 
 #if UNITY_EDITOR
+
+#if UNITY_EDITOR
+        // Non-generic variant to create/load assets by runtime Type
+        new public static AppState GetOrCreate(Type t, string path = "Data/GameStates/")
+        {
+            if (t == null) return null;
+
+            string searchFilter = $"t:{t.Name}";
+            string[] guids = UnityEditor.AssetDatabase.FindAssets(searchFilter);
+
+            if (guids != null && guids.Length > 0)
+            {
+                if (guids.Length > 1)
+                    for (int i = guids.Length - 1; i > 0; i--)
+                    {
+                        UnityEngine.Object obj = UnityEditor.AssetDatabase.LoadMainAssetAtPath(UnityEditor.AssetDatabase.GUIDToAssetPath(guids[i]));
+                        if (obj != null) Destroy(obj);
+                    }
+
+                UnityEngine.Object loaded = UnityEditor.AssetDatabase.LoadMainAssetAtPath(UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]));
+                if (loaded is AppState asset) return asset;
+            }
+
+            // Create new ScriptableObject instance of the requested Type
+            ScriptableObject created = CreateInstance(t);
+            if (created == null) return null;
+
+            System.IO.Directory.CreateDirectory(System.IO.Path.Combine(Application.dataPath, path));
+            UnityEditor.AssetDatabase.CreateAsset(created, $"Assets/{path}{t.Name}.asset");
+            UnityEditor.AssetDatabase.SaveAssets();
+
+            return created as AppState;
+        }
+
+        public static bool TryGetAlreadyActive(Type t, out AppState result)
+        {
+            FieldInfo singletonField = typeof(AppStateGlobal<>).MakeGenericType(t)
+                .GetField("S", BindingFlags.Static | BindingFlags.NonPublic);
+            PropertyInfo slotField = typeof(Singleton<>).MakeGenericType(t)
+                .GetProperty("slot", BindingFlags.Instance | BindingFlags.Public);
+
+            object single = singletonField.GetValue(null);
+            if (single is null)
+            {
+                result = null;
+                return false;
+            }
+            object slot = slotField.GetValue(single);
+            if (slot is null || slot.GetType() != t)
+            {
+                result = null;
+                return false;
+            }
+            result = slot as AppState;
+            return true;
+        }
+
+#endif
+
 
         public class PostProcessor : UnityEditor.AssetPostprocessor
         {
             private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
             {
-                if (!TryGet(out GameStateRegistry registry))
-                    registry = GetOrCreate(typeof(GameStateRegistry)) as GameStateRegistry;
+                if (!TryGet(out AppStateMachine registry))
+                    registry = _GlobalAssetBase.GetOrCreate(typeof(AppStateMachine)) as AppStateMachine;
 
                 registry.OnEnable();
 
-                Type GlobalAssetType = typeof(GameStateSingle<>);
+                Type GlobalAssetType = typeof(AppStateGlobal<>);
                 List<Type> globalAssetTypes = GlobalAssetType.GetAllInheritors();
 
                 foreach (Type type in globalAssetTypes)
                 {
                     // If no existing in-memory instance is found, ensure an asset exists on disk
-                    if (_GameStateSingleBase.TryGetAlreadyActive(type, out _GameStateSingleBase currentInstance))
+                    if (TryGetAlreadyActive(type, out AppState currentInstance))
                     {
                         if (!registry.AllStates.Contains(currentInstance)) registry.AllStates.Add(currentInstance);
                         currentInstance.OnEnable();
                     }
                     else
                     {
-                        _GameStateSingleBase created = _GameStateSingleBase.GetOrCreate(type);
+                        AppState created = GetOrCreate(type);
+                        if (!registry.AllStates.Contains(created)) registry.AllStates.Add(created);
+                        created.OnEnable();
+                    }
+                }
+
+                Type GlobalSubAssetType = typeof(AppSubStateGlobal<>);
+                List<Type> globalSubAssetTypes = GlobalAssetType.GetAllInheritors();
+
+                foreach (Type type in globalAssetTypes)
+                {
+                    // If no existing in-memory instance is found, ensure an asset exists on disk
+                    if (TryGetAlreadyActive(type, out AppState currentInstance))
+                    {
+                        if (!registry.AllStates.Contains(currentInstance)) registry.AllStates.Add(currentInstance);
+                        currentInstance.OnEnable();
+                    }
+                    else
+                    {
+                        AppState created = GetOrCreate(type);
                         if (!registry.AllStates.Contains(created)) registry.AllStates.Add(created);
                         created.OnEnable();
                     }
@@ -76,7 +154,7 @@ namespace SLS.GameStateMachine
 
         }
 
-        [UnityEditor.CustomEditor(typeof(GameStateRegistry))]
+        [UnityEditor.CustomEditor(typeof(AppStateMachine))]
         internal class Editor : UnityEditor.Editor
         {
             public override VisualElement CreateInspectorGUI()
@@ -84,7 +162,7 @@ namespace SLS.GameStateMachine
                 VisualElement root = new();
 
                 root.Add(new UnityEditor.UIElements.PropertyField(
-                    serializedObject.FindProperty($"<{nameof(GameStateRegistry.AllStates)}>k__BackingField")));
+                    serializedObject.FindProperty($"<{nameof(AppStateMachine.AllStates)}>k__BackingField")));
 
                 Button CreateNewBasicStateButton = new(CreateNewBasicState)
                 { text = "Create New Basic State" };
@@ -101,7 +179,7 @@ namespace SLS.GameStateMachine
 
             void CreateNewBasicState()
             {
-                GameState NewState = ScriptableObject.CreateInstance<GameState>();
+                AppState NewState = ScriptableObject.CreateInstance<AppState>();
                 ProjectWindowUtil.CreateAsset(NewState, "Assets/Data/GameStates/New Game State.asset");
                 Self.AllStates.Add(NewState);
                 EditorUtility.SetDirty(Self);

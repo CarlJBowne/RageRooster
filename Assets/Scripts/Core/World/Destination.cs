@@ -38,6 +38,27 @@ namespace RageRooster.Core.World
             spawn = spawnID;
         }
 
+        public static Destination AreaOnly(AreaAsset area)
+        {
+            Destination result = new()
+            {
+                area = area,
+                room = null,
+                spawn = -1
+            };
+            return result;
+        }
+        public static Destination RoomOnly(RoomAsset room)
+        {
+            Destination result = new()
+            {
+                area = null,
+                room = room,
+                spawn = -1
+            };
+            return result;
+        }
+
         public static implicit operator Destination(AreaAsset area)
         {
             Destination result = new();
@@ -85,7 +106,10 @@ namespace RageRooster.Core.World
         }
 
         /// <summary> Validity Check </summary>
-        public static implicit operator bool(Destination asset) => asset != null && asset.area != null && asset.room != null && asset.room.area == asset.area && asset.spawn > 1 && asset.spawn < asset.room.spawnPointNames.Count;
+        public static implicit operator bool(Destination asset) => asset != null 
+            && asset.room != null 
+            && asset.room.ValidSpawn(asset.spawn);
+        public override string ToString() => (bool)this ? $"{room.name} - {spawn}" : "Invalid";
 
         static Destination() => Default = new Destination();
         public static Destination Default { get; private set; }
