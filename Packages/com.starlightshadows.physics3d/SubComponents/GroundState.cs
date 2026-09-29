@@ -27,30 +27,82 @@ namespace SLS.Physics3D
 
         #endregion
 
-        /// <summary>
-        /// Construct a new GroundState value container. Use <see cref="Init"/>
-        /// to attach this state to its owning <see cref="PhysicsBody"/>.
-        /// </summary>
-        /// <param name="input">The initial ground value.</param>
-        public GroundState(Values input) => value = input;
+        #region Enums
 
         /// <summary>
-        /// The possible ground-related states for a body describing whether it is
-        /// standing, airborne, in hangtime, etc.
+        /// The possible states where this <see cref="PhysicsBody"/> is anchored to a collider.
         /// </summary>
-        public enum Values
+        public enum AnchorStates
         {
-            Grounded = 0,
-            Jumping = 1,
-            Decelerating = 2,
-            Hangtime = 3,
-            Falling = 4,
-            TerminalVelocity = 5
+            /// <summary> This <see cref="PhysicsBody"/> grounded to a NavMesh </summary>
+            Grounded,
+            /// <summary> This <see cref="PhysicsBody"/> is standing on a non-static surface </summary>
+            Standing,
+            /// <summary> This <see cref="PhysicsBody"/> is sticking to a wall or ceiling </summary>
+            Sticking,
+            /// <summary> This <see cref="PhysicsBody"/> is not currently anchored.</summary>
+            Airborne,
         }
         /// <summary>
-        /// The current ground state value.
+        /// The possible states where this <see cref="PhysicsBody"/> is not anchored to a collider.
         /// </summary>
-        public Values value { get; private set; }
+        public enum AirStates
+        {
+            /// <summary> This <see cref="PhysicsBody"/> is not currently airborne. </summary>
+            Anchored,
+            /// <summary> This <see cref="PhysicsBody"/> is going upwards</summary>
+            Upward,
+            /// <summary> This <see cref="PhysicsBody"/> is losing upward speed</summary>
+            Decellerating,
+            /// <summary> This <see cref="PhysicsBody"/> is currently has neutral vertical velocity</summary>
+            Neutral,
+            /// <summary> This <see cref="PhysicsBody"/> is falling</summary>
+            Falling,
+            /// <summary> This <see cref="PhysicsBody"/> has reached terminal downward velocity</summary>
+            Terminus
+        }
+        /// <summary>
+        /// The current Anchored state of this <see cref="PhysicsBody"/>
+        /// </summary>
+        public AnchorStates AnchorState { get; private set; }
+        /// <summary>
+        /// The current Airborne state of this <see cref="PhysicsBody"/>
+        /// </summary>
+        public AirStates AirState { get; private set; }
+
+        #region Conveniences
+        public const AnchorStates Grounded = AnchorStates.Grounded;
+        public const AnchorStates Standing = AnchorStates.Standing;
+        public const AnchorStates Sticking = AnchorStates.Sticking;
+        public const AnchorStates Airborne = AnchorStates.Airborne;
+        public const AirStates Anchored = AirStates.Anchored;
+        public const AirStates Upward = AirStates.Upward;
+        public const AirStates Decellerating = AirStates.Decellerating;
+        public const AirStates Neutral = AirStates.Neutral;
+        public const AirStates Falling = AirStates.Falling;
+        public const AirStates Terminus = AirStates.Terminus;
+        #endregion
+
+        #region Comparison
+
+        public static implicit operator AnchorStates(GroundState This) => This.AnchorState;
+        public static implicit operator AirStates(GroundState This) => This.AirState;
+
+        public static bool operator ==(GroundState This, GroundState other) =>
+            This.AnchorState == other.AnchorState && This.AirState == other.AirState;
+        public static bool operator !=(GroundState This, GroundState other) => !(This == other);
+        public static bool operator ==(GroundState This, AnchorStates other) => This.AnchorState == other;
+        public static bool operator !=(GroundState This, AnchorStates other) => This.AnchorState != other;
+        public static bool operator ==(GroundState This, AirStates other) => This.AirState == other;
+        public static bool operator !=(GroundState This, AirStates other) => This.AirState != other;
+
+
+        public override bool Equals(object obj) => object.ReferenceEquals(this, obj);
+        public override int GetHashCode() => HashCode.Combine(AnchorState, AirState, anchor);
+
+        #endregion
+
+        #endregion
 
         /// <summary>
         /// The anchor point representing the last ground contact (point, normal, collider).
@@ -206,27 +258,6 @@ namespace SLS.Physics3D
         public bool WithinSlopeAngle(Vector3 inNormal) => Vector3.Angle(Vector3.up, inNormal) < maxSlopeNormalAngle;
 
 
-        #region Comparison
 
-        public static implicit operator bool(GroundState This) => This.value == Values.Grounded;
-        public static implicit operator Values(GroundState This) => This.value;
-        public static implicit operator GroundState(Values input) => new(input);
-
-        public static bool operator ==(GroundState This, GroundState other) => This.value == other.value;
-        public static bool operator !=(GroundState This, GroundState other) => This.value != other.value;
-        public static bool operator ==(GroundState This, Values other) => This.value == other;
-        public static bool operator !=(GroundState This, Values other) => This.value != other;
-
-        public const Values Grounded = Values.Grounded;
-        public const Values Jumping = Values.Jumping;
-        public const Values Decelerating = Values.Decelerating;
-        public const Values Hangtime = Values.Hangtime;
-        public const Values Falling = Values.Falling;
-        public const Values TerminalVelocity = Values.TerminalVelocity;
-
-        public override bool Equals(object obj) => obj is GroundState state && value == state.value && EqualityComparer<AnchorPoint>.Default.Equals(anchor, state.anchor);
-        public override int GetHashCode() => HashCode.Combine(value, anchor);
-
-        #endregion
     }
 }
