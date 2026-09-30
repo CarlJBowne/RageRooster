@@ -17,7 +17,7 @@ namespace SLS.Physics3D
 
         public override void Enter()
         {
-            if (Ground.Check(out _)) return;
+            if (Ground.SweepStandable(out _)) return;
             else
             {
                 if (airborneResolver) ChooseNext(airborneResolver);
@@ -35,7 +35,7 @@ namespace SLS.Physics3D
 
             Print(() => $"Physics Step {Body.Step} - Collide and Slide - Velocity {stepVelocity}");
 
-            stepVelocity = stepVelocity.ProjectAndScale(anchor.normal);
+            stepVelocity = stepVelocity.ProjectAndScale(CurrentAnchor.normal);
 
             float stopDistance = -1;
             Vector3 nextNormal = Vector3.zero;
@@ -76,13 +76,13 @@ namespace SLS.Physics3D
                 if (stopDistance == -1)
                 {
                     // Snap down to a slightly lower ground if detected (small ledge correction).
-                    if (Body.Sweep(Vector3.down, out RaycastHit downHit, Body.Ground.groundCheckBuffer) && downHit.distance < downSnap)
+                    if (Body.Sweep(Vector3.down, out RaycastHit downHit, Body.Anchor.groundCheckBuffer) && downHit.distance < downSnap)
                     {
                         if (!CheckCorner(downHit))
                         {
                             Print(() => $"Snapping down at near platform or slope {downHit.distance}");
                             Body.Position += Vector3.down * downHit.distance;
-                            Ground.Land(downHit);
+                            Ground.Anchor(downHit);
                         }
                     }
                     else Body.WalkOff();
@@ -108,7 +108,7 @@ namespace SLS.Physics3D
                     negateVerticalLefover = true;
                     nextNormal = nextNormal.XZ().normalized;
                 }
-                else if (hit.normal.y > 0 && !Ground.WithinSlopeAngle(hit.normal)) // Hit a steep slope
+                else if (hit.normal.y > 0 && !Ground.Standable(hit.normal)) // Hit a steep slope
                 {
                     Print(() => $"Hit a steep slope, normal: {hit.normal}");
                     scaleByDot = true;
@@ -116,8 +116,8 @@ namespace SLS.Physics3D
                     nextNormal = nextNormal.XZ().normalized;
                 }
 
-                if (anchor.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(anchor, hit.normal);
-                else if (anchor.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, anchor);
+                if (CurrentAnchor.normal.y > 0 && hit.normal.y < 0) FloorCeilingLock(CurrentAnchor, hit.normal);
+                else if (CurrentAnchor.normal.y < 0 && hit.normal.y > 0) FloorCeilingLock(hit.normal, CurrentAnchor);
 
                 void FloorCeilingLock(Vector3 floorNormal, Vector3 ceilingNormal)
                 {
@@ -127,17 +127,17 @@ namespace SLS.Physics3D
                 }
 
                 // If we hit a valid ground surface and are moving downwards or flat, land on it.
-                if (hit.normal.y > 0 && Ground.WithinSlopeAngle(hit.normal))
+                if (hit.normal.y > 0 && Ground.Standable(hit.normal))
                 {
                     Print(() => $"Found Landable ground, normal: {nextNormal}");
-                    Ground.Land(hit);
+                    Ground.Anchor(hit);
                 }
             }
 
             Vector3 snapToSurface = stopDistance != -1 ? stepVelocity.normalized * stopDistance : stepVelocity;
 
             // Make sure we aren't moving off into the void at the destination
-            if (!Body.Sweep(Vector3.down * 5000, out _, checkBuffer, snapToSurface, QueryTriggerInteraction.Collide)) return;
+            if (!Body.Sweep(Vector3.down * 5000, out RaycastHit _, checkBuffer, snapToSurface, QueryTriggerInteraction.Collide)) return;
 
             Body.Position += snapToSurface;
 

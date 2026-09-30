@@ -9,7 +9,7 @@ public class MovingPlatform : MonoBehaviour, IMovablePlatform
     public float speed = 2.0f;
 
     private Vector3 target;
-    public List<PhysicsBody> bodies { get; } = new();
+    public List<MovingBody> bodies { get; } = new();
     public bool MovePlayer { get; set; } = false;
 
     void Start()

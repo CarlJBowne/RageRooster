@@ -64,7 +64,7 @@ namespace SLS.Physics3D
                 if (!nonNavResolver && !airborneResolver)
                 {
                     lockToNavMesh = true;
-                    if(!NavMesh.SamplePosition(Position, out sampleHit, float.PositiveInfinity, NavAgent.areaMask))
+                    if (!NavMesh.SamplePosition(Position, out sampleHit, float.PositiveInfinity, NavAgent.areaMask))
                     {
                         Body.enabled = false;
                         return;
@@ -72,7 +72,7 @@ namespace SLS.Physics3D
                 }
                 else
                 {
-                    if (nonNavResolver && Ground.Check(out _, false)) ChooseNext(nonNavResolver);
+                    if (nonNavResolver && Ground.SweepStandable(Body.Direction.Up * -.1f, out _)) ChooseNext(nonNavResolver);
                     else
                     {
                         if (airborneResolver) ChooseNext(airborneResolver);
@@ -160,7 +160,7 @@ namespace SLS.Physics3D
                 Body.Direction.Set(NavAgent.desiredVelocity, NavAgent.angularSpeed * Time.fixedDeltaTime);
                 NavAgent.velocity = Vector3.zero;
 
-                stepZeroVelocity.Global = (Vector3.Dot(NavAgent.desiredVelocity, direction) + 1) * NavAgent.desiredVelocity.magnitude * (Vector3)direction;
+                stepZeroVelocity.Global = (Vector3.Dot(NavAgent.desiredVelocity, Direction) + 1) * NavAgent.desiredVelocity.magnitude * (Vector3)Direction;
                 if (NavAgent.remainingDistance < 0.1f) NavDestination(false);
             }
         }

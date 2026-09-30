@@ -28,12 +28,12 @@ public class PlayerGlidingMovement : PlayerAirborneMovement
         if (!isVentGlide || transform.position.y > targetHeight)
         {
             result = ApplyGravity(gravity, terminalVelocity, flatGravity);
-            Player.MovementBody.Ground.UnLand(GroundState.Values.Falling);
+            Player.MovementBody.UnLand(JumpPhase.Falling);
         }
         else if (transform.position.y < targetHeight)
         {
             result = raiseRate/* * currentVent.transform.up.y*/;
-            Player.MovementBody.Ground.UnLand(GroundState.Values.Hangtime);
+            Player.MovementBody.UnLand(JumpPhase.Hangtime);
         }
         else result = 0;
 
@@ -47,7 +47,7 @@ public class PlayerGlidingMovement : PlayerAirborneMovement
     {
         Y = Y.Max(0);
 
-        Player.MovementBody.Ground.UnLand(GroundState.Values.Falling);
+        Player.MovementBody.UnLand(JumpPhase.Falling);
         if (fallState != null) fallState.Enter();
     }
 
@@ -56,7 +56,7 @@ public class PlayerGlidingMovement : PlayerAirborneMovement
         base.OnEnter(prev, isFinal);
         if (!isFinal) return;
 
-        Player.MovementBody.Ground.UnLand();
+        Player.MovementBody.UnLand();
 
         Player.MovementBody.Velocity.y = Player.MovementBody.Velocity.y.Max(0);
 
@@ -69,5 +69,5 @@ public class PlayerGlidingMovement : PlayerAirborneMovement
 
     public override void BeginJump() => throw new System.Exception("Don't Use This Method.");
     public override void BeginJump(float power, float height, float minHeight) => throw new System.Exception("Don't Use This Method.");
-    public override void BeginJump(GroundState.Values newState) => throw new System.Exception("Don't Use This Method.");
+    public override void BeginJump(JumpPhase newState) => throw new System.Exception("Don't Use This Method.");
 }

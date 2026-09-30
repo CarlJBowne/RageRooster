@@ -26,7 +26,7 @@ using System.Reflection;
 
 
 [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider), typeof(NavMeshAgent))]
-public sealed class PlayerMovementBody : PhysicsBody
+public sealed class PlayerMovementBody : MovingBody
 {
     #region Config
 
@@ -77,7 +77,7 @@ public sealed class PlayerMovementBody : PhysicsBody
 
     public void ReturnToNeutral(bool doCrossFade = true)
     {
-        if (Ground.Check(out _))
+        if (Anchor.SweepStandable(out _))
         {
             Self.StateMachine.IdleWalk.State.Enter();
             if (doCrossFade) Self.Animator.CrossFade("GroundBasic", .1f);
@@ -99,18 +99,18 @@ public sealed class PlayerMovementBody : PhysicsBody
 
 
 
-    public override void OnLand(bool wasntGrounded, bool objectChange)
+    public override void OnAnchor(bool wasntGrounded, bool objectChange)
     {
         UpdateResolver();
         Self.StateMachine.Signal(new("Land", ignoreLock: true));
         canDoDoubleJump = true; //I still don't like this being part of this script of all things.
         if (Self.Controller.CheckJumpBuffer()) Self.StateMachine.Signal("Jump");
     }
-    public override void OnUnLand(GroundState.Values newValue) => UpdateResolver();
+    public override void OnDeanchor() => UpdateResolver();
 
     public override void WalkOff()
     {
-        Ground.UnLand(GroundState.Values.Hangtime);
+        Anchor.DeAnchor();
         Self.StateMachine.Signal(new("WalkOff", ignoreLock: true));
     }
 
@@ -124,6 +124,12 @@ public sealed class PlayerMovementBody : PhysicsBody
         return false;
     }
 
+    public void UnLand(JumpPhase jumpPhase = JumpPhase.Neutral)
+    {
+        Anchor.DeAnchor(jumpPhase == JumpPhase.Jumping);
+        JumpPhase = jumpPhase;
+    }
+    public JumpPhase JumpPhase;
 
     #region Other
 
@@ -139,7 +145,7 @@ public sealed class PlayerMovementBody : PhysicsBody
             Self.StateMachine.Signal(new(value != null ? "EnterVent" : "ExitVent", 0, true));
         }
     }
-VolcanicVent currentVent;
+    VolcanicVent currentVent;
     public bool isOverVent => currentVent != null;
 
     #endregion Other
@@ -147,7 +153,7 @@ VolcanicVent currentVent;
 #if UNITY_EDITOR
 
     [CustomEditor(typeof(PlayerMovementBody))]
-    new public class Editor : PhysicsBody.Editor
+    new public class Editor : MovingBody.Editor
     {
         PropertyField BonkField;
 

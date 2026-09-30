@@ -34,7 +34,7 @@ namespace SLS.AppStateMachine
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
-        private static void Boot() => Self.AllStates[0].Enter().Instant(); //This may be horrible. Investigate.
+        private static void Boot() => Self.AllStates[0].Enter().InstantSafe(); //This may be horrible. Investigate.
 
 #if UNITY_EDITOR
 

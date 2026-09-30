@@ -13,9 +13,9 @@ using UnityEditor.UIElements;
 namespace SLS.Physics3D
 {
     /// <summary>
-    /// Abstract base class for movement resolvers. A resolver is responsible for translating a proposed movement vector into collisions, sliding, landing and other movement effects for its owning <see cref="PhysicsBody"/>.
+    /// Abstract base class for movement resolvers. A resolver is responsible for translating a proposed movement vector into collisions, sliding, landing and other movement effects for its owning <see cref="MovingBody"/>.
     /// </summary>
-    [System.Serializable, RequireComponent(typeof(PhysicsBody))]
+    [System.Serializable, RequireComponent(typeof(MovingBody))]
     public abstract class PhysicsResolver : MonoBehaviour
     {
         #region Relations
@@ -23,7 +23,7 @@ namespace SLS.Physics3D
         /// <summary>
         /// The owning PhysicsBody instance. Available after <see cref="Init"/> is called.
         /// </summary>
-        [field: SerializeField] public PhysicsBody Body { get; private set; }
+        [field: SerializeField] public MovingBody Body { get; private set; }
 
         /// <summary>
         /// Convenience properties that forward to the owning body. These provide quick
@@ -31,16 +31,16 @@ namespace SLS.Physics3D
         /// </summary>
         protected Vector3 Position => Body.Position;
         protected Velocity stepZeroVelocity => Body.Velocity;
-        protected GroundState Ground => Body.Ground;
-        protected AnchorPoint anchor => Body.Ground.anchor;
-        protected Direction direction => Body.Direction;
+        protected AnchorState Ground => Body.Anchor;
+        protected AnchorPoint CurrentAnchor => Body.Anchor.AnchorPoint;
+        protected Direction Direction => Body.Direction;
         protected PhysicsResolver Next => Body.Resolver;
 
         #endregion
 
         public virtual void Reset()
         {
-            if (!TryGetComponent(out PhysicsBody pb))
+            if (!TryGetComponent(out MovingBody pb))
             { DestroyImmediate(this); return; }
             this.Body = pb;
         }
@@ -119,6 +119,7 @@ namespace SLS.Physics3D
             foldout.BindProperty(property);
             foldout.SetValueWithoutNotify(false);
             root.Add(foldout);
+            foldout.value = false;
 
             var getButton = new Button(ButtonPress)
             {

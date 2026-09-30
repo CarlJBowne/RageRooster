@@ -15,14 +15,14 @@ using UnityEditor.UIElements;
 namespace SLS.Physics3D
 {
     /// <summary>
-    /// Core physics body component that owns per-entity physics state and delegates movement
+    /// Core Moving Body component that owns per-entity physics state and delegates movement
     /// resolution to modular <see cref="PhysicsResolver"/> implementations. <br/>
     /// This component centralizes the Rigidbody/Collider/NavMeshAgent integration, exposes
     /// the high-level physical concepts (velocity, ground state, facing direction), and
     /// coordinates resolver selection and invocation each FixedUpdate.
     /// </summary>
     [RequireComponent(typeof(Rigidbody), typeof(Collider), typeof(NavMeshAgent))]
-    public class PhysicsBody : MonoBehaviour
+    public class MovingBody : MonoBehaviour
     {
         protected virtual void FixedUpdate()
         {
@@ -42,7 +42,7 @@ namespace SLS.Physics3D
 
             Resolver?.FixedUpdateFormer();
 
-            if(Direction.lookTarget != null && Velocity.lookVelocity > 0f) 
+            if (Direction.lookTarget != null && Velocity.lookVelocity > 0f)
                 Direction.Set(Direction.lookTarget.position - Position, Velocity.lookVelocity * Time.fixedDeltaTime);
             else if (Velocity.r != 0f) Direction.RotationY += Velocity.r * Time.fixedDeltaTime;
 
@@ -74,7 +74,7 @@ namespace SLS.Physics3D
         }
 
         /// <summary>
-        /// The Serialized Tree of <see cref="PhysicsResolver"/>s available for this body. The <see cref="ResolverTree"/>
+        /// The root <see cref="PhysicsResolver"/>, the first one it will attempt to use in any ambiguous situation.
         /// </summary>
         [field: SerializeField] public PhysicsResolver firstResolver { get; private set; }
 
@@ -85,11 +85,11 @@ namespace SLS.Physics3D
         [field: SerializeField] public Velocity Velocity { get; private set; }
 
         /// <summary>
-        /// Current ground state for this body. Tracks whether the body is grounded, the
+        /// Current <see cref="AnchorState"/> for this body. Tracks whether the body is grounded, the
         /// anchor point (surface normal/point/collider) and exposes checks for ledges and
         /// slope limits.
         /// </summary>
-        [field: SerializeField] public GroundState Ground { get; private set; }
+        [field: SerializeField] public AnchorState Anchor { get; private set; }
 
         /// <summary>
         /// Direction helper that represents the local forward vector used for local
@@ -117,21 +117,12 @@ namespace SLS.Physics3D
         [Tooltip("The maximum amount of steps this resolver allows.")]
         [SerializeField] public int maxPhysicsSteps = 6;
         /// <summary>
-        /// The amount of MoveSteps this <see cref="PhysicsBody"/> has gone through in this FixedUpdate sharedacross //all of its <see cref="PhysicsResolver"/>s
+        /// The amount of MoveSteps this <see cref="MovingBody"/> has gone through in this FixedUpdate sharedacross //all of its <see cref="PhysicsResolver"/>s
         /// </summary>
         public int Step { get; internal set; } = 0;
 
         #endregion
 
-        /// <summary>
-        /// Casts the Rigidbody in a direction to check for collision using SweepTest. (Includes optional buffer)
-        /// </summary>
-        /// <param name="offset"></param>
-        /// <param name="hit">The resulting Hit.</param>
-        /// <param name="buffer">A buffer that the Rigidbody is temporarily moved backwards by before the Sweep Test.</param>
-        /// <param name="tempOrigin">An optional temporary origin to move the Rigidbody to before the Sweep Test.</param>
-        /// <param name="queryTriggerInteraction">Override to include trigger colliders in the Sweep Test.</param>
-        /// <returns>Whether anything was Hit.</returns>
         /// <summary>
         /// Performs a sweep test using the internal Rigidbody to determine whether this
         /// body would collide when translated by <paramref name="offset"/>. Optionally
@@ -177,6 +168,35 @@ namespace SLS.Physics3D
             return result;
         }
 
+        /// <summary>
+        /// Performs a sweep test using the internal Rigidbody to determine whether this
+        /// body would collide when translated by <paramref name="offset"/>. Optionally
+        /// supports a temporary origin and a buffer distance to shrink the effective start
+        /// location for the sweep.
+        /// </summary>
+        /// <param name="offset">The desired translation vector to sweep along.</param>
+        /// <param name="hit">Outputs an <see cref="AnchorPoint"/> based on the first <see cref="RaycastHit"/> detected by the sweep (if any).</param>
+        /// <param name="buffer">A small buffer to back the test origin up along <paramref name="offset"/>. Defaults to 0.</param>
+        /// <param name="tempOrigin">An optional temporary origin to perform the sweep from instead of the current RB position.</param>
+        /// <param name="queryTriggerInteraction">Whether the sweep should hit trigger colliders. Defaults to Ignore.</param>
+        /// <returns>True if the sweep detected a collider, otherwise false.</returns>
+        public bool Sweep(Vector3 offset, out AnchorPoint hit, float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore) =>
+            Sweep(offset, out hit, buffer, tempOrigin, queryTriggerInteraction);
+        /// <summary>
+        /// Performs a sweep test using the internal Rigidbody to determine whether this
+        /// body would collide when translated by <paramref name="offset"/>. Optionally
+        /// supports a temporary origin and a buffer distance to shrink the effective start
+        /// location for the sweep.
+        /// </summary>
+        /// <param name="offset">The desired translation vector to sweep along.</param>
+        /// <param name="hit">Outputs an <see cref="AnchorPoint"/> based on the first <see cref="RaycastHit"/> detected by the sweep (if any).</param>
+        /// <param name="buffer">A small buffer to back the test origin up along <paramref name="offset"/>. Defaults to 0.</param>
+        /// <param name="tempOrigin">An optional temporary origin to perform the sweep from instead of the current RB position.</param>
+        /// <param name="queryTriggerInteraction">Whether the sweep should hit trigger colliders. Defaults to Ignore.</param>
+        /// <returns>True if the sweep detected a collider, otherwise false.</returns>
+        public bool Sweep(Vector3 offset, float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore) =>
+            Sweep(offset, out RaycastHit _, buffer, tempOrigin, queryTriggerInteraction);
+
         #region LifeCycle and Components
 
         [field: SerializeField, HeaderItem(true)] public Rigidbody RB { get; internal set; }
@@ -205,7 +225,7 @@ namespace SLS.Physics3D
                 NavAgent.enabled = false;
             }
 
-            Ground.Init(this);
+            Anchor.Init(this);
 
             Direction.Init(this);
             Velocity.Init(this);
@@ -297,40 +317,32 @@ namespace SLS.Physics3D
         /// with a surface during an airborne state.
         /// </summary>
         /// <param name="collision">Collision information provided by Unity.</param>
-        void OnCollisionEnter(Collision collision)
+        protected virtual void OnCollisionEnter(Collision collision)
         {
-            Vector3 contactNormal = collision.GetContact(0).normal;
-            if (!Ground && Velocity.y > .1f && Vector3.Dot(contactNormal, Vector3.up) < -0.75f) Velocity.y = 0;
-            else if (!Ground && Ground.WithinSlopeAngle(contactNormal))
-                Ground.Land(collision.GetContact(0));
-
+            ContactPoint contact = collision.GetContact(0);
+            if (Anchor.Airborne && Anchor.Rising && Anchor.NormalAngle(contact.normal) is AnchorPoint.Type.Ceiling)
+                Velocity.y = 0;
+            else Anchor.Land(contact);
         }
 
-        #region LandPlugs
-
-        public void Land() => Ground.Land();
-        public void Land(AnchorPoint anchor) => Ground.Land(anchor);
-        public void UnLand(GroundState.Values newValue = GroundState.Values.Falling) => Ground.UnLand(newValue);
-        #endregion
-
         /// <summary>
-        /// Called by <see cref="GroundState"/> when this body lands on a surface.
+        /// Called by <see cref="AnchorState"/> when this body lands on a surface.
         /// Override to perform game-specific landing behavior. The default implementation
         /// will re-evaluate the active resolver.
         /// </summary>
         /// <param name="wasntGrounded">True if the body was previously not grounded.</param>
         /// <param name="objectChange">True if the collider surface changed since last ground.</param>
-        public virtual void OnLand(bool wasntGrounded, bool objectChange) => UpdateResolver();
+        public virtual void OnAnchor(bool wasntGrounded, bool objectChange) => UpdateResolver();
 
         /// <summary>
-        /// Called by <see cref="GroundState"/> when this body leaves the ground. Override
+        /// Called by <see cref="AnchorState"/> when this body leaves the ground. Override
         /// to perform game-specific airborne entry behavior. The default implementation
         /// will re-evaluate the active resolver.
         /// </summary>
         /// <param name="newValue">The new ground state value being transitioned to.</param>
-        public virtual void OnUnLand(GroundState.Values newValue) => UpdateResolver();
+        public virtual void OnDeanchor() => UpdateResolver();
 
-        public virtual void WalkOff() => Ground.UnLand(GroundState.Values.Hangtime);
+        public virtual void WalkOff() => Anchor.DeAnchor();
         public virtual bool LastChanceStopper(Vector3 velocity, Vector3 normal) => false;
 
 
@@ -341,14 +353,14 @@ namespace SLS.Physics3D
 #if UNITY_EDITOR
         private void OnDrawGizmos() => Debug.DisplayGizmos();
 
-        [CustomEditor(typeof(PhysicsBody), true)]
+        [CustomEditor(typeof(MovingBody), true)]
         public class Editor : UnityEditor.Editor
         {
-            PhysicsBody This;
+            MovingBody This;
 
             public PropertyField ResolverField;
             public PropertyField GroundCheckBufferField;
-            public PropertyField MaxSlopeAngleField;
+            public Foldout AnglesGroup;
             public PropertyField AllowBackwardsVelocityField;
 
             public TabView TabView;
@@ -369,7 +381,7 @@ namespace SLS.Physics3D
 
             public override VisualElement CreateInspectorGUI()
             {
-                This = (PhysicsBody)target;
+                This = (MovingBody)target;
 
                 TabView = new();
                 MakeConfigTab();
@@ -430,16 +442,24 @@ namespace SLS.Physics3D
 
                 ResolverField = new(serializedObject.FindBackingField(nameof(firstResolver)));
 
-                GroundCheckBufferField = new(serializedObject.FindProperty
-                    (nameof(Ground).BackingField()).FindBackingFieldRelative(nameof(GroundState.groundCheckBuffer)));
-                MaxSlopeAngleField = new(serializedObject.FindProperty
-                    (nameof(Ground).BackingField()).FindBackingFieldRelative(nameof(GroundState.maxSlopeNormalAngle)));
+                SerializedProperty GroundProp = serializedObject.FindProperty(nameof(Anchor).BackingField());
+                GroundCheckBufferField = new(GroundProp.FindBackingFieldRelative(nameof(AnchorState.groundCheckBuffer)));
+                AnglesGroup = new()
+                {
+                    text = "Angles"
+                };
+                AnglesGroup.Add(new PropertyField(GroundProp.FindBackingFieldRelative(nameof(AnchorState.angleStandable))));
+                AnglesGroup.Add(new PropertyField(GroundProp.FindBackingFieldRelative(nameof(AnchorState.angleSlope))));
+                AnglesGroup.Add(new PropertyField(GroundProp.FindBackingFieldRelative(nameof(AnchorState.angleWall))));
+                AnglesGroup.Add(new PropertyField(GroundProp.FindBackingFieldRelative(nameof(AnchorState.angleInvertedSlope))));
+                AnglesGroup.Add(new PropertyField(GroundProp.FindBackingFieldRelative(nameof(AnchorState.angleCeiling))));
+
                 AllowBackwardsVelocityField = new(serializedObject.FindBackingField(nameof(Velocity))
                     .FindPropertyRelative(nameof(Velocity.allowBackwards)));
 
                 ConfigTab.Add(ResolverField);
                 ConfigTab.Add(GroundCheckBufferField);
-                ConfigTab.Add(MaxSlopeAngleField);
+                ConfigTab.Add(AnglesGroup);
                 ConfigTab.Add(AllowBackwardsVelocityField);
             }
             public virtual void MakeActiveTab()
@@ -523,13 +543,13 @@ namespace SLS.Physics3D
                     ResolverLabel.text = This.Resolver.GetType().Name.Replace("PhysResolver", "");
                     LVelocityLabel.text = $" F:{This.Velocity.f}, U:{This.Velocity.u}, S:{This.Velocity.s}";
                     GVelocityLabel.text = $" X:{This.Velocity.x}, Y:{This.Velocity.y}, Z:{This.Velocity.z}";
-                    DirectionLabel.text = This.Direction.value.ToString("F3");
+                    DirectionLabel.text = This.Direction.Value.ToString("F3");
                     RotationLabel.text = This.Direction.Rotation.ToString("F3");
                     RotationQLabel.text = This.Direction.RotationQ.ToString("F2");
-                    GroundStateLabel.text = This.Ground.value.ToString();
-                    AnchorLabel.text = This.Ground.anchor.collider != null
-                        ? $"{This.Ground.anchor.normal.ToString("F2")}({This.Ground.anchor.collider.gameObject.name})"
-                        : This.Ground.anchor.normal.ToString("F2");
+                    GroundStateLabel.text = This.Anchor.ToString();
+                    AnchorLabel.text = This.Anchor.AnchorPoint.collider != null
+                        ? $"{This.Anchor.AnchorPoint.normal.ToString("F2")}({This.Anchor.AnchorPoint.collider.gameObject.name})"
+                        : This.Anchor.AnchorPoint.normal.ToString("F2");
                 }
                 catch
                 {

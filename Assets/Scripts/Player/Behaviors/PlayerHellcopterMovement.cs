@@ -32,19 +32,19 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
 
     protected override void VerticalUpwards(ref float Y)
     {
-        if (Player.MovementBody.Ground.value == GroundState.Values.Decelerating)
+        if (Player.MovementBody.JumpPhase == JumpPhase.Decelerating)
         {
             Y = currentVent.hellcopterSpeed;
-            if (transform.position.y >= targetHeight) Player.MovementBody.UnLand(GroundState.Values.Falling);
+            if (transform.position.y >= targetHeight) Player.MovementBody.UnLand(JumpPhase.Falling);
         }
-        else if (Player.MovementBody.Ground.value == GroundState.Values.Falling && Player.MovementBody.Velocity.y <= fallStateThreshold) Fall(ref Y);
+        else if (Player.MovementBody.JumpPhase == JumpPhase.Falling && Player.MovementBody.Velocity.y <= fallStateThreshold) Fall(ref Y);
 
     }
 
     protected override void Fall(ref float Y)
     {
         if (Player.MovementBody.Velocity.y > fallStateThreshold) Y = fallStateThreshold;
-        Player.MovementBody.UnLand(GroundState.Values.Falling);
+        Player.MovementBody.UnLand(JumpPhase.Falling);
         if (fallState != null) fallState.Enter();
     }
 
@@ -80,5 +80,5 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
 
     public override void BeginJump() => throw new System.Exception("Don't Use This Method.");
     public override void BeginJump(float power, float height, float minHeight) => throw new System.Exception("Don't Use This Method.");
-    public override void BeginJump(GroundState.Values newState) => throw new System.Exception("Don't Use This Method.");
+    public override void BeginJump(JumpPhase newState) => throw new System.Exception("Don't Use This Method.");
 }

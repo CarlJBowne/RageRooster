@@ -8,7 +8,7 @@ using static RageRooster.Player.Services;
 public class PlayerAirborneMovement : PlayerMovementEffector
 {
 
-    public GroundState.Values defaultPhase = GroundState.Values.Jumping;
+    public JumpPhase defaultPhase = JumpPhase.Jumping;
     public float jumpHeight;
     public float jumpPower;
     public float jumpMinHeight;
@@ -24,7 +24,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
     protected float targetMinHeight;
     protected float targetHeight;
-    public bool isUpward => defaultPhase == GroundState.Values.Jumping;
+    public bool isUpward => defaultPhase == JumpPhase.Jumping;
 
     private void Update()
     {
@@ -41,14 +41,14 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
     protected virtual void VerticalUpwards(ref float Y)
     {
-        if (Player.MovementBody.Ground.value == GroundState.Values.Jumping && transform.position.y >= targetMinHeight) 
-            Player.MovementBody.Ground.UnLand(GroundState.Values.Decelerating);
-        if (Player.MovementBody.Ground.value == GroundState.Values.Decelerating && transform.position.y >= targetHeight) 
-            Player.MovementBody.Ground.UnLand(GroundState.Values.Falling);
+        if (Player.MovementBody.JumpPhase == JumpPhase.Jumping && transform.position.y >= targetMinHeight) 
+            Player.MovementBody.UnLand(JumpPhase.Decelerating);
+        if (Player.MovementBody.JumpPhase == JumpPhase.Decelerating && transform.position.y >= targetHeight) 
+            Player.MovementBody.UnLand(JumpPhase.Falling);
 
-        if (Player.MovementBody.Ground.value < GroundState.Values.Decelerating) 
+        if (Player.MovementBody.JumpPhase < JumpPhase.Decelerating) 
             Y = jumpPower;
-        if (Player.MovementBody.Ground.value > GroundState.Values.Jumping &&
+        if (Player.MovementBody.JumpPhase > JumpPhase.Jumping &&
            (Player.MovementBody.Velocity.y <= fallStateThreshold || (allowMidFall && !Input.Jump.IsPressed())))
             Fall(ref Y);
 
@@ -57,7 +57,7 @@ public class PlayerAirborneMovement : PlayerMovementEffector
     protected virtual void Fall(ref float Y)
     {
         if (Player.MovementBody.Velocity.y > fallStateThreshold) Y = fallStateThreshold;
-        Player.MovementBody.Ground.UnLand(GroundState.Values.Falling);
+        Player.MovementBody.UnLand(JumpPhase.Falling);
         if (fallState != null) fallState.Enter();
     }
 
@@ -66,24 +66,24 @@ public class PlayerAirborneMovement : PlayerMovementEffector
         base.OnEnter(prev, isFinal);
         if (!isFinal) return;
 
-        PrepPhase(out GroundState.Values nextJumpPhase);
+        PrepPhase(out JumpPhase nextJumpPhase);
 
-        Player.MovementBody.Ground.UnLand(nextJumpPhase);
+        Player.MovementBody.UnLand(nextJumpPhase);
         switch (nextJumpPhase)
         {
-            case GroundState.Values.Jumping: StartFrom_Jump(); break;
-            case GroundState.Values.Decelerating: StartFrom_Decel(); break;
-            case GroundState.Values.Falling: StartFrom_Falling(); break;
+            case JumpPhase.Jumping: StartFrom_Jump(); break;
+            case JumpPhase.Decelerating: StartFrom_Decel(); break;
+            case JumpPhase.Falling: StartFrom_Falling(); break;
         }
     }
 
-    protected virtual void PrepPhase(out GroundState.Values nextJumpPhase)
+    protected virtual void PrepPhase(out JumpPhase nextJumpPhase)
     {
         nextJumpPhase = defaultPhase;
-        if (nextJumpPhase < GroundState.Values.Jumping)
+        if (nextJumpPhase < JumpPhase.Jumping)
         {
-            nextJumpPhase = Player.MovementBody.Ground.value;
-            if (nextJumpPhase < GroundState.Values.Jumping) nextJumpPhase = GroundState.Values.Jumping;
+            nextJumpPhase = Player.MovementBody.JumpPhase;
+            if (nextJumpPhase < JumpPhase.Jumping) nextJumpPhase = JumpPhase.Jumping;
         }
     }
 
@@ -132,9 +132,9 @@ public class PlayerAirborneMovement : PlayerMovementEffector
 
         State.Enter();
     }
-    public virtual void BeginJump(GroundState.Values newState)
+    public virtual void BeginJump(JumpPhase newState)
     {
-        GroundState.Values skippedDefault = defaultPhase;
+        JumpPhase skippedDefault = defaultPhase;
         defaultPhase = newState;
         State.Enter();
         defaultPhase = skippedDefault;
