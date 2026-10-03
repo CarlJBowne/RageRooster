@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -149,6 +150,12 @@ public class SceneSO : ScriptableObject
 
 #if UNITY_EDITOR
     [UnityEditor.Callbacks.OnOpenAsset]
-    internal void DblClick() => UnityEditor.SceneManagement.EditorSceneManager.LoadScene(Scene);
+    static internal bool DblClick(int instanceID, int line)
+    {
+        UnityEngine.Object x = EditorUtility.InstanceIDToObject(instanceID);
+        if (x is not SceneSO scene) return false;
+        UnityEditor.SceneManagement.EditorSceneManager.LoadScene(scene.Scene);
+            return true;
+    }
 #endif
 }

@@ -253,7 +253,8 @@ public static class Xtensions_Coroutine
         do
         {
             moved = Enum.MoveNext();
-            if (Enum.Current is IEnumerator ienum) ienum.Instant();
+            if (Enum.Current is IEnumerator ienum) 
+                ienum.Instant();
         } while (moved != null);
     }
     /// <summary>
@@ -267,8 +268,13 @@ public static class Xtensions_Coroutine
         do
         {
             moved = Enum.MoveNext();
-            if (++backupCounter > 5000) break;
-            if (Enum.Current is IEnumerator ienum) ienum.Instant();
+            if (++backupCounter > 300)
+            {
+                Debug.LogWarning("Instant Enumeration hit 300 iterations.");
+                break;
+            }
+            if (Enum.Current is IEnumerator ienum) 
+                ienum.InstantSafe();
         } while (moved != null);
     }
 

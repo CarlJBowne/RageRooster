@@ -1,4 +1,5 @@
 using RageRooster.Core.Save;
+using SLS.Physics3D;
 using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ public class PlayerWallJump : PlayerMovementEffector
 
     public bool WallJump(Vector3 direction)
     {
-        if (Player.MovementBody.Sweep(Player.MovementBody.Direction.Value * 0.5f, out RaycastHit hit, Player.MovementBody.Anchor.groundCheckBuffer))
+        if (Player.MovementBody.Sweep(Player.MovementBody.Direction.Value * 0.5f, out SweepPayload hit, buffer: Player.MovementBody.defaultCheckBuffer))
         {
             if (Vector3.Dot(Vector3.down, direction).Abs() > maxAngleDifference) return false;
 

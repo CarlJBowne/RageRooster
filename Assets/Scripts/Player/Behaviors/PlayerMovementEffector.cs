@@ -1,4 +1,5 @@
 ﻿using EditorAttributes;
+using SLS.Physics3D;
 using SLS.StateMachineH;
 using UnityEngine;
 using static RageRooster.Player.Services;
@@ -50,7 +51,7 @@ public abstract class PlayerMovementEffector : StateBehavior
     }
 
     //Probably not actually helpfull.
-    protected virtual bool HorizontalCast(float vX, float vZ, out RaycastHit hit)
+    protected virtual bool HorizontalCast(float vX, float vZ, out SweepPayload hit)
     {
         Vector3 velocity = new(vX, 0, vZ);
         return Player.MovementBody.Sweep(velocity, out hit);

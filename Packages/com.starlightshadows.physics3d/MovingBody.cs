@@ -22,7 +22,7 @@ namespace SLS.Physics3D
     /// coordinates resolver selection and invocation each FixedUpdate.
     /// </summary>
     [RequireComponent(typeof(Rigidbody), typeof(Collider), typeof(NavMeshAgent))]
-    public class MovingBody : MonoBehaviour
+    public partial class MovingBody : MonoBehaviour
     {
         protected virtual void FixedUpdate()
         {
@@ -36,6 +36,8 @@ namespace SLS.Physics3D
             }
             if (Debug.DisplaySweeps) Debug.ClearSweeps();
 #endif
+
+            CancelResolverContinuance();
 
             RB.linearVelocity = Vector3.zero;
             RB.angularVelocity = Vector3.zero;
@@ -74,9 +76,13 @@ namespace SLS.Physics3D
         }
 
         /// <summary>
-        /// The root <see cref="PhysicsResolver"/>, the first one it will attempt to use in any ambiguous situation.
+        /// The default grounded <see cref="PhysicsResolver"/>, the first one it will attempt to use in any grounded situation.
         /// </summary>
-        [field: SerializeField] public PhysicsResolver firstResolver { get; private set; }
+        [field: SerializeField] public PhysicsResolver.Grounded groundResolver { get; private set; }
+        /// <summary>
+        /// The root Airborne PhysicsResolver, the first one it will attempt to use in airborne situations.
+        /// </summary>
+        [field: SerializeField] public PhysicsResolver.Airborne airResolver { get; private set; }
 
         /// <summary>
         /// The current velocity container for this body. Contains both local (f/s/u) and
@@ -100,15 +106,23 @@ namespace SLS.Physics3D
         /// Debug Data container for this body. Used to store and display useful debug information
         /// </summary>
         public PhysicsBodyDebug Debug { get; private set; } = new();
+        /// <summary>
+        /// The buffer (in world units) used when performing a downwards sweep to
+        /// determine whether the body is grounded. Small positive values help
+        /// tolerate minor geometry gaps and numerical jitter.
+        /// </summary>
+        [field: SerializeField] public float defaultCheckBuffer { get; private set; } = 0.1f;
 
 
         #region Resolvers
 
         public PhysicsResolver Resolver { get; private set; }
-        public void UpdateResolver() => UpdateResolver(firstResolver);
-        public void UpdateResolver(PhysicsResolver resolver)
+        public void SelectGroundResolver() => SelectResolver(groundResolver);
+        public void SelectAirResolver() => SelectResolver(groundResolver);
+        public void SelectResolver(bool airborne) => SelectResolver(airborne ? airResolver : groundResolver);
+        public void SelectResolver(PhysicsResolver resolver)
         {
-            if (resolver == Resolver) return;
+            if (resolver == Resolver || resolver == null) return;
             Resolver?.Exit();
             Resolver = resolver;
             Resolver?.Enter();
@@ -117,11 +131,13 @@ namespace SLS.Physics3D
         [Tooltip("The maximum amount of steps this resolver allows.")]
         [SerializeField] public int maxPhysicsSteps = 6;
         /// <summary>
-        /// The amount of MoveSteps this <see cref="MovingBody"/> has gone through in this FixedUpdate sharedacross //all of its <see cref="PhysicsResolver"/>s
+        /// The amount of MoveSteps this <see cref="MovingBody"/> has gone through in this FixedUpdate sharedacross / all of its <see cref="PhysicsResolver"/>s
         /// </summary>
         public int Step { get; internal set; } = 0;
 
         #endregion
+
+        #region Sweeps
 
         /// <summary>
         /// Performs a sweep test using the internal Rigidbody to determine whether this
@@ -135,20 +151,34 @@ namespace SLS.Physics3D
         /// <param name="tempOrigin">An optional temporary origin to perform the sweep from instead of the current RB position.</param>
         /// <param name="queryTriggerInteraction">Whether the sweep should hit trigger colliders. Defaults to Ignore.</param>
         /// <returns>True if the sweep detected a collider, otherwise false.</returns>
-        public bool Sweep(Vector3 offset, out RaycastHit hit, float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
+        public SweepPayload Sweep(Vector3 offset, bool relative = false, float? buffer = null, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
         {
+            buffer ??= defaultCheckBuffer;
             Vector3 originalPos = RB.position;
+            if (relative) offset = transform.TransformVector(offset);
 
-            if (tempOrigin.HasValue && buffer > 0) RB.MovePosition(tempOrigin.Value - (offset.normalized * buffer));
+            if (tempOrigin.HasValue && buffer > 0) RB.MovePosition(tempOrigin.Value - (offset.normalized * buffer.Value));
             else if (tempOrigin.HasValue) RB.MovePosition(tempOrigin.Value);
-            else if (buffer > 0) RB.MovePosition(RB.position - (offset.normalized * buffer));
+            else if (buffer > 0) RB.MovePosition(RB.position - (offset.normalized * buffer.Value));
 
-            bool result = RB.SweepTest(offset.normalized, out hit, offset.magnitude + buffer, queryTriggerInteraction);
+            bool didHit = RB.SweepTest(offset.normalized, out RaycastHit hit, offset.magnitude + buffer ?? defaultCheckBuffer, queryTriggerInteraction);
 
             if (tempOrigin.HasValue || buffer > 0) RB.MovePosition(originalPos);
 
-            hit.distance = (hit.distance - buffer).Min(0);
+            hit.distance = (hit.distance - buffer.Value).Min(0);
 
+            SweepPayload result = new()
+            {
+                hit = didHit,
+                distance = hit.distance,
+                input = offset,
+                leftover = offset - (offset.normalized * hit.distance),
+                normal = !relative ? hit.normal : transform.InverseTransformVector(hit.normal),
+                isRelative = relative,
+                anchorPoint = new AnchorPoint(hit),
+                angle = Direction.Angle(hit.normal),
+                barycentricCoordinate = hit.barycentricCoordinate
+            };
 
 #if UNITY_EDITOR
             if (Debug.DisplaySweeps)
@@ -168,34 +198,13 @@ namespace SLS.Physics3D
             return result;
         }
 
-        /// <summary>
-        /// Performs a sweep test using the internal Rigidbody to determine whether this
-        /// body would collide when translated by <paramref name="offset"/>. Optionally
-        /// supports a temporary origin and a buffer distance to shrink the effective start
-        /// location for the sweep.
-        /// </summary>
-        /// <param name="offset">The desired translation vector to sweep along.</param>
-        /// <param name="hit">Outputs an <see cref="AnchorPoint"/> based on the first <see cref="RaycastHit"/> detected by the sweep (if any).</param>
-        /// <param name="buffer">A small buffer to back the test origin up along <paramref name="offset"/>. Defaults to 0.</param>
-        /// <param name="tempOrigin">An optional temporary origin to perform the sweep from instead of the current RB position.</param>
-        /// <param name="queryTriggerInteraction">Whether the sweep should hit trigger colliders. Defaults to Ignore.</param>
-        /// <returns>True if the sweep detected a collider, otherwise false.</returns>
-        public bool Sweep(Vector3 offset, out AnchorPoint hit, float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore) =>
-            Sweep(offset, out hit, buffer, tempOrigin, queryTriggerInteraction);
-        /// <summary>
-        /// Performs a sweep test using the internal Rigidbody to determine whether this
-        /// body would collide when translated by <paramref name="offset"/>. Optionally
-        /// supports a temporary origin and a buffer distance to shrink the effective start
-        /// location for the sweep.
-        /// </summary>
-        /// <param name="offset">The desired translation vector to sweep along.</param>
-        /// <param name="hit">Outputs an <see cref="AnchorPoint"/> based on the first <see cref="RaycastHit"/> detected by the sweep (if any).</param>
-        /// <param name="buffer">A small buffer to back the test origin up along <paramref name="offset"/>. Defaults to 0.</param>
-        /// <param name="tempOrigin">An optional temporary origin to perform the sweep from instead of the current RB position.</param>
-        /// <param name="queryTriggerInteraction">Whether the sweep should hit trigger colliders. Defaults to Ignore.</param>
-        /// <returns>True if the sweep detected a collider, otherwise false.</returns>
-        public bool Sweep(Vector3 offset, float buffer = 0, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore) =>
-            Sweep(offset, out RaycastHit _, buffer, tempOrigin, queryTriggerInteraction);
+        public bool Sweep(Vector3 offset, out SweepPayload result, bool relative = false, float? buffer = null, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore)
+        {
+            result = Sweep(offset, relative, buffer, tempOrigin, queryTriggerInteraction);
+            return result.hit;
+        }
+
+        #endregion
 
         #region LifeCycle and Components
 
@@ -240,7 +249,7 @@ namespace SLS.Physics3D
             RB.detectCollisions = true;
             RB.useGravity = false;
             Collider.enabled = true;
-            UpdateResolver();
+            SelectGroundResolver();
         }
         void OnDisable()
         {
@@ -249,7 +258,7 @@ namespace SLS.Physics3D
             RB.useGravity = false;
             Collider.enabled = false;
             NavAgent.enabled = false;
-            UpdateResolver(null);
+            SelectResolver(null);
         }
 
         public void Enable(Vector3? atPosition, Vector3? withDirection)
@@ -320,7 +329,7 @@ namespace SLS.Physics3D
         protected virtual void OnCollisionEnter(Collision collision)
         {
             ContactPoint contact = collision.GetContact(0);
-            if (Anchor.Airborne && Anchor.Rising && Anchor.NormalAngle(contact.normal) is AnchorPoint.Type.Ceiling)
+            if (Anchor.Airborne && Anchor.Rising && Direction.Angle(contact.normal) is AnchorPoint.Angle.Ceiling)
                 Velocity.y = 0;
             else Anchor.Land(contact);
         }
@@ -332,7 +341,7 @@ namespace SLS.Physics3D
         /// </summary>
         /// <param name="wasntGrounded">True if the body was previously not grounded.</param>
         /// <param name="objectChange">True if the collider surface changed since last ground.</param>
-        public virtual void OnAnchor(bool wasntGrounded, bool objectChange) => UpdateResolver();
+        public virtual void OnAnchor(bool wasntGrounded, bool objectChange) => SelectGroundResolver();
 
         /// <summary>
         /// Called by <see cref="AnchorState"/> when this body leaves the ground. Override
@@ -340,11 +349,16 @@ namespace SLS.Physics3D
         /// will re-evaluate the active resolver.
         /// </summary>
         /// <param name="newValue">The new ground state value being transitioned to.</param>
-        public virtual void OnDeanchor() => UpdateResolver();
+        public virtual void OnDeanchor() => SelectGroundResolver();
 
         public virtual void WalkOff() => Anchor.DeAnchor();
-        public virtual bool LastChanceStopper(Vector3 velocity, Vector3 normal) => false;
 
+        protected bool cancelResolverContinuance = false;
+        public bool CancelResolverContinuance(bool set = false)
+        {
+            if (set) cancelResolverContinuance = true;
+            return cancelResolverContinuance;
+        }
 
         #endregion
 
@@ -359,8 +373,7 @@ namespace SLS.Physics3D
             MovingBody This;
 
             public PropertyField ResolverField;
-            public PropertyField GroundCheckBufferField;
-            public Foldout AnglesGroup;
+            public PropertyField DirectionField;
             public PropertyField AllowBackwardsVelocityField;
 
             public TabView TabView;
@@ -440,26 +453,16 @@ namespace SLS.Physics3D
                 ConfigTab.tabHeader.style.flexGrow = 1;
                 TabView.Add(ConfigTab);
 
-                ResolverField = new(serializedObject.FindBackingField(nameof(firstResolver)));
+                ResolverField = new(serializedObject.FindBackingField(nameof(groundResolver)));
 
                 SerializedProperty GroundProp = serializedObject.FindProperty(nameof(Anchor).BackingField());
-                GroundCheckBufferField = new(GroundProp.FindBackingFieldRelative(nameof(AnchorState.groundCheckBuffer)));
-                AnglesGroup = new()
-                {
-                    text = "Angles"
-                };
-                AnglesGroup.Add(new PropertyField(GroundProp.FindBackingFieldRelative(nameof(AnchorState.angleStandable))));
-                AnglesGroup.Add(new PropertyField(GroundProp.FindBackingFieldRelative(nameof(AnchorState.angleSlope))));
-                AnglesGroup.Add(new PropertyField(GroundProp.FindBackingFieldRelative(nameof(AnchorState.angleWall))));
-                AnglesGroup.Add(new PropertyField(GroundProp.FindBackingFieldRelative(nameof(AnchorState.angleInvertedSlope))));
-                AnglesGroup.Add(new PropertyField(GroundProp.FindBackingFieldRelative(nameof(AnchorState.angleCeiling))));
-
+                DirectionField = new(GroundProp.FindPropertyRelative(nameof(Direction)))
+                { label = "Angles" };
                 AllowBackwardsVelocityField = new(serializedObject.FindBackingField(nameof(Velocity))
                     .FindPropertyRelative(nameof(Velocity.allowBackwards)));
 
                 ConfigTab.Add(ResolverField);
-                ConfigTab.Add(GroundCheckBufferField);
-                ConfigTab.Add(AnglesGroup);
+                ConfigTab.Add(DirectionField);
                 ConfigTab.Add(AllowBackwardsVelocityField);
             }
             public virtual void MakeActiveTab()

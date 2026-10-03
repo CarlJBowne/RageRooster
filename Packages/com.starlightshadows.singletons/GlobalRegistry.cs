@@ -12,14 +12,16 @@ namespace SLS.Singletons
     /// <remarks>
     /// An instance of this, and all <see cref="GlobalAsset{t}"/>s are automatically created and registered if they don't already exist. <see cref="GlobalAsset{t}"/>s are registered to this, which is in turn registered to PlayerSettings preloaded assets, ensuring they are always loaded and accessible at runtime and in the editor.
     /// </remarks>
-    [DefaultExecutionOrder(-165)]
+    [DefaultExecutionOrder(-999999999)]
     public class GlobalRegistry : GlobalAsset<GlobalRegistry>
     {
         public List<_GlobalAssetBase> assets = new();
 
         public override void OnInit()
         { 
-            for (int i = 0; i < assets.Count && assets[i] != null; i++) assets[i].OnEnable();
+            for (int i = 0; i < assets.Count; i++)
+                if (assets[i] != null)
+                    assets[i].OnEnable();
         }
 
 #if UNITY_EDITOR

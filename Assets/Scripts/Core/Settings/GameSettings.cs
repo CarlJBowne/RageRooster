@@ -36,11 +36,11 @@ namespace RageRooster.Settings
             options.Initialize(ref stream);
 
             {
-                Volume.Master.Value = 1f;
-                Volume.Music.Value = 1f;
-                Volume.SFX.Value = 1f;
-                Volume.Ambience.Value = 1f;
-                Graphics.Brightness.Value = 1f;
+                Volume.Master &= 1f;
+                Volume.Music &= 1f;
+                Volume.SFX &= 1f;
+                Volume.Ambience &= 1f;
+                Graphics.Brightness &= 1f;
             }
             stream.LoadFromFile();
         }

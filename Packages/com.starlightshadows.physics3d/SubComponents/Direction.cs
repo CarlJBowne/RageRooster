@@ -9,6 +9,19 @@ namespace SLS.Physics3D
     [System.Serializable]
     public class Direction : PhysicsSubComponent
     {
+        #region Config
+        [Tooltip("The maximum angle from this Body's UP direction that is considered standable.")]
+        [field: SerializeField] public float angleStandable { get; private set; } = 40f;
+        [Tooltip("The minimum Angle from this Body's UP direction that is considered a slope rather than just a floor.")]
+        [field: SerializeField] public float angleSlope { get; private set; } = 10f;
+        [Tooltip("The minimum Angle from this Body's UP direction that is considered a wall rather than a slope.")]
+        [field: SerializeField] public float angleWall { get; private set; } = 80f;
+        [Tooltip("The minimum Angle from this Body's UP direction that is considered an inverted slope rather than a wall.")]
+        [field: SerializeField] public float angleInvertedSlope { get; private set; } = 100f;
+        [Tooltip("The minimum Angle from this Body's UP direction that is considered a ceiling.")]
+        [field: SerializeField] public float angleCeiling { get; private set; } = 150f;
+        #endregion
+
         /// <summary>
         /// The currently cached forward vector used by the physics body.
         /// </summary>
@@ -216,5 +229,24 @@ namespace SLS.Physics3D
         private Coroutine QuickTurnRoutine;
 
         public Transform lookTarget;
+
+        /// <summary>
+        /// Gets the NormalType of the <see cref="AnchorPoint"/>'s Normal based on this Body's angle definitions
+        /// </summary>
+        public AnchorPoint.Angle Angle() => Angle(Body.Anchor.Normal);
+        /// <summary>
+        /// Gets the NormalType of the input angle based on this Body's angle definitions
+        /// </summary>
+        public AnchorPoint.Angle Angle(Vector3 inNormal)
+        {
+            if (inNormal == Vector3.zero) return AnchorPoint.Angle.Null;
+            float val = Vector3.Angle(Direction.Up, inNormal);
+            return val < angleSlope ? AnchorPoint.Angle.Floor
+                : val <= angleStandable ? AnchorPoint.Angle.Slope
+                : val < angleWall ? AnchorPoint.Angle.SteepSlope
+                : val < angleInvertedSlope ? AnchorPoint.Angle.Wall
+                : val < angleCeiling ? AnchorPoint.Angle.InvertedSlope
+                : AnchorPoint.Angle.Ceiling;
+        }
     }
 }

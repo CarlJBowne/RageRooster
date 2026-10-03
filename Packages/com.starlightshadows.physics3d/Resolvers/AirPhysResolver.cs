@@ -6,7 +6,7 @@ namespace SLS.Physics3D
     /// A resolver based on the <see cref="CollideAndSlide"/> resolver but with all grounded-movement-related logic removed.
     /// </summary>
     [System.Serializable]
-    public class AirPhysResolver : PhysicsResolver
+    public class AirPhysResolver : PhysicsResolver.Airborne
     {
         [Tooltip("The distance of the buffer that will be used in sweep checking.")]
         [SerializeField] float checkBuffer = 0.1f;
@@ -14,7 +14,7 @@ namespace SLS.Physics3D
         [SerializeField] float defaultGravity = 9.8f;
         [Tooltip("Whether this resolver should automatically apply gravity each frame. If false, gravity must be applied manually by calling ApplyGravity().")]
         [SerializeField] bool autoApplyGravity = false;
-        [field: SerializeField] public PhysicsResolver landResolver { get; private set; }
+        [SerializeField] ICollisionHandler onCollision;
 
         public override void Move(Vector3 stepVelocity)
         {
@@ -27,84 +27,71 @@ namespace SLS.Physics3D
             bool land = false;
 
             // Sweep for any obstacle in the trajectory (ignore flat-floor hits when moving purely horizontally).
-            bool sweepHit = Body.Sweep(stepVelocity, out RaycastHit hit, checkBuffer);
+            var hit = Body.Sweep(stepVelocity);
 
-            if (sweepHit) //Hit
+            if (!hit)
             {
-                Print(() => $"Sweep hit: {hit.collider.name} at distance {hit.distance}, normal {hit.normal}");
-                stopDistance = hit.distance;
-                nextNormal = hit.normal;
-
-                if (Mathf.Approximately(hit.normal.y, 0))
-                {
-                    Print(() => $"Hit a wall, normal: {hit.normal}");
-                    nextNormal = nextNormal.XZ().normalized;
-                }
-                else if (hit.normal.y > 0)
-                {
-                    if (Ground.Standable(hit.normal))
-                    {
-                        Print(() => $"Hit landable ground with normal {hit.normal}.");
-                        land = true;
-                    }
-                    else
-                    {
-                        Print(() => $"Hit steep slope, normal: {hit.normal}.");
-                        nextNormal = nextNormal.XZ().normalized;
-                        //This ^^^ feels wrong but I'm leaving it in for now. Do Testing Please.
-                    }
-                }
-                else
-                {
-                    if (Ground.NormalAngle(hit.normal) is AnchorPoint.Type.Ceiling)
-                    {
-                        Print(() => $"Hit a ceiling, normal: {hit.normal}. BONK.");
-                        Body.Velocity.y = 0;
-                        //BONK (Implement later)
-                    }
-                    else
-                    {
-                        Print(() => $"Hit an inward curve, normal: {hit.normal}. Try to Slide up.");
-                        nextNormal = nextNormal.XZ().normalized;
-                        //This ^^^ feels wrong but I'm leaving it in for now. Do Testing Please.
-                    }
-                }
-
-                // If we hit a valid ground surface and are moving downwards or flat, land on it.
-                if (hit.normal.y > 0 && Ground.Standable(hit.normal) && stepVelocity.y <= 0) Ground.Land(hit);
-            }
-            else
-            {
-
-                if (!Body.Sweep(Vector3.down * 5000, checkBuffer, Position + stepVelocity, QueryTriggerInteraction.Collide))
-                {
-                    Print(() => "Entered Void Zone. Treating as Horizontal Bonk.");
-                    Body.LastChanceStopper(stepVelocity.XZ(), nextNormal.XZ());
-                    return;
-                    // If going forward will put this body over the void, don't move at all.
-                }
+                //if (!Body.Sweep(Vector3.down * 5000, checkBuffer, Position + stepVelocity, QueryTriggerInteraction.Collide))
+                //{
+                //    Print(() => "Entered Void Zone. Treating as Horizontal Bonk.");
+                //    return;
+                //    // If going forward will put this body over the void, don't move at all.
+                //}
                 Print(() => "No sweep hit. Ending Early.");
                 Body.Position += stepVelocity;
                 return;
             }
 
+            Print(() => $"Sweep hit: {hit.anchorPoint.collider.gameObject.name} at distance {hit.distance}, normal {hit.normal}");
+            stopDistance = hit.distance;
+            nextNormal = hit.normal;
 
             Vector3 snapToSurface = stopDistance != -1 ? stepVelocity.normalized * stopDistance : stepVelocity;
 
             Body.Position += snapToSurface;
 
-            if (ContinueCheck(stopDistance)) return;
-            else if (Body.LastChanceStopper(stepVelocity.XZ(), nextNormal.XZ())) return;
+            onCollision?.Collide(hit);
+
+            if (ContinueCheck(stopDistance) || Body.CancelResolverContinuance()) return;
+            switch (hit.angle)
+            {
+                case AnchorPoint.Angle.Floor:
+                    Print(() => $"Hit flatish ground with normal {hit.normal}.");
+                    land = true;
+                break;
+                case AnchorPoint.Angle.Slope:
+                    Print(() => $"Hit sloped ground with normal {hit.normal}.");
+                    land = true;
+                break;
+                case AnchorPoint.Angle.SteepSlope:
+                    Print(() => $"Hit steep slope, normal: {hit.normal}.");
+                    nextNormal = nextNormal.XZ().normalized;
+                break;
+                case AnchorPoint.Angle.Wall: 
+                    Print(() => $"Hit a wall, normal: {hit.normal}");
+                    nextNormal = nextNormal.XZ().normalized;
+                break;
+                case AnchorPoint.Angle.InvertedSlope: 
+                    Print(() => $"Hit an inward curve, normal: {hit.normal}. Try to Slide up.");
+                    nextNormal = nextNormal.XZ().normalized;
+                break;
+                case AnchorPoint.Angle.Ceiling: 
+                    Print(() => $"Hit a ceiling, normal: {hit.normal}. BONK.");
+                    Body.Velocity.y = 0;
+                    stepVelocity.y = 0;
+                break;
+                default: throw new System.Exception($"Unknown AnchorPoint.Type {hit.angle} for normal {hit.normal}");
+            }
 
             Vector3 leftover = stepVelocity - snapToSurface;
             Vector3 newDir = leftover.ProjectAndScale(nextNormal);
             newDir *= Vector3.Dot(leftover.normalized, nextNormal) + 1;
 
-            if (land && landResolver != null) // Don't do landing logic if no ground-based resolvers exist.
+            if (land && DefaultGroundResolver != null) // Don't do landing logic if no ground-based resolvers exist.
             {
                 leftover.y = 0;
-                Ground.Land(hit);
-                ChooseNext(landResolver);
+                Anchor.Land(hit);
+                if(Next == this) ChooseNext(DefaultGroundResolver);
             }
             Next.Move(newDir);
         }

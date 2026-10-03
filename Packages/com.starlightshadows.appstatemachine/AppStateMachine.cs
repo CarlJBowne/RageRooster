@@ -18,7 +18,7 @@ namespace SLS.AppStateMachine
         [field: SerializeField] public List<AppState> AllStates { get; private set; } = new();
         public static Dictionary<string, AppState> Dict;
 
-        public static Action Setup;
+        public static event Action Setup;
 
         public override void OnInit()
         {
@@ -33,8 +33,11 @@ namespace SLS.AppStateMachine
             Setup?.Invoke();
         }
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
-        private static void Boot() => Self.AllStates[0].Enter().InstantSafe(); //This may be horrible. Investigate.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void Init()
+        {
+            Self.AllStates[0].Enter().InstantSafe();
+        }
 
 #if UNITY_EDITOR
 

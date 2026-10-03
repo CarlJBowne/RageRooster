@@ -482,8 +482,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalManager
   <State>k__BackingField: {fileID: 8455434200384702600}
   signals:
+    serializedHashes: 
     serializedKeys: []
-    serializedHashes: [] 
     serializedValues: []
   blockParentNodes: 0
   blockGlobalNode: 0
@@ -515,20 +515,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c3d6cd8aa43154aa3119b5010e205a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovementBody
-  <firstResolver>k__BackingField: {fileID: 4050968043308300902}
+  <groundResolver>k__BackingField: {fileID: 4050968043308300902}
+  <airResolver>k__BackingField: {fileID: 0}
   <Velocity>k__BackingField:
     allowBackwards: 1
     lookVelocity: 0
-  <Ground>k__BackingField:
-    <groundCheckBuffer>k__BackingField: 0.1
-    <maxSlopeNormalAngle>k__BackingField: 45
   <Direction>k__BackingField:
+    <angleStandable>k__BackingField: 40
+    <angleSlope>k__BackingField: 10
+    <angleWall>k__BackingField: 80
+    <angleInvertedSlope>k__BackingField: 100
+    <angleCeiling>k__BackingField: 150
     lookTarget: {fileID: 0}
+  <defaultCheckBuffer>k__BackingField: 0.1
   maxPhysicsSteps: 6
   <RB>k__BackingField: {fileID: 1838944232945776554}
   <Collider>k__BackingField: {fileID: 598530174602593461}
   <NavAgent>k__BackingField: {fileID: 0}
   bonkThreshold: 15
+  JumpPhase: 0
 --- !u!114 &4050968043308300902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,7 +550,6 @@ MonoBehaviour:
   lockToNavMesh: 1
   <detectionRange>k__BackingField: 0.35
   <nonNavResolver>k__BackingField: {fileID: 2069593994508189260}
-  <airborneResolver>k__BackingField: {fileID: 5813673675774806942}
 --- !u!114 &2069593994508189260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -564,7 +568,6 @@ MonoBehaviour:
   validGroundMask:
     serializedVersion: 2
     m_Bits: 0
-  <airborneResolver>k__BackingField: {fileID: 5813673675774806942}
 --- !u!114 &5813673675774806942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -581,7 +584,6 @@ MonoBehaviour:
   checkBuffer: 0.1
   defaultGravity: 9.8
   autoApplyGravity: 0
-  <landResolver>k__BackingField: {fileID: 4050968043308300902}
 --- !u!54 &1838944232945776554
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -684,14 +686,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75abf0fbf8cd69a41b21a65a6991e62a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 3
+  _current: 0
+  _max: 0
+  _min: 0
   damageEvent:
     _PersistentCalls: []
   depleteEvent:
     _PersistentCalls: []
+  healEvent:
+    _PersistentCalls: []
   immuneTags:
     intValue: 1
-  health: 0
+  OnValueChanged:
+    _PersistentCalls: []
+  OnMaxChanged:
+    _PersistentCalls: []
+  OnMinChanged:
+    _PersistentCalls: []
   invincibilityTime: 3
   damageState: {fileID: 7172318012010073439}
   damageStateWham: {fileID: 6582450023354364424}
@@ -711,7 +722,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 8455434200384702600}
-  Machine: {fileID: 8455434200384702600}
   jumpBuffer: 0.3
   overrideMovementControl: 0
   overrideMovementVector: {x: 0, y: 0}
@@ -799,8 +809,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 401
   playerRotationSpeed: 4
-  eggAmount: 10
-  eggCapacity: 10
   currentTargetDistance: 10
   totalEggsShot: 0
 --- !u!114 &415518188991741153
@@ -874,7 +882,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLedgeGrab
   <State>k__BackingField: {fileID: 8455434200384702600}
-  Machine: {fileID: 8455434200384702600}
   ledged: 0
   ledgeState: {fileID: 0}
 --- !u!114 &6199145597115895703
@@ -952,11 +959,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Pools:
+    serializedHashes: cbb8fe7f5a51641663c115f2
     serializedKeys:
     - GroundSlam
     - Damage
     - Flap
-    serializedHashes: cbb8fe7f5a51641663c115f2
     serializedValues:
     - <name>k__BackingField: 
       <prefab>k__BackingField: {fileID: 6204509560008947582, guid: eede06116798a8b4f84b46c3727f0d64,
@@ -9713,6 +9720,11 @@ PrefabInstance:
     - target: {fileID: 249638977249460694, guid: aada0ff0faa779d42804f021194f2ede,
         type: 3}
       propertyPath: 'signals.serializedKeys.Array.data[0]'
+      value: Land
+      objectReference: {fileID: 0}
+    - target: {fileID: 249638977249460694, guid: aada0ff0faa779d42804f021194f2ede,
+        type: 3}
+      propertyPath: 'signals.serializedHashes.Array.data[0]'
       value: 137525990
       objectReference: {fileID: 0}
     - target: {fileID: 621752658282996683, guid: aada0ff0faa779d42804f021194f2ede,
@@ -9848,6 +9860,11 @@ PrefabInstance:
     - target: {fileID: 4649485773612048994, guid: aada0ff0faa779d42804f021194f2ede,
         type: 3}
       propertyPath: 'signals.serializedKeys.Array.data[0]'
+      value: Land
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649485773612048994, guid: aada0ff0faa779d42804f021194f2ede,
+        type: 3}
+      propertyPath: 'signals.serializedHashes.Array.data[0]'
       value: 137525990
       objectReference: {fileID: 0}
     - target: {fileID: 5468325439734856268, guid: aada0ff0faa779d42804f021194f2ede,
@@ -9883,6 +9900,11 @@ PrefabInstance:
     - target: {fileID: 6080566082621996169, guid: aada0ff0faa779d42804f021194f2ede,
         type: 3}
       propertyPath: 'signals.serializedKeys.Array.data[0]'
+      value: Land
+      objectReference: {fileID: 0}
+    - target: {fileID: 6080566082621996169, guid: aada0ff0faa779d42804f021194f2ede,
+        type: 3}
+      propertyPath: 'signals.serializedHashes.Array.data[0]'
       value: 137525990
       objectReference: {fileID: 0}
     - target: {fileID: 6271237044072515728, guid: aada0ff0faa779d42804f021194f2ede,
@@ -9913,11 +9935,21 @@ PrefabInstance:
     - target: {fileID: 7018513612467870576, guid: aada0ff0faa779d42804f021194f2ede,
         type: 3}
       propertyPath: 'signals.serializedKeys.Array.data[0]'
-      value: -454820793
+      value: WalkOff
       objectReference: {fileID: 0}
     - target: {fileID: 7018513612467870576, guid: aada0ff0faa779d42804f021194f2ede,
         type: 3}
       propertyPath: 'signals.serializedKeys.Array.data[1]'
+      value: Aim
+      objectReference: {fileID: 0}
+    - target: {fileID: 7018513612467870576, guid: aada0ff0faa779d42804f021194f2ede,
+        type: 3}
+      propertyPath: 'signals.serializedHashes.Array.data[0]'
+      value: -454820793
+      objectReference: {fileID: 0}
+    - target: {fileID: 7018513612467870576, guid: aada0ff0faa779d42804f021194f2ede,
+        type: 3}
+      propertyPath: 'signals.serializedHashes.Array.data[1]'
       value: 153482222
       objectReference: {fileID: 0}
     - target: {fileID: 7018513612467870576, guid: aada0ff0faa779d42804f021194f2ede,

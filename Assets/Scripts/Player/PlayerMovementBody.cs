@@ -29,7 +29,6 @@ using System.Reflection;
 public sealed class PlayerMovementBody : MovingBody
 {
     #region Config
-
     /// <summary>
     /// Angle threshold for Bonking.
     /// </summary>
@@ -101,12 +100,12 @@ public sealed class PlayerMovementBody : MovingBody
 
     public override void OnAnchor(bool wasntGrounded, bool objectChange)
     {
-        UpdateResolver();
+        SelectGroundResolver();
         Self.StateMachine.Signal(new("Land", ignoreLock: true));
         canDoDoubleJump = true; //I still don't like this being part of this script of all things.
         if (Self.Controller.CheckJumpBuffer()) Self.StateMachine.Signal("Jump");
     }
-    public override void OnDeanchor() => UpdateResolver();
+    public override void OnDeanchor() => SelectGroundResolver();
 
     public override void WalkOff()
     {
@@ -114,7 +113,7 @@ public sealed class PlayerMovementBody : MovingBody
         Self.StateMachine.Signal(new("WalkOff", ignoreLock: true));
     }
 
-    public override bool LastChanceStopper(Vector3 velocity, Vector3 normal)
+    public bool LastChanceStopper(Vector3 velocity, Vector3 normal)
     {
         if (Vector3.Angle(velocity, -normal) < bonkThreshold && Self.StateMachine.Signal(new("Bonk", 0, true)))
         {
@@ -126,7 +125,7 @@ public sealed class PlayerMovementBody : MovingBody
 
     public void UnLand(JumpPhase jumpPhase = JumpPhase.Neutral)
     {
-        Anchor.DeAnchor(jumpPhase == JumpPhase.Jumping);
+        Anchor.DeAnchor();
         JumpPhase = jumpPhase;
     }
     public JumpPhase JumpPhase;

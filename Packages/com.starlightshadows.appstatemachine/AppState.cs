@@ -56,7 +56,7 @@ namespace SLS.AppStateMachine
             State = null;
         }
 
-        protected IEnumerator LoadScene()
+        protected virtual IEnumerator LoadScene()
         {
             if (!Scene) yield break;
 
@@ -70,7 +70,7 @@ namespace SLS.AppStateMachine
             LoadedScene = SceneManager.GetSceneByName(Scene);
             yield break;
         }
-        protected IEnumerator UnloadScene()
+        protected virtual IEnumerator UnloadScene()
         {
             if (!Scene) yield break;
 
@@ -84,13 +84,13 @@ namespace SLS.AppStateMachine
             LoadedScene = default;
             yield break;
         }
-        protected IEnumerator LoadPrefab()
+        protected virtual IEnumerator LoadPrefab()
         {
             if (!Prefab) yield break;
             LoadedPrefab = Prefab.Instantiate();
             yield break;
         }//Could use more in-depth functionality.
-        protected IEnumerator UnloadPrefab()
+        protected virtual IEnumerator UnloadPrefab()
         {
             if (LoadedPrefab == null) yield break;
             Destroy(LoadedPrefab);
@@ -98,7 +98,7 @@ namespace SLS.AppStateMachine
             yield break;
         }
 
-        protected IEnumerator ExitPrevious()
+        protected virtual IEnumerator ExitPrevious()
         {
             if (State == null) yield break;
             State.DoExit();

@@ -31,7 +31,7 @@ namespace SLS.Physics3D
         /// </summary>
         protected Vector3 Position => Body.Position;
         protected Velocity stepZeroVelocity => Body.Velocity;
-        protected AnchorState Ground => Body.Anchor;
+        protected AnchorState Anchor => Body.Anchor;
         protected AnchorPoint CurrentAnchor => Body.Anchor.AnchorPoint;
         protected Direction Direction => Body.Direction;
         protected PhysicsResolver Next => Body.Resolver;
@@ -79,11 +79,16 @@ namespace SLS.Physics3D
             vel.sqrMagnitude < float.Epsilon || ++Body.Step >= Body.maxPhysicsSteps;
         public bool ContinueCheck(float hitDistance) =>
             hitDistance == -1 || ++Body.Step >= Body.maxPhysicsSteps;
+        public bool ContinueCheck() => ++Body.Step >= Body.maxPhysicsSteps;
 
-        public void ChooseNext() => Body.UpdateResolver();
-        public void ChooseNext(PhysicsResolver target) => Body.UpdateResolver(target);
+        public void ChooseNext(PhysicsResolver target) => Body.SelectResolver(target);
+
+        public PhysicsResolver DefaultGroundResolver => Body.groundResolver;
+        public PhysicsResolver DefaultAirResolver => Body.airResolver;
+        public void Select() => Body.SelectResolver(this);
 
         public static implicit operator bool(PhysicsResolver P) => P != null;
+        public bool active => Body.Resolver == this;
 
         protected void Print(Func<string> value)
         {
@@ -97,6 +102,19 @@ namespace SLS.Physics3D
         public void Hide()
         {
             this.hideFlags = HideFlags.HideInInspector;
+        }
+
+        public abstract class Grounded : PhysicsResolver
+        {
+
+        }
+        public abstract class Airborne : PhysicsResolver
+        {
+
+        }
+        public abstract class Sticky : PhysicsResolver
+        {
+            
         }
     }
 

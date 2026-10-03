@@ -42,7 +42,7 @@ namespace SLS.Physics3D
             collider = null
         };
 
-        public enum Type
+        public enum Angle
         {
             Floor,
             Slope,
