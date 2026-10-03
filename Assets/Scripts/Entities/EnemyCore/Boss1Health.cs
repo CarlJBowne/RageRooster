@@ -48,7 +48,9 @@ public class Boss1Health : Health, IDamagable
 
     protected override bool OverrideDamageable(Attack attack)
     {
-        Attack.Tags[] checkedTags = attack.tags.AllTags;
+        //Attack.Tags[] checkedTags = attack.tags.AllTags;
+        string checkedTags = attack.tags.ToString();
+        Debug.Log(checkedTags);
         if (lastDamageTime + damageCooldown > Time.time) return false;
         if (attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.GroundSlam])
         {
