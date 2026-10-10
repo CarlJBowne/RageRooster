@@ -13,6 +13,7 @@ public class Boss1Health : Health, IDamagable
     //public State jumpState;
     public Transform phase2StartPos;
     public Transform phase3StartPos;
+    public bool isVulnerable;
 
     public UltEvents.UltEvent ResetBossEvent;
     public UltEvents.UltEvent FinishBossEvent;
@@ -25,7 +26,7 @@ public class Boss1Health : Health, IDamagable
     private MovementAnimator moveAnim;
     // private StateMachine machine;
     private Vector3 respawnPoint;
-    private float lastDamageTime;
+    private float lastDamageTime;    
 
     protected override void Awake()
     {
@@ -46,13 +47,18 @@ public class Boss1Health : Health, IDamagable
         Player.onRespawn -= ResetBoss;
     }
 
+    public void FlipVulnerable()
+    {
+        isVulnerable = !isVulnerable;
+    }
+
     protected override bool OverrideDamageable(Attack attack)
     {
         //Attack.Tags[] checkedTags = attack.tags.AllTags;
         string checkedTags = attack.tags.ToString();
         Debug.Log(checkedTags);
         if (lastDamageTime + damageCooldown > Time.time) return false;
-        if (attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.GroundSlam])
+        if (attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.GroundSlam] && isVulnerable == true)
         {
             damageTint.BeginAnimation();
             CustomEvent.Trigger(gameObject, "Damaged");
