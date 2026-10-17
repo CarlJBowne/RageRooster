@@ -53,7 +53,7 @@ namespace SLS.ObjectUtilities
             for (int i = 0; i < serializedPools.Count; i++) serializedPools[i].Update(Time.deltaTime);
         }
 
-        public override void OnDeInit()
+        public override void OnDeload()
         {
             initialized = false;
             UpdateProxy.OnUpdate -= Update;

@@ -1,8 +1,9 @@
-using System.Collections.Generic;
-using UnityEngine;
 using System;
-using System.Reflection;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using UnityEditor;
+using UnityEngine;
 
 namespace SLS.Singletons
 {
@@ -22,6 +23,21 @@ namespace SLS.Singletons
             for (int i = 0; i < assets.Count; i++)
                 if (assets[i] != null)
                     assets[i].OnEnable();
+        }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
+        private static void ForceLoad()
+        {
+            // Retrieve the array from PlayerSettings via code to find the asset
+            var preloadedAsset = PlayerSettings.GetPreloadedAssets()
+                .OfType<GlobalRegistry>()
+                .FirstOrDefault();
+
+            if (preloadedAsset != null)
+            {
+                // Accessing a property or referencing it forces the Editor to load it into memory, triggering OnEnable()
+                string assetName = preloadedAsset.name;
+            }
         }
 
 #if UNITY_EDITOR

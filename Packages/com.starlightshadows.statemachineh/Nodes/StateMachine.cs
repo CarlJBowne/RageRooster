@@ -26,6 +26,11 @@ namespace SLS.StateMachineH
         /// </summary>  
         [field: SerializeField] public Transform StateHolder { get; internal set; }
 
+        /// <summary>
+        /// The optionally separate <see cref="GameObject"/> that represents the physical entity this <see cref="StateMachine"/> is managing the state of. If null, the <see cref="StateMachine"/>'s own <see cref="GameObject"/> is used.
+        /// </summary>
+        [field: SerializeField] public GameObject body { get; private set; }
+
         /// <summary>  
         /// Indicates whether this <see cref="StateMachine"/> is active. Derived from <see cref="Behaviour.enabled"/>
         /// </summary>  
@@ -299,5 +304,18 @@ namespace SLS.StateMachineH
         /// <param name="signal">The input signal. Accepts just a string.</param>
         /// <returns></returns>
         public bool Signal(Signals.Signal signal) => SignalManager != null && SignalManager.FireSignal(signal);
+
+        /// <summary>
+        /// The primary <see cref="GameObject"/> of this <see cref="StateMachine"/>. If <see cref="body"/> is set, this will refer to it rather than the <see cref="origin"/>
+        /// </summary>
+        new public GameObject gameObject => body != null ? body : base.gameObject;
+        /// <summary>
+        /// The primary <see cref="Transform"/> of this <see cref="StateMachine"/>. If <see cref="body"/> is set, this will refer to it rather than the <see cref="origin"/>
+        /// </summary>
+        new public Transform transform => body != null ? body.transform : base.transform;
+        /// <summary>
+        /// The <see cref="GameObject"/> that this <see cref="StateMachine"/> component is actually attached to. May be different from <see cref="gameObject"/> and <see cref="transform"/> if <see cref="body"/> is set.
+        /// </summary>
+        public GameObject origin => base.gameObject;
     }
 }

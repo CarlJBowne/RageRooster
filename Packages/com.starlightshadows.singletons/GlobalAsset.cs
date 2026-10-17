@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using UnityEditor.Presets;
 using UnityEngine;
 
 namespace SLS.Singletons
@@ -13,7 +14,7 @@ namespace SLS.Singletons
     /// </remarks>
     /// <typeparam name="T">The concrete type inheriting this base class (the singleton type).</typeparam>
     [DefaultExecutionOrder(-155)]
-    public abstract class GlobalAsset<T> : _GlobalAssetBase where T : class
+    public abstract class GlobalAsset<T> : _GlobalAssetBase where T : GlobalAsset<T>
     {
         /// Backing field for the late object singleton instance.
         /// </summary>
@@ -23,12 +24,6 @@ namespace SLS.Singletons
         /// Gets the registered singleton instance, attempting any configured creation paths if necessary.
         /// </summary>
         public static T Self => S.Get;
-
-        /// <summary>
-        /// Whether an instance of this Singleton Type is Active.
-        /// </summary>
-        public static bool Active => S.Active;
-
         /// <summary>
         /// Attempts to get the currently registered singleton instance.
         /// </summary>
@@ -36,21 +31,58 @@ namespace SLS.Singletons
         /// <returns>True if an instance is present; otherwise false.</returns>
         public static bool TryGet(out T instance) => S.TryGet(out instance);
 
-        public bool Initialized { get; private set; }
+        protected bool isInitialized { get; private set; }
+        protected bool isEditorInitialized { get; private set; }
+
+        /// <summary>
+        /// Whether this <see cref="GlobalAsset{T}"/> is present and locatable in the singleton registry.
+        /// </summary>
+        public static bool Present => S.Active;
+        /// <summary>
+        /// Whether this <see cref="GlobalAsset{T}"/> is present and has been initialized for runtime use.
+        /// </summary>
+        public static bool Active => Present && S.Get.isInitialized;
+        /// <summary>
+        /// Whether this <see cref="GlobalAsset{T}"/> is present and has been initialized for editor use.
+        /// </summary>
+        public static bool EditorActive => Present && S.Get.isEditorInitialized;
+
+
 
         /// <summary>
         /// Unity OnEnable callback override - registers this ScriptableObject as the singleton instance.
         /// </summary>
-        public sealed override void OnEnable()
+        internal sealed override void OnEnable()
         {
-            if (Initialized) return;
-            Singleton.OperationMessage res = S.Register(this as T);
-            if (res != Singleton.OperationMessage.Success) return;
+            if (Present && Active && EditorActive) return;
+
+            if (!Present)
+            {
+                Singleton.OperationMessage res = S.Register(this as T);
+                if (res != Singleton.OperationMessage.Success) return;
+            }
+
+            this.GetExecutionDetails(out bool gameIsEditor, out bool gameIsPlaying);
+
+            if (!EditorActive && gameIsEditor)
+            {
 #if UNITY_EDITOR
-            Debug.Log($"INITIALIZING : {this.name}...");
+                if (!gameIsPlaying) Debug.Log($"INITIALIZING : {this.name}... (For Editor use only.)");
 #endif
+                OnInitEditor();
+                isEditorInitialized = true;
+            }
+
             OnInit();
-            Initialized = true;
+
+            if(!Active && gameIsPlaying)
+            {
+#if UNITY_EDITOR
+                Debug.Log($"INITIALIZING : {this.name}...");
+#endif
+                OnInitPlaying();
+                isInitialized = true;
+            }
         }
 
         /// <summary>
@@ -58,15 +90,20 @@ namespace SLS.Singletons
         /// </summary>
         private void OnDisable()
         {
-            if (!Initialized) return;
+            if (!Present && !Active && !EditorActive) return;
+
             Singleton.OperationMessage res = S.Deregister(this as T);
             if (res != Singleton.OperationMessage.Success) return;
-            OnDeInit();
-            Initialized = false;
+
+            OnDeload();
+            isInitialized = false;
+            isEditorInitialized = false;
         }
 
         public virtual void OnInit() { }
-        public virtual void OnDeInit() { }
+        public virtual void OnDeload() { }
+        public virtual void OnInitEditor() { }
+        public virtual void OnInitPlaying() { }
     }
 
 
@@ -79,7 +116,7 @@ namespace SLS.Singletons
         /// Called by Unity when this ScriptableObject becomes enabled. Can be called to force initialization. <br/>
         /// Override OnInit() instead of this method in derived classes as needed.
         /// </summary>
-        public virtual void OnEnable() { }
+        internal virtual void OnEnable() { }
 
 #if UNITY_EDITOR
         // Non-generic variant to create/load assets by runtime Type
