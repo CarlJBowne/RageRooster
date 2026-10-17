@@ -41,10 +41,12 @@ namespace RageRooster.TOP
             EntitySpawn.PlayerPosition = Player.Services.Player.Transform;
             Debug.Log("Player Active");
 
-            for (int i = 0; i < rootObjects.Length; i++)
-                DontDestroyOnLoad(rootObjects[i]);
-            //rootObjects[1].GetComponent<Player>().Awake();
-            //rootObjects[2].GetComponent<Cameras>().Awake();
+            //for (int i = 0; i < rootObjects.Length; i++)
+            //{
+            //    Debug.Log($"Immortalizing : {rootObjects[i].name}");
+            //    DontDestroyOnLoad(rootObjects[i]);
+            //}
+
 
             OnEnter();
 
@@ -53,6 +55,8 @@ namespace RageRooster.TOP
             Debug.Log("Initializing Other Systems");
             GlobalPool.poolParent = rootObjects[0].transform.Find("PooledObjects");
             GlobalPool.Self.Initialize();
+            Player.Services.Player.Ranged.eggPool.Initialize();
+
             Overlay.OverALL.Alpha = 1;
             Overlay.UnderHUD.ResetState();
             Overlay.BetweenUI.ResetState();
@@ -62,7 +66,6 @@ namespace RageRooster.TOP
                 );
 
             Debug.Log("Beginning Transition");
-            //It's not loading the correct room cause the boot data's destination isn't actually being transferred to the stupid Room Manager, you dumbass.
             RoomManager.ResetTransitionData(false);
             RoomManager.TransitionStyle = new()
             {
@@ -129,7 +132,7 @@ namespace RageRooster.TOP
             Destination loadedDest = SaveData.Active.playerStats.location;
             loadedDest ??= new();
 
-            RoomManager.queuedDestination = 
+            RoomManager.queuedDestination =
                 (d.room != null && d.spawn > -1) ? d // Everything Checks
                 : (d.area != null && d.room == null) ? //Area but No Room
                     (loadedDest.area == d.area) ? d // Area Matches Save

@@ -8,13 +8,13 @@ namespace SLS.Physics3D
     /// A resolver specifically for use in NavMeshes. This resolver uses a NavMeshAgent to perform movement and pathfinding, and is designed to be used as the final resolver in the chain for characters that should be fully NavMesh-driven. It includes logic to attempt to snap to the NavMesh if the agent becomes ungrounded, and can optionally lock movement to the NavMesh surface when navigating off ledges or small platforms.
     /// </summary>
     [System.Serializable, RequireComponent(typeof(NavMeshAgent))]
-    public class NavMeshPhysResolver : PhysicsResolver.Grounded
+    public class NavMeshPhysResolver : PhysicsResolver.GroundType
     {
         [Tooltip("Whether this resolver should attempt to lock movement to the NavMesh surface when navigating off ledges or small platforms. This can help prevent characters from unintentionally walking off of small platforms, but may cause unwanted snapping behavior in some cases.")]
         public bool lockToNavMesh = true;
         [Tooltip("The distance within which the resolver will attempt to snap to the NavMesh if the agent becomes ungrounded. This should generally be set to a value slightly larger than the expected maximum step height of the character.")]
         [field: SerializeField] public float detectionRange { get; private set; } = .35f;
-        [field: SerializeField] public PhysicsResolver nonNavResolver { get; private set; }
+        [field: SerializeField] public PhysicsResolver.GroundType altGroundResolver { get; private set; }
 
         NavMeshAgent Agent => Body.NavAgent;
 
@@ -40,7 +40,7 @@ namespace SLS.Physics3D
             if (ContinueCheck(hit.distance)) return;
 
             Vector3 leftover = stepVelocity - snapToSurface;
-            if (lockToNavMesh || nonNavResolver == null)
+            if (lockToNavMesh || altGroundResolver == null)
             {
                 leftover = leftover.ProjectAndScale(hit.normal);
                 leftover *= Vector3.Dot(leftover.normalized, hit.normal) + 1;
@@ -49,54 +49,45 @@ namespace SLS.Physics3D
             }
             else
             {
-                ChooseNext(nonNavResolver);
+                ChooseNext(altGroundResolver);
                 if (Body.CancelResolverContinuance()) return;
                 Next.Move(leftover);
             }
         }
 
-        public override void Enter()
+        public override bool TryEnter(ref PhysicsResolver result)
         {
-            if (Agent == null
-                || !NavMesh.SamplePosition(Position, out NavMeshHit sampleHit, detectionRange, Agent.areaMask)
+            if (!NavMesh.SamplePosition(Position, out NavMeshHit sampleHit, detectionRange, Agent.areaMask)
                 || Vector3.Dot(Body.Velocity.Global.normalized, (Position - sampleHit.position).normalized) < -.3f)
             {
-                if (!nonNavResolver && !DefaultAirResolver)
+
+                if (altGroundResolver && altGroundResolver.TryEnter(ref result)) return true;
+                else if (result && result.TryEnter(ref result)) return false;
+                else if (Body.airResolver && Body.airResolver.TryEnter(ref result)) return true;
+                else
                 {
                     if (!NavMesh.SamplePosition(Position, out sampleHit, float.PositiveInfinity, Agent.areaMask))
                     {
                         Body.enabled = false;
-                        return;
+                        result = null;
+                        return false;
                     }
-                }
-                else
-                {
-                    if (nonNavResolver && Anchor.SweepStandable(Body.Direction.Up * -.1f, out _)) ChooseNext(nonNavResolver);
-                    else
-                    {
-                        if (DefaultAirResolver) ChooseNext(DefaultAirResolver);
-                        else
-                        {
-                            if (nonNavResolver && Anchor.InstantSnapToFloor(out _)) ChooseNext(nonNavResolver);
-                            else Body.enabled = false;
-                        }
-                    }
-
-                    return;
                 }
             }
             Agent.enabled = true;
             destinationDriven = false;
-            // Place agent internal position on the navmesh
+
             Agent.Warp(sampleHit.position);
             Agent.nextPosition = sampleHit.position;
-            // Place the RB at the same surface + baseOffset so visuals/physics line up
-            Body.Position = sampleHit.position + Vector3.up * Agent.baseOffset;
+
+            Body.Position = sampleHit.position + (Vector3.up * Agent.baseOffset);
 
             // We will manage character position ourselves (RB) and use NavAgent for pathfinding only.
             Agent.enabled = true;
+
+            return base.TryEnter(ref result);
         }
-        public override void Exit()
+        public override void OnExit()
         {
             destinationDriven = false;
             Agent.enabled = false;

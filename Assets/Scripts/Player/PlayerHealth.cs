@@ -52,7 +52,7 @@ public class PlayerHealth : Health
             else if (attack == Attack.Tags.Wham)
             {
                 damageStateWham.Enter();
-                Self.MovementBody.UnLand();
+                Self.MovementBody.Anchor.DeAnchor();
                 Self.MovementBody.Velocity.y = 14;
             }
             else damageState.Enter();
@@ -65,7 +65,7 @@ public class PlayerHealth : Health
         if (attack == Attack.Tags.Wham)
         {
             damageStateWham.Enter();
-            Self.MovementBody.UnLand();
+            Self.MovementBody.Anchor.DeAnchor();
             Self.MovementBody.Velocity.y = 14;
         }
         else Self.Death();

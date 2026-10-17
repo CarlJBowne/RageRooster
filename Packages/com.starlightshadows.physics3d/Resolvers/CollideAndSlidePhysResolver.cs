@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.XR;
 
 namespace SLS.Physics3D
@@ -7,7 +8,7 @@ namespace SLS.Physics3D
     /// A resolver representing the famed "Collide and Slide" algorithm. This resolver performs a single collision sweep for the proposed movement vector, moves the body to the point of impact (or full distance if no collision), and then delegates remaining movement along the surface normal of the collision.
     /// </summary>
     [System.Serializable]
-    public class CollideAndSlidePhysResolver : PhysicsResolver.Grounded
+    public class CollideAndSlidePhysResolver : PhysicsResolver.GroundType
     {
         [Tooltip("The distance of the buffer that will be used in sweep checking.")]
         [SerializeField] float checkBuffer = 0.1f;
@@ -15,21 +16,20 @@ namespace SLS.Physics3D
         [SerializeField] float downSnap = 0.08f;
         [Tooltip("A Layermask for solid ground.")]
         [SerializeField] LayerMask validGroundMask;
-        [SerializeField] ICollisionHandler onCollision;
+        [field: SerializeField] public PhysicsResolver.GroundType altGroundResolver { get; private set; }
 
 
-        public override void Enter()
+
+        public override bool TryEnter(ref PhysicsResolver result)
         {
-            if (Anchor.SweepStandable(out _)) return;
-            else
+            if(!Body.Anchor.SweepStandable(out SweepPayload hit))
             {
-                if (Body.airResolver) ChooseNext(Body.airResolver);
-                else
-                {
-                    if (Anchor.InstantSnapToFloor(out _)) return;
-                    else Body.enabled = false;
-                }
+                if (altGroundResolver && altGroundResolver.TryEnter(ref result)) return true;
+                else if (result && result.TryEnter(ref result)) return false;
+                else if (Body.airResolver && Body.airResolver.TryEnter(ref result)) return true;
+
             }
+            return base.TryEnter(ref result);
         }
 
         public override void Move(Vector3 stepVelocity)
@@ -44,7 +44,7 @@ namespace SLS.Physics3D
             Vector3 nextNormal = Vector3.zero;
 
             // Sweep for any obstacle in the trajectory (ignore flat-floor hits when moving purely horizontally).
-            var hit = Body.Sweep(stepVelocity, true, checkBuffer);
+            var hit = Body.Sweep(stepVelocity, false, checkBuffer);
 
             if (!hit)
             {
@@ -89,15 +89,14 @@ namespace SLS.Physics3D
                         Body.Position += stepVelocity;
                         Body.Position += -Body.Direction.Up * downHit.distance;
                         Anchor.Anchor(downHit.anchorPoint);
-                        return;
                     }
                 }
                 else
                 {
                     Body.Position += stepVelocity;
                     Body.WalkOff();
-                    return;
                 }
+                return;
             }
 
             stopDistance = hit.distance;
@@ -149,7 +148,7 @@ namespace SLS.Physics3D
             }
 
             Print(() => $"Beginning next step. Leftover: {leftover}");
-            ChooseNext(DefaultGroundResolver);
+            ChooseNext(Body.groundResolver);
             if (Body.CancelResolverContinuance()) return;
             Next.Move(leftover);
         }

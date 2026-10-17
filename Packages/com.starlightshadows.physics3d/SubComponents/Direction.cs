@@ -10,15 +10,25 @@ namespace SLS.Physics3D
     public class Direction : PhysicsSubComponent
     {
         #region Config
-        [Tooltip("The maximum angle from this Body's UP direction that is considered standable.")]
-        [field: SerializeField] public float angleStandable { get; private set; } = 40f;
-        [Tooltip("The minimum Angle from this Body's UP direction that is considered a slope rather than just a floor.")]
+        /// <summary>
+        /// The minimum Angle from this Body's UP direction that is considered a slope rather than just a floor.
+        /// </summary>
         [field: SerializeField] public float angleSlope { get; private set; } = 10f;
-        [Tooltip("The minimum Angle from this Body's UP direction that is considered a wall rather than a slope.")]
+        /// <summary>
+        /// The maximum angle from this Body's UP direction that is considered standable.
+        /// </summary>
+        [field: SerializeField] public float angleStandable { get; private set; } = 40f;
+        /// <summary>
+        /// The minimum Angle from this Body's UP direction that is considered a wall rather than a slope.
+        /// </summary>
         [field: SerializeField] public float angleWall { get; private set; } = 80f;
-        [Tooltip("The minimum Angle from this Body's UP direction that is considered an inverted slope rather than a wall.")]
+        /// <summary>
+        /// The minimum Angle from this Body's UP direction that is considered an inverted slope rather than a wall.
+        /// </summary>
         [field: SerializeField] public float angleInvertedSlope { get; private set; } = 100f;
-        [Tooltip("The minimum Angle from this Body's UP direction that is considered a ceiling.")]
+        /// <summary>
+        /// The minimum Angle from this Body's UP direction that is considered a ceiling.
+        /// </summary>
         [field: SerializeField] public float angleCeiling { get; private set; } = 150f;
         #endregion
 

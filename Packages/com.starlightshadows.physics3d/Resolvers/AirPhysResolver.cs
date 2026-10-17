@@ -6,7 +6,7 @@ namespace SLS.Physics3D
     /// A resolver based on the <see cref="CollideAndSlide"/> resolver but with all grounded-movement-related logic removed.
     /// </summary>
     [System.Serializable]
-    public class AirPhysResolver : PhysicsResolver.Airborne
+    public class AirPhysResolver : PhysicsResolver.AirType
     {
         [Tooltip("The distance of the buffer that will be used in sweep checking.")]
         [SerializeField] float checkBuffer = 0.1f;
@@ -14,7 +14,6 @@ namespace SLS.Physics3D
         [SerializeField] float defaultGravity = 9.8f;
         [Tooltip("Whether this resolver should automatically apply gravity each frame. If false, gravity must be applied manually by calling ApplyGravity().")]
         [SerializeField] bool autoApplyGravity = false;
-        [SerializeField] ICollisionHandler onCollision;
 
         public override void Move(Vector3 stepVelocity)
         {
@@ -87,16 +86,20 @@ namespace SLS.Physics3D
             Vector3 newDir = leftover.ProjectAndScale(nextNormal);
             newDir *= Vector3.Dot(leftover.normalized, nextNormal) + 1;
 
-            if (land && DefaultGroundResolver != null) // Don't do landing logic if no ground-based resolvers exist.
+            if (land && Body.groundResolver) // Don't do landing logic if no ground-based resolvers exist.
             {
                 leftover.y = 0;
                 Anchor.Land(hit);
-                if(Next == this) ChooseNext(DefaultGroundResolver);
+                if(Next == this) ChooseNext(Body.groundResolver);
             }
             Next.Move(newDir);
         }
 
-        public override void OnStart() => gravity = defaultGravity;
+        public override void OnStart()
+        {
+            base.OnStart();
+            gravity = defaultGravity;
+        }
 
         public override void FixedUpdateLatter() { if (autoApplyGravity) ApplyGravity(); }
 

@@ -11,6 +11,7 @@ public abstract class PlayerMovementEffector : StateBehavior
         if(this.ForwardMovement(out float FS))
         {
             Player.MovementBody.Velocity.f = FS;
+            Player.MovementBody.Velocity.s = 0;
         }
         else if (this.DirectionalMovement(out float F, out float? S))
         {

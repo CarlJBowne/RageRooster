@@ -35,7 +35,7 @@ namespace SLS.ObjectUtilities
             if(poolParent != null)
             {
                 ObjectPool.DefaultPoolParent = poolParent;
-                UnityEngine.Object.DontDestroyOnLoad(ObjectPool.DefaultPoolParent);
+                //UnityEngine.Object.DontDestroyOnLoad(ObjectPool.DefaultPoolParent);
             }
 
             InitPoolGlobally(basicEnemyBullet);

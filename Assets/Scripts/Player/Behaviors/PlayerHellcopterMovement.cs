@@ -24,27 +24,34 @@ public class PlayerHellcopterMovement : PlayerAirborneMovement
 
     public override bool VerticalMovement(out float result)
     {
-        result = ApplyGravity(gravity, terminalVelocity, flatGravity);
-        VerticalUpwards(ref result);
-        if (Player.MovementBody.Velocity.y <= fallStateThreshold) Fall(ref result);
+        result = Player.MovementBody.Velocity.y;
+        if (Phase is JumpPhase.Jumping or JumpPhase.Decelerating)
+        {
+            VerticalUpwards(ref result);
+        }
+        else if (Phase is JumpPhase.Falling)
+        {
+            result = ApplyGravity(gravity, terminalVelocity, flatGravity);
+            if (Player.MovementBody.Velocity.y <= terminalVelocity) Phase = JumpPhase.TerminalVelocity;
+        }
         return true;
     }
 
     protected override void VerticalUpwards(ref float Y)
     {
-        if (Player.MovementBody.JumpPhase == JumpPhase.Decelerating)
+        if (Phase == JumpPhase.Decelerating)
         {
             Y = currentVent.hellcopterSpeed;
-            if (transform.position.y >= targetHeight) Player.MovementBody.UnLand(JumpPhase.Falling);
+            if (transform.position.y >= targetHeight) Phase = (JumpPhase.Falling);
         }
-        else if (Player.MovementBody.JumpPhase == JumpPhase.Falling && Player.MovementBody.Velocity.y <= fallStateThreshold) Fall(ref Y);
+        else if (Phase == JumpPhase.Falling && Player.MovementBody.Velocity.y <= fallStateThreshold) Fall(ref Y);
 
     }
 
     protected override void Fall(ref float Y)
     {
         if (Player.MovementBody.Velocity.y > fallStateThreshold) Y = fallStateThreshold;
-        Player.MovementBody.UnLand(JumpPhase.Falling);
+        Phase = (JumpPhase.Falling);
         if (fallState != null) fallState.Enter();
     }
 

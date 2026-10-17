@@ -515,25 +515,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40c3d6cd8aa43154aa3119b5010e205a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovementBody
+  <resolvers>k__BackingField:
+  - {fileID: 4050968043308300902}
+  - {fileID: 2069593994508189260}
+  - {fileID: 5813673675774806942}
   <groundResolver>k__BackingField: {fileID: 4050968043308300902}
-  <airResolver>k__BackingField: {fileID: 0}
+  <airResolver>k__BackingField: {fileID: 5813673675774806942}
+  maxPhysicsSteps: 6
+  <defaultCheckBuffer>k__BackingField: 0.1
+  <RB>k__BackingField: {fileID: 1838944232945776554}
+  <Collider>k__BackingField: {fileID: 598530174602593461}
+  <NavAgent>k__BackingField: {fileID: 0}
   <Velocity>k__BackingField:
     allowBackwards: 1
     lookVelocity: 0
   <Direction>k__BackingField:
-    <angleStandable>k__BackingField: 40
     <angleSlope>k__BackingField: 10
+    <angleStandable>k__BackingField: 40
     <angleWall>k__BackingField: 80
     <angleInvertedSlope>k__BackingField: 100
     <angleCeiling>k__BackingField: 150
     lookTarget: {fileID: 0}
-  <defaultCheckBuffer>k__BackingField: 0.1
-  maxPhysicsSteps: 6
-  <RB>k__BackingField: {fileID: 1838944232945776554}
-  <Collider>k__BackingField: {fileID: 598530174602593461}
-  <NavAgent>k__BackingField: {fileID: 0}
+  <Debug>k__BackingField:
+    maxHitDisplays: 15
+    DisplayJumpMarker: 0
+    JumpMarkerPos1: {x: 0, y: 0, z: 0}
+    JumpMarkerPos2: {x: 0, y: 0, z: 0}
+    JumpMarkerPos3: {x: 0, y: 0, z: 0}
+    DisplayClosestNavEdge: 0
   bonkThreshold: 15
-  JumpPhase: 0
 --- !u!114 &4050968043308300902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -549,7 +559,7 @@ MonoBehaviour:
   <Body>k__BackingField: {fileID: 3941225653291784218}
   lockToNavMesh: 1
   <detectionRange>k__BackingField: 0.35
-  <nonNavResolver>k__BackingField: {fileID: 2069593994508189260}
+  <altGroundResolver>k__BackingField: {fileID: 2069593994508189260}
 --- !u!114 &2069593994508189260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,6 +578,7 @@ MonoBehaviour:
   validGroundMask:
     serializedVersion: 2
     m_Bits: 0
+  <altGroundResolver>k__BackingField: {fileID: 0}
 --- !u!114 &5813673675774806942
 MonoBehaviour:
   m_ObjectHideFlags: 0

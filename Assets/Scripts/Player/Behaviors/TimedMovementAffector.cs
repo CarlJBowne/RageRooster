@@ -107,7 +107,7 @@ namespace SLS.StateMachineH.Timelines
             if (setVerticalInfluence > 0f)
                 Y = Mathf.Lerp(Y, setVerticalVelocity, setVerticalInfluence);
             if (Player.MovementBody.Anchor.Standing && Y < 0) Y = 0;
-            if (Player.MovementBody.Anchor.Standing && Y > 0) Player.MovementBody.UnLand();
+            if (Player.MovementBody.Anchor.Standing && Y > 0) Player.MovementBody.Anchor.DeAnchor();
             Player.MovementBody.Velocity.y = Y;
 
             //DebugRR.DebugTextOverlay.AppendNewLine($"TMA : Output: {output}");

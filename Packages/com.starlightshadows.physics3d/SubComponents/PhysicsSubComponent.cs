@@ -46,5 +46,12 @@ namespace SLS.Physics3D
         public Collider Collider => Body.Collider;
         #endregion
 
+        protected void Print(Func<string> value)
+        {
+#if UNITY_EDITOR
+            if (!Body.Debug.DisplayDebugString) return;
+            Body.Debug.AppendLine(value?.Invoke());
+#endif
+        }
     }
 }

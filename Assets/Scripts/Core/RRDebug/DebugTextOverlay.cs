@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using RageRooster.Core;
 using UnityEngine;
 
 namespace DebugRR
 {
-    [DefaultExecutionOrder(ExecutionOrders.Gameplay-50)]
+    [DefaultExecutionOrder(ExecutionOrders.Gameplay + 1)]
     public class DebugTextOverlay : MonoBehaviour
     {
-        public TMPro.TMP_Text text;
         //public bool clearAtBeginningOfUpdate = true;
         public static TMPro.TMP_Text Text;
 
@@ -15,9 +15,12 @@ namespace DebugRR
 
         //Coroutine coroutine;
 
-        private void Awake()
+        private void Awake() => Init();
+        [ContextMenu("Init")]
+        public void Init()
         {
-            Text = text;
+            if (!Gameplay.Active) return;
+            Text = GetComponent<TMPro.TMP_Text>();
             Input.Debug.ToggleTextOverlay.performed += ctx =>
             {
                 SetVisible(!Text.gameObject.activeSelf);

@@ -74,7 +74,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 8395760873617269010}
-  Machine: {fileID: 0}
   acceleration: 0.35
   decceleration: 0.5
   maxSpeed: 8
@@ -95,7 +94,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 8395760873617269010}
-  Machine: {fileID: 0}
   defaultPhase: 4
   jumpHeight: 0
   jumpPower: 0
@@ -153,7 +151,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 8395760873617269010}
-  Machine: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -194,10 +191,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
   <State>k__BackingField: {fileID: 8395760873617269010}
   signals:
-    serializedNames:
+    serializedHashes: e67a3208a8930d78
+    serializedKeys:
     - Land
     - EnterVent
-    serializedHashes: e67a3208a8930d78
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 0}
@@ -233,7 +230,7 @@ MonoBehaviour:
     intValue: 0
     boolValue: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  <Animator>k__BackingField: {fileID: 0}
 --- !u!1 &439532856085778822
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,7 +303,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 1501509694756331304}
-  Machine: {fileID: 0}
   acceleration: 0.35
   decceleration: 0.001
   maxSpeed: 10
@@ -327,7 +323,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 1501509694756331304}
-  Machine: {fileID: 0}
   defaultPhase: 1
   jumpHeight: 5
   jumpPower: 12
@@ -335,10 +330,10 @@ MonoBehaviour:
   gravity: 30
   terminalVelocity: 98.1
   flatGravity: 0
-  allowMidFall: 1
+  allowMidFall: 0
   allowDoubleJump: 1
   fallState: {fileID: 1795561309536884184}
-  fallStateThreshold: 200
+  fallStateThreshold: -0.5
 --- !u!114 &4131485229137905776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,9 +379,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
   <State>k__BackingField: {fileID: 1501509694756331304}
   signals:
-    serializedNames:
-    - Land
     serializedHashes: e67a3208
+    serializedKeys:
+    - Land
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 0}
@@ -418,7 +413,7 @@ MonoBehaviour:
     intValue: 0
     boolValue: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  <Animator>k__BackingField: {fileID: 0}
 --- !u!1 &617782207937767042
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,7 +487,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 4637717981930095470}
-  Machine: {fileID: 0}
   acceleration: 0.35
   decceleration: 0.5
   maxSpeed: 8
@@ -513,7 +507,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 4637717981930095470}
-  Machine: {fileID: 0}
   defaultPhase: 3
   jumpHeight: 0
   jumpPower: 0
@@ -540,7 +533,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 4637717981930095470}
-  Machine: {fileID: 0}
   Jump:
     rid: -2
   Attack:
@@ -581,10 +573,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
   <State>k__BackingField: {fileID: 4637717981930095470}
   signals:
-    serializedNames:
+    serializedHashes: e67a3208883f1df4
+    serializedKeys:
     - Land
     - ExitVent
-    serializedHashes: e67a3208883f1df4
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 0}
@@ -620,7 +612,7 @@ MonoBehaviour:
     intValue: 0
     boolValue: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  <Animator>k__BackingField: {fileID: 0}
 --- !u!1 &816272236132542090
 GameObject:
   m_ObjectHideFlags: 0
@@ -722,7 +714,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 2559980278779774860}
-  Machine: {fileID: 0}
   Jump:
     rid: 440872815894725004
   Attack:
@@ -884,7 +875,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 1011226270160650039}
-  Machine: {fileID: 0}
   acceleration: 0.35
   decceleration: 0
   maxSpeed: 10
@@ -905,8 +895,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 1011226270160650039}
-  Machine: {fileID: 0}
-  defaultPhase: 4
+  defaultPhase: 5
   jumpHeight: 0
   jumpPower: 0
   jumpMinHeight: 0
@@ -931,10 +920,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
   <State>k__BackingField: {fileID: 1011226270160650039}
   signals:
-    serializedNames:
+    serializedHashes: e67a3208299535af
+    serializedKeys:
     - Land
     - EndFall
-    serializedHashes: e67a3208299535af
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 0}
@@ -970,7 +959,7 @@ MonoBehaviour:
     intValue: 0
     boolValue: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  <Animator>k__BackingField: {fileID: 0}
 --- !u!1 &2916739586709754898
 GameObject:
   m_ObjectHideFlags: 0
@@ -1288,7 +1277,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 7024526740484287390}
-  Machine: {fileID: 0}
   Jump:
     rid: 1950655830041821311
   Attack:
@@ -1329,9 +1317,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
   <State>k__BackingField: {fileID: 7024526740484287390}
   signals:
-    serializedNames:
-    - Land
     serializedHashes: e67a3208
+    serializedKeys:
+    - Land
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 0}
@@ -1366,7 +1354,7 @@ MonoBehaviour:
     intValue: 0
     boolValue: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  <Animator>k__BackingField: {fileID: 0}
 --- !u!1 &3113314633541517961
 GameObject:
   m_ObjectHideFlags: 0
@@ -1436,7 +1424,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 3529526253282525060}
-  Machine: {fileID: 0}
   gravity: 30
   terminalVelocity: 100
   flatGravity: 0
@@ -1458,7 +1445,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 3529526253282525060}
-  Machine: {fileID: 0}
   Jump:
     rid: 440872815894725002
   Attack:
@@ -1515,9 +1501,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
   <State>k__BackingField: {fileID: 3529526253282525060}
   signals:
-    serializedNames:
-    - Land
     serializedHashes: e67a3208
+    serializedKeys:
+    - Land
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 0}
@@ -1598,7 +1584,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 1247436238169980682}
-  Machine: {fileID: 0}
   acceleration: 0.35
   decceleration: 0.5
   maxSpeed: 5
@@ -1619,7 +1604,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 1247436238169980682}
-  Machine: {fileID: 0}
   defaultPhase: 1
   jumpHeight: 7
   jumpPower: 14
@@ -1725,7 +1709,7 @@ MonoBehaviour:
     intValue: 0
     boolValue: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  <Animator>k__BackingField: {fileID: 0}
 --- !u!1 &7005226038824116130
 GameObject:
   m_ObjectHideFlags: 0
@@ -1802,7 +1786,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 2405825106197238307}
-  Machine: {fileID: 0}
   acceleration: 0.35
   decceleration: 0
   maxSpeed: 20
@@ -1823,7 +1806,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 2405825106197238307}
-  Machine: {fileID: 0}
   defaultPhase: 4
   jumpHeight: 0
   jumpPower: 0
@@ -1915,7 +1897,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 2405825106197238307}
-  Machine: {fileID: 0}
   Jump:
     rid: 1950655830041821309
   Attack:
@@ -1973,10 +1954,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
   <State>k__BackingField: {fileID: 2405825106197238307}
   signals:
-    serializedNames:
+    serializedHashes: e67a32084e3dcc72
+    serializedKeys:
     - Land
     - Bonk
-    serializedHashes: e67a32084e3dcc72
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 0}
@@ -2012,7 +1993,7 @@ MonoBehaviour:
     intValue: 0
     boolValue: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  <Animator>k__BackingField: {fileID: 0}
 --- !u!1 &7834614901570998682
 GameObject:
   m_ObjectHideFlags: 0
@@ -2089,7 +2070,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 724050107024081372}
-  Machine: {fileID: 0}
   acceleration: 0.35
   decceleration: 0
   maxSpeed: 20
@@ -2110,7 +2090,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <State>k__BackingField: {fileID: 724050107024081372}
-  Machine: {fileID: 0}
   defaultPhase: 1
   jumpHeight: 1.5
   jumpPower: 10
@@ -2202,7 +2181,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerButtonActions
   <State>k__BackingField: {fileID: 724050107024081372}
-  Machine: {fileID: 0}
   Jump:
     rid: 1950655830041821307
   Attack:
@@ -2260,10 +2238,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
   <State>k__BackingField: {fileID: 724050107024081372}
   signals:
-    serializedNames:
+    serializedHashes: e67a32084e3dcc72
+    serializedKeys:
     - Land
     - Bonk
-    serializedHashes: e67a32084e3dcc72
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 0}
@@ -2299,7 +2277,7 @@ MonoBehaviour:
     intValue: 0
     boolValue: 0
   doWhenNotFinal: 0
-  animator: {fileID: 0}
+  <Animator>k__BackingField: {fileID: 0}
 --- !u!1 &8324690027597384102
 GameObject:
   m_ObjectHideFlags: 0

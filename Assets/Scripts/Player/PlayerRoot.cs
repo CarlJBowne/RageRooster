@@ -113,7 +113,7 @@ public class PlayerRoot : MonoBehaviour, IPlayer
             return;
         }
 
-        DontDestroyOnLoad(this);
+        //DontDestroyOnLoad(this);
 
         CoreServices.Player = this as IPlayer;
         Self = this;

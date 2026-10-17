@@ -47,7 +47,7 @@ public class PlayerRanged : MonoBehaviour
 
     private void Awake()
     {
-        eggPool.Initialize();
+        //eggPool.Initialize();
         Ammo.Max = Player.Stats.MaxAmmo;
         Ammo.Value = Ammo.Max;
         events = new()

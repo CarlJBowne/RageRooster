@@ -136,47 +136,47 @@ namespace SLS.Physics3D
         /// <param name="newAnchorPoint">Defines the position and normal being Anchored too</param>
         /// <param name="tryNavMesh"> Whether the system should attempt to Anchor the player to the NavMesh</param>
         /// <returns>Success</returns>
-        public bool Land(AnchorPoint newAnchorPoint, PhysicsResolver.Grounded newResolver = null) => Anchor(newAnchorPoint, newResolver);
+        public bool Land(AnchorPoint newAnchorPoint, PhysicsResolver.GroundType newResolver = null) => Anchor(newAnchorPoint, newResolver);
         /// <summary>
         /// Attempts to Anchor to any collider found in the input direction (Only Standable Ground)
         /// </summary>
         /// <param name="vector">The direction to check for a collider</param>
         /// <param name="tryNavMesh"> Whether the system should attempt to Anchor the player to the NavMesh</param>
         /// <returns>Success</returns>
-        public bool Land(Vector3 vector, PhysicsResolver.Grounded newResolver = null) => Anchor(vector, newResolver);
+        public bool Land(Vector3 vector, PhysicsResolver.GroundType newResolver = null) => Anchor(vector, newResolver);
         /// <summary>
         /// Attempts to Anchor to any collision found direction of the Body's current Velocity vector (Only Standable Ground)
         /// </summary>
         /// <param name="tryNavMesh"> Whether the system should attempt to Anchor the player to the NavMesh</param>
         /// <returns>Success</returns>
-        public bool Land(PhysicsResolver.Grounded newResolver = null) => Anchor(newResolver);
+        public bool Land(PhysicsResolver.GroundType newResolver = null) => Anchor(newResolver);
 
         /// <summary>
         /// Attempts to Anchor to the passed in <see cref="Physics3D.AnchorPoint"/> (Allows Sticking)
         /// </summary>
         /// <param name="newAnchorPoint">Defines the position and normal being Anchored too</param>
         /// <returns>Success</returns>
-        public bool Stick(AnchorPoint newAnchorPoint, PhysicsResolver.Sticky newResolver = null) => Anchor(newAnchorPoint, newResolver, true);
+        public bool Stick(AnchorPoint newAnchorPoint, PhysicsResolver.StickyType newResolver = null) => Anchor(newAnchorPoint, newResolver, true);
         /// <summary>
         /// Attempts to Anchor to any collider found in the input direction (Allows Sticking)
         /// </summary>
         /// <param name="vector">The direction to check for a collider</param>
         /// <returns>Success</returns>
-        public bool Stick(Vector3 vector, PhysicsResolver.Sticky newResolver = null) => Anchor(vector, newResolver, true);
+        public bool Stick(Vector3 vector, PhysicsResolver.StickyType newResolver = null) => Anchor(vector, newResolver, true);
         /// <summary>
         /// Attempts to Anchor to any collision found direction of the Body's current Velocity vector (Allows Sticking)
         /// </summary>
         /// <returns>Success</returns>
-        public bool Stick(PhysicsResolver.Sticky newResolver = null) => Anchor(newResolver, true);
+        public bool Stick(PhysicsResolver.StickyType newResolver = null) => Anchor(newResolver, true);
 
         /// <summary>
         /// Deanchors this Body from whatever Anchor it has.
         /// </summary>
         /// <param name="setJumping"></param>
-        public void DeAnchor(PhysicsResolver.Airborne newResolver = null)
+        public void DeAnchor(PhysicsResolver.AirType newResolver = null)
         {
             if (!HasOwner || !Anchored) return;
-            if (Body.airResolver && newResolver) return;
+            //if (Body.airResolver && newResolver) return;
 
             Anchored = false;
             if (NavAgent != null) NavAgent.enabled = false;
@@ -221,7 +221,7 @@ namespace SLS.Physics3D
         /// <param name="buffer">A small buffer to back the test origin up along <paramref name="offset"/>. Defaults to 0.</param>
         /// <param name="tempOrigin">An optional temporary origin to perform the sweep from instead of the current RB position.</param>
         /// <param name="queryTriggerInteraction">Whether the sweep should hit trigger colliders. Defaults to Ignore.</param>
-        /// <returns>True if the sweep detected a collider, otherwise false.</returns>
+        /// <returns>True if the sweep detected a collider that was considered standable, otherwise false.</returns>
         public bool SweepStandable(out SweepPayload hit, float? buffer = null, Vector3? tempOrigin = null, QueryTriggerInteraction queryTriggerInteraction = QueryTriggerInteraction.Ignore) =>
             Body.Sweep(Direction.Up * -.1f, out hit, false, buffer, tempOrigin, queryTriggerInteraction) && Standable(hit.normal);
 

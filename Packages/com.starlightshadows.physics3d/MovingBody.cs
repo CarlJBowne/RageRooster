@@ -7,6 +7,8 @@ using SLS.EditorUtilities.ComponentHeaders;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
+using System.Linq;
+
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.UIElements;
@@ -75,37 +77,18 @@ namespace SLS.Physics3D
 
         }
 
+        [field: SerializeField] public List<PhysicsResolver> resolvers { get; private set; } = new();
         /// <summary>
         /// The default grounded <see cref="PhysicsResolver"/>, the first one it will attempt to use in any grounded situation.
         /// </summary>
-        [field: SerializeField] public PhysicsResolver.Grounded groundResolver { get; private set; }
+        [field: SerializeField] public PhysicsResolver.GroundType groundResolver { get; private set; }
         /// <summary>
         /// The root Airborne PhysicsResolver, the first one it will attempt to use in airborne situations.
         /// </summary>
-        [field: SerializeField] public PhysicsResolver.Airborne airResolver { get; private set; }
+        [field: SerializeField] public PhysicsResolver.AirType airResolver { get; private set; }
 
-        /// <summary>
-        /// The current velocity container for this body. Contains both local (f/s/u) and
-        /// global (x/y/z) representations and helper methods to keep them in sync.
-        /// </summary>
-        [field: SerializeField] public Velocity Velocity { get; private set; }
-
-        /// <summary>
-        /// Current <see cref="AnchorState"/> for this body. Tracks whether the body is grounded, the
-        /// anchor point (surface normal/point/collider) and exposes checks for ledges and
-        /// slope limits.
-        /// </summary>
-        [field: SerializeField] public AnchorState Anchor { get; private set; }
-
-        /// <summary>
-        /// Direction helper that represents the local forward vector used for local
-        /// velocity computations and rotation helpers.
-        /// </summary>
-        [field: SerializeField] public Direction Direction { get; private set; }
-        /// <summary>
-        /// Debug Data container for this body. Used to store and display useful debug information
-        /// </summary>
-        public PhysicsBodyDebug Debug { get; private set; } = new();
+        [Tooltip("The maximum amount of steps this resolver allows.")]
+        [SerializeField] public int maxPhysicsSteps = 6;
         /// <summary>
         /// The buffer (in world units) used when performing a downwards sweep to
         /// determine whether the body is grounded. Small positive values help
@@ -113,23 +96,23 @@ namespace SLS.Physics3D
         /// </summary>
         [field: SerializeField] public float defaultCheckBuffer { get; private set; } = 0.1f;
 
-
         #region Resolvers
 
-        public PhysicsResolver Resolver { get; private set; }
+        public PhysicsResolver Resolver => resolver;
+        private PhysicsResolver resolver = null;
         public void SelectGroundResolver() => SelectResolver(groundResolver);
         public void SelectAirResolver() => SelectResolver(groundResolver);
         public void SelectResolver(bool airborne) => SelectResolver(airborne ? airResolver : groundResolver);
-        public void SelectResolver(PhysicsResolver resolver)
+        public void SelectResolver(PhysicsResolver newResolver)
         {
-            if (resolver == Resolver || resolver == null) return;
-            Resolver?.Exit();
-            Resolver = resolver;
-            Resolver?.Enter();
+            if (newResolver == Resolver || newResolver == null) return;
+
+            PhysicsResolver prev = Resolver;
+            newResolver.TryEnter(ref resolver);
+            if (prev == resolver) return;
+            prev?.OnExit();
         }
 
-        [Tooltip("The maximum amount of steps this resolver allows.")]
-        [SerializeField] public int maxPhysicsSteps = 6;
         /// <summary>
         /// The amount of MoveSteps this <see cref="MovingBody"/> has gone through in this FixedUpdate sharedacross / all of its <see cref="PhysicsResolver"/>s
         /// </summary>
@@ -213,6 +196,28 @@ namespace SLS.Physics3D
         [field: SerializeField, HeaderItem(false)] public NavMeshAgent NavAgent { get; internal set; }
 
         /// <summary>
+        /// The current velocity container for this body. Contains both local (f/s/u) and
+        /// global (x/y/z) representations and helper methods to keep them in sync.
+        /// </summary>
+        [field: SerializeField] public Velocity Velocity { get; private set; }
+        /// <summary>
+        /// Current <see cref="AnchorState"/> for this body. Tracks whether the body is grounded, the
+        /// anchor point (surface normal/point/collider) and exposes checks for ledges and
+        /// slope limits.
+        /// </summary>
+        [field: SerializeField] public AnchorState Anchor { get; private set; } = new();
+        /// <summary>
+        /// Direction helper that represents the local forward vector used for local
+        /// velocity computations and rotation helpers.
+        /// </summary>
+        [field: SerializeField] public Direction Direction { get; private set; }
+        /// <summary>
+        /// Debug Data container for this body. Used to store and display useful debug information
+        /// </summary>
+        [field: SerializeField] public PhysicsBodyDebug Debug { get; private set; } = new();
+
+
+        /// <summary>
         /// Unity Reset callback used to initialize related components when the component
         /// is first added or when Reset is invoked in the editor.
         /// </summary>
@@ -239,8 +244,17 @@ namespace SLS.Physics3D
             Direction.Init(this);
             Velocity.Init(this);
             Debug.Init(this);
-            PhysicsResolver[] resolvers = gameObject.GetComponents<PhysicsResolver>();
-            for (int i = 0; i < resolvers.Length; i++) resolvers[i].OnStart();
+            if (resolvers.Count == 0) resolvers = gameObject.GetComponents<PhysicsResolver>().ToList();
+            for (int i = 0; i < resolvers.Count; i++) if (resolvers[i]) resolvers[i].OnStart();
+
+            if (groundResolver && groundResolver.TryEnter(ref resolver)) { }
+            else if (airResolver && airResolver.TryEnter(ref resolver)) { }
+            else if (resolvers.Count > 0 && resolvers[0] && resolvers[0].TryEnter(ref resolver)) { }
+            else
+            {
+                resolver = null;
+                enabled = false;
+            }
         }
 
         void OnEnable()
@@ -372,10 +386,6 @@ namespace SLS.Physics3D
         {
             MovingBody This;
 
-            public PropertyField ResolverField;
-            public PropertyField DirectionField;
-            public PropertyField AllowBackwardsVelocityField;
-
             public TabView TabView;
             public Tab ConfigTab;
             public Tab ActiveTab;
@@ -389,6 +399,8 @@ namespace SLS.Physics3D
             public Label RotationQLabel;
             public Label GroundStateLabel;
             public Label AnchorLabel;
+
+            protected bool generateFurtherDefaults = true;
 
             private bool _subscribedToUpdate = false;
 
@@ -453,17 +465,37 @@ namespace SLS.Physics3D
                 ConfigTab.tabHeader.style.flexGrow = 1;
                 TabView.Add(ConfigTab);
 
-                ResolverField = new(serializedObject.FindBackingField(nameof(groundResolver)));
+                ConfigTab.Add(new PropertyField(serializedObject.FindBackingField(nameof(groundResolver))));
+                ConfigTab.Add(new PropertyField(serializedObject.FindBackingField(nameof(airResolver))));
+                ConfigTab.Add(new PropertyField(serializedObject.FindBackingField(nameof(resolvers))));
+                ConfigTab.Add(new PropertyField(serializedObject.FindBackingField(nameof(maxPhysicsSteps))));
+                ConfigTab.Add(new PropertyField(serializedObject.FindBackingField(nameof(defaultCheckBuffer))));
+                ConfigTab.Add(new PropertyField(serializedObject.FindBackingField(nameof(Velocity))
+                    .FindPropertyRelative(nameof(Velocity.allowBackwards))));
 
-                SerializedProperty GroundProp = serializedObject.FindProperty(nameof(Anchor).BackingField());
-                DirectionField = new(GroundProp.FindPropertyRelative(nameof(Direction)))
-                { label = "Angles" };
-                AllowBackwardsVelocityField = new(serializedObject.FindBackingField(nameof(Velocity))
-                    .FindPropertyRelative(nameof(Velocity.allowBackwards)));
+                Foldout AnglesFoldout = new()
+                {
+                    text = "Angle Thresholds",
+                    value = false,
+                };
+                ConfigTab.Add(AnglesFoldout);
+                SerializedProperty direction = serializedObject.FindBackingField(nameof(Direction));
+                AnglesFoldout.Add(new PropertyField(direction.FindBackingFieldRelative(nameof(Direction.angleSlope)))
+                { tooltip = "The minimum Angle from this Body's UP direction that is considered a slope rather than just a floor." });
+                AnglesFoldout.Add(new PropertyField(direction.FindBackingFieldRelative(nameof(Direction.angleStandable)))
+                { tooltip = "The maximum angle from this Body's UP direction that is considered standable." });
+                AnglesFoldout.Add(new PropertyField(direction.FindBackingFieldRelative(nameof(Direction.angleWall)))
+                { tooltip = "The minimum Angle from this Body's UP direction that is considered a wall rather than a slope." });
+                AnglesFoldout.Add(new PropertyField(direction.FindBackingFieldRelative(nameof(Direction.angleInvertedSlope)))
+                { tooltip = "The minimum Angle from this Body's UP direction that is considered an inverted slope rather than a wall." });
+                AnglesFoldout.Add(new PropertyField(direction.FindBackingFieldRelative(nameof(Direction.angleCeiling)))
+                { tooltip = "The minimum Angle from this Body's UP direction that is considered a ceiling." });
 
-                ConfigTab.Add(ResolverField);
-                ConfigTab.Add(DirectionField);
-                ConfigTab.Add(AllowBackwardsVelocityField);
+                if (!generateFurtherDefaults) return;
+                SerializedProperty find = serializedObject.GetIterator();
+                find.NextVisible(true);
+                while (find.NextVisible(false)) if (find.name == nameof(Debug).BackingField()) break;
+                while (find.NextVisible(false)) ConfigTab.Add(new PropertyField(find));
             }
             public virtual void MakeActiveTab()
             {

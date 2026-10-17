@@ -15,6 +15,8 @@ using SLS.StateMachineH;
 using SLS.StateMachineH.Signals;
 using static RageRooster.Player.Services;
 using RageRooster.Player;
+using SLS.ListUtilities;
+
 
 
 
@@ -72,7 +74,7 @@ public sealed class PlayerMovementBody : MovingBody
     public static bool Loaded => Singleton.Active;
 
     #endregion LifeCycle
-    private static readonly int CurrentSpeedHash = Animator.StringToHash("CurrentSpeed");
+    private static readonly int CurrentSpeedHash = "CurrentSpeed".Hash();
 
     public void ReturnToNeutral(bool doCrossFade = true)
     {
@@ -93,6 +95,11 @@ public sealed class PlayerMovementBody : MovingBody
 
         base.FixedUpdate();
 
+#if UNITY_EDITOR
+        if (Debug.DisplayDebugString)
+            DebugRR.DebugTextOverlay.SetText(Debug.StringBuilder.ToString());
+#endif
+
         if (prePos != Position) _movingUpdateActionTimer.Tick();
     }
 
@@ -105,7 +112,10 @@ public sealed class PlayerMovementBody : MovingBody
         canDoDoubleJump = true; //I still don't like this being part of this script of all things.
         if (Self.Controller.CheckJumpBuffer()) Self.StateMachine.Signal("Jump");
     }
-    public override void OnDeanchor() => SelectGroundResolver();
+    public override void OnDeanchor()
+    {
+        
+    }
 
     public override void WalkOff()
     {
@@ -122,13 +132,6 @@ public sealed class PlayerMovementBody : MovingBody
         }
         return false;
     }
-
-    public void UnLand(JumpPhase jumpPhase = JumpPhase.Neutral)
-    {
-        Anchor.DeAnchor();
-        JumpPhase = jumpPhase;
-    }
-    public JumpPhase JumpPhase;
 
     #region Other
 
@@ -148,7 +151,7 @@ public sealed class PlayerMovementBody : MovingBody
     public bool isOverVent => currentVent != null;
 
     #endregion Other
-
+    /*
 #if UNITY_EDITOR
 
     [CustomEditor(typeof(PlayerMovementBody))]
@@ -164,4 +167,5 @@ public sealed class PlayerMovementBody : MovingBody
         }
     }
 #endif
+    */
 }

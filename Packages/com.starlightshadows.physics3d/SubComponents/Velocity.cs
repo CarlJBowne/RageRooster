@@ -118,6 +118,7 @@ namespace SLS.Physics3D
             get => new(xValue, yValue, zValue);
             set
             {
+                Print(()=>$"Velocity.Global set to {value}");
                 xValue = value.x;
                 yValue = value.y;
                 zValue = value.z;
@@ -130,9 +131,10 @@ namespace SLS.Physics3D
         }
         public Vector3 Local
         {
-            get => new(sValue, yValue, fValue);
+            get => new(sValue, uValue, fValue);
             set
             {
+                Print(() => $"Velocity.Local set to {value}");
                 sValue = value.x;
                 yValue = value.y;
                 fValue = value.z;
@@ -192,6 +194,7 @@ namespace SLS.Physics3D
         public void CallThisPostRotation()
         {
             if (cLValue == 0 && cGValue == 0) { xValue = 0; zValue = 0; fValue = 0; sValue = 0; return; }
+            Print(() => $"Velocity.CallThisPostRotation() - cL: {cLValue}, cG: {cGValue}");
 
             Vector3 localAdjusted = transform.TransformVector(Local);
 
