@@ -10,7 +10,7 @@ public class Boss1Health : Health, IDamagable
     public int phase2Trigger;
     public UltEvents.UltEvent phase2Event;
     public UltEvents.UltEvent phase3Event;
-    //public State jumpState;
+    public State jumpState;
     public Transform phase2StartPos;
     public Transform phase3StartPos;
     public bool isVulnerable;
@@ -104,7 +104,7 @@ public class Boss1Health : Health, IDamagable
     public void BeginPhase2()
     {
         moveAnim.SetTarget(phase2StartPos);
-        // jumpState.Enter();
+        //jumpState.Enter();
         phase2TriggerTriggered = true;
         damagable = false;
         bossPhase = 2;
@@ -113,7 +113,7 @@ public class Boss1Health : Health, IDamagable
     public void BeginPhase3()
     {
         moveAnim.SetTarget(phase3StartPos);
-        // jumpState.Enter();
+        //jumpState.Enter();
         damagable = true;
         bossPhase = 3;
     }
