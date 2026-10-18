@@ -7,7 +7,7 @@ using SLS.SaveFileCore;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine.UIElements;
-using SLS.EditorUtilities.Editor;
+using SLS.EditorUtilities;
 #endif
 
 namespace RageRooster.Core.Save

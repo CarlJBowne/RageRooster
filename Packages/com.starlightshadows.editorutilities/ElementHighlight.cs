@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace SLS.EditorUtilities.Editor
+namespace SLS.EditorUtilities
 {
     public class ElementHighlight
     {

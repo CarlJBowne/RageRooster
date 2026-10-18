@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using System.Collections.ObjectModel;
-using SLS.EditorUtilities.Editor;
+using SLS.EditorUtilities;
 
 #if UNITY_EDITOR
 using UnityEditor;

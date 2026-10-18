@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
-using SLS.EditorUtilities.Editor;
+using SLS.EditorUtilities;
 using SLS.ListUtilities;
 using SLS.ListUtilities.Editor;
 using UnityEditor;

@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static SLS.StateMachineH.Timelines.TimedEvents;
 using SLS.ListUtilities.Editor;
-using SLS.EditorUtilities.Editor;
+using SLS.EditorUtilities;
 
 namespace SLS.StateMachineH.Timelines.Editor
 {

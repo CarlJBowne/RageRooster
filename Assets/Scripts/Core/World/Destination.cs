@@ -9,7 +9,7 @@ using UnityEditor.VersionControl;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.UIElements;
-using SLS.EditorUtilities.Editor;
+using SLS.EditorUtilities;
 #endif
 
 namespace RageRooster.Core.World

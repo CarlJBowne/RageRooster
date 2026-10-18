@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEngine;
 
-namespace SLS.EditorUtilities.Editor
+namespace SLS.EditorUtilities
 {
     /// <summary>
     /// A simple dynamic enum-like field backed by a list of strings. <br/>

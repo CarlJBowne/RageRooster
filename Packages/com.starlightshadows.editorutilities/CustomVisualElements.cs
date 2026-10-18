@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 using UnityEngine;
 using UnityEditor.UIElements;
 
-namespace SLS.EditorUtilities.Editor
+namespace SLS.EditorUtilities
 {
     public class CustomFoldout : Foldout
     {

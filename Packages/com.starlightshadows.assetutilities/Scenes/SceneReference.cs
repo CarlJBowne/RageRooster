@@ -9,7 +9,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
-using SLS.EditorUtilities.Editor;
+using SLS.EditorUtilities;
 #endif
 
 [System.Serializable]

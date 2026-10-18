@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using SLS.ListUtilities.Editor;
 using SLS.StateMachineH.Editor;
 using SLS.StateMachineH.Utils;
-using SLS.EditorUtilities.Editor;
+using SLS.EditorUtilities;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;

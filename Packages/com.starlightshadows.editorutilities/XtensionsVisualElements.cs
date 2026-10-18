@@ -6,7 +6,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace SLS.EditorUtilities.Editor
+namespace SLS.EditorUtilities
 {
     public static class Xtensions_VisualElements_Core
     {

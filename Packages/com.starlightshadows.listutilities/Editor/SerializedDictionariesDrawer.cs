@@ -5,7 +5,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using SLS.ListUtilities;
-using SLS.EditorUtilities.Editor;
+using SLS.EditorUtilities;
 
 namespace SLS.ListUtilities.Editor
 {
