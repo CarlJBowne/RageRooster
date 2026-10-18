@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
@@ -8,6 +9,7 @@ using RageRooster.Player;
 using RageRooster.Core.World;
 using UnityEngine;
 using SLS.SaveFileCore;
+
 
 namespace RageRooster.Core.Save
 {
@@ -50,9 +52,15 @@ namespace RageRooster.Core.Save
         public static void SaveToDeathData() => Clone(Active, DeathReloadData);
         public static void RevertToDeathData() => Clone(DeathReloadData, Active);
 
-        public static Action SaveToSaveFile;
-        public static Action RevertToSaveFile;
-        public static Action<int> CallInitializeSave;
+        public static void SaveToSaveFile() => ManagerFunctions.SaveToSaveFile?.Invoke();
+        public static void RevertToSaveFile() => ManagerFunctions.RevertToSaveFile?.Invoke();
+        public static void InitializeManager(int fileNo) => ManagerFunctions.CallInitializeSave?.Invoke(fileNo);
+        public static class ManagerFunctions
+        {
+            public static Action SaveToSaveFile;
+            public static Action RevertToSaveFile;
+            public static Action<int> CallInitializeSave;
+        }
 
         public static IReadOnlyList<string> FlagIDs { get; private set; }
 

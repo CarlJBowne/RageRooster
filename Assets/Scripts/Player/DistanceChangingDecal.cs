@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using static RageRooster.Player.Services;
+using static RageRooster.Player.LocalContext;
 
 
 [RequireComponent(typeof(DecalProjector)), DefaultExecutionOrder(50)]

@@ -31,9 +31,9 @@ namespace RageRooster.TOP.Save
                 { FileVersion_UCF.NUM, typeof(FileVersion_UCF) }
             };
 
-            SaveData.SaveToSaveFile = SaveToSaveFile;
-            SaveData.RevertToSaveFile = RevertToSaveFile;
-            SaveData.CallInitializeSave = InitializeManager;
+            SaveData.ManagerFunctions.SaveToSaveFile = SaveToSaveFile;
+            SaveData.ManagerFunctions.RevertToSaveFile = RevertToSaveFile;
+            SaveData.ManagerFunctions.CallInitializeSave = InitializeManager;
         }
         public static void InitializeManager(int fileNo)
         {

@@ -77,7 +77,7 @@ namespace RageRooster.Core.World
 
         public void OnTriggerEnter(Collider other)
         {
-            if (other != IPlayer.Self?.Collider || Root.asset == RoomManager.currentRoom) return;
+            if (other != IPlayer.Get?.Collider || Root.asset == RoomManager.currentRoom) return;
             RoomManager.EnterRoom(Root.asset);
             if (spawnPoint != null)
             {
@@ -219,10 +219,10 @@ namespace RageRooster.Core.World
 
             public void UpdateDistance()
             {
-                Vector3 player = IgnoreVertical(IPlayer.Self?.Position ?? Vector3.zero);
+                Vector3 player = IgnoreVertical(IPlayer.Get?.Position ?? Vector3.zero);
 
-                float DOT = Vector3.Dot(point - (IPlayer.Self?.Position ?? Vector3.zero), direction);
-                distanceSquared = Vector3.SqrMagnitude((IPlayer.Self?.Position ?? Vector3.zero) - point);
+                float DOT = Vector3.Dot(point - (IPlayer.Get?.Position ?? Vector3.zero), direction);
+                distanceSquared = Vector3.SqrMagnitude((IPlayer.Get?.Position ?? Vector3.zero) - point);
 
                 if (DOT > 0)
                 {

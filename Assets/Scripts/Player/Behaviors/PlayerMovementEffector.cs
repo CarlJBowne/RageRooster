@@ -2,7 +2,7 @@
 using SLS.Physics3D;
 using SLS.StateMachineH;
 using UnityEngine;
-using static RageRooster.Player.Services;
+using static RageRooster.Player.LocalContext;
 
 public abstract class PlayerMovementEffector : StateBehavior
 {

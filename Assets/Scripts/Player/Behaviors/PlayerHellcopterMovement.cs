@@ -4,7 +4,7 @@ using EditorAttributes;
 using SLS.Physics3D;
 using SLS.StateMachineH;
 using UnityEngine;
-using static RageRooster.Player.Services;
+using static RageRooster.Player.LocalContext;
 
 public class PlayerHellcopterMovement : PlayerAirborneMovement
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using static RageRooster.Player.Services;
+using static RageRooster.Player.LocalContext;
 public class PlayerGravityApplier : PlayerMovementEffector
 {
     public bool Active = true;

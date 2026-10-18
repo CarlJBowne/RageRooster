@@ -119,6 +119,9 @@ namespace SLS.Singletons
         internal virtual void OnEnable() { }
 
 #if UNITY_EDITOR
+
+        public static void Enable_For_Editor(_GlobalAssetBase asset) => asset.OnEnable();
+
         // Non-generic variant to create/load assets by runtime Type
         public static _GlobalAssetBase GetOrCreate(Type t, string path = "Data/")
         {

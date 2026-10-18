@@ -125,7 +125,7 @@ namespace RageRooster.Core.World
             PostFadeOutAction?.Invoke();
 
 
-            if (IPlayer.Present) IPlayer.Self.ActivityState = ActivityStates.Invisible;
+            if (IPlayer.Present) IPlayer.Get.ActivityState = IPlayer.ActivityStates.Invisible;
             yield return null;
             CurrentlyTransitioning = true;
             UI.OverlayTopPlus.LoadingPopup();
@@ -160,7 +160,7 @@ namespace RageRooster.Core.World
 
             CurrentlyTransitioning = false;
             UI.OverlayTopPlus.LoadingPopup(false);
-            if (IPlayer.Present) IPlayer.Self.ActivityState = ActivityStates.Active;
+            if (IPlayer.Present) IPlayer.Get.ActivityState = IPlayer.ActivityStates.Active;
 
 
 //            try { if (fullTransition) Music.BeginPrimaryMusic(currentArea.music); }

@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static RageRooster.Player.Services;
+using static RageRooster.Player.LocalContext;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerHealth : Health

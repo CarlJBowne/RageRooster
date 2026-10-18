@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Utilities.Xtensions;
-using static RageRooster.Player.Services;
+using static RageRooster.Player.LocalContext;
 
 public class PlayerTargetPursuer : StateTimeline
 {

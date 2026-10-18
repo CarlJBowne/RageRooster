@@ -204,7 +204,7 @@ public class UIHUDSystem : MonoBehaviour
     // Sets the currency text on the HUD
     public void SetCurrencyText(int amount)
     {
-        if (IPlayer.Self == null) return;
+        if (RageRooster.Core.IPlayer.Get == null) return;
         currencyText.text = amount.ToString();
     }
 

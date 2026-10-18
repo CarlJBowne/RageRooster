@@ -11,7 +11,7 @@ using SLS.GeneralUtilities.Syncables;
 using SLS.ObjectUtilities;
 using SLS.StateMachineH;
 using UnityEngine;
-using static RageRooster.Player.Services;
+using static RageRooster.Player.LocalContext;
 using Services = RageRooster.Services;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]

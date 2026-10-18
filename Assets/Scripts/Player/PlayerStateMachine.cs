@@ -11,7 +11,7 @@ using RageRooster.Core.World;
 using SLS.StateMachineH.Signals;
 using RageRooster.Core;
 using Services = RageRooster.Services;
-using static RageRooster.Player.Services;
+using static RageRooster.Player.LocalContext;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerStateMachine : StateMachine, IPlayerStateMachine

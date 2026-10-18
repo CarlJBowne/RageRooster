@@ -1,5 +1,8 @@
 using System;
+using System.Runtime.CompilerServices;
 using FMODUnity;
+
+[assembly: InternalsVisibleTo("RageRooster.Audio")]
 
 namespace RageRooster.Core
 {

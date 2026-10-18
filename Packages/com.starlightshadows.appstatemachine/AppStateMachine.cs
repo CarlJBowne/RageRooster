@@ -107,7 +107,7 @@ namespace SLS.AppStateMachine
                 if (!TryGet(out AppStateMachine registry))
                     registry = _GlobalAssetBase.GetOrCreate(typeof(AppStateMachine)) as AppStateMachine;
 
-                registry.OnEnable();
+                _GlobalAssetBase.Enable_For_Editor(registry);
 
                 Type GlobalAssetType = typeof(AppStateGlobal<>);
                 List<Type> globalAssetTypes = GlobalAssetType.GetAllInheritors();

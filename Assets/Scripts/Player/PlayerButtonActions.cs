@@ -12,7 +12,7 @@ using UnityEngine.InputSystem;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.UIElements;
-using static RageRooster.Player.Services;
+using static RageRooster.Player.LocalContext;
 
 #endif
 

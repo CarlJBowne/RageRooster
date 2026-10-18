@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SLS.Singletons;
 
 namespace RageRooster.Player
 {
-    public static class Services
+    public static class LocalContext
     {
-        public static PlayerRoot Self;
-        public static PlayerRoot Player => Self;
+        internal static readonly Singleton<PlayerRoot> Register = new();
+        public static PlayerRoot Self => Register.Get;
+        public static PlayerRoot Player => Register.Get;
 
         public static bool Active() =>
             Self != null

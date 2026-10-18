@@ -73,7 +73,7 @@ public class WaveController : MonoBehaviour
 
         isActive = true;
         SetWalls(true);
-        Player.OnRespawn += ResetArena;
+        RageRooster.Services.Player.OnRespawn += ResetArena;
         HandleWaves().Begin(this);
     }
 
@@ -132,7 +132,7 @@ public class WaveController : MonoBehaviour
         for (int i = 0; i < spawnPoints.Count; i++)
         {
             enemyPool.Pump(out Spawnable pooledEnemy, out _,
-                (spawnPoints[i], (Player.Transform.position - spawnPoints[i]).DirToRot()));
+                (spawnPoints[i], (RageRooster.Services.Player.Transform.position - spawnPoints[i]).DirToRot()));
             activeEnemies++;
         }
     }
@@ -149,10 +149,10 @@ public class WaveController : MonoBehaviour
         activeEnemies = 0;
         isActive = false;
         Coroutine.Stop(ref coroutine);
-        Player.OnRespawn -= ResetArena;
+        RageRooster.Services.Player.OnRespawn -= ResetArena;
     }
 
-    private void OnDestroy() => Player.OnRespawn -= ResetArena;
+    private void OnDestroy() => RageRooster.Services.Player.OnRespawn -= ResetArena;
 
     private void OnDrawGizmosSelected()
     {

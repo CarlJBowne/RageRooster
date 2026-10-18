@@ -8,7 +8,7 @@ using UnityEngine;
 
 using static SLS.StateMachineH.StateAnimator;
 using static UnityEngine.EventSystems.EventTrigger;
-using static RageRooster.Player.Services;
+using static RageRooster.Player.LocalContext;
 
 public class PlayerGroundMovement : PlayerMovementEffector
 {

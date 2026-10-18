@@ -13,12 +13,15 @@ using RageRooster;
 using RageRooster.Core;
 using CoreServices = RageRooster.Services;
 using RageRooster.Player;
-using static RageRooster.Player.Services;
+using static RageRooster.Player.LocalContext;
 using RageRooster.TOP.Save;
 
 namespace RageRooster.TOP
 {
-    public sealed class Gameplay : Core.Gameplay
+    /// <summary>
+    /// This is the actual definition of the functionality attributed to <see cref="Core.Gameplay"/>
+    /// </summary>
+    public sealed class Gameplay_Top : Core.Gameplay
     {
         public override IEnumerator Enter()
         {
@@ -37,8 +40,8 @@ namespace RageRooster.TOP
             yield return null;
             Debug.Log("Gameplay Scene Active");
 
-            yield return new WaitUntil(Player.Services.Active);
-            EntitySpawn.PlayerPosition = Player.Services.Player.Transform;
+            yield return new WaitUntil(Player.LocalContext.Active);
+            EntitySpawn.PlayerPosition = Player.LocalContext.Player.Transform;
             Debug.Log("Player Active");
 
             //for (int i = 0; i < rootObjects.Length; i++)
@@ -55,7 +58,7 @@ namespace RageRooster.TOP
             Debug.Log("Initializing Other Systems");
             GlobalPool.poolParent = rootObjects[0].transform.Find("PooledObjects");
             GlobalPool.Self.Initialize();
-            Player.Services.Player.Ranged.eggPool.Initialize();
+            Player.LocalContext.Player.Ranged.eggPool.Initialize();
 
             Overlay.OverALL.Alpha = 1;
             Overlay.UnderHUD.ResetState();
@@ -285,7 +288,7 @@ namespace RageRooster.TOP
             CoreServices.Music.StopAllMusic();
             UpdateProxy.OnFixedUpdate -= FixedUpdate;
             PlayerRoot.HaveDestroyed();
-            SaveData.CallInitializeSave(-1);
+            SaveData.InitializeManager(-1);
             RoomManager.queuedDestination = null;
             for (int i = rootObjects.Length - 1; i >= 0; i--)
                 Destroy(rootObjects[i]);

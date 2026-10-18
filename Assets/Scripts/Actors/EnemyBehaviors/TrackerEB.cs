@@ -62,7 +62,7 @@ public class TrackerEB : StateBehavior
 
         if(target == null)
         {
-            target = Player.Transform;
+            target = RageRooster.Services.Player.Transform;
             //PlayerStateMachine attempt = Player.StateMachine;
             //if (attempt != null) target = attempt.transform; 
             //else PlayerStateMachine.whenInitializedEvent += player => 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using static RageRooster.Player.Services;
+using static RageRooster.Player.LocalContext;
 
 public class PlayerLassoProjectile : PlayerProjectile
 {

@@ -32,7 +32,7 @@ public class EntityRangeManager : MonoBehaviour
     public int CurrentRange { get; private set; }
     public float CurrentDistance { get; private set; }
     public float CurrentDOT { get; private set; }
-    public Vector3 Target => targetOverride == null ? Player.Center : targetOverride.position;
+    public Vector3 Target => targetOverride == null ? RageRooster.Services.Player.Center : targetOverride.position;
 
     private float timer;
 

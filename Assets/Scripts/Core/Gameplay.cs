@@ -58,5 +58,8 @@ namespace RageRooster.Core
         public static void EndGame() => Get.DoEndGame();
         protected abstract void DoEndGame();
 
+
+        internal bool aaaaaaaaaaaa = false;
+
     }
 }

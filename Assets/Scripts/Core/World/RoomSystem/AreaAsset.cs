@@ -62,7 +62,7 @@ namespace RageRooster.Core.World
         protected override void OnFinishLoad()
         {
             for (int i = 0; i < rooms.Count; i++)
-                if (IPlayer.Present) IPlayer.Self.OnMovingUpdate += rooms[i].Update;
+                if (IPlayer.Present) IPlayer.Get.OnMovingUpdate += rooms[i].Update;
 
         }
 
@@ -89,7 +89,7 @@ namespace RageRooster.Core.World
             // Unsubscribe and fully unload contained rooms, then unload the shell scene using SceneSO.
             foreach (RoomAsset room in rooms)
             {
-                if (IPlayer.Present) IPlayer.Self.OnMovingUpdate -= room.Update;
+                if (IPlayer.Present) IPlayer.Get.OnMovingUpdate -= room.Update;
                 yield return room.CompleteUnload();
             }
 

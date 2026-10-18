@@ -21016,7 +21016,7 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void Player_Position()
 		{
-			global::UnityEngine.Vector3 accessor = global::RageRooster.Player.Services.Player.Position;
+			global::UnityEngine.Vector3 accessor = global::RageRooster.Player.LocalContext.Player.Position;
 			global::Unity.VisualScripting.StaticPropertyAccessor<UnityEngine.Vector3> optimized = new global::Unity.VisualScripting.StaticPropertyAccessor<UnityEngine.Vector3>(default(global::System.Reflection.PropertyInfo));
 			optimized.GetValue(null);
 		}

@@ -8,12 +8,12 @@ using RageRooster.Player;
 using RageRooster.Core.World;
 using SLS.MenuCore;
 using SLS.StateMachineH.Signals;
+using SLS.GeneralUtilities.EventTickets;
 using UnityEngine;
 using UnityEngine.AI;
-using static SLS.Singletons.Singleton;
-using CoreServices = RageRooster.Services;
-using static RageRooster.Player.Services;
-using SLS.GeneralUtilities.EventTickets;
+using Core = RageRooster.Services;
+using static RageRooster.Player.LocalContext;
+using static RageRooster.Core.IPlayer;
 
 /// <summary>
 /// The Root component of the Player entity. Implements IPlayer for external access and IPlayerRoot for internal assembly access.
@@ -107,7 +107,7 @@ public class PlayerRoot : MonoBehaviour, IPlayer
     private List<EventTicket> events;
     public void Awake()
     {
-        if (RageRooster.Player.Services.Active() && RageRooster.Player.Services.Player != this)
+        if (RageRooster.Player.LocalContext.Active() && RageRooster.Player.LocalContext.Player != this)
         {
             Destroy(gameObject);
             return;
@@ -115,8 +115,8 @@ public class PlayerRoot : MonoBehaviour, IPlayer
 
         //DontDestroyOnLoad(this);
 
-        CoreServices.Player = this as IPlayer;
-        Self = this;
+        RageRooster.Core.IPlayer.Register.Register(this, IPlayerPassword);
+        LocalContext.Register.Register(this);
 
         StateMachine = GetComponent<PlayerStateMachine>();
         Health = GetComponent<PlayerHealth>();
@@ -150,7 +150,8 @@ public class PlayerRoot : MonoBehaviour, IPlayer
 
     void OnDestroy()
     {
-        if (RageRooster.Services.Player == (this as IPlayer)) RageRooster.Services.Player = null;
+        RageRooster.Core.IPlayer.Register.Deregister(this, IPlayerPassword);
+        LocalContext.Register.Deregister(this);
         _activeState = ActivityStates.Null;
         events.DestroyAll();
     }
@@ -181,7 +182,7 @@ public class PlayerRoot : MonoBehaviour, IPlayer
         IEnumerator DeathRoutine()
         {
             yield return new WaitForSecondsRealtime(fallDownPitTime + 1);
-            yield return CoreServices.UI.OverlayTopPlus.GameOverAnimation();
+            yield return Core.UI.OverlayTopPlus.GameOverAnimation();
             yield return new WaitForSecondsRealtime(deathTime);
 
             RoomManager.TransitionStyle = new()
@@ -233,4 +234,6 @@ public class PlayerRoot : MonoBehaviour, IPlayer
     {
 
     }
+
+    private const string IPlayerPassword = "ANGUS_BUCKEYE_IS_RAD";
 }
