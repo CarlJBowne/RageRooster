@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class SettingsMenu : Menu
 {
-    static Singleton<SettingsMenu> S;
+    static readonly Singleton<SettingsMenu> S = new();
     public static SettingsMenu Get => S.Get;
     public static bool TryGet(out SettingsMenu instance) => S.TryGet(out instance);
     public static bool Present => S.Active;

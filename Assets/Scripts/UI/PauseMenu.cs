@@ -13,7 +13,7 @@ using static RageRooster.Services;
 
 public class PauseMenu : Menu
 {
-    static Singleton<PauseMenu> S;
+    static readonly Singleton<PauseMenu> S = new();
     public static PauseMenu Get => S.Get;
     public static bool TryGet(out PauseMenu instance) => S.TryGet(out instance);
     public static bool Present => S.Active;

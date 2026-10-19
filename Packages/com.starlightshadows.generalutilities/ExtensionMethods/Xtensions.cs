@@ -30,7 +30,7 @@ public static class Xtensions_C
     public static bool NotNull<T>(this T obj) where T : class => obj != null;
 
     /// <summary>
-    /// Clones an object aat the deepest Binary. <br/>
+    /// Clones an object at the deepest Binary. <br/>
     /// Requires the type to be <see cref="SerializableAttribute"/>
     /// </summary>
     /// <typeparam name="T"></typeparam>

@@ -34,10 +34,7 @@ namespace SLS.AppStateMachine
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void Init()
-        {
-            Self.AllStates[0].Enter().InstantSafe();
-        }
+        private static void Init() => Self.AllStates[0].Enter().InstantSafe();
 
 #if UNITY_EDITOR
 

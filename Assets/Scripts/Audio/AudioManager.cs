@@ -8,7 +8,7 @@ using SLS.Singletons;
 
 public class AudioManager : MonoBehaviour
 {
-    static Singleton<AudioManager> S = new(() =>
+    static readonly Singleton<AudioManager> S = new(() =>
     {
         GameObject GO = new("--Audio-Manager--");
         AudioManager result = GO.AddComponent<AudioManager>();

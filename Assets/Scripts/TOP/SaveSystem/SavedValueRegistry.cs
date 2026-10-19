@@ -25,8 +25,7 @@ namespace RageRooster.TOP.Save
         [SerializeField] private Flag.Collection globalFlagDefs = new();
         [SerializeField] private Flag.BoolOnlyCollection storyFlagDefs = new();
 
-
-        public override void OnInit()
+        public override void OnInitEditor()
         {
             SaveData.SavedValueManagerAsset = this;
             SaveData defs = new()
@@ -39,7 +38,7 @@ namespace RageRooster.TOP.Save
                     wishbones = wishbones,
                     hensRescued = hensRescued,
                 },
-                flags = AreaRegistry.All.ToDictionary( a => a.name,  a => a.flagDefaults)
+                flags = AreaRegistry.All.ToDictionary(a => a.name, a => a.flagDefaults)
             };
             defs.flags.Add("Global", globalFlagDefs);
             SaveData.InitializeDefaults(defs);

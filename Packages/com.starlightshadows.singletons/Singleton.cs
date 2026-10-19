@@ -153,7 +153,7 @@ namespace SLS.Singletons
             /// <summary>
             /// Backing field for the late object singleton instance.
             /// </summary>
-            static Singleton<T> S = new();
+            static readonly Singleton<T> S = new();
 
             /// <summary>
             /// Gets the registered singleton instance, attempting any configured creation paths if necessary.
@@ -218,7 +218,7 @@ namespace SLS.Singletons
             /// <summary>
             /// Backing field for the late object singleton instance.
             /// </summary>
-            static Singleton<T> S = new(true, () =>
+            static readonly Singleton<T> S = new(true, () =>
             {
                 T result = new();
                 (result as LateObject<T>).Awake();
@@ -276,7 +276,7 @@ namespace SLS.Singletons
     /// Register - Deregister - Get - TryGet - Active. <br/>
     /// Also allows immediate instantiation and creation attempt functions: Establish in the Constructor.
     /// </summary>
-    public struct Singleton<T> where T : class
+    public class Singleton<T> where T : class 
     {
         public Singleton(bool immediate = false, params Func<T>[] createAttempts)
         {
@@ -291,9 +291,13 @@ namespace SLS.Singletons
             this.createAttempts = createAttempts;
         }
 
-        public T slot { get; private set; }
+        public T slot 
+        { 
+            get; 
+            private set; 
+        }
 
-        public readonly bool Active => slot != null;
+        public bool Active => slot != null;
 
         private readonly Func<T>[] createAttempts;
 
@@ -392,7 +396,7 @@ namespace SLS.Singletons
 
     }
 
-    public struct SingletonLocked<T> where T : class
+    public class SingletonLocked<T> where T : class
     {
         public SingletonLocked(string password, bool immediate = false, params Func<T>[] createAttempts)
         {
@@ -413,7 +417,7 @@ namespace SLS.Singletons
 
         public T slot { get; private set; }
 
-        public readonly bool Active => slot != null;
+        public bool Active => slot != null;
 
         private readonly Func<T>[] createAttempts;
 

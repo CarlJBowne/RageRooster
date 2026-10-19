@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 public class OverlayTopPlus : Overlay, IOverlayTopPlus
 {
-    static Singleton<OverlayTopPlus> self;
+    static readonly Singleton<OverlayTopPlus> self = new();
 
     public static OverlayTopPlus Get => self.Get;
     public static bool TryGet(out OverlayTopPlus overlay) => self.TryGet(out overlay);

@@ -9,7 +9,7 @@ namespace SLS.AppStateMachine
     {
         /// Backing field for the late object singleton instance.
         /// </summary>
-        static Singleton<T> S = new();
+        static readonly Singleton<T> S = new();
 
         /// <summary>
         /// Gets the registered singleton instance, attempting any configured creation paths if necessary.
@@ -43,7 +43,7 @@ namespace SLS.AppStateMachine
     {
         /// Backing field for the late object singleton instance.
         /// </summary>
-        static Singleton<T> S = new();
+        static readonly Singleton<T> S = new();
 
         /// <summary>
         /// Gets the registered singleton instance, attempting any configured creation paths if necessary.

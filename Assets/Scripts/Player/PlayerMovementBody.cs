@@ -68,7 +68,7 @@ public sealed class PlayerMovementBody : MovingBody
 
     void OnDestroy() => Singleton.Deregister(this);
 
-    static Singleton<PlayerMovementBody> Singleton;
+    static readonly Singleton<PlayerMovementBody> Singleton = new();
     public static PlayerMovementBody Get => Singleton.Get;
     public static bool TryGet(out PlayerMovementBody result) => Singleton.TryGet(out result);
     public static bool Loaded => Singleton.Active;
@@ -88,7 +88,8 @@ public sealed class PlayerMovementBody : MovingBody
 
     protected override void FixedUpdate()
     {
-        Self.Animator.SetFloat(CurrentSpeedHash, Velocity.magnitudeH);
+        if (Velocity != null && Self != null && Self.Animator != null) 
+            Self.Animator.SetFloat(CurrentSpeedHash, Velocity.magnitudeH);
         if (PlayerStats.Active != null && PlayerStats.Active.d_moonJump && Input.Jump.IsPressed()) Velocity.u = 10f;
 
         Vector3 prePos = Position;

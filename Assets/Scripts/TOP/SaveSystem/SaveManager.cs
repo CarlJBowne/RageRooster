@@ -38,9 +38,12 @@ namespace RageRooster.TOP.Save
         public static void InitializeManager(int fileNo)
         {
             if (Initialized) return;
+#if UNITY_EDITOR
+            Debug.Log($"Initializing Save Manager using File {fileNo}");
+#endif
+            SaveData.InitializeSystem();
             TransferSnapshot = new SaveData();
             Active = new SaveFile(fileNo);
-            SaveData.InitializeSystem();
             RevertToSaveFile();
             Initialized = true;
         }

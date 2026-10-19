@@ -9,7 +9,7 @@ namespace RageRooster.Player
 {
     public static class LocalContext
     {
-        internal static readonly Singleton<PlayerRoot> Register = new();
+        public readonly static Singleton<PlayerRoot> Register = new();
         public static PlayerRoot Self => Register.Get;
         public static PlayerRoot Player => Register.Get;
 

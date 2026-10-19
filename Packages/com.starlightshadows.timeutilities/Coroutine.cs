@@ -249,13 +249,13 @@ public static class Xtensions_Coroutine
     public static void Instant(this IEnumerator Enum)
     {
         if (Enum == null) return;
-        object moved;
+        bool moved;
         do
         {
             moved = Enum.MoveNext();
             if (Enum.Current is IEnumerator ienum) 
                 ienum.Instant();
-        } while (moved != null);
+        } while (moved != false);
     }
     /// <summary>
     /// Forces this Coroutine to run all of its logic instantly. Cannot guarentee the stability of this choice.
@@ -264,18 +264,18 @@ public static class Xtensions_Coroutine
     {
         int backupCounter = 0;
         if (Enum == null) return;
-        object moved;
+        bool moved;
         do
         {
             moved = Enum.MoveNext();
             if (++backupCounter > 300)
             {
                 Debug.LogWarning("Instant Enumeration hit 300 iterations.");
-                break;
+                return;
             }
             if (Enum.Current is IEnumerator ienum) 
                 ienum.InstantSafe();
-        } while (moved != null);
+        } while (moved != false);
     }
 
 }

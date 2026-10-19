@@ -17,10 +17,4 @@ public static class Xtensions_ICloneable
         target.Clone(source);
         return target;
     }
-    public static T Clone<T>(this T source, T target = default)
-    {
-        target ??= Activator.CreateInstance<T>();
-        target.Clone(source);
-        return target;
-    }
 }

@@ -12,7 +12,7 @@ namespace RageRooster.Core
         public static bool TryGet(out IPlayer res) => Register.TryGet(out res);
         public static bool Active => Register.Active;
 
-        public readonly static SingletonLocked<IPlayer> Register = new("ANGUS_BUCKEYE_IS_RAD");
+        public readonly static SingletonLocked<IPlayer> Register = new ("ANGUS_BUCKEYE_IS_RAD"); 
         public static bool Present => Get != null;
 
         Transform Transform { get; }
