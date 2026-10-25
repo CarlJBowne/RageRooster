@@ -56,8 +56,7 @@ namespace RageRooster.TOP
             yield return null;
 
             Debug.Log("Initializing Other Systems");
-            GlobalPool.poolParent = rootObjects[0].transform.Find("PooledObjects");
-            GlobalPool.Get.Initialize();
+            GlobalPool.Get.Initialize(rootObjects[7].transform);
             Player.LocalContext.Player.Ranged.eggPool.Initialize();
 
             Overlay.OverALL.Alpha = 1;

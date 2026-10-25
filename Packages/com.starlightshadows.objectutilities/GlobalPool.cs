@@ -17,7 +17,6 @@ namespace SLS.ObjectUtilities
         static GlobalPool instance;
 
         public static bool initialized { private set; get; }
-        public static Transform poolParent;
 
         static Dictionary<string, ObjectPool> dictionary_string = new();
         static Dictionary<Spawnable, ObjectPool> dictionary_prefab = new();
@@ -27,16 +26,10 @@ namespace SLS.ObjectUtilities
         public ObjectPool basicEnemyBullet;
         public static ObjectPool BasicEnemyBullet;
 
-        public void Initialize()
+        public void Initialize(Transform defaultPool)
         {
             if (initialized && Active) return;
             if (!Application.isPlaying) return;
-
-            if(poolParent != null)
-            {
-                ObjectPool.DefaultPoolParent = poolParent;
-                //UnityEngine.Object.DontDestroyOnLoad(ObjectPool.DefaultPoolParent);
-            }
 
             InitPoolGlobally(basicEnemyBullet);
             BasicEnemyBullet = basicEnemyBullet;

@@ -60,11 +60,15 @@ namespace SLS.ObjectUtilities
             return This;
         }
 
-        public virtual void Initialize()
+        public virtual void Initialize(bool Instant = false)
         {
             if (initialized || initializing) return;
-            initializing = true;
-            InitializeEnum().Begin();
+            if (Instant) for (int i = 0; i < initialSize; i++) NewInstance();
+            else
+            {
+                initializing = true;
+                InitializeEnum().Begin();
+            }
         }
 
         protected virtual IEnumerator InitializeEnum()
@@ -109,10 +113,7 @@ namespace SLS.ObjectUtilities
 
             // Maintain activeObjects count via spawnable's events.
             // onActivate increments, onDeactivate decrements and notifies onInstanceDisable.
-            newInstance.onActivate += () =>
-            {
-                activeObjects++;
-            };
+            newInstance.onActivate += () => activeObjects++;
 
             newInstance.onDeactivate += () =>
             {

@@ -42,6 +42,7 @@ namespace SLS.ObjectUtilities
             if (!instance.TryGetComponent(out Spawnable result))
                 result = instance.AddComponent<Spawnable>();
             result.IsPrefab = false;
+            if (parent != null) instance.transform.parent = parent;
             return result;
         }
 
