@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RageRooster.TOP.Save.SavedValueRegistry
   playerStatsDef:
     MaxHealth:
-      _value: 4
+      _value: 0
       OnValueChangedUlt:
         _PersistentCalls: []
     MaxAmmo:
@@ -27,7 +27,7 @@ MonoBehaviour:
     ragingCharge: 0
     glide: 1
     doubleJump: 1
-    lasso: 1
+    lasso: 0
     d_invincibility: 0
     d_moonJump: 0
   powerEggs:
@@ -37,37 +37,45 @@ MonoBehaviour:
   hensRescued:
     IDs: []
   globalFlagDefs:
-    serializedNames: []
-    serializedKeys: 
-    serializedValues: []
-  attackTagNames:
-  - Player
-  - Enemy
-  - Wham
-  - FriendlyFire
-  - Thrown
-  - Projectile
-  - Environment
-  - Pit
-  - Boss
-  - Egg
-  - RagingCharge
-  - Explosion
-  - Boulder
-  - OnPlayerDouble
-  - OnPlayerTriple
-  - OnPlayerQuadruple
-  - OnPlayerNone
-  - Punch
-  - Uppercut
-  - Kick
-  - Headbutt
-  - Charge
-  - GroundSlam
-  - Fire
-  - Lazer
-  - Peck
-  - Lava
+    serializedKeys:
+    - GeneralProgress
+    serializedHashes: 87e2da56
+    serializedValues:
+    - rid: 343584772953473185
+  activeDisplayData:
+    playerStats:
+      MaxHealth:
+        _value: 0
+        OnValueChangedUlt:
+          _PersistentCalls: []
+      MaxAmmo:
+        _value: 0
+        OnValueChangedUlt:
+          _PersistentCalls: []
+      dropLaunch: 0
+      wallJump: 0
+      hellcopter: 0
+      ragingCharge: 0
+      glide: 0
+      doubleJump: 0
+      lasso: 0
+      d_invincibility: 0
+      d_moonJump: 0
+    progress:
+      Currency:
+        _value: 0
+        OnValueChangedUlt:
+          _PersistentCalls: []
+      powerEggs:
+        IDs: []
+      wishbones:
+        IDs: []
+      hensRescued:
+        IDs: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 343584772953473185
+      type: {class: Flag/Int, ns: SLS.SaveFileCore, asm: SLS.SaveFileCore}
+      data:
+        value: 0

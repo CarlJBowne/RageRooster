@@ -10,9 +10,9 @@ using RageRooster.Core.World;
 using UnityEngine;
 using SLS.SaveFileCore;
 
-
 namespace RageRooster.Core.Save
 {
+    [Serializable]
     /// <summary>
     /// A class tracking saved values across the game.
     /// </summary>
@@ -23,50 +23,32 @@ namespace RageRooster.Core.Save
         /// <summary>
         /// The currently Active <see cref="SaveData"/> functioning in the game.
         /// </summary>
-        public static SaveData Active { get; private set; }
+        public static SaveData Active => SaveDataManager.ActiveData;
         /// <summary>
         /// Stands for Defaults or Definitions depending on your point of view. <br/>
         /// Contains all the default values as well as the definition of what they are called.
         /// </summary>
-        public static SaveData Defs { get; private set; }
-
-        public static void InitializeDefaults(SaveData defaultInput)
-        {
-            Defs = defaultInput;
-            FlagIDs = Defs.flags.Keys.ToList();
-        }
-        public static void InitializeSystem()
-        {
-            Active = new();
-            Active.playerStats.Establish();
-            Active.progress.Establish();
-
-            DeathReloadData = new();
-        }
-
+        public static SaveData Defs => SaveDataManager.DefsData;
         /// <summary> The Save Data used to reload data after the player experiences a death. </summary>
         /// <remarks> See <see cref="RevertToDeathData"/></remarks>
-        public static SaveData DeathReloadData { get; private set; }
+        public static SaveData DeathReloadData => SaveDataManager.DeathReloadData;
+
+        public static SaveDataManager Manager => SaveDataManager.Get;
+
+        public static void InitializeFile(int fileNo) => Manager.InitializeFile(fileNo);
+        public static void ExitFile() => Manager.ExitFile();
 
 
-        public static void SaveToDeathData() => Clone(Active, DeathReloadData);
-        public static void RevertToDeathData() => Clone(DeathReloadData, Active);
 
-        public static void SaveToSaveFile() => ManagerFunctions.SaveToSaveFile?.Invoke();
-        public static void RevertToSaveFile() => ManagerFunctions.RevertToSaveFile?.Invoke();
-        public static void InitializeManager(int fileNo) => ManagerFunctions.CallInitializeSave?.Invoke(fileNo);
-        public static class ManagerFunctions
-        {
-            public static Action SaveToSaveFile;
-            public static Action RevertToSaveFile;
-            public static Action<int> CallInitializeSave;
-        }
+        public static void SaveToDeathData() => Manager.SaveToDeathData();
+        public static void RevertToDeathData() => Manager.RevertToDeathData();
+        public static void SaveToFile() => Manager.SaveToFile();
+        public static void RevertToFile() => Manager.RevertToFile();
 
-        public static IReadOnlyList<string> FlagIDs { get; private set; }
+
+        public static IReadOnlyList<string> FlagIDs => Defs.flags.Keys.ToList();
 
         #endregion
-
-        #region Actual Data
 
         public PlayerStats playerStats = new();
         public SavedProgress progress = new();
@@ -76,10 +58,6 @@ namespace RageRooster.Core.Save
             progress.powerEggs.CompletionOf(.3f) +
             progress.hensRescued.CompletionOf(.2f) +
             progress.wishbones.CompletionOf(.1f);
-
-        #endregion Actual Data 
-
-        #region Self Functionality
 
         /// <summary>
         /// Default Constructor, Clones data from default assets.
@@ -104,15 +82,6 @@ namespace RageRooster.Core.Save
             return this;
         }
 
-        #endregion
-
-        #region Editor Exclusive
-        public static ScriptableObject SavedValueManagerAsset;
-
-        #endregion
-
-        #region Menu Display Data
-
         /// <summary>
         /// The display data used for the Main Menu's Save File Selection Screen. This is a simplified version of the Save Data, containing only the information needed for display purposes.
         /// </summary>
@@ -127,6 +96,5 @@ namespace RageRooster.Core.Save
             public int hensRescued;
         }
 
-        #endregion
     }
 }

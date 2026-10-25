@@ -16,7 +16,7 @@ namespace RageRooster.Core.World
     {
         [SerializeField] private AreaAsset[] areaAssets;
 
-        public static IReadOnlyDictionary<string, AreaAsset> Get { get; private set; }
+        public static IReadOnlyDictionary<string, AreaAsset> Areas { get; private set; }
         public static IReadOnlyList<string> Names { get; private set; }
         public static IReadOnlyList<AreaAsset> All { get; private set; }
 
@@ -24,7 +24,7 @@ namespace RageRooster.Core.World
         {
             Dictionary<string, AreaAsset>  dictionary = new();
             foreach (AreaAsset item in areaAssets) dictionary.Add(item.name, item);
-            Get = dictionary;
+            Areas = dictionary;
             Names = dictionary.Keys.ToList();
             All = areaAssets.ToList();
         }
@@ -32,8 +32,8 @@ namespace RageRooster.Core.World
         private Destination editorDestination = null;
         public static Destination EditorDestination
         {
-            get => Self.editorDestination;
-            set => Self.editorDestination = value;
+            get => Get.editorDestination;
+            set => Get.editorDestination = value;
         }
 
 
@@ -45,7 +45,7 @@ namespace RageRooster.Core.World
         /// <param name="area"></param>
         public static void Editor_AddArea(AreaAsset area)
         {
-            AreaRegistry This = Self;
+            AreaRegistry This = Get;
             List<AreaAsset> areas = new List<AreaAsset>(This.areaAssets)
             {area};
             This.areaAssets = areas.ToArray();

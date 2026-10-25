@@ -18,7 +18,7 @@ namespace RageRooster.TOP.Save.Streams
         protected override List<string> altVersions => new() { "1.0.0" };
         public override string version => NUM;
 
-        static SaveData Transfer => SaveManager.TransferSnapshot;
+        static SaveData Transfer => SaveDataRegistry.TransferSnapshot;
 
         public FileVersion_UCF(int fileID) : base(fileID) { }
         public override void Initialize()

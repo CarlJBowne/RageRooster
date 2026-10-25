@@ -11,7 +11,7 @@ namespace RageRooster.TOP.Save.Streams
         public const string NUM = "UNLEASHED 1.0";
         public override string version => NUM;
 
-        static SaveData Transfer => SaveManager.TransferSnapshot;
+        static SaveData Transfer => SaveDataRegistry.TransferSnapshot;
 
         JsonFile PlayerFile => RootFile;
         JsonFile ProgressFile;

@@ -113,8 +113,8 @@ namespace SLS.AppStateMachine
         public virtual void OnEnable()
         {
 #if UNITY_EDITOR
-            if (!AppStateMachine.Self.AllStates.Contains(this))
-                AppStateMachine.Self.AllStates.Add(this);
+            if (!AppStateMachine.Get.AllStates.Contains(this))
+                AppStateMachine.Get.AllStates.Add(this);
 #else
                         Destroy(this);
 #endif

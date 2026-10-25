@@ -79,13 +79,13 @@ namespace RageRooster.Core.World
 
             if (source is JArray a)
             {
-                result.area = AreaRegistry.Get[(string)a[0]];
+                result.area = AreaRegistry.Areas[(string)a[0]];
                 result.room = result.area[(string)a[1]];
                 result.spawn = result.room.spawnPointNames.IndexOf((string)a[2]);
             }
             else if (source is JObject o)
             {
-                result.area = AreaRegistry.Get[(string)o["area"]];
+                result.area = AreaRegistry.Areas[(string)o["area"]];
                 result.room = result.area[(int)o["roomID"]];
                 result.spawn = (int)o["spawnID"];
             }

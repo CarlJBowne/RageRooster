@@ -23,7 +23,7 @@ namespace SLS.Singletons
         /// <summary>
         /// Gets the registered singleton instance, attempting any configured creation paths if necessary.
         /// </summary>
-        public static T Self => S.Get;
+        public static T Get => S.Get;
         /// <summary>
         /// Attempts to get the currently registered singleton instance.
         /// </summary>

@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace RageRooster.Core.Save
 {
+    [System.Serializable]
     public class SavedProgress : Saveable<SavedProgress>
     {
         public static SavedProgress Active { get; private set; }

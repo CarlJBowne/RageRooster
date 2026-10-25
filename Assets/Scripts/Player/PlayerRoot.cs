@@ -74,7 +74,6 @@ public class PlayerRoot : MonoBehaviour, IPlayer
     public AudioCaller Audio { get; private set; }
     public RagdollHandler RagdollHandler { get; private set; }
     public PlayerStats Stats => PlayerStats.Active;
-    [SerializeField] private PlayerStats statsDisplay;
     #endregion
 
     #region Helper Properties / Methods

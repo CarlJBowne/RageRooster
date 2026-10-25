@@ -13,7 +13,7 @@ namespace RageRooster.Actors.Save
         public void Save()
         {
             spawnPoint.SetAsReturnLocation();
-            SaveData.SaveToSaveFile();
+            SaveData.SaveToFile();
         }
     }
 }

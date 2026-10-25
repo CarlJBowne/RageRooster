@@ -96,7 +96,7 @@ namespace RageRooster.Actors.Save.Collectibles
                 else
                     targetRegistryList.Add(input);
                 ID = input;
-                EditorUtility.SetDirty(SaveData.SavedValueManagerAsset);
+                SaveDataManager.SetDirty();
                 EditorUtility.SetDirty(this);
             }
 

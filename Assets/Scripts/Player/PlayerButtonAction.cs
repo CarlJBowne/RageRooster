@@ -236,26 +236,26 @@ public abstract class PlayerButtonAction : Polymorph
     {
         [SerializeReference] public PlayerButtonAction hasUpgrade;
         [SerializeReference] public PlayerButtonAction noUpgrade;
-        [SerializeField] PlayerStats.Upgrade upgrade;
+        [SerializeField] public PlayerStats.Upgrade upgrade;
         public override PlayerButtonAction Choose() => PlayerStats.Active.HasUpgrade(upgrade) ? hasUpgrade : noUpgrade;
 
 #if UNITY_EDITOR
-        public override void OverrideBody(VisualElement container, SerializedProperty property)
-        {
-            container.hierarchy.Clear();
-
-            PropertyField persistField = new(property.FindPropertyRelative(nameof(persistAcrossStateChange)));
-            PropertyField upgradeField = new(property.FindPropertyRelative(nameof(upgrade)));
-
-            container.Add(persistField);
-            container.Add(upgradeField);
-
-            PolymorphEditors.TabbedDrawer tabDrawer = new();
-            container.Add(tabDrawer);
-
-            tabDrawer.Add("Has Upgrade", property.FindPropertyRelative(nameof(hasUpgrade)));
-            tabDrawer.Add("Lacks Upgrade", property.FindPropertyRelative(nameof(noUpgrade)));
-        }
+        //public override void OverrideBody(VisualElement container, SerializedProperty property)
+        //{
+        //    container.hierarchy.Clear();
+        //
+        //    PropertyField persistField = new(property.FindPropertyRelative(nameof(persistAcrossStateChange)));
+        //    PropertyField upgradeField = new(property.FindPropertyRelative(nameof(upgrade)));
+        //
+        //    container.Add(persistField);
+        //    container.Add(upgradeField);
+        //
+        //    PolymorphEditors.TabbedDrawer tabDrawer = new();
+        //    container.Add(tabDrawer);
+        //
+        //    tabDrawer.Add("Has Upgrade", property.FindPropertyRelative(nameof(hasUpgrade)));
+        //    tabDrawer.Add("Lacks Upgrade", property.FindPropertyRelative(nameof(noUpgrade)));
+        //}
 #endif
     }
     [System.Serializable]

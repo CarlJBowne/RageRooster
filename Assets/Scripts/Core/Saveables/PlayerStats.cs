@@ -44,8 +44,8 @@ namespace RageRooster.Player
 
         public override PlayerStats Clone(PlayerStats source)
         {
-            MaxHealth &= source.MaxHealth;
-            MaxAmmo &= source.MaxAmmo;
+            MaxHealth.Clone(source.MaxHealth);
+            MaxAmmo.Clone(source.MaxAmmo);
             dropLaunch = source.dropLaunch;
             wallJump = source.wallJump;
             hellcopter = source.hellcopter;

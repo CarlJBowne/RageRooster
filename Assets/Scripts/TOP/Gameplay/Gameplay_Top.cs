@@ -57,7 +57,7 @@ namespace RageRooster.TOP
 
             Debug.Log("Initializing Other Systems");
             GlobalPool.poolParent = rootObjects[0].transform.Find("PooledObjects");
-            GlobalPool.Self.Initialize();
+            GlobalPool.Get.Initialize();
             Player.LocalContext.Player.Ranged.eggPool.Initialize();
 
             Overlay.OverALL.Alpha = 1;
@@ -120,7 +120,7 @@ namespace RageRooster.TOP
                 UnityEngine.Cursor.lockState = CursorLockMode.Locked;
                 UnityEngine.Cursor.visible = false;
 
-                SaveManager.InitializeManager(fileNo);
+                SaveData.InitializeFile(fileNo);
                 RoomManager.queuedDestination = SaveData.Active.playerStats.location;
 
                 Menu.CloseAllMenus();
@@ -131,7 +131,7 @@ namespace RageRooster.TOP
 
         protected override void DoBeginEditor(Destination d)
         {
-            SaveManager.InitializeManager(0);
+            SaveData.InitializeFile(0);
             Destination loadedDest = SaveData.Active.playerStats.location;
             loadedDest ??= new();
 
@@ -189,7 +189,7 @@ namespace RageRooster.TOP
 
         protected override void DoReloadSave()
         {
-            SaveData.RevertToSaveFile();
+            SaveData.RevertToFile();
             RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
         }
 
@@ -288,7 +288,7 @@ namespace RageRooster.TOP
             CoreServices.Music.StopAllMusic();
             UpdateProxy.OnFixedUpdate -= FixedUpdate;
             PlayerRoot.HaveDestroyed();
-            SaveData.InitializeManager(-1);
+            SaveData.InitializeFile(-1);
             RoomManager.queuedDestination = null;
             for (int i = rootObjects.Length - 1; i >= 0; i--)
                 Destroy(rootObjects[i]);

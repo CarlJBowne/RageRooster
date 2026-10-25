@@ -291,10 +291,14 @@ namespace SLS.StateMachineH
 
             for (int i = 0; i < Behaviors.Length; i++)
             {
-                SerializedObject behaviorSO = new(Behaviors[i]);
-                ApplyPropertyOverride(nameof(StateBehavior.State), true, behaviorSO);
-                if (Behaviors[i] is StateAnimator) ApplyPropertyOverride("animator", false, behaviorSO);
-                if (Behaviors[i] is StateTimeline) ApplyPropertyOverride("timeline", false, behaviorSO);
+                try
+                {
+                    SerializedObject behaviorSO = new(Behaviors[i]);
+                    if (behaviorSO == null) continue;
+                    ApplyPropertyOverride(nameof(StateBehavior.State), true, behaviorSO);
+                    if (Behaviors[i] is StateAnimator) ApplyPropertyOverride("animator", false, behaviorSO);
+                    if (Behaviors[i] is StateTimeline) ApplyPropertyOverride("timeline", false, behaviorSO);
+                } catch { }
             }
 
             /*

@@ -120,7 +120,22 @@ namespace SLS.GeneralUtilities.Syncables
         /// <returns>An <see cref="EventTicket"/> representing the subscription.</returns>
         public EventTicket Subscribe(Action<T> subscriber, bool subscribeNow = true) =>
             OnValueChanged.Subscribe(subscriber, subscribeNow);
+
+
+        public virtual void Clone(Syncable<T> source, bool transferEvents = false)
+        {
+            Value = source._value;
+
+            if (transferEvents)
+            {
+                OnValueChanged = source.OnValueChanged;
+                OnValueChangedUlt = source.OnValueChangedUlt;
+                source.OnValueChanged = null;
+                source.OnValueChangedUlt.Clear();
+            }
+        }
     }
+    [System.Serializable]
     /// <summary>
     /// A serializable wrapper around a value of type <typeparamref name="T"/> that exposes change events
     /// and utilities for subscribing to value changes. Includes Maximum and Minimum clamps
@@ -268,6 +283,7 @@ namespace SLS.GeneralUtilities.Syncables
             OnMinChanged.Subscribe(subscriber, subscribeNow);
 
     }
+    [System.Serializable]
     /// <summary>
     /// A serializable wrapper for an integer value that exposes change events and utilities for subscribing to value changes. 
     /// </summary>
@@ -321,6 +337,7 @@ namespace SLS.GeneralUtilities.Syncables
             return l;
         }
     }
+    [System.Serializable]
     /// <summary>
     /// A serializable wrapper for an integer value that exposes change events and utilities for subscribing to value changes. Includes Maximum and Minimum clamps.
     /// </summary>
@@ -374,6 +391,7 @@ namespace SLS.GeneralUtilities.Syncables
             return l;
         }
     }
+    [System.Serializable]
     /// <summary>
     /// A serializable wrapper for a float value that exposes change events and utilities for subscribing to value changes. 
     /// </summary>
@@ -427,6 +445,7 @@ namespace SLS.GeneralUtilities.Syncables
             return l;
         }
     }
+    [System.Serializable]
     /// <summary>
     /// A serializable wrapper for a float value that exposes change events and utilities for subscribing to value changes. Includes Maximum and Minimum clamps.
     /// </summary>
