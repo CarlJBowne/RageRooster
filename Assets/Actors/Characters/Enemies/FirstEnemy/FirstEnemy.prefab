@@ -2293,6 +2293,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6568739688903100457}
   - component: {fileID: 8321065955194454580}
+  - component: {fileID: -2377929100448460731}
   m_Layer: 7
   m_Name: model:zipper
   m_TagString: Untagged
@@ -2377,6 +2378,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.12066847, y: -0.13558134, z: -0.00003856048}
     m_Extent: {x: 0.11463833, y: 0.063739926, z: 0.0161543}
   m_DirtyAABB: 0
+--- !u!114 &-2377929100448460731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109271765081359736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EPO::EPOOutline.TargetStateListener
 --- !u!1 &2189804844839969149
 GameObject:
   m_ObjectHideFlags: 0
@@ -3798,6 +3811,7 @@ GameObject:
   m_Component:
   - component: {fileID: 448769880172832541}
   - component: {fileID: 4437686323060875640}
+  - component: {fileID: 4832841274774353276}
   m_Layer: 7
   m_Name: model:eyes
   m_TagString: Untagged
@@ -3882,6 +3896,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.13714664, y: 0.15665978, z: 0}
     m_Extent: {x: 0.07469849, y: 0.09686497, z: 0.18382016}
   m_DirtyAABB: 0
+--- !u!114 &4832841274774353276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3351759849497971691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EPO::EPOOutline.TargetStateListener
 --- !u!1 &3365581301399612858
 GameObject:
   m_ObjectHideFlags: 0
@@ -5133,6 +5159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7046083550121289224}
   - component: {fileID: 3871778905808713235}
+  - component: {fileID: -6770989395946606768}
   m_Layer: 7
   m_Name: model:head
   m_TagString: Untagged
@@ -5420,6 +5447,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.313747, y: 0.043897167, z: -0.00046657026}
     m_Extent: {x: 0.22064823, y: 0.22627954, z: 0.2283629}
   m_DirtyAABB: 0
+--- !u!114 &-6770989395946606768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4181365211077265811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EPO::EPOOutline.TargetStateListener
 --- !u!1 &4393467809286582535
 GameObject:
   m_ObjectHideFlags: 0
@@ -5724,6 +5763,7 @@ GameObject:
   - component: {fileID: 8073722270089541327}
   - component: {fileID: 6928868531156243767}
   - component: {fileID: -3097921049069292220}
+  - component: {fileID: -6816383428242930802}
   m_Layer: 7
   m_Name: FirstEnemy
   m_TagString: Untagged
@@ -5915,7 +5955,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18e851c5f4414a439ad7d539149b8b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 25
+  _current: 0
+  _max: 0
+  _min: 0
   damageEvent:
     _PersistentCalls:
     - _Target: {fileID: 3674508901043307227}
@@ -5926,9 +5968,16 @@ MonoBehaviour:
     - _Target: {fileID: 3674508901043307227}
       _MemberName: SpawnLootOnDeplete
       _PersistentArguments: []
+  healEvent:
+    _PersistentCalls: []
   immuneTags:
     intValue: 0
-  health: 0
+  OnValueChanged:
+    _PersistentCalls: []
+  OnMaxChanged:
+    _PersistentCalls: []
+  OnMinChanged:
+    _PersistentCalls: []
   stunTime: 0.25
   poofPrefab: {fileID: 0}
   stunComponents: []
@@ -5938,7 +5987,6 @@ MonoBehaviour:
   enemyLootSpawner: {fileID: 3674508901043307227}
   tintAnimator: {fileID: 3292420354071468214}
   ragdoll: {fileID: 9177222470484513295}
-  respawnTime: 5
   onDamageEvent:
     _PersistentCalls: []
 --- !u!114 &3674508901043307227
@@ -5973,23 +6021,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Target
   Types:
     items:
-    - rid: 440872388981686361
-    - rid: 440872388981686362
+    - rid: 343584772953473213
+    - rid: 343584772953473214
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 6988035877431068064}
   collider: {fileID: 982579509626493083}
   navMeshAgent: {fileID: 6738454064187818541}
   centerComputationType: 0
-  outlinable: {fileID: 0}
+  outlinable: {fileID: -6816383428242930802}
   references:
     version: 2
     RefIds:
-    - rid: 440872388981686361
-      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
+    - rid: 343584772953473213
+      type: {class: TargetType/Melee, ns: , asm: RageRooster.Core}
       data:
         Target: {fileID: 8358454157859321066}
-    - rid: 440872388981686362
-      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
+    - rid: 343584772953473214
+      type: {class: TargetType/Ranged, ns: , asm: RageRooster.Core}
       data:
         Target: {fileID: 8358454157859321066}
 --- !u!114 &1790795846713865799
@@ -6127,7 +6175,136 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11dd5e2eafeaaee49be5a582c7094c6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Utilities::Spawnable
-  <Type>k__BackingField: 0
+  Reserved: 0
+--- !u!114 &-6816383428242930802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4811522196661094151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe91dc294731a9428c0941ea7579110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EPO::EPOOutline.Outlinable
+  complexMaskingMode: 0
+  drawingMode: 1
+  outlineLayer: 0
+  outlineTargets:
+  - CutoutMask: 8
+    renderer: {fileID: 1175529866787609900}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 2
+    cutoutTextureName: 
+    cutoutTextureIndex: 0
+  - CutoutMask: 8
+    renderer: {fileID: 4925999999004565022}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 2
+    cutoutTextureName: 
+    cutoutTextureIndex: 0
+  - CutoutMask: 8
+    renderer: {fileID: 2741697468071330918}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 2
+    cutoutTextureName: 
+    cutoutTextureIndex: 0
+  - CutoutMask: 8
+    renderer: {fileID: 8199609326572638153}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 2
+    cutoutTextureName: 
+    cutoutTextureIndex: 0
+  - CutoutMask: 8
+    renderer: {fileID: 4437686323060875640}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 2
+    cutoutTextureName: 
+    cutoutTextureIndex: 0
+  - CutoutMask: 8
+    renderer: {fileID: 3871778905808713235}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 2
+    cutoutTextureName: 
+    cutoutTextureIndex: 0
+  - CutoutMask: 8
+    renderer: {fileID: 8321065955194454580}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 2
+    cutoutTextureName: 
+    cutoutTextureIndex: 0
+  - CutoutMask: 8
+    renderer: {fileID: 3441150694114781866}
+    SubmeshIndex: 0
+    BoundsMode: 0
+    Bounds:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 0.5, y: 0.5, z: 0.5}
+    CutoutThreshold: 0.5
+    CullMode: 0
+    cutoutTextureName: 
+    cutoutTextureIndex: 0
+  renderStyle: 1
+  outlineParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  backParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
+  frontParameters:
+    enabled: 1
+    color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+    dilateShift: 1
+    blurShift: 1
+    fillPass:
+      shader: {fileID: 0}
+      serializedProperties: []
 --- !u!1 &4858683810890698992
 GameObject:
   m_ObjectHideFlags: 0
@@ -6448,6 +6625,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1458824801760389338}
   - component: {fileID: 2741697468071330918}
+  - component: {fileID: 8081092088811200863}
   m_Layer: 7
   m_Name: model:body
   m_TagString: Untagged
@@ -6578,6 +6756,18 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.06691624, y: 0.03238105, z: 0.000000059604645}
     m_Extent: {x: 0.48562878, y: 0.26545668, z: 0.7570718}
   m_DirtyAABB: 0
+--- !u!114 &8081092088811200863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5282634705669476003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EPO::EPOOutline.TargetStateListener
 --- !u!1 &5283977169364125783
 GameObject:
   m_ObjectHideFlags: 0
@@ -7377,6 +7567,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3284966236783948611}
   - component: {fileID: 8199609326572638153}
+  - component: {fileID: -8748961941529070431}
   m_Layer: 7
   m_Name: model:buckle
   m_TagString: Untagged
@@ -7461,6 +7652,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.07284778, y: 0.13234936, z: 0}
     m_Extent: {x: 0.06204778, y: 0.05261731, z: 0.05499055}
   m_DirtyAABB: 0
+--- !u!114 &-8748961941529070431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6011485910714402778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EPO::EPOOutline.TargetStateListener
 --- !u!1 &6073028464797925824
 GameObject:
   m_ObjectHideFlags: 0
@@ -8940,6 +9143,7 @@ GameObject:
   m_Component:
   - component: {fileID: 287867298051898874}
   - component: {fileID: 1175529866787609900}
+  - component: {fileID: 4004338981319860351}
   m_Layer: 7
   m_Name: model:badge
   m_TagString: Untagged
@@ -9024,6 +9228,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.07580093, y: 0.079553604, z: 0.08693533}
     m_Extent: {x: 0.029600754, y: 0.028168865, z: 0.03102456}
   m_DirtyAABB: 0
+--- !u!114 &4004338981319860351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7644307547403519340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EPO::EPOOutline.TargetStateListener
 --- !u!1 &7647867555888904831
 GameObject:
   m_ObjectHideFlags: 0
@@ -9979,6 +10195,7 @@ GameObject:
   m_Component:
   - component: {fileID: 546282385346601100}
   - component: {fileID: 4925999999004565022}
+  - component: {fileID: -8761730549947884388}
   m_Layer: 7
   m_Name: model:belt
   m_TagString: Untagged
@@ -10064,6 +10281,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.06784889, y: -0.00992047, z: -0.0005772412}
     m_Extent: {x: 0.07998428, y: 0.17877126, z: 0.1642152}
   m_DirtyAABB: 0
+--- !u!114 &-8761730549947884388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8258027791829115202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EPO::EPOOutline.TargetStateListener
 --- !u!1 &8270716253781601867
 GameObject:
   m_ObjectHideFlags: 0
@@ -11020,11 +11249,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4395560480213554972, guid: d7ae0227bca3990498448cccbcd653b3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5211043965471510471}
   m_SourcePrefab: {fileID: 100100000, guid: d7ae0227bca3990498448cccbcd653b3, type: 3}
+--- !u!212 &3441150694114781866 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 8092432242721501587, guid: d7ae0227bca3990498448cccbcd653b3,
+    type: 3}
+  m_PrefabInstance: {fileID: 6885850365851982649}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4849020590673270714 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2072881672364969091, guid: d7ae0227bca3990498448cccbcd653b3,
     type: 3}
   m_PrefabInstance: {fileID: 6885850365851982649}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7101999157648690213 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4395560480213554972, guid: d7ae0227bca3990498448cccbcd653b3,
+    type: 3}
+  m_PrefabInstance: {fileID: 6885850365851982649}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-5211043965471510471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7101999157648690213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 034bc47afcbf5e141a58d5c20b7808e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: EPO::EPOOutline.TargetStateListener
