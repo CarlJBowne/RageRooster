@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using SLS.GeneralUtilities.EventTickets;
+using SLS.GeneralUtilities.Events;
 using SLS.ListUtilities;
 using UnityEngine;
 using UnityEngine.Events;
@@ -138,10 +138,10 @@ namespace SLS.AppStateMachine
         [SerializeField] UltEvents.UltEvent onEnter;
         [SerializeField] UltEvents.UltEvent onExit;
 
-        public EventTicket RegisterOnEnter(Action callback) => onEnter.Subscribe(callback);
-        public void DeregisterOnEnter(Action callback) => onEnter.DynamicCalls -= callback;
-        public EventTicket RegisterOnExit(Action callback) => onExit.Subscribe(callback);
-        public void DeregisterOnExit(Action callback) => onEnter.DynamicCalls -= callback;
+        public EventTicket SubscribeOnEnter(Action callback) => onEnter.Subscribe(callback);
+        public void UnsubscribeOnEnter(Action callback) => onEnter.DynamicCalls -= callback;
+        public EventTicket SubscribeOnExit(Action callback) => onExit.Subscribe(callback);
+        public void UnsubscribeOnExit(Action callback) => onEnter.DynamicCalls -= callback;
 
 #else
         [SerializeField] UnityEngine.Events.UnityEvent onEnter;

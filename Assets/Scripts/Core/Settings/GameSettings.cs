@@ -12,7 +12,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using SLS.SaveFileCore;
 using Utilities.Xtensions.Input;
-using SLS.GeneralUtilities.Syncables;
+using SLS.GeneralUtilities.Events;
 
 namespace RageRooster.Settings
 {
@@ -58,13 +58,14 @@ namespace RageRooster.Settings
         public static class Graphics
         {
             public static FloatSyncableClamped Brightness = new(1f);
+            public static EventTicket BrightnessTicket = null;
             public static Image brightnessOverlay;
             public static void EstablishBrightnessOverlay()
             {
                 if (brightnessOverlay != null) return;
                 if (Overlay.ActiveOverlays > 0)
                     brightnessOverlay = Overlay.OverALL.transform.parent.Find("BrightnessOverlay").GetComponent<Image>();
-                Brightness.OnValueChanged += value => brightnessOverlay.color = new(0, 0, 0, 1 - value);
+                BrightnessTicket = Brightness.Subscribe(value => brightnessOverlay.color = new(0, 0, 0, 1 - value));
             }
         }
 

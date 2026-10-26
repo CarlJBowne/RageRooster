@@ -33,17 +33,15 @@ namespace RageRooster.Core.Save
         /// <remarks> See <see cref="RevertToDeathData"/></remarks>
         public static SaveData DeathReloadData => SaveDataManager.DeathReloadData;
 
-        public static SaveDataManager Manager => SaveDataManager.Get;
-
-        public static void InitializeFile(int fileNo) => Manager.InitializeFile(fileNo);
-        public static void ExitFile() => Manager.ExitFile();
+        public static void InitializeFile(int fileNo) => SaveDataManager.Get.InitializeFile(fileNo);
+        public static void ExitFile() => SaveDataManager.Get.ExitFile();
 
 
 
-        public static void SaveToDeathData() => Manager.SaveToDeathData();
-        public static void RevertToDeathData() => Manager.RevertToDeathData();
-        public static void SaveToFile() => Manager.SaveToFile();
-        public static void RevertToFile() => Manager.RevertToFile();
+        public static void SaveToDeathData() => SaveDataManager.Get.SaveToDeathData();
+        public static void RevertToDeathData() => SaveDataManager.Get.RevertToDeathData();
+        public static void SaveToFile() => SaveDataManager.Get.SaveToFile();
+        public static void RevertToFile() => SaveDataManager.Get.RevertToFile();
 
 
         public static IReadOnlyList<string> FlagIDs => Defs.flags.Keys.ToList();

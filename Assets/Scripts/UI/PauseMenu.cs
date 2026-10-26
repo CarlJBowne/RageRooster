@@ -1,62 +1,46 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.EventSystems;
-using System;
-using SLS.Singletons;
-using SLS.MenuCore;
-using RageRooster.Core.World;
-using RageRooster.Core;
 using RageRooster;
+using RageRooster.Core;
+using RageRooster.Core.World;
+using SLS.GeneralUtilities.Events;
+using SLS.MenuCore;
+using SLS.Singletons;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using static RageRooster.Services;
 
-public class PauseMenu : Menu
+public class PauseMenu : RageRooster.Core.PauseMenu
 {
-    static readonly Singleton<PauseMenu> S = new();
-    public static PauseMenu Get => S.Get;
-    public static bool TryGet(out PauseMenu instance) => S.TryGet(out instance);
-    public static bool Present => S.Active;
-
-    public static bool isPaused => S.Get.isActive;
-
-    public static bool canPause
-    {
-        get => Services.UI.canPause;
-        set => Services.UI.canPause = value;
-    }
-
-    public static System.Action onPause;
-    public static System.Action onUnPause;
 
     protected override void Awake()
     {
         S.Register(this);
-        Services.UI.SetPause += SetPause;
         base.Awake();
+        EventTicket.Set(ref canPauseTicket, Input.Pause.SubscribePerformed(Get.Open, true));
     }
     protected override void OnDestroy()
     {
+        EventTicket.Destroy(ref canPauseTicket);
         S.Deregister(this);
-        Services.UI.SetPause -= SetPause;
         base.OnDestroy();
     }
 
     protected override void OnOpen()
     {
         base.OnOpen();
-        onPause?.Invoke();
+        DoStatic.OnPause();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        Services.UI.OnPause?.Invoke(true);
     }
     protected override void OnClose()
     {
         base.OnClose();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        onUnPause?.Invoke();
-        Services.UI.OnPause?.Invoke(false);
+        DoStatic.OnUnPause();
     }
 
     public void QuitGame()

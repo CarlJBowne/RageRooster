@@ -32,6 +32,8 @@ public static class ExecutionOrders
     public const int PlayerSystems = -90;
     public const int PlayerBehaviors = -89;
 
-    public const int Area = -71;
-    public const int Room = -70;
+    public const int UI = -70;
+
+    public const int Area = -51;
+    public const int Room = -50;
 }

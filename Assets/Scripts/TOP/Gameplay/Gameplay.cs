@@ -21,7 +21,7 @@ namespace RageRooster.TOP
     /// <summary>
     /// This is the actual definition of the functionality attributed to <see cref="Core.Gameplay"/>
     /// </summary>
-    public sealed class Gameplay_Top : Core.Gameplay
+    public sealed class Gameplay : Core.Gameplay
     {
         public override IEnumerator Enter()
         {

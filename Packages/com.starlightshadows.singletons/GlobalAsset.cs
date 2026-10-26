@@ -75,7 +75,7 @@ namespace SLS.Singletons
 
             OnInit();
 
-            if(!Active && gameIsPlaying)
+            if (!Active && gameIsPlaying)
             {
 #if UNITY_EDITOR
                 Debug.Log($"INITIALIZING : {this.name}...");
@@ -156,25 +156,25 @@ namespace SLS.Singletons
 
         public static bool TryGetAlreadyActive(Type t, out _GlobalAssetBase result)
         {
-            FieldInfo singletonField = typeof(GlobalAsset<>).MakeGenericType(t)
-                .GetField("S", BindingFlags.Static | BindingFlags.NonPublic);
-            PropertyInfo slotField = typeof(Singleton<>).MakeGenericType(t)
-                .GetProperty("slot", BindingFlags.Instance | BindingFlags.Public);
+            //For some reason an unknown bug has appeared here where the GA_Type line throws an error as if T is an invalid generic argument when it's not.
+            try
+            {
+                Type GA_Type = typeof(GlobalAsset<>).MakeGenericType(t);
+                FieldInfo singletonField = GA_Type.GetField("S", BindingFlags.Static | BindingFlags.NonPublic);
+                Type S_Type = typeof(Singleton<>).MakeGenericType(t);
+                PropertyInfo slotField = S_Type.GetProperty("slot", BindingFlags.Instance | BindingFlags.Public);
 
-            object single = singletonField.GetValue(null);
-            if (single is null)
+                object single = singletonField.GetValue(null) ?? throw new();
+                object slot = slotField.GetValue(single);
+                if (slot is null || slot.GetType() != t) throw new();
+                result = slot as _GlobalAssetBase;
+                return true;
+            }
+            catch
             {
                 result = null;
                 return false;
             }
-            object slot = slotField.GetValue(single);
-            if (slot is null || slot.GetType() != t)
-            {
-                result = null;
-                return false;
-            }
-            result = slot as _GlobalAssetBase;
-            return true;
         }
 #endif
     }

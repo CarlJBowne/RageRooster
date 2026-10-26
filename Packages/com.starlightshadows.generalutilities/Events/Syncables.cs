@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using SLS.GeneralUtilities.EventTickets;
+using SLS.GeneralUtilities.Events;
 using UnityEngine;
 
-namespace SLS.GeneralUtilities.Syncables
+namespace SLS.GeneralUtilities.Events
 {
     /// <summary>
     /// A serializable wrapper around a value of type <typeparamref name="T"/> that exposes change events
@@ -42,26 +42,6 @@ namespace SLS.GeneralUtilities.Syncables
         public virtual void SetValue(T value) => Value = value;
 
         /// <summary>
-        /// Traditional .NET event raised when the value changes.
-        /// </summary>
-        public event Action<T> OnValueChanged;
-
-        /// <summary>
-        /// UltEvents-compatible event that is invoked when the value changes (serialized by Unity).
-        /// </summary>
-        [SerializeField] protected UltEvents.UltEvent<T> OnValueChangedUlt;
-
-        /// <summary>
-        /// Invokes both <see cref="OnValueChanged"/> and <see cref="OnValueChangedUlt"/> with the provided value.
-        /// </summary>
-        /// <param name="v">The value passed to subscribers.</param>
-        protected void CallOnValueChanged(T v)
-        {
-            OnValueChanged?.Invoke(v);
-            OnValueChangedUlt?.Invoke(v);
-        }
-
-        /// <summary>
         /// Implicit conversion to the wrapped value type for convenience.
         /// </summary>
         /// <param name="s">The stat object to convert.</param>
@@ -92,7 +72,7 @@ namespace SLS.GeneralUtilities.Syncables
         /// <summary>
         /// Returns a human-readable representation of the stat and the number of listeners attached.
         /// </summary>
-        public override string ToString() => $"Value:{_value}, {OnValueChanged?.GetInvocationList().Length ?? 0} Listeners";
+        public override string ToString() => $"Value:{_value}, {onValueChanged?.GetInvocationList().Length ?? 0} Listeners";
 
         /// <summary>
         /// Pseudo-assignment operator that sets the stat object's value to the provided value and returns the object.
@@ -112,37 +92,127 @@ namespace SLS.GeneralUtilities.Syncables
             return l;
         }
 
-        /// <summary>
-        /// Creates an <see cref="EventTicket"/> subscribing a method with parameter <see cref="T"/> to <see cref="OnValueChanged"/>.
-        /// </summary>
-        /// <param name="subscriber">Handler to invoke when the value changes.</param>
-        /// <param name="subscribeNow">If true, subscribes immediately.</param>
-        /// <returns>An <see cref="EventTicket"/> representing the subscription.</returns>
-        public EventTicket Subscribe(Action<T> subscriber, bool subscribeNow = true) =>
-            OnValueChanged.Subscribe(subscriber, subscribeNow);
-
-
         public virtual void Clone(Syncable<T> source, bool transferEvents = false)
         {
             Value = source._value;
 
             if (transferEvents)
             {
-                OnValueChanged = source.OnValueChanged;
-                OnValueChangedUlt = source.OnValueChangedUlt;
-                source.OnValueChanged = null;
-                source.OnValueChangedUlt.Clear();
+                onValueChanged = source.onValueChanged;
+                onValueChangedUlt = source.onValueChangedUlt;
+                source.onValueChanged = null;
+                source.onValueChangedUlt.Clear();
             }
         }
+
+        #region Events
+
+        /// <summary>
+        /// Traditional .NET event raised when the value changes.
+        /// </summary>
+        protected event Action<T> onValueChanged;
+
+        /// <summary>
+        /// UltEvents-compatible event that is invoked when the value changes (serialized by Unity).
+        /// </summary>
+        [SerializeField] protected UltEvents.UltEvent<T> onValueChangedUlt;
+
+        /// <summary>
+        /// Invokes both <see cref="onValueChanged"/> and <see cref="onValueChangedUlt"/> with the provided value.
+        /// </summary>
+        /// <param name="v">The value passed to subscribers.</param>
+        protected virtual void CallOnValueChanged(T v)
+        {
+            onValueChanged?.Invoke(v);
+            onValueChangedUlt?.Invoke(v);
+            for (int i = 0; i < Subscribers.Count; i++) Subscribers[i].Value = v;
+        }
+
+        public event Action<T> OnValueChanged
+        {
+            add => onValueChanged += value;
+            remove => onValueChanged -= value;
+        }
+
+        /// <summary>
+        /// Creates an <see cref="EventTicket"/> subscribing a method with parameter <see cref="T"/> to <see cref="onValueChanged"/>.
+        /// </summary>
+        /// <param name="subscriber">Handler to invoke when the value changes.</param>
+        /// <param name="now">If true, subscribes immediately.</param>
+        /// <returns>An <see cref="EventTicket"/> representing the subscription.</returns>
+        public EventTicket Subscribe(Action<T> subscriber, bool now = true)
+            => new(() => onValueChanged += subscriber, () => onValueChanged -= subscriber, now);
+
+        /// <summary>
+        /// The active Publisher/Source <see cref="Syncable{T}"/> that this <see cref="Syncable{T}"/> is Synced too.
+        /// </summary>
+        public Syncable<T> Subscription { get; protected set; }
+        /// <summary>
+        /// Active Listener <see cref="Syncable{T}"/>s that are Synced to this <see cref="Syncable{T}"/>.
+        /// </summary>
+        public List<Syncable<T>> Subscribers { get; protected set; } = new();
+
+        /// <summary>
+        /// Subscribes or Syncs this <see cref="Syncable{T}"/> to another of its type, pushing changes from this onto it.
+        /// </summary>
+        /// <param name="subscriber">The subscribing <see cref="Syncable{T}"/>. The Listener.</param>
+        /// <param name="subscribe">Set to false to unsubscribe</param>
+        public void Sync(Syncable<T> subscriber, bool subscribe = true)
+        {
+            if (subscribe)
+            {
+                subscriber.Subscription?.Subscribers.Remove(this);
+                subscriber.Subscription = this;
+                Subscribers.Add(subscriber);
+                subscriber.Value = Value;
+            }
+            else
+            {
+                subscriber.Subscription = null;
+                Subscribers.Remove(subscriber);
+            }
+        }
+        /// <summary>
+        /// Subscribes or Syncs a <see cref="Syncable{T}"/> of the same type to this, pushing changes from it onto this.
+        /// </summary>
+        /// <param name="publisher">The publishing <see cref="Syncable{T}"/>. Set to null to unsubscribe.</param>
+        public void SyncTo(Syncable<T> publisher)
+        {
+            Subscription?.Subscribers.Remove(this);
+            Subscription = publisher;
+            if (publisher != null)
+            {
+                Value = publisher.Value;
+                publisher.Subscribers.Add(this);
+            }
+        }
+
+        #endregion
+
     }
     [System.Serializable]
     /// <summary>
-    /// A serializable wrapper around a value of type <typeparamref name="T"/> that exposes change events
-    /// and utilities for subscribing to value changes. Includes Maximum and Minimum clamps
+    /// A serializable, clamped wrapper around a value of type <typeparamref name="T"/> with change events
+    /// and synchronization links to other clamped syncables.
     /// </summary>
     /// <typeparam name="T">A value type that implements <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/>.</typeparam>
-    public class SyncableClamped<T> : Syncable<T> where T : struct, IEquatable<T>, IComparable<T>
+    public class SyncableClamped<T> where T : struct, IEquatable<T>, IComparable<T>
     {
+        /// <summary>
+        /// Backing field for the <see cref="Value"/> property. Serialized by Unity.
+        /// </summary>
+        [SerializeField] protected T _value;
+
+        /// <summary>
+        /// Traditional .NET event raised when the value changes.
+        /// </summary>
+        protected event Action<T> onValueChanged;
+
+        /// <summary>
+        /// UltEvents-compatible event invoked when the value changes (serialized by Unity).
+        /// </summary>
+        [SerializeField] protected UltEvents.UltEvent<T> onValueChangedUlt;
+
         public SyncableClamped(T init = default, T minInit = default, T maxInit = default)
         {
             _value = init;
@@ -162,7 +232,7 @@ namespace SLS.GeneralUtilities.Syncables
         /// Gets or sets the current value. Will invoke Value-Changed Callbacks when the resulting value has changed.
         /// Will also clamp itself between <see cref="Min"/> and <see cref="Max"/>.
         /// </summary>
-        public override T Value
+        public virtual T Value
         {
             get => _value;
             set
@@ -176,30 +246,58 @@ namespace SLS.GeneralUtilities.Syncables
         }
 
         /// <summary>
-        /// Traditional .NET event raised when the Maximum changes.
+        /// Sets the <see cref="Value"/>. Provided so it can be fed into event subscription structures.
         /// </summary>
-        public event Action<T> OnMaxChanged; [SerializeField] protected UltEvents.UltEvent<T> OnMaxChangedUlt;
+        public virtual void SetValue(T value) => Value = value;
+
         /// <summary>
-        /// Invokes both <see cref="OnMaxChanged"/> and <see cref="OnMaxChangedUlt"/> with the provided value.
+        /// Implicit conversion to the wrapped value type.
         /// </summary>
-        /// <param name="v">The value passed to subscribers.</param>
-        protected void CallOnMaxChanged(T v)
+        public static implicit operator T(SyncableClamped<T> syncable) => syncable is null ? default : syncable.Value;
+
+        /// <summary>
+        /// Equality operator comparing the syncable's value to a raw value.
+        /// </summary>
+        public static bool operator ==(SyncableClamped<T> left, T right) => left is not null && left.Value.Equals(right);
+
+        /// <summary>
+        /// Inequality operator comparing the syncable's value to a raw value.
+        /// </summary>
+        public static bool operator !=(SyncableClamped<T> left, T right) => !(left == right);
+
+        public override bool Equals(object obj) => obj is T value ? Value.Equals(value) : base.Equals(obj);
+        public override int GetHashCode() => _value.GetHashCode();
+        public override string ToString() => $"Value:{_value}, {onValueChanged?.GetInvocationList().Length ?? 0} Listeners";
+
+        /// <summary>
+        /// Pseudo-assignment operator that sets the syncable to the provided value.
+        /// </summary>
+        public static SyncableClamped<T> operator &(SyncableClamped<T> left, T right)
         {
-            OnMaxChanged?.Invoke(v);
-            OnMaxChangedUlt?.Invoke(v);
+            left.Value = right;
+            return left;
         }
+
         /// <summary>
-        /// Traditional .NET event raised when the Minimum changes.
+        /// Pseudo-assignment operator that copies the value from another clamped syncable.
         /// </summary>
-        public event Action<T> OnMinChanged; [SerializeField] protected UltEvents.UltEvent<T> OnMinChangedUlt;
-        /// <summary>
-        /// Invokes both <see cref="OnMinChanged"/> and <see cref="OnMinChangedUlt"/> with the provided value.
-        /// </summary>
-        /// <param name="v">The value passed to subscribers.</param>
-        protected void CallOnMinChanged(T v)
+        public static SyncableClamped<T> operator &(SyncableClamped<T> left, SyncableClamped<T> right)
         {
-            OnMinChanged?.Invoke(v);
-            OnMinChangedUlt?.Invoke(v);
+            left.Value = right.Value;
+            return left;
+        }
+
+        public virtual void Clone(SyncableClamped<T> source, bool transferEvents = false)
+        {
+            Value = source._value;
+
+            if (transferEvents)
+            {
+                onValueChanged = source.onValueChanged;
+                onValueChangedUlt = source.onValueChangedUlt;
+                source.onValueChanged = null;
+                source.onValueChangedUlt.Clear();
+            }
         }
 
         /// <summary>
@@ -265,22 +363,120 @@ namespace SLS.GeneralUtilities.Syncables
             if (!preVal.Equals(_value)) CallOnValueChanged(value);
         }
 
+        #region Events
+
+
+        protected virtual void CallOnValueChanged(T v)
+        {
+            onValueChanged?.Invoke(v);
+            onValueChangedUlt?.Invoke(v);
+            for (int i = 0; i < Subscribers.Count; i++) Subscribers[i].Value = v;
+        }
+
+        public event Action<T> OnValueChanged
+        {
+            add => onValueChanged += value;
+            remove => onValueChanged -= value;
+        }
+
         /// <summary>
-        /// Creates an <see cref="EventTicket"/> subscribing a method with parameter <see cref="T"/> to <see cref="OnMaxChanged"/>.
+        /// Creates an <see cref="EventTicket"/> for the value-changed event.
+        /// </summary>
+        public EventTicket Subscribe(Action<T> subscriber, bool now = true)
+            => new(() => onValueChanged += subscriber, () => onValueChanged -= subscriber, now);
+
+        /// <summary>
+        /// Traditional .NET event raised when the Maximum changes.
+        /// </summary>
+        protected event Action<T> onMaxChanged; [SerializeField] protected UltEvents.UltEvent<T> onMaxChangedUlt;
+        /// <summary>
+        /// Invokes both <see cref="onMaxChanged"/> and <see cref="onMaxChangedUlt"/> with the provided value.
+        /// </summary>
+        /// <param name="v">The value passed to subscribers.</param>
+        protected void CallOnMaxChanged(T v)
+        {
+            onMaxChanged?.Invoke(v);
+            onMaxChangedUlt?.Invoke(v);
+            for (int i = 0; i < Subscribers.Count; i++) Subscribers[i].Max = Max;
+        }
+        /// <summary>
+        /// Traditional .NET event raised when the Minimum changes.
+        /// </summary>
+        protected event Action<T> onMinChanged; [SerializeField] protected UltEvents.UltEvent<T> onMinChangedUlt;
+        /// <summary>
+        /// Invokes both <see cref="onMinChanged"/> and <see cref="onMinChangedUlt"/> with the provided value.
+        /// </summary>
+        /// <param name="v">The value passed to subscribers.</param>
+        protected void CallOnMinChanged(T v)
+        {
+            onMinChanged?.Invoke(v);
+            onMinChangedUlt?.Invoke(v);
+            for (int i = 0; i < Subscribers.Count; i++) Subscribers[i].Min = Min;
+        }
+
+        /// <summary>
+        /// Creates an <see cref="EventTicket"/> subscribing a method with parameter <see cref="T"/> to <see cref="onMaxChanged"/>.
         /// </summary>
         /// <param name="subscriber">Handler to invoke when the value changes.</param>
-        /// <param name="subscribeNow">If true, subscribes immediately.</param>
+        /// <param name="now">If true, subscribes immediately.</param>
         /// <returns>An <see cref="EventTicket"/> representing the subscription.</returns>
-        public EventTicket SubscribeMax(Action<T> subscriber, bool subscribeNow = true) =>
-            OnMaxChanged.Subscribe(subscriber, subscribeNow);
+        public EventTicket SubscribeMax(Action<T> subscriber, bool now = true)
+            => new(() => onMaxChanged += subscriber, () => onMaxChanged -= subscriber, now);
         /// <summary>
-        /// Creates an <see cref="EventTicket"/> subscribing a method with parameter <see cref="T"/> to <see cref="OnMinChanged"/>.
+        /// Creates an <see cref="EventTicket"/> subscribing a method with parameter <see cref="T"/> to <see cref="onMinChanged"/>.
         /// </summary>
         /// <param name="subscriber">Handler to invoke when the value changes.</param>
-        /// <param name="subscribeNow">If true, subscribes immediately.</param>
+        /// <param name="now">If true, subscribes immediately.</param>
         /// <returns>An <see cref="EventTicket"/> representing the subscription.</returns>
-        public EventTicket SubscribeMin(Action<T> subscriber, bool subscribeNow = true) =>
-            OnMinChanged.Subscribe(subscriber, subscribeNow);
+        public EventTicket SubscribeMin(Action<T> subscriber, bool now = true)
+            => new(() => onMinChanged += subscriber, () => onMinChanged -= subscriber, now);
+
+
+        /// <summary>
+        /// The active Publisher/Source <see cref="SyncableClamped{T}"/> that this <see cref="SyncableClamped{T}"/> is Synced too.
+        /// </summary>
+        public SyncableClamped<T> Subscription { get; protected set; }
+        /// <summary>
+        /// Active Listener <see cref="SyncableClamped{T}"/>s that are Synced to this <see cref="SyncableClamped{T}"/>.
+        /// </summary>
+        public List<SyncableClamped<T>> Subscribers { get; protected set; } = new();
+
+        /// <summary>
+        /// Subscribes or Syncs this <see cref="SyncableClamped{T}"/> to another of its type, pushing changes from this onto it.
+        /// </summary>
+        /// <param name="subscriber">The subscribing <see cref="SyncableClamped{T}"/>. The Listener.</param>
+        /// <param name="subscribe">Set to false to unsubscribe</param>
+        public void Sync(SyncableClamped<T> subscriber, bool subscribe = true)
+        {
+            if (subscribe)
+            {
+                subscriber.Subscription?.Subscribers.Remove(this);
+                subscriber.Subscription = this;
+                Subscribers.Add(subscriber);
+                subscriber.Value = Value;
+            }
+            else
+            {
+                subscriber.Subscription = null;
+                Subscribers.Remove(subscriber);
+            }
+        }
+        /// <summary>
+        /// Subscribes or Syncs a <see cref="SyncableClamped{T}"/> of the same type to this, pushing changes from it onto this.
+        /// </summary>
+        /// <param name="publisher">The publishing <see cref="SyncableClamped{T}"/>. Set to null to unsubscribe.</param>
+        public void SyncTo(SyncableClamped<T> publisher)
+        {
+            Subscription?.Subscribers.Remove(this);
+            Subscription = publisher;
+            if (publisher != null)
+            {
+                Value = publisher.Value;
+                publisher.Subscribers.Add(this);
+            }
+        }
+
+        #endregion
 
     }
     [System.Serializable]

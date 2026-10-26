@@ -5,7 +5,7 @@ using RageRooster.Core;
 using RageRooster.Core.Save;
 using RageRooster.Core.World;
 using SLS.GeneralUtilities;
-using SLS.GeneralUtilities.Syncables;
+using SLS.GeneralUtilities.Events;
 using SLS.SaveFileCore;
 using SLS.SaveFileCore;
 

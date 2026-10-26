@@ -9,6 +9,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using static RageRooster.Services;
+using RageRooster.Core;
 
 namespace RageRooster.Actors.Save.Collectibles
 {
@@ -24,7 +25,7 @@ namespace RageRooster.Actors.Save.Collectibles
         {
             PlayerStats.Active.MaxAmmo += 1;
             Acquire();
-            UI.ShowHint(hintString);
+            HUD.ShowHint(hintString);
         }
 
         [CustomEditor(typeof(Hen))]

@@ -70,12 +70,12 @@ public class PlayerStateMachine : StateMachine, IPlayerStateMachine
 
         whenInitializedEvent?.Invoke(this);
 
-        Services.UI.OnPause += OnPause;
+        PauseMenu.onPauseValue += OnPause;
     }
 
     private void OnDestroy()
     {
-        Services.UI.OnPause -= OnPause;
+        PauseMenu.onPauseValue -= OnPause;
 
         Singleton.Deregister(ref instance, this);
     }

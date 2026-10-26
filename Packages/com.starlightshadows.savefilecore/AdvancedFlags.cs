@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SLS.GeneralUtilities.EventTickets;
+using SLS.GeneralUtilities.Events;
 using SLS.ListUtilities;
 
 
@@ -68,8 +68,8 @@ namespace SLS.SaveFileCore
 
             public event Action<T> OnValueChanged;
 
-            public EventTicket RegisterCallback(Action<T> callback) =>
-                EventTicket.Action(OnValueChanged, callback);
+            public EventTicket Subscribe(Action<T> callback, bool now = true) 
+                => new(() => OnValueChanged += callback, () => OnValueChanged -= callback, now);
 
             protected override void CallValueChangedCallback() => OnValueChanged?.Invoke(Value);
 
@@ -195,8 +195,8 @@ namespace SLS.SaveFileCore
                 return true;
             }
 
-            public EventTicket Subscribe<T>(string name, Action<T> callback) =>
-                TryGet(name, out Generic<T> res) ? res.RegisterCallback(callback) : null;
+            public EventTicket Subscribe<T>(string name, Action<T> callback, bool now = true) =>
+                TryGet(name, out Generic<T> res) ? res.Subscribe(callback, now) : null;
 
             public string[] AllNamesOfType<T>() => AllNamesOfType(typeof(T));
             public string[] AllNamesOfType(Type type)
@@ -275,8 +275,8 @@ namespace SLS.SaveFileCore
                 return true;
             }
 
-            public EventTicket Subscribe(string name, Action<T> callback) =>
-                TryGet(name, out Generic<T> res) ? res.RegisterCallback(callback) : null;
+            public EventTicket Subscribe(string name, Action<T> callback, bool now = true) =>
+                TryGet(name, out Generic<T> res) ? res.Subscribe(callback, now) : null;
 
             public void Clone(OneTypeCollection<T> source, DictionaryCloneOp op = DictionaryCloneOp.Transfer)
             {

@@ -1,6 +1,6 @@
 using RageRooster.Core.Save;
-using SLS.GeneralUtilities.EventTickets;
-using SLS.GeneralUtilities.Syncables;
+using SLS.GeneralUtilities.Events;
+using SLS.GeneralUtilities.Events;
 using SLS.StateMachineH;
 using System.Collections;
 using System.Collections.Generic;

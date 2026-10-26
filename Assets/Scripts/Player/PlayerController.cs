@@ -9,7 +9,7 @@ using Utilities.Xtensions;
 
 using CTX = UnityEngine.InputSystem.InputAction.CallbackContext;
 using static RageRooster.Player.LocalContext;
-using SLS.GeneralUtilities.EventTickets;
+using SLS.GeneralUtilities.Events;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerController : StateBehavior

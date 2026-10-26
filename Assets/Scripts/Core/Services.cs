@@ -24,9 +24,6 @@ namespace RageRooster
 
         public static class UI
         {
-            public static bool canPause;
-            public static Action<bool> SetPause;
-            public static Action<bool> OnPause;
             public static Action<string> ShowHint;
             public static IOverlayTopPlus OverlayTopPlus;
         }

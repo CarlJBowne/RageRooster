@@ -5,13 +5,15 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using DG.Tweening;
+using SLS.GeneralUtilities.Events;
 using RageRooster.Core;
-using static RageRooster.Services;
 using RageRooster.Player;
 using RageRooster.Core.Save;
+using static RageRooster.Services;
+using Player = RageRooster.Player.LocalContext;
 
-[DefaultExecutionOrder(ExecutionOrders.GameplaySystems+20)]
-public class UIHUDSystem : MonoBehaviour
+[DefaultExecutionOrder(ExecutionOrders.UI)]
+public class HUD : RageRooster.Core.HUD
 {
     public GameObject hintHolder;
     public TextMeshProUGUI hintText;
@@ -26,7 +28,9 @@ public class UIHUDSystem : MonoBehaviour
     Camera mainCamera;
     float hintTimer;
 
-    public static UIHUDSystem Instance { get; private set; }
+    private List<EventTicket> events;
+
+    public static HUD Instance { get; private set; }
 
     public void Awake()
     {
@@ -37,10 +41,14 @@ public class UIHUDSystem : MonoBehaviour
         }
         Instance = this;
 
-        //Services.
+        events = new()
         {
-
-        }
+            Player.Player.Health.OnValueChanged.Subscribe(health.Update),
+            Player.Player.Health.OnMaxChanged.Subscribe(health.UpdateMax),
+            Player.Player.Ranged.Ammo.Subscribe(ammo.Update),
+            Player.Player.Ranged.Ammo.SubscribeMax(ammo.UpdateMax),
+            SavedProgress.Active.Currency.Subscribe(SetCurrencyText)
+        };
 
         mainCamera = Camera.main;
         transform.parent.TryGetComponent(out canvas);
@@ -53,7 +61,7 @@ public class UIHUDSystem : MonoBehaviour
 
     protected void OnDestroy()
     {
-
+        events.DestroyAll();
     }
 
     // Called every frame to update the HUD
@@ -70,7 +78,7 @@ public class UIHUDSystem : MonoBehaviour
         combo.comboTime.Tick(combo.EndCombo);
     }
 
-    [field: SerializeField] public Health health { get; private set; } =new();
+    [field: SerializeField] public Health health { get; private set; } = new();
     [Serializable]
     public class Health
     {
@@ -164,7 +172,7 @@ public class UIHUDSystem : MonoBehaviour
 
 
     // Displays a hint on the screen
-    public void ShowHint(string hintString)
+    protected override void DoShowHint(string hintString)
     {
         hintText.text = HintTextParser(hintString);
         hintHolder.SetActive(true);
@@ -211,7 +219,7 @@ public class UIHUDSystem : MonoBehaviour
 
 
 
-    public void SetHitMarkerVisibility(bool value) => hitMarker.enabled = value;
+    protected override void DoSetHitMarkerVisibility(bool value) => hitMarker.enabled = value;
 
     public void UpdateHitMarker(Vector3 position, float distance, bool hitDamagable)
     {

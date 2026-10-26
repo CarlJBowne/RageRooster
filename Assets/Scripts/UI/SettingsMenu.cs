@@ -2,7 +2,7 @@ using UnityEngine.UI;
 using RageRooster.Settings;
 using SLS.Singletons;
 using SLS.MenuCore;
-using SLS.GeneralUtilities.EventTickets;
+using SLS.GeneralUtilities.Events;
 using System.Collections.Generic;
 
 public class SettingsMenu : Menu

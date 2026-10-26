@@ -7,8 +7,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
 using UnityEngine.Serialization;
-using SLS.GeneralUtilities.Syncables;
-using SLS.GeneralUtilities.EventTickets;
+using SLS.GeneralUtilities.Events;
+using SLS.GeneralUtilities.Events;
 
 
 

@@ -6,8 +6,8 @@ using EditorAttributes;
 using RageRooster.Core;
 using RageRooster.Core.Save;
 using RageRooster.Player;
-using SLS.GeneralUtilities.EventTickets;
-using SLS.GeneralUtilities.Syncables;
+using SLS.GeneralUtilities.Events;
+using SLS.GeneralUtilities.Events;
 using SLS.ObjectUtilities;
 using SLS.StateMachineH;
 using UnityEngine;
@@ -53,7 +53,7 @@ public class PlayerRanged : MonoBehaviour
         events = new()
         {
             Player.Stats.MaxAmmo.Subscribe(Ammo.SetMax),
-            Services.UI.OnPause.Subscribe(ExitAimingInstant)
+            PauseMenu.SubscribeOnPause(ExitAimingInstant)
         };
     }
     private void OnDestroy()
@@ -129,7 +129,7 @@ public class PlayerRanged : MonoBehaviour
         targetState.Enter();
         aimingRig.enabled = true;
         aimingRig.weight = 1;
-        UIHUDSystem.Instance.SetHitMarkerVisibility(true);
+        HUD.SetHitMarkerVisibility(true);
         Cameras.SetTargetVirtualCamera(Cameras.aimingCamera);
     }
     public void ExitAiming(State targetState)
@@ -141,7 +141,7 @@ public class PlayerRanged : MonoBehaviour
         targetState.Enter();
         aimingRig.enabled = false;
         aimingRig.weight = 0;
-        UIHUDSystem.Instance?.SetHitMarkerVisibility(false);
+        HUD.SetHitMarkerVisibility(false);
         Cameras.SetTargetVirtualCamera(Cameras.normalCamera);
     }
 
@@ -152,19 +152,19 @@ public class PlayerRanged : MonoBehaviour
         TargetingManager.ToggleAimingDownSights(false);
         aimingRig.enabled = false;
         aimingRig.weight = 0;
-        UIHUDSystem.Instance?.SetHitMarkerVisibility(false);
+        HUD.SetHitMarkerVisibility(false);
         Cameras.SetTargetVirtualCamera(Cameras.normalCamera);
         Self.StateMachine.IdleWalk.State.Enter();
     }
 
-    public void ExitAimingInstant(bool _)
+    public void ExitAimingInstant()
     {
         if (!Self.StateMachine.Aiming) return;
         Cameras.normalCamera.m_XAxis.Value = hAxis.Value;
         TargetingManager.ToggleAimingDownSights(false);
         aimingRig.enabled = false;
         aimingRig.weight = 0;
-        UIHUDSystem.Instance?.SetHitMarkerVisibility(false);
+        HUD.SetHitMarkerVisibility(false);
         Cameras.SetTargetVirtualCamera(Cameras.normalCamera);
         Self.Animator.Play("GroundBasic");
         Self.StateMachine.IdleWalk.State.Enter();

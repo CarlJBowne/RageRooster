@@ -1,5 +1,5 @@
 using System;
-using SLS.GeneralUtilities.Syncables;
+using SLS.GeneralUtilities.Events;
 using SLS.SaveFileCore;
 using UnityEngine;
 

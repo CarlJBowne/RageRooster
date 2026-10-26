@@ -19,6 +19,7 @@ using UnityEngine.InputSystem;
 using System;
 using static RageRooster.Services;
 using RageRooster;
+using RageRooster.Core;
 
 public class ConversationManager : MonoBehaviour
 {
@@ -158,7 +159,7 @@ public class ConversationManager : MonoBehaviour
         //Interface to stop player movement while in dialogue by disabling the component for movement
         Player?.StateMachine.UnCutsceneState();
         inDialogue = false;
-        Services.UI.canPause = true;
+        PauseMenu.CanPause = true;
         canExit = false;
     }
 

@@ -8,7 +8,7 @@ using RageRooster.Player;
 using RageRooster.Core.World;
 using SLS.MenuCore;
 using SLS.StateMachineH.Signals;
-using SLS.GeneralUtilities.EventTickets;
+using SLS.GeneralUtilities.Events;
 using UnityEngine;
 using UnityEngine.AI;
 using Core = RageRooster.Services;
@@ -140,11 +140,6 @@ public class PlayerRoot : MonoBehaviour, IPlayer
     {
         events = new()
         {
-            Health.OnValueChanged.Subscribe(UIHUDSystem.Instance.health.Update),
-            Health.OnMaxChanged.Subscribe(UIHUDSystem.Instance.health.UpdateMax),
-            Ranged.Ammo.Subscribe(UIHUDSystem.Instance.health.Update),
-            Ranged.Ammo.SubscribeMax(UIHUDSystem.Instance.ammo.UpdateMax),
-            SavedProgress.Active.Currency.Subscribe(UIHUDSystem.Instance.SetCurrencyText),
         };
     }
 

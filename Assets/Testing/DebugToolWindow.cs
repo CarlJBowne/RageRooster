@@ -28,21 +28,21 @@ public class DebugToolWindow : EditorWindow
         rootVisualElement.Add(onlyInGameMessage);
         rootVisualElement.Add(actualWindowRoot);
 
-        if (RageRooster.TOP.Gameplay_Top.Active)
+        if (RageRooster.TOP.Gameplay.Active)
         {
             onlyInGameMessage.SetEnabled(false);
             BeginWindow();
         }
         else actualWindowRoot.SetEnabled(false);
 
-        RageRooster.TOP.Gameplay_Top.onFinalAwake += BeginWindow;
-        RageRooster.TOP.Gameplay_Top.onDestroy += EndWindow;
+        RageRooster.TOP.Gameplay.onFinalAwake += BeginWindow;
+        RageRooster.TOP.Gameplay.onDestroy += EndWindow;
 
     }
     private void OnDisable()
     {
-        RageRooster.TOP.Gameplay_Top.onFinalAwake -= BeginWindow;
-        RageRooster.TOP.Gameplay_Top.onDestroy -= EndWindow;
+        RageRooster.TOP.Gameplay.onFinalAwake -= BeginWindow;
+        RageRooster.TOP.Gameplay.onDestroy -= EndWindow;
     }
 
     //Intializes the window for real when the game is playing.
