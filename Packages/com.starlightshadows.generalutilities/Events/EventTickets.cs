@@ -15,7 +15,6 @@ namespace SLS.GeneralUtilities.Events
 {
     /// <summary>
     /// Represents a subscription ticket that can be placed in a list and used to subscribe and unsubscribe subscribers from various publishers in an easy and consistent manner.
-    /// <br/> This class specifically contains all the static helper methods for creating EventTickets from various types of events. Though Extension methods are also provided for most types found on the publishing event.
     /// </summary>
     public class EventTicket
     {

@@ -44,11 +44,6 @@ namespace RageRooster.TOP
             EntitySpawn.PlayerPosition = Player.LocalContext.Player.Transform;
             Debug.Log("Player Active");
 
-            //for (int i = 0; i < rootObjects.Length; i++)
-            //{
-            //    Debug.Log($"Immortalizing : {rootObjects[i].name}");
-            //    DontDestroyOnLoad(rootObjects[i]);
-            //}
 
 
             OnEnter();

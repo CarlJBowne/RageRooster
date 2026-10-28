@@ -31,6 +31,8 @@ namespace SLS.ObjectUtilities
             if (initialized && Active) return;
             if (!Application.isPlaying) return;
 
+            ObjectPool.DefaultPoolParent = defaultPool;
+
             InitPoolGlobally(basicEnemyBullet);
             BasicEnemyBullet = basicEnemyBullet;
 

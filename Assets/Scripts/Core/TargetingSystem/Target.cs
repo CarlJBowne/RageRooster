@@ -211,11 +211,13 @@ public abstract class TargetType : Polymorph
         public UltEvents.UltEvent OnInteract;
         public override void OnTargeted(TargetType prevTarget)
         {
+            if (InteractionPopup == null) return;
             InteractionPopup.SetActive(true);
             InteractionPopup.transform.position = Target.transform.position + PopupPosition;
         }
         public override void OnDeTargeted(TargetType nextTarget)
         {
+            if (InteractionPopup == null) return;
             if (!nextTarget) InteractionPopup.SetActive(false);
         }
 

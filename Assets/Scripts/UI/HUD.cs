@@ -32,15 +32,8 @@ public class HUD : RageRooster.Core.HUD
 
     public static HUD Instance { get; private set; }
 
-    public void Awake()
+    protected override void OnInit()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-            return;
-        }
-        Instance = this;
-
         events = new()
         {
             Player.Player.Health.OnValueChanged.Subscribe(health.Update),
@@ -57,12 +50,9 @@ public class HUD : RageRooster.Core.HUD
         health.Init();
         ammo.Init();
         SetCurrencyText(SavedProgress.Active.Currency);
-    }
 
-    protected void OnDestroy()
-    {
-        events.DestroyAll();
     }
+    protected override void OnDeInit() => events.DestroyAll();
 
     // Called every frame to update the HUD
     private void Update()

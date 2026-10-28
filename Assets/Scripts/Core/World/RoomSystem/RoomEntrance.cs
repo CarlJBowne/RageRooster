@@ -72,7 +72,12 @@ namespace RageRooster.Core.World
             Root.asset.entrances.RemoveAt(Root.EntranceActors.IndexOf(this));
             Root.EntranceActors.Remove(this);
         }
-        public override void OnSave() => Root.asset.entrances[Root.EntranceActors.IndexOf(this)] = GetData();
+        public override void OnSave()
+        {
+            int id = Root.EntranceActors.IndexOf(this);
+            if (Root.asset.entrances.Count < id) Root.asset.entrances[id] = GetData();
+            else Root.asset.entrances.Add(GetData());
+        }
 #endif
 
         public void OnTriggerEnter(Collider other)

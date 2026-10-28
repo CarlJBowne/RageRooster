@@ -24,7 +24,6 @@ namespace RageRooster
 
         public static class UI
         {
-            public static Action<string> ShowHint;
             public static IOverlayTopPlus OverlayTopPlus;
         }
 

@@ -1264,7 +1264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Target
   Types:
     items:
-    - rid: 945612048032596199
+    - rid: 343584841781477481
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 0}
   collider: {fileID: 153816187}
@@ -1274,12 +1274,13 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 945612048032596199
-      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
+    - rid: 343584841781477481
+      type: {class: TargetType/Interactable, ns: , asm: RageRooster.Core}
       data:
         Target: {fileID: 153816186}
+        PopupPosition: {x: 0, y: 0, z: 0}
+        OnInteract:
+          _PersistentCalls: []
 --- !u!65 &153816187
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1544,7 +1545,7 @@ MonoBehaviour:
   defaultColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &179040852
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1563,7 +1564,7 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &179040853
 Transform:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1578,7 +1579,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &179040854
 MeshRenderer:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1626,7 +1627,7 @@ MeshRenderer:
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!33 &179040855
 MeshFilter:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1653,7 +1654,7 @@ MonoBehaviour:
     meshQuery:
       layers: 16777223
       maskAndChannels: 234881031
-    surfaceParameter: 62502
+    surfaceParameter: 62510
     meshQueryIndex: 0
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
@@ -2942,10 +2943,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae6a1e04b2022f54c82b83da1bc8d399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  breakVFX: {fileID: 6156975185382734124, guid: 380698cbd3e2d4d4ba173b9c25d5a20b,
-    type: 3}
-  DespawnTime: 1
-  lootSpawner: {fileID: 0}
 --- !u!114 &231493297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3636,8 +3633,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Target
   Types:
     items:
-    - rid: 440872388981686363
-    - rid: 440872388981686364
+    - rid: -2
+    - rid: -2
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 280758275}
   collider: {fileID: 280758276}
@@ -3649,14 +3646,6 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 440872388981686363
-      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
-      data:
-        Target: {fileID: 280758282}
-    - rid: 440872388981686364
-      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
-      data:
-        Target: {fileID: 280758282}
 --- !u!114 &280758283
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -7279,8 +7268,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Target
   Types:
     items:
-    - rid: 440872388981686365
-    - rid: 440872388981686366
+    - rid: -2
+    - rid: -2
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 779113069}
   collider: {fileID: 779113070}
@@ -7292,14 +7281,6 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 440872388981686365
-      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
-      data:
-        Target: {fileID: 779113068}
-    - rid: 440872388981686366
-      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
-      data:
-        Target: {fileID: 779113068}
 --- !u!54 &779113069
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8679,7 +8660,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 63056
+    surfaceParameter: 63062
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
@@ -8903,8 +8884,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Target
   Types:
     items:
-    - rid: 440872388981686365
-    - rid: 440872388981686366
+    - rid: -2
+    - rid: -2
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 961141755}
   collider: {fileID: 961141756}
@@ -8916,14 +8897,6 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 440872388981686365
-      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
-      data:
-        Target: {fileID: 961141762}
-    - rid: 440872388981686366
-      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
-      data:
-        Target: {fileID: 961141762}
 --- !u!114 &961141763
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -9360,7 +9333,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Target
   Types:
     items:
-    - rid: 945612048032596200
+    - rid: 343584841781477479
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 0}
   collider: {fileID: 1001837991}
@@ -9370,10 +9343,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 945612048032596200
-      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
+    - rid: 343584841781477479
+      type: {class: TargetType/Ranged, ns: , asm: RageRooster.Core}
       data:
         Target: {fileID: 1001837990}
 --- !u!65 &1001837991
@@ -14309,7 +14280,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Target
   Types:
     items:
-    - rid: 945612048032596198
+    - rid: 343584841781477480
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 0}
   collider: {fileID: 1385617812}
@@ -14319,15 +14290,10 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 945612048032596198
-      type: {class: TargetType/Interactable, ns: , asm: Assembly-CSharp}
+    - rid: 343584841781477480
+      type: {class: TargetType/Melee, ns: , asm: RageRooster.Core}
       data:
         Target: {fileID: 1385617811}
-        PopupPosition: {x: 0, y: 0, z: 0}
-        OnInteract:
-          _PersistentCalls: []
 --- !u!65 &1385617812
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15702,7 +15668,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d466add7a96e79f439a6554af873731f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPositionRelative: {x: 0, y: 0, z: 0}
 --- !u!65 &1640396723
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17778,7 +17743,7 @@ MonoBehaviour:
   HandleAsOne: 1
 --- !u!1 &1845861645
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -17796,7 +17761,7 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &1845861646
 Transform:
-  m_ObjectHideFlags: 2
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -17811,7 +17776,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1845861647
 MeshCollider:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 16
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -17852,7 +17817,7 @@ MonoBehaviour:
     meshQuery:
       layers: 33554440
       maskAndChannels: 8
-    surfaceParameter: 63056
+    surfaceParameter: 63062
     meshQueryIndex: 1
     subMeshQueryIndex: 0
     geometryHashValue: 8604286058628454252
@@ -18356,8 +18321,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Target
   Types:
     items:
-    - rid: 440872388981686371
-    - rid: 440872388981686372
+    - rid: -2
+    - rid: -2
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 0}
   collider: {fileID: 1891244945}
@@ -18369,14 +18334,6 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 440872388981686371
-      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
-      data:
-        Target: {fileID: 1891244949}
-    - rid: 440872388981686372
-      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
-      data:
-        Target: {fileID: 1891244949}
 --- !u!114 &1891244950
 MonoBehaviour:
   m_ObjectHideFlags: 2
@@ -18778,8 +18735,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Target
   Types:
     items:
-    - rid: 440872388981686367
-    - rid: 440872388981686368
+    - rid: -2
+    - rid: -2
   RealPositionOffset: {x: 0, y: 0, z: 0}
   rigidBody: {fileID: 1911888897}
   collider: {fileID: 1911888898}
@@ -18791,14 +18748,6 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 440872388981686367
-      type: {class: TargetType/Melee, ns: , asm: Assembly-CSharp}
-      data:
-        Target: {fileID: 1911888899}
-    - rid: 440872388981686368
-      type: {class: TargetType/Ranged, ns: , asm: Assembly-CSharp}
-      data:
-        Target: {fileID: 1911888899}
 --- !u!114 &1911888900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19574,7 +19523,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: -2.8262203, y: 1.3385534, z: 75.17779}
 --- !u!1 &1988749489
 GameObject:
-  m_ObjectHideFlags: 3
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -19591,7 +19540,7 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &1988749490
 Transform:
-  m_ObjectHideFlags: 11
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -19609,7 +19558,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1988749491
 MonoBehaviour:
-  m_ObjectHideFlags: 27
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
