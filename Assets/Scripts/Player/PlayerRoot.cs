@@ -140,6 +140,9 @@ public class PlayerRoot : MonoBehaviour, IPlayer
     {
         events = new()
         {
+#if UNITY_EDITOR
+            Input.Debug.GodMode.SubscribePerformed(PlayerStats.ActivateDebug)
+#endif
         };
     }
 
@@ -150,7 +153,7 @@ public class PlayerRoot : MonoBehaviour, IPlayer
         _activeState = ActivityStates.Null;
         events.DestroyAll();
     }
-    #endregion
+#endregion
 
 
     #region Death / Respawn Sequence

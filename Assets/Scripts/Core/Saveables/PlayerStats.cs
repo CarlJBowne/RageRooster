@@ -19,8 +19,8 @@ namespace RageRooster.Player
     {
         public static PlayerStats Active { get; private set; }
         public void Establish() => Active = this;
-        public IntSyncable MaxHealth = new();
-        public IntSyncable MaxAmmo = new();
+        public IntSyncable MaxHealth = new(3, "Player Health");
+        public IntSyncable MaxAmmo = new(0, "Player Ammo");
         public Destination location;
 
         /// <summary> The ability to throw a grabbable object downwards while in midair, launching the player upwards. </summary>

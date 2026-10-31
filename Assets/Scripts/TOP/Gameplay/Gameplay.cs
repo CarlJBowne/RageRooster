@@ -282,7 +282,7 @@ namespace RageRooster.TOP
             CoreServices.Music.StopAllMusic();
             UpdateProxy.OnFixedUpdate -= FixedUpdate;
             PlayerRoot.HaveDestroyed();
-            SaveData.InitializeFile(-1);
+            SaveData.ExitFile();
             RoomManager.queuedDestination = null;
             for (int i = rootObjects.Length - 1; i >= 0; i--)
                 Destroy(rootObjects[i]);

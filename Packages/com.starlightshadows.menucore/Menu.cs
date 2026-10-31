@@ -47,7 +47,11 @@ namespace SLS.MenuCore
             }
 
             if (isActive) Menu.Open(this, true);
-            else SetVisibility(false, 0);
+            else
+            {
+                SetVisibility(false, 0);
+                SetInteractable(false);
+            }
         }
 
         protected virtual void OnDestroy()
@@ -153,12 +157,12 @@ namespace SLS.MenuCore
             ActiveMenus.Add(menu);
 
             menu.isActive = true;
-            menu.gameObject.SetActive(true);
+            menu.SetVisibility(true);
             menu.SetInteractable(true);
 
             if (menu.defaultSelection != null) menu.defaultSelection.Select();
 
-            ActiveMenus[^2]?.SetInteractable(false);
+            if (ActiveMenus.Count > 2) ActiveMenus[^2]?.SetInteractable(false);
 
             menu.OnOpen();
         }
@@ -176,9 +180,10 @@ namespace SLS.MenuCore
             ActiveMenus.Remove(menu);
 
             menu.isActive = false;
-            menu.gameObject.SetActive(false);
+            menu.SetVisibility(false);
+            menu.SetInteractable(false);
 
-            ActiveMenus[^1]?.SetInteractable(true);
+            if (ActiveMenus.Count > 1) ActiveMenus[^1]?.SetInteractable(true);
             menu.OnClose();
         }
 

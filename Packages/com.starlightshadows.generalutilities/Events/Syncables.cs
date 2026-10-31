@@ -14,7 +14,18 @@ namespace SLS.GeneralUtilities.Events
     [System.Serializable]
     public class Syncable<T> where T : struct, IEquatable<T>
     {
-        public Syncable(T init = default) => _value = init;
+        public Syncable(T init = default, string id = null)
+        {
+            _value = init;
+#if UNITY_EDITOR
+            ID = id;
+#endif
+        }
+
+#if UNITY_EDITOR
+        //A debugging ID for this Syncable. Can be used to identify it in logs or debugging tools.
+        public readonly string ID = null;
+#endif
 
         /// <summary>
         /// Backing field for the <see cref="Value"/> property. Serialized by Unity.
@@ -198,6 +209,21 @@ namespace SLS.GeneralUtilities.Events
     /// <typeparam name="T">A value type that implements <see cref="IEquatable{T}"/> and <see cref="IComparable{T}"/>.</typeparam>
     public class SyncableClamped<T> where T : struct, IEquatable<T>, IComparable<T>
     {
+        public SyncableClamped(T init = default, T minInit = default, T maxInit = default, string id = null)
+        {
+            _value = init;
+            _min = minInit;
+            _max = maxInit;
+#if UNITY_EDITOR
+            ID = id;
+#endif
+        }
+
+#if UNITY_EDITOR
+        //A debugging ID for this Syncable. Can be used to identify it in logs or debugging tools.
+        public readonly string ID = null;
+#endif
+
         /// <summary>
         /// Backing field for the <see cref="Value"/> property. Serialized by Unity.
         /// </summary>
@@ -485,6 +511,8 @@ namespace SLS.GeneralUtilities.Events
     /// </summary>
     public class IntSyncable : Syncable<int>
     {
+        public IntSyncable(int init = 0, string id = null) : base(init, id) { }
+
         /// <summary> Adds the int on the right to the value of the <see cref="IntSyncable"/> on the left. </summary>
         public static IntSyncable operator +(IntSyncable l, int r)
         {
@@ -539,6 +567,8 @@ namespace SLS.GeneralUtilities.Events
     /// </summary>
     public class IntSyncableClamped : SyncableClamped<int>
     {
+        public IntSyncableClamped(int value = 0, int min = 0, int max = 1) : base(value, min, max) { }
+
         /// <summary> Adds the int on the right to the value of the <see cref="IntSyncable"/> on the left. </summary>
         public static IntSyncableClamped operator +(IntSyncableClamped l, int r)
         {
@@ -593,6 +623,8 @@ namespace SLS.GeneralUtilities.Events
     /// </summary>
     public class FloatSyncable : Syncable<float>
     {
+        public FloatSyncable(float init = 0, string id = null) : base(init, id) { }
+
         /// <summary> Adds the float on the right to the value of the <see cref="FloatSyncable"/> on the left. </summary>
         public static FloatSyncable operator +(FloatSyncable l, float r)
         {
@@ -647,7 +679,7 @@ namespace SLS.GeneralUtilities.Events
     /// </summary>
     public class FloatSyncableClamped : SyncableClamped<float>
     {
-        public FloatSyncableClamped(float value = 0, float min = 0, float max = 1) : base(value, min, max) { }
+        public FloatSyncableClamped(float value = 0, float min = 0, float max = 1, string id = null) : base(value, min, max, id) { }
 
         /// <summary> Adds the float on the right to the value of the <see cref="FloatSyncable"/> on the left. </summary>
         public static FloatSyncableClamped operator +(FloatSyncableClamped l, float r)
