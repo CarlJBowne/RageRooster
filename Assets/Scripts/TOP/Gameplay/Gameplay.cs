@@ -75,8 +75,6 @@ namespace RageRooster.TOP
                     Overlay.BetweenUI.ResetState();
                     OverlayTopPlus.Get.ResetState();
                     SavedProgress.UpdateGameTime();
-                    Input.Pause.performed += c => { Menu.Escape(); };
-                    Menu.EscapeCallbackMenuless += PauseMenu.Get.Open;
                     UpdateProxy.OnFixedUpdate += FixedUpdate;
                 },
             };
@@ -282,7 +280,7 @@ namespace RageRooster.TOP
             CoreServices.Music.StopAllMusic();
             UpdateProxy.OnFixedUpdate -= FixedUpdate;
             PlayerRoot.HaveDestroyed();
-            SaveData.InitializeFile(-1);
+            SaveData.ExitFile();
             RoomManager.queuedDestination = null;
             for (int i = rootObjects.Length - 1; i >= 0; i--)
                 Destroy(rootObjects[i]);

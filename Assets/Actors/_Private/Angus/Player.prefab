@@ -741,11 +741,11 @@ MonoBehaviour:
   upgradesDisplay:
     MaxHealth:
       _value: 0
-      OnValueChangedUlt:
+      onValueChangedUlt:
         _PersistentCalls: []
     MaxAmmo:
       _value: 0
-      OnValueChangedUlt:
+      onValueChangedUlt:
         _PersistentCalls: []
     dropLaunch: 0
     wallJump: 0
@@ -831,13 +831,13 @@ MonoBehaviour:
   playerRotationSpeed: 4
   Ammo:
     _value: 0
-    OnValueChangedUlt:
+    onValueChangedUlt:
       _PersistentCalls: []
     _max: 0
     _min: 0
-    OnMaxChangedUlt:
+    onMaxChangedUlt:
       _PersistentCalls: []
-    OnMinChangedUlt:
+    onMinChangedUlt:
       _PersistentCalls: []
   currentTargetDistance: 10
   totalEggsShot: 0
@@ -5851,6 +5851,12 @@ PrefabInstance:
       propertyPath: managedReferences[3657502764043599955].pressEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._Object
       value: 
       objectReference: {fileID: 5883982345042846063}
+    - target: {fileID: 5898498358072726126, guid: e2f7aba649dedca4b89f601ebb61b048,
+        type: 3}
+      propertyPath: managedReferences[3657502764043599955].pressEvent._PersistentCalls.Array.data[0]._PersistentArguments.Array.data[0]._String
+      value: SLS.StateMachineH.State, SLS.StateMachineH, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+      objectReference: {fileID: 0}
     - target: {fileID: 6142764829233176585, guid: e2f7aba649dedca4b89f601ebb61b048,
         type: 3}
       propertyPath: <Machine>k__BackingField

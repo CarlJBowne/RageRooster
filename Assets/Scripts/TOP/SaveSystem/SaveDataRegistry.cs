@@ -27,16 +27,8 @@ namespace RageRooster.TOP.Save
         [SerializeField] private Flag.Collection globalFlagDefs = new();
         [SerializeField] private Flag.BoolOnlyCollection storyFlagDefs = new();
 
-        public override void OnInit()
+        public override void OnInitEditor()
         {
-            //Init File background services.
-            SaveFile._versionOptions.DesiredFileVersion = typeof(FileVersion_10);
-            SaveFile._versionOptions.AllFileVersions = new Dictionary<string, Type>()
-            {
-                { FileVersion_10.NUM, typeof(FileVersion_10) },
-                { FileVersion_UCF.NUM, typeof(FileVersion_UCF) }
-            };
-
             DefsData = new()
             {
                 playerStats = playerStatsDef,
@@ -50,6 +42,18 @@ namespace RageRooster.TOP.Save
                 flags = AreaRegistry.All.ToDictionary(a => a.name, a => a.flagDefaults)
             };
             DefsData.flags.Add("Global", globalFlagDefs);
+            activeDisplayData = null;
+        }
+        public override void OnInitPlaying()
+        {
+            //Init File background services.
+            SaveFile._versionOptions.DesiredFileVersion = typeof(FileVersion_10);
+            SaveFile._versionOptions.AllFileVersions = new Dictionary<string, Type>()
+            {
+                { FileVersion_10.NUM, typeof(FileVersion_10) },
+                { FileVersion_UCF.NUM, typeof(FileVersion_UCF) }
+            };
+
         }
         [UnityEngine.SerializeField] private SaveData activeDisplayData = null;
 
@@ -59,7 +63,7 @@ namespace RageRooster.TOP.Save
 
 
         public override void InitializeFile(int fileNo)
-        {
+        { 
             ActiveData = new();
             ActiveData.playerStats.Establish();
             ActiveData.progress.Establish();

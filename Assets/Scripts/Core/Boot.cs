@@ -6,12 +6,14 @@ using RageRooster.Core.World;
 using RageRooster.Settings;
 using SLS.AppStateMachine;
 using SLS.MenuCore;
+using UnityEngine.InputSystem;
 
 
 public class Boot : AppStateGlobal<Boot>
 {
     public AppState MainMenuState;
     public AppState GameplayState;
+    public InputActionReference MenuEscapeAction;
 
     private int loadFromSavePointID = -2;
     public static int LoadFromSavePointID
@@ -40,6 +42,7 @@ public class Boot : AppStateGlobal<Boot>
     private void OnBoot()
     {
         GameSettings.Init();
+        Input.Pause.performed += c => { Menu.Escape(); };
         var d = AudioManager.Get;
         Overlay.Instantiate();
     }

@@ -1,4 +1,5 @@
 using RageRooster.Core.Save;
+using RageRooster.Player;
 using SLS.GeneralUtilities.Events;
 using SLS.GeneralUtilities.Events;
 using SLS.StateMachineH;
@@ -12,7 +13,7 @@ using static RageRooster.Player.LocalContext;
 public class PlayerHealth : Health
 {
     protected override IntSyncable MaxSourceStat => Player.Stats.MaxHealth;
-    public static IntSyncableClamped Viewer;
+    //public static IntSyncableClamped Viewer;
 
     public float invincibilityTime;
     public State damageState;
@@ -28,11 +29,13 @@ public class PlayerHealth : Health
     {
         base.Awake();
         collider = GetComponent<Collider>();
-        Viewer = new();
-        Viewer &= Current;
-        Viewer.Max = Max;
-        events.Add(OnValueChanged.Subscribe(Viewer.SetValue));
-        events.Add(OnMaxChanged.Subscribe(Viewer.SetMax));
+        events.Add(PlayerStats.Active.MaxHealth.Subscribe(SetMaxAndFill));
+
+        //Viewer = new();
+        //Viewer &= Current;
+        //Viewer.Max = Max;
+        //events.Add(OnValueChanged.Subscribe(Viewer.SetValue));
+        //events.Add(OnMaxChanged.Subscribe(Viewer.SetMax));
     }
 
     protected override void OnDamage(Attack attack)
