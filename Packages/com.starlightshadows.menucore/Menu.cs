@@ -160,6 +160,7 @@ namespace SLS.MenuCore
             menu.isActive = true;
             menu.SetVisibility(true);
             menu.TimeOpened = Time.time;
+            menu.SetInteractable(true);
 
             if (menu.defaultSelection != null) menu.defaultSelection.Select();
 
@@ -182,6 +183,7 @@ namespace SLS.MenuCore
 
             menu.isActive = false;
             menu.SetVisibility(false);
+            menu.SetInteractable(false);
 
             if (ActiveMenus.Count > 1) ActiveMenus[^1]?.SetInteractable(true);
             menu.OnClose();
