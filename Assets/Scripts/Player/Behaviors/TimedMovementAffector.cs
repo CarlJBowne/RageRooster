@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
-using static RageRooster.Player.LocalContext;
+using SLS.StateMachineH;
+using SLS.StateMachineH.Timelines;
 
 
-
-namespace SLS.StateMachineH.Timelines
+namespace RageRooster.Player
 {
     public class TimedMovementAffector : StateTimeline
     {

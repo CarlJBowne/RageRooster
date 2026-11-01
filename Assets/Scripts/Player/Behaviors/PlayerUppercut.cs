@@ -2,31 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
-using static RageRooster.Player.LocalContext;
 
-public class PlayerUppercut : PlayerMovementEffector
+namespace RageRooster.Player
 {
-    public float gravity = 9.81f;
-    public float ucPower;
-    public float ucHeight;
-    public float ucMinHeight;
-
-    protected float targetUcHeight;
-    protected float targetMinUcHeight;
-
-    protected override void OnFixedUpdate() => UppercutJump();
-
-    public void UppercutJump()
+    public class PlayerUppercut : PlayerMovementEffector
     {
-        Debug.Log("Real?(1)");
-        Player.MovementBody.Velocity.y = ucPower;
-        targetMinUcHeight = transform.position.y + ucMinHeight;
-        targetUcHeight = (transform.position.y + ucHeight) - (ucPower.P()) / (2 * gravity);
-        if (targetUcHeight <= transform.position.y)
+        public float gravity = 9.81f;
+        public float ucPower;
+        public float ucHeight;
+        public float ucMinHeight;
+
+        protected float targetUcHeight;
+        protected float targetMinUcHeight;
+
+        protected override void OnFixedUpdate() => UppercutJump();
+
+        public void UppercutJump()
         {
-            Player.MovementBody.Velocity.y = Mathf.Sqrt(2 * gravity * ucHeight);
-            targetMinUcHeight = transform.position.y;
+            Debug.Log("Real?(1)");
+            Player.MovementBody.Velocity.y = ucPower;
+            targetMinUcHeight = transform.position.y + ucMinHeight;
+            targetUcHeight = (transform.position.y + ucHeight) - (ucPower.P()) / (2 * gravity);
+            if (targetUcHeight <= transform.position.y)
+            {
+                Player.MovementBody.Velocity.y = Mathf.Sqrt(2 * gravity * ucHeight);
+                targetMinUcHeight = transform.position.y;
+            }
+            Debug.Log("Real?(2)");
         }
-        Debug.Log("Real?(2)");
     }
 }

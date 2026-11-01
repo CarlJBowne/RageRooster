@@ -13,7 +13,7 @@ using RageRooster;
 using RageRooster.Core;
 using CoreServices = RageRooster.Services;
 using RageRooster.Player;
-using static RageRooster.Player.LocalContext;
+
 using RageRooster.TOP.Save;
 
 namespace RageRooster.TOP
@@ -40,8 +40,8 @@ namespace RageRooster.TOP
             yield return null;
             Debug.Log("Gameplay Scene Active");
 
-            yield return new WaitUntil(Player.LocalContext.Active);
-            EntitySpawn.PlayerPosition = Player.LocalContext.Player.Transform;
+            yield return new WaitUntil(() => Player.Player.Active);
+            EntitySpawn.PlayerPosition = Player.Player.Transform;
             Debug.Log("Player Active");
 
 
@@ -52,7 +52,7 @@ namespace RageRooster.TOP
 
             Debug.Log("Initializing Other Systems");
             GlobalPool.Get.Initialize(rootObjects[7].transform);
-            Player.LocalContext.Player.Ranged.eggPool.Initialize();
+            Player.Player.Ranged.eggPool.Initialize();
 
             Overlay.OverALL.Alpha = 1;
             Overlay.UnderHUD.ResetState();

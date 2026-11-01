@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using DG.Tweening;
+using RageRooster.Core;
+using RageRooster.Player;
 using SLS.GeneralUtilities.Events;
 using TMPro;
 using UnityEngine;
@@ -18,7 +20,6 @@ namespace RageRooster.UI.HUD
 
         int currentHealth = 3;
         int currentMaxHealth = 3;
-        PlayerHealth PlayerHealth => RageRooster.Player.LocalContext.Player.Health;
         int absoluteMax => healthImages.Count;
         private List<EventTicket> events;
         //Sequence healthSequence;
@@ -27,12 +28,12 @@ namespace RageRooster.UI.HUD
         {
             events = new()
             {
-                PlayerHealth.OnValueChanged.Subscribe(UpdateDisplay),
-                PlayerHealth.OnMaxChanged.Subscribe(UpdateMax),
+                Player.Player.Health.OnValueChanged.Subscribe(UpdateDisplay),
+                Player.Player.Health.OnMaxChanged.Subscribe(UpdateMax),
             };
 
-            UpdateMax(PlayerHealth.Max);
-            UpdateDisplay(PlayerHealth.Current);
+            UpdateMax(Player.Player.Health.Max);
+            UpdateDisplay(Player.Player.Health.Current);
         }
         private void OnDestroy() => events.DestroyAll();
 

@@ -10,7 +10,6 @@ using RageRooster.Core;
 using RageRooster.Player;
 using RageRooster.Core.Save;
 using static RageRooster.Services;
-using Player = RageRooster.Player.LocalContext;
 using RageRooster.UI.HUD;
 
 namespace RageRooster.UI

@@ -1,237 +1,192 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using log4net;
 using RageRooster;
 using RageRooster.Core;
 using RageRooster.Core.Save;
-using RageRooster.Player;
 using RageRooster.Core.World;
+using RageRooster.Player;
+using SLS.GeneralUtilities.Events;
 using SLS.MenuCore;
 using SLS.StateMachineH.Signals;
-using SLS.GeneralUtilities.Events;
 using UnityEngine;
 using UnityEngine.AI;
-using Core = RageRooster.Services;
-using static RageRooster.Player.LocalContext;
 using static RageRooster.Core.IPlayer;
 
-/// <summary>
-/// The Root component of the Player entity. Implements IPlayer for external access and IPlayerRoot for internal assembly access.
-/// </summary>
-[DefaultExecutionOrder(ExecutionOrders.Player)]
-[RequireComponent(typeof(PlayerStateMachine), typeof(PlayerHealth), typeof(PlayerMovementBody))]
-[RequireComponent(typeof(PlayerGrabber), typeof(PlayerController), typeof(TargetingManager))]
-[RequireComponent(typeof(SignalManager), typeof(Animator), typeof(RagdollHandler))]
-[RequireComponent(typeof(AudioCaller), typeof(CapsuleCollider))]
-public class PlayerRoot : MonoBehaviour, IPlayer
+using Core = RageRooster.Services;
+
+namespace RageRooster.Player
 {
-
-    #region GameplayState
-
-    public ActivityStates ActivityState
+    /// <summary>
+    /// The Root component of the Player entity. Implements IPlayer for external access from the Core assembly.
+    /// Handles MonoBehavior lifecycle and initialization of the static Player context.
+    /// </summary>
+    [DefaultExecutionOrder(ExecutionOrders.Player)]
+    [RequireComponent(typeof(PlayerStateMachine), typeof(PlayerHealth), typeof(PlayerMovementBody))]
+    [RequireComponent(typeof(PlayerGrabber), typeof(PlayerController), typeof(TargetingManager))]
+    [RequireComponent(typeof(SignalManager), typeof(Animator), typeof(RagdollHandler))]
+    [RequireComponent(typeof(AudioCaller), typeof(CapsuleCollider))]
+    public class PlayerRoot : MonoBehaviour, IPlayer
     {
-        get => _activeState;
-        set
+        #region Forwarding Properties to Static Player Context
+        public ActivityStates ActivityState
         {
-            if (_activeState == value || value is ActivityStates.Null || _activeState is ActivityStates.Null)
+            get => Player.ActivityState;
+            set => Player.ActivityState = value;
+        }
+
+        public bool Exists => Player.Exists;
+        public bool Active => Player.Active;
+        public bool Paused => Player.Paused;
+        public bool InCutscene => Player.InCutscene;
+        public bool Dying => Player.Dying;
+
+        public Transform Transform => Player.Transform;
+        public GameObject GameObject => Player.GameObject;
+        public PlayerStateMachine StateMachine => Player.StateMachine;
+        public PlayerHealth Health => Player.Health;
+        public SignalManager SignalManager => Player.SignalManager;
+        public PlayerMovementBody MovementBody => Player.MovementBody;
+        public CapsuleCollider Collider => Player.Collider;
+        public PlayerController Controller => Player.Controller;
+        public PlayerRanged Ranged => Player.Ranged;
+        public PlayerGrabber Grabber => Player.Grabber;
+        public TargetingManager TargetingManager => Player.TargetingManager;
+        public Animator Animator => Player.Animator;
+        public AudioCaller Audio => Player.Audio;
+        public RagdollHandler RagdollHandler => Player.RagdollHandler;
+        public PlayerStats Stats => Player.Stats;
+
+        public Vector3 Position => Player.Position;
+        public Vector3 Center => Player.Center;
+        public Quaternion Rotation => Player.Rotation;
+        public Vector3 Forward => Player.Forward;
+
+        public MonoBehaviour CurrentVent
+        {
+            get => Player.CurrentVent;
+            set => Player.CurrentVent = value;
+        }
+
+        public float DistanceFrom(Vector3 pos) => Player.DistanceFrom(pos);
+        public void InstantMove(Vector3 newPosition, float? yRot = null) => Player.InstantMove(newPosition, yRot);
+        public bool Owns(Component C) => Player.Owns(C);
+        #endregion
+
+        #region Events / Callbacks
+
+        private List<EventTicket> events;
+        public void Awake()
+        {
+            if (Player.Exists && Player.Root != this)
+            {
+                Destroy(gameObject);
                 return;
+            }
 
-            _activeState = value;
+            //DontDestroyOnLoad(this);
 
-            gameObject.SetActive(value != ActivityStates.Invisible);
-            StateMachine.enabled = value is ActivityStates.Active;
+            RageRooster.Core.IPlayer.Register.Register(this, IPlayerPassword);
 
-            MovementBody.enabled = value is ActivityStates.Active or ActivityStates.Dying;
-            Controller.enabled = value is ActivityStates.Active;
-            Animator.enabled = value is ActivityStates.Active or ActivityStates.Cutscene;
-            Ranged.enabled = value is ActivityStates.Active;
+            Player.Initialize(this);
         }
-    }
-
-    private ActivityStates _activeState = ActivityStates.Null;
-
-    public bool Exists => ActivityState is not ActivityStates.Null;
-    public bool Active => ActivityState is ActivityStates.Active;
-    public bool Paused => ActivityState is ActivityStates.Paused;
-    public bool InCutscene => ActivityState is ActivityStates.Cutscene;
-    public bool Dying => ActivityState is ActivityStates.Dying;
-
-    #endregion
-
-    #region Component References
-    public Transform Transform => transform;
-    public GameObject GameObject => gameObject;
-    public PlayerStateMachine StateMachine { get; private set; }
-    public PlayerHealth Health { get; private set; }
-    public SignalManager SignalManager { get; private set; }
-    public PlayerMovementBody MovementBody { get; private set; }
-    public CapsuleCollider Collider { get; private set; }
-    public PlayerController Controller { get; private set; }
-    public PlayerRanged Ranged { get; private set; }
-    public PlayerGrabber Grabber { get; private set; }
-    public TargetingManager TargetingManager { get; private set; }
-    public Animator Animator { get; private set; }
-    public AudioCaller Audio { get; private set; }
-    public RagdollHandler RagdollHandler { get; private set; }
-    public PlayerStats Stats => PlayerStats.Active;
-    #endregion
-
-    #region Helper Properties / Methods
-    public Vector3 Position => Exists ? transform.position : Vector3.zero;
-    public Vector3 Center => transform.position + Collider.center;
-    public Quaternion Rotation => transform.rotation;
-    public Vector3 Forward => transform.forward;
-
-    public MonoBehaviour CurrentVent { get; set; }
-
-    public float DistanceFrom(Vector3 pos) => Exists ? Vector3.Distance(Position, pos) : 999999f;
-
-    public void InstantMove(Vector3 newPosition, float? yRot = null)
-    {
-        if (!Exists) return;
-        Vector3 camDelta = newPosition - transform.position;
-        MovementBody.Position = newPosition;
-        if (yRot != null) MovementBody.Direction.Rotation = new(0, yRot.Value, 0);
-        StateMachine.ResetState();
-        Cameras.currentVirtualCamera.PreviousStateIsValid = false;
-        Cameras.currentVirtualCamera.OnTargetObjectWarped(transform, camDelta);
-        MovementBody.Velocity.ZeroOut();
-    }
-
-    public bool Owns(Component C) => Exists && C != null && C.gameObject == gameObject;
-
-    #endregion
-
-    #region Events / Callbacks
-
-    private List<EventTicket> events;
-    public void Awake()
-    {
-        if (RageRooster.Player.LocalContext.Active() && RageRooster.Player.LocalContext.Player != this)
+        private void Start()
         {
-            Destroy(gameObject);
-            return;
-        }
-
-        //DontDestroyOnLoad(this);
-
-        RageRooster.Core.IPlayer.Register.Register(this, IPlayerPassword);
-        LocalContext.Register.Register(this);
-
-        StateMachine = GetComponent<PlayerStateMachine>();
-        Health = GetComponent<PlayerHealth>();
-        MovementBody = GetComponent<PlayerMovementBody>();
-        Collider = GetComponent<CapsuleCollider>();
-        Controller = GetComponent<PlayerController>();
-        Ranged = GetComponent<PlayerRanged>();
-        Grabber = GetComponent<PlayerGrabber>();
-        Animator = GetComponent<Animator>();
-        Audio = GetComponent<AudioCaller>();
-        RagdollHandler = GetComponent<RagdollHandler>();
-        TargetingManager = GetComponent<TargetingManager>();
-        SignalManager = GetComponent<SLS.StateMachineH.Signals.SignalManager>();
-
-        _activeState = ActivityStates.Active;
-
-        fallDownPitTime = Health.inFallDownPitTime;
-        deathTime = Health.inDeathTime;
-    }
-    private void Start()
-    {
-        events = new()
+            events = new()
         {
 #if UNITY_EDITOR
             Input.Debug.GodMode.SubscribePerformed(PlayerStats.ActivateDebug)
 #endif
         };
-    }
-
-    void OnDestroy()
-    {
-        RageRooster.Core.IPlayer.Register.Deregister(this, IPlayerPassword);
-        LocalContext.Register.Deregister(this);
-        _activeState = ActivityStates.Null;
-        events.DestroyAll();
-    }
-#endregion
-
-
-    #region Death / Respawn Sequence
-    private float fallDownPitTime;
-    private float deathTime;
-
-    public Action onRespawn { get; set; }
-    public event Action OnRespawn
-    {
-        add => onRespawn += value;
-        remove => onRespawn -= value;
-    }
-    public Action onMovingUpdate { get; set; }
-    public event Action OnMovingUpdate
-    {
-        add => onMovingUpdate += value;
-        remove => onMovingUpdate -= value;
-    }
-
-    public void Death()
-    {
-        DeathOrPit();
-        StartCoroutine(DeathRoutine());
-        IEnumerator DeathRoutine()
-        {
-            yield return new WaitForSecondsRealtime(fallDownPitTime + 1);
-            yield return Core.UI.OverlayTopPlus.GameOverAnimation();
-            yield return new WaitForSecondsRealtime(deathTime);
-
-            RoomManager.TransitionStyle = new()
-            {
-                FadeOutRoutine = Overlay.UnderHUD.FadeAlpha(1, 1f),
-                FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 1f),
-            };
-
-            SaveData.RevertToDeathData();
-            RoomManager.PostFadeOutAction = () => { onRespawn?.Invoke(); };
-            RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
         }
-    }
 
-    public void Respawn()
-    {
-        DeathOrPit();
-        StartCoroutine(PitFallRoutine());
-        IEnumerator PitFallRoutine()
+        void OnDestroy()
         {
-            yield return new WaitForSecondsRealtime(fallDownPitTime);
-
-            RoomManager.TransitionStyle = new()
-            {
-                FadeOutRoutine = Overlay.UnderHUD.FadeAlpha(1, 1f),
-                FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 1f),
-            };
-
-            RoomManager.PostFadeOutAction = () => { onRespawn?.Invoke(); };
-            RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
+            RageRooster.Core.IPlayer.Register.Deregister(this, IPlayerPassword);
+            Player.Clear();
+            events.DestroyAll();
         }
+        #endregion
+
+
+        #region Death / Respawn Sequence
+
+        public Action onRespawn { get; set; }
+        public event Action OnRespawn
+        {
+            add => onRespawn += value;
+            remove => onRespawn -= value;
+        }
+        public Action onMovingUpdate { get; set; }
+        public event Action OnMovingUpdate
+        {
+            add => onMovingUpdate += value;
+            remove => onMovingUpdate -= value;
+        }
+
+        public void Death()
+        {
+            DeathOrPit();
+            StartCoroutine(DeathRoutine());
+            IEnumerator DeathRoutine()
+            {
+                yield return new WaitForSecondsRealtime(Health.inFallDownPitTime + 1);
+                yield return RageRooster.Services.UI.OverlayTopPlus.GameOverAnimation();
+                yield return new WaitForSecondsRealtime(Health.inDeathTime);
+
+                RoomManager.TransitionStyle = new()
+                {
+                    FadeOutRoutine = Overlay.UnderHUD.FadeAlpha(1, 1f),
+                    FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 1f),
+                };
+
+                SaveData.RevertToDeathData();
+                RoomManager.PostFadeOutAction = () => { onRespawn?.Invoke(); };
+                RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
+            }
+        }
+
+        public void Respawn()
+        {
+            DeathOrPit();
+            StartCoroutine(PitFallRoutine());
+            IEnumerator PitFallRoutine()
+            {
+                yield return new WaitForSecondsRealtime(Health.inDeathTime);
+
+                RoomManager.TransitionStyle = new()
+                {
+                    FadeOutRoutine = Overlay.UnderHUD.FadeAlpha(1, 1f),
+                    FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 1f),
+                };
+
+                RoomManager.PostFadeOutAction = () => { onRespawn?.Invoke(); };
+                RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
+            }
+        }
+
+        private void DeathOrPit()
+        {
+            Vector3 targetVelocity = MovementBody.Velocity.Global;
+            Audio.PlayOneShot("Death");
+            StateMachine.Ragdoll.Enter();
+            MovementBody.Velocity.ZeroOut();
+            RagdollHandler.State = RagdollHandler.States.Thrown;
+            RagdollHandler.SetVelocity(targetVelocity * 0.75f);
+            Animator.enabled = false;
+        }
+        #endregion
+
+        #region Interface Implementation
+        IPlayerStateMachine IPlayer.StateMachine => StateMachine;
+
+        public static void HaveDestroyed()
+        {
+
+        }
+
+        private const string IPlayerPassword = "ANGUS_BUCKEYE_IS_RAD";
+        #endregion
     }
-
-    private void DeathOrPit()
-    {
-        Vector3 targetVelocity = MovementBody.Velocity.Global;
-        Audio.PlayOneShot("Death");
-        StateMachine.Ragdoll.Enter();
-        MovementBody.Velocity.ZeroOut();
-        RagdollHandler.State = RagdollHandler.States.Thrown;
-        RagdollHandler.SetVelocity(targetVelocity * 0.75f);
-        Animator.enabled = false;
-    }
-    #endregion
-
-    IPlayerStateMachine IPlayer.StateMachine => StateMachine;
-
-    public static void HaveDestroyed()
-    {
-
-    }
-
-    private const string IPlayerPassword = "ANGUS_BUCKEYE_IS_RAD";
 }

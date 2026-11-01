@@ -2,34 +2,36 @@ using RageRooster.Core.Save;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static RageRooster.Player.LocalContext;
 
-public class PlayerParryCollider : MonoBehaviour, IAttackSource
+namespace RageRooster.Player
 {
-
-    public Attack baseAttack;
-    public Attack hellUpgradedAttack;
-    public new SphereCollider collider;
-
-    private void OnTriggerEnter(Collider other) => Contact(other.gameObject);
-    
-
-    public void Contact(GameObject target)
+    public class PlayerParryCollider : MonoBehaviour, IAttackSource
     {
-        if (target == Player.GameObject) return;
-        if (target.TryGetComponent(out AttackProjectile targetProjectile))
+
+        public Attack baseAttack;
+        public Attack hellUpgradedAttack;
+        public new SphereCollider collider;
+
+        private void OnTriggerEnter(Collider other) => Contact(other.gameObject);
+
+
+        public void Contact(GameObject target)
         {
-            targetProjectile.Reflect(false);
+            if (target == Player.GameObject) return;
+            if (target.TryGetComponent(out AttackProjectile targetProjectile))
+            {
+                targetProjectile.Reflect(false);
+            }
+            else if (target.TryGetComponent(out IDamagable targetDamagable))
+                targetDamagable.Damage(GetAttack(target));
         }
-        else if (target.TryGetComponent(out IDamagable targetDamagable)) 
-            targetDamagable.Damage(GetAttack(target));
-    }
-    public Attack GetAttack() => throw new System.NotImplementedException();
-    public Attack GetAttack(GameObject target)
-    {
-        Attack result = Player.Stats.hellcopter ? hellUpgradedAttack : baseAttack;
-        result.velocity = (target.transform.position - (transform.position + collider.center)).normalized * result.velocity.x;
-        return result;
-    }
+        public Attack GetAttack() => throw new System.NotImplementedException();
+        public Attack GetAttack(GameObject target)
+        {
+            Attack result = Player.Stats.hellcopter ? hellUpgradedAttack : baseAttack;
+            result.velocity = (target.transform.position - (transform.position + collider.center)).normalized * result.velocity.x;
+            return result;
+        }
 
+    }
 }

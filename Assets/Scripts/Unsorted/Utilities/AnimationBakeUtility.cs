@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 
 public class AnimationBakeUtility : MonoBehaviour
 {
+    /*
     [Button]
     public void DO()
     {
@@ -55,4 +56,5 @@ public class AnimationBakeUtility : MonoBehaviour
     public List<string> StateName;
     public List<float> LayerApplications;
     public float RunSpeedValue;
+    */
 }

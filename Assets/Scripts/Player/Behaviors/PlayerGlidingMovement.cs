@@ -4,70 +4,72 @@ using System.Collections.Generic;
 using UnityEngine;
 using SLS.StateMachineH;
 using SLS.Physics3D;
-using static RageRooster.Player.LocalContext;
 
-public class PlayerGlidingMovement : PlayerAirborneMovement
+namespace RageRooster.Player
 {
-    public bool isVentGlide;
-    public float raiseRate;
-
-    VolcanicVent currentVent = null;
-
-    /*
-     Parameters inherited from PlayerAirborneMovement that are irrelevant and should be hidden:
-     *isDash
-     *minSpeed
-     *defaultPhase
-     *fallStateThreshold
-     */
-
-    //Only change from PlayerAirborneMovement is the removal of HorizontalCharge.
-
-    public override bool VerticalMovement(out float result)
+    public class PlayerGlidingMovement : PlayerAirborneMovement
     {
-        if (!isVentGlide || transform.position.y > targetHeight)
+        public bool isVentGlide;
+        public float raiseRate;
+
+        VolcanicVent currentVent = null;
+
+        /*
+         Parameters inherited from PlayerAirborneMovement that are irrelevant and should be hidden:
+         *isDash
+         *minSpeed
+         *defaultPhase
+         *fallStateThreshold
+         */
+
+        //Only change from PlayerAirborneMovement is the removal of HorizontalCharge.
+
+        public override bool VerticalMovement(out float result)
         {
-            result = ApplyGravity(gravity, terminalVelocity, flatGravity);
+            if (!isVentGlide || transform.position.y > targetHeight)
+            {
+                result = ApplyGravity(gravity, terminalVelocity, flatGravity);
+                Phase = JumpPhase.Falling;
+            }
+            else if (transform.position.y < targetHeight)
+            {
+                result = raiseRate/* * currentVent.transform.up.y*/;
+                Phase = JumpPhase.Hangtime;
+            }
+            else result = 0;
+
+            if (!Input.Jump.IsPressed()) Fall(ref result);
+            return true;
+        }
+
+
+
+        protected override void Fall(ref float Y)
+        {
+            Y = Y.Max(0);
+
             Phase = JumpPhase.Falling;
+            if (fallState != null) fallState.Enter();
         }
-        else if (transform.position.y < targetHeight)
+
+        protected override void OnEnter(State prev, bool isFinal)
         {
-            result = raiseRate/* * currentVent.transform.up.y*/;
-            Phase = JumpPhase.Hangtime;
+            base.OnEnter(prev, isFinal);
+            if (!isFinal) return;
+
+            Player.MovementBody.Anchor.DeAnchor();
+
+            Player.MovementBody.Velocity.y = Player.MovementBody.Velocity.y.Max(0);
+
+            if (isVentGlide)
+            {
+                currentVent = Player.MovementBody.CurrentVent;
+                targetHeight = currentVent.transform.position.y + (currentVent.glideHeight/* * currentVent.transform.up.y*/);
+            }
         }
-        else result = 0;
 
-        if (!Input.Jump.IsPressed()) Fall(ref result);
-        return true;
+        public override void BeginJump() => throw new System.Exception("Don't Use This Method.");
+        public override void BeginJump(float power, float height, float minHeight) => throw new System.Exception("Don't Use This Method.");
+        public override void BeginJump(JumpPhase newState) => throw new System.Exception("Don't Use This Method.");
     }
-
-
-
-    protected override void Fall(ref float Y)
-    {
-        Y = Y.Max(0);
-
-        Phase = JumpPhase.Falling;
-        if (fallState != null) fallState.Enter();
-    }
-
-    protected override void OnEnter(State prev, bool isFinal)
-    {
-        base.OnEnter(prev, isFinal);
-        if (!isFinal) return;
-
-        Player.MovementBody.Anchor.DeAnchor();
-
-        Player.MovementBody.Velocity.y = Player.MovementBody.Velocity.y.Max(0);
-
-        if (isVentGlide)
-        {
-            currentVent = Player.MovementBody.CurrentVent;
-            targetHeight = currentVent.transform.position.y + (currentVent.glideHeight/* * currentVent.transform.up.y*/);
-        }
-    }
-
-    public override void BeginJump() => throw new System.Exception("Don't Use This Method.");
-    public override void BeginJump(float power, float height, float minHeight) => throw new System.Exception("Don't Use This Method.");
-    public override void BeginJump(JumpPhase newState) => throw new System.Exception("Don't Use This Method.");
 }

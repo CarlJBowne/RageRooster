@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using RageRooster.Player;
 
 namespace BPS
 {
@@ -57,7 +58,7 @@ namespace BPS
 
         List<Type> GetObjectTypes()
         {
-            Assembly rootAssembly = typeof(PlayerController).Assembly;
+            Assembly rootAssembly = typeof(Player).Assembly;
             List<Type> result = rootAssembly.GetTypes().ToList();
 
             //foreach (MonoBehaviour mono in Resources.FindObjectsOfTypeAll<MonoBehaviour>()) 

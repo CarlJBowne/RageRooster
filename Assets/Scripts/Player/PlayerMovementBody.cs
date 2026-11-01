@@ -13,7 +13,7 @@ using RageRooster.Core.World;
 using SLS.Physics3D;
 using SLS.StateMachineH;
 using SLS.StateMachineH.Signals;
-using static RageRooster.Player.LocalContext;
+
 using RageRooster.Player;
 using SLS.ListUtilities;
 
@@ -27,146 +27,149 @@ using System.Reflection;
 #endif
 
 
-[RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider), typeof(NavMeshAgent))]
-public sealed class PlayerMovementBody : MovingBody
+namespace RageRooster.Player
 {
-    #region Config
-    /// <summary>
-    /// Angle threshold for Bonking.
-    /// </summary>
-    [SerializeField] float bonkThreshold = 15;
-    //[SerializeField] float platformDetectionFactor = 3;
-    //[SerializeField] float platformLockRadius = .25f;
-
-    internal bool canDoDoubleJump = true;
-
-    #endregion
-
-    #region LifeCycle
-
-    protected override void Awake()
+    [RequireComponent(typeof(Rigidbody), typeof(CapsuleCollider), typeof(NavMeshAgent))]
+    public sealed class PlayerMovementBody : MovingBody
     {
-        base.Awake();
-        Singleton.Register(this);
-        _movingUpdateActionTimer.Start(MovingUpdateAction);
-    }
-    private void Start()
-    {
-        ////Do this again because no matter what I tell this system to do nothing ever works correctly.
-        //if (Resolvers.groundedResolver != null && Ground.InstantSnapToFloor(out RaycastHit hit))
-        //{
-        //    Ground.Land(hit);
-        //    Resolvers.Update(Resolvers.groundedResolver);
-        //}
-        //else if (Resolvers.airborneResolver != null)
-        //{
-        //    Resolvers.Update(Resolvers.airborneResolver);
-        //}
-        //else enabled = false; //WTF.
+        #region Config
+        /// <summary>
+        /// Angle threshold for Bonking.
+        /// </summary>
+        [SerializeField] float bonkThreshold = 15;
+        //[SerializeField] float platformDetectionFactor = 3;
+        //[SerializeField] float platformLockRadius = .25f;
 
-    }
+        internal bool canDoDoubleJump = true;
 
-    void OnDestroy() => Singleton.Deregister(this);
+        #endregion
 
-    static readonly Singleton<PlayerMovementBody> Singleton = new();
-    public static PlayerMovementBody Get => Singleton.Get;
-    public static bool TryGet(out PlayerMovementBody result) => Singleton.TryGet(out result);
-    public static bool Loaded => Singleton.Active;
+        #region LifeCycle
 
-    #endregion LifeCycle
-    private static readonly int CurrentSpeedHash = "CurrentSpeed".Hash();
-
-    public void ReturnToNeutral(bool doCrossFade = true)
-    {
-        if (Anchor.SweepStandable(out _))
+        protected override void Awake()
         {
-            Self.StateMachine.IdleWalk.State.Enter();
-            if (doCrossFade) Self.Animator.CrossFade("GroundBasic", .1f);
+            base.Awake();
+            Singleton.Register(this);
+            _movingUpdateActionTimer.Start(MovingUpdateAction);
         }
-        else Self.StateMachine.Airborne.Enter();
-    }
+        private void Start()
+        {
+            ////Do this again because no matter what I tell this system to do nothing ever works correctly.
+            //if (Resolvers.groundedResolver != null && Ground.InstantSnapToFloor(out RaycastHit hit))
+            //{
+            //    Ground.Land(hit);
+            //    Resolvers.Update(Resolvers.groundedResolver);
+            //}
+            //else if (Resolvers.airborneResolver != null)
+            //{
+            //    Resolvers.Update(Resolvers.airborneResolver);
+            //}
+            //else enabled = false; //WTF.
 
-    protected override void FixedUpdate()
-    {
-        if (Velocity != null && Self != null && Self.Animator != null) 
-            Self.Animator.SetFloat(CurrentSpeedHash, Velocity.magnitudeH);
-        if (PlayerStats.Active != null && PlayerStats.Active.d_moonJump && Input.Jump.IsPressed()) Velocity.u = 10f;
+        }
 
-        Vector3 prePos = Position;
+        void OnDestroy() => Singleton.Deregister(this);
 
-        base.FixedUpdate();
+        static readonly Singleton<PlayerMovementBody> Singleton = new();
+        public static PlayerMovementBody Get => Singleton.Get;
+        public static bool TryGet(out PlayerMovementBody result) => Singleton.TryGet(out result);
+        public static bool Loaded => Singleton.Active;
+
+        #endregion LifeCycle
+        private static readonly int CurrentSpeedHash = "CurrentSpeed".Hash();
+
+        public void ReturnToNeutral(bool doCrossFade = true)
+        {
+            if (Anchor.SweepStandable(out _))
+            {
+                Player.StateMachine.IdleWalk.State.Enter();
+                if (doCrossFade) Player.Animator.CrossFade("GroundBasic", .1f);
+            }
+            else Player.StateMachine.Airborne.Enter();
+        }
+
+        protected override void FixedUpdate()
+        {
+            if (Velocity != null && Player.Active && Player.Animator != null)
+                Player.Animator.SetFloat(CurrentSpeedHash, Velocity.magnitudeH);
+            if (PlayerStats.Active != null && PlayerStats.Active.d_moonJump && Input.Jump.IsPressed()) Velocity.u = 10f;
+
+            Vector3 prePos = Position;
+
+            base.FixedUpdate();
 
 #if UNITY_EDITOR
-        if (Debug.DisplayDebugString)
-            DebugRR.DebugTextOverlay.SetText(Debug.StringBuilder.ToString());
+            if (Debug.DisplayDebugString)
+                DebugRR.DebugTextOverlay.SetText(Debug.StringBuilder.ToString());
 #endif
 
-        if (prePos != Position) _movingUpdateActionTimer.Tick();
-    }
-
-
-
-    public override void OnAnchor(bool wasntGrounded, bool objectChange)
-    {
-        SelectGroundResolver();
-        Self.StateMachine.Signal(new("Land", ignoreLock: true));
-        canDoDoubleJump = true; //I still don't like this being part of this script of all things.
-        if (Self.Controller.CheckJumpBuffer()) Self.StateMachine.Signal("Jump");
-    }
-    public override void OnDeanchor()
-    {
-        
-    }
-
-    public override void WalkOff()
-    {
-        Anchor.DeAnchor();
-        Self.StateMachine.Signal(new("WalkOff", ignoreLock: true));
-    }
-
-    public bool LastChanceStopper(Vector3 velocity, Vector3 normal)
-    {
-        if (Vector3.Angle(velocity, -normal) < bonkThreshold && Self.StateMachine.Signal(new("Bonk", 0, true)))
-        {
-            this.Velocity.ZeroOut();
-            return true;
+            if (prePos != Position) _movingUpdateActionTimer.Tick();
         }
-        return false;
-    }
 
-    #region Other
 
-    public static System.Action MovingUpdateAction;
-    private Timer _movingUpdateActionTimer = new(0.2f, true);
 
-    public VolcanicVent CurrentVent
-    {
-        get => currentVent;
-        set
+        public override void OnAnchor(bool wasntGrounded, bool objectChange)
         {
-            currentVent = value;
-            Self.StateMachine.Signal(new(value != null ? "EnterVent" : "ExitVent", 0, true));
+            SelectGroundResolver();
+            Player.StateMachine.Signal(new("Land", ignoreLock: true));
+            canDoDoubleJump = true; //I still don't like this being part of this script of all things.
+            if (Player.Controller.CheckJumpBuffer()) Player.StateMachine.Signal("Jump");
         }
-    }
-    VolcanicVent currentVent;
-    public bool isOverVent => currentVent != null;
-
-    #endregion Other
-    /*
-#if UNITY_EDITOR
-
-    [CustomEditor(typeof(PlayerMovementBody))]
-    new public class Editor : MovingBody.Editor
-    {
-        PropertyField BonkField;
-
-        public override void MakeConfigTab()
+        public override void OnDeanchor()
         {
-            base.MakeConfigTab();
-            BonkField = new PropertyField(serializedObject.FindProperty(nameof(PlayerMovementBody.bonkThreshold)));
-            ConfigTab.Add(BonkField);
+
         }
+
+        public override void WalkOff()
+        {
+            Anchor.DeAnchor();
+            Player.StateMachine.Signal(new("WalkOff", ignoreLock: true));
+        }
+
+        public bool LastChanceStopper(Vector3 velocity, Vector3 normal)
+        {
+            if (Vector3.Angle(velocity, -normal) < bonkThreshold && Player.StateMachine.Signal(new("Bonk", 0, true)))
+            {
+                this.Velocity.ZeroOut();
+                return true;
+            }
+            return false;
+        }
+
+        #region Other
+
+        public static System.Action MovingUpdateAction;
+        private Timer _movingUpdateActionTimer = new(0.2f, true);
+
+        public VolcanicVent CurrentVent
+        {
+            get => currentVent;
+            set
+            {
+                currentVent = value;
+                Player.StateMachine.Signal(new(value != null ? "EnterVent" : "ExitVent", 0, true));
+            }
+        }
+        VolcanicVent currentVent;
+        public bool isOverVent => currentVent != null;
+
+        #endregion Other
+        /*
+    #if UNITY_EDITOR
+
+        [CustomEditor(typeof(PlayerMovementBody))]
+        new public class Editor : MovingBody.Editor
+        {
+            PropertyField BonkField;
+
+            public override void MakeConfigTab()
+            {
+                base.MakeConfigTab();
+                BonkField = new PropertyField(serializedObject.FindProperty(nameof(PlayerMovementBody.bonkThreshold)));
+                ConfigTab.Add(BonkField);
+            }
+        }
+    #endif
+        */
     }
-#endif
-    */
 }

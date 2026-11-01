@@ -4,88 +4,90 @@ using EditorAttributes;
 using SLS.Physics3D;
 using SLS.StateMachineH;
 using UnityEngine;
-using static RageRooster.Player.LocalContext;
 
-public class PlayerHellcopterMovement : PlayerAirborneMovement
+namespace RageRooster.Player
 {
-
-    //public new PlayerHellcopterMovement fallState;
-    VolcanicVent currentVent = null;
-
-    /*
-     Parameters inherited from PlayerAirborneMovement that are irrelevant and should be hidden:
-     *jumpHeight
-     *jumpPower
-     *jumpMinHeight
-     *forceDownwards
-     *allowMidFall
-     */
-
-
-    public override bool VerticalMovement(out float result)
+    public class PlayerHellcopterMovement : PlayerAirborneMovement
     {
-        result = Player.MovementBody.Velocity.y;
-        if (Phase is JumpPhase.Jumping or JumpPhase.Decelerating)
+
+        //public new PlayerHellcopterMovement fallState;
+        VolcanicVent currentVent = null;
+
+        /*
+         Parameters inherited from PlayerAirborneMovement that are irrelevant and should be hidden:
+         *jumpHeight
+         *jumpPower
+         *jumpMinHeight
+         *forceDownwards
+         *allowMidFall
+         */
+
+
+        public override bool VerticalMovement(out float result)
         {
-            VerticalUpwards(ref result);
+            result = Player.MovementBody.Velocity.y;
+            if (Phase is JumpPhase.Jumping or JumpPhase.Decelerating)
+            {
+                VerticalUpwards(ref result);
+            }
+            else if (Phase is JumpPhase.Falling)
+            {
+                result = ApplyGravity(gravity, terminalVelocity, flatGravity);
+                if (Player.MovementBody.Velocity.y <= terminalVelocity) Phase = JumpPhase.TerminalVelocity;
+            }
+            return true;
         }
-        else if (Phase is JumpPhase.Falling)
+
+        protected override void VerticalUpwards(ref float Y)
         {
-            result = ApplyGravity(gravity, terminalVelocity, flatGravity);
-            if (Player.MovementBody.Velocity.y <= terminalVelocity) Phase = JumpPhase.TerminalVelocity;
-        }
-        return true;
-    }
+            if (Phase == JumpPhase.Decelerating)
+            {
+                Y = currentVent.hellcopterSpeed;
+                if (transform.position.y >= targetHeight) Phase = (JumpPhase.Falling);
+            }
+            else if (Phase == JumpPhase.Falling && Player.MovementBody.Velocity.y <= fallStateThreshold) Fall(ref Y);
 
-    protected override void VerticalUpwards(ref float Y)
-    {
-        if (Phase == JumpPhase.Decelerating)
+        }
+
+        protected override void Fall(ref float Y)
         {
-            Y = currentVent.hellcopterSpeed;
-            if (transform.position.y >= targetHeight) Phase = (JumpPhase.Falling);
+            if (Player.MovementBody.Velocity.y > fallStateThreshold) Y = fallStateThreshold;
+            Phase = (JumpPhase.Falling);
+            if (fallState != null) fallState.Enter();
         }
-        else if (Phase == JumpPhase.Falling && Player.MovementBody.Velocity.y <= fallStateThreshold) Fall(ref Y);
-
-    }
-
-    protected override void Fall(ref float Y)
-    {
-        if (Player.MovementBody.Velocity.y > fallStateThreshold) Y = fallStateThreshold;
-        Phase = (JumpPhase.Falling);
-        if (fallState != null) fallState.Enter();
-    }
 
 
-    protected override void StartFrom_Jump()
-    {
-        if (!isUpward) return;
-
-        currentVent = Player.MovementBody.CurrentVent;
-        targetHeight = currentVent.transform.position.y + currentVent.hellcopterTargetHeight;
-
-        Player.MovementBody.Velocity.y = currentVent.hellcopterSpeed;
-        targetHeight -= (currentVent.hellcopterSpeed.P()) / (2 * gravity * Time.deltaTime);
-        if (targetHeight <= transform.position.y)
+        protected override void StartFrom_Jump()
         {
-            Player.MovementBody.Velocity.y = Mathf.Sqrt(2 * gravity * currentVent.hellcopterTargetHeight);
-        }
+            if (!isUpward) return;
+
+            currentVent = Player.MovementBody.CurrentVent;
+            targetHeight = currentVent.transform.position.y + currentVent.hellcopterTargetHeight;
+
+            Player.MovementBody.Velocity.y = currentVent.hellcopterSpeed;
+            targetHeight -= (currentVent.hellcopterSpeed.P()) / (2 * gravity * Time.deltaTime);
+            if (targetHeight <= transform.position.y)
+            {
+                Player.MovementBody.Velocity.y = Mathf.Sqrt(2 * gravity * currentVent.hellcopterTargetHeight);
+            }
 
 #if UNITY_EDITOR
-        Player.MovementBody.Debug.PlaceJumpMarker(targetHeight, 0);
+            Player.MovementBody.Debug.PlaceJumpMarker(targetHeight, 0);
 #endif
+        }
+
+        protected override void StartFrom_Decel()
+        {
+
+        }
+
+        protected override void StartFrom_Falling()
+        {
+            Player.MovementBody.Velocity.y = Player.MovementBody.Velocity.y.Max(0);
+        }
+
+        public override void BeginJump() => throw new System.Exception("Don't Use This Method.");
+        public override void BeginJump(float power, float height, float minHeight) => throw new System.Exception("Don't Use This Method.");
+        public override void BeginJump(JumpPhase newState) => throw new System.Exception("Don't Use This Method.");
     }
-
-    protected override void StartFrom_Decel()
-    {
-
-    }
-
-    protected override void StartFrom_Falling()
-    {
-        Player.MovementBody.Velocity.y = Player.MovementBody.Velocity.y.Max(0);
-    }
-
-    public override void BeginJump() => throw new System.Exception("Don't Use This Method.");
-    public override void BeginJump(float power, float height, float minHeight) => throw new System.Exception("Don't Use This Method.");
-    public override void BeginJump(JumpPhase newState) => throw new System.Exception("Don't Use This Method.");
 }

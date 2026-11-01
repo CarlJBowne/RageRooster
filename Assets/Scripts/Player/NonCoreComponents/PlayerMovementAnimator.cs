@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
-using static RageRooster.Player.LocalContext;
+using RageRooster.Player;
 
 
 [System.Obsolete("PlayerMovementAnimator is deprecated, please use TimedMovementAffector instead.")]

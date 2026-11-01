@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using DG.Tweening;
+using RageRooster.Core;
 using RageRooster.Player;
 using SLS.GeneralUtilities.Events;
 using TMPro;
@@ -16,18 +17,17 @@ namespace RageRooster.UI
 
         int currentAmmo = 0;
         int currentMaxAmmo = 0;
-        PlayerRanged PlayerRanged => Player.LocalContext.Player.Ranged;
         private List<EventTicket> events;
 
         private void Awake()
         {
             events = new()
             {
-                PlayerRanged.Ammo.Subscribe(UpdateDisplay),
-                PlayerRanged.Ammo.SubscribeMax(UpdateMax),
+                Player.Player.Ranged.Ammo.Subscribe(UpdateDisplay),
+                Player.Player.Ranged.Ammo.SubscribeMax(UpdateMax),
             };
-            UpdateMax(PlayerRanged.Ammo.Max);
-            UpdateDisplay(PlayerRanged.Ammo.Value);
+            UpdateMax(Player.Player.Ranged.Ammo.Max);
+            UpdateDisplay(Player.Player.Ranged.Ammo.Value);
         }
         private void OnDestroy() => events.DestroyAll();
 

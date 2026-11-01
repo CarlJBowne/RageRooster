@@ -1,17 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using SLS.StateMachineH;
-using System;
-using Cinemachine;
 using System.Linq;
-using SLS.Singletons;
+using Cinemachine;
+using RageRooster.Core;
 using RageRooster.Core.Save;
 using RageRooster.Core.World;
+using RageRooster.Player;
+using SLS.Singletons;
+using SLS.StateMachineH;
 using SLS.StateMachineH.Signals;
-using RageRooster.Core;
+using UnityEngine;
 using Services = RageRooster.Services;
-using static RageRooster.Player.LocalContext;
 
 [DefaultExecutionOrder(ExecutionOrders.PlayerSystems)]
 public class PlayerStateMachine : StateMachine, IPlayerStateMachine
