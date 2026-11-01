@@ -31,7 +31,7 @@ public class AttackSourceExplosion : AttackSourceSingle
 
     public Attack GetAttack(Transform target)
     {
-        Attack result = attack;
+        Attack result = attack.Clone();
         //Vector3 contact = currentCollider.ClosestPoint(transform.position);
         result.velocity = (target.position - transform.position).normalized * explosionForce; //Simple function to find the opposite direction and apply knockback based on the closest contact point
         return result;

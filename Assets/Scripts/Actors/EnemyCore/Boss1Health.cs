@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
-using SLS.StateMachineH;
+// using SLS.StateMachineH;
 using EditorAttributes;
 using static RageRooster.Services;
 using RageRooster.Core.Save;
+using Unity.VisualScripting;
 
 public class Boss1Health : Health, IDamagable
 {
@@ -11,9 +12,10 @@ public class Boss1Health : Health, IDamagable
     public int phase2Trigger;
     public UltEvents.UltEvent phase2Event;
     public UltEvents.UltEvent phase3Event;
-    public State jumpState;
+    //public State jumpState;
     public Transform phase2StartPos;
     public Transform phase3StartPos;
+    public bool isVulnerable;
 
     public UltEvents.UltEvent ResetBossEvent;
     public UltEvents.UltEvent FinishBossEvent;
@@ -24,16 +26,16 @@ public class Boss1Health : Health, IDamagable
     private int stunCounter = 0;
     private Animator animator;
     private MovementAnimator moveAnim;
-    private StateMachine machine;
+    // private StateMachine machine;
     private Vector3 respawnPoint;
-    private float lastDamageTime;
+    private float lastDamageTime;    
 
     protected override void Awake()
     {
         base.Awake();
         TryGetComponent(out animator);
         TryGetComponent(out moveAnim);
-        TryGetComponent(out machine);
+        // TryGetComponent(out machine);
         respawnPoint = transform.position;
         if (finishedBossWorldChange.TryGet(out bool res) && res) FinishBossEvent?.Invoke();
     }
@@ -47,47 +49,64 @@ public class Boss1Health : Health, IDamagable
         Player.OnRespawn -= ResetBoss;
     }
 
+    public void FlipVulnerable()
+    {
+        isVulnerable = !isVulnerable;
+    }
+
     protected override bool OverrideDamageable(Attack attack)
     {
+        //Attack.Tags[] checkedTags = attack.tags.AllTags;
+        string checkedTags = attack.tags.ToString();
+        Debug.Log(checkedTags);
         if (lastDamageTime + damageCooldown > Time.time) return false;
-        if (attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.GroundSlam])
+        if (attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.GroundSlam] && isVulnerable == true)
         {
             damageTint.BeginAnimation();
-            animator.Play("Damage");
+            CustomEvent.Trigger(gameObject, "Damaged");
             return true;
         }
-        if (bossPhase != 2 && attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.Egg] && machine.CurrentState.gameObject.name != "Charging")
+        if (bossPhase != 2 && attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.Egg] /* &&  machine.CurrentState.gameObject.name != "Charging" */)
         {
             stunCounter++;
             if (stunCounter > 2)
             {
                 stunCounter = 0;
-                machine.Signal("Charge");
+                // machine.SendSignal("Charge");
             }
-            else machine.Signal("Flinch");
-            lastDamageTime = Time.time;
+            //else machine.SendSignal("Flinch");
+            //lastDamageTime = Time.time;
         }
         return false;
     }
 
+    public void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Collided with " + other);        
+
+        /* if (other.TryGetComponent<Attack>(out Attack foundAttack)) 
+        {
+            Debug.Log("Attack tag attached!");
+            OverrideDamageable(foundAttack);
+        } */
+    }
 
     protected override void OnDamage(Attack attack)
     {
         damageEvent?.Invoke(attack.amount);
-
         //if (!phase2TriggerTriggered && GetCurrentHealth() <= phase2Trigger) BeginPhase2();
     }
 
     public void OnDamageReturn()
     {
-        if (!phase2TriggerTriggered && Current <= phase2Trigger) BeginPhase2();
-        else machine.Signal("ReturnFromStun");
+        if (!phase2TriggerTriggered && GetCurrentHealth() <= phase2Trigger) BeginPhase2();
+        // else machine.SendSignal("ReturnFromStun");
     }
 
     public void BeginPhase2()
     {
         moveAnim.SetTarget(phase2StartPos);
-        jumpState.Enter();
+        //jumpState.Enter();
         phase2TriggerTriggered = true;
         damagable = false;
         bossPhase = 2;
@@ -96,7 +115,7 @@ public class Boss1Health : Health, IDamagable
     public void BeginPhase3()
     {
         moveAnim.SetTarget(phase3StartPos);
-        jumpState.Enter();
+        //jumpState.Enter();
         damagable = true;
         bossPhase = 3;
     }
@@ -130,7 +149,7 @@ public class Boss1Health : Health, IDamagable
         gameObject.SetActive(false);
         Current = Max;
         phase2TriggerTriggered = false;
-        machine[0][0].Enter();
+        // machine[0][0].Enter();
         animator.Play("Walking", -1, 0f);
         bossPhase = 1;
         damagable = true;
