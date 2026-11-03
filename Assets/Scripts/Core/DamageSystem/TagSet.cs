@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections.ObjectModel;
+using UnityEditor.UIElements;
+
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine.UIElements;
@@ -121,7 +123,7 @@ public partial class Attack
         /// Create a BitwiseEnum with specific integer bitmask.
         /// </summary>
         /// <param name="intValue">Integer bitmask.</param>
-        public TagSet(int intValue = 0) => this.intValue = intValue;
+        public TagSet(int intValue = 0) : base(intValue) { }
         /// <summary>
         /// Create a BitwiseEnum from an array of booleans. Each true value sets the corresponding bit.
         /// </summary>
@@ -130,9 +132,7 @@ public partial class Attack
         {
             intValue = 0;
             if (inputs == null) return;
-            int maxBits = sizeof(int) * 8;
-            int len = Math.Min(inputs.Length, maxBits);
-            for (int i = 0; i < len; i++)
+            for (int i = 0; i < MAX && i < inputs.Length; i++)
                 if (inputs[i]) intValue |= 1 << i;
         }
         /// <summary>
@@ -146,17 +146,16 @@ public partial class Attack
                 this[(int)values[0]] = true;
         }
 
-
         /// <summary>
         /// Create a BitwiseEnum Cloned from an existing one.
         /// </summary>
         /// <param name="source">The Source.</param>
-        public TagSet(Bitmask source) => intValue = source.intValue;
+        public TagSet(Bitmask source) : base(source.intValue) { }
         /// <summary>
         /// Create a BitwiseEnum Cloned from an existing one.
         /// </summary>
         /// <param name="source">The Source.</param>
-        public TagSet(TagSet source) => intValue = source.intValue;
+        public TagSet(TagSet source) : base(source.intValue) { }
 
         public bool this[Tags i]
         {
@@ -167,19 +166,28 @@ public partial class Attack
         public static bool operator ==(TagSet L, Tags R) => L[R];
         public static bool operator !=(TagSet L, Tags R) => !L[R];
 
+
+
         public override bool Equals(object obj) => obj is TagSet set && base.Equals(obj) && intValue == set.intValue;
         public override int GetHashCode() => HashCode.Combine(base.GetHashCode(), intValue);
+
+
+
+#if UNITY_EDITOR
 
         public override string ToString()
         {
             string result = "";
-            for (int i = 0; i < 32; i++)
-                if (this[i] == true)
-                    result += $"{(Attack.Tags)i}, ";
-            return result;
+            for (int i = 0; i < Bitmask.MAX; i++)
+                if (this[i])
+                {
+                    if (result != "") result += ", ";
+                    result += ((Tags)i).ToString();
+                }
+
+            return result != "" ? result : "None";
         }
 
-#if UNITY_EDITOR
         [CustomPropertyDrawer(typeof(TagSet))]
         public class AttackTagBitEnumDrawer : UnityEditor.PropertyDrawer
         {
@@ -195,34 +203,10 @@ public partial class Attack
                     return container;
                 }
 
-                var imgui = new IMGUIContainer(() =>
-                {
-                    // Retrieve dynamic names from GlobalPrefabs; ensure null-safety
-                    string[] options;
-                    try
-                    {
-                        options = TagNames != null && TagNames.Count > 0 ? TagNames.ToArray() : (new string[] { "None" });
-                    }
-                    catch
-                    {
-                        options = new string[] { "None" };
-                    }
+                MaskField mask = new(property.displayName, TagNames.ToList(), intProp.intValue, s => s, s => s);
+                mask.BindProperty(intProp);
+                container.Add(mask);
 
-                    EditorGUI.BeginChangeCheck();
-
-                    // Render mask field using GUILayout so it integrates into the IMGUIContainer
-                    int currentMask = intProp.intValue;
-                    int newMask = EditorGUILayout.MaskField(property.displayName, currentMask, options);
-
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        intProp.intValue = newMask;
-                        // Apply changes immediately to the serialized object
-                        property.serializedObject.ApplyModifiedProperties();
-                    }
-                });
-
-                container.Add(imgui);
                 return container;
             }
         }
@@ -245,21 +229,39 @@ public partial class Attack
 
     public static implicit operator TagSet(Attack O) => O.tags;
 
-    public override string ToString() => $"\"{_displayName}\" ({amount}) <{tags.ToString()}>";
-
-    public static void InitGlobalData(List<string> namesInput)
-    {
-        TagNames = namesInput;
-
-        Dictionary<string, int> dictionary = new();
-        for (int i = 0; i < TagNames.Count; i++) dictionary[TagNames[i]] = i;
-        TagNameToID = new(dictionary);
-    }
 
     public override bool Equals(object obj) => obj is Attack attack && amount == attack.amount && velocity.Equals(attack.velocity) && EqualityComparer<TagSet>.Default.Equals(tags, attack.tags) && x == attack.x && y == attack.y && z == attack.z && _displayName == attack._displayName;
     public override int GetHashCode() => HashCode.Combine(amount, velocity, tags, x, y, z, _displayName);
 
-    public static ReadOnlyDictionary<string, int> TagNameToID { get; private set; }
-    public static IReadOnlyList<string> TagNames { get; private set; }
+    public static void InitGlobalData()
+    {
+        m_TagNames = Enum.GetValues(typeof(Tags))
+            .Cast<Tags>()
+            .Select(t => t.ToString())
+            .ToList();
 
+        Dictionary<string, int> dictionary = new();
+        for (int i = 0; i < TagNames.Count; i++) dictionary[TagNames[i]] = i;
+        m_TagNameToID = new(dictionary);
+    }
+
+    private static IReadOnlyList<string> m_TagNames;
+    private static ReadOnlyDictionary<string, int> m_TagNameToID;
+
+    public static ReadOnlyDictionary<string, int> TagNameToID
+    {
+        get
+        {
+            if (m_TagNameToID == null) InitGlobalData();
+            return m_TagNameToID;
+        }
+    }
+    public static IReadOnlyList<string> TagNames
+    {
+        get
+        {
+            if (m_TagNames == null) InitGlobalData();
+            return m_TagNames;
+        }
+    }
 }

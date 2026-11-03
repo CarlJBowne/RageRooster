@@ -5,6 +5,7 @@ using static RageRooster.Core.IPlayer;
 
 namespace RageRooster.Player
 {
+    [Unity.VisualScripting.IncludeInSettings(true)]
     /// <summary>
     /// Static context for direct access to Player components and helpers without getter calls.
     /// </summary>

@@ -32,8 +32,10 @@ public partial class Attack
         this.amount = source.amount;
         this.velocity = source.velocity;
         this.tags = new(source.tags);
+#if UNITY_EDITOR
+        this._displayName = source._displayName;
+#endif
     }
-    public Attack Clone() => new(this);
 
     public float x => velocity.x;
     public float y => velocity.y;
@@ -44,8 +46,8 @@ public partial class Attack
 
 
 
-
 #if UNITY_EDITOR
+    public override string ToString() => $"{_displayName} ({amount}) <{tags}>";
     [SerializeField] private string _displayName = "";
     [CustomPropertyDrawer(typeof(Attack))]
     public class PropertyDrawer : UnityEditor.PropertyDrawer
@@ -77,7 +79,7 @@ public partial class Attack
             foldout.contentContainer.Add(velocityField);
             foldout.contentContainer.Add(tagsField);
 
-            if(foldout.SetupHeader(out VisualElement header, out Label label, out Toggle toggle))
+            if (foldout.SetupHeader(out VisualElement header, out Label label, out Toggle toggle))
             {
                 header.Add(displayNameField);
                 header.Add(amountField);

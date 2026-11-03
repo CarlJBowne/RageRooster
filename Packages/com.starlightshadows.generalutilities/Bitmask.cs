@@ -47,8 +47,7 @@ public class Bitmask : IEquatable<Bitmask>
     {
         intValue = 0;
         if (inputs == null) return;
-        int maxBits = sizeof(int) * 8;
-        int len = Math.Min(inputs.Length, maxBits);
+        int len = Math.Min(inputs.Length, MAX);
         for (int i = 0; i < len; i++)
             if (inputs[i]) intValue |= 1 << i;
     }
@@ -95,7 +94,7 @@ public class Bitmask : IEquatable<Bitmask>
     /// </summary>
     public bool Contains(int Other)
     {
-        if (Other < 0 || Other >= sizeof(int) * 8) throw new ArgumentOutOfRangeException(nameof(Other));
+        if (Other < 0 || Other >= MAX) throw new ArgumentOutOfRangeException(nameof(Other));
         return (intValue & (1 << Other)) != 0;
     }
 
@@ -240,6 +239,8 @@ public class Bitmask : IEquatable<Bitmask>
     /// String representation of the integer mask.
     /// </summary>
     public override string ToString() => intValue.ToString();
+
+    public const int MAX = sizeof(int) * 8;
 
 }
 
