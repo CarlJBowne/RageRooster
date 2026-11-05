@@ -112,74 +112,27 @@ namespace RageRooster.Player
 
         #region Death / Respawn Sequence
 
-        public Action onRespawn { get; set; }
         public event Action OnRespawn
         {
-            add => onRespawn += value;
-            remove => onRespawn -= value;
+            add => Player.onRespawn += value;
+            remove => Player.onRespawn -= value;
         }
-        public Action onMovingUpdate { get; set; }
         public event Action OnMovingUpdate
         {
-            add => onMovingUpdate += value;
-            remove => onMovingUpdate -= value;
+            add => Player.onMovingUpdate += value;
+            remove => Player.onMovingUpdate -= value;
         }
 
-        public void Death()
-        {
-            DeathOrPit();
-            StartCoroutine(DeathRoutine());
-            IEnumerator DeathRoutine()
-            {
-                yield return new WaitForSecondsRealtime(Health.inFallDownPitTime + 1);
-                yield return RageRooster.Services.UI.OverlayTopPlus.GameOverAnimation();
-                yield return new WaitForSecondsRealtime(Health.inDeathTime);
 
-                RoomManager.TransitionStyle = new()
-                {
-                    FadeOutRoutine = Overlay.UnderHUD.FadeAlpha(1, 1f),
-                    FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 1f),
-                };
 
-                SaveData.RevertToDeathData();
-                RoomManager.PostFadeOutAction = () => { onRespawn?.Invoke(); };
-                RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
-            }
-        }
-
-        public void Respawn()
-        {
-            DeathOrPit();
-            StartCoroutine(PitFallRoutine());
-            IEnumerator PitFallRoutine()
-            {
-                yield return new WaitForSecondsRealtime(Health.inDeathTime);
-
-                RoomManager.TransitionStyle = new()
-                {
-                    FadeOutRoutine = Overlay.UnderHUD.FadeAlpha(1, 1f),
-                    FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 1f),
-                };
-
-                RoomManager.PostFadeOutAction = () => { onRespawn?.Invoke(); };
-                RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
-            }
-        }
-
-        private void DeathOrPit()
-        {
-            Vector3 targetVelocity = MovementBody.Velocity.Global;
-            Audio.PlayOneShot("Death");
-            StateMachine.Ragdoll.Enter();
-            MovementBody.Velocity.ZeroOut();
-            RagdollHandler.State = RagdollHandler.States.Thrown;
-            RagdollHandler.SetVelocity(targetVelocity * 0.75f);
-            Animator.enabled = false;
-        }
         #endregion
 
         #region Interface Implementation
         IPlayerStateMachine IPlayer.StateMachine => StateMachine;
+
+        public void Death() => Player.Death();
+
+        public void Respawn() => Player.Respawn();
 
         public static void HaveDestroyed()
         {

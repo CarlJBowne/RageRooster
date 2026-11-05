@@ -1,4 +1,9 @@
+using System;
+using System.Collections;
+using RageRooster.Core.Save;
+using RageRooster.Core.World;
 using RageRooster.Player;
+using SLS.MenuCore;
 using SLS.StateMachineH.Signals;
 using UnityEngine;
 using static RageRooster.Core.IPlayer;
@@ -123,19 +128,67 @@ namespace RageRooster.Player
             Cameras.currentVirtualCamera.PreviousStateIsValid = false;
             Cameras.currentVirtualCamera.OnTargetObjectWarped(Transform, camDelta);
             MovementBody.Velocity.ZeroOut();
+            MovementBody.Anchor.Anchor();
         }
 
         public static bool Owns(Component C) => Exists && C != null && C.gameObject == GameObject;
 
         public static void Death()
         {
-            if (Root != null) Root.Death();
+            DeathOrPit();
+            DeathRoutine().Begin(Root);
+            IEnumerator DeathRoutine()
+            {
+                yield return new WaitForSecondsRealtime(Health.inFallDownPitTime + 1);
+                yield return RageRooster.Services.UI.OverlayTopPlus.GameOverAnimation();
+                yield return new WaitForSecondsRealtime(Health.inDeathTime);
+
+                RoomManager.TransitionStyle = new()
+                {
+                    FadeOutRoutine = Overlay.UnderHUD.FadeAlpha(1, 1f),
+                    FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 1f),
+                    PostFadeOutAction = () =>
+                    {
+                        onRespawn?.Invoke();
+                        SaveData.RevertToDeathData();
+                    }
+                };
+                RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
+            }
         }
 
         public static void Respawn()
         {
-            if (Root != null) Root.Respawn();
+            DeathOrPit();
+            PitFallRoutine().Begin(Root);
+            IEnumerator PitFallRoutine()
+            {
+                yield return new WaitForSecondsRealtime(Health.inDeathTime);
+
+                RoomManager.TransitionStyle = new()
+                {
+                    FadeOutRoutine = Overlay.UnderHUD.FadeAlpha(1, 1f),
+                    FadeInRoutine = Overlay.UnderHUD.FadeAlpha(0, 1f),
+                    PostFadeOutAction = () => { onRespawn?.Invoke(); },
+                };
+                RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
+            }
         }
+
+        private static void DeathOrPit()
+        {
+            Vector3 targetVelocity = MovementBody.Velocity.Global;
+            Audio.PlayOneShot("Death");
+            StateMachine.Ragdoll.Enter();
+            MovementBody.Velocity.ZeroOut();
+            RagdollHandler.State = RagdollHandler.States.Thrown;
+            RagdollHandler.SetVelocity(targetVelocity * 0.75f);
+            Animator.enabled = false;
+        }
+
+        internal static event Action onRespawn;
+        internal static event Action onMovingUpdate;
+
         #endregion
     }
 }
