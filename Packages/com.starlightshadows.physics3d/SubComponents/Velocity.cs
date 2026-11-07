@@ -158,7 +158,7 @@ namespace SLS.Physics3D
         /// <summary>
         /// How much Local Velocity is carried over upon rotation. 0-1
         /// </summary>
-        public float cL
+        public float carryLocal
         {
             get => cLValue;
             set
@@ -170,7 +170,7 @@ namespace SLS.Physics3D
         /// <summary>
         /// How much Global Velocity is carried over upon rotation. 0-1
         /// </summary>
-        public float cG
+        public float carryGlobal
         {
             get => cGValue;
             set
@@ -181,7 +181,7 @@ namespace SLS.Physics3D
         } float cGValue;
 
         /// <summary>
-        /// The angular velocity around the vertical axis (Y) that the <see cref="MovingBody"/> automatically uses to look towards the <see cref="Direction"/>'s <see cref="Direction.lookTarget"/>.
+        /// The angular velocity around the vertical axis (U) that the <see cref="MovingBody"/> automatically uses to look towards the <see cref="Direction"/>'s <see cref="Direction.lookTarget"/>.
         /// </summary>
         public float lookVelocity;
 
@@ -189,7 +189,7 @@ namespace SLS.Physics3D
         /// <summary>
         /// Call this after the transform or direction has been rotated. This method
         /// reconciles local/global velocity components according to the configured
-        /// carry-over parameters (<see cref="cL"/> and <see cref="cG"/>).
+        /// carry-over parameters (<see cref="carryLocal"/> and <see cref="carryGlobal"/>).
         /// </summary>
         public void CallThisPostRotation()
         {

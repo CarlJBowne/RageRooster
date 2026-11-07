@@ -244,10 +244,10 @@ namespace SLS.StateMachineH
                         if (!iterator.NextVisible(false)) break;
                     }
 
-                    while (iterator.NextVisible(false))
+                    while (iterator != null && iterator.NextVisible(false))
                     {
-                        var copy = iterator.Copy();
-                        var field = new PropertyField(copy);
+                        SerializedProperty copy = iterator.Copy();
+                        PropertyField field = new(copy);
                         field.Bind(serializedObject);
                         additions.Add(field);
                     }

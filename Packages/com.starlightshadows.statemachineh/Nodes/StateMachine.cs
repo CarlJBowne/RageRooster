@@ -130,9 +130,9 @@ namespace SLS.StateMachineH
             this.PreSetup();
 
             {
-                ChildCount = StateHolder.childCount;
+                int childCount = StateHolder.childCount;
                 Children = new();
-                for (int i = 0; i < ChildCount; i++)
+                for (int i = 0; i < childCount; i++)
                 {
                     GameObject childG = StateHolder.GetChild(i).gameObject;
                     if (!childG.TryGetComponent(out State childS)) break;

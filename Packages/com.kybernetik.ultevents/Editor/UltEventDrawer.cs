@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2026 Kybernetik //
 
 #if UNITY_EDITOR
 
@@ -57,7 +57,8 @@ namespace UltEvents.Editor
             if ((uint)index >= (uint)_CurrentCallCount)
                 return 0;
 
-            var height = EditorGUI.GetPropertyHeight(_CurrentCallList.serializedProperty.GetArrayElementAtIndex(index));
+            var call = _CurrentCallList.serializedProperty.GetArrayElementAtIndex(index);
+            var height = EditorGUI.GetPropertyHeight(call);
             height += Border * 2 + Padding;
 
             if (index == _CurrentCallCount - 1)

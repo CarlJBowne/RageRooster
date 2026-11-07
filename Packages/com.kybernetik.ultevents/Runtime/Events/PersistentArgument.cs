@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2026 Kybernetik //
 
 using System;
 using UnityEngine;
@@ -429,7 +429,6 @@ namespace UltEvents
             {
                 AssertType(PersistentArgumentType.Object);
                 _Object = value;
-                _String = value != null ? value.GetType().AssemblyQualifiedName : "";
                 _Value = value;
             }
         }
