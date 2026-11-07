@@ -1,0 +1,69 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using SLS.MenuCore;
+using static RageRooster.Services;
+
+namespace RageRooster.Core.World
+{
+    public class TunnelTransition : MonoBehaviour
+    {
+        public Destination destination;
+        public float fadeoutTime = 1f;
+        public bool cancellable;
+        public bool forceFullTransition;
+        public bool lockCameraPosition;
+        public bool lockCameraRotation;
+
+        private bool playerWithin;
+        Coroutine coroutine;
+        Audio.Music.Channel activeMusicChannel;
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!(!playerWithin && Services.Player.Owns(other))) return;
+
+            playerWithin = true;
+            if (lockCameraPosition || lockCameraRotation) Cameras.LockPrimary(lockCameraPosition, lockCameraRotation);
+            coroutine?.StopAuto();
+            coroutine = new(TransitionEnum(), this);
+            activeMusicChannel = Audio.Music.Primary;
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if(playerWithin && Services.Player.Owns(other) && cancellable)
+            {
+                playerWithin = false;
+                if (lockCameraPosition || lockCameraRotation) Cameras.LockPrimary(false, false);
+                coroutine?.StopAuto();
+                coroutine = new(CancelEnum(), this);
+            }
+        }
+
+        private IEnumerator TransitionEnum()
+        {
+            yield return Overlay.UnderHUD.FadeAlpha(1, fadeoutTime);
+
+            RoomManager.TransitionStyle = new()
+            {
+                forceFullTransition = forceFullTransition,
+                FadeOutRoutine = Overlay.BetweenUI.FadeAlpha(1, .1f),
+                FadeInRoutine = Overlay.BetweenUI.FadeAlpha(0, .5f),
+                PostFadeOutAction = Overlay.UnderHUD.ResetState,
+            };
+            RoomManager.StartTransition(destination);
+        }
+        private IEnumerator CancelEnum()
+        {
+            yield return Overlay.UnderHUD.FadeAlpha(0, fadeoutTime);
+            activeMusicChannel = null;
+        }
+
+
+
+
+
+
+    }
+}

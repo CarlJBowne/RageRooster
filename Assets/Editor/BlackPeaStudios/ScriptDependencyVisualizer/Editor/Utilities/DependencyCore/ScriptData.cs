@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using RageRooster.Player;
 
 namespace BPS
 {
@@ -57,7 +58,7 @@ namespace BPS
 
         List<Type> GetObjectTypes()
         {
-            Assembly rootAssembly = typeof(PlayerController).Assembly;
+            Assembly rootAssembly = typeof(Player).Assembly;
             List<Type> result = rootAssembly.GetTypes().ToList();
 
             //foreach (MonoBehaviour mono in Resources.FindObjectsOfTypeAll<MonoBehaviour>()) 
@@ -87,9 +88,9 @@ namespace BPS
                     continue;
                 }
 
-                if(typeof(UnityEditor.Editor).IsAssignableFrom(result[i]) || 
-                    typeof(UnityEditor.PropertyDrawer).IsAssignableFrom(result[i])||
-                    typeof(PlayerStateBehavior).IsAssignableFrom(result[i])
+                if(typeof(UnityEditor.Editor).IsAssignableFrom(result[i]) 
+                    ||  typeof(UnityEditor.PropertyDrawer).IsAssignableFrom(result[i])
+                    //|| typeof(PlayerStateBehavior).IsAssignableFrom(result[i])
                     )
                 {
                     result.RemoveAt(i);

@@ -1,0 +1,293 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using RageRooster.Core.World;
+using RageRooster.Core.Save;
+using SLS.AppStateMachine;
+using SLS.MenuCore;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using Utilities;
+using SLS.ObjectUtilities;
+using RageRooster;
+using RageRooster.Core;
+using CoreServices = RageRooster.Services;
+using RageRooster.Player;
+
+using RageRooster.TOP.Save;
+
+namespace RageRooster.TOP
+{
+    /// <summary>
+    /// This is the actual definition of the functionality attributed to <see cref="Core.Gameplay"/>
+    /// </summary>
+    public sealed class Gameplay : Core.Gameplay
+    {
+        public override IEnumerator Enter()
+        {
+            yield return ExitPrevious();
+
+            DoEnter();
+            Debug.Log("Loading Gameplay Scene");
+            SceneManager.LoadScene(Scene, LoadSceneMode.Single);
+            yield return null;
+            Scene s = SceneManager.GetSceneByName(Scene);
+            yield return null;
+            yield return new WaitUntil(
+                () => s.IsValid() && s.isLoaded
+                );
+            rootObjects = s.GetRootGameObjects();
+            yield return null;
+            Debug.Log("Gameplay Scene Active");
+
+            yield return new WaitUntil(() => Player.Player.Active);
+            EntitySpawn.PlayerPosition = Player.Player.Transform;
+            Debug.Log("Player Active");
+
+
+
+            OnEnter();
+
+            yield return null;
+
+            Debug.Log("Initializing Other Systems");
+            GlobalPool.Get.Initialize(rootObjects[7].transform);
+            Player.Player.Ranged.eggPool.Initialize();
+
+            Overlay.OverALL.Alpha = 1;
+            Overlay.UnderHUD.ResetState();
+            Overlay.BetweenUI.ResetState();
+
+            yield return WaitFor.Until(() => Active
+                && Services.Player is not null
+                );
+
+            Debug.Log("Beginning Transition");
+            RoomManager.ResetTransitionData(false);
+            RoomManager.TransitionStyle = new()
+            {
+                forceFullTransition = true,
+                FadeOutRoutine = null,
+                FadeInRoutine = Overlay.OverALL.FadeAlpha(0, 0.5f),
+                PreFadeInAction = () =>
+                {
+                    Overlay.UnderHUD.ResetState();
+                    Overlay.BetweenUI.ResetState();
+                    OverlayTopPlus.Get.ResetState();
+                    SavedProgress.UpdateGameTime();
+                    UpdateProxy.OnFixedUpdate += FixedUpdate;
+                },
+            };
+            yield return RoomManager.Transition();
+            Debug.Log("Transition Finished");
+            InvokeOnFinalAwake();
+
+        }
+
+        /// <summary>
+        /// The <see cref="UnityEngine.GameObject"/> that this script is attached to. Null if not active."/>
+        /// </summary>
+        public static GameObject GameObject { get; private set; }
+
+        /// <summary>
+        /// The Emitter that plays gameplay music. 
+        /// </summary>
+        //public static StudioEventEmitter musicEmitter;
+
+
+        /// <summary>
+        /// Begins The Gameplay Phase using the specified Save File on Disk.
+        /// </summary>
+        /// <param name="fileNo"></param>
+        protected override void DoBeginSaveFile(int fileNo)
+        {
+            if (Active) return;
+
+            Enum().Begin();
+            IEnumerator Enum()
+            {
+
+                yield return Overlay.OverALL.FadeAlpha(1);
+
+                UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+                UnityEngine.Cursor.visible = false;
+
+                SaveData.InitializeFile(fileNo);
+                RoomManager.queuedDestination = SaveData.Active.playerStats.location;
+
+                Menu.CloseAllMenus();
+
+                yield return Get.Enter();
+            }
+        }
+
+        protected override void DoBeginEditor(Destination d)
+        {
+            SaveData.InitializeFile(0);
+            Destination loadedDest = SaveData.Active.playerStats.location;
+            loadedDest ??= new();
+
+            RoomManager.queuedDestination =
+                (d.room != null && d.spawn > -1) ? d // Everything Checks
+                : (d.area != null && d.room == null) ? //Area but No Room
+                    (loadedDest.area == d.area) ? d // Area Matches Save
+                    : new(d.area.rooms[0], 0) // Area doesn't Match Save
+                  : (d.room != null && d.spawn == -1) ?  // Room but no Spawn
+                        (loadedDest.room == d.room) ? d // Room Matches Save
+                        : new(d.room, 0) // Room doesn't Match Save
+                    : throw new System.Exception("Excuse me??????"); // Idk.
+
+            Get.Enter().Begin();
+        }
+
+
+        /*
+        private static Destination CalculateEditorSpawn()
+        {
+            Destination target = EditorState.EditorDestination;
+
+            // If target is default, use the save file location
+            if (target.IsNull()) return SaveData.Active.location;
+
+            Destination fileDest = SaveData.Active.location;
+
+            if (EditorState.EditorDestinationArea != null && EditorState.EditorDestinationArea != fileDest.area)
+            {
+                target.room ??= EditorState.EditorDestinationArea.rooms[0];
+                target.spawnID = 0;
+                return target;
+            }
+
+            // If area matches save file, fill in missing room/spawnID from save file
+            if (target.area == fileDest.area)
+            {
+                if (target.room == null) target.room = fileDest.room;
+                if (target.spawnID == -1) target.spawnID = fileDest.spawnID;
+            }
+            else // If area is different, fill missing room/spawnID with 0th values
+            {
+                if (target.room == null) target.room = target.area.rooms[0];
+                if (target.spawnID == -1) target.spawnID = 0;
+            }
+
+            // If room is set but spawnID is missing, fill from save file if area matches, else use 0
+            if (target.room != null && target.spawnID == -1)
+                target.spawnID = (target.room.area == fileDest.area) ? fileDest.spawnID : 0;
+
+            return target;
+        }
+        */
+
+
+        protected override void DoReloadSave()
+        {
+            SaveData.RevertToFile();
+            RoomManager.StartTransition(RoomManager.ReturnDestination as Destination);
+        }
+
+
+
+
+
+
+        //protected override void OnDeInitialize() => EnemyCullingGroup.DeInitialize();
+        /*
+        public static class EnemyCullingGroup
+        {
+            static Transform camera;
+            public const float enemyCullDistance = 80f;
+            static CullingGroup cullingGroup = new();
+            static List<CullableEntity> cullableEnemies = new();
+            static List<BoundingSphere> enemyBoundingSpheres = new();
+
+            public const float tickTime = 0.1f;
+            static Coroutine activeRoutine;
+            static WaitForSeconds activeTickDelay = new WaitForSeconds(tickTime);
+
+            public static void Initialize(MonoBehaviour owner)
+            {
+                cullingGroup.targetCamera = Camera.main;
+                camera = Camera.main.transform;
+                cullingGroup.onStateChanged += CullingGroupStateUpdate;
+                cullingGroup.SetBoundingDistances(new float[] { enemyCullDistance });
+                activeRoutine = TickEnum().Begin(owner);
+            }
+            public static void DeInitialize()
+            {
+                cullingGroup.Dispose();
+                cullableEnemies.Clear();
+                enemyBoundingSpheres.Clear();
+                activeRoutine?.StopAuto();
+            }
+
+            public static IEnumerator TickEnum()
+            {
+                while (true)
+                {
+                    UpdateCulledEnemies();
+                    yield return activeTickDelay;
+                }
+            }
+
+            public static void AddEnemyToCullingGroup(CullableEntity input)
+            {
+                cullableEnemies.Add(input);
+                enemyBoundingSpheres.Add(new(input.transform.position, input.radius));
+            }
+            public static void RemoveEnemyFromCullingGroup(CullableEntity input)
+            {
+                if (cullableEnemies.Count < 1) return;
+                int ID = cullableEnemies.IndexOf(input);
+                cullableEnemies.Remove(input);
+                enemyBoundingSpheres.RemoveAt(ID);
+            }
+
+            public static void UpdateCulledEnemies()
+            {
+                cullingGroup.SetDistanceReferencePoint(camera.position);
+                for (int i = 0; i < cullableEnemies.Count; i++)
+                {
+                    enemyBoundingSpheres[i] = new BoundingSphere(cullableEnemies[i].transform.position, cullableEnemies[i].radius);
+
+
+                }
+
+                cullingGroup.SetBoundingSpheres(enemyBoundingSpheres.ToArray());
+                cullingGroup.SetBoundingSphereCount(cullableEnemies.Count);
+
+                for(int i = 0; i < enemyBoundingSpheres.Count; i++)
+                {
+
+                    cullableEnemies[i].OnCullEntity(cullingGroup.IsVisible(i));
+
+                }
+            }
+
+            public static void CullingGroupStateUpdate(CullingGroupEvent @event)
+            {
+                if (@event.index < 0 || @event.index >= cullableEnemies.Count) return;
+
+                bool currentlyWithin = @event.currentDistance == 0;
+                if (currentlyWithin != (@event.previousDistance == 0) || cullableEnemies[@event.index].init)
+                    cullableEnemies[@event.index].WithinRangeChange(currentlyWithin);
+            }
+
+
+        }*/
+
+        protected override IEnumerator OnExit()
+        {
+            CoreServices.Music.StopAllMusic();
+            UpdateProxy.OnFixedUpdate -= FixedUpdate;
+            PlayerRoot.HaveDestroyed();
+            SaveData.ExitFile();
+            RoomManager.queuedDestination = null;
+            for (int i = rootObjects.Length - 1; i >= 0; i--)
+                Destroy(rootObjects[i]);
+            yield break;
+        }
+
+        protected override void DoEndGame() => titleScreenGameState.Enter();
+    }
+
+}

@@ -4,11 +4,11 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 using UnityEngine.SceneManagement;
-using Utilities.Singletons;
+using SLS.Singletons;
 
 public class AudioManager : MonoBehaviour
 {
-    static Singleton<AudioManager> S = new(() =>
+    static readonly Singleton<AudioManager> S = new(() =>
     {
         GameObject GO = new("--Audio-Manager--");
         AudioManager result = GO.AddComponent<AudioManager>();
@@ -21,10 +21,10 @@ public class AudioManager : MonoBehaviour
     public static bool Active => S.Active;
 
     // Properties to set the volume for different audio buses
-    public float masterVolume { set => masterBus.setVolume(value); }
-    public float musicVolume { set => musicBus.setVolume(value); }
-    public float SFXVolume { set => sfxBus.setVolume(value); }
-    public float ambienceVolume { set => ambienceBus.setVolume(value); }
+    public void SetMasterVolume(float value) => masterBus.setVolume(value);
+    public void SetMusicVolume(float value) => musicBus.setVolume(value);
+    public void SetSFXVolume(float value) => sfxBus.setVolume(value);
+    public void SetAmbienceVolume(float value) => ambienceBus.setVolume(value);
 
     private Bus masterBus;
     private Bus musicBus;

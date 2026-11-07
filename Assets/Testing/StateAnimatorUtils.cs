@@ -19,9 +19,9 @@ public class StateAnimatorUtils : MonoBehaviour
 
     private void AttemptConvert(State This, bool isRoot = false)
     {
-        if (!isRoot && This.TryGetComponent(out PlayerMovementAnimator playerMovementAnimator))
-            playerMovementAnimator.RunTransfer();
-        foreach (var child in This.Children) AttemptConvert(child);
+        //if (!isRoot && This.TryGetComponent(out PlayerMovementAnimator playerMovementAnimator))
+        //    playerMovementAnimator.RunTransfer();
+        //foreach (var child in This.Children) AttemptConvert(child);
     }
 
 

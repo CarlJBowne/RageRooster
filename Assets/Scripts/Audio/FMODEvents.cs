@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Utilities.Singletons;
+using SLS.Singletons;
 
 [CreateAssetMenu(fileName = "FMODEvents", menuName = "ScriptableObjects/FMODEvents")]
 public class FMODEvents : GlobalAsset<FMODEvents>

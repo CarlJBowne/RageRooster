@@ -2,10 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SLS.MenuCore;
 
 public class ScreenTransition
 {
-    public void Start(MonoBehaviour owner = null) => ActiveCoroutine = new(Enum(), owner != null ? owner : Overlay.OverMenus);
+    public void Start(MonoBehaviour owner = null) => ActiveCoroutine = new(Enum(), owner != null ? owner : Overlay.OverALL);
 
     public Action PreOutTransitionEvent;
     public IEnumerator OutTransition;

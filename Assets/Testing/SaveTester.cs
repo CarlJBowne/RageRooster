@@ -4,29 +4,26 @@ using UnityEngine;
 using EditorAttributes;
 using Newtonsoft.Json.Linq;
 using static UnityEngine.Rendering.DebugUI;
-using RageRooster.Systems.SaveSystem;
-using Utilities.JSON;
+using RageRooster.Core.Save;
+using SLS.SaveFileCore;
 
 [CreateAssetMenu(fileName = "SaveTester", menuName = "ScriptableObjects/SaveTester")]
 public class SaveTester : ScriptableObject
 {
     public string path;
     public string fileName;
-    public ScriptableCollection coll;
     private JsonFile File;
 
     [Button]
     public void Save()
     {
         File = new JsonFile(Application.dataPath + path, fileName);
-        File.SaveToFile(coll.Serialize() as JObject);
     }
     [Button]
     public void Load()
     {
         File = new JsonFile(Application.dataPath + path, fileName);
-        File.LoadFromFile();
-        File.Data.DeserializeInto(coll);
+        //File.LoadFromFile();
     }
 }
 

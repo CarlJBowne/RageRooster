@@ -101,7 +101,7 @@ MonoBehaviour:
     - rid: -2
       type: {class: , ns: , asm: }
     - rid: 440872815894724698
-      type: {class: PlayerButtonAction/TargetDependant, ns: , asm: Assembly-CSharp}
+      type: {class: PlayerButtonAction/TargetDependant, ns: , asm: RageRooster.Player}
       data:
         persistAcrossStateChange: 0
         hasMeleeTarget:
@@ -111,7 +111,7 @@ MonoBehaviour:
         noTarget:
           rid: 440872815894724701
     - rid: 440872815894724700
-      type: {class: PlayerButtonAction/UpgradeDependant, ns: , asm: Assembly-CSharp}
+      type: {class: PlayerButtonAction/UpgradeDependant, ns: , asm: RageRooster.Player}
       data:
         persistAcrossStateChange: 1
         hasUpgrade:
@@ -120,7 +120,7 @@ MonoBehaviour:
           rid: -2
         upgrade: 6
     - rid: 440872815894724701
-      type: {class: PlayerButtonAction/UpgradeDependant, ns: , asm: Assembly-CSharp}
+      type: {class: PlayerButtonAction/UpgradeDependant, ns: , asm: RageRooster.Player}
       data:
         persistAcrossStateChange: 1
         hasUpgrade:
@@ -129,21 +129,21 @@ MonoBehaviour:
           rid: -2
         upgrade: 6
     - rid: 440872815894724702
-      type: {class: PlayerButtonAction/CrossStatePressRelease, ns: , asm: Assembly-CSharp}
+      type: {class: PlayerButtonAction/CrossStatePressRelease, ns: , asm: RageRooster.Player}
       data:
         persistAcrossStateChange: 1
         actionEvent:
           _PersistentCalls: []
         transferState: {fileID: 6282605067651037026}
     - rid: 440872815894724703
-      type: {class: PlayerButtonAction/CrossStatePressRelease, ns: , asm: Assembly-CSharp}
+      type: {class: PlayerButtonAction/CrossStatePressRelease, ns: , asm: RageRooster.Player}
       data:
         persistAcrossStateChange: 1
         actionEvent:
           _PersistentCalls: []
         transferState: {fileID: 6282605067651037026}
     - rid: 3657502764043599955
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: RageRooster.Player}
       data:
         persistAcrossStateChange: 0
         pressEvent:
@@ -179,7 +179,7 @@ MonoBehaviour:
     serializedNames:
     - AimRelease
     - WalkOff
-    serializedKeys: 82634ae547fce3e4
+    serializedHashes: 82634ae547fce3e4
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 0}
@@ -311,7 +311,7 @@ MonoBehaviour:
     - rid: -2
       type: {class: , ns: , asm: }
     - rid: 1676068309935587422
-      type: {class: PlayerButtonAction/CrossStatePressRelease, ns: , asm: Assembly-CSharp}
+      type: {class: PlayerButtonAction/CrossStatePressRelease, ns: , asm: RageRooster.Player}
       data:
         persistAcrossStateChange: 0
         actionEvent:
@@ -645,8 +645,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: SLS.StateMachineH.Runtime::SLS.StateMachineH.Signals.SignalNode
   <State>k__BackingField: {fileID: 3324675951119846532}
   signals:
-    serializedNames: []
-    serializedKeys: 
+    serializedKeys: []
+    serializedHashes: 
     serializedValues: []
   blockParentNodes: 0
   blockGlobalNode: 0
@@ -778,7 +778,7 @@ MonoBehaviour:
     - rid: -2
       type: {class: , ns: , asm: }
     - rid: 1950655830041821324
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: RageRooster.Player}
       data:
         persistAcrossStateChange: 1
         pressEvent:
@@ -789,7 +789,7 @@ MonoBehaviour:
             _MemberName: Enter
             _PersistentArguments: []
     - rid: 1950656167362429026
-      type: {class: PlayerButtonAction/BasicPush, ns: , asm: Assembly-CSharp}
+      type: {class: PlayerButtonAction/BasicPush, ns: , asm: RageRooster.Player}
       data:
         persistAcrossStateChange: 0
         pressEvent:
@@ -816,7 +816,7 @@ MonoBehaviour:
     serializedNames:
     - AimRelease
     - WalkOff
-    serializedKeys: 82634ae547fce3e4
+    serializedHashes: 82634ae547fce3e4
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 0}
@@ -1019,7 +1019,7 @@ MonoBehaviour:
     serializedNames:
     - LassoReach
     - LassoReachMiss
-    serializedKeys: 76106e20319f4050
+    serializedHashes: 76106e20319f4050
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 7793706925814574489}
@@ -1168,7 +1168,7 @@ MonoBehaviour:
     serializedNames:
     - LassoPull
     - YEET
-    serializedKeys: 1cbdc19db2fe1800
+    serializedHashes: 1cbdc19db2fe1800
     serializedValues:
     - _PersistentCalls:
       - _Target: {fileID: 1739575009564784701}

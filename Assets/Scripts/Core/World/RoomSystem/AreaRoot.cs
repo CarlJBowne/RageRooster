@@ -1,0 +1,48 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace RageRooster.Core.World
+{
+    /// <summary>
+    /// The Root component for an Area. Attached to the root <see cref="GameObject"/> of a <see cref="AreaAsset.shellScene"/>
+    /// <br/> If an Area is created via the File/CreateRoom button, this component is automatically setup.
+    /// </summary>
+    [DefaultExecutionOrder(ExecutionOrders.Area)]
+    public class AreaRoot : MonoBehaviour
+    {
+        /// <summary>
+        /// The <see cref="AreaAsset"/> associated with this instance.
+        /// </summary>
+        [field: SerializeField] public AreaAsset asset { get; protected set; }
+
+        [field: SerializeField] public GameObject[] roomLowestLods { get; private set; }
+
+        private void Awake()
+        {
+            if (!Gameplay.Active)
+            {
+                Gameplay.BeginEditor(Destination.AreaOnly(asset));
+                return;
+            }
+
+            asset.Connect(this);
+        }
+
+#if UNITY_EDITOR
+        public class Editor : UnityEditor.Editor
+        {
+
+
+            public static void AttachAsset(AreaRoot This, AreaAsset area)
+            {
+                This.asset = area;
+                UnityEditor.EditorUtility.SetDirty(This);
+            }
+        }
+
+
+#endif
+    }
+
+}

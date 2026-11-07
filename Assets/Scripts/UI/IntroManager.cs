@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System.Collections;
 using RageRooster.Settings;
+using SLS.MenuCore;
 
 public class IntroManager : MonoBehaviour
 {
@@ -56,7 +57,7 @@ public class IntroManager : MonoBehaviour
         //inputActions.Enable();
         skipButton.action.performed += SkipButtonPressed;
 
-        if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+        if (Overlay.ActiveOverlays == 0) Instantiate(overlayPrefab);
         GameSettings.Graphics.EstablishBrightnessOverlay();
 
         SetAlpha(introVideoImage, 0f);

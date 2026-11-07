@@ -5,8 +5,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using SLS.MenuCore;
+using RageRooster.Core;
 
-public class MainMenu : MenuSingleton<MainMenu>
+public class MainMenu : Menu
 {
     private enum MenuState
     {
@@ -23,11 +25,11 @@ public class MainMenu : MenuSingleton<MainMenu>
 
     private int currentButtonIndex = 0;
 
-    protected override void OnInitialize()
+    protected override void Awake()
     {
-        Menu.Manager.Initialize();
+        //Menu.Manager.Initialize(); //Does this have any equivalent???
         base.Awake();
-        if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
+        //if (Overlay.ActiveOverlays.Count == 0) Instantiate(overlayPrefab);
     }
 
     private void Start()
@@ -119,9 +121,6 @@ public class MainMenu : MenuSingleton<MainMenu>
 
     private void SetMenuButtonsInteractable(bool interactable)
     {
-        foreach (var button in menuButtons)
-        {
-            button.interactable = interactable;
-        }
+        foreach (var button in menuButtons) button.interactable = interactable;
     }
 }
