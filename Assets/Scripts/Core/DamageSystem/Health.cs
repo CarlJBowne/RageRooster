@@ -25,7 +25,7 @@ using UnityEditor;
 public class Health : MonoBehaviour, IDamagable
 {
     #region Real Values / Initial Cofig
-    [SerializeField, Rename("Initial Health"), FormerlySerializedAs("health")] protected int _current;
+    [SerializeField, Rename("Initial Health"), FormerlySerializedAs("health"), HideInEditMode] protected int _current;
     [SerializeField, Rename("Max Health"), FormerlySerializedAs("maxHealth")] protected int _max;
     [SerializeField, Rename("Min Health"), FormerlySerializedAs("")] protected int _min;
 
