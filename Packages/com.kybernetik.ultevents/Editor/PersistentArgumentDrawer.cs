@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2026 Kybernetik //
 
 #if UNITY_EDITOR
 
@@ -510,7 +510,11 @@ namespace UltEvents.Editor
                         }
                         else
                         {
-                            label.text += MemberSelectionMenu.GetSignature(linkedMember, true, null);
+                            label.text += MemberSelectionMenu.GetSignature(
+                                linkedMember,
+                                true,
+                                null,
+                                SyntaxColorSet.CurrentSkin);
 
                             if ((uint)DrawerState.Current.callIndex <= (uint)callIndex)
                             {
@@ -528,7 +532,7 @@ namespace UltEvents.Editor
                         break;
                 }
 
-                if (GUI.Button(area, label, PersistentCallDrawer.PopupButtonStyle))
+                if (GUI.Button(area, label, PersistentCallDrawer.PopupButtonSmallStyle))
                 {
                     if (Event.current.button == 0)
                         ShowLinkMenu(area, argumentProperty, argumentType, callIndex, argument.Type);
@@ -583,7 +587,7 @@ namespace UltEvents.Editor
                     continue;
 
                 var content = new GUIContent(
-                    $"Returned Value {i} ({MemberSelectionMenu.GetSignature(member, true, null)})");
+                    $"Returned Value {i} ({MemberSelectionMenu.GetSignature(member, true, null, null)})");
 
                 var on = i == linkIndex && linkType == PersistentArgumentType.ReturnValue;
 

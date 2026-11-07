@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2026 Kybernetik //
 
 using System;
 using System.Reflection;
@@ -139,7 +139,9 @@ namespace UltEvents
 
         /// <summary>The <see cref="Field"/> or <see cref="Method"/> depending on <see cref="IsField"/>.</summary>
         public MemberInfo Member
-            => IsField ? Field : Method;
+            => IsField
+            ? Field
+            : Method;
 
         /// <summary>Gets the <see cref="Member"/> and blocks any exceptions (which causes it to return null).</summary>
         internal MemberInfo GetMemberSafe()
@@ -150,11 +152,11 @@ namespace UltEvents
 
         /// <summary>Gets the <see cref="Method"/> return type or <see cref="Field"/> type if <see cref="IsGetter"/>.</summary>
         internal Type GetReturnType()
-        {
-            return IsField ?
-                IsGetter ? Field.FieldType : null :
-                GetMethodSafe()?.GetReturnType();
-        }
+            => IsField
+            ? IsGetter
+            ? Field.FieldType
+            : null
+            : GetMethodSafe()?.GetReturnType();
 
         /************************************************************************************************************************/
 #if UNITY_EDITOR
@@ -162,8 +164,10 @@ namespace UltEvents
 
         // Always clear the cached members in the editor in case any fields
         // have been directly modified by Inspector or Undo operations.
-        void ISerializationCallbackReceiver.OnBeforeSerialize() => ClearCache();
-        void ISerializationCallbackReceiver.OnAfterDeserialize() => ClearCache();
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+            => ClearCache();
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
+            => ClearCache();
 
         private void ClearCache()
         {
@@ -450,12 +454,21 @@ namespace UltEvents
             // If you think this looks retarded, that's because it is.
 
             // Sometimes Unity ends up with an old reference to an object where the reference thinks
-            // it has been destroyed even though it hasn't and it still has a value Instance ID.
+            // it has been destroyed even though it hasn't and it still has a valid ID.
 
             // So we just get a new reference using that ID.
 
             if (_Target == null && !ReferenceEquals(_Target, null))
-                _Target = UnityEditor.EditorUtility.InstanceIDToObject(_Target.GetInstanceID());
+            {
+#if UNITY_6000_3_OR_NEWER
+                var newTarget = UnityEditor.EditorUtility.EntityIdToObject(_Target.GetEntityId());
+#else
+                var newTarget = UnityEditor.EditorUtility.InstanceIDToObject(_Target.GetInstanceID());
+#endif
+
+                if (newTarget != null)
+                    _Target = newTarget;
+            }
 #endif
 
             GetMemberDetails(_MemberName, _Target, out declaringType, out memberName);

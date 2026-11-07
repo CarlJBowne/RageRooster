@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2026 Kybernetik //
 
 #if UNITY_EDITOR
 
@@ -26,7 +26,8 @@ namespace UltEvents.Editor
             => EditorGUIUtility.standardVerticalSpacing;
 
         public static readonly GUIStyle
-            PopupButtonStyle = EditorStyles.popup,
+            PopupButtonStyle,
+            PopupButtonSmallStyle,
             PopupLabelStyle,
             TypePickerButtonStyle;
 
@@ -41,11 +42,22 @@ namespace UltEvents.Editor
 
         static PersistentCallDrawer()
         {
+            PopupButtonStyle = new(EditorStyles.popup)
+            {
+                richText = true,
+            };
+
+            PopupButtonSmallStyle = new(PopupButtonStyle)
+            {
+                fontSize = 10,
+            };
+
             PopupLabelStyle = new(GUI.skin.label)
             {
                 fontSize = 10,
                 alignment = TextAnchor.MiddleLeft,
                 padding = new(4, 14, 0, 0),
+                richText = true,
             };
 
             TypePickerButtonStyle = new(EditorStyles.miniButton)
@@ -258,7 +270,12 @@ namespace UltEvents.Editor
             autoOpenMemberMenu = false;
 
             // Type field for a static type.
-            if (targetProperty.objectReferenceValue == null &&
+            // Check the ID in case it's referencing a missing object which would appear null.
+#if UNITY_6000_4_OR_NEWER
+            if (targetProperty.objectReferenceEntityIdValue == EntityId.None &&
+#else
+            if (targetProperty.objectReferenceInstanceIDValue == 0 &&
+#endif
                 !targetProperty.hasMultipleDifferentValues)
             {
                 DoTargetTypeFieldGUI(area, targetProperty, memberNameProperty, ref autoOpenMemberMenu);
@@ -340,10 +357,11 @@ namespace UltEvents.Editor
             EditorGUI.BeginChangeCheck();
 
             var oldTarget = targetProperty.objectReferenceValue;
-            var target = EditorGUI.ObjectField(area, oldTarget, typeof(Object), true);
+            EditorGUI.ObjectField(area, targetProperty, GUIContent.none);
             if (EditorGUI.EndChangeCheck())
             {
-                SetBestTarget(oldTarget, target, out autoOpenMemberMenu);
+                var newTarget = targetProperty.objectReferenceValue;
+                SetBestTarget(oldTarget, newTarget, out autoOpenMemberMenu);
             }
 
             EditorGUI.showMixedValue = false;
@@ -503,9 +521,9 @@ namespace UltEvents.Editor
 
         private static void SetBestTarget(Object oldTarget, Object newTarget, out bool autoOpenMethodMenu)
         {
-            // It's more likely that the user intends to target a method on a Component than the GameObject itself so
-            // if a GameObject was dropped in, try to select a component with the same type as the old target,
-            // otherwise select it's first component after the Transform.
+            // It's more likely that the user intends to target a method on a Component than the GameObject itself
+            // so if a GameObject was dropped in, try to select a component with the same type as the old target,
+            // otherwise select its first component after the Transform.
             var gameObject = newTarget as GameObject;
             if (oldTarget is not GameObject && !ReferenceEquals(gameObject, null))
             {
@@ -551,7 +569,11 @@ namespace UltEvents.Editor
                 }
                 else if (member != null)
                 {
-                    label = MemberSelectionMenu.GetSignature(member, false, null);
+                    label = MemberSelectionMenu.GetSignature(
+                        member,
+                        false,
+                        null,
+                        SyntaxColorSet.CurrentSkin);
 
                     DoGetSetToggleGUI(ref area, member);
                 }

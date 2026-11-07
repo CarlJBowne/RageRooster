@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2026 Kybernetik //
 
 #if UNITY_EDITOR
 
@@ -62,6 +62,12 @@ namespace UltEvents.Editor
                 GenericMenu = new();
             else
                 RootItem = new(title);
+
+            // This should allow rich text coloring in this menu, but it only works in some Unity versions.
+            // Works in Unity 6.0 and reportedly also 6.7.
+            // Doesn't work in Unity 2023 and 6.5.
+            // Note that several methods in MemberSelectionMenu also need to be modified to actually add the color tags.
+            // ((GUIStyle)"DD ItemStyle").richText = true;
         }
 
         /************************************************************************************************************************/
@@ -218,9 +224,15 @@ namespace UltEvents.Editor
                 parentItem.Function = null;
             }
 
+#if UNITY_6000_5_OR_NEWER
+            foreach (var child in parent.childList)
+#else
             foreach (var child in parent.children)
+#endif
+            {
                 if (child.name == name)
                     return (Item)child;
+            }
 
             var item = new Item(name)
             {

@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2026 Kybernetik //
 
 #if UNITY_EDITOR
 
@@ -445,7 +445,7 @@ namespace UltEvents.Editor
             string prefix,
             Object[] targets)
         {
-            var members = GetSortedMembers(type, bindings);
+            var members = MemberCache.Get(type, bindings);
             var previousDeclaringType = type;
 
             var firstSeparator = true;
@@ -456,9 +456,44 @@ namespace UltEvents.Editor
             var nameMatchesNextMethod = false;
 
             var i = 0;
-            while (i < members.Count)
+
+            if (members.Favourites.Count > 0)
             {
-                var member = GetNextSupportedMember(members, ref i, out var parameters, out var getter);
+                firstSeparator = false;
+
+                _Menu.AddDisabledItem(prefix + "Favourites in " + type.GetNameCS());
+
+                while (i < members.Favourites.Count)
+                {
+                    var member = GetNextSupportedMember(members.Favourites, ref i, out var parameters, out var getter);
+                    if (member == null)
+                        return;
+
+                    var path = members.FavouritePaths[i];
+
+                    i++;
+
+                    switch (member)
+                    {
+                        case FieldInfo field:
+                            AddSelectFieldItem(prefix + path, targets, type, field, false);
+                            continue;
+
+                        case PropertyInfo property:
+                            AddSelectPropertyItem(prefix + path, targets, type, property, getter, false);
+                            continue;
+
+                        case MethodBase method:
+                            AddSelectMethodItem(prefix + path, targets, type, false, method, parameters, false);
+                            break;
+                    }
+                }
+            }
+
+            i = 0;
+            while (i < members.Others.Count)
+            {
+                var member = GetNextSupportedMember(members.Others, ref i, out var parameters, out var getter);
 
                 GotMember:
 
@@ -512,7 +547,7 @@ namespace UltEvents.Editor
                             ref firstField,
                             ref firstSeparator);
 
-                        AddSelectFieldItem(prefix, targets, type, field);
+                        AddSelectFieldItem(prefix, targets, type, field, true);
                         continue;
 
                     case PropertyInfo property:
@@ -524,7 +559,7 @@ namespace UltEvents.Editor
                             ref firstProperty,
                             ref firstSeparator);
 
-                        AddSelectPropertyItem(prefix, targets, type, property, getter);
+                        AddSelectPropertyItem(prefix, targets, type, property, getter, true);
                         continue;
 
                     case MethodBase method:
@@ -543,15 +578,15 @@ namespace UltEvents.Editor
                                 var nameMatchedPreviousMethod = nameMatchesNextMethod;
 
                                 var nextMember = GetNextSupportedMember(
-                                    members, ref i, out var nextParameters, out var nextGetter);
+                                    members.Others, ref i, out var nextParameters, out var nextGetter);
 
                                 nameMatchesNextMethod = nextMember != null && method.Name == nextMember.Name;
 
                                 if (nameMatchedPreviousMethod || nameMatchesNextMethod)
                                 {
-                                    AddSelectMethodItem(prefix, targets, type, true, method, parameters);
+                                    AddSelectMethodItem(prefix, targets, type, true, method, parameters, true);
 
-                                    if (i < members.Count)
+                                    if (i < members.Others.Count)
                                     {
                                         member = nextMember;
                                         parameters = nextParameters;
@@ -566,7 +601,7 @@ namespace UltEvents.Editor
                             }
 
                             // Otherwise just build the label normally.
-                            AddSelectMethodItem(prefix, targets, type, false, method, parameters);
+                            AddSelectMethodItem(prefix, targets, type, false, method, parameters, true);
                             break;
                         }
                 }
@@ -629,17 +664,21 @@ namespace UltEvents.Editor
             string prefix,
             Object[] targets,
             Type currentType,
-            FieldInfo field)
+            FieldInfo field,
+            bool allowRegrouping)
         {
             LabelBuilder.Length = 0;
             LabelBuilder.Append(prefix);
 
-            // Declaring Type.
-            AppendDeclaringTypeSubMenu(LabelBuilder, field.DeclaringType, currentType);
+            if (allowRegrouping)
+            {
+                // Declaring Type.
+                AppendDeclaringTypeSubMenu(LabelBuilder, field.DeclaringType, currentType);
 
-            // Non-Public Grouping.
-            if (BoolPref.GroupNonPublicMethods && !field.IsPublic)
-                LabelBuilder.Append("Non-Public Fields" + SubMenuSeparator);
+                // Non-Public Grouping.
+                if (BoolPref.GroupNonPublicMethods && !field.IsPublic)
+                    LabelBuilder.Append("Non-Public Fields" + SubMenuSeparator);
+            }
 
             // Property Type and Name.
             LabelBuilder.Append(field.FieldType.GetNameCS(BoolPref.ShowFullTypeNames));
@@ -657,7 +696,8 @@ namespace UltEvents.Editor
             Object[] targets,
             Type currentType,
             PropertyInfo property,
-            MethodInfo getter)
+            MethodInfo getter,
+            bool allowRegrouping)
         {
             var defaultMethod = getter;
 
@@ -672,12 +712,15 @@ namespace UltEvents.Editor
             LabelBuilder.Length = 0;
             LabelBuilder.Append(prefix);
 
-            // Declaring Type.
-            AppendDeclaringTypeSubMenu(LabelBuilder, property.DeclaringType, currentType);
+            if (allowRegrouping)
+            {
+                // Declaring Type.
+                AppendDeclaringTypeSubMenu(LabelBuilder, property.DeclaringType, currentType);
 
-            // Non-Public Grouping.
-            if (BoolPref.GroupNonPublicMethods && !IsPublic(property))
-                LabelBuilder.Append("Non-Public Properties" + SubMenuSeparator);
+                // Non-Public Grouping.
+                if (BoolPref.GroupNonPublicMethods && !MemberCache.IsPublic(property))
+                    LabelBuilder.Append("Non-Public Properties" + SubMenuSeparator);
+            }
 
             // Property Type and Name.
             LabelBuilder.Append(property.PropertyType.GetNameCS(BoolPref.ShowFullTypeNames));
@@ -704,17 +747,21 @@ namespace UltEvents.Editor
             Type currentType,
             bool methodNameSubMenu,
             MethodBase method,
-            ParameterInfo[] parameters)
+            ParameterInfo[] parameters,
+            bool allowRegrouping)
         {
             LabelBuilder.Length = 0;
             LabelBuilder.Append(prefix);
 
-            // Declaring Type.
-            AppendDeclaringTypeSubMenu(LabelBuilder, method.DeclaringType, currentType);
+            if (allowRegrouping)
+            {
+                // Declaring Type.
+                AppendDeclaringTypeSubMenu(LabelBuilder, method.DeclaringType, currentType);
 
-            // Non-Public Grouping.
-            if (BoolPref.GroupNonPublicMethods && !method.IsPublic)
-                LabelBuilder.Append("Non-Public Methods" + SubMenuSeparator);
+                // Non-Public Grouping.
+                if (BoolPref.GroupNonPublicMethods && !method.IsPublic)
+                    LabelBuilder.Append("Non-Public Methods" + SubMenuSeparator);
+            }
 
             // Overload Grouping.
             if (methodNameSubMenu)
@@ -726,13 +773,13 @@ namespace UltEvents.Editor
 
                 LabelBuilder.Append(SubMenuSeparator);
 
-                AppendParameters(LabelBuilder, method.GetParameters(), true, true);
+                AppendParameters(LabelBuilder, method.GetParameters(), true, true, null);
 
                 AppendTargetName(LabelBuilder, GetFirst(targets), method.DeclaringType);
             }
             else// Regular Method Signature.
             {
-                LabelBuilder.Append(GetMethodSignature(method, parameters, true, GetFirst(targets)));
+                LabelBuilder.Append(GetMethodSignature(method, parameters, true, GetFirst(targets), null));
             }
 
             var label = LabelBuilder.ToString();
@@ -782,177 +829,6 @@ namespace UltEvents.Editor
 
                     DrawerState.Current.Clear();
                 });
-        }
-
-        /************************************************************************************************************************/
-        #endregion
-        /************************************************************************************************************************/
-        #region Member Gathering
-        /************************************************************************************************************************/
-
-        private static readonly Dictionary<BindingFlags, Dictionary<Type, List<MemberInfo>>>
-            MemberCache = new();
-
-        internal static void ClearMemberCache()
-            => MemberCache.Clear();
-
-        /************************************************************************************************************************/
-
-        private static List<MemberInfo> GetSortedMembers(Type type, BindingFlags bindings)
-        {
-            // Get the cache for the specified bindings.
-            if (!MemberCache.TryGetValue(bindings, out var memberCache))
-            {
-                memberCache = new();
-                MemberCache.Add(bindings, memberCache);
-            }
-
-            // If the members for the specified type aren't cached for those bindings, gather and sort them.
-            if (!memberCache.TryGetValue(type, out var members))
-            {
-                var fields = type.GetFields(bindings);
-                var properties = type.GetProperties(bindings);
-                var methods = type.GetMethods(bindings);
-
-                // When gathering static members, also include constructors.
-                var constructors = ((bindings & BindingFlags.Static) == BindingFlags.Static) ?
-                    type.GetConstructors((bindings & ~BindingFlags.Static) | BindingFlags.Instance) :
-                    null;
-
-                var capacity = properties.Length + methods.Length;
-                if (constructors != null)
-                    capacity += constructors.Length;
-
-                members = new(capacity);
-                members.AddRange(fields);
-                members.AddRange(properties);
-                if (constructors != null)
-                    members.AddRange(constructors);
-                members.AddRange(methods);
-
-                // If the bindings include static, add static members from each base type.
-                if ((bindings & BindingFlags.Static) == BindingFlags.Static && type.BaseType != null)
-                {
-                    members.AddRange(GetSortedMembers(type.BaseType, bindings & ~BindingFlags.Instance));
-                }
-
-                UltEventUtils.StableInsertionSort(members, CompareMembers);
-
-                memberCache.Add(type, members);
-            }
-
-            return members;
-        }
-
-        /************************************************************************************************************************/
-
-        private static int CompareMembers(MemberInfo a, MemberInfo b)
-        {
-            if (BoolPref.SubMenuForEachBaseType)
-            {
-                var result = CompareChildBeforeBase(a.DeclaringType, b.DeclaringType);
-                if (result != 0)
-                    return result;
-            }
-
-            // Fields.
-            if (a is FieldInfo)
-            {
-                if (b is not FieldInfo)
-                    return -1;
-            }
-            else
-            {
-                if (b is FieldInfo)
-                    return 1;
-            }
-
-            // Properties.
-            if (a is PropertyInfo)
-            {
-                if (b is not PropertyInfo)
-                    return -1;
-            }
-            else
-            {
-                if (b is PropertyInfo)
-                    return 1;
-            }
-
-            // Methods.
-
-            // Non-Public Sub-Menu.
-            if (BoolPref.GroupNonPublicMethods)
-            {
-                if (IsPublic(a))
-                {
-                    if (!IsPublic(b))
-                        return -1;
-                }
-                else
-                {
-                    if (IsPublic(b))
-                        return 1;
-                }
-            }
-
-            // Compare names.
-            return a.Name.CompareTo(b.Name);
-        }
-
-        /************************************************************************************************************************/
-
-        private static int CompareChildBeforeBase(Type a, Type b)
-        {
-            if (a == b)
-                return 0;
-
-            while (true)
-            {
-                a = a.BaseType;
-
-                if (a == null)
-                    return 1;
-
-                if (a == b)
-                    return -1;
-            }
-        }
-
-        /************************************************************************************************************************/
-
-        private static readonly Dictionary<MemberInfo, bool>
-            MemberToIsPublic = new();
-
-        private static bool IsPublic(MemberInfo member)
-        {
-            if (!MemberToIsPublic.TryGetValue(member, out var isPublic))
-            {
-                switch (member.MemberType)
-                {
-                    case MemberTypes.Field:
-                        isPublic = (member as FieldInfo).IsPublic;
-                        break;
-
-                    case MemberTypes.Property:
-                        isPublic =
-                            (member as PropertyInfo).GetGetMethod() != null ||
-                            (member as PropertyInfo).GetSetMethod() != null;
-                        break;
-
-                    case MemberTypes.Constructor:
-                    case MemberTypes.Method:
-                        isPublic = (member as MethodBase).IsPublic;
-                        break;
-
-                    default:
-                        throw new ArgumentException("Unhandled member type", "member");
-                }
-
-                MemberToIsPublic.Add(member, isPublic);
-            }
-
-            return isPublic;
         }
 
         /************************************************************************************************************************/
@@ -1092,13 +968,26 @@ namespace UltEvents.Editor
             SignaturesWithoutParameters = new();
         private static readonly StringBuilder
             SignatureBuilder = new();
+        private static SyntaxColorSet
+            _LastColorSet;
 
         /************************************************************************************************************************/
 
-        public static string GetSignature(MemberInfo member, bool includeParameterNames, Object target)
+        public static string GetSignature(
+            MemberInfo member,
+            bool includeParameterNames,
+            Object target,
+            SyntaxColorSet colors)
         {
             if (member == null)
                 return null;
+
+            if (_LastColorSet != colors)
+            {
+                _LastColorSet = colors;
+                SignaturesWithParameters.Clear();
+                SignaturesWithoutParameters.Clear();
+            }
 
             var signatureCache = includeParameterNames
                 ? SignaturesWithParameters
@@ -1107,7 +996,7 @@ namespace UltEvents.Editor
             if (!signatureCache.TryGetValue(member, out var signature))
             {
                 if (member is MethodBase method)
-                    signature = BuildSignature(method, method.GetParameters(), includeParameterNames);
+                    signature = BuildSignature(method, method.GetParameters(), includeParameterNames, colors);
                 else if (member is FieldInfo field)
                     signature = BuildSignature(field);
                 else
@@ -1125,7 +1014,8 @@ namespace UltEvents.Editor
             MethodBase method,
             ParameterInfo[] parameters,
             bool includeParameterNames,
-            Object target)
+            Object target,
+            SyntaxColorSet colors)
         {
             if (method == null)
                 return null;
@@ -1136,7 +1026,7 @@ namespace UltEvents.Editor
 
             if (!signatureCache.TryGetValue(method, out var signature))
             {
-                signature = BuildSignature(method, parameters, includeParameterNames);
+                signature = BuildSignature(method, parameters, includeParameterNames, colors);
                 signatureCache.Add(method, signature);
             }
 
@@ -1154,17 +1044,23 @@ namespace UltEvents.Editor
         private static string BuildSignature(
             MethodBase method,
             ParameterInfo[] parameters,
-            bool includeParameterNames)
+            bool includeParameterNames,
+            SyntaxColorSet colors)
         {
             SignatureBuilder.Length = 0;
 
+            colors?.StartRichTextColor(SignatureBuilder, colors.MainType);
+
             SignatureBuilder.Append(method.GetReturnType().GetNameCS(false));
+
+            colors?.FinishRichTextColor(SignatureBuilder);
+
             SignatureBuilder.Append(' ');
 
             SignatureBuilder.Append(method.Name);
 
             SignatureBuilder.Append(' ');
-            AppendParameters(SignatureBuilder, parameters, true, includeParameterNames);
+            AppendParameters(SignatureBuilder, parameters, true, includeParameterNames, colors);
 
             var signature = SignatureBuilder.ToString();
             SignatureBuilder.Length = 0;
@@ -1193,7 +1089,8 @@ namespace UltEvents.Editor
             StringBuilder text,
             ParameterInfo[] parameters,
             bool includeTypes,
-            bool includeNames)
+            bool includeNames,
+            SyntaxColorSet colors)
         {
             text.Append('(');
 
@@ -1206,7 +1103,11 @@ namespace UltEvents.Editor
 
                 if (includeTypes)
                 {
+                    colors?.StartRichTextColor(SignatureBuilder, colors.ParameterType);
+
                     text.Append(parameter.ParameterType.GetNameCS(false));
+
+                    colors?.FinishRichTextColor(SignatureBuilder);
 
                     if (includeNames)
                         text.Append(' ');

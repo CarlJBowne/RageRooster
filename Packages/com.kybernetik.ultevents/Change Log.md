@@ -2,6 +2,22 @@ https://kybernetik.com.au/ultevents/docs/changes
 
 > When updating plugins, you must delete any previous version from your project first. This is mandatory since Unity's package importer system doesn't delete or rename existing files so any old scripts that aren't directly overwritten will cause compile errors that prevent anything from working.
 
+# UltEvents 3.1.1
+
+- 2026-07-05
+- Fixed a compile error in Unity 6.3 due to an incorrect #if.
+
+# UltEvents 3.1.0
+
+- 2026-07-04
+- Added syntax highlighting colours to various Inspector labels.
+- Added `[Hide]` attribute to hide members from the selection menu.
+- Added `[Favourite]` attribute to mark frequently used members so they can be displayed at the top of the member selection list.
+- Changed the Sample scene to use URP materials since that's what most projects use.
+- Fixed various issues with API changes in Unity 6.3 and 6.5.
+- Fixed `PersistentCallDrawer` to show missing target object references properly rather than treating them as `null` and showing the type selection field instead.
+- Fixed the `PersistentArgument.Object` setter to not change the stored type name because it needs to stay based on the method's argument type rather than the given object's specific type.
+
 # UltEvents 3.0.8
 
 - 2025-10-27

@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2026 Kybernetik //
 
 #if ! DOCS
 
@@ -10,8 +10,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("An serializable event system for Unity with superior features to the inbuilt UnityEvents.")]
 [assembly: AssemblyCompany("Kybernetik")]
 [assembly: AssemblyProduct("UltEvents")]
-[assembly: AssemblyCopyright("Copyright © Kybernetik 2025")]
-[assembly: AssemblyVersion("3.0.8.0")]
+[assembly: AssemblyCopyright("Copyright © Kybernetik 2021-2026")]
+[assembly: AssemblyVersion("3.1.1.0")]
 [assembly: ComVisible(false)]
 
 [assembly: SuppressMessage("Style", "IDE0016:Use 'throw' expression",

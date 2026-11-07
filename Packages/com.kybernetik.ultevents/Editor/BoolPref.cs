@@ -1,4 +1,4 @@
-﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2025 Kybernetik //
+﻿// UltEvents // https://kybernetik.com.au/ultevents // Copyright 2021-2026 Kybernetik //
 
 #if UNITY_EDITOR
 
@@ -77,13 +77,15 @@ namespace UltEvents.Editor
         /// <summary>Adds a menu item to toggle this pref.</summary>
         public void AddToMenu(GenericMenu menu)
         {
-            menu.AddItem(new GUIContent("Display Options ->/" + Label), Value, () => Value = !Value);
+            var path = "Display Options" + MemberSelectionMenu.SubMenuSeparator + Label;
+            menu.AddItem(new(path), Value, () => Value = !Value);
         }
 
         /// <summary>Adds a menu item to toggle this pref.</summary>
         public void AddToMenu(PickerMenu menu)
         {
-            menu.AddItem("Display Options ->/" + Label, Value, () => Value = !Value);
+            var path = "Display Options" + MemberSelectionMenu.SubMenuSeparator + Label;
+            menu.AddItem(path, Value, () => Value = !Value);
         }
 
         /************************************************************************************************************************/
@@ -101,7 +103,7 @@ namespace UltEvents.Editor
             ShowDeclaringTypeNames = new("Show Declaring Type Names", false),
             ShowArrowsForSubMenus = new("Show Arrows For Sub Menus", true),
             GroupMethodOverloads = new("Sub-Menu for Method Overloads", true),
-            SubMenuForEachBaseType = new("Base Types ->/Individual Sub-Menus", true, MemberSelectionMenu.ClearMemberCache),
+            SubMenuForEachBaseType = new("Base Types ->/Individual Sub-Menus", true, MemberCache.Clear),
             SubMenuForBaseTypes = new("Base Types ->/Group Sub-Menu", true),
             SubMenuForRootBaseType = new("Base Types ->/Group Root Type", false);
 
