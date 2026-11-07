@@ -217,13 +217,13 @@ public class Boss2HeadStateMachine : MonoBehaviour, IDamagable
 
         if (headID == FinalBossHead.Pecky && Random.Range(0f, 1f) <= projectileChance)
         {
-            Spawnable projectile = projectilePool.Pump(transform.position - Direction.front);
-            if (projectile != null) projectile.GetComponent<Rigidbody>().linearVelocity = Direction.upBack;
+            Spawnable projectile = projectilePool.Pump(transform.position - Directions.front);
+            if (projectile != null) projectile.GetComponent<Rigidbody>().linearVelocity = Directions.upBack;
         }
         else if (headID == FinalBossHead.Slasher)
         {
             Spawnable projectile = projectilePool.Pump(transform.position);
-            projectile.transform.localScale = .1f * Direction.one;
+            projectile.transform.localScale = .1f * Directions.one;
         }
         else if (headID == FinalBossHead.Stumpy)
         {
