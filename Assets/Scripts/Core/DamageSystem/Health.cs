@@ -182,11 +182,7 @@ public class Health : MonoBehaviour, IDamagable
     #region Damage Functionality
     public bool Damage(Attack attack)
     {
-        if (!damagable || attack.amount < 1 || immuneTags.ContainsAnyFrom(attack.tags) || !OverrideDamageable(attack))
-            return false;
-        OverrideDamageValue(ref attack);
-        if (!damagable || attack.amount < 1 || immuneTags.ContainsAnyFrom(attack.tags) || !OverrideDamageable(attack))
-            return false;
+        if (!Override(attack)) return false;
 
         int prevValue = Current;
         Current -= attack.amount;
@@ -219,8 +215,7 @@ public class Health : MonoBehaviour, IDamagable
     /// </summary>
     /// <param name="attack">The attack fed in.</param>
     /// <returns>Whether the attack successfully connects.</returns>
-	protected virtual bool OverrideDamageable(Attack attack) { return true; }
-    protected virtual void OverrideDamageValue(ref Attack attack) { }
+	protected virtual bool Override(Attack attack) => damagable && attack.amount >= 1 && !immuneTags.ContainsAnyFrom(attack.tags);
 
 
 
