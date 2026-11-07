@@ -54,11 +54,8 @@ public class Boss1Health : Health, IDamagable
         isVulnerable = !isVulnerable;
     }
 
-    protected override bool OverrideDamageable(Attack attack)
+    protected override bool Override(Attack attack)
     {
-        //Attack.Tags[] checkedTags = attack.tags.AllTags;
-        string checkedTags = attack.tags.ToString();
-        Debug.Log(checkedTags);
         if (lastDamageTime + damageCooldown > Time.time) return false;
         if (attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.GroundSlam] && isVulnerable == true)
         {
@@ -78,17 +75,6 @@ public class Boss1Health : Health, IDamagable
             //lastDamageTime = Time.time;
         }
         return false;
-    }
-
-    public void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("Collided with " + other);        
-
-        /* if (other.TryGetComponent<Attack>(out Attack foundAttack)) 
-        {
-            Debug.Log("Attack tag attached!");
-            OverrideDamageable(foundAttack);
-        } */
     }
 
     protected override void OnDamage(Attack attack)

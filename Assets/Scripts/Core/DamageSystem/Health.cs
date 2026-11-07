@@ -25,9 +25,9 @@ using UnityEditor;
 public class Health : MonoBehaviour, IDamagable
 {
     #region Real Values / Initial Cofig
-    [SerializeField, Title("Initial Health")] protected int _current;
-    [SerializeField, Title("Max Health")] protected int _max;
-    [SerializeField, Title("Min Health")] protected int _min;
+    [SerializeField, Rename("Initial Health"), FormerlySerializedAs("health"), HideInEditMode] protected int _current;
+    [SerializeField, Rename("Max Health"), FormerlySerializedAs("maxHealth")] protected int _max;
+    [SerializeField, Rename("Min Health"), FormerlySerializedAs("")] protected int _min;
 
     public UltEvents.UltEvent<int> damageEvent = new();
     public UltEvents.UltEvent depleteEvent = new();
@@ -182,11 +182,7 @@ public class Health : MonoBehaviour, IDamagable
     #region Damage Functionality
     public bool Damage(Attack attack)
     {
-        if (!damagable || attack.amount < 1 || immuneTags.ContainsAnyFrom(attack.tags) || !OverrideDamageable(attack))
-            return false;
-        OverrideDamageValue(ref attack);
-        if (!damagable || attack.amount < 1 || immuneTags.ContainsAnyFrom(attack.tags) || !OverrideDamageable(attack))
-            return false;
+        if (!Override(attack)) return false;
 
         int prevValue = Current;
         Current -= attack.amount;
@@ -219,8 +215,7 @@ public class Health : MonoBehaviour, IDamagable
     /// </summary>
     /// <param name="attack">The attack fed in.</param>
     /// <returns>Whether the attack successfully connects.</returns>
-	protected virtual bool OverrideDamageable(Attack attack) { return true; }
-    protected virtual void OverrideDamageValue(ref Attack attack) { }
+	protected virtual bool Override(Attack attack) => damagable && attack.amount >= 1 && !immuneTags.ContainsAnyFrom(attack.tags);
 
 
 

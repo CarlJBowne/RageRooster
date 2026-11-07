@@ -46,7 +46,7 @@ public class EnemyHealth : Health
 
     #region DamageOverrides
 
-    protected override bool OverrideDamageable(Attack attack) => attack != Attack.Tags.Enemy || attack == Attack.Tags.FriendlyFire;
+    protected override bool Override(Attack attack) => attack != Attack.Tags.Enemy || attack == Attack.Tags.FriendlyFire;
 
     protected override void OnDamage(Attack attack)
     {
