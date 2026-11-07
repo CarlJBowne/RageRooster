@@ -84,7 +84,7 @@ namespace RageRooster.Player
 
         protected override bool Override(Attack attack)
         {
-            if (attack.amount < 1) return false;
+            if (!base.Override(attack)) return false;
 
             if (Player.Stats.d_invincibility && attack != Attack.Tags.Pit) return false;
 
