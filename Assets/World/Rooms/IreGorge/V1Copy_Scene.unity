@@ -157646,11 +157646,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb36b3e8db67d4449d1fb90e81ed7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visualProxy: {fileID: 0}
-  Scene: Level0_Farmhouse
-  altRangeDetection: 1
-  radius: 100
-  loadZone: {fileID: 1456924102}
 --- !u!65 &497116666
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -159448,8 +159443,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af44c1156afa30745b290b3569a07d88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transition: {fileID: 1763734330}
-  isWithin: 0
 --- !u!65 &513552575
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -368502,8 +368495,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af44c1156afa30745b290b3569a07d88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transition: {fileID: 497116665}
-  isWithin: 0
 --- !u!65 &1456924103
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -376165,28 +376156,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.VisualScripting.Core::Unity.VisualScripting.Variables
   _data:
     _json: '{"declarations":{"Kind":"Object","collection":{"$content":[{"name":"Health","value":{"$content":0,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"Boss1Health,
-      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"ERM","value":{"$content":1,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"EntityRangeManager,
-      Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"Animator","value":{"$content":2,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Animator,
-      UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"CrashChecker","value":{"$content":3,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.BoxCollider,
-      UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"FaceHurtbox","value":{"$content":4,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.BoxCollider,
+      RageRooster.Actors, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"ERM","value":{"$content":1,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"EntityRangeManager,
+      RageRooster.Actors, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"BT","value":{"$content":2,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"BoulderThrowerBB,
+      RageRooster.Actors, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"Animator","value":{"$content":3,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.Animator,
+      UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"CrashChecker","value":{"$content":4,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.BoxCollider,
+      UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"FaceHurtbox","value":{"$content":5,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.BoxCollider,
+      UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"VHB","value":{"$content":6,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.BoxCollider,
       UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"AttackOdds","value":{"$content":0.0,"$type":"System.Single"},"typeHandle":{"Identification":"System.Single,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"AttackID","value":{"$content":0,"$type":"System.Int32"},"typeHandle":{"Identification":"System.Int32,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"RigCount","value":{"$content":0,"$type":"System.Int32"},"typeHandle":{"Identification":"System.Int32,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"RigCountMax","value":{"$content":3,"$type":"System.Int32"},"typeHandle":{"Identification":"System.Int32,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"CallRangedAttack","value":{"$content":false,"$type":"System.Boolean"},"typeHandle":{"Identification":"System.Boolean,
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"ForcedRangeChange","value":{"$content":false,"$type":"System.Boolean"},"typeHandle":{"Identification":"System.Boolean,
-      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"VHB","value":{"$content":5,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
-      UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"StartPosList","value":{"$content":[6,7],"$type":"System.Collections.Generic.List`1[[UnityEngine.Transform,
+      mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"},{"name":"StartPosList","value":{"$content":[7,8],"$type":"System.Collections.Generic.List`1[[UnityEngine.Transform,
       UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"typeHandle":{"Identification":"System.Collections.Generic.List`1[[UnityEngine.Transform,
       UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]],
       mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
     _objectReferences:
     - {fileID: 1507381843}
     - {fileID: 1507381846}
+    - {fileID: 1507381872}
     - {fileID: 1507381840}
     - {fileID: 657052919}
     - {fileID: 53045421}
-    - {fileID: 1636995641}
+    - {fileID: 1636995644}
     - {fileID: 5297981666365246341}
     - {fileID: 5297981666365246340}
 --- !u!114 &1507381848
@@ -376279,6 +376272,18 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1507381872 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7734967300198561671, guid: 003760916c27556478dabff57bfdc7e0,
+    type: 3}
+  m_PrefabInstance: {fileID: 5297981666365246339}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1507381833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d1732c013cfa754e8931789c70ea390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1507477301 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6611765353990376916, guid: 5dd7923414e63774a8b6ffc3f3f76be7,
@@ -394707,9 +394712,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 743923127}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1636995641 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1234613465650686611, guid: 003760916c27556478dabff57bfdc7e0,
+--- !u!65 &1636995644 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 2897862127270705767, guid: 003760916c27556478dabff57bfdc7e0,
     type: 3}
   m_PrefabInstance: {fileID: 5297981666365246339}
   m_PrefabAsset: {fileID: 0}
@@ -442099,11 +442104,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb36b3e8db67d4449d1fb90e81ed7d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visualProxy: {fileID: 0}
-  Scene: Level0_Farmhouse
-  altRangeDetection: 1
-  radius: 100
-  loadZone: {fileID: 513552574}
 --- !u!65 &1763734331
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -523909,6 +523909,16 @@ PrefabInstance:
     - target: {fileID: 9444963703372427, guid: 003760916c27556478dabff57bfdc7e0, type: 3}
       propertyPath: <Machine>k__BackingField
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 152818659551315348, guid: 003760916c27556478dabff57bfdc7e0,
+        type: 3}
+      propertyPath: _max
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 152818659551315348, guid: 003760916c27556478dabff57bfdc7e0,
+        type: 3}
+      propertyPath: _current
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 244707401499803438, guid: 003760916c27556478dabff57bfdc7e0,
         type: 3}
