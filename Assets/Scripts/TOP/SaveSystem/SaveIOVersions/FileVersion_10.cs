@@ -65,7 +65,6 @@ namespace RageRooster.TOP.Save.Streams
             Load_SavedCollectible(Transfer.progress.hensRescued,
                 (JObject)ProgressData["HensRescued"],
                 (JArray)ProgressData["HensRescuedIDs"]);
-            Transfer.progress.storyFlags.LoadFromJson(ProgressData["StoryFlags"] as JArray);
 
             foreach (string key in SaveData.FlagIDs)
                 Transfer.flags[key].LoadFromJson(WorldChangesData[key] as JObject);
@@ -107,7 +106,6 @@ namespace RageRooster.TOP.Save.Streams
                     ["PowerEggIDs"] = Save_SavedCollectible_IDs(Transfer.progress.powerEggs),
                     ["HensRescuedIDs"] = Save_SavedCollectible_IDs(Transfer.progress.hensRescued),
                     ["WishboneIDs"] = Save_SavedCollectible_IDs(Transfer.progress.wishbones),
-                    ["StoryFlags"] = Transfer.progress.storyFlags.SaveToJson()
                 });
 
                 WorldChangesFile.SaveToFile(new JObject().Populate(o =>

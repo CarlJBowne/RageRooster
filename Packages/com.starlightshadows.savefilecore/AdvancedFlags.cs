@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using SLS.GeneralUtilities.Events;
 using SLS.ListUtilities;
+using static SLS.SaveFileCore.Flag;
+
 
 
 
@@ -46,7 +48,7 @@ namespace SLS.SaveFileCore
                 get => value;
                 set
                 {
-                    if (this.value.Equals(value)) return;
+                    if ((this.value == null && value == null) || (this.value != null && this.value.Equals(value))) return;
                     this.value = value;
                     CallValueChangedCallback();
                 }
@@ -68,7 +70,7 @@ namespace SLS.SaveFileCore
 
             public event Action<T> OnValueChanged;
 
-            public EventTicket Subscribe(Action<T> callback, bool now = true) 
+            public EventTicket Subscribe(Action<T> callback, bool now = true)
                 => new(() => OnValueChanged += callback, () => OnValueChanged -= callback, now);
 
             protected override void CallValueChangedCallback() => OnValueChanged?.Invoke(Value);
@@ -159,39 +161,20 @@ namespace SLS.SaveFileCore
         [Serializable]
         public class Collection : Dictionary<Flag>
         {
-            // Get or create a Flag<T> under the given name (uses string-name storage)
-            public Generic<T> GetOrCreate<T>(string name)
+            public Generic<T> Get<T>(string name)
             {
                 if (TryGet(name, out Flag existing, true) && existing is Generic<T> f) return f;
-
-                Flag newFlag = null;
-                if (typeof(T) == typeof(bool)) newFlag = new Bool();
-                if (typeof(T) == typeof(int)) newFlag = new Int();
-                if (typeof(T) == typeof(float)) newFlag = new Float();
-                if (typeof(T) == typeof(UnityEngine.Vector3)) newFlag = new Vector3();
-                if (typeof(T) == typeof(string)) newFlag = new String();
-                if (typeof(T) == typeof(char)) newFlag = new Char();
-                this[name] = newFlag;
-                return newFlag as Generic<T>;
-
+                return null;
             }
 
-            public void Set<T>(string name, T value)
-            {
-                if (!ContainsKey(name)) return;
-                if (this[name].ValueType != typeof(T)) return;
-                if (this[name] is not Generic<T> gen) return;
-                gen.Value = value;
-            }
-
-            public bool TryGet<T>(string name, out T value)
+            public bool TryGet<T>(string name, out Generic<T> value)
             {
                 value = default;
                 if (!ContainsKey(name)) return false;
                 if (this[name].ValueType != typeof(T)) return false;
                 if (this[name] is not Generic<T> gen) return false;
 
-                value = gen.Value;
+                value = gen;
                 return true;
             }
 
@@ -208,6 +191,37 @@ namespace SLS.SaveFileCore
                 return result.ToArray();
             }
 
+            public Generic<T> AddNew<T>(string name)
+            {
+                Flag newFlag = typeof(T) switch
+                {
+                    Type t when t == typeof(bool) => new Bool(),
+                    Type t when t == typeof(int) => new Int(),
+                    Type t when t == typeof(float) => new Float(),
+                    Type t when t == typeof(UnityEngine.Vector3) => new Vector3(),
+                    Type t when t == typeof(string) => new String(),
+                    Type t when t == typeof(char) => new Char(),
+                    _ => throw new ArgumentException($"Type {typeof(T)} is not a valid Flag type.")
+                };
+                this[name] = newFlag;
+                return newFlag as Generic<T>;
+            }
+            public Flag AddNew(string name, Type type)
+            {
+                Flag newFlag = type switch
+                {
+                    Type t when t == typeof(bool) => new Bool(),
+                    Type t when t == typeof(int) => new Int(),
+                    Type t when t == typeof(float) => new Float(),
+                    Type t when t == typeof(UnityEngine.Vector3) => new Vector3(),
+                    Type t when t == typeof(string) => new String(),
+                    Type t when t == typeof(char) => new Char(),
+                    _ => throw new ArgumentException($"Type {type} is not a valid Flag type.")
+                };
+                this[name] = newFlag;
+                return newFlag;
+            }
+
             public void Clone(Collection source, DictionaryCloneOp op = DictionaryCloneOp.Transfer)
             {
                 if (source == null) return;
@@ -216,7 +230,8 @@ namespace SLS.SaveFileCore
                 for (int i = 0; i < source.Count; i++)
                 {
                     if (!ContainsHash(source.Hashes[i]) && op is not DictionaryCloneOp.Transfer)
-                        this.Add(source.Keys[i], Activator.CreateInstance(source.Values[i].GetType()) as Flag);
+                        this.AddNew(source.Keys[i], source.Values[i].ValueType);
+                    this.Add(source.Keys[i], Activator.CreateInstance(source.Values[i].GetType()) as Flag);
                     this[source.Keys[i]].Clone(source.Values[i]);
                 }
             }
@@ -235,114 +250,15 @@ namespace SLS.SaveFileCore
                     result.Add(new JProperty(Keys[i], Values[i].SaveToJson()));
                 return result;
             }
-        }
 
-        public class OneTypeCollection<T> : Dictionary<Generic<T>>
-        {
-            // Get or create a Flag<T> under the given name (uses string-name storage)
-            public Generic<T> GetOrCreate(string name)
+            public float PercentageIsntDefault(float mult = 1f)
             {
-                if (TryGet(name, out Generic<T> existing, true) && existing is Generic<T> f) return f;
-
-                Flag newFlag = null;
-                if (typeof(T) == typeof(bool)) newFlag = new Bool();
-                if (typeof(T) == typeof(int)) newFlag = new Int();
-                if (typeof(T) == typeof(float)) newFlag = new Float();
-                if (typeof(T) == typeof(UnityEngine.Vector3)) newFlag = new Vector3();
-                if (typeof(T) == typeof(string)) newFlag = new String();
-                if (typeof(T) == typeof(char)) newFlag = new Char();
-                this[name] = newFlag as Generic<T>;
-                return newFlag as Generic<T>;
-
-            }
-
-            public void Set(string name, T value)
-            {
-                if (!ContainsKey(name)) return;
-                if (this[name].ValueType != typeof(T)) return;
-                if (this[name] is not Generic<T> gen) return;
-                gen.Value = value;
-            }
-
-            public bool TryGet(string name, out T value)
-            {
-                value = default;
-                if (!ContainsKey(name)) return false;
-                if (this[name].ValueType != typeof(T)) return false;
-                if (this[name] is not Generic<T> gen) return false;
-
-                value = gen.Value;
-                return true;
-            }
-
-            public EventTicket Subscribe(string name, Action<T> callback, bool now = true) =>
-                TryGet(name, out Generic<T> res) ? res.Subscribe(callback, now) : null;
-
-            public void Clone(OneTypeCollection<T> source, DictionaryCloneOp op = DictionaryCloneOp.Transfer)
-            {
-                if (source == null) return;
-                if (Count == 0) op = DictionaryCloneOp.TransferAndAdd;
-                if (op is DictionaryCloneOp.ReplaceEntirely) Clear();
-                for (int i = 0; i < source; i++)
-                {
-                    if (!ContainsHash(source.Hashes[i]) && op is not DictionaryCloneOp.Transfer)
-                        this.Add(source.Keys[i], Activator.CreateInstance(source.Values[i].GetType()) as Generic<T>);
-                    this[source.Keys[i]].Clone(source.Values[i]);
-                }
-            }
-
-            public void LoadFromJson(JObject list)
-            {
-                if (!list.HasValues) return;
-                foreach (JProperty prop in list.Properties())
-                    if (ContainsKey(prop.Name))
-                        this[prop.Name].LoadFromJson(prop.Value);
-            }
-            public JObject SaveToJson()
-            {
-                JObject result = new();
+                if (Count == 0) return 0;
+                int notDefault = 0;
                 for (int i = 0; i < Count; i++)
-                    result.Add(new JProperty(Keys[i], Values[i].SaveToJson()));
-                return result;
-            }
-        }
-
-        public class BoolOnlyCollection : OneTypeCollection<bool>
-        {
-            public float CompletionOf(float percentage)
-            {
-                int completeted = 0;
-                for (int i = 0; i < Count; i++)
-                    if (Values[i].Value)
-                        completeted++;
-                return completeted / Count * percentage;
-            }
-            public void Clone(BoolOnlyCollection source, DictionaryCloneOp op = DictionaryCloneOp.Transfer)
-            {
-                if (source == null) return;
-                if (Count == 0) op = DictionaryCloneOp.TransferAndAdd;
-                if (op is DictionaryCloneOp.ReplaceEntirely) Clear();
-                for (int i = 0; i < source; i++)
-                {
-                    if (!ContainsHash(source.Hashes[i]) && op is not DictionaryCloneOp.Transfer)
-                        this.Add(source.Keys[i], Activator.CreateInstance(source.Values[i].GetType()) as Generic<bool>);
-                    this[source.Keys[i]].Clone(source.Values[i]);
-                }
-            }
-            public new JArray SaveToJson()
-            {
-                JArray res = new();
-                for (int i = 0; i < Count; i++)
-                    if (Values[i].Value)
-                        res.Add(Keys[i]);
-                return res;
-            }
-            public void LoadFromJson(JArray list)
-            {
-                if (!list.HasValues) return;
-                for (int i = 0; i < list.Count; i++)
-                    if (ContainsKey(list[i].ToString()))
-                        this[list[i].ToString()].Value = true;
+                    if (Values[i].valueObject != null && !Values[i].valueObject.Equals(default))
+                        notDefault++;
+                return (float)notDefault / (float)Count * mult;
             }
         }
 

@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using RageRooster.Core.World;
 using SLS.SaveFileCore;
+using SLS.GeneralUtilities.Events;
+using UnityEditor.UIElements;
+
+
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine.UIElements;
@@ -39,22 +43,17 @@ namespace RageRooster.Core.Save
         {
             if (foundFlag != null) return true;
 
+            if (!SaveData.FlagIDs.Contains(CollectionID)) return false;
 
+            Flag.Collection collection = SaveData.Active.flags[CollectionID];
 
+            if (!collection.ContainsKey(ID)) return false;
 
+            foundFlag = collection[ID] as Flag.Generic<T>;
 
-            return (foundFlag != null);
+            return foundFlag != null;
         }
-        public void RegisterCallback(Action<T> input)
-        {
-            if (!Find()) return;
-            foundFlag.OnValueChanged += input;
-        }
-        public void UnregisterCallback(Action<T> input)
-        {
-            if (!Find()) return;
-            foundFlag.OnValueChanged -= input;
-        }
+        public EventTicket RegisterCallback(Action<T> input) => !Find() ? null : foundFlag.Subscribe(input);
     }
 
 #if UNITY_EDITOR
@@ -63,10 +62,10 @@ namespace RageRooster.Core.Save
     {
         VisualElement root;
         SerializedProperty collectionIDProp;
-        DynamicEnumField targetCollectionField;
+        DropdownField targetCollectionField;
         List<string> collectionIDs;
         SerializedProperty flagIDProp;
-        DynamicEnumField targetFlagField;
+        DropdownField targetFlagField;
         List<string> flagIds;
         Type targetType;
 
@@ -77,28 +76,27 @@ namespace RageRooster.Core.Save
             collectionIDProp = property.FindPropertyRelative("CollectionID");
             flagIDProp = property.FindPropertyRelative("ID");
 
-            collectionIDs = new(AreaRegistry.Names);
-            collectionIDs.Insert(0, "Global");
-            collectionIDs.Insert(1, "StoryFlags");
-            int collInitID = collectionIDs.Contains(collectionIDProp.stringValue)
-                ? collectionIDs.IndexOf(collectionIDProp.stringValue)
-                : 0;
+            collectionIDs = SaveData.FlagIDs.ToList();
 
-            targetCollectionField = new DynamicEnumField(collectionIDs, collInitID, OnCollectionIDChange);
-            
-
-            OnCollectionIDChange(collInitID);
+            targetCollectionField = new DropdownField("Collection", collectionIDs, collectionIDs.IndexOf("Global")).AddTo(root, c =>
+            {
+                c.RegisterValueChangedCallback(OnCollectionIDChange);
+                c.BindProperty(collectionIDProp);
+            });
 
             return root;
         }
 
-        void OnCollectionIDChange(int v)
+        void OnCollectionIDChange(ChangeEvent<string> v)
         {
-            flagIds = new();
+            if (string.IsNullOrEmpty(v.newValue)) return;
+            flagIds = SaveData.Defs.flags[v.newValue].AllNamesOfType(targetType).ToList();
 
-            Polymorph.Dictionary<Flag> target;
-            //if (v == 1) target = SaveData.Default.progress.storyFlags as Polymorph.Dictionary<Flag>;
-            //else target = SaveData.Default.flags[collectionIDs[v]];
+            if (targetFlagField != null && targetFlagField.parent == root) root.Remove(targetFlagField);
+            targetFlagField = new DropdownField("Flag", flagIds, -1).AddTo(root, f =>
+            {
+                f.BindProperty(flagIDProp);
+            });
 
         }
     }

@@ -25,23 +25,24 @@ namespace RageRooster.TOP.Save
         [SerializeField] private SavedCollectible wishbones = new();
         [SerializeField] private SavedCollectible hensRescued = new();
         [SerializeField] private Flag.Collection globalFlagDefs = new();
-        [SerializeField] private Flag.BoolOnlyCollection storyFlagDefs = new();
+        [SerializeField] private Flag.Collection storyFlagDefs = new();
 
         public override void OnInitEditor()
         {
+            var flags = AreaRegistry.All.ToDictionary(a => a.name, a => a.flagDefaults);
+            flags.Add("Global", globalFlagDefs);
+            flags.Add("Story", storyFlagDefs);
             DefsData = new()
             {
                 playerStats = playerStatsDef,
                 progress = new()
                 {
-                    storyFlags = storyFlagDefs,
                     powerEggs = powerEggs,
                     wishbones = wishbones,
                     hensRescued = hensRescued,
                 },
-                flags = AreaRegistry.All.ToDictionary(a => a.name, a => a.flagDefaults)
+                flags = flags
             };
-            DefsData.flags.Add("Global", globalFlagDefs);
             activeDisplayData = null;
         }
         public override void OnInitPlaying()
