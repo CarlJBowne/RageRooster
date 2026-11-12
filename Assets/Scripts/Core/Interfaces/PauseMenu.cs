@@ -32,8 +32,15 @@ namespace RageRooster.Core
         public static event System.Action onUnPause;
         public static event System.Action<bool> onPauseValue;
 
-        public static EventTicket SubscribeOnPause(Action res, bool subscribeNow = true) => new(onPause, res, subscribeNow);
-        public static EventTicket SubscribeOnUnPause(Action res, bool subscribeNow = true) => new(onUnPause, res, subscribeNow);
+        public static EventTicket SubscribeOnPause(Action res, bool subscribeNow = true) => new(
+            () => onPause += res, 
+            () => onPause -= res, subscribeNow);
+        public static EventTicket SubscribeOnUnPause(Action res, bool subscribeNow = true) => new(
+            () => onUnPause += res,
+            () => onUnPause -= res, subscribeNow);
+        public static EventTicket SubscribeOnPause(Action<bool> res, bool subscribeNow = true) => new(
+            () => onPauseValue += res,
+            () => onPauseValue -= res, subscribeNow);
 
         protected static class DoStatic
         {

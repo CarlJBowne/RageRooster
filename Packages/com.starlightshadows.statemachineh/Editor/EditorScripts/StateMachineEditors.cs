@@ -238,18 +238,21 @@ namespace SLS.StateMachineH
                 var iterator = serializedObject.GetIterator();
                 if (iterator.NextVisible(true))
                 {
+                    bool hasNext = true;
                     // Skip the next 8 properties to match original behavior (skip total of 9)
                     for (int i = 0; i < propsToMovePast; i++)
                     {
-                        if (!iterator.NextVisible(false)) break;
+                        hasNext = iterator.NextVisible(false);
+                        if (!hasNext) break;
                     }
-
-                    while (iterator != null && iterator.NextVisible(false))
+                    if (!hasNext) return;
+                    while (iterator != null && hasNext)
                     {
                         SerializedProperty copy = iterator.Copy();
                         PropertyField field = new(copy);
                         field.Bind(serializedObject);
                         additions.Add(field);
+                        hasNext = iterator.NextVisible(false);
                     }
                 }
             }

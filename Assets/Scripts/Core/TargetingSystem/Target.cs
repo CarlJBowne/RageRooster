@@ -62,6 +62,7 @@ public class Target : MonoBehaviour
             Types[i].Target = this; // keep reference available until fully torn down
             Types[i].Enabled = false;
         }
+        if(outlinable) outlinable.enabled = false;
     }
 
     private void Awake()
