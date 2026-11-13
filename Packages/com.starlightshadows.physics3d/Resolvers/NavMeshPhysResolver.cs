@@ -57,8 +57,10 @@ namespace SLS.Physics3D
 
         public override bool TryEnter(ref PhysicsResolver result)
         {
-            if (!NavMesh.SamplePosition(Position, out NavMeshHit sampleHit, detectionRange, Agent.areaMask)
-                || Vector3.Dot(Body.Velocity.Global.normalized, (Position - sampleHit.position).normalized) < -.3f)
+            bool navFound = NavMesh.SamplePosition(Position, out NavMeshHit sampleHit, detectionRange, Agent.areaMask);
+            Vector3 distance = Position - sampleHit.position;
+
+            if (!navFound || (distance.sqrMagnitude > .01f && Vector3.Dot(Body.Velocity.Global.normalized, distance.normalized) < -.3f))
             {
 
                 if (altGroundResolver && altGroundResolver.TryEnter(ref result)) return true;

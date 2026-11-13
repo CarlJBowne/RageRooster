@@ -53,17 +53,12 @@ namespace RageRooster.Player
             if (turningSpeed > 0) Player.MovementBody.Direction.Set
                     ((target.position - Player.Transform.position).XZ(), turningSpeed * Time.fixedDeltaTime);
 
-            float targetForwardSpeed = Player.MovementBody.Velocity.sqrMagnitudeH;
+            float targetForwardSpeed = Player.MovementBody.Velocity.f;
 
 
             if (forwardSpeedInfluence > 0f)
-            {
-                targetForwardSpeed = Mathf.Lerp(targetForwardSpeed, forwardSpeed, forwardSpeedInfluence * delta
+                Player.MovementBody.Velocity.f = Mathf.Lerp(targetForwardSpeed, forwardSpeed, forwardSpeedInfluence * delta
                     * (Vector3.Distance(Player.Position, targetPosition) > closeDistance).Int());
-            }
-
-            Player.MovementBody.Velocity.x = (targetPosition - Player.Position).x * targetForwardSpeed;
-            Player.MovementBody.Velocity.z = (targetPosition - Player.Position).z * targetForwardSpeed;
 
             Player.MovementBody.Velocity.y = verticalShift > 0f
                 ? verticalShift * (targetPosition.y - Player.Position.y).Sign()

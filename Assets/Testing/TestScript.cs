@@ -14,9 +14,12 @@ using UnityEditor.UIElements;
 using SLS.MenuCore;
 using static RageRooster.Services;
 using System.Linq;
+using RageRooster.Core.Save;
 
 public class TestScript : MonoBehaviour
 {
+    public FlagClient<int> testFlag;
+
     private void OnTriggerEnter(Collider other)
     {
         if (!Player.Owns(other)) return;

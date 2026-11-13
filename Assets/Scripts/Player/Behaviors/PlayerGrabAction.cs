@@ -17,15 +17,15 @@ namespace RageRooster.Player
         public AnimationCurve forwardSpeedCurve;
         public AnimationCurve forwardSpeedInfluenceCurve;
         public AnimationCurve turningSpeedCurve;
+        public float instantDirectionSnap = 2;
         public AnimationCurve verticalShiftCurve;
         public float horizontalThresholdAdjustment = 0.05f;
-        public float verticalThreshold;
-        public float directionalThreshold;
-        public float maxAttemptTime = 9;
+        public float verticalThreshold = 3;
+        public float directionalThreshold = 3;
+        public float directionalMissThreshold = 12f;
+        public float maxAttemptTime = 3;
         public TimedMovementAffector failMissedReturn;
         public TimedMovementAffector failBlockedReturn;
-        //public TimedMovementAffector passthroughReturn;                      NOTE. GRABBABLE SWITCHES DOES NOT WORK CORRECTLY YET.
-        //[SerializeReference] public AnimationAction grabAnimation;
         public State successState;
         public float grabAnimationTime;
         public bool moveToTargetPosition;
@@ -41,6 +41,9 @@ namespace RageRooster.Player
         Target selectedTarget;
         Grabbable selectedGrabbable;
         Vector3 storedTargetPosition;
+        float horizontalDistance;
+        float verticalDistance;
+        float angleDifference;
         Vector3 playerPhaseTwoStartPosition;
 
         protected override void OnAwake() => grabAnimationTime = 1 / grabAnimationTime;
@@ -69,6 +72,7 @@ namespace RageRooster.Player
             State.Enter();
             phase = 1;
             horizontalThreshold = selectedGrabbable.grabRadius + Player.Collider.radius + horizontalThresholdAdjustment;
+            Player.MovementBody.Direction.Set((selectedTarget.position - Player.Position).XZ(), instantDirectionSnap);
             //initialAnimation.Do(Player.Animator);
         }
 
@@ -80,9 +84,9 @@ namespace RageRooster.Player
 
                 if (selectedTarget != null) storedTargetPosition = selectedTarget.position;
 
-                float horizontalDistance = (Player.Center - storedTargetPosition).XZ().magnitude;
-                float verticalDistance = (Player.Center.y - storedTargetPosition.y).Abs();
-                float angleDifference = Vector3.Angle(Player.Forward, (storedTargetPosition - Player.Center).XZ());
+                horizontalDistance = (Player.Center - storedTargetPosition).XZ().magnitude;
+                verticalDistance = (Player.Center.y - storedTargetPosition.y).Abs();
+                angleDifference = Vector3.Angle(Player.Forward, (storedTargetPosition - Player.Center).XZ());
 
                 SampleCurve(forwardSpeedCurve, out float forwardSpeed);
                 SampleCurve(forwardSpeedInfluenceCurve, out float forwardSpeedInfluence);
@@ -111,15 +115,19 @@ namespace RageRooster.Player
                     targetVelocity.y = 0;
                 }
 
-
-
                 Player.MovementBody.Velocity.f = targetVelocity.z;
                 Player.MovementBody.Velocity.u = targetVelocity.y;
 
+                if (angleDifference > directionalMissThreshold)
+                {
+                    failBlockedReturn.State.Enter();
+                    EndCleanup();
+                    return;
+                }
 
                 if (elapsedTime > maxAttemptTime || (horizontalDistance <= horizontalThreshold && angleDifference <= directionalThreshold && (verticalDistance <= verticalThreshold || verticalShift == 0))) //CHANGE PHASE
                 {
-                    if (selectedTarget == null || selectedGrabbable == null)
+                    if (selectedTarget == null || selectedGrabbable == null || angleDifference > directionalThreshold)
                     {
                         failMissedReturn.State.Enter();
                         EndCleanup();
@@ -133,6 +141,7 @@ namespace RageRooster.Player
                         return;
                     }
 
+                    Player.MovementBody.Velocity.ZeroOut();
                     storedTargetPosition = selectedTarget.position + (Player.Position - Player.Center);
                     playerPhaseTwoStartPosition = Player.Position;
                     elapsedTime = 0;

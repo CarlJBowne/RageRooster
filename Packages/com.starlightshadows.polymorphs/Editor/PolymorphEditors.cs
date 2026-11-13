@@ -384,7 +384,7 @@ public class PolymorphEditors
         {
             rootProperty = input;
             property = input.FindPropertyRelative("items");
-            AssertProperties(rootProperty);
+            AssertProperties(rootProperty, property);
             header.Bind(input);
             FinishBind();
         }

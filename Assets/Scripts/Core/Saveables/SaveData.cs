@@ -52,7 +52,7 @@ namespace RageRooster.Core.Save
         public SavedProgress progress = new();
         public Dictionary<string, Flag.Collection> flags = new();
         public float Completion =>
-            progress.storyFlags.CompletionOf(.4f) +
+            flags["Story"].PercentageIsntDefault(.4f) +
             progress.powerEggs.CompletionOf(.3f) +
             progress.hensRescued.CompletionOf(.2f) +
             progress.wishbones.CompletionOf(.1f);

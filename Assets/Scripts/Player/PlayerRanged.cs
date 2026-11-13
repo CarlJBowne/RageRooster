@@ -50,10 +50,10 @@ namespace RageRooster.Player
 
             Ammo.SetMaxAndFill(Player.Stats.MaxAmmo);
             events = new()
-        {
-            Player.Stats.MaxAmmo.Subscribe(Ammo.SetMax),
-            PauseMenu.SubscribeOnPause(ExitAimingInstant)
-        };
+            {
+                Player.Stats.MaxAmmo.Subscribe(Ammo.SetMax),
+                PauseMenu.SubscribeOnPause(ExitAimingInstant)
+            };
         }
         private void OnDestroy()
         {
