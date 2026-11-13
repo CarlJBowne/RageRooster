@@ -17,7 +17,7 @@ using SLS.EditorUtilities;
 namespace RageRooster.Core.Save
 {
     [System.Serializable]
-    public class FlagClient<T> where T : struct
+    public class FlagClient<T>
     {
         public string ID;
         public string CollectionID;
@@ -53,7 +53,7 @@ namespace RageRooster.Core.Save
 
             return foundFlag != null;
         }
-        public EventTicket RegisterCallback(Action<T> input) => !Find() ? null : foundFlag.Subscribe(input);
+        public EventTicket RegisterCallback(Action<T> input, bool now = true) => !Find() ? null : foundFlag.Subscribe(input, now);
     }
 
 #if UNITY_EDITOR
@@ -96,6 +96,7 @@ namespace RageRooster.Core.Save
             targetFlagField = new DropdownField("Flag", flagIds, -1).AddTo(root, f =>
             {
                 f.BindProperty(flagIDProp);
+                
             });
 
         }
