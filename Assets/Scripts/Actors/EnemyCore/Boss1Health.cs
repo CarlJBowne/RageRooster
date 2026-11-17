@@ -49,10 +49,10 @@ public class Boss1Health : Health, IDamagable
         Player.OnRespawn -= ResetBoss;
     }
 
-    public void FlipVulnerable()
+    /* public void FlipVulnerable()
     {
         isVulnerable = !isVulnerable;
-    }
+    } */
 
     protected override bool Override(Attack attack)
     {
@@ -65,14 +65,7 @@ public class Boss1Health : Health, IDamagable
         }
         if (bossPhase != 2 && attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.Egg] /* &&  machine.CurrentState.gameObject.name != "Charging" */)
         {
-            stunCounter++;
-            if (stunCounter > 2)
-            {
-                stunCounter = 0;
-                // machine.SendSignal("Charge");
-            }
-            //else machine.SendSignal("Flinch");
-            //lastDamageTime = Time.time;
+            CustomEvent.Trigger(gameObject, "Egged");
         }
         return false;
     }
