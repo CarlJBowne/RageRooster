@@ -49,11 +49,6 @@ public class Boss1Health : Health, IDamagable
         Player.OnRespawn -= ResetBoss;
     }
 
-    /* public void FlipVulnerable()
-    {
-        isVulnerable = !isVulnerable;
-    } */
-
     protected override bool Override(Attack attack)
     {
         if (lastDamageTime + damageCooldown > Time.time) return false;
