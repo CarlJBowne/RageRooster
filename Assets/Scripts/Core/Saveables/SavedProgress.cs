@@ -6,7 +6,7 @@ using UnityEngine;
 namespace RageRooster.Core.Save
 {
     [System.Serializable]
-    public class SavedProgress : Saveable<SavedProgress>
+    public class SavedProgress : ICloneable<SavedProgress>
     {
         public static SavedProgress Active { get; private set; }
         public void Establish() => Active = this;
@@ -35,7 +35,7 @@ namespace RageRooster.Core.Save
             return Time.timeAsDouble - previousSaveInteractionTime;
         }
 
-        public override SavedProgress Clone(SavedProgress source)
+        public SavedProgress Clone(SavedProgress source)
         {
             playTime = source.playTime;
             Currency &= source.Currency;

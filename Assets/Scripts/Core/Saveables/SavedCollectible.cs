@@ -11,7 +11,7 @@ namespace RageRooster.Core.Save
     /// A Basic Saved Collectible class, tracking the amount and specific collected instances of a collectible. <br/>
     /// Used for <see cref="powerEggs"/>, <see cref="wishbones"/>, and <see cref="hensRescued"/>.
     /// </summary>
-    public class SavedCollectible : Saveable<SavedCollectible>
+    public class SavedCollectible : ICloneable<SavedCollectible>
     {
         /// <summary>
         /// The total amount of this collectible that has been collected, only for easy access.
@@ -28,7 +28,7 @@ namespace RageRooster.Core.Save
 
         public int total => isCollected.Count;
 
-        public override SavedCollectible Clone(SavedCollectible source)
+        public SavedCollectible Clone(SavedCollectible source)
         {
             if (this.GetType() != source.GetType()) return null;
             collected = source.collected;

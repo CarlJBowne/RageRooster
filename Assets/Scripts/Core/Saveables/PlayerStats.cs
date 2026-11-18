@@ -15,7 +15,7 @@ namespace RageRooster.Player
     /// A container for the active data of all player upgrades.
     /// </summary>
     [System.Serializable]
-    public class PlayerStats : Saveable<PlayerStats>
+    public class PlayerStats : ICloneable<PlayerStats>
     {
         public static PlayerStats Active { get; private set; }
         public void Establish() => Active = this;
@@ -42,7 +42,7 @@ namespace RageRooster.Player
         /// <summary> A debug-privilege upgrade that makes the player go infinitely upwards as long as the jump button is held. </summary>
         [JsonIgnore] public bool d_moonJump;
 
-        public override PlayerStats Clone(PlayerStats source)
+        public PlayerStats Clone(PlayerStats source)
         {
             MaxHealth.Clone(source.MaxHealth);
             MaxAmmo.Clone(source.MaxAmmo);

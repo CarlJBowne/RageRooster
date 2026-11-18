@@ -10,17 +10,25 @@ namespace SLS.SaveFileCore
     /// </summary>
     public abstract class SaveFile
     {
-
+        /// <summary>Gets the parameters used to create each file-version instance.</summary>
         public object[] parameters { get; protected set; }
 
+        /// <summary>Gets the supported file-version identifiers and their implementing types; the first entry is the desired version.</summary>
         public abstract Dictionary<string, Type> AllFileVersions { get; }
+        /// <summary>Creates a file-version instance using this save file's parameters.</summary>
+        /// <param name="T">Concrete file-version type to instantiate.</param>
+        /// <returns>The created file-version instance.</returns>
         public virtual FileVersion Create(Type T) => FileVersion.Create(T, parameters);
+        /// <summary>Gets the type of the first supported version, which is the version used for saving.</summary>
         public Type DesiredFileVersion => AllFileVersions.First().Value;
 
+        /// <summary>Gets the version instance currently selected for this save file.</summary>
         public FileVersion ActiveFileVersion => active;
+        /// <summary>Stores the selected version instance, or <see langword="null"/> when none has been selected yet.</summary>
         private FileVersion active;
 
-
+        /// <summary>Initializes this save file, selects a matching stored version when possible, and retains the supplied parameters.</summary>
+        /// <param name="newParameters">Arguments used to configure the save-file versions.</param>
         public SaveFile(params object[] newParameters)
         {
             EstablishParams(newParameters);
@@ -56,6 +64,7 @@ namespace SLS.SaveFileCore
 
         }
 
+        /// <summary>Loads data from the active version, invoking the configured pre-load and post-load callbacks.</summary>
         public void LoadFromFile()
         {
             if (!active.Valid) return;
@@ -63,6 +72,8 @@ namespace SLS.SaveFileCore
             active.LoadFromFile();
             PostLoad();
         }
+
+        /// <summary>Saves data using the desired version, replacing an older active version if necessary.</summary>
         public void SaveToFile()
         {
             PreSave();
@@ -75,6 +86,10 @@ namespace SLS.SaveFileCore
             PostSave();
         }
 
+        /// <summary>Exports display data from the active file version as the requested type.</summary>
+        /// <typeparam name="T">Expected display-data type.</typeparam>
+        /// <param name="result">Receives the exported display data.</param>
+        /// <exception cref="Exception">No active file version exists, or its display data is not assignable to <typeparamref name="T"/>.</exception>
         public void ExportDisplayData<T>(out T result)
         {
             if (active == null) throw new Exception($"SaveFile with params {parameters} has no FileVersion assigned. Cannot export Menu Display Data.");
@@ -83,11 +98,17 @@ namespace SLS.SaveFileCore
             result = (T)resultObj;
         }
 
+        /// <summary>Callback invoked immediately before loading from the active version.</summary>
         public Action PreLoad;
+        /// <summary>Callback invoked immediately before saving to the desired version.</summary>
         public Action PreSave;
+        /// <summary>Callback invoked after loading from the active version.</summary>
         public Action PostLoad;
+        /// <summary>Callback invoked after saving to the desired version.</summary>
         public Action PostSave;
 
+        /// <summary>Stores the parameters used when creating file-version instances.</summary>
+        /// <param name="parameters">Configuration arguments to retain.</param>
         public virtual void EstablishParams(params object[] parameters) => this.parameters = parameters;
     }
 }

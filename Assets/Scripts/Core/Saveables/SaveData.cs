@@ -16,7 +16,7 @@ namespace RageRooster.Core.Save
     /// <summary>
     /// A class tracking saved values across the game.
     /// </summary>
-    public class SaveData : Saveable<SaveData>
+    public class SaveData : ICloneable<SaveData>
     {
         #region Top Systems
 
@@ -67,7 +67,7 @@ namespace RageRooster.Core.Save
             else if (Defs != null) Clone(Defs);
         }
 
-        public override SaveData Clone(SaveData source)
+        public SaveData Clone(SaveData source)
         {
             playerStats.Clone(source.playerStats);
             progress.Clone(source.progress);
@@ -78,6 +78,12 @@ namespace RageRooster.Core.Save
                 flags[key].Clone(source.flags[key]);
             }
             return this;
+        }
+
+        public static T Clone<T>(T source, T target) where T : class, ICloneable<T>
+        {
+            target.Clone(source);
+            return target;
         }
 
         /// <summary>
