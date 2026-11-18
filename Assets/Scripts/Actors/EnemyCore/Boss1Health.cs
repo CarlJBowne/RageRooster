@@ -63,7 +63,7 @@ public class Boss1Health : Health, IDamagable
             CustomEvent.Trigger(gameObject, "Damaged");
             return true;
         }
-        if (bossPhase != 2 && attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.Egg] /* &&  machine.CurrentState.gameObject.name != "Charging" */)
+        if (bossPhase != 2 && attack[Attack.Tags.WeakSpot] && attack[Attack.Tags.Egg] && isVulnerable == false)
         {
             CustomEvent.Trigger(gameObject, "Egged");
         }
