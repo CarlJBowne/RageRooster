@@ -1089,10 +1089,10 @@ namespace Unity.VisualScripting.Generated.Aot
 	// TMPro.TMP_Animated.op_Implicit
 	// TMPro.TMP_Animated.op_Equality
 	// TMPro.TMP_Animated.op_Inequality
-	// SLS.StateMachineH.Timelines.TimedMovementAffector.op_Implicit
-	// SLS.StateMachineH.Timelines.TimedMovementAffector.op_Implicit
-	// SLS.StateMachineH.Timelines.TimedMovementAffector.op_Equality
-	// SLS.StateMachineH.Timelines.TimedMovementAffector.op_Inequality
+	// SLS.StateMachineUltimate.Timelines.TimedMovementAffector.op_Implicit
+	// SLS.StateMachineUltimate.Timelines.TimedMovementAffector.op_Implicit
+	// SLS.StateMachineUltimate.Timelines.TimedMovementAffector.op_Equality
+	// SLS.StateMachineUltimate.Timelines.TimedMovementAffector.op_Inequality
 	// RageRooster.Core.World.AreaAsset.op_Implicit
 	// RageRooster.Core.World.AreaAsset.op_Equality
 	// RageRooster.Core.World.AreaAsset.op_Inequality
@@ -9924,9 +9924,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void DistanceAttackChooserBB_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -9970,9 +9970,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void RandomAttackChooserBB_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -10121,9 +10121,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void Boss2HeadStateBehavior_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -10622,9 +10622,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerAirborneMovement_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -10668,9 +10668,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerGlidingMovement_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -10714,9 +10714,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerGrabAction_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -10760,9 +10760,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerGroundMovement_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -10806,9 +10806,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerGroundSlam_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -10852,9 +10852,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerHellcopterMovement_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -10898,9 +10898,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerLedgeGrab_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -10944,9 +10944,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerMovementEffector_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -10990,9 +10990,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerMovementHorizontalBasic_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -11071,9 +11071,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerTargetPursuer_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -11117,9 +11117,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerUppercut_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -11163,9 +11163,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerWallJump_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -11279,9 +11279,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerButtonActions_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -11325,9 +11325,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerController_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -11616,9 +11616,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerStateMachine_op_Implicit()
 		{
-			global::SLS.StateMachineH.State arg0 = default(global::SLS.StateMachineH.State);
+			global::SLS.StateMachineUltimate.State arg0 = default(global::SLS.StateMachineUltimate.State);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.State, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.State, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.State, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.State, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -11662,9 +11662,9 @@ namespace Unity.VisualScripting.Generated.Aot
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void PlayerStrafingMovement_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
@@ -14176,18 +14176,18 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// SLS.StateMachineH.Timelines.TimedMovementAffector.op_Implicit
+		// SLS.StateMachineUltimate.Timelines.TimedMovementAffector.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void SLS_StateMachineH_Timelines_TimedMovementAffector_op_Implicit()
 		{
-			global::SLS.StateMachineH.StateBehavior arg0 = default(global::SLS.StateMachineH.StateBehavior);
+			global::SLS.StateMachineUltimate.StateBehavior arg0 = default(global::SLS.StateMachineUltimate.StateBehavior);
 			bool conversion = ((bool)(arg0));
-			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineH.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
+			global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool> optimized = new global::Unity.VisualScripting.StaticFunctionInvoker<SLS.StateMachineUltimate.StateBehavior, bool>(default(global::System.Reflection.MethodInfo));
 			optimized.Invoke(null, arg0);
 			optimized.Invoke(default(object[]));
 		}
 		
-		// SLS.StateMachineH.Timelines.TimedMovementAffector.op_Implicit
+		// SLS.StateMachineUltimate.Timelines.TimedMovementAffector.op_Implicit
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void SLS_StateMachineH_Timelines_TimedMovementAffector_op_Implicit_0()
 		{
@@ -14198,7 +14198,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// SLS.StateMachineH.Timelines.TimedMovementAffector.op_Equality
+		// SLS.StateMachineUltimate.Timelines.TimedMovementAffector.op_Equality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void SLS_StateMachineH_Timelines_TimedMovementAffector_op_Equality()
 		{
@@ -14210,7 +14210,7 @@ namespace Unity.VisualScripting.Generated.Aot
 			optimized.Invoke(default(object[]));
 		}
 		
-		// SLS.StateMachineH.Timelines.TimedMovementAffector.op_Inequality
+		// SLS.StateMachineUltimate.Timelines.TimedMovementAffector.op_Inequality
 		[global::UnityEngine.Scripting.PreserveAttribute()]
 		public static void SLS_StateMachineH_Timelines_TimedMovementAffector_op_Inequality()
 		{

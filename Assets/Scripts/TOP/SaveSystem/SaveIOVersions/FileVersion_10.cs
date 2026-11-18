@@ -17,16 +17,13 @@ namespace RageRooster.TOP.Save.Streams
         JsonFile ProgressFile;
         JsonFile WorldChangesFile;
 
-        public FileVersion_10(int fileID) : base(fileID) { }
-        public override void Initialize()
+        public FileVersion_10(int fileID) : base(fileID)
         {
-            this.fileID = fileID;
             saveRootPath = $"{UnityEngine.Application.persistentDataPath}/Save{fileID}";
 
             RootFile = new(saveRootPath, $"PlayerData");
             ProgressFile = new(saveRootPath, $"Progress");
             WorldChangesFile = new(saveRootPath, $"WorldChanges");
-
         }
 
         #region Getters

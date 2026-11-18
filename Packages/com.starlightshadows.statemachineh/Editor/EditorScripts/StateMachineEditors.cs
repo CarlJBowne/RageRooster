@@ -9,7 +9,7 @@ using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace SLS.StateMachineH
+namespace SLS.StateMachineUltimate
 {
     [CustomEditor(typeof(State), false)]
     public class StateEditor : UnityEditor.Editor

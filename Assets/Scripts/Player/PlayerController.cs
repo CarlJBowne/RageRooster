@@ -1,7 +1,7 @@
 using EditorAttributes;
 using RageRooster.Core.Save;
 using RageRooster.Player;
-using SLS.StateMachineH;
+using SLS.StateMachineUltimate;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -169,7 +169,7 @@ namespace RageRooster.Player
             Recurse(Machine);
             void Recurse(State state)
             {
-                if (state.TryGetComponent(out SLS.StateMachineH.Signals.SignalNode signalNode))
+                if (state.TryGetComponent(out SLS.StateMachineUltimate.Signals.SignalNode signalNode))
                 {
                     PlayerButtonActions actionSet = signalNode.GetOrAddComponent<PlayerButtonActions>();
 

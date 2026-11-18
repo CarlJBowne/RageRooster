@@ -24,17 +24,7 @@ namespace RageRooster.Settings
     {
         public static void Init() 
         {
-            FileVersion.Options options = new()
-            {
-                DesiredFileVersion = typeof(ConfigVersion_10),
-                AllFileVersions =
-                {
-                    {ConfigVersion_10.NUM, typeof(ConfigVersion_10)},
-                    {ConfigVersion_UCF.NUM, typeof(ConfigVersion_UCF)},
-                }
-            };
-            options.Initialize(ref stream);
-
+            file = new();
             {
                 Volume.Master &= 1f;
                 Volume.Music &= 1f;
@@ -42,10 +32,10 @@ namespace RageRooster.Settings
                 Volume.Ambience &= 1f;
                 Graphics.Brightness &= 1f;
             }
-            stream.LoadFromFile();
+            file.LoadFromFile();
         }
-        public static void LoadSettings() => stream.LoadFromFile();
-        public static void SaveSettings() => stream.SaveToFile();
+        public static void LoadSettings() => file.LoadFromFile();
+        public static void SaveSettings() => file.SaveToFile();
 
         public static class Volume
         {
@@ -67,23 +57,6 @@ namespace RageRooster.Settings
                     brightnessOverlay = Overlay.OverALL.transform.parent.Find("BrightnessOverlay").GetComponent<Image>();
                 BrightnessTicket = Brightness.Subscribe(value => brightnessOverlay.color = new(0, 0, 0, 1 - value));
             }
-        }
-
-        static SLS.SaveFileCore.FileVersion stream;
-        public abstract class FileVersion : SLS.SaveFileCore.FileVersion
-        {
-            public FileVersion() : base(-1) { }
-
-            public override string version { get; }
-
-            public override void Initialize()
-            {
-                saveRootPath = $"{Application.persistentDataPath}";
-                RootFile = new JsonFile(saveRootPath, "Config");
-            }
-            public override void DeleteFile() => RootFile.DeleteFile();
-            public override void ExportDisplayData(out object result) => throw new NotImplementedException();
-
         }
 
         public static class Remapping
@@ -159,5 +132,31 @@ namespace RageRooster.Settings
                         .Start();
             }
         }
+
+        public class File : SLS.SaveFileCore.SaveFile
+        {
+            public File() : base() { }
+            public override Dictionary<string, Type> AllFileVersions { get; } = new()
+            {
+                { ConfigVersion_10.NUM, typeof(ConfigVersion_10) },
+                { ConfigVersion_UCF.NUM, typeof(ConfigVersion_UCF) }
+            };
+        }
+        static File file;
+        public abstract class FileVersion : SLS.SaveFileCore.FileVersion
+        {
+            public FileVersion() : base()
+            {
+                saveRootPath = $"{Application.persistentDataPath}";
+                RootFile = new JsonFile(saveRootPath, "Config");
+            }
+
+            public override string version { get; }
+
+            public override void DeleteFile() => RootFile.DeleteFile();
+            public override void ExportDisplayData(out object result) => throw new NotImplementedException();
+
+        }
+
     }
 }

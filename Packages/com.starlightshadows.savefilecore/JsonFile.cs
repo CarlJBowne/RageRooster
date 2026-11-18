@@ -8,7 +8,7 @@ using Files = System.IO.File;
 namespace SLS.SaveFileCore
 {
     /// <summary>
-    /// A Json File representation. Stores a JToken.
+    /// A Json File representation.
     /// </summary>
     public class JsonFile : TextFile
     {

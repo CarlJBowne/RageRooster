@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SLS.EditorUtilities.ComponentHeaders;
 using UnityEngine;
 
-namespace SLS.StateMachineH
+namespace SLS.StateMachineUltimate
 {
     /// <summary>  
     /// A behavior that manages animation states within a <see cref="StateMachine"/>.  

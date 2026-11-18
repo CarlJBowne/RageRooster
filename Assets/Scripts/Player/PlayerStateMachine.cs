@@ -8,8 +8,8 @@ using RageRooster.Core.Save;
 using RageRooster.Core.World;
 using RageRooster.Player;
 using SLS.Singletons;
-using SLS.StateMachineH;
-using SLS.StateMachineH.Signals;
+using SLS.StateMachineUltimate;
+using SLS.StateMachineUltimate.Signals;
 using UnityEngine;
 using Services = RageRooster.Services;
 

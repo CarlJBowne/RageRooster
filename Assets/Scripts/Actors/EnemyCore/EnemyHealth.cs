@@ -1,6 +1,6 @@
 ﻿using EditorAttributes;
 using SLS.EditorUtilities.ComponentHeaders;
-using SLS.StateMachineH;
+using SLS.StateMachineUltimate;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ public class EnemyHealth : Health
     [System.Obsolete]
     public Behaviour[] stunComponents;
     [SerializeField, HeaderItem(true)] EntityActivity entityActivity;
-    [SerializeField, HeaderItem()] SLS.StateMachineH.StateMachine hierarchicalMachine;
+    [SerializeField, HeaderItem()] SLS.StateMachineUltimate.StateMachine hierarchicalMachine;
     [SerializeField, HeaderItem()] Unity.VisualScripting.StateMachine visualMachine;
     [SerializeField, HeaderItem(true)] EnemyLootSpawner enemyLootSpawner;
 

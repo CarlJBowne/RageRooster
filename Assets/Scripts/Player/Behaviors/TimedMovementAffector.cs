@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
-using SLS.StateMachineH;
-using SLS.StateMachineH.Timelines;
+using SLS.StateMachineUltimate;
+using SLS.StateMachineUltimate.Timelines;
 
 
 namespace RageRooster.Player

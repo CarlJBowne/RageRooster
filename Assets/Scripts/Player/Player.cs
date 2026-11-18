@@ -4,7 +4,7 @@ using RageRooster.Core.Save;
 using RageRooster.Core.World;
 using RageRooster.Player;
 using SLS.MenuCore;
-using SLS.StateMachineH.Signals;
+using SLS.StateMachineUltimate.Signals;
 using UnityEngine;
 using static RageRooster.Core.IPlayer;
 
@@ -32,7 +32,7 @@ namespace RageRooster.Player
             Audio = root.GetComponent<AudioCaller>();
             RagdollHandler = root.GetComponent<RagdollHandler>();
             TargetingManager = root.GetComponent<TargetingManager>();
-            SignalManager = root.GetComponent<SLS.StateMachineH.Signals.SignalManager>();
+            SignalManager = root.GetComponent<SLS.StateMachineUltimate.Signals.SignalManager>();
 
             _activeState = ActivityStates.Active;
         }

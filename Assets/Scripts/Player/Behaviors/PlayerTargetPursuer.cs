@@ -1,6 +1,6 @@
 using DG.Tweening;
-using SLS.StateMachineH;
-using SLS.StateMachineH.Timelines;
+using SLS.StateMachineUltimate;
+using SLS.StateMachineUltimate.Timelines;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

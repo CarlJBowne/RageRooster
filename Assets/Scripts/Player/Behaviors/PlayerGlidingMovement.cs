@@ -2,7 +2,7 @@ using EditorAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SLS.StateMachineH;
+using SLS.StateMachineUltimate;
 using SLS.Physics3D;
 
 namespace RageRooster.Player

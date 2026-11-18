@@ -4,7 +4,7 @@ using SLS.EditorUtilities.ComponentHeaders;
 using UnityEditor;
 using UnityEngine;
 
-namespace SLS.StateMachineH
+namespace SLS.StateMachineUltimate
 {
 
     /// <summary>  
@@ -139,7 +139,7 @@ namespace SLS.StateMachineH
         public static implicit operator bool(StateBehavior B) => B != null && B.State.Active;
 
         /// <summary>
-        /// Blocks this <see cref="StateBehavior"/> from doing anything for the duration of the <see cref="SLS.StateMachineH.State"/>'s activation. <br/>
+        /// Blocks this <see cref="StateBehavior"/> from doing anything for the duration of the <see cref="SLS.StateMachineUltimate.State"/>'s activation. <br/>
         /// Automatically undone when the State is exited.<br/>
         /// Can be undone with <see cref="UnBlockForThisCycle"/>
         /// </summary>
@@ -150,7 +150,7 @@ namespace SLS.StateMachineH
 
         /// <summary>
         /// Undoes the effects of <see cref="BlockForThisCycle"/>, re-enabling functionality. <br/>
-        /// If run while the current <see cref="SLS.StateMachineH.State"/> is active, will cause OnEnter like functionality unless manually disabled. <br/>
+        /// If run while the current <see cref="SLS.StateMachineUltimate.State"/> is active, will cause OnEnter like functionality unless manually disabled. <br/>
         /// Be very intentional with how you use this.
         /// </summary>
         public void UnBlockForThisCycle(bool doEnterLogic = true)

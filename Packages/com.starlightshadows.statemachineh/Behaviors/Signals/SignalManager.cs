@@ -9,7 +9,7 @@ using EVENT = UltEvents.UltEvent;
 using EVENT = UnityEngine.Events.UnityEvent;
 #endif
 
-namespace SLS.StateMachineH.Signals
+namespace SLS.StateMachineUltimate.Signals
 {
     /// <summary>  
     /// Manages signals within a hierarchical state machine.  

@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using SLS.ListUtilities.Editor;
-using SLS.StateMachineH.Editor;
-using SLS.StateMachineH.Utils;
+using SLS.StateMachineUltimate.Editor;
+using SLS.StateMachineUltimate.Utils;
 using SLS.EditorUtilities;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +16,7 @@ using EVENT = UltEvents.UltEvent;
 using EVENT = UnityEngine.Events.UnityEvent;
 #endif
 
-namespace SLS.StateMachineH.Signals
+namespace SLS.StateMachineUltimate.Signals
 {
     [CustomPropertyDrawer(typeof(SignalSet))]
     internal class SignalSetDrawer : PropertyDrawer

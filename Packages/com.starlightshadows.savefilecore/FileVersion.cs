@@ -12,22 +12,15 @@ namespace SLS.SaveFileCore
     /// </summary>
     public abstract class FileVersion
     {
-        public static FileVersion Create(Type T, int fileID) => Activator.CreateInstance(T, fileID) as FileVersion;
-        public static FileVersion Create(Type T) => Activator.CreateInstance(T) as FileVersion;
         public static FileVersion Create(Type T, params object[] args) => Activator.CreateInstance(T, args) as FileVersion;
 
         public abstract string version { get; }
         protected virtual List<string> altVersions { get; }
         public string saveRootPath { get; protected set; }
-        public int fileID { get; protected set; }
+        public object[] parameters { get; protected set; }
         public JsonFile RootFile { get; protected set; }
 
-        public FileVersion(int fileID)
-        {
-            this.fileID = fileID;
-            Initialize();
-        }
-        public abstract void Initialize();
+        public FileVersion(params object[] parameters) => this.parameters = parameters;
 
         public virtual bool PathExists => RootFile.PathExists;
         public virtual bool FileExists => RootFile.FileExists;
@@ -82,145 +75,6 @@ namespace SLS.SaveFileCore
 
         public abstract void ExportDisplayData(out object result);
 
-
-        public class Options
-        {
-            public Type DesiredFileVersion = null;
-            public Dictionary<string, Type> AllFileVersions = new();
-
-            public void Initialize(ref FileVersion FileVersion, int fileID)
-            {
-                FileVersion = Create(DesiredFileVersion, fileID);
-                if (FileVersion.MatchVersion(out string version).IfFail(out FileOpMessage failReason))
-                {
-                    if (failReason == FileOpMessage.FileVersionMismatch && AllFileVersions.ContainsKey(version))
-                    {
-                        FileVersion = Create(AllFileVersions[version], fileID);
-                        if (FileVersion.MatchVersion(out _).IfFail(out failReason))
-                        {
-                            FileVersion = Create(DesiredFileVersion, fileID);
-                        }
-                    }
-                    else
-                    {
-                        FileVersion = null;
-                        foreach (var pair in AllFileVersions)
-                        {
-                            if (pair.Value == DesiredFileVersion) continue;
-                            FileVersion = Create(pair.Value, fileID);
-                            if (!FileVersion.MatchVersion(out string loaderVersion).IfFail(out failReason)) return;
-                            else if (failReason == FileOpMessage.FileVersionMismatch && AllFileVersions.ContainsKey(version))
-                            {
-                                FileVersion = Create(AllFileVersions[version], fileID);
-                                if (!FileVersion.MatchVersion(out _).IfFail(out failReason)) return;
-                                else FileVersion = null;
-                            }
-                        }
-                        FileVersion ??= Create(DesiredFileVersion, fileID);
-                    }
-                }
-
-            }
-            public void Initialize(ref FileVersion FileVersion)
-            {
-                FileVersion = Create(DesiredFileVersion);
-                if (FileVersion.MatchVersion(out string version).IfFail(out FileOpMessage failReason))
-                {
-                    if (failReason == FileOpMessage.FileVersionMismatch)
-                    {
-                        FileVersion = Create(AllFileVersions[version]);
-                        if (FileVersion.MatchVersion(out _).IfFail(out failReason))
-                        {
-                            FileVersion = Create(DesiredFileVersion);
-                        }
-                    }
-                    else
-                    {
-                        FileVersion = null;
-                        foreach (var pair in AllFileVersions)
-                        {
-                            if (pair.Value == DesiredFileVersion) continue;
-                            FileVersion = Create(pair.Value);
-                            if (!FileVersion.MatchVersion(out string loaderVersion).IfFail(out failReason)) return;
-                            else if (failReason == FileOpMessage.FileVersionMismatch)
-                            {
-                                FileVersion = Create(AllFileVersions[version]);
-                                if (!FileVersion.MatchVersion(out _).IfFail(out failReason)) return;
-                                else FileVersion = null;
-                            }
-                        }
-                        FileVersion ??= Create(DesiredFileVersion);
-                    }
-                }
-
-            }
-            public void Initialize(ref FileVersion FileVersion, params object[] args)
-            {
-                FileVersion = Create(DesiredFileVersion, args);
-                if (FileVersion.MatchVersion(out string version).IfFail(out FileOpMessage failReason))
-                {
-                    if (failReason == FileOpMessage.FileVersionMismatch)
-                    {
-                        FileVersion = Create(AllFileVersions[version], args);
-                        if (FileVersion.MatchVersion(out _).IfFail(out failReason))
-                        {
-                            FileVersion = Create(DesiredFileVersion, args);
-                        }
-                    }
-                    else
-                    {
-                        FileVersion = null;
-                        foreach (var pair in AllFileVersions)
-                        {
-                            if (pair.Value == DesiredFileVersion) continue;
-                            FileVersion = Create(pair.Value, args);
-                            if (!FileVersion.MatchVersion(out string loaderVersion).IfFail(out failReason)) return;
-                            else if (failReason == FileOpMessage.FileVersionMismatch)
-                            {
-                                FileVersion = Create(AllFileVersions[version], args);
-                                if (!FileVersion.MatchVersion(out _).IfFail(out failReason)) return;
-                                else FileVersion = null;
-                            }
-                        }
-                        FileVersion ??= Create(DesiredFileVersion, args);
-                    }
-                }
-
-            }
-            public void Initialize(ref FileVersion FileVersion, Func<Type, FileVersion> Creator)
-            {
-                FileVersion = Creator(DesiredFileVersion);
-                if (FileVersion.MatchVersion(out string version).IfFail(out FileOpMessage failReason))
-                {
-                    if (failReason == FileOpMessage.FileVersionMismatch)
-                    {
-                        FileVersion = Creator(AllFileVersions[version]);
-                        if (FileVersion.MatchVersion(out _).IfFail(out failReason))
-                        {
-                            FileVersion = Creator(DesiredFileVersion);
-                        }
-                    }
-                    else
-                    {
-                        FileVersion = null;
-                        foreach (var pair in AllFileVersions)
-                        {
-                            if (pair.Value == DesiredFileVersion) continue;
-                            FileVersion = Creator(pair.Value);
-                            if (!FileVersion.MatchVersion(out string loaderVersion).IfFail(out failReason)) return;
-                            else if (failReason == FileOpMessage.FileVersionMismatch)
-                            {
-                                FileVersion = Creator(AllFileVersions[version]);
-                                if (!FileVersion.MatchVersion(out _).IfFail(out failReason)) return;
-                                else FileVersion = null;
-                            }
-                        }
-                        FileVersion ??= Creator(DesiredFileVersion);
-                    }
-                }
-
-            }
-        }
         public class MismatchException : Exception
         {
             public MismatchException(string message) : base(message) { }

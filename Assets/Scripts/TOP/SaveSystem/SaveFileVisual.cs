@@ -32,7 +32,7 @@ namespace RageRooster.TOP.Save
 
         public void DeleteFile()
         {
-            file.FileVersion.DeleteFile();
+            file.ActiveFileVersion.DeleteFile();
             UpdateFile();
         }
 

@@ -45,17 +45,6 @@ namespace RageRooster.TOP.Save
             };
             activeDisplayData = null;
         }
-        public override void OnInitPlaying()
-        {
-            //Init File background services.
-            SaveFile._versionOptions.DesiredFileVersion = typeof(FileVersion_10);
-            SaveFile._versionOptions.AllFileVersions = new Dictionary<string, Type>()
-            {
-                { FileVersion_10.NUM, typeof(FileVersion_10) },
-                { FileVersion_UCF.NUM, typeof(FileVersion_UCF) }
-            };
-
-        }
         [UnityEngine.SerializeField] private SaveData activeDisplayData = null;
 
         public static SaveData TransferSnapshot;
@@ -104,6 +93,5 @@ namespace RageRooster.TOP.Save
 
         public override void SaveToDeathData() => SaveData.Clone(SaveData.Active, SaveData.DeathReloadData);
         public override void RevertToDeathData() => SaveData.Clone(SaveData.DeathReloadData, SaveData.Active);
-
     }
 }

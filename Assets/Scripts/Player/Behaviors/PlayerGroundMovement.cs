@@ -1,12 +1,12 @@
 using EditorAttributes;
 using RageRooster.Core.Save;
-using SLS.StateMachineH;
+using SLS.StateMachineUltimate;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-using static SLS.StateMachineH.StateAnimator;
+using static SLS.StateMachineUltimate.StateAnimator;
 using static UnityEngine.EventSystems.EventTrigger;
 
 
